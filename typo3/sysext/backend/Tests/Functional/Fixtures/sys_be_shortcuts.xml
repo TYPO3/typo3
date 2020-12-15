@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <sys_be_shortcuts>
+        <uid>1</uid>
+        <userid>1</userid>
+        <route>web_layout</route>
+        <arguments>{"id":"123"}</arguments>
+    </sys_be_shortcuts>
+</dataset>

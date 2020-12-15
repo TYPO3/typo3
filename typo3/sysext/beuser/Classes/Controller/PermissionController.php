@@ -142,7 +142,6 @@ class PermissionController extends ActionController
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
         $lang = $this->getLanguageService();
 
         if ($currentRequest->getControllerActionName() === 'edit') {
@@ -174,7 +173,7 @@ class PermissionController extends ActionController
         }
 
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
+            ->setRouteIdentifier('system_BeuserTxPermission')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => GeneralUtility::_GP('route'),

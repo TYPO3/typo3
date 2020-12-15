@@ -286,7 +286,7 @@ class InfoModuleController
             }
         }
         $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
+            ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);

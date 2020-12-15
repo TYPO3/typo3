@@ -430,7 +430,7 @@ class SetupModuleController
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
+            ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'))
             ->setArguments([
                 'route' => $route,

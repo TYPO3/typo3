@@ -663,7 +663,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('file_FilelistList')
+            ->setRouteIdentifier('file_FilelistList')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => GeneralUtility::_GP('route'),

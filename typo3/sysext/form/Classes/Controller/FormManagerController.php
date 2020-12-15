@@ -458,8 +458,6 @@ class FormManagerController extends AbstractBackendController
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $currentRequest = $this->request;
-        $moduleName = $currentRequest->getPluginName();
 
         // Create new
         $addFormButton = $buttonBar->makeLinkButton()
@@ -478,7 +476,7 @@ class FormManagerController extends AbstractBackendController
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
+            ->setRouteIdentifier('web_FormFormbuilder')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'))
             ->setArguments([
                 'route' => GeneralUtility::_GP('route')

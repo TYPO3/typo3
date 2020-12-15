@@ -130,8 +130,8 @@ CREATE TABLE sys_registry (
 CREATE TABLE sys_be_shortcuts (
 	uid int(11) unsigned NOT NULL auto_increment,
 	userid int(11) unsigned DEFAULT '0' NOT NULL,
-	module_name varchar(255) DEFAULT '' NOT NULL,
-	url text,
+	route varchar(255) DEFAULT '' NOT NULL,
+	arguments text,
 	description varchar(255) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sc_group tinyint(4) DEFAULT '0' NOT NULL,

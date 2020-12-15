@@ -4690,4 +4690,18 @@ return [
             'Breaking-93080-RelationHandlerInternalsProtected.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getModuleName' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setModuleName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI.rst'
+        ],
+    ],
 ];

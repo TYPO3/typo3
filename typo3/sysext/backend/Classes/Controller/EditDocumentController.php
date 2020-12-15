@@ -1788,7 +1788,6 @@ class EditDocumentController
         if ($this->returnUrl !== $this->getCloseUrl()) {
             $queryParams = $request->getQueryParams();
             $potentialArguments = [
-                'returnUrl',
                 'edit',
                 'defVals',
                 'overrideVals',
@@ -1806,7 +1805,7 @@ class EditDocumentController
             }
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton
-                ->setModuleName('xMOD_alt_doc.php')
+                ->setRouteIdentifier('record_edit')
                 ->setDisplayName($this->getShortcutTitle($request))
                 ->setArguments($arguments);
             $buttonBar->addButton($shortCutButton, $position, $group);

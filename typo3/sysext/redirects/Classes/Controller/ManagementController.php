@@ -178,7 +178,7 @@ class ManagementController
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('site_redirects')
+            ->setRouteIdentifier('site_redirects')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_labels_tablabel'))
             ->setArguments([
                 'route' => $this->request->getQueryParams()['route'],

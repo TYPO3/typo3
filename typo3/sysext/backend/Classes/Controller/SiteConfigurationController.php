@@ -640,7 +640,7 @@ class SiteConfigurationController
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('site_configuration')
+            ->setRouteIdentifier('site_configuration')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'))
             ->setArguments([
                 'route' => $route

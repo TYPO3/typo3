@@ -1,0 +1,24 @@
+"sys_be_shortcuts",,,,,,,,,
+,"uid","userid","module_name","url","description","sorting","sc_group","route","arguments"
+,1,1,"system_config|","/typo3/index.php?&route=%2Fmodule%2Fsystem%2Fconfig&tree=siteConfiguration","Site Configuration",0,0,"system_config","{""tree"":""siteConfiguration""}"
+,2,1,"web_FormFormbuilder|","/typo3/index.php?&route=%2Fmodule%2Fweb%2FFormFormbuilder","Form manager",0,0,"web_FormFormbuilder","[]"
+,3,1,"system_BeuserTxPermission|","/typo3/index.php?&route=%2Fmodule%2Fsystem%2FBeuserTxPermission&id=123","Permissions",0,0,"system_BeuserTxPermission","{""id"":""123""}"
+,4,1,"file_FilelistList|","/typo3/index.php?&route=%2Fmodule%2Ffile%2FFilelistList&id=1%3A%2F","Filelist root",0,0,"file_FilelistList","{""id"":""1:\/""}"
+,5,1,"web_layout|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flayout&id=123&SET%5Btt_content_showHidden%5D=1&SET%5Bfunction%5D=1&SET%5Blanguage%5D=0","Web layout",0,0,"web_layout","{""id"":""123"",""SET"":{""tt_content_showHidden"":""1"",""function"":""1"",""language"":""0""}}"
+,6,1,"xMOD_alt_doc.php|","/typo3/index.php?&route=%2Frecord%2Fedit&returnUrl=%2Ftypo3%2Findex.php%3Froute%3D%252Fmodule%252Fweb%252Flayout%26token%3D123456%26id%3D123%26%23element-tt_content-3&edit%5Btt_content%5D%5B3%5D=edit","Edit Page Content",0,0,"record_edit","{""edit"":{""tt_content"":{""3"":""edit""}}}"
+,7,1,"xMOD_alt_doc.php|","/typo3/index.php?&route=%2Frecord%2Fedit&returnUrl=%2Ftypo3%2Findex.php%3Froute%3D%252Fmodule%252Fweb%252Flist%26token%3D123456%26id%3D0%26table%3D&edit%5Bbe_groups%5D%5B3%5D=edit","Edit Backend usergroup on root level",0,0,"record_edit","{""edit"":{""be_groups"":{""3"":""edit""}}}"
+,8,1,"xMOD_alt_doc.php|","/typo3/index.php?&route=%2Frecord%2Fedit&returnUrl=%2Ftypo3%2Findex.php%3Froute%3D%252Fmodule%252Fweb%252Flist%26token%3D123456%26id%3D0%26table%3D&edit%5Bbe_groups%5D%5B0%5D=new","Create new Backend usergroup",0,0,"record_edit","{""edit"":{""be_groups"":[""new""]}}"
+,9,1,"xMOD_alt_doc.php|","/typo3/index.php?&route=%2Frecord%2Fedit&returnUrl=%2Ftypo3%2Findex.php%3Froute%3D%252Fmodule%252Fsystem%252FBeuserTxBeuser%26token%3D123456&edit%5Bbe_users%5D%5B1%5D=edit","Edit Backend user on root level",0,0,"record_edit","{""edit"":{""be_users"":{""1"":""edit""}}}"
+,10,1,"xMOD_alt_doc.php|","/typo3/index.php?&route=%2Frecord%2Fedit&returnUrl=%2Ftypo3%2Findex.php%3Froute%3D%252Fmodule%252Fweb%252Flist%26token%3D123456%26id%3D123%26table%3D&edit%5Bpages%5D%5B416%5D=edit&overrideVals%5Bpages%5D%5Bsys_language_uid%5D=1","Edit Page with overrides",0,0,"record_edit","{""edit"":{""pages"":{""416"":""edit""}},""overrideVals"":{""pages"":{""sys_language_uid"":""1""}}}"
+,11,1,"web_info|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Finfo&id=123&SET%5Bfunction%5D=TYPO3%5CCMS%5CInfo%5CController%5CTranslationStatusController&SET%5Bdepth%5D=3","Localization Overview",0,0,"web_info","{""id"":""123"",""SET"":{""function"":""TYPO3\\CMS\\Info\\Controller\\TranslationStatusController"",""depth"":""3""}}"
+,12,1,"system_dbint|","/typo3/index.php?&route=%2Fmodule%2Fsystem%2Fdbint&SET%5Bfunction%5D=search&SET%5Bsearch%5D=raw&SET%5Bsearch_query_makeQuery%5D=all","Db int full search",0,0,"system_dbint","{""SET"":{""function"":""search"",""search"":""raw"",""search_query_makeQuery"":""all""}}"
+,13,1,"system_BeuserTxBeuser|","/typo3/index.php?&route=%2Fmodule%2Fsystem%2FBeuserTxBeuser&tx_beuser_system_beusertxbeuser%5Baction%5D=index&tx_beuser_system_beusertxbeuser%5Bcontroller%5D=BackendUser","Backend users",0,0,"system_BeuserTxBeuser","{""tx_beuser_system_beusertxbeuser"":{""action"":""index"",""controller"":""BackendUser""}}"
+,14,1,"web_list|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flist&id=123&GET%5BclipBoard%5D=1","Recordlist",0,0,"web_list","{""id"":""123"",""GET"":{""clipBoard"":""1""}}"
+,15,1,"web_list|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flist&id=123&table=tx_styleguide_inline_mnsymmetric&GET%5BclipBoard%5D=1","Single table view",0,0,"web_list","{""id"":""123"",""table"":""tx_styleguide_inline_mnsymmetric"",""GET"":{""clipBoard"":""1""}}"
+,16,1,"","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flist&id=123&table=tx_styleguide_inline_mnsymmetric&GET%5BclipBoard%5D=1","Invalid no module name",0,0,,
+,17,1,"web_list|",,"Invalid no url",0,0,,
+,18,1,"web_list|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flist&id=123&table=tx_styleguide_inline_mnsymmetric&GET%5BclipBoard%5D=1","Invalid new field route not empty",0,0,"route_identifier",
+,19,1,"web_list|","/typo3/index.php?&route=%2Fmodule%2Fweb%2Flist&id=123&table=tx_styleguide_inline_mnsymmetric&GET%5BclipBoard%5D=1","Invalid new field arguments not empty",0,0,,"[]"
+,20,1,,,"New record",0,0,"web_list","{""id"":123,""GET"":{""clipBoard"":true}}"
+,21,1,,,"New record with empty arguments",0,0,"record_edit","[]"
+,22,1,,,"New record with empty route",0,0,,"{""id"":123,""GET"":{""clipBoard"":true}}"

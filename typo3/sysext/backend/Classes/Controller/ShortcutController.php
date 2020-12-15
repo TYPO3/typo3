@@ -83,16 +83,16 @@ class ShortcutController
         $result = 'success';
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $url = rawurldecode($parsedBody['url'] ?? $queryParams['url'] ?? '');
+        $routeIdentifier = $parsedBody['routeIdentifier'] ?? $queryParams['routeIdentifier'] ?? '';
+        $arguments = $parsedBody['arguments'] ?? $queryParams['arguments'] ?? '';
 
-        if ($this->shortcutRepository->shortcutExists($url)) {
+        if ($routeIdentifier === '') {
+            $result = 'missingRoute';
+        } elseif ($this->shortcutRepository->shortcutExists($routeIdentifier, $arguments)) {
             $result = 'alreadyExists';
         } else {
-            $moduleName = $parsedBody['module'] ?? '';
-            $parentModuleName = $parsedBody['motherModName'] ?? '';
-            $shortcutName = $parsedBody['displayName'] ?? '';
-            $success = $this->shortcutRepository->addShortcut($url, $moduleName, $parentModuleName, $shortcutName);
-
+            $shortcutName = $parsedBody['displayName'] ?? $queryParams['arguments'] ?? '';
+            $success = $this->shortcutRepository->addShortcut($routeIdentifier, $arguments, $shortcutName);
             if (!$success) {
                 $result = 'failed';
             }

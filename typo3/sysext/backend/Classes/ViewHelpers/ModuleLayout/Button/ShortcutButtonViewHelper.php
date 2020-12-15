@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button;
 
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * Default::
  *
  *    <be:moduleLayout>
- *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" arguments="{route: '{route}'"/>
+ *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" arguments="{parameter: '{someValue}'}"/>
  *    </be:moduleLayout>
  */
 class ShortcutButtonViewHelper extends AbstractButtonViewHelper
@@ -50,7 +51,8 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('displayName', 'string', 'Name for the shortcut');
+        // This will be required in v12. Deprecation for empty argument logged by ModuleTemplate->makeShortcutIcon()
+        $this->registerArgument('displayName', 'string', 'Name for the shortcut', false, '');
         $this->registerArgument('arguments', 'array', 'List of relevant GET variables as key/values list to store', false, []);
         // @deprecated since v11, will be removed in v12. Use 'arguments' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
         $this->registerArgument('getVars', 'array', 'List of additional GET variables to store. The current id, module and all module arguments will always be stored', false, []);
@@ -62,9 +64,11 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
         $moduleName = $currentRequest->getPluginName();
         $displayName = $arguments['displayName'];
 
-        $shortcutButton = $buttonBar->makeShortcutButton()
+        // Initialize the shortcut button
+        $shortcutButton = $buttonBar
+            ->makeShortcutButton()
             ->setDisplayName($displayName)
-            ->setModuleName($moduleName);
+            ->setRouteIdentifier(self::getRouteIdentifierForModuleName($moduleName));
 
         if (!empty($arguments['arguments'])) {
             $shortcutButton->setArguments($arguments['arguments']);
@@ -80,5 +84,22 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
         }
 
         return $shortcutButton;
+    }
+
+    /**
+     * Tries to fetch the route identifier for a given module name
+     *
+     * @param string $moduleName
+     * @return string
+     */
+    protected static function getRouteIdentifierForModuleName(string $moduleName): string
+    {
+        foreach (GeneralUtility::makeInstance(Router::class)->getRoutes() as $identifier => $route) {
+            if ($route->hasOption('moduleName') && $route->getOption('moduleName') === $moduleName) {
+                return $identifier;
+            }
+        }
+
+        return '';
     }
 }

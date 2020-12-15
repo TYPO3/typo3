@@ -121,7 +121,8 @@ class ConfigurationController
 
         // Shortcut in doc header
         $shortcutButton = $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
-        $shortcutButton->setModuleName('system_config')
+        $shortcutButton
+            ->setRouteIdentifier('system_config')
             ->setDisplayName($configurationProvider->getLabel())
             ->setArguments([
                 'route' => $request->getQueryParams()['route'],

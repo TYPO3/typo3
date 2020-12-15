@@ -764,10 +764,9 @@ class PageLayoutController
         }
         // Shortcut
         $shortcutButton = $this->buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
+            ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
-                'route' => $request->getQueryParams()['route'],
                 'id' => (int)$this->id,
                 'SET' => [
                     'tt_content_showHidden' => (bool)$this->MOD_SETTINGS['tt_content_showHidden'],

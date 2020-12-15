@@ -1383,7 +1383,7 @@ class SchedulerModuleController
             $shortcutArguments['tx_scheduler']['uid'] = $queryParams['tx_scheduler']['uid'];
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('system_txschedulerM1')
+            ->setRouteIdentifier('system_txschedulerM1')
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);

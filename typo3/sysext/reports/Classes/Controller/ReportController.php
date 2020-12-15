@@ -113,7 +113,7 @@ class ReportController
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('system_reports')
+            ->setRouteIdentifier('system_reports')
             ->setDisplayName($this->shortcutName)
             ->setArguments([
                 'route' => $request->getQueryParams()['route'],

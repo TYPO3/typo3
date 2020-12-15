@@ -140,7 +140,7 @@ class DatabaseIntegrityController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($this->moduleName)
+            ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setArguments([
                 'route' => $request->getQueryParams()['route'],

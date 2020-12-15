@@ -18,6 +18,11 @@ Some methods related to :php:`ext:backend` shortcut / bookmark handling have bee
 * :php:`TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setGetVariables()`
 * :php:`TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setSetVariables()`
 
+See also:
+
+- :ref:`changelog-Deprecation-93060-ShortcutTitleMustBeSetByControllers`
+- :ref:`changelog-Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI`
+
 
 Impact
 ======
@@ -40,13 +45,14 @@ introduced. This method expects the full set of arguments and values to create a
 
 .. code-block:: php
 
-    $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-    $shortCutButton = $buttonBar->makeShortcutButton()
-        ->setModuleName('web_view')
-        ->setArguments([
-            'route' => $request->getQueryParams['route'],
-            'id' => (int)($request->getQueryParams()['id'] ?? 0),
-         ]);
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+   $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+   $pageId = (int)($request->getQueryParams()['id'] ?? 0);
+   $shortCutButton = $buttonBar->makeShortcutButton()
+       ->setRouteIdentifier('web_view')
+       ->setDisplayName('View page ' . $pageId)
+       ->setArguments([
+          'id' => $pageId,
+       ]);
+   $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

@@ -157,7 +157,7 @@ class RecyclerModuleController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('web_RecyclerRecycler')
+            ->setRouteIdentifier('web_RecyclerRecycler')
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'route' => $route,

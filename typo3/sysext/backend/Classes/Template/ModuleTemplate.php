@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Template;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -540,32 +541,28 @@ class ModuleTemplate
         if (GeneralUtility::_GET('route') !== null) {
             $storeUrl = '&route=' . $moduleName . $storeUrl;
         }
-        if ((int)$motherModName === 1) {
-            $motherModule = 'top.currentModuleLoaded';
-        } elseif (is_string($motherModName) && $motherModName !== '') {
-            $motherModule = GeneralUtility::quoteJSvalue($motherModName);
-        } else {
-            $motherModule = '\'\'';
-        }
-        $confirmationText = GeneralUtility::quoteJSvalue(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')
-        );
 
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
-        $shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
-        $shortcutExist = $shortcutRepository->shortcutExists($shortcutUrl);
 
-        if ($shortcutExist) {
+        // We simply let the above functionality as it is for maximum backwards compatibility and now
+        // just process the generated $shortcutUrl to match the new format (routeIdentifier & arguments)
+        [$routeIdentifier, $arguments] = $this->getCreateShortcutProperties($shortcutUrl);
+
+        if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $arguments)) {
             return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .
             $this->iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
-        $url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
-        $onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) .
-            ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this, ' . GeneralUtility::quoteJSvalue($displayName) . ');return false;';
+        $confirmationText =  $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
+        $onClick = 'top.TYPO3.ShortcutMenu.createShortcut('
+            . GeneralUtility::quoteJSvalue($routeIdentifier)
+            . ', ' . GeneralUtility::quoteJSvalue($arguments)
+            . ', ' . GeneralUtility::quoteJSvalue($displayName)
+            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
+            . ', this);return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark')) . '">' .
+        htmlspecialchars($confirmationText) . '">' .
         $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 
@@ -590,6 +587,41 @@ class ModuleTemplate
             ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
         );
         return HttpUtility::buildQueryString($storeArray, '&');
+    }
+
+    /**
+     * Process the generated shortcut url and return properties needed for the
+     * shortcut registration with route identifier and JSON encoded arguments.
+     *
+     * @param string $shortcutUrl
+     *
+     * @return array
+     * @deprecated Only for backwards compatibility. Can be removed in v12
+     */
+    protected function getCreateShortcutProperties(string $shortcutUrl): array
+    {
+        $routeIdentifier = '';
+        $arguments = [];
+
+        parse_str(parse_url($shortcutUrl)['query'] ?? '', $arguments);
+        $routePath = (string)($arguments['route'] ?? '');
+
+        if ($routePath !== '') {
+            foreach (GeneralUtility::makeInstance(Router::class)->getRoutes() as $identifier => $route) {
+                if ($route->getPath() === $routePath
+                    && (
+                        $route->hasOption('moduleName')
+                        || in_array($identifier, ['record_edit', 'file_edit', 'wizard_rte'], true)
+                    )
+                ) {
+                    $routeIdentifier = $identifier;
+                }
+            }
+        }
+
+        unset($arguments['route'], $arguments['returnUrl']);
+
+        return [$routeIdentifier, json_encode($arguments)];
     }
 
     /**

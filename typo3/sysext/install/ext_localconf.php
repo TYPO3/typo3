@@ -11,6 +11,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['taskcenterEx
     = \TYPO3\CMS\Install\Updates\TaskcenterExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysActionExtension']
     = \TYPO3\CMS\Install\Updates\SysActionExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['shortcutRecordsMigration']
+    = \TYPO3\CMS\Install\Updates\ShortcutRecordsMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['databaseRowsUpdateWizard']
     = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;
 

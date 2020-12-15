@@ -49,20 +49,18 @@ class ShortcutMenu {
    * makes a call to the backend class to create a new shortcut,
    * when finished it reloads the menu
    *
-   * @param {String} moduleName
-   * @param {String} url
-   * @param {String} confirmationText
-   * @param {String} motherModule
-   * @param {Object} shortcutButton
+   * @param {String} routeIdentifier
+   * @param {String} routeArguments
    * @param {String} displayName
+   * @param {String} confirmationText
+   * @param {Object} shortcutButton
    */
   public createShortcut(
-    moduleName: string,
-    url: string,
-    confirmationText: string,
-    motherModule: string,
-    shortcutButton: JQuery,
+    routeIdentifier: string,
+    routeArguments: string,
     displayName: string,
+    confirmationText: string,
+    shortcutButton: JQuery,
   ): void {
     if (typeof confirmationText !== 'undefined') {
       Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText).on('confirm.button.ok', (e: JQueryEventObject): void => {
@@ -74,9 +72,8 @@ class ShortcutMenu {
         });
 
         (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_create)).post({
-          module: moduleName,
-          url: url,
-          motherModName: motherModule,
+          routeIdentifier: routeIdentifier,
+          arguments: routeArguments,
           displayName: displayName,
         }).then((): void => {
           this.refreshMenu();

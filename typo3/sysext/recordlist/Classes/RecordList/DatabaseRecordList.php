@@ -601,7 +601,7 @@ class DatabaseRecordList
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
             // Shortcut
-            $shortCutButton = $buttonBar->makeShortcutButton()->setModuleName('web_list');
+            $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
             $queryParams = $request->getQueryParams();
             $arguments = [
                 'route' => $queryParams['route'],

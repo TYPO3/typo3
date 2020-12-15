@@ -174,10 +174,9 @@ class HelpController
 
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('help_cshmanual')
+            ->setRouteIdentifier('help_cshmanual')
             ->setDisplayName($this->getShortcutTitle($request))
             ->setArguments([
-                'route' => $request->getQueryParams()['route'],
                 'action' => $action,
                 'table' => $request->getQueryParams()['table'] ?? '',
                 'field' => $request->getQueryParams()['field'] ?? ''

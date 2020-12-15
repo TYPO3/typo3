@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Deprecation-93060-ShortcutTitleMustBeSetByControllers:
+
 ===============================================================
 Deprecation: #93060 - Shortcut title must be set by controllers
 ===============================================================

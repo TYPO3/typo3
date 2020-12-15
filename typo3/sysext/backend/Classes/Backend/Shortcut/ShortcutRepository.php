@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\Shortcut;
 
+use Symfony\Component\Routing\Route;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Repository for backend shortcuts
@@ -46,33 +45,23 @@ class ShortcutRepository
      */
     protected const SUPERGLOBAL_GROUP = -100;
 
-    /**
-     * @var array
-     */
-    protected $shortcuts;
+    protected const TABLE_NAME = 'sys_be_shortcuts';
 
-    /**
-     * @var array
-     */
-    protected $shortcutGroups;
+    protected array $shortcuts;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected array $shortcutGroups;
 
-    /**
-     * @var ModuleLoader
-     */
-    protected $moduleLoader;
+    protected ConnectionPool $connectionPool;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+    protected IconFactory $iconFactory;
+
+    protected ModuleLoader $moduleLoader;
+
+    public function __construct(ConnectionPool $connectionPool, IconFactory $iconFactory, ModuleLoader $moduleLoader)
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->connectionPool = $connectionPool;
+        $this->iconFactory = $iconFactory;
+        $this->moduleLoader = $moduleLoader;
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 
         $this->shortcutGroups = $this->initShortcutGroups();
@@ -154,26 +143,24 @@ class ShortcutRepository
     /**
      * Returns if there already is a shortcut entry for a given TYPO3 URL
      *
-     * @param string $url
+     * @param string $routeIdentifier
+     * @param string $arguments
      * @return bool
      */
-    public function shortcutExists(string $url): bool
+    public function shortcutExists(string $routeIdentifier, string $arguments): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()->removeAll();
 
         $uid = $queryBuilder->select('uid')
-            ->from('sys_be_shortcuts')
+            ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq(
                     'userid',
                     $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->eq(
-                    'url',
-                    $queryBuilder->createNamedParameter($url, \PDO::PARAM_STR)
-                )
+                $queryBuilder->expr()->eq('route', $queryBuilder->createNamedParameter($routeIdentifier)),
+                $queryBuilder->expr()->eq('arguments', $queryBuilder->createNamedParameter($arguments))
             )
             ->execute()
             ->fetchColumn();
@@ -184,58 +171,49 @@ class ShortcutRepository
     /**
      * Add a shortcut
      *
-     * @param string $url URL of the new shortcut
-     * @param string $module module identifier of the new shortcut
-     * @param string $parentModule parent module identifier of the new shortcut
+     * @param string $routeIdentifier route identifier of the new shortcut
+     * @param string $arguments arguments of the new shortcut
      * @param string $title title of the new shortcut
      * @return bool
      * @throws \RuntimeException if the given URL is invalid
      */
-    public function addShortcut(string $url, string $module, string $parentModule = '', string $title = ''): bool
+    public function addShortcut(string $routeIdentifier, string $arguments = '', string $title = ''): bool
     {
-        // @todo $parentModule can not longer be set using public API.
-
-        if (empty($url) || empty($module)) {
+        // Do not add shortcuts for routes which do not exist
+        if (!$this->routeExists($routeIdentifier)) {
             return false;
         }
 
-        $queryParts = parse_url($url);
-        $queryParameters = [];
-        parse_str($queryParts['query'] ?? '', $queryParameters);
-
-        if (!empty($queryParameters['scheme'])) {
-            throw new \RuntimeException('Shortcut URLs must be relative', 1518785877);
-        }
-
         $languageService = $this->getLanguageService();
-        $titlePrefix = '';
-        $type = 'other';
-        $table = '';
-        $recordId = 0;
-        $pageId = 0;
-
-        if (is_array($queryParameters['edit'])) {
-            $table = (string)key($queryParameters['edit']);
-            $recordId = (int)key($queryParameters['edit'][$table]);
-            $pageId = (int)BackendUtility::getRecord($table, $recordId)['pid'];
-            $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf';
-            $action = $queryParameters['edit'][$table][$recordId];
-
-            switch ($action) {
-                case 'edit':
-                    $type = 'edit';
-                    $titlePrefix = $languageService->sL($languageFile . ':shortcut_edit');
-                    break;
-                case 'new':
-                    $type = 'new';
-                    $titlePrefix = $languageService->sL($languageFile . ':shortcut_create');
-                    break;
-            }
-        }
 
         // Only apply "magic" if title is not set
         // @todo This is deprecated and can be removed in v12
         if ($title === '') {
+            $queryParameters = json_decode($arguments, true);
+            $titlePrefix = '';
+            $type = 'other';
+            $table = '';
+            $recordId = 0;
+            $pageId = 0;
+
+            if ($queryParameters && is_array($queryParameters['edit'])) {
+                $table = (string)key($queryParameters['edit']);
+                $recordId = (int)key($queryParameters['edit'][$table]);
+                $pageId = (int)BackendUtility::getRecord($table, $recordId)['pid'];
+                $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf';
+                $action = $queryParameters['edit'][$table][$recordId];
+
+                switch ($action) {
+                    case 'edit':
+                        $type = 'edit';
+                        $titlePrefix = $languageService->sL($languageFile . ':shortcut_edit');
+                        break;
+                    case 'new':
+                        $type = 'new';
+                        $titlePrefix = $languageService->sL($languageFile . ':shortcut_create');
+                        break;
+                }
+            }
             // Check if given id is a combined identifier
             if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
                 try {
@@ -250,7 +228,7 @@ class ShortcutRepository
                 }
             } else {
                 // Lookup the title of this page and use it as default description
-                $pageId = $pageId ?: $recordId ?: $this->extractPageIdFromShortcutUrl($url);
+                $pageId = $pageId ?: $recordId ?: (int)($queryParameters['id'] ?? 0);
                 $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
 
                 if (!empty($page)) {
@@ -282,21 +260,19 @@ class ShortcutRepository
         // In case title is still empty try to set the modules short description label
         // @todo This is deprecated and can be removed in v12
         if ($title === '') {
-            $moduleLabels = $this->moduleLoader->getLabelsForModule($module);
-
+            $moduleLabels = $this->moduleLoader->getLabelsForModule($this->getModuleNameFromRouteIdentifier($routeIdentifier));
             if (!empty($moduleLabels['shortdescription'])) {
                 $title = $this->getLanguageService()->sL($moduleLabels['shortdescription']);
             }
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_be_shortcuts');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $affectedRows = $queryBuilder
-            ->insert('sys_be_shortcuts')
+            ->insert(self::TABLE_NAME)
             ->values([
                 'userid' => $this->getBackendUser()->user['uid'],
-                'module_name' => $module . '|' . $parentModule,
-                'url' => $url,
+                'route' => $routeIdentifier,
+                'arguments' => $arguments,
                 'description' => $title ?: 'Shortcut',
                 'sorting' => $GLOBALS['EXEC_TIME'],
             ])
@@ -316,9 +292,8 @@ class ShortcutRepository
     public function updateShortcut(int $id, string $title, int $groupId): bool
     {
         $backendUser = $this->getBackendUser();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_be_shortcuts');
-        $queryBuilder->update('sys_be_shortcuts')
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder->update(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
@@ -358,10 +333,9 @@ class ShortcutRepository
         $shortcut = $this->getShortcutById($id);
         $success = false;
 
-        if ($shortcut['raw']['userid'] == $this->getBackendUser()->user['uid']) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('sys_be_shortcuts');
-            $affectedRows = $queryBuilder->delete('sys_be_shortcuts')
+        if ((int)$shortcut['raw']['userid'] === (int)$this->getBackendUser()->user['uid']) {
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+            $affectedRows = $queryBuilder->delete(self::TABLE_NAME)
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
@@ -459,13 +433,12 @@ class ShortcutRepository
     protected function initShortcuts(): array
     {
         $backendUser = $this->getBackendUser();
-        // Traverse shortcuts
         $lastGroup = 0;
         $shortcuts = [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_be_shortcuts');
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $result = $queryBuilder->select('*')
-            ->from('sys_be_shortcuts')
+            ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->andX(
                     $queryBuilder->expr()->eq(
@@ -493,21 +466,16 @@ class ShortcutRepository
 
         while ($row = $result->fetch()) {
             $shortcut = ['raw' => $row];
+            $routeIdentifier = $row['route'] ?? '';
+            $arguments = json_decode($row['arguments'] ?? '', true) ?? [];
 
-            [$row['module_name'], $row['M_module_name']] = explode('|', $row['module_name']);
+            if ($routeIdentifier === 'record_edit' && is_array($arguments['edit'])) {
+                $shortcut['table'] = key($arguments['edit']);
+                $shortcut['recordid'] = key($arguments['edit'][$shortcut['table']]);
 
-            $queryParts = parse_url($row['url']);
-            // Explode GET vars recursively
-            $queryParameters = [];
-            parse_str($queryParts['query'] ?? '', $queryParameters);
-
-            if ($row['module_name'] === 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
-                $shortcut['table'] = key($queryParameters['edit']);
-                $shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
-
-                if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
+                if ($arguments['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
                     $shortcut['type'] = 'edit';
-                } elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
+                } elseif ($arguments['edit'][$shortcut['table']][$shortcut['recordid']] === 'new') {
                     $shortcut['type'] = 'new';
                 }
 
@@ -518,56 +486,57 @@ class ShortcutRepository
                 $shortcut['type'] = 'other';
             }
 
-            // Check for module access
-            $moduleName = $row['M_module_name'] ?: $row['module_name'];
+            $moduleName = $this->getModuleNameFromRouteIdentifier($routeIdentifier);
 
-            // Check if the user has access to this module
-            // @todo Hack for EditDocumentController / FormEngine, see issues #91368 and #91210
-            if (!is_array($this->moduleLoader->checkMod($moduleName)) && $moduleName !== 'xMOD_alt_doc.php') {
+            // Skip shortcut if module name can not be resolved
+            if ($moduleName === '') {
                 continue;
             }
 
-            $pageId = $this->extractPageIdFromShortcutUrl($row['url']);
-
-            if (!$backendUser->isAdmin()) {
-                if (MathUtility::canBeInterpretedAsInteger($pageId)) {
-                    // Check for webmount access
-                    if ($backendUser->isInWebMount($pageId) === null) {
-                        continue;
-                    }
-                    // Check for record access
-                    $pageRow = BackendUtility::getRecord('pages', $pageId);
-
-                    if ($pageRow === null) {
-                        continue;
-                    }
-
-                    if (!$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
-                        continue;
-                    }
+            // Check if the user has access to this module
+            // @todo Hack for EditDocumentController / FormEngine, see issues #91368 and #91210
+            if ($routeIdentifier !== 'record_edit' && !is_array($this->moduleLoader->checkMod($moduleName))) {
+                continue;
+            }
+            if (($pageId = ((int)($arguments['id'] ?? 0))) > 0 && !$backendUser->isAdmin()) {
+                // Check for webmount access
+                if ($backendUser->isInWebMount($pageId) === null) {
+                    continue;
+                }
+                // Check for record access
+                $pageRow = BackendUtility::getRecord('pages', $pageId);
+                if ($pageRow === null || !$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
+                    continue;
                 }
             }
 
-            $moduleParts = explode('_', $moduleName);
             $shortcutGroup = (int)$row['sc_group'];
-
             if ($shortcutGroup && $lastGroup !== $shortcutGroup && $shortcutGroup !== self::SUPERGLOBAL_GROUP) {
                 $shortcut['groupLabel'] = $this->getShortcutGroupLabel($shortcutGroup);
             }
-
             $lastGroup = $shortcutGroup;
 
-            if ($row['description']) {
-                $shortcut['label'] = $row['description'];
-            } else {
-                $shortcut['label'] = GeneralUtility::fixed_lgd_cs(rawurldecode($queryParts['query']), 150);
+            $description = $row['description'] ?? '';
+            // Empty description should usually never happen since not defining such, is deprecated and a
+            // fallback is in place, at least for v11. Only manual inserts could lead to an empty description.
+            // @todo Can be removed in v12 since setting a display name is mandatory then
+            if ($description === '') {
+                $moduleLabel = (string)($this->moduleLoader->getLabelsForModule($moduleName)['shortdescription'] ?? '');
+                if ($moduleLabel !== '') {
+                    $description = $this->getLanguageService()->sL($moduleLabel);
+                }
             }
 
-            $shortcut['group'] = $shortcutGroup;
-            $shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
-            $shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
-            $shortcut['action'] = 'jump(' . GeneralUtility::quoteJSvalue($this->getTokenUrl($row['url'])) . ',' . GeneralUtility::quoteJSvalue($moduleName) . ',' . GeneralUtility::quoteJSvalue($moduleParts[0]) . ', ' . (int)$pageId . ');';
+            $shortcutUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($routeIdentifier, $arguments);
 
+            $shortcut['group'] = $shortcutGroup;
+            $shortcut['icon'] = $this->getShortcutIcon($routeIdentifier, $moduleName, $shortcut);
+            $shortcut['label'] = $description;
+            $shortcut['action'] = 'jump('
+                . GeneralUtility::quoteJSvalue($shortcutUrl)
+                . ',' . GeneralUtility::quoteJSvalue($moduleName)
+                . ',' . GeneralUtility::quoteJSvalue($moduleName)
+                . ', ' . $pageId . ');';
             $shortcuts[] = $shortcut;
         }
 
@@ -606,15 +575,16 @@ class ShortcutRepository
     /**
      * Gets the icon for the shortcut
      *
-     * @param array $row
+     * @param string $routeIdentifier
+     * @param string $moduleName
      * @param array $shortcut
      * @return string Shortcut icon as img tag
      */
-    protected function getShortcutIcon(array $row, array $shortcut): string
+    protected function getShortcutIcon(string $routeIdentifier, string $moduleName, array $shortcut): string
     {
         $selectFields = [];
-        switch ($row['module_name']) {
-            case 'xMOD_alt_doc.php':
+        switch ($routeIdentifier) {
+            case 'record_edit':
                 $table = $shortcut['table'];
                 $recordid = $shortcut['recordid'];
                 $icon = '';
@@ -644,8 +614,7 @@ class ShortcutRepository
                         $selectFields[] = 't3ver_oid';
                     }
 
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable($table);
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
                     $queryBuilder->select(...array_unique(array_values($selectFields)))
                         ->from($table)
                         ->where(
@@ -670,12 +639,11 @@ class ShortcutRepository
                 break;
             default:
                 $iconIdentifier = '';
-                $moduleName = $row['module_name'];
 
                 if (strpos($moduleName, '_') !== false) {
                     [$mainModule, $subModule] = explode('_', $moduleName, 2);
                     $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
-                } elseif (!empty($moduleName)) {
+                } elseif ($moduleName !== '') {
                     $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'];
                 }
 
@@ -690,95 +658,52 @@ class ShortcutRepository
     }
 
     /**
-     * Returns title for the shortcut icon
+     * Get the module name from the resolved route or by static mapping for some special cases.
      *
-     * @param string $shortcutLabel Shortcut label
-     * @param string $moduleName Backend module name (key)
-     * @param string $parentModuleName Parent module label
-     * @return string Title for the shortcut icon
-     */
-    protected function getShortcutIconTitle(string $shortcutLabel, string $moduleName, string $parentModuleName = ''): string
-    {
-        $languageService = $this->getLanguageService();
-
-        if (strpos($moduleName, 'xMOD_') === 0) {
-            $title = substr($moduleName, 5);
-        } else {
-            [$mainModule, $subModule] = explode('_', $moduleName);
-            $mainModuleLabels = $this->moduleLoader->getLabelsForModule($mainModule);
-            $title = $languageService->sL($mainModuleLabels['title']);
-
-            if (!empty($subModule)) {
-                $subModuleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
-                $title .= '>' . $languageService->sL($subModuleLabels['title']);
-            }
-        }
-
-        if ($parentModuleName) {
-            $title .= ' (' . $parentModuleName . ')';
-        }
-
-        $title .= ': ' . $shortcutLabel;
-
-        return $title;
-    }
-
-    /**
-     * Return the ID of the page in the URL if found.
-     *
-     * @param string $url The URL of the current shortcut link
-     * @return int If a page ID was found, it is returned. Otherwise: 0
-     */
-    protected function extractPageIdFromShortcutUrl(string $url): int
-    {
-        return (int)preg_replace('/.*[\\?&]id=([^&]+).*/', '$1', $url);
-    }
-
-    /**
-     * Adds the correct token, if the url is an index.php script
-     * @todo: this needs love
-     *
-     * @param string $url
+     * @param string $routeIdentifier
      * @return string
      */
-    protected function getTokenUrl(string $url): string
+    protected function getModuleNameFromRouteIdentifier(string $routeIdentifier): string
     {
-        $parsedUrl = parse_url($url);
-        $parameters = [];
-        parse_str($parsedUrl['query'] ?? '', $parameters);
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        // parse the returnUrl and replace the module token of it
-        if (!empty($parameters['returnUrl'])) {
-            $parsedReturnUrl = parse_url($parameters['returnUrl']);
-            $returnUrlParameters = [];
-            parse_str($parsedReturnUrl['query'] ?? '', $returnUrlParameters);
-
-            if (strpos($parsedReturnUrl['path'] ?? '', 'index.php') !== false && !empty($returnUrlParameters['route'])) {
-                $module = $returnUrlParameters['route'];
-                $parameters['returnUrl'] = (string)$uriBuilder->buildUriFromRoutePath($module, $returnUrlParameters);
-                $url = $parsedUrl['path'] . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
-            }
+        if ($this->isSpecialRoute($routeIdentifier)) {
+            return $routeIdentifier;
         }
 
-        if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
-            $routePath = $parameters['route'];
-            /** @var \TYPO3\CMS\Backend\Routing\Router $router */
-            $router = GeneralUtility::makeInstance(Router::class);
+        $route = $this->getRoute($routeIdentifier);
+        return $route !== null ? (string)($route->getOption('moduleName') ?? '') : '';
+    }
 
-            try {
-                $route = $router->match($routePath);
+    /**
+     * Get the route for a given route identifier
+     *
+     * @param string $routeIdentifier
+     * @return Route|null
+     */
+    protected function getRoute(string $routeIdentifier): ?Route
+    {
+        return GeneralUtility::makeInstance(Router::class)->getRoutes()[$routeIdentifier] ?? null;
+    }
 
-                if ($route) {
-                    $routeIdentifier = $route->getOption('_identifier');
-                    unset($parameters['route']);
-                    $url = (string)$uriBuilder->buildUriFromRoute($routeIdentifier, $parameters);
-                }
-            } catch (ResourceNotFoundException $e) {
-                $url = '';
-            }
-        }
-        return $url;
+    /**
+     * Check if a route for the given identifier exists
+     *
+     * @param string $routeIdentifier
+     * @return bool
+     */
+    protected function routeExists(string $routeIdentifier): bool
+    {
+        return $this->getRoute($routeIdentifier) !== null;
+    }
+
+    /**
+     * Check if given route identifier is a special "no module" route
+     *
+     * @param string $routeIdentifier
+     * @return bool
+     */
+    protected function isSpecialRoute(string $routeIdentifier): bool
+    {
+        return in_array($routeIdentifier, ['record_edit', 'file_edit', 'wizard_rte'], true);
     }
 
     /**
