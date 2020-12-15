@@ -30,8 +30,7 @@ max_line_length = 80
 indent_size = 2
 
 # package.json
-# .travis.yml
-[{package.json,.travis.yml}]
+[package.json]
 indent_size = 2
 
 # TypoScript
