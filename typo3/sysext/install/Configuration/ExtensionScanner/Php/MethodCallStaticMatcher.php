@@ -1057,4 +1057,11 @@ return [
             'Deprecation-92607-DeprecatedGeneralUtilityuniqueList.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Database\RelationHandler::isOnSymmetricSide' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
 ];

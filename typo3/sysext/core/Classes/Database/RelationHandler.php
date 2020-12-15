@@ -86,14 +86,14 @@ class RelationHandler
      *
      * @var string
      */
-    public $firstTable = '';
+    protected $firstTable = '';
 
     /**
      * Will contain the second table name in the $tablelist (for negative ids)
      *
      * @var string
      */
-    public $secondTable = '';
+    protected $secondTable = '';
 
     /**
      * If TRUE, uid_local and uid_foreign are switched, and the current table
@@ -101,42 +101,42 @@ class RelationHandler
      *
      * @var bool
      */
-    public $MM_is_foreign = false;
+    protected $MM_is_foreign = false;
 
     /**
      * Field name at the "local" side of the MM relation
      *
      * @var string
      */
-    public $MM_oppositeField = '';
+    protected $MM_oppositeField = '';
 
     /**
      * Only set if MM_is_foreign is set
      *
      * @var string
      */
-    public $MM_oppositeTable = '';
+    protected $MM_oppositeTable = '';
 
     /**
      * Only set if MM_is_foreign is set
      *
      * @var array
      */
-    public $MM_oppositeFieldConf = [];
+    protected $MM_oppositeFieldConf = [];
 
     /**
      * Is empty by default; if MM_is_foreign is set and there is more than one table
      * allowed (on the "local" side), then it contains the first table (as a fallback)
      * @var string
      */
-    public $MM_isMultiTableRelationship = '';
+    protected $MM_isMultiTableRelationship = '';
 
     /**
      * Current table => Only needed for reverse relations
      *
      * @var string
      */
-    public $currentTable;
+    protected $currentTable;
 
     /**
      * If a record should be undeleted
@@ -152,28 +152,28 @@ class RelationHandler
      *
      * @var array
      */
-    public $MM_match_fields = [];
+    protected $MM_match_fields = [];
 
     /**
      * This is set to TRUE if the MM table has a UID field.
      *
      * @var bool
      */
-    public $MM_hasUidField;
+    protected $MM_hasUidField;
 
     /**
      * Array of fields and value pairs used for insert in MM table
      *
      * @var array
      */
-    public $MM_insert_fields = [];
+    protected $MM_insert_fields = [];
 
     /**
      * Extra MM table where
      *
      * @var string
      */
-    public $MM_table_where = '';
+    protected $MM_table_where = '';
 
     /**
      * Usage of a MM field on the opposite relation.
@@ -186,6 +186,7 @@ class RelationHandler
      * If false, reference index is not updated.
      *
      * @var bool
+     * @deprecated since v11, will be removed in v12
      */
     protected $updateReferenceIndex = true;
 
@@ -226,7 +227,7 @@ class RelationHandler
      *
      * @return int
      */
-    public function getWorkspaceId(): int
+    protected function getWorkspaceId(): int
     {
         if (!isset($this->workspaceId)) {
             $this->workspaceId = (int)$GLOBALS['BE_USER']->workspace;
@@ -372,10 +373,14 @@ class RelationHandler
      * Sets whether the reference index shall be updated.
      *
      * @param bool $updateReferenceIndex Whether the reference index shall be updated
-     * @todo: Unused in core, should be removed, use ReferenceIndexUpdater instead
+     * @deprecated since v11, will be removed in v12
      */
     public function setUpdateReferenceIndex($updateReferenceIndex)
     {
+        trigger_error(
+            'Calling RelationHandler->setUpdateReferenceIndex() is deprecated. Use setReferenceIndexUpdater() instead.',
+            E_USER_DEPRECATED
+        );
         $this->updateReferenceIndex = (bool)$updateReferenceIndex;
     }
 
@@ -401,7 +406,7 @@ class RelationHandler
      * @param string $itemlist Item list
      * @param array $configuration Parent field configuration
      */
-    public function readList($itemlist, array $configuration)
+    protected function readList($itemlist, array $configuration)
     {
         if ((string)trim($itemlist) != '') {
             $tempItemArray = GeneralUtility::trimExplode(',', $itemlist);
@@ -482,7 +487,7 @@ class RelationHandler
      *
      * @param string $sortby The default_sortby field/command (e.g. 'price DESC')
      */
-    public function sortList($sortby)
+    protected function sortList($sortby)
     {
         // Sort directly without fetching additional data
         if ($sortby === 'uid') {
@@ -529,12 +534,11 @@ class RelationHandler
 
     /**
      * Reads the record tablename/id into the internal arrays itemArray and tableArray from MM records.
-     * You can call this function after start if you supply no list to start()
      *
      * @param string $tableName MM Tablename
      * @param int $uid Local UID
      */
-    public function readMM($tableName, $uid)
+    protected function readMM($tableName, $uid)
     {
         $key = 0;
         $theTable = null;
@@ -917,7 +921,7 @@ class RelationHandler
      * @param int $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
      * @param array $conf TCA configuration for current field
      */
-    public function readForeignField($uid, $conf)
+    protected function readForeignField($uid, $conf)
     {
         if ($this->useLiveParentIds) {
             $uid = $this->getLiveDefaultId($this->currentTable, $uid);
@@ -1298,9 +1302,8 @@ class RelationHandler
      * @param string $table Table name
      * @param int $uid Record uid
      * @return array Result from ReferenceIndex->updateRefIndexTable() updated directly, else empty array
-     * @internal Should be protected
      */
-    public function updateRefIndex($table, $uid): array
+    protected function updateRefIndex($table, $uid): array
     {
         if (!$this->updateReferenceIndex) {
             return [];
@@ -1310,6 +1313,7 @@ class RelationHandler
             $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, $this->getWorkspaceId());
             $statisticsArray = [];
         } else {
+            // @deprecated else branch can be dropped when setUpdateReferenceIndex() is dropped.
             // Update reference index directly if enabled
             $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
@@ -1603,7 +1607,7 @@ class RelationHandler
      * @param array $childRec The record row of the child record
      * @return bool Returns TRUE if looking from the symmetric ("other") side to the relation.
      */
-    public static function isOnSymmetricSide($parentUid, $parentConf, $childRec)
+    protected static function isOnSymmetricSide($parentUid, $parentConf, $childRec)
     {
         return MathUtility::canBeInterpretedAsInteger($childRec['uid'])
             && $parentConf['symmetric_field']

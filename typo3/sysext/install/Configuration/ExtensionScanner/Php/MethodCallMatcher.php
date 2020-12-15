@@ -4641,4 +4641,53 @@ return [
             'Deprecation-93023-ReworkedSessionHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\RelationHandler->getWorkspaceId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->setUpdateReferenceIndex' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->readList' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->sortList' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->readMM' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->readForeignField' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->updateRefIndex' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
 ];

@@ -1275,5 +1275,65 @@ return [
         'restFiles' => [
             'Breaking-93029-DroppedDeletedFieldFromSys_refindex.rst',
         ],
-    ]
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->firstTable' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->secondTable' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_is_foreign' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_oppositeField' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_oppositeTable' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_oppositeFieldConf' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_isMultiTableRelationship' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->currentTable' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_match_fields' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_hasUidField' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_insert_fields' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\RelationHandler->MM_table_where' => [
+        'restFiles' => [
+            'Breaking-93080-RelationHandlerInternalsProtected.rst',
+        ],
+    ],
 ];
