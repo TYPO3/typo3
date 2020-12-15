@@ -24,6 +24,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -63,11 +64,6 @@ class LanguagePackService implements LoggerAwareInterface
      */
     protected $requestFactory;
 
-    private const OLD_LANGUAGE_PACK_URLS = [
-        'https://typo3.org/fileadmin/ter/',
-        'https://beta-translation.typo3.org/fileadmin/ter/',
-        'https://localize.typo3.org/fileadmin/ter/'
-    ];
     private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
     public function __construct(EventDispatcherInterface $eventDispatcher, RequestFactory $requestFactory)
@@ -201,43 +197,6 @@ class LanguagePackService implements LoggerAwareInterface
     }
 
     /**
-     * Update main language pack download location if possible.
-     * Store to registry to be used during language pack update
-     *
-     * @return string
-     */
-    public function updateMirrorBaseUrl(): string
-    {
-        $repositoryUrl = 'https://repositories.typo3.org/mirrors.xml.gz';
-        $downloadBaseUrl = false;
-        try {
-            $response = $this->requestFactory->request($repositoryUrl);
-            if ($response->getStatusCode() === 200) {
-                $xmlContent = @gzdecode($response->getBody()->getContents());
-                if (!empty($xmlContent['mirror']['host']) && !empty($xmlContent['mirror']['path'])) {
-                    $downloadBaseUrl = 'https://' . $xmlContent['mirror']['host'] . $xmlContent['mirror']['path'];
-                }
-            } else {
-                $this->logger->warning(sprintf(
-                    'Requesting %s was not successful, got status code %d (%s)',
-                    $repositoryUrl,
-                    $response->getStatusCode(),
-                    $response->getReasonPhrase()
-                ));
-            }
-        } catch (\Exception $e) {
-            // Catch generic exception, fallback handled below
-            $this->logger->error('Failed to download list of mirrors', ['exception' => $e]);
-        }
-        if (empty($downloadBaseUrl)) {
-            // Hard coded fallback if something went wrong fetching & parsing mirror list
-            $downloadBaseUrl = self::LANGUAGE_PACK_URL;
-        }
-        $this->registry->set('languagePacks', 'baseUrl', $downloadBaseUrl);
-        return $downloadBaseUrl;
-    }
-
-    /**
      * Download and unpack a single language pack of one extension.
      *
      * @param string $key Extension key
@@ -266,20 +225,13 @@ class LanguagePackService implements LoggerAwareInterface
             throw new \RuntimeException('Extension ' . (string)$key . ' not loaded', 1520117245);
         }
 
-        $languagePackBaseUrl = $this->registry->get('languagePacks', 'baseUrl');
-        if (empty($languagePackBaseUrl)) {
-            throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
-        }
-
-        if (in_array($languagePackBaseUrl, self::OLD_LANGUAGE_PACK_URLS, true)) {
-            $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
-        }
+        $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
 
         // Allow to modify the base url on the fly
         $event = $this->eventDispatcher->dispatch(new ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
         $languagePackBaseUrl = $event->getBaseUrl();
         $path = ExtensionManagementUtility::extPath($key);
-        $majorVersion = explode('.', TYPO3_branch)[0];
+        $majorVersion = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
         if (strpos($path, '/sysext/') !== false) {
             // This is a system extension and the package URL should be adapted to have different packs per core major version
             // https://localize.typo3.org/xliff/b/a/backend-l10n/backend-l10n-fr.v9.zip
@@ -344,12 +296,11 @@ class LanguagePackService implements LoggerAwareInterface
     public function setLastUpdatedIsoCode(array $isos)
     {
         $activeLanguages = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [];
-        $registry = GeneralUtility::makeInstance(Registry::class);
         foreach ($isos as $iso) {
             if (!in_array($iso, $activeLanguages, true)) {
                 throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520176318);
             }
-            $registry->set('languagePacks', $iso, time());
+            $this->registry->set('languagePacks', $iso, time());
         }
     }
 

@@ -92,7 +92,6 @@ class LanguagePackCommand extends Command
             $progressBarOutput = $output;
         }
         $progressBar = new ProgressBar($progressBarOutput, count($isos) * count($extensions));
-        $languagePackService->updateMirrorBaseUrl();
         $hasErrors = false;
         foreach ($isos as $iso) {
             foreach ($extensions as $extension) {

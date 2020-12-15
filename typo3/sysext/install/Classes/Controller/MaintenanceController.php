@@ -644,7 +644,6 @@ class MaintenanceController extends AbstractController
         ]);
         // This action needs TYPO3_CONF_VARS for full GeneralUtility::getUrl() config
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
-        $this->languagePackService->updateMirrorBaseUrl();
         $extensions = $this->languagePackService->getExtensionLanguagePackDetails();
         return new JsonResponse([
             'success' => true,
