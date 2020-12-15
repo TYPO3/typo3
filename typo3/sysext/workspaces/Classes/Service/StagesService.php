@@ -17,8 +17,7 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,16 +60,6 @@ class StagesService implements SingletonInterface
      * @var array
      */
     protected $workspaceStageAllowedCache = [];
-
-    /**
-     * @var array
-     */
-    protected $fetchGroupsCache = [];
-
-    /**
-     * @var array
-     */
-    protected $userGroups = [];
 
     /**
      * Getter for current workspace id
@@ -453,19 +442,6 @@ class StagesService implements SingletonInterface
     }
 
     /**
-     * Gets backend user ids from a mixed list of backend users
-     * and backend users groups. This is used for notifying persons
-     * responsible for a particular stage or workspace.
-     *
-     * @param string $stageRespValue Responsible_person value from stage record
-     * @return string List of backend user ids
-     */
-    public function getResponsibleUser($stageRespValue)
-    {
-        return implode(',', $this->resolveBackendUserIds($stageRespValue));
-    }
-
-    /**
      * Resolves backend user ids from a mixed list of backend users
      * and backend user groups (e.g. "be_users_1,be_groups_3,be_users_4,...")
      *
@@ -483,23 +459,17 @@ class StagesService implements SingletonInterface
                 // Current value is a uid of a be_user record
                 $backendUserIds[] = str_replace('be_users_', '', $element);
             } elseif (strpos($element, 'be_groups_') === 0) {
-                $backendGroupIds[] = str_replace('be_groups_', '', $element);
+                $backendGroupIds[] = (int)str_replace('be_groups_', '', $element);
             } elseif ((int)$element) {
                 $backendUserIds[] = (int)$element;
             }
         }
 
         if (!empty($backendGroupIds)) {
-            $allBeUserArray = BackendUtility::getUserNames();
-            $backendGroupList = implode(',', $backendGroupIds);
-            $this->userGroups = [];
-            $backendGroups = $this->fetchGroups($backendGroupList);
-            foreach ($backendGroups as $backendGroup) {
-                foreach ($allBeUserArray as $backendUserId => $backendUser) {
-                    if (GeneralUtility::inList($backendUser['usergroup_cached_list'], $backendGroup['uid'])) {
-                        $backendUserIds[] = $backendUserId;
-                    }
-                }
+            $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
+            $backendUsersInGroups = $groupResolver->findAllUsersInGroups($backendGroupIds, 'be_groups', 'be_users');
+            foreach ($backendUsersInGroups as $backendUsers) {
+                $backendUserIds[] = (int)$backendUsers['uid'];
             }
         }
 
@@ -551,90 +521,6 @@ class StagesService implements SingletonInterface
     protected function getWorkspaceRecord()
     {
         return WorkspaceRecord::get($this->getWorkspaceId());
-    }
-
-    /**
-     * @param string $grList
-     * @param string $idList
-     * @return array
-     */
-    private function fetchGroups($grList, $idList = '')
-    {
-        $cacheKey = md5($grList . $idList);
-        if (isset($this->fetchGroupsCache[$cacheKey])) {
-            return $this->fetchGroupsCache[$cacheKey];
-        }
-        if ($idList === '') {
-            // we're at the beginning of the recursion and therefore we need to reset the userGroups member
-            $this->userGroups = [];
-        }
-        $groupList = $this->fetchGroupsRecursive($grList);
-        $this->fetchGroupsCache[$cacheKey] = $groupList;
-        return $groupList;
-    }
-
-    /**
-     * @param array $groups
-     */
-    private function fetchGroupsFromDB(array $groups)
-    {
-        // The userGroups array is filled
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
-
-        $result = $queryBuilder
-            ->select('*')
-            ->from('be_groups')
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    $queryBuilder->createNamedParameter($groups, Connection::PARAM_INT_ARRAY)
-                )
-            )
-            ->execute();
-
-        while ($row = $result->fetch()) {
-            $this->userGroups[$row['uid']] = $row;
-        }
-    }
-
-    /**
-     * Fetches particular groups recursively.
-     *
-     * @param string $grList
-     * @param string $idList
-     * @return array
-     */
-    private function fetchGroupsRecursive($grList, $idList = '')
-    {
-        $requiredGroups = GeneralUtility::intExplode(',', $grList, true);
-        $existingGroups = array_keys($this->userGroups);
-        $missingGroups = array_diff($requiredGroups, $existingGroups);
-        if (!empty($missingGroups)) {
-            $this->fetchGroupsFromDB($missingGroups);
-        }
-        // Traversing records in the correct order
-        foreach ($requiredGroups as $uid) {
-            // traversing list
-            // Get row:
-            $row = $this->userGroups[$uid];
-            if (is_array($row) && !GeneralUtility::inList($idList, (string)$uid)) {
-                // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-                // If the localconf.php option isset the user of the sub- sub- groups will also be used
-                if ($GLOBALS['TYPO3_CONF_VARS']['BE']['customStageShowRecipientRecursive'] == 1) {
-                    // Include sub groups
-                    if (trim($row['subgroup'])) {
-                        // Make integer list
-                        $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-                        // Get the subgroups
-                        $subGroups = $this->fetchGroups($theList, $idList . ',' . $uid);
-                        // Merge the subgroups to the already existing userGroups array
-                        $subUid = key($subGroups);
-                        $this->userGroups[$subUid] = $subGroups[$subUid];
-                    }
-                }
-            }
-        }
-        return $this->userGroups;
     }
 
     /**

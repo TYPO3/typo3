@@ -56,7 +56,6 @@ CREATE TABLE be_users (
 	workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
 	TSconfig text,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
-	usergroup_cached_list text,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	category_perms text,
 	KEY username (username)

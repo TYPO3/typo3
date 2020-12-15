@@ -742,12 +742,12 @@ class BackendUtility
      * Returns an array with be_users records of all user NOT DELETED sorted by their username
      * Keys in the array is the be_users uid
      *
-     * @param string $fields Optional $fields list (default: username,usergroup,usergroup_cached_list,uid) can be used to set the selected fields
+     * @param string $fields Optional $fields list (default: username,usergroup,uid) can be used to set the selected fields
      * @param string $where Optional $where clause (fx. "AND username='pete'") can be used to limit query
      * @return array
      * @internal should only be used from within TYPO3 Core, use a direct SQL query instead to ensure proper DBAL where statements
      */
-    public static function getUserNames($fields = 'username,usergroup,usergroup_cached_list,uid', $where = '')
+    public static function getUserNames($fields = 'username,usergroup,uid', $where = '')
     {
         return self::getRecordsSortedByTitle(
             GeneralUtility::trimExplode(',', $fields, true),

@@ -127,4 +127,107 @@ class GroupResolver
         }
         return $groups;
     }
+
+    /**
+     * This works the other way around: Find all users that belong to some groups. Because groups are nested,
+     * we need to find all groups and subgroups first, because maybe a user is only part of a higher group,
+     * instead of a "All editors" group.
+     *
+     * @param int[] $groupIds a list of IDs of groups
+     * @param string $sourceTable e.g. be_groups or fe_groups
+     * @param string $userSourceTable e.g. be_users or fe_users
+     * @return array full user records
+     */
+    public function findAllUsersInGroups(array $groupIds, string $sourceTable, string $userSourceTable): array
+    {
+        $this->sourceTable = $sourceTable;
+
+        // Ensure the given groups exist
+        $mainGroups = $this->fetchRowsFromDatabase($groupIds);
+        $groupIds = array_map('intval', array_column($mainGroups, 'uid'));
+        if (empty($groupIds)) {
+            return [];
+        }
+        $parentGroupIds = $this->fetchParentGroupsRecursive($groupIds, $groupIds);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userSourceTable);
+        $queryBuilder
+            ->select('*')
+            ->from($userSourceTable);
+
+        $constraints = [];
+        foreach ($groupIds as $groupUid) {
+            $constraints[] = $queryBuilder->expr()->inSet($this->sourceField, (string)$groupUid);
+        }
+        foreach ($parentGroupIds as $groupUid) {
+            $constraints[] = $queryBuilder->expr()->inSet($this->sourceField, (string)$groupUid);
+        }
+
+        $users = $queryBuilder
+            ->where(
+                $queryBuilder->expr()->orX(...$constraints)
+            )
+            ->execute()
+            ->fetchAll();
+        return !empty($users) ? $users : [];
+    }
+
+    /**
+     * Load a list of group uids, and take into account if groups have been loaded before as part of recursive detection.
+     *
+     * @param int[] $groupIds a list of groups to find THEIR ancestors
+     * @param array $processedGroupIds helper function to avoid recursive detection
+     * @return array a list of parent groups and thus, grand grand parent groups as well
+     */
+    protected function fetchParentGroupsRecursive(array $groupIds, array $processedGroupIds = []): array
+    {
+        if (empty($groupIds)) {
+            return [];
+        }
+        $parentGroups = $this->fetchParentGroupsFromDatabase($groupIds);
+        $validParentGroupIds = [];
+        foreach ($parentGroups as $parentGroup) {
+            $parentGroupId = (int)$parentGroup['uid'];
+            // Record was already processed, continue to avoid adding this group again
+            if (in_array($parentGroupId, $processedGroupIds, true)) {
+                continue;
+            }
+            $processedGroupIds[] = $parentGroupId;
+            $validParentGroupIds[] = $parentGroupId;
+        }
+
+        $grandParentGroups = $this->fetchParentGroupsRecursive($validParentGroupIds, $processedGroupIds);
+        return array_merge($validParentGroupIds, $grandParentGroups);
+    }
+
+    /**
+     * Find all groups that have a FIND_IN_SET(subgroups, [$subgroupIds]) => the parent groups
+     * via one SQL query.
+     *
+     * @param array $subgroupIds
+     * @return array
+     */
+    protected function fetchParentGroupsFromDatabase(array $subgroupIds): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->sourceTable);
+        $queryBuilder
+            ->select('*')
+            ->from($this->sourceTable);
+
+        $constraints = [];
+        foreach ($subgroupIds as $subgroupId) {
+            $constraints[] = $queryBuilder->expr()->inSet($this->recursiveSourceField, (string)$subgroupId);
+        }
+
+        $result = $queryBuilder
+            ->where(
+                $queryBuilder->expr()->orX(...$constraints)
+            )
+            ->execute();
+
+        $groups = [];
+        while ($row = $result->fetch()) {
+            $groups[(int)$row['uid']] = $row;
+        }
+        return $groups;
+    }
 }

@@ -16,10 +16,10 @@
 namespace TYPO3\CMS\Belog\Domain\Repository;
 
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Model\Workspace;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,18 +34,10 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class LogEntryRepository extends Repository
 {
     /**
-     * Backend users, with UID as key
-     *
-     * @var array
-     */
-    protected $beUserList = [];
-
-    /**
      * Initialize some local variables to be used during creation of objects
      */
     public function initializeObject()
     {
-        $this->beUserList = $this->getBackendUsers();
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
@@ -146,13 +138,11 @@ class LogEntryRepository extends Repository
         // Constraint for a group
         if (strpos($userOrGroup, 'gr-') === 0) {
             $groupId = (int)substr($userOrGroup, 3);
-            $userIds = [];
-            foreach ($this->beUserList as $userId => $userData) {
-                if (GeneralUtility::inList($userData['usergroup_cached_list'], (string)$groupId)) {
-                    $userIds[] = $userId;
-                }
-            }
+            $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
+            $userIds = $groupResolver->findAllUsersInGroups([$groupId], 'be_groups', 'be_users');
             if (!empty($userIds)) {
+                $userIds = array_column($userIds, 'uid');
+                $userIds = array_map('intval', $userIds);
                 $queryConstraints[] = $query->in('userid', $userIds);
             } else {
                 // If there are no group members -> use -1 as constraint to not find anything
@@ -185,15 +175,5 @@ class LogEntryRepository extends Repository
         return $queryBuilder->delete('sys_log')
             ->where(...$constraints)
             ->execute();
-    }
-
-    /**
-     * Get a list of all backend users that are not deleted
-     *
-     * @return array
-     */
-    protected function getBackendUsers()
-    {
-        return BackendUtility::getUserNames();
     }
 }

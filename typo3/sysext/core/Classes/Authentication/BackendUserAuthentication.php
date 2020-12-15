@@ -1274,11 +1274,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
 
             // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
-            $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
             // Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
             // and without duplicates (duplicates are presented with their last entrance in the list,
             // which thus reflects the order of the TypoScript in TSconfig)
-            $this->setCachedList(implode(',', $this->userGroupsUID));
+            $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->userGroupsUID)));
 
             $this->prepareUserTsConfig();
 
@@ -1392,27 +1391,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $cache->set($hash, $this->userTS, ['UserTSconfig'], 0);
             // Ensure to update UC later
             $this->userTSUpdated = true;
-        }
-    }
-
-    /**
-     * Updates the field be_users.usergroup_cached_list if the groupList of the user
-     * has changed/is different from the current list.
-     * The field "usergroup_cached_list" contains the list of groups which the user is a member of.
-     * After authentication (where these functions are called...) one can depend on this list being
-     * a representation of the exact groups/subgroups which the BE_USER has membership with.
-     *
-     * @param string $cList The newly compiled group-list which must be compared with the current list in the user record and possibly stored if a difference is detected.
-     * @internal
-     */
-    public function setCachedList($cList)
-    {
-        if ((string)$cList != (string)$this->user['usergroup_cached_list']) {
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users')->update(
-                'be_users',
-                ['usergroup_cached_list' => $cList],
-                ['uid' => (int)$this->user['uid']]
-            );
         }
     }
 
