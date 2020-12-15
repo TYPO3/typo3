@@ -65,9 +65,8 @@ indent_style = space
 indent_size = 2
 
 # package.json
-# .travis.yml
 # bower.json
-[{package.json,.travis.yml,bower.json}]
+[{package.json,bower.json}]
 indent_style = space
 indent_size = 2
 
