@@ -30,12 +30,6 @@
 			<trans-unit id="extConfTemplate.backToList" resname="extConfTemplate.backToList">
 				<source>Back to list</source>
 			</trans-unit>
-			<trans-unit id="updateScript.headline" resname="updateScript.headline">
-				<source>Update script for %s</source>
-			</trans-unit>
-			<trans-unit id="updateScript.none" resname="updateScript.none">
-				<source>No update necessary.</source>
-			</trans-unit>
 			<trans-unit id="button.cancel" resname="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
@@ -56,9 +50,6 @@
 			</trans-unit>
 			<trans-unit id="button.resolveDependenciesIgnore" resname="button.resolveDependenciesIgnore">
 				<source>I know what I'm doing, continue anyway</source>
-			</trans-unit>
-			<trans-unit id="extensionList.update.script" resname="extensionList.update.script">
-				<source>Execute the update script</source>
 			</trans-unit>
 			<trans-unit id="extensionList.downloadsql" resname="extensionList.downloadsql">
 				<source>Download SQL Dump</source>
