@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -175,6 +176,10 @@ class RecoveryService implements RecoveryServiceInterface
         $replyTo = $this->recoveryConfiguration->getReplyTo();
         if ($replyTo) {
             $mail->addReplyTo($replyTo);
+        }
+
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            $mail->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
 
         return $mail;
