@@ -219,10 +219,10 @@ class LiveSearch
             $collect[$onlineUid] = [
                 'id' => $tableName . ':' . $row['uid'],
                 'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
-                'typeLabel' =>  htmlspecialchars($this->getTitleOfCurrentRecordType($tableName)),
+                'typeLabel' => $this->getTitleOfCurrentRecordType($tableName),
                 'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
-                'title' => htmlspecialchars(BackendUtility::getRecordTitle($tableName, $row)),
-                'editLink' => htmlspecialchars($this->getEditLink($tableName, $row))
+                'title' => BackendUtility::getRecordTitle($tableName, $row),
+                'editLink' => $this->getEditLink($tableName, $row)
             ];
         }
         return $collect;
