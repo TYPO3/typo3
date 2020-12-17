@@ -449,6 +449,72 @@ module.exports = function (grunt) {
         cache: './.cache/grunt-newer/'
       }
     },
+    rollup: {
+      options: {
+        format: 'amd',
+        onwarn: function(warning) {
+          if (warning.code === 'THIS_IS_UNDEFINED' && grunt.file.match('*/lit-html/directives/async-*.js')) {
+            // lit-html's Symbol.asyncIterator polyfill in async-{append/replace}.js contains
+            // a global check for `this`: `(this && this.__asyncValues) || function (o) {`.
+            // rollup will rewrite that to `function (o) {` and warn about rewriting `this`.
+            // The rewrite is perfectly ok, the AMD module will act as a singleton, so no
+            // global window object is needed here. The warning is therefore silenced.
+            return;
+          }
+          console.warn( warning.message );
+        }
+      },
+      'lit-html': {
+        options: {
+          preserveModules: true,
+          plugins: () => [
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            }
+          ]
+        },
+        files: {
+          '<%= paths.core %>Public/JavaScript/Contrib/lit-html': [
+            'node_modules/lit-html/lit-html.js',
+            'node_modules/lit-html/directives/*.js',
+            'node_modules/lit-html/lib/*.js',
+            // omitted, empty
+            '!node_modules/lit-html/lib/render-options.js',
+            '!node_modules/lit-html/lib/template-processor.js',
+          ]
+        }
+      },
+      'lit-element': {
+        options: {
+          preserveModules: true,
+          plugins: () => [
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            },
+            {
+              name: 'externals',
+              resolveId: (source) => {
+                if (source === 'lit-html/lit-html.js') {
+                  return {id: 'lit-html', external: true}
+                }
+                if (source === 'lit-html/lib/shady-render.js') {
+                  return {id: 'lit-html/lib/shady-render', external: true}
+                }
+                return null
+              }
+            }
+          ]
+        },
+        files: {
+          '<%= paths.core %>Public/JavaScript/Contrib/lit-element': [
+            'node_modules/lit-element/lit-element.js',
+            'node_modules/lit-element/lib/*.js',
+          ]
+        }
+      },
+    },
     npmcopy: {
       options: {
         clean: false,
@@ -643,6 +709,7 @@ module.exports = function (grunt) {
   // Register tasks
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-rollup');
   grunt.loadNpmTasks('grunt-npmcopy');
   grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('grunt-postcss');
@@ -707,7 +774,7 @@ module.exports = function (grunt) {
    * - yarn install
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['exec:yarn-install', 'npmcopy']);
+  grunt.registerTask('update', ['exec:yarn-install', 'rollup', 'npmcopy']);
 
   /**
    * grunt compile-typescript task

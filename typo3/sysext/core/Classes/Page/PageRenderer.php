@@ -1398,6 +1398,18 @@ class PageRenderer implements SingletonInterface
         $requireJsConfig['public']['shim'] = [
             'tablesort.dotsep' => ['deps' => ['tablesort']],
         ];
+        $requireJsConfig['public']['packages'] = [
+            [
+                'name' => 'lit-html',
+                'location' => $corePath . 'lit-html',
+                'main' => 'lit-html',
+            ],
+            [
+                'name' => 'lit-element',
+                'location' => $corePath . 'lit-element',
+                'main' => 'lit-element',
+            ]
+        ];
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;
         $publicPackageNames = ['core', 'frontend', 'backend'];
@@ -1490,8 +1502,11 @@ class PageRenderer implements SingletonInterface
             $requireJsConfig = $this->getRequireJsConfig(static::REQUIREJS_SCOPE_CONFIG);
             $requireJsConfig['typo3BaseUrl'] = (string)$uriBuilder->buildUriFromRoute('ajax_core_requirejs');
         } else {
-            // backend request, having backend user logged in
-            $requireJsConfig = array_replace_recursive(
+            // Backend request, having backend user logged in.
+            // Merge public and private require js configuration.
+            // Use array_merge for 'packages' definitions (scalar array indexes) and
+            // merge+replace for other, string array based configuration (like 'path' and 'shim').
+            $requireJsConfig = ArrayUtility::replaceAndAppendScalarValuesRecursive(
                 $this->publicRequireJsConfig,
                 $this->requireJsConfig
             );
