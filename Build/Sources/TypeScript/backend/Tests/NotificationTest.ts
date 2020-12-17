@@ -11,24 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import ImmediateAction = require('TYPO3/CMS/Backend/ActionButton/ImmediateAction');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import type {LitElement} from 'lit-element';
 
 describe('TYPO3/CMS/Backend/Notification:', () => {
   beforeEach((): void => {
-    $.fx.off = true;
-    jasmine.clock().install();
-
     const alertContainer = document.getElementById('alert-container');
     while (alertContainer !== null && alertContainer.firstChild) {
       alertContainer.removeChild(alertContainer.firstChild);
     }
-  });
-
-  afterEach((): void => {
-    jasmine.clock().uninstall();
   });
 
   describe('can render notifications with dismiss after 1000ms', () => {
@@ -75,21 +68,23 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
     }
 
     for (let dataSet of notificationProvider()) {
-      it('can render a notification of type ' + dataSet.class, () => {
+      it('can render a notification of type ' + dataSet.class, async () => {
         dataSet.method(dataSet.title, dataSet.message, 1);
 
+        await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
         const alertSelector = 'div.alert.' + dataSet.class;
         const alertBox = document.querySelector(alertSelector);
         expect(alertBox).not.toBe(null);
         expect(alertBox.querySelector('.alert-title').textContent).toEqual(dataSet.title);
         expect(alertBox.querySelector('.alert-message').textContent).toEqual(dataSet.message);
-        jasmine.clock().tick(1200);
+        // wait for the notification to disappear for the next assertion (which tests for auto dismiss)
+        await new Promise(resolve => window.setTimeout(resolve, 2000));
         expect(document.querySelector(alertSelector)).toBe(null);
       });
     }
   });
 
-  it('can render action buttons', () => {
+  it('can render action buttons', async () => {
     Notification.info(
       'Info message',
       'Some text',
@@ -110,6 +105,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       ],
     );
 
+    await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
     const alertBox = document.querySelector('div.alert');
     expect(alertBox.querySelector('.alert-actions')).not.toBe(null);
     expect(alertBox.querySelectorAll('.alert-actions a').length).toEqual(2);
@@ -117,7 +113,7 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
     expect(alertBox.querySelectorAll('.alert-actions a')[1].textContent).toEqual('My other action');
   });
 
-  it('immediate action is called', () => {
+  it('immediate action is called', async () => {
     const observer = {
       callback: (): void => {
         return;
@@ -138,8 +134,10 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       ],
     );
 
+    await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
     const alertBox = document.querySelector('div.alert');
     (<HTMLAnchorElement>alertBox.querySelector('.alert-actions a')).click();
+    await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
     expect(observer.callback).toHaveBeenCalled();
   });
 });

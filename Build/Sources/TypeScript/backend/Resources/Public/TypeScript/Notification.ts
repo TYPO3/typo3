@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-// @todo Importing bootstrap here, to have jQuery.fn.alert applied
-import 'bootstrap';
+import {LitElement, html, customElement, property, internalProperty} from 'lit-element';
+import {classMap} from 'lit-html/directives/class-map';
+import {ifDefined} from 'lit-html/directives/if-defined';
 import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
 import Severity = require('./Severity');
@@ -29,7 +29,7 @@ interface Action {
  */
 class Notification {
   private static duration: number = 5;
-  private static messageContainer: JQuery = null;
+  private static messageContainer: HTMLElement = null;
 
   /**
    * Show a notice notification
@@ -105,9 +105,81 @@ class Notification {
     duration: number | string = this.duration,
     actions: Array<Action> = [],
   ): void {
-    const className = Severity.getCssClass(severity);
+
+    duration = (typeof duration === 'undefined') ? this.duration : duration;
+
+    if (this.messageContainer === null || document.getElementById('alert-container') === null) {
+      this.messageContainer = document.createElement('div');
+      this.messageContainer.setAttribute('id', 'alert-container');
+      document.body.appendChild(this.messageContainer);
+    }
+
+    const box = <NotificationMessage>document.createElement('typo3-notification-message');
+    box.setAttribute('notificationId', 'notification-' + Math.random().toString(36).substr(2, 5));
+    box.setAttribute('title', title);
+    if (message) {
+      box.setAttribute('message', message);
+    }
+    box.setAttribute('severity', severity.toString());
+    box.setAttribute('duration', duration.toString());
+    box.actions = actions;
+    this.messageContainer.appendChild(box);
+  }
+}
+
+@customElement('typo3-notification-message')
+class NotificationMessage extends LitElement {
+  @property() notificationId: string;
+  @property() title: string;
+  @property() message: string;
+  @property({type: Number}) severity: SeverityEnum = SeverityEnum.info;
+  @property() duration: number = 0;
+  @property({type: Array, attribute: false}) actions: Array<Action> = [];
+
+  @internalProperty() visible: boolean = false;
+  @internalProperty() executingAction: number = -1;
+
+  createRenderRoot(): Element|ShadowRoot {
+    return this;
+  }
+
+  async firstUpdated() {
+    await new Promise(resolve => window.setTimeout(resolve, 200));
+    this.visible = true;
+    await this.requestUpdate();
+    if (this.duration > 0) {
+      await new Promise(resolve => window.setTimeout(resolve, this.duration * 1000));
+      this.close();
+    }
+  }
+
+  async close(): Promise<void> {
+    this.visible = false;
+    const onfinish = () => {
+      this.parentNode && this.parentNode.removeChild(this);
+    };
+
+    if ('animate' in this) {
+      this.style.overflow = 'hidden';
+      this.style.display = 'block';
+      this.animate(
+        [
+          { height: this.getBoundingClientRect().height + 'px' },
+          { height: 0 },
+        ], {
+          duration: 400,
+          easing: 'cubic-bezier(.02, .01, .47, 1)'
+        }
+      ).onfinish = onfinish;
+    } else {
+      onfinish();
+    }
+  }
+
+  render() {
+    const className = Severity.getCssClass(this.severity);
     let icon = '';
-    switch (severity) {
+    switch (this.severity) {
       case SeverityEnum.notice:
         icon = 'lightbulb-o';
         break;
@@ -125,102 +197,51 @@ class Notification {
         icon = 'info';
     }
 
-    duration = (typeof duration === 'undefined')
-      ? this.duration
-      : (
-        typeof duration === 'string'
-          ? parseFloat(duration)
-          : duration
-      );
-
-    if (this.messageContainer === null || document.getElementById('alert-container') === null) {
-      this.messageContainer = $('<div>', {'id': 'alert-container'}).appendTo('body');
-    }
-
-    const notificationId = 'notification-' + Math.random().toString(36).substr(2, 5);
-
-    const $box = $(
-      '<div id="' + notificationId + '" class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
-        '<button type="button" class="close" data-bs-dismiss="alert">' +
-          '<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
-          '<span class="sr-only">Close</span>' +
-        '</button>' +
-        '<div class="media">' +
-          '<div class="media-left">' +
-            '<span class="fa-stack fa-lg">' +
-              '<i class="fa fa-circle fa-stack-2x"></i>' +
-              '<i class="fa fa-' + icon + ' fa-stack-1x"></i>' +
-            '</span>' +
-          '</div>' +
-          '<div class="media-body">' +
-            '<h4 class="alert-title"></h4>' +
-            '<p class="alert-message text-pre-wrap"></p>' +
-          '</div>' +
-        '</div>' +
-        '<div class="alert-actions">' +
-        '</div>' +
-      '</div>',
-    );
-    $box.find('.alert-title').text(title);
-    $box.find('.alert-message').text(message);
-
-    const $actionButtonContainer = $box.find('.alert-actions');
-    if (actions.length > 0) {
-      for (let action of actions) {
-        const $actionButton = $('<a />', {
-          href: '#',
-          title: action.label,
-        });
-        $actionButton.text(action.label);
-        $actionButton.on('click', (e: JQueryEventObject): void => {
-          // Remove potentially set timeout
-          $box.clearQueue();
-
-          const target = <HTMLAnchorElement>e.currentTarget;
-          target.classList.add('executing');
-
-          $actionButtonContainer.find('a').not(target).addClass('disabled');
-          action.action.execute(target).then((): void => {
-            $box.alert('close');
-          });
-        });
-
-        $actionButtonContainer.append($actionButton);
-      }
-    } else {
-      $actionButtonContainer.remove();
-    }
-
-    $box.on('close.bs.alert', (e: Event) => {
-      e.preventDefault();
-      const $me = $(e.currentTarget);
-      $me
-        .clearQueue()
-        .queue((next: any): void => {
-          $me.removeClass('in');
-          next();
-        })
-        .slideUp({
-          complete: (): void => {
-            $me.remove();
-          },
-        });
-    });
-    $box.appendTo(this.messageContainer);
-    $box.delay(200)
-      .queue((next: any): void => {
-        $box.addClass('in');
-        next();
-      });
-
-    if (duration > 0) {
-      // if duration > 0 dismiss alert
-      $box.delay(duration * 1000)
-        .queue((next: any): void => {
-          $box.alert('close');
-          next();
-        });
-    }
+    /* eslint-disable @typescript-eslint/indent */
+    return html`
+      <div
+        id="${ifDefined(this.notificationId || undefined)}"
+        class="${'alert alert-' + className + ' alert-dismissible fade' + (this.visible ? ' in' : '')}"
+        role="alert">
+        <button type="button" class="close" @click="${async (e: Event) => this.close()}">
+          <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+          <span class="sr-only">Close</span>
+        </button>
+        <div class="media">
+          <div class="media-left">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="${'fa fa-' + icon + ' fa-stack-1x'}"></i>
+            </span>
+          </div>
+          <div class="media-body">
+            <h4 class="alert-title">${this.title}</h4>
+            <p class="alert-message text-pre-wrap">${this.message ? this.message : ''}</p>
+          </div>
+        </div>
+        ${this.actions.length === 0 ? '' : html`
+          <div class="alert-actions">
+            ${this.actions.map((action, index) => html`
+              <a href="#"
+                 title="${action.label}"
+                 @click="${async (e: any) => {
+                   e.preventDefault()
+                   this.executingAction = index;
+                   await this.updateComplete;
+                   await action.action.execute(e.currentTarget);
+                   this.close();
+                 }}"
+                 class="${classMap({
+                   executing: this.executingAction === index,
+                   disabled: this.executingAction >= 0 && this.executingAction !== index
+                 })}"
+                >${action.label}</a>
+            `)}
+          </div>
+        `}
+      </div>
+    `;
+    /* eslint-enable @typescript-eslint/indent */
   }
 }
 
