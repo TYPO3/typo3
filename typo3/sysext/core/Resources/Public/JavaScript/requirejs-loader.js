@@ -57,13 +57,13 @@
         if (this.status === 200) {
           success(JSON.parse(xhr.responseText));
         } else {
-          error(this.status, xhr.statusText);
+          error(this.status, new Error(xhr.statusText));
         }
-      } catch (error) {
-        error(this.status, error);
+      } catch (err) {
+        error(this.status, err);
       }
     };
-    xhr.open('GET', config.typo3BaseUrl + '&name=' + encodeURIComponent(name));
+    xhr.open('GET', config.typo3BaseUrl + (config.typo3BaseUrl.indexOf('?') === -1 ? '?' : '&' ) + 'name=' + encodeURIComponent(name));
     xhr.send();
   };
 
@@ -128,7 +128,13 @@
         // result cannot be returned since nested in two asynchronous calls
         originalLoad.call(req, context, name, url);
       },
-      function() {}
+      function(status, err) {
+        var error = new Error('requirejs fetchConfiguration for ' + name + ' failed [' + status + ']');
+        error.contextName = context.contextName;
+        error.requireModules = [name];
+        error.originalError = err;
+        context.onError(error);
+      }
     );
   };
 })(requirejs);
