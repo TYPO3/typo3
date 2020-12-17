@@ -181,6 +181,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $user;
 
     /**
+     * This array will hold the groups that the user is a member of
+     */
+    public array $userGroups = [];
+
+    /**
      * Will prevent the setting of the session cookie
      * @var bool
      */
@@ -1115,7 +1120,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authInfo['db_user']['userid_column'] = $this->userid_column;
         $authInfo['db_user']['username_column'] = $this->username_column;
         $authInfo['db_user']['userident_column'] = $this->userident_column;
-        $authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
         $authInfo['db_user']['enable_clause'] = $this->userConstraints()->buildExpression(
             [$this->user_table => $this->user_table],
             $expressionBuilder
@@ -1130,7 +1134,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $authInfo['db_user']['checkPidList'] = '';
             $authInfo['db_user']['check_pid_clause'] = '';
         }
-        $authInfo['db_groups']['table'] = $this->usergroup_table;
         return $authInfo;
     }
 

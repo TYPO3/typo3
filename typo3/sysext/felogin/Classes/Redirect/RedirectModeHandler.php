@@ -88,12 +88,12 @@ class RedirectModeHandler
     public function redirectModeGroupLogin(): string
     {
         // taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
-        $groupData = $this->userService->getFeUserGroupData();
+        $groups = $this->userService->getFeUserGroupData();
 
-        $groupUids = array_unique(array_map('intval', $groupData['uid']));
-        if (empty($groupData['uid'])) {
+        if (empty($groups)) {
             return '';
         }
+        $groupUids = array_keys($groups);
 
         // take the first group with a redirect page
         $redirectPageId = $this->frontendUserGroupRepository->findRedirectPageIdByGroupId(

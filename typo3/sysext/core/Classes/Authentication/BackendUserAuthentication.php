@@ -83,12 +83,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     ];
 
     /**
-     * This array will hold the groups that the user is a member of
-     * @var array
-     */
-    public $userGroups = [];
-
-    /**
      * This array holds the uid's of the groups in the listed order
      * @var array
      */

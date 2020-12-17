@@ -800,4 +800,29 @@ return [
             'Breaking-93073-AbstractUserAuthentication-forceSetCookieRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AuthenticationService->db_groups' => [
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->TSdataArray' => [
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->userTS' => [
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->userTSUpdated' => [
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->userData_change' => [
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
+        ],
+    ],
 ];

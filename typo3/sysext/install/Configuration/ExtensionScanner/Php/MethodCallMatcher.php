@@ -4704,4 +4704,18 @@ return [
             'Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AuthenticationService->getGroups' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AuthenticationService->getSubGroups' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst'
+        ],
+    ],
 ];

@@ -56,7 +56,7 @@ class UserService
 
     public function getFeUserGroupData(): array
     {
-        return $this->feUser->groupData;
+        return $this->feUser->userGroups;
     }
 
     public function getFeUserTable(): string

@@ -98,7 +98,7 @@ class UserAspectTest extends UnitTestCase
         $user->user = [
             'uid' => 13
         ];
-        $user->groupData['uid'] = [1, 5, 7];
+        $user->userGroups = [1 => ['uid' => 1], 5 => ['uid' => 5], 7 => ['uid' => 7]];
         $subject = new UserAspect($user);
         self::assertTrue($subject->isLoggedIn());
     }
@@ -125,7 +125,7 @@ class UserAspectTest extends UnitTestCase
         $user->user = [
             'uid' => 13
         ];
-        $user->groupData['uid'] = [23, 54];
+        $user->userGroups = [23 => ['uid' => 23], 54 => ['uid' => 54]];
         $subject = new UserAspect($user);
         self::assertEquals([0, -2, 23, 54], $subject->getGroupIds());
     }
@@ -137,7 +137,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new FrontendUserAuthentication();
         // Not used, because overridden with 33
-        $user->groupData['uid'] = [23, 54];
+        $user->userGroups = [23 => ['uid' => 23], 54 => ['uid' => 54]];
         $subject = new UserAspect($user, [33]);
         self::assertEquals([33], $subject->getGroupIds());
     }
@@ -204,7 +204,9 @@ class UserAspectTest extends UnitTestCase
         if ($userId) {
             $user->user['uid'] = $userId;
         }
-        $user->groupData['uid'] = $userGroups;
+        foreach ($userGroups ?? [] as $groupId) {
+            $user->userGroups[$groupId] = ['uid' => $groupId];
+        }
         $subject = new UserAspect($user, $overriddenGroups);
         self::assertEquals($expectedResult, $subject->isUserOrGroupSet());
     }

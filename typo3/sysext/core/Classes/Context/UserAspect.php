@@ -146,8 +146,8 @@ class UserAspect implements AspectInterface
             if ($this->isLoggedIn()) {
                 // If a user is logged in, always add "-2"
                 $groups = [0, -2];
-                if (!empty($this->user->groupData['uid'])) {
-                    $groups = array_merge($groups, array_map('intval', $this->user->groupData['uid']));
+                if (!empty($this->user->userGroups)) {
+                    $groups = array_merge($groups, array_keys($this->user->userGroups));
                 }
             } else {
                 $groups = [0, -1];
@@ -164,10 +164,7 @@ class UserAspect implements AspectInterface
     public function getGroupNames(): array
     {
         $groupNames = [];
-        if ($this->user instanceof FrontendUserAuthentication) {
-            $groupNames = $this->user->groupData['title'];
-        }
-        if ($this->user instanceof BackendUserAuthentication) {
+        if ($this->user instanceof AbstractUserAuthentication) {
             foreach ($this->user->userGroups as $userGroup) {
                 $groupNames[] = $userGroup['title'];
             }

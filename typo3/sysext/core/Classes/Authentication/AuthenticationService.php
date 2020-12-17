@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -170,106 +169,6 @@ class AuthenticationService extends AbstractAuthenticationService
         // Responsible, authentication ok. Log successful login and return 'auth ok, do NOT check other services'
         $this->writeLogMessage($this->pObj->loginType . ' Authentication successful for username \'%s\'', $submittedUsername);
         return 200;
-    }
-
-    /**
-     * Find usergroup records, currently only for frontend
-     *
-     * @param array $user Data of user.
-     * @param array $knownGroups Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
-     * @return mixed Groups array, keys = uid which must be unique
-     */
-    public function getGroups($user, $knownGroups)
-    {
-        // Attention: $knownGroups is not used within this method, but other services can use it.
-        // This parameter should not be removed!
-        // The FrontendUserAuthentication call getGroups and handover the previous detected groups.
-        $groupDataArr = [];
-        if ($this->mode === 'getGroupsFE') {
-            $groups = [];
-            if ($user[$this->db_user['usergroup_column']] ?? false) {
-                $groupList = $user[$this->db_user['usergroup_column']];
-                $groups = [];
-                $this->getSubGroups($groupList, '', $groups);
-            }
-            $groups = array_unique($groups);
-            if (!empty($groups)) {
-                $this->logger->debug('Get usergroups with id: ' . implode(',', $groups));
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($this->db_groups['table']);
-
-                $res = $queryBuilder->select('*')
-                    ->from($this->db_groups['table'])
-                    ->where(
-                        $queryBuilder->expr()->in(
-                            'uid',
-                            $queryBuilder->createNamedParameter($groups, Connection::PARAM_INT_ARRAY)
-                        )
-                    )
-                    ->execute();
-
-                while ($row = $res->fetch()) {
-                    $groupDataArr[$row['uid']] = $row;
-                }
-            } else {
-                $this->logger->debug('No usergroups found.');
-            }
-        }
-        return $groupDataArr;
-    }
-
-    /**
-     * Fetches subgroups of groups. Function is called recursively for each subgroup.
-     * Function was previously copied from
-     * \TYPO3\CMS\Core\Authentication\BackendUserAuthentication->fetchGroups and has been slightly modified.
-     *
-     * @param string $grList Commalist of fe_groups uid numbers
-     * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
-     * @param array $groups
-     * @internal
-     */
-    public function getSubGroups($grList, $idList, &$groups)
-    {
-        // Fetching records of the groups in $grList:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
-
-        $res = $queryBuilder
-            ->select('uid', 'subgroup')
-            ->from($this->db_groups['table'])
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    $queryBuilder->createNamedParameter(
-                        GeneralUtility::intExplode(',', $grList, true),
-                        Connection::PARAM_INT_ARRAY
-                    )
-                )
-            )
-            ->execute();
-
-        // Internal group record storage
-        $groupRows = [];
-        // The groups array is filled
-        while ($row = $res->fetch()) {
-            if (!in_array($row['uid'], $groups)) {
-                $groups[] = $row['uid'];
-            }
-            $groupRows[$row['uid']] = $row;
-        }
-        // Traversing records in the correct order
-        $include_staticArr = GeneralUtility::intExplode(',', $grList);
-        // traversing list
-        foreach ($include_staticArr as $uid) {
-            // Get row:
-            $row = $groupRows[$uid];
-            // Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-            if (is_array($row) && !GeneralUtility::inList($idList, (string)$uid) && trim($row['subgroup'])) {
-                // Make integer list
-                $theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
-                // Call recursively, pass along list of already processed groups so they are not processed again.
-                $this->getSubGroups($theList, $idList . ',' . $uid, $groups);
-            }
-        }
     }
 
     /**

@@ -44,9 +44,9 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
         $this->context = GeneralUtility::makeInstance(Context::class);
         $user = new FrontendUserAuthentication();
         $user->user['uid'] = 13;
-        $user->groupData = [
-            'uid' => [1, 2],
-            'title' => ['Editor', 'OtherRole']
+        $user->userGroups = [
+            1 => ['uid' => 1, 'title' => 'Editor'],
+            2 => ['uid' => 2, 'title' => 'OtherRole']
         ];
         $this->context->setAspect('frontend.user', new UserAspect($user, [1, 2]));
         $this->viewHelper = new IfHasRoleViewHelper();

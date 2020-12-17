@@ -499,7 +499,9 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $frontendUser = $GLOBALS['TSFE']->fe_user;
         $frontendUser->user['uid'] = empty($groups) ? 0 : 13;
-        $frontendUser->groupData['uid'] = $groups;
+        foreach ($groups as $groupId) {
+            $frontendUser->userGroups[$groupId] = ['uid' => $groupId];
+        }
 
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect($frontendUser, $groups));
     }

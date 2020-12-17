@@ -65,13 +65,6 @@ class AbstractAuthenticationService implements LoggerAwareInterface
     public $db_user = [];
 
     /**
-     * Usergroups db table definition
-     *
-     * @var array
-     */
-    public $db_groups = [];
-
-    /**
      * If the writelog() functions is called if a login-attempt has be tried without success
      *
      * @var bool
@@ -99,7 +92,6 @@ class AbstractAuthenticationService implements LoggerAwareInterface
         $this->login = $loginData;
         $this->authInfo = $authInfo;
         $this->db_user = $this->getServiceOption('db_user', $authInfo['db_user'] ?? [], false);
-        $this->db_groups = $this->getServiceOption('db_groups', $authInfo['db_groups'] ?? [], false);
         $this->writeAttemptLog = $this->pObj->writeAttemptLog ?? true;
     }
 

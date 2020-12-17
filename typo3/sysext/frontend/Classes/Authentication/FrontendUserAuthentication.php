@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Frontend\Authentication;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -124,22 +124,17 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Used to accumulate the TSconfig data of the user
      * @var array
      */
-    public $TSdataArray = [];
+    protected $TSdataArray = [];
 
     /**
      * @var array
      */
-    public $userTS = [];
+    protected $userTS = [];
 
     /**
      * @var bool
      */
-    public $userTSUpdated = false;
-
-    /**
-     * @var bool
-     */
-    public $userData_change = false;
+    protected $userData_change = false;
 
     /**
      * @var bool
@@ -264,17 +259,15 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Will select all fe_groups records that the current fe_user is member of
-     * and which groups are also allowed in the current domain.
-     * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
+     * Will select all fe_groups records that the current fe_user is member of.
      *
-     * @return int Returns the number of usergroups for the frontend users (if the internal user record exists and the usergroup field contains a value)
+     * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
      */
     public function fetchGroupData()
     {
         $this->TSdataArray = [];
         $this->userTS = [];
-        $this->userTSUpdated = false;
+        $this->userGroups = [];
         $this->groupData = [
             'title' => [],
             'uid' => [],
@@ -282,68 +275,34 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         ];
         // Setting default configuration:
         $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
-        // Get the info data for auth services
-        $authInfo = $this->getAuthInfoArray();
+
+        $groupDataArr = [];
         if (is_array($this->user)) {
             $this->logger->debug('Get usergroups for user', [
                 $this->userid_column => $this->user[$this->userid_column],
                 $this->username_column => $this->user[$this->username_column]
             ]);
-        } else {
-            $this->logger->debug('Get usergroups for "anonymous" user');
+            $groupDataArr = GeneralUtility::makeInstance(GroupResolver::class)->resolveGroupsForUser($this->user, $this->usergroup_table);
         }
-        $groupDataArr = [];
-        // Use 'auth' service to find the groups for the user
-        $subType = 'getGroups' . $this->loginType;
-        /** @var AuthenticationService $serviceObj */
-        foreach ($this->getAuthServices($subType, [], $authInfo) as $serviceObj) {
-            $groupData = $serviceObj->getGroups($this->user, $groupDataArr);
-            if (is_array($groupData) && !empty($groupData)) {
-                // Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
-                $groupDataArr = $groupData + $groupDataArr;
-            }
-        }
+
         if (empty($groupDataArr)) {
-            $this->logger->debug('No usergroups found by services');
+            $this->logger->debug('No usergroups found');
+        } else {
+            $this->logger->debug(count($groupDataArr) . ' usergroup records found');
         }
-        if (!empty($groupDataArr)) {
-            $this->logger->debug(count($groupDataArr) . ' usergroup records found by services');
-        }
-        // Use 'auth' service to check the usergroups if they are really valid
         foreach ($groupDataArr as $groupData) {
-            // By default a group is valid
-            $validGroup = true;
-            $subType = 'authGroups' . $this->loginType;
-            foreach ($this->getAuthServices($subType, [], $authInfo) as $serviceObj) {
-                // we assume that the service defines the authGroup function
-                if (!$serviceObj->authGroup($this->user, $groupData)) {
-                    $validGroup = false;
-                    $this->logger->debug($subType . ' auth service did not auth group', [
-                        'uid ' => $groupData['uid'],
-                        'title' => $groupData['title'],
-                    ]);
-                    break;
-                }
-            }
-            if ($validGroup && (string)$groupData['uid'] !== '') {
-                $this->groupData['title'][$groupData['uid']] = $groupData['title'];
-                $this->groupData['uid'][$groupData['uid']] = $groupData['uid'];
-                $this->groupData['pid'][$groupData['uid']] = $groupData['pid'];
-                $this->groupData['TSconfig'][$groupData['uid']] = $groupData['TSconfig'];
-            }
+            $groupId = (int)$groupData['uid'];
+            $this->groupData['title'][$groupId] = $groupData['title'];
+            $this->groupData['uid'][$groupId] = $groupData['uid'];
+            $this->groupData['pid'][$groupId] = $groupData['pid'];
+            $this->TSdataArray[] = $groupData['TSconfig'];
+            $this->userGroups[$groupId] = $groupData;
         }
-        if (!empty($this->groupData) && !empty($this->groupData['TSconfig'])) {
-            // TSconfig: collect it in the order it was collected
-            foreach ($this->groupData['TSconfig'] as $TSdata) {
-                $this->TSdataArray[] = $TSdata;
-            }
-            $this->TSdataArray[] = $this->user['TSconfig'];
-            // Sort information
-            ksort($this->groupData['title']);
-            ksort($this->groupData['uid']);
-            ksort($this->groupData['pid']);
-        }
-        return !empty($this->groupData['uid']) ? count($this->groupData['uid']) : 0;
+        $this->TSdataArray[] = $this->user['TSconfig'] ?? '';
+        // Sort information
+        ksort($this->groupData['title']);
+        ksort($this->groupData['uid']);
+        ksort($this->groupData['pid']);
     }
 
     /**
@@ -356,19 +315,19 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function createUserAspect(bool $respectUserGroups = true): UserAspect
     {
         $userGroups = [0];
-        $isUserAndGroupSet = is_array($this->user) && !empty($this->groupData['uid']);
+        $isUserAndGroupSet = is_array($this->user) && !empty($this->userGroups);
         if ($isUserAndGroupSet) {
             // group -2 is not an existing group, but denotes a 'default' group when a user IS logged in.
             // This is used to let elements be shown for all logged in users!
             $userGroups[] = -2;
-            $groupsFromUserRecord = $this->groupData['uid'];
+            $groupsFromUserRecord = array_keys($this->userGroups);
         } else {
             // group -1 is not an existing group, but denotes a 'default' group when not logged in.
             // This is used to let elements be hidden, when a user is logged in!
             $userGroups[] = -1;
             if ($respectUserGroups) {
                 // For cases where logins are not banned from a branch usergroups can be set based on IP masks so we should add the usergroups uids.
-                $groupsFromUserRecord = $this->groupData['uid'];
+                $groupsFromUserRecord = array_keys($this->userGroups);
             } else {
                 // Set to blank since we will NOT risk any groups being set when no logins are allowed!
                 $groupsFromUserRecord = [];
@@ -378,7 +337,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $groupsFromUserRecord = array_unique($groupsFromUserRecord);
         if ($respectUserGroups && !empty($groupsFromUserRecord)) {
             sort($groupsFromUserRecord);
-            $userGroups = array_merge($userGroups, array_map('intval', $groupsFromUserRecord));
+            $userGroups = array_merge($userGroups, $groupsFromUserRecord);
         }
 
         // For every 60 seconds the is_online timestamp for a logged-in user is updated
@@ -397,16 +356,15 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function getUserTSconf()
     {
-        if (!$this->userTSUpdated) {
+        if ($this->userTS === [] && !empty($this->TSdataArray)) {
             // Parsing the user TS (or getting from cache)
             $this->TSdataArray = TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
             $userTS = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
             $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
             $parseObj->parse($userTS);
             $this->userTS = $parseObj->setup;
-            $this->userTSUpdated = true;
         }
-        return $this->userTS;
+        return $this->userTS ?? [];
     }
 
     /*****************************************
