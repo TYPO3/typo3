@@ -72,7 +72,7 @@ class FormSelectTreeAjaxController
         $flexSectionContainerPreparation = [];
         if ($processedTca['columns'][$fieldName]['config']['type'] === 'flex') {
             if (!empty($request->getQueryParams()['dataStructureIdentifier'])) {
-                $dataStructureIdentifier = json_encode($request->getQueryParams()['dataStructureIdentifier']);
+                $dataStructureIdentifier = $request->getQueryParams()['dataStructureIdentifier'];
             }
             $flexFormSheetName = $request->getQueryParams()['flexFormSheetName'];
             $flexFormFieldName = $request->getQueryParams()['flexFormFieldName'];
