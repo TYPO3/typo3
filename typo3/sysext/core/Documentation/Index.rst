@@ -14,6 +14,7 @@ Every change to the TYPO3 Core which might affect your site is documented here.
 
    Sitemap/Index
    Master
+   Changelog-11
    Changelog-10
    Changelog-9
    Changelog-8

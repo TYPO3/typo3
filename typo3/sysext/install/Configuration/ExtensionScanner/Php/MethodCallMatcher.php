@@ -4533,7 +4533,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Feature-92815-IntroduceForwardResponseForExtbase.rst',
-            'Deprecation-92815-ActionControllerforwardIsDeprecated.rst',
+            'Deprecation-92815-ActionControllerForward.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\ReferenceIndex->generateRefIndexData' => [
