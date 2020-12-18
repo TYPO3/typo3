@@ -74,6 +74,14 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     }
 
     /**
+     * On CLI there is no session and no switched user
+     */
+    public function getOriginalUserIdWhenInSwitchUserMode(): ?int
+    {
+        return null;
+    }
+
+    /**
      * Logs-in the _CLI_ user. It does not need to check for credentials.
      *
      * @throws \RuntimeException when the user could not log in or it is an admin
