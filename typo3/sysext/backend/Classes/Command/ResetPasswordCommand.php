@@ -26,6 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -139,7 +140,9 @@ class ResetPasswordCommand extends Command
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
 
-        return $request->withAttribute('normalizedParams', $normalizedParams);
+        return $request
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
     }
 
     /**
