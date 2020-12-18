@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * External standard parsers for indexed_search
  * MUST RETURN utf-8 content!
+ * @internal will be removed, in favor of unified Content Extractor API.
  */
 class FileContentParser
 {

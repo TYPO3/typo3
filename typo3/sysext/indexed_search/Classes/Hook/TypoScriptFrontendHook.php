@@ -32,24 +32,6 @@ use TYPO3\CMS\IndexedSearch\Indexer;
 class TypoScriptFrontendHook
 {
     /**
-     * Frontend hook: If the page is not being re-generated this is our chance to force it to be
-     * (because re-generation of the page is required in order to have the indexer called!)
-     *
-     * @param array $params Parameters from frontend
-     * @param TypoScriptFrontendController $tsfe TSFE object
-     */
-    public function headerNoCache(array &$params, TypoScriptFrontendController $tsfe)
-    {
-        // Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-        if (in_array('tx_indexedsearch_reindex', $tsfe->applicationData['tx_crawler']['parameters']['procInstructions'] ?? [], true)) {
-            // Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.
-            $params['disableAcquireCacheData'] = true;
-            // Enable indexing
-            $tsfe->applicationData['forceIndexing'] = true;
-        }
-    }
-
-    /**
      * Trigger indexing of content, after evaluating if this page could / should be indexed.
      *
      * @param array $parameters
