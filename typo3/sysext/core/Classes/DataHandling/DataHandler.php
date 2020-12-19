@@ -5359,14 +5359,6 @@ class DataHandler implements LoggerAwareInterface
             // uid_local = given uid OR uid_foreign = given uid
             $queryBuilder->expr()->eq($relationUidFieldName, $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT))
         );
-        if ($relationUidFieldName === 'uid_foreign') {
-            // When discarding a local-side record - eg. sys_category - it does not matter who points to it,
-            // all relations can be dropped. If on foreign side - eg. tt_content to sys_category - "tablenames"
-            // field has to be taken into account to not delete rows with same uid from other tables.
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR))
-            );
-        }
         if (!empty($fieldConfig['MM_table_where']) && is_string($fieldConfig['MM_table_where'])) {
             $queryBuilder->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$recordUid, $fieldConfig['MM_table_where']))
