@@ -120,6 +120,7 @@ class T3editorElement extends AbstractFormElement
             'text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
             $attributeString,
+            $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
                 'effectivePid' => $this->data['effectivePid']
@@ -176,6 +177,7 @@ class T3editorElement extends AbstractFormElement
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
      * @param string $additionalParams Any additional editor parameters
+     * @param string $label Codemirror panel label
      * @param array $hiddenfields
      *
      * @return string Generated HTML code for editor
@@ -186,6 +188,7 @@ class T3editorElement extends AbstractFormElement
         string $class = '',
         string $content = '',
         string $additionalParams = '',
+        string $label = '',
         array $hiddenfields = []
     ): string {
         $code = [];
@@ -205,6 +208,7 @@ class T3editorElement extends AbstractFormElement
 
         $attributes['data-codemirror-config'] = json_encode([
             'mode' => $mode->getIdentifier(),
+            'label' => $label,
             'addons' => json_encode($addons),
             'options' => json_encode($settings)
         ]);
