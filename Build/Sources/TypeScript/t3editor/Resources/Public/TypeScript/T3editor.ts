@@ -116,7 +116,7 @@ class T3editor {
         FormEngine.Validation.markFieldAsChanged($textarea);
       });
 
-      const bottomPanel = T3editor.createPanelNode('bottom', $textarea.attr('alt'));
+      const bottomPanel = T3editor.createPanelNode('bottom', config.label);
       cm.addPanel(
         bottomPanel,
         {
