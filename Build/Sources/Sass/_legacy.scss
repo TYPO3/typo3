@@ -305,7 +305,9 @@ label {
     @extend .card !optional;
 
     &-group {
-        @extend .card-group !optional;
+        // .card-group is not a replacement for panel-group, therefore we build our own
+        display: flex;
+        flex-flow: column;
     }
 
     &-heading {
@@ -315,10 +317,9 @@ label {
 
     &-title {
         @extend .card-title !optional;
-    }
 
-    &-title {
-        @extend .card-title !optional;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     &-body {

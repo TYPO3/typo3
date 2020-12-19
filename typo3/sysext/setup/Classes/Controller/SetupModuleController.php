@@ -600,7 +600,7 @@ class SetupModuleController
                             'class' => 'btn btn-default t3js-modal-trigger',
                             'data-severity' => 'warning',
                             'data-title' => $this->getLabel($config['label'], '', false),
-                            'data-content' => $this->getLabel($confirmData['message'], '', false),
+                            'data-bs-content' => $this->getLabel($confirmData['message'], '', false),
                             'value' => htmlspecialchars($this->getLabel($config['buttonlabel'], '', false)),
                         ];
                         if (isset($confirmData['eventName'])) {

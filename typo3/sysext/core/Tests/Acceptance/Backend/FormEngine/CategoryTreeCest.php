@@ -58,9 +58,9 @@ class CategoryTreeCest
         $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
         $I->wait(1);
         $I->executeJS('$(\'button[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
-        $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
+        $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-bs-original-title="Edit record"]');
         // Select category with id 7
-        $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-original-title="Edit record"]');
+        $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-bs-original-title="Edit record"]');
         $I->waitForText('Category', 20);
         // Change title and level to root
         $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');

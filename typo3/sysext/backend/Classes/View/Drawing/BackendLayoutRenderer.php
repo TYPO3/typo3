@@ -332,7 +332,7 @@ class BackendLayoutRenderer
     {
         $pasteIcon = json_encode(
             ' <button type="button"'
-            . ' data-content="' . htmlspecialchars((string)$pasteItem) . '"'
+            . ' data-bs-content="' . htmlspecialchars((string)$pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
             . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'

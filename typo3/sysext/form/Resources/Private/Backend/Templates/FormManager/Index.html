@@ -35,17 +35,17 @@
                                     <td class="col-icon nowrap">
                                         <f:if condition="{form.invalid}">
                                             <f:then>
-                                                <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}" data-toggle="tooltip" data-placement="top">
+                                                <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}" data-bs-toggle="tooltip" data-bs-placement="top">
                                                     <core:icon identifier="overlay-missing" />
                                                 </span>
                                             </f:then>
                                             <f:else if="{form.duplicateIdentifier}">
-                                                <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}" data-toggle="tooltip" data-placement="top">
+                                                <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}" data-bs-toggle="tooltip" data-bs-placement="top">
                                                     <core:icon identifier="overlay-missing" />
                                                 </span>
                                             </f:else>
                                             <f:else>
-                                                <span title="id={form.identifier}" data-toggle="tooltip" data-placement="right">
+                                                <span title="id={form.identifier}" data-bs-toggle="tooltip" data-bs-placement="right">
                                                     <core:icon identifier="content-form" />
                                                 </span>
                                             </f:else>

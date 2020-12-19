@@ -12,8 +12,6 @@
  */
 
 import $ from 'jquery';
-// @todo Importing bootstrap here, to have jQuery.fn.popup applied
-import 'bootstrap';
 import {Popover as BootstrapPopover} from 'bootstrap';
 
 /**
@@ -28,7 +26,7 @@ class Popover {
    *
    * @return {string}
    */
-  private readonly DEFAULT_SELECTOR: string = '[data-toggle="popover"]';
+  private readonly DEFAULT_SELECTOR: string = '[data-bs-toggle="popover"]';
 
   constructor() {
     this.initialize();
@@ -39,7 +37,10 @@ class Popover {
    */
   public initialize(selector?: string): void {
     selector = selector || this.DEFAULT_SELECTOR;
-    $(selector).popover();
+    $(selector).each((i, el) => {
+      const popover = new BootstrapPopover(el)
+      $(el).data('typo3.bs.popover', popover);
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -48,8 +49,11 @@ class Popover {
    *
    * @param {JQuery} $element
    */
-  public popover($element: JQuery): void {
-    $element.popover();
+  public popover($element: JQuery) {
+    $element.each((i, el) => {
+      const popover = new BootstrapPopover(el)
+      $(el).data('typo3.bs.popover', popover);
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -62,12 +66,15 @@ class Popover {
   public setOptions($element: JQuery, options?: BootstrapPopover.Options): void {
     options = options || <BootstrapPopover.Options>{};
     const title: string|(() => void) = options.title || $element.data('title') || '';
-    const content: string|(() => void) = options.content || $element.data('content') || '';
+    const content: string|(() => void) = options.content || $element.data('bs-content') || '';
     $element
-      .attr('data-original-title', (title as string))
-      .attr('data-content', (content as string))
-      .attr('data-placement', 'auto')
-      .popover(options);
+      .attr('data-bs-original-title', (title as string))
+      .attr('data-bs-content', (content as string))
+      .attr('data-bs-placement', 'auto')
+
+    $.each(options, (key, value) => {
+      this.setOption($element, key, value);
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -79,7 +86,16 @@ class Popover {
    * @param {String} value
    */
   public setOption($element: JQuery, key: string, value: string): void {
-    $element.data('bs.popover').options[key] = value;
+    if (key === 'content') {
+      $element.attr('data-bs-content', value);
+    } else {
+      $element.each((i, el) => {
+        const popover = $(el).data('typo3.bs.popover');
+        if (popover) {
+          popover.config[key] = value;
+        }
+      });
+    }
   }
 
   // noinspection JSMethodCanBeStatic
@@ -89,7 +105,12 @@ class Popover {
    * @param {JQuery} $element
    */
   public show($element: JQuery): void {
-    $element.popover('show');
+    $element.each((i, el) => {
+      const popover = $(el).data('typo3.bs.popover');
+      if (popover) {
+        popover.show();
+      }
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -99,7 +120,12 @@ class Popover {
    * @param {JQuery} $element
    */
   public hide($element: JQuery): void {
-    $element.popover('hide');
+    $element.each((i, el) => {
+      const popover = $(el).data('typo3.bs.popover');
+      if (popover) {
+        popover.hide();
+      }
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -109,7 +135,12 @@ class Popover {
    * @param {Object} $element
    */
   public destroy($element: JQuery): void {
-    $element.popover('destroy');
+    $element.each((i, el) => {
+      const popover = $(el).data('typo3.bs.popover');
+      if (popover) {
+        popover.dispose();
+      }
+    });
   }
 
   // noinspection JSMethodCanBeStatic
@@ -119,7 +150,12 @@ class Popover {
    * @param {Object} $element
    */
   public toggle($element: JQuery): void {
-    $element.popover('toggle');
+    $element.each((i, el) => {
+      const popover = $(el).data('typo3.bs.popover');
+      if (popover) {
+        popover.toggle();
+      }
+    });
   }
 }
 

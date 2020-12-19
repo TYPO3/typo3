@@ -69,10 +69,10 @@ class ContextHelp {
     const $element = $(this.selector);
     $element
       .attr('data-loaded', 'false')
-      .attr('data-html', 'true')
-      .attr('data-original-title', title)
-      .attr('data-placement', this.placement)
-      .attr('data-trigger', this.trigger);
+      .attr('data-bs-html', 'true')
+      .attr('data-bs-original-title', title)
+      .attr('data-bs-placement', this.placement)
+      .attr('data-bs-trigger', this.trigger);
     Popover.popover($element);
 
     $(document).on('show.bs.popover', this.selector, (e: Event): void => {

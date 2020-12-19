@@ -3,7 +3,7 @@
         <f:for each="{items}" as="item" iteration="iteration">
             <f:if condition="{item.content}">
                 <li role="presentation" class="t3js-tabmenu-item nav-item">
-                    <a href="#{id}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-toggle="tab">
+                    <a href="#{id}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-bs-toggle="tab">
                         <f:if condition="{item.icon}">
                             <f:format.raw>{item.icon}</f:format.raw>
                         </f:if>

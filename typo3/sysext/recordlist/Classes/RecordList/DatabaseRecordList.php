@@ -872,8 +872,8 @@ class DatabaseRecordList
                         . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
                         . ' aria-label="' . sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle) . '"'
                         . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
-                        . ' data-toggle="collapse"'
-                        . ' data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
+                        . ' data-bs-toggle="collapse"'
+                        . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
                         . $icon
                         . '</button>';
                 }
@@ -1137,7 +1137,7 @@ class DatabaseRecordList
                 // If the record is edit-locked	by another user, we will show a little warning sign:
                 $lockInfo = BackendUtility::isRecordLocked($table, $row['uid']);
                 if ($lockInfo) {
-                    $warning = '<span data-toggle="tooltip" data-placement="right" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
+                    $warning = '<span data-bs-toggle="tooltip" data-bs-placement="right" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
                         . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 if ($this->isRecordDeletePlaceholder($row)) {
@@ -1319,7 +1319,7 @@ class DatabaseRecordList
                             . ' href="' . $href . '"'
                             . ' title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
                             . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
-                            . ' data-content="' . htmlspecialchars($confirmMessage) . '"'
+                            . ' data-bs-content="' . htmlspecialchars($confirmMessage) . '"'
                             . ' data-severity="warning">'
                             . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
                             . '</a>';
@@ -2005,7 +2005,7 @@ class DatabaseRecordList
                 }
                 $output .= ' <div class="btn-group">' .
                     '<span id="actions_' . $table . '_' . $row['uid'] . '" class="btn-group collapse collapse-horizontal width">' . $cellOutput . '</span>' .
-                    '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default collapsed" data-toggle="collapse" aria-expanded="false"><span class="t3-icon fa fa-ellipsis-h"></span></a>' .
+                    '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default collapsed" data-bs-toggle="collapse" aria-expanded="false"><span class="t3-icon fa fa-ellipsis-h"></span></a>' .
                     '</div>';
             } else {
                 $output .= ' <div class="btn-group" role="group">' . implode('', $actions) . '</div>';
@@ -2118,7 +2118,7 @@ class DatabaseRecordList
                     . ' href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteAfter')) . '"'
                     . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteAfter')) . '"'
-                    . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'after', $elFromTable)) . '"'
+                    . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'after', $elFromTable)) . '"'
                     . ' data-severity="warning">'
                     . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL)->render() . '</a>';
         }
@@ -2129,7 +2129,7 @@ class DatabaseRecordList
                 . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid'])) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
                 . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
-                . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'into', $elFromTable)) . '"'
+                . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText($table, $row, 'into', $elFromTable)) . '"'
                 . ' data-severity="warning">'
                 . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';
         }
@@ -2303,7 +2303,7 @@ class DatabaseRecordList
             $attributes['data-href'] = 'javascript:' . $jsCode;
             $attributes['data-severity'] = 'warning';
             $attributes['data-title'] = $title;
-            $attributes['data-content'] = $warning;
+            $attributes['data-bs-content'] = $warning;
         } else {
             $attributes['class'] = 'btn btn-default';
             $attributes['onclick'] = $jsCode . 'return false;';

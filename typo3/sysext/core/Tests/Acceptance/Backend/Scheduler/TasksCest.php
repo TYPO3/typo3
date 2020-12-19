@@ -62,7 +62,7 @@ class TasksCest
     public function canRunTask(BackendTester $I)
     {
         // run the task
-        $I->click('a[data-original-title="Run task"]');
+        $I->click('a[data-bs-original-title="Run task"]');
         $I->waitForText('Executed: System Status Update');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -74,7 +74,7 @@ class TasksCest
      */
     public function canEditTask(BackendTester $I)
     {
-        $I->click('//a[contains(@data-original-title, "Edit")]');
+        $I->click('//a[contains(@data-bs-original-title, "Edit")]');
         $I->waitForText('Edit task');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
@@ -91,11 +91,11 @@ class TasksCest
     public function canEnableAndDisableTask(BackendTester $I)
     {
         $I->wantTo('See a enable button for a task');
-        $I->click('//a[contains(@data-original-title, "Enable")]', '#tx_scheduler_form');
+        $I->click('//a[contains(@data-bs-original-title, "Enable")]', '#tx_scheduler_form');
         $I->dontSeeElement('.tx_scheduler_mod1 .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
-        $I->click('//a[contains(@data-original-title, "Disable")]');
+        $I->click('//a[contains(@data-bs-original-title, "Disable")]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -109,8 +109,8 @@ class TasksCest
     public function canDeleteTask(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->wantTo('See a delete button for a task');
-        $I->seeElement('//a[contains(@data-original-title, "Delete")]');
-        $I->click('//a[contains(@data-original-title, "Delete")]');
+        $I->seeElement('//a[contains(@data-bs-original-title, "Delete")]');
+        $I->click('//a[contains(@data-bs-original-title, "Delete")]');
         $I->wantTo('Cancel the delete dialog');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
@@ -120,7 +120,7 @@ class TasksCest
 
         $I->switchToContentFrame();
         $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
-        $I->click('//a[contains(@data-original-title, "Delete")]');
+        $I->click('//a[contains(@data-bs-original-title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToContentFrame();
         $I->see('The task was successfully deleted.');

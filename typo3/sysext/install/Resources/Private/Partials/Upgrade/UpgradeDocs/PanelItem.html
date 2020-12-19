@@ -8,19 +8,19 @@
         <h3 class="panel-title">
             <f:if condition="{read}">
                 <f:then>
-                    <a class="link-action t3js-upgradeDocs-unmarkRead pull-right" data-filepath="{fileArray.filepath}" data-toggle="tooltip" data-placement="top" title="Mark as not read">
+                    <a class="link-action t3js-upgradeDocs-unmarkRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as not read">
                         <i class="fa fa-lg fa-ban"></i>
                         <span class="sr-only">restore this document</span>
                     </a>
                 </f:then>
                 <f:else>
-                    <a class="link-action t3js-upgradeDocs-markRead pull-right" data-filepath="{fileArray.filepath}" data-toggle="tooltip" data-placement="top" title="Mark as read">
+                    <a class="link-action t3js-upgradeDocs-markRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
                         <i class="fa fa-lg fa-check"></i>
                         <span class="sr-only">ignore this document</span>
                     </a>
                 </f:else>
             </f:if>
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">
+            <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">
                 <span class="caret"></span>
                 <strong>{fileArray.headline}</strong>
             </a>

@@ -205,7 +205,7 @@ define(['jquery',
         this.search(e.target);
       }.bind(this), this.settings.filterTimeout).bindTo(document.querySelector(this.settings.searchInput));
 
-      $toolbar.find('[data-toggle="tooltip"]').tooltip();
+      $toolbar.find('[data-bs-toggle="tooltip"]').tooltip();
 
       if ($('[data-tree-show-submenu="page-new"]').length) {
         $('[data-tree-show-submenu="page-new"]').trigger('click');

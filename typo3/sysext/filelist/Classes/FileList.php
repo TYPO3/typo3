@@ -246,7 +246,7 @@ class FileList
         if ($warning) {
             $attributes['class'] = 'btn btn-default t3js-modal-trigger';
             $attributes['data-severity'] = 'warning';
-            $attributes['data-content'] = $warning;
+            $attributes['data-bs-content'] = $warning;
             $attributes['data-event-name'] = 'filelist:clipboard:cmd';
             $attributes['data-event-payload'] = $cmd;
         } else {
@@ -375,7 +375,7 @@ class FileList
                         '_FILE',
                         $this->folderObject->getCombinedIdentifier()
                     )) . '"'
-                    . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText(
+                    . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText(
                         '_FILE',
                         $this->folderObject->getReadablePath(),
                         'into',
@@ -976,7 +976,7 @@ class FileList
             if ($addPasteButton) {
                 $cells[] = '<a class="btn btn-default t3js-modal-trigger" '
                     . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '"'
-                    . ' data-content="' . htmlspecialchars($this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm)) . '"'
+                    . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm)) . '"'
                     . ' data-severity="warning"'
                     . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
@@ -1108,7 +1108,7 @@ class FileList
             $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
             $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
-            $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-content="' . htmlspecialchars($confirmationMessage)
+            $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-bs-content="' . htmlspecialchars($confirmationMessage)
                 . '" data-check="' . $confirmationCheck
                 . '" data-delete-url="' . htmlspecialchars($deleteUrl)
                 . '" data-title="' . htmlspecialchars($title)

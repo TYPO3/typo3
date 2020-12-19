@@ -909,7 +909,7 @@ define(
             .append('g')
             .attr('class', 'node-icon-container')
             .attr('title', this.getNodeTitle)
-            .attr('data-toggle', 'tooltip')
+            .attr('data-bs-toggle', 'tooltip')
             .on('click', function(node) {
               _this.clickOnIcon(node, this);
             });
@@ -932,7 +932,7 @@ define(
             .attr('class', 'node-icon-locked');
         }
 
-        Tooltip.initialize('[data-toggle="tooltip"]', {
+        Tooltip.initialize('[data-bs-toggle="tooltip"]', {
           delay: {
             "show": 50,
             "hide": 50

@@ -62,7 +62,7 @@ define(['jquery',
         showReferences: {identifier: '[data-identifier="showReferences"]'},
         referenceLink: {identifier: '[data-identifier="referenceLink"]'},
 
-        tooltip: {identifier: '[data-toggle="tooltip"]'},
+        tooltip: {identifier: '[data-bs-toggle="tooltip"]'},
 
         moduleBody: {class: '.module-body.t3js-module-body'},
         t3Logo: {class: '.t3-message-page-logo'},

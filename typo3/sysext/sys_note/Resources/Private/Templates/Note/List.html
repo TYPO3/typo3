@@ -34,7 +34,7 @@
                                     <be:link.editRecord uid="{note.uid}" table="sys_note" class="btn btn-default btn-sm">
                                         <core:icon identifier="actions-open" />
                                     </be:link.editRecord>
-                                    <a href="{be:moduleLink(route:'tce_db', query:'cmd[sys_note][{note.uid}][delete]=1', currentUrlParameterName:'redirect')}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}">
+                                    <a href="{be:moduleLink(route:'tce_db', query:'cmd[sys_note][{note.uid}][delete]=1', currentUrlParameterName:'redirect')}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}" data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}">
                                         <core:icon identifier="actions-edit-delete" />
                                     </a>
                                 </span>

@@ -6,7 +6,7 @@
 <div class="panel panel-default panel-flat searchhit">
     <div class="panel-heading" role="tab" id="heading-{extensionKey}">
         <h3 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{extensionKey}" aria-expanded="true" aria-controls="collapse-{extensionKey}" class="collapsed">
+            <a role="button" data-bs-toggle="collapse" href="#collapse-{extensionKey}" aria-expanded="false" aria-controls="collapse-{extensionKey}" class="collapsed">
                 <span class="caret"></span>
                 <strong>{extensionData.packageInfo.packageKey}</strong>
             </a>
@@ -19,7 +19,7 @@
                     <f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
                         <f:if condition="{categoryName}">
                             <li role="presentation" class="nav-item {f:if(condition:'{iteration.isFirst}', then:'active')}">
-                                <a class="nav-link text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
+                                <a class="nav-link text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-bs-toggle="tab">{categoryName}</a>
                             </li>
                         </f:if>
                     </f:for>

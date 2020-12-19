@@ -47,7 +47,7 @@ class InlineStackProcessor
 
     /**
      * Convert the DOM object-id of an inline container to an array.
-     * The object-id could look like 'data-parentPageId-tx_mmftest_company-1-employees'.
+     * The object-id could look like 'data-bs-parentPageId-tx_mmftest_company-1-employees'.
      * This initializes $this->inlineStructure - used by AJAX entry points
      * There are two keys:
      * - 'stable': Containing full qualified identifiers (table, uid and field)

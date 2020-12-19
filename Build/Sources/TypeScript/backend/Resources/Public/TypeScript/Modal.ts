@@ -378,7 +378,7 @@ class Modal {
     $(theDocument).on('click', '.t3js-modal-trigger', (evt: JQueryEventObject): void => {
       evt.preventDefault();
       const $element = $(evt.currentTarget);
-      const content = $element.data('content') || 'Are you sure?';
+      const content = $element.data('bs-content') || 'Are you sure?';
       const severity = typeof SeverityEnum[$element.data('severity')] !== 'undefined'
         ? SeverityEnum[$element.data('severity')]
         : SeverityEnum.info;
@@ -536,7 +536,7 @@ class Modal {
       configuration.callback(currentModal);
     }
 
-    return currentModal.modal();
+    return currentModal.modal('show');
   }
 }
 

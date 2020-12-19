@@ -71,9 +71,9 @@ define(['jquery',
         '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tcatree.findItem'] + '">' +
         '</div>' +
         '<div class="btn-group">' +
-        '<button type="button" data-toggle="tooltip" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
-        '<button type="button" data-toggle="tooltip" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
-        '<button type="button" data-toggle="tooltip" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
+        '<button type="button" data-bs-toggle="tooltip" class="btn btn-default expand-all-btn" title="' + TYPO3.lang['tcatree.expandAll'] + '"></button>' +
+        '<button type="button" data-bs-toggle="tooltip" class="btn btn-default collapse-all-btn" title="' + TYPO3.lang['tcatree.collapseAll'] + '"></button>' +
+        '<button type="button" data-bs-toggle="tooltip" class="btn btn-default hide-unchecked-btn" title="' + TYPO3.lang['tcatree.toggleHideUnchecked'] + '"></button>' +
         '</div>' +
         '</div>'
       );
@@ -131,7 +131,7 @@ define(['jquery',
       });
 
       $toolbar.find(this.settings.toggleHideUnchecked).on('click', this.toggleHideUnchecked.bind(this));
-      $toolbar.find('[data-toggle="tooltip"]').tooltip();
+      $toolbar.find('[data-bs-toggle="tooltip"]').tooltip();
     };
 
     /**

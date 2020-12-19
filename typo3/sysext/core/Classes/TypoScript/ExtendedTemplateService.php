@@ -264,7 +264,7 @@ class ExtendedTemplateService extends TemplateService
             case 'subst':
                 $all = preg_replace(
                     '/##[a-z0-9]{6}_B##(.*?)##[a-z0-9]{6}_M##(.*?)##[a-z0-9]{6}_E##/',
-                    '<strong class="text-success" data-toggle="tooltip" data-placement="top" data-title="$1" title="$1">$2</strong>',
+                    '<strong class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" data-title="$1" title="$1">$2</strong>',
                     $all
                 );
                 break;
@@ -1127,7 +1127,7 @@ class ExtendedTemplateService extends TemplateService
                         $deleteTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle'));
                         $deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
                         $deleteIconHTML =
-                            '<button type="button" class="btn btn-default t3js-toggle" data-toggle="undo" rel="' . $idName . '">'
+                            '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
                                 . '<span title="' . $deleteTitle . '">'
                                     . $deleteIcon
                                 . '</span>'
@@ -1135,7 +1135,7 @@ class ExtendedTemplateService extends TemplateService
                         $editTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle'));
                         $editIcon = $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
                         $editIconHTML =
-                            '<button type="button" class="btn btn-default t3js-toggle" data-toggle="edit"  rel="' . $idName . '">'
+                            '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
                                 . '<span title="' . $editTitle . '">'
                                     . $editIcon
                                 . '</span>'

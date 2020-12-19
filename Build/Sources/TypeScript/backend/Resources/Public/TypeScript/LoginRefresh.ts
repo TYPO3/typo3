@@ -105,6 +105,7 @@ class LoginRefresh {
   public showTimeoutModal(): void {
     this.isTimingOut = true;
     this.$timeoutModal.modal(this.options.modalConfig);
+    this.$timeoutModal.modal('show');
     this.fillProgressbar(this.$timeoutModal);
   }
 
@@ -121,6 +122,7 @@ class LoginRefresh {
    */
   public showBackendLockedModal(): void {
     this.$backendLockedModal.modal(this.options.modalConfig);
+    this.$backendLockedModal.modal('show');
   }
 
   /**
@@ -136,9 +138,12 @@ class LoginRefresh {
   public showLoginForm(): void {
     // log off for sure
     new AjaxRequest(TYPO3.settings.ajaxUrls.logout).get().then((): void => {
-      TYPO3.configuration.showRefreshLoginPopup
-        ? this.showLoginPopup()
-        : this.$loginForm.modal(this.options.modalConfig);
+      if (TYPO3.configuration.showRefreshLoginPopup) {
+        this.showLoginPopup();
+      } else {
+        this.$loginForm.modal(this.options.modalConfig);
+        this.$loginForm.modal('show');
+      }
     });
   }
 

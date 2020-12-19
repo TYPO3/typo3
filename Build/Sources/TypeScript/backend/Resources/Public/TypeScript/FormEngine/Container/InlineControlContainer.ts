@@ -29,7 +29,7 @@ import Severity = require('../../Severity');
 import Utility = require('../../Utility');
 
 enum Selectors {
-  toggleSelector = '[data-toggle="formengine-inline"]',
+  toggleSelector = '[data-bs-toggle="formengine-inline"]',
   controlSectionSelector = '.t3js-formengine-irre-control',
   createNewRecordButtonSelector = '.t3js-create-new-button',
   createNewRecordBySelectorSelector = '.t3js-create-new-selector',

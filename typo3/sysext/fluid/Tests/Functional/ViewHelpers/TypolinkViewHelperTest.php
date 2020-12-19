@@ -352,13 +352,13 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 [
                     'parameter' => 'http://typo3.org/ "_self" "<CSS>" "<Title>"',
                     'additionalAttributes' => [
-                        'data-html' => '<div data-template="template">'
+                        'data-bs-html' => '<div data-template="template">'
                             . '<img src="logo.png" alt="&quot;&lt;ALT&gt;&quot;"></div>',
                         'data-other' => '\'\'',
                     ],
                 ],
                 '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
-                    . ' class="&lt;CSS&gt;" data-html="&lt;div data-template=&quot;template&quot;&gt;'
+                    . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
                     . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
                     . ' data-other="\'\'">Link Text</a>'
             ]

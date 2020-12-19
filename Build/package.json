@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@claviska/jquery-minicolors": "^2.3.5",
+    "@popperjs/core": "^2.6.0",
     "@typo3/icons": "^2.0.4",
     "autosize": "^4.0.2",
     "bootstrap": "^5.0.0-beta1",

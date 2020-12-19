@@ -965,7 +965,7 @@ class PageLayoutView implements LoggerAwareInterface
     {
         $pasteIcon = json_encode(
             ' <button type="button"'
-            . ' data-content="' . htmlspecialchars((string)$pasteItem) . '"'
+            . ' data-bs-content="' . htmlspecialchars((string)$pasteItem) . '"'
             . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
             . ' data-severity="warning"'
             . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
@@ -1088,7 +1088,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                     . ' data-severity="warning"'
                     . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
-                    . ' data-content="' . htmlspecialchars($confirm) . '" '
+                    . ' data-bs-content="' . htmlspecialchars($confirm) . '" '
                     . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1140,7 +1140,7 @@ class PageLayoutView implements LoggerAwareInterface
         }
         // Get record locking status:
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
-            $additionalIcons[] = '<a href="#" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
+            $additionalIcons[] = '<a href="#" data-bs-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
                 . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
         }
         // Call stats information hook

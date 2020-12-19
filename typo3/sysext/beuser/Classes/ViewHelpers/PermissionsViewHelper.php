@@ -89,7 +89,7 @@ class PermissionsViewHelper extends AbstractViewHelper
             $icon .= '<button'
                 . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
-                . ' data-toggle="tooltip"'
+                . ' data-bs-toggle="tooltip"'
                 . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
                 . ' data-permissions="' . htmlspecialchars($arguments['permission']) . '"'
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'

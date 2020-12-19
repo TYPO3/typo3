@@ -1172,7 +1172,7 @@ define(['jquery',
           var iconWrap;
           iconWrap = $('<a></a>')
             .attr('href', _getCollectionElementId(collectionName, collectionElementIdentifier, true))
-            .attr('data-toggle', 'collapse')
+            .attr('data-bs-toggle', 'collapse')
             .attr('aria-expanded', 'true')
             .attr('aria-controls', _getCollectionElementId(collectionName, collectionElementIdentifier))
             .addClass('collapsed')

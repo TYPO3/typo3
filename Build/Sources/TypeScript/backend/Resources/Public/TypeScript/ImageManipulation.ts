@@ -322,7 +322,7 @@ class ImageManipulation {
      * Assign EventListener to aspectRatioTrigger
      */
     this.aspectRatioTrigger.off('click').on('click', (e: JQueryEventObject): void => {
-      const ratioId: string = $(e.currentTarget).attr('data-option');
+      const ratioId: string = $(e.currentTarget).attr('data-bs-option');
       const temp: CropVariant = $.extend(true, {}, this.currentCropVariant);
       const ratio: Ratio = temp.allowedAspectRatios[ratioId];
       this.setAspectRatio(ratio);
@@ -448,7 +448,7 @@ class ImageManipulation {
 
     if (this.currentCropVariant.selectedRatio) {
       // set data explicitly or setAspectRatio up-scales the crop
-      this.currentModal.find(`[data-option='${this.currentCropVariant.selectedRatio}']`).addClass('active');
+      this.currentModal.find(`[data-bs-option='${this.currentCropVariant.selectedRatio}']`).addClass('active');
     }
   }
 
@@ -507,8 +507,8 @@ class ImageManipulation {
   private update(cropVariant: CropVariant): void {
     const temp: CropVariant = $.extend(true, {}, cropVariant);
     const selectedRatio: Ratio = cropVariant.allowedAspectRatios[cropVariant.selectedRatio];
-    this.currentModal.find('[data-option]').removeClass('active');
-    this.currentModal.find(`[data-option="${cropVariant.selectedRatio}"]`).addClass('active');
+    this.currentModal.find('[data-bs-option]').removeClass('active');
+    this.currentModal.find(`[data-bs-option="${cropVariant.selectedRatio}"]`).addClass('active');
     /**
      * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
      */

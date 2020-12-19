@@ -86,7 +86,7 @@
             border-left: 2px solid $color-orange;
             position: relative;
 
-            &[data-toggle=collapse] {
+            &[data-bs-toggle=collapse] {
                 background-color: #333;
             }
         }

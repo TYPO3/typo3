@@ -13,9 +13,9 @@
                     <f:render section="FilterNothingFound" />
                 </f:then>
                 <f:else>
-                    <div id="new-content-element-wizard-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+                    <div id="new-content-element-wizard-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                         <div class="carousel-inner" role="listbox">
-                            <div class="item active" data-slide="next">
+                            <div class="carousel-item active" data-bs-slide="next">
                                 <div class="t3-new-content-element-wizard-title">
                                     <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
                                 </div>
@@ -23,7 +23,7 @@
                                 {renderedTabs -> f:format.raw()}
                                 <f:render section="FilterNothingFound" />
                             </div>
-                            <div class="item">
+                            <div class="carousel-item">
                                 <div class="t3-new-content-element-wizard-title">
                                     <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:2_selectPosition') -> f:format.htmlspecialchars()}</h2>
                                 </div>

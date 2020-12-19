@@ -212,7 +212,7 @@
         <f:for each="{nonExcludeFields}" key="tableName" as="table">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
-                    <a data-toggle="collapse" title="{item.linkTitle}" data-parent="#{id}" href="#{tableName}-{id}" aria-expanded="true" aria-controls="{tableName}-{id}">
+                    <a data-bs-toggle="collapse" title="{item.linkTitle}" data-bs-parent="#{id}" href="#{tableName}-{id}" aria-expanded="true" aria-controls="{tableName}-{id}">
                         <f:if condition="{table.label}">{f:translate(key:table.label)}</f:if> [{tableName}]
                     </a>
                 </div>
@@ -233,7 +233,7 @@
     <f:if condition="tsconfig">
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
-                <a data-toggle="collapse" data-parent="#tsconfig-{id}-heading" href="#tsconfig-{id}" aria-expanded="true" aria-controls="tsconfig-{id}">
+                <a data-bs-toggle="collapse" data-bs-parent="#tsconfig-{id}-heading" href="#tsconfig-{id}" aria-expanded="true" aria-controls="tsconfig-{id}">
                     {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}
                 </a>
             </div>

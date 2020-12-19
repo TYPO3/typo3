@@ -14,7 +14,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="cropper-accordion-heading-{cropVariantIterator.cycle}">
                             <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion-cropper-variants"
+                                <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion-cropper-variants"
                                         href="#cropper-collapse-{cropVariantIterator.cycle}"
                                         aria-expanded="{f:if(condition:cropVariantIterator.isFirst, then:'true', else:'false')}"
                                         aria-controls="cropper-collapse-{cropVariantIterator.cycle}"
@@ -48,9 +48,9 @@
                                                 <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>
                                             </label>
                                             <div id="ratio-{cropVariantIterator.cycle}" class="ratio-buttons t3js-ratio-buttons"
-                                                        data-toggle="buttons">
+                                                        data-bs-toggle="buttons">
                                                 <f:for each="{cropVariant.allowedAspectRatios}" as="ratio" iteration="ratioIterator">
-                                                    <label class="btn btn-secondary" data-method="setAspectRatio" data-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
+                                                    <label class="btn btn-secondary" data-method="setAspectRatio" data-bs-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
                                                         <input
                                                             class="sr-only" id="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}"
                                                             name="aspectRatio-{cropVariantIterator.cycle}-{ratioIterator.cycle}" value="{cropVariant.id}"

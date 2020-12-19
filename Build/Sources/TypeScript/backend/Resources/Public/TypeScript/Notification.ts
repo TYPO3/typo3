@@ -12,6 +12,8 @@
  */
 
 import $ from 'jquery';
+// @todo Importing bootstrap here, to have jQuery.fn.alert applied
+import 'bootstrap';
 import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
 import Severity = require('./Severity');
@@ -139,7 +141,7 @@ class Notification {
 
     const $box = $(
       '<div id="' + notificationId + '" class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert">' +
+        '<button type="button" class="close" data-bs-dismiss="alert">' +
           '<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
           '<span class="sr-only">Close</span>' +
         '</button>' +

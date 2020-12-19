@@ -68,7 +68,7 @@ class Recordlist {
 
     const $me = $(e.currentTarget);
     const table = $me.data('table');
-    const $target = $($me.data('target'));
+    const $target = $($me.data('bs-target'));
     const isExpanded = $target.data('state') === 'expanded';
     const $collapseIcon = $me.find('.collapseIcon');
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;

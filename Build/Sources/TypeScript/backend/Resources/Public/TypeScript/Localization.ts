@@ -116,7 +116,7 @@ class Localization {
             );
           }
 
-          slideStep1 += '<div data-toggle="buttons">' + actions.join('<hr>') + '</div>';
+          slideStep1 += '<div data-bs-toggle="buttons">' + actions.join('<hr>') + '</div>';
           Wizard.addSlide(
             'localize-choose-action',
             TYPO3.lang['localize.wizard.header_page']
@@ -155,7 +155,7 @@ class Localization {
                     Wizard.unlockNextStep();
                   });
 
-                  const $languageButtons = $('<div />', {class: 'row', 'data-toggle': 'buttons'});
+                  const $languageButtons = $('<div />', {class: 'row', 'data-bs-toggle': 'buttons'});
 
                   for (const languageObject of result) {
                     $languageButtons.append(

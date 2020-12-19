@@ -18,7 +18,7 @@
 var TBE_EDITOR = {
   /* Example:
     elements: {
-      'data-parentPid-table-uid': {
+      'data-bs-parentPid-table-uid': {
         'field': {
           'range':		[0, 100],
           'rangeImg':		'',

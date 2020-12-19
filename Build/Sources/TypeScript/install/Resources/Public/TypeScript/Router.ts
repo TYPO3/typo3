@@ -241,7 +241,7 @@ class Router {
         + '<div class="panel panel-default panel-flat searchhit">'
         + '<div class="panel-heading" role="tab" id="heading-error">'
         + '<h3 class="panel-title">'
-        + '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-error" aria-expanded="true" '
+        + '<a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse-error" aria-expanded="true" '
         + 'aria-controls="collapse-error" class="collapsed">'
         + '<span class="caret"></span>'
         + '<strong>Ajax error</strong>'

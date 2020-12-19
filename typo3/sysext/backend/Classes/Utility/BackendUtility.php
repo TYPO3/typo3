@@ -1200,9 +1200,9 @@ class BackendUtility
     public static function getRecordToolTip(array $row, $table = 'pages')
     {
         $toolTipText = self::getRecordIconAltText($row, $table);
-        $toolTipCode = 'data-toggle="tooltip" data-title=" '
+        $toolTipCode = 'data-bs-toggle="tooltip" data-title=" '
             . str_replace(' - ', '<br>', $toolTipText)
-            . '" data-html="true" data-placement="right"';
+            . '" data-bs-html="true" data-bs-placement="right"';
         return $toolTipCode;
     }
 

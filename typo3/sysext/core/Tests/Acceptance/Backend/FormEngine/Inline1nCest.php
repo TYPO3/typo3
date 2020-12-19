@@ -44,7 +44,7 @@ class Inline1nCest
         $I->switchToContentFrame();
 
         $I->waitForText('inline 1n', 20);
-        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-original-title="Edit record"]';
+        $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[data-bs-original-title="Edit record"]';
         $I->click($editRecordLinkCssPath);
         $I->waitForText('Edit Form', 3, 'h1');
     }
@@ -55,12 +55,12 @@ class Inline1nCest
     public function checkIfExpandsAndCollapseShowInput(BackendTester $I)
     {
         $I->wantTo('Expands the inline Element');
-        $I->click('div[data-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
         $I->wantTo('check is the value in input');
         $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'lipsum');
         $I->wantTo('Collapse the inline Element');
-        $I->click('div[data-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
         $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["] .panel');
     }
 
@@ -133,7 +133,7 @@ class Inline1nCest
      */
     public function changeInline1nInlineInput(BackendTester $I)
     {
-        $I->click('div[data-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child][1"]');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child][1"]');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
         $I->fillField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'hello world');
         $I->click('button[name="_savedok"]');

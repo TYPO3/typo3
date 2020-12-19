@@ -22,7 +22,7 @@ import $ from 'jquery';
 class Tooltip {
   constructor() {
     $((): void => {
-      this.initialize('[data-toggle="tooltip"]');
+      this.initialize('[data-bs-toggle="tooltip"]');
     });
   }
 
@@ -40,7 +40,7 @@ class Tooltip {
    */
   public show($element: JQuery, title: string): void {
     $element
-      .attr('data-placement', 'auto')
+      .attr('data-bs-placement', 'auto')
       .attr('data-title', title)
       .tooltip('show');
   }

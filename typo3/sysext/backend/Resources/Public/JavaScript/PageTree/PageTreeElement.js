@@ -67,7 +67,7 @@ define(['jquery',
 
         // Ensure tooltips don't stay when scrolling the pagetree
         $('#typo3-pagetree-tree').on('scroll', function () {
-            $(this).find('[data-toggle=tooltip]').tooltip('hide');
+            $(this).find('[data-bs-toggle=tooltip]').tooltip('hide');
         });
 
         var dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;

@@ -293,7 +293,7 @@ class Backend extends Workspaces {
       }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
       .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
         const $me = $(e.currentTarget);
-        const $target = this.elements.$tableBody.find($me.data('target'));
+        const $target = this.elements.$tableBody.find($me.data('bs-target'));
         let iconIdentifier;
 
         if ($target.first().attr('aria-expanded') === 'true') {
@@ -578,12 +578,12 @@ class Backend extends Workspaces {
           'expand',
           'apps-pagetree-collapse',
         ).attr('title', TYPO3.lang['tooltip.expand'])
-          .attr('data-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
-          .attr('data-toggle', 'collapse'),
+          .attr('data-bs-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
+          .attr('data-bs-toggle', 'collapse'),
         $('<button />', {
           class: 'btn btn-default',
           'data-action': 'changes',
-          'data-toggle': 'tooltip',
+          'data-bs-toggle': 'tooltip',
           title: TYPO3.lang['tooltip.showChanges'],
         }).append(this.getPreRenderedIcon('actions-document-info')),
         this.getAction(
@@ -616,9 +616,9 @@ class Backend extends Workspaces {
       if (item.integrity.messages !== '') {
         $integrityIcon = $(TYPO3.settings.Workspaces.icons[item.integrity.status]);
         $integrityIcon
-          .attr('data-toggle', 'tooltip')
-          .attr('data-placement', 'top')
-          .attr('data-html', 'true')
+          .attr('data-bs-toggle', 'tooltip')
+          .attr('data-bs-placement', 'top')
+          .attr('data-bs-html', 'true')
           .attr('title', item.integrity.messages);
       }
 
@@ -680,7 +680,7 @@ class Backend extends Workspaces {
         ),
       );
 
-      Tooltip.initialize('[data-toggle="tooltip"]', {
+      Tooltip.initialize('[data-bs-toggle="tooltip"]', {
         delay: {
           show: 500,
           hide: 100,
@@ -786,7 +786,7 @@ class Backend extends Workspaces {
               href: '#workspace-changes',
               'aria-controls': 'workspace-changes',
               role: 'tab',
-              'data-toggle': 'tab',
+              'data-bs-toggle': 'tab',
             }).text(TYPO3.lang['window.recordChanges.tabs.changeSummary']),
           ),
         );
@@ -807,7 +807,7 @@ class Backend extends Workspaces {
               href: '#workspace-comments',
               'aria-controls': 'workspace-comments',
               role: 'tab',
-              'data-toggle': 'tab',
+              'data-bs-toggle': 'tab',
             }).html(TYPO3.lang['window.recordChanges.tabs.comments'] + '&nbsp;').append(
               $('<span />', {class: 'badge'}).text(item.comments.length),
             ),
@@ -830,7 +830,7 @@ class Backend extends Workspaces {
               href: '#workspace-history',
               'aria-controls': 'workspace-history',
               role: 'tab',
-              'data-toggle': 'tab',
+              'data-bs-toggle': 'tab',
             }).text(TYPO3.lang['window.recordChanges.tabs.history']),
           ),
         );
@@ -1203,7 +1203,7 @@ class Backend extends Workspaces {
       return $('<button />', {
         class: 'btn btn-default',
         'data-action': action,
-        'data-toggle': 'tooltip',
+        'data-bs-toggle': 'tooltip',
       }).append(this.getPreRenderedIcon(iconIdentifier));
     }
     return $('<span />', {class: 'btn btn-default disabled'}).append(this.getPreRenderedIcon('empty-empty'));

@@ -101,7 +101,7 @@ class LanguagePacks extends AbstractInteractableModule {
             contentContainer.empty();
             contentContainer.append(this.languageMatrixHtml(data));
             contentContainer.append(this.extensionMatrixHtml(data));
-            $('[data-toggle="tooltip"]').tooltip(<any>({container: contentContainer}));
+            $('[data-bs-toggle="tooltip"]').tooltip(<any>({container: contentContainer}));
           } else {
             const message = InfoBox.render(Severity.error, 'Something went wrong', '');
             this.addNotification(message);
@@ -337,13 +337,13 @@ class LanguagePacks extends AbstractInteractableModule {
                 $('<a>', {
                   'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
                   'data-iso': language.iso,
-                  'data-toggle': 'tooltip',
+                  'data-bs-toggle': 'tooltip',
                   'title': 'Deactivate',
                 }).append(deactivateIcon),
                 $('<a>', {
                   'class': 'btn btn-default t3js-languagePacks-update',
                   'data-iso': language.iso,
-                  'data-toggle': 'tooltip',
+                  'data-bs-toggle': 'tooltip',
                   'title': 'Download language packs',
                 }).append(updateIcon),
               ),
@@ -358,7 +358,7 @@ class LanguagePacks extends AbstractInteractableModule {
                 $('<a>', {
                   'class': 'btn btn-default t3js-languagePacks-activateLanguage',
                   'data-iso': language.iso,
-                  'data-toggle': 'tooltip',
+                  'data-bs-toggle': 'tooltip',
                   'title': 'Activate',
                 }).append(activateIcon),
               ),
@@ -428,7 +428,7 @@ class LanguagePacks extends AbstractInteractableModule {
           $('<a>', {
             'class': 'btn btn-default t3js-languagePacks-update',
             'data-iso': language,
-            'data-toggle': 'tooltip',
+            'data-bs-toggle': 'tooltip',
             'title': 'Download and update all language packs',
           }).append(
             $('<span>').append(updateIcon),
@@ -479,7 +479,7 @@ class LanguagePacks extends AbstractInteractableModule {
             'class': 'btn btn-default t3js-languagePacks-update',
             'data-extension': extension.key,
             'data-iso': pack.iso,
-            'data-toggle': 'tooltip',
+            'data-bs-toggle': 'tooltip',
             'title': securityUtility.encodeHtml(tooltip),
           }).append(updateIcon),
         );

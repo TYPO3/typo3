@@ -330,7 +330,7 @@ class UpgradeWizardsService
             $markup[] = '    </div>';
             $markup[] = '    <div class="panel-body">';
             $markup[] = '        <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>';
-            $markup[] = '        <div class="btn-group" data-toggle="buttons">';
+            $markup[] = '        <div class="btn-group" data-bs-toggle="buttons">';
             if (!$updateObject->getConfirmation()->isRequired()) {
                 $markup[] = '        <label class="btn btn-default active"><input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked="checked" />' . $updateObject->getConfirmation()->getDeny() . '</label>';
             }

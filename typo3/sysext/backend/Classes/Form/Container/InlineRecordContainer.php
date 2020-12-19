@@ -221,7 +221,7 @@ class InlineRecordContainer extends AbstractContainer
             $ariaAttributesString = 'aria-expanded="' . $ariaExpanded . '" aria-controls="' . $ariaControls . '"';
             $html = '
 				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
-					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
+					<div class="panel-heading" data-bs-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
@@ -614,7 +614,7 @@ class InlineRecordContainer extends AbstractContainer
         // If the record is edit-locked by another user, we will show a little warning sign:
         if ($lockInfo = BackendUtility::isRecordLocked($foreignTable, $rec['uid'])) {
             $cells['locked'] = '
-				<button type="button" class="btn btn-default" data-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">
+				<button type="button" class="btn btn-default" data-bs-toggle="tooltip" data-title="' . htmlspecialchars($lockInfo['msg']) . '">
 					<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>
 				</button>';
         }
