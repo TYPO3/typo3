@@ -4571,6 +4571,13 @@ class DataHandler implements LoggerAwareInterface
     public function deleteAction($table, $id)
     {
         $recordToDelete = BackendUtility::getRecord($table, $id);
+
+        if (is_array($recordToDelete) && isset($recordToDelete['t3ver_wsid']) && (int)$recordToDelete['t3ver_wsid'] !== 0) {
+            // When dealing with a workspace record, use discard.
+            $this->discard($table, null, $recordToDelete);
+            return;
+        }
+
         // Record asked to be deleted was found:
         if (is_array($recordToDelete)) {
             $recordWasDeleted = false;

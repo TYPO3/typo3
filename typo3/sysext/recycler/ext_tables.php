@@ -11,6 +11,7 @@ defined('TYPO3') or die();
     [
         'routeTarget' => \TYPO3\CMS\Recycler\Controller\RecyclerModuleController::class . '::handleRequest',
         'access' => 'user,group',
+        'workspaces' => 'online',
         'name' => 'web_RecyclerRecycler',
         'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.svg',
         'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
