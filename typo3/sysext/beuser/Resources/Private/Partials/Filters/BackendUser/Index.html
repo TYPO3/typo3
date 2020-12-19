@@ -47,6 +47,7 @@
         />
     </div>
     <div class="form-group">
-        <f:form.submit value="{f:translate(key: 'filter')}" class="btn btn-default btn-sm" />
+        <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">{f:translate(key: 'filter')}</f:form.button>
+        <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-outline-light">{f:translate(key: 'reset')}</f:form.button>
     </div>
 </f:form>

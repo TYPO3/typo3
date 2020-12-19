@@ -120,6 +120,9 @@
 			<trans-unit id="filter" resname="filter">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="reset" resname="reset">
+				<source>Reset</source>
+			</trans-unit>
 			<trans-unit id="reallyLogout" resname="reallyLogout">
 				<source>Really logout</source>
 			</trans-unit>

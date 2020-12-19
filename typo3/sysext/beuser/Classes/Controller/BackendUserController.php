@@ -139,9 +139,16 @@ class BackendUserController extends ActionController
      *
      * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
      * @param int $currentPage
+     * @param string $operation
      */
-    public function indexAction(Demand $demand = null, int $currentPage = 1): ResponseInterface
+    public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
+        if ($operation === 'reset-filters') {
+            // Reset the module data demand object
+            $this->moduleData->setDemand(GeneralUtility::makeInstance(Demand::class));
+            $this->moduleDataStorageService->persistModuleData($this->moduleData);
+            $demand = null;
+        }
         if ($demand === null) {
             $demand = $this->moduleData->getDemand();
         } else {
