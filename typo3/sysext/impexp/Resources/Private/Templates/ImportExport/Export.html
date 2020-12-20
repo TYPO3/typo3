@@ -6,24 +6,24 @@
     <h1><f:translate key="title_export" /></h1>
 
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-            <a class="text-capitalize" href="#export-configuration" aria-controls="export-configuration" role="tab" data-toggle="tab">
+        <li role="presentation" class="nav-item active">
+            <a class="nav-link text-capitalize" href="#export-configuration" aria-controls="export-configuration" role="tab" data-toggle="tab">
                 <f:translate key="tableselec_configuration" />
             </a>
         </li>
-        <li role="presentation">
-            <a class="text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-toggle="tab">
+        <li role="presentation" class="nav-item">
+            <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-toggle="tab">
                 <f:translate key="exportdata_filePreset" />
             </a>
         </li>
-        <li role="presentation">
-            <a class="text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-toggle="tab">
+        <li role="presentation" class="nav-item">
+            <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-toggle="tab">
                 <f:translate key="exportdata_advancedOptions" />
             </a>
         </li>
         <f:if condition="{errors -> f:count()} > 0">
-            <li role="presentation">
-                <a class="text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-toggle="tab">
+            <li role="presentation" class="nav-item">
+                <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-toggle="tab">
                     <f:translate key="exportdata_messages" />
                     <core:icon identifier="status-dialog-warning" />
                 </a>

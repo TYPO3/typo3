@@ -780,8 +780,9 @@ class Backend extends Workspaces {
 
       if (item.diff.length > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation'}).append(
+          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
             $('<a />', {
+              class: 'nav-link',
               href: '#workspace-changes',
               'aria-controls': 'workspace-changes',
               role: 'tab',
@@ -800,8 +801,9 @@ class Backend extends Workspaces {
 
       if (item.comments.length > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation'}).append(
+          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
             $('<a />', {
+              class: 'nav-link',
               href: '#workspace-comments',
               'aria-controls': 'workspace-comments',
               role: 'tab',
@@ -822,8 +824,9 @@ class Backend extends Workspaces {
 
       if (item.history.total > 0) {
         $tabsNav.append(
-          $('<li />', {role: 'presentation'}).append(
+          $('<li />', {role: 'presentation', class: 'nav-item'}).append(
             $('<a />', {
+              class: 'nav-link',
               href: '#workspace-history',
               'aria-controls': 'workspace-history',
               role: 'tab',

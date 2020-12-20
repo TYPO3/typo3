@@ -75,10 +75,11 @@ class DebugConsole {
     if ($tab.length === 0) {
       // create new tab
       $tab =
-        $('<li />', {role: 'presentation', 'data-identifier': tabIdentifier}).append(
+        $('<li />', {role: 'presentation', class: 'nav-item', 'data-identifier': tabIdentifier}).append(
           $('<a />', {
             'aria-controls': tabIdentifier,
             'data-toggle': 'tab',
+            class: 'nav-link',
             href: '#' + tabIdentifier,
             role: 'tab',
           }).text(group + ' ').append(

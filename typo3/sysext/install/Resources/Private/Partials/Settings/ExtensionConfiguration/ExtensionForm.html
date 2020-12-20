@@ -18,8 +18,8 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
                         <f:if condition="{categoryName}">
-                            <li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}">
-                                <a class="text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
+                            <li role="presentation" class="nav-item {f:if(condition:'{iteration.isFirst}', then:'active')}">
+                                <a class="nav-link text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
                             </li>
                         </f:if>
                     </f:for>

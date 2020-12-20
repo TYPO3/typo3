@@ -12,8 +12,8 @@
 <div class="element-browser-panel element-browser-tabs">
     <ul class="nav nav-tabs" role="tablist">
         <f:for each="{menuItems}" as="menuItem" key="menuId">
-            <li{f:if(condition: '{menuItem.isActive}', then: ' class="active"')}>
-                <a href="{menuItem.url}" {menuItem.addParams -> f:format.raw()}>{menuItem.label}</a>
+            <li class="nav-item {f:if(condition: '{menuItem.isActive}', then: 'active')}">
+                <a href="{menuItem.url}" class="nav-link" {menuItem.addParams -> f:format.raw()}>{menuItem.label}</a>
             </li>
         </f:for>
     </ul>
