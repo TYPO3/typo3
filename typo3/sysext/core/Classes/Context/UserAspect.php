@@ -37,7 +37,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 class UserAspect implements AspectInterface
 {
     /**
-     * @var AbstractUserAuthentication
+     * @var AbstractUserAuthentication|\stdClass
      */
     protected $user;
 
@@ -59,9 +59,9 @@ class UserAspect implements AspectInterface
     }
 
     /**
-     * @return object
+     * @return \stdClass
      */
-    private function createPseudoUser(): object
+    private function createPseudoUser(): \stdClass
     {
         $user = new \stdClass();
         $user->user = [];
