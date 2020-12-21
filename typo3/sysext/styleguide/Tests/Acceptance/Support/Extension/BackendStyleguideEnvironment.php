@@ -44,7 +44,7 @@ class BackendStyleguideEnvironment extends BackendEnvironment
         ],
         'xmlDatabaseFixtures' => [
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_users.xml',
-            'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_sessions.xml',
+            'typo3/sysext/core/Tests/Acceptance/Fixtures/be_sessions.xml',
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_groups.xml',
         ],
     ];
