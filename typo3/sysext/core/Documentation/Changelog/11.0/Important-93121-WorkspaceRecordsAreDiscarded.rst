@@ -9,8 +9,10 @@ See :issue:`93121`
 Description
 ===========
 
-The delete behavior for records that have been changed in workspaces has
-been changed: When a user in a non-live workspace uses the delete button
+A record in workspaces that has been
+changed in comparison to live - if it is a new, a moved
+or a changed workspace record - is subject to change in deletion behavior:
+When a user in a non-live workspace uses the delete button
 (waste bin symbol in list or page module) on a record that has a workspace
 overlay, those records are discarded now.
 
@@ -31,7 +33,7 @@ Note there is a second scenario: When deleting a record in page or list module
 that has NOT been changed in this workspace, this record is marked as
 to be deleted in live during publish. Technically a 'delete placeholder'
 is created in this case. This important difference is currently not reflected
-well in page and list module. Further TYPO3 core v11 changes will improve this
+well in page and list module. Further TYPO3 v11 changes will improve this
 situation usability wise. The change of the delete behavior allows us to
 work in this area to ultimately end up with a satisfying user experience.
 
