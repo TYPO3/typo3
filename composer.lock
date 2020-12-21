@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8de7b76a71ba3611516b5ad80455d16d",
+    "content-hash": "6fdfbf1369e94f491d1cb141162d3e19",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7202,16 +7202,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.0.1",
+            "version": "11.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "175745442bb18de8868f035462c65f1553200508"
+                "reference": "04bfc2fac4e85a143b13526e56fc21091a7dcc8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/175745442bb18de8868f035462c65f1553200508",
-                "reference": "175745442bb18de8868f035462c65f1553200508",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/04bfc2fac4e85a143b13526e56fc21091a7dcc8c",
+                "reference": "04bfc2fac4e85a143b13526e56fc21091a7dcc8c",
                 "shasum": ""
             },
             "require-dev": {
@@ -7224,7 +7224,7 @@
                 "typo3/cms-frontend": "11.*.*@dev",
                 "typo3/cms-install": "11.*.*@dev",
                 "typo3/coding-standards": "^0.2.0",
-                "typo3/testing-framework": "^6.4.1"
+                "typo3/testing-framework": "^6.5.0"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -7264,9 +7264,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.0.1"
+                "source": "https://github.com/TYPO3/styleguide/tree/11.0.2"
             },
-            "time": "2020-10-20T17:29:09+00:00"
+            "time": "2020-12-21T20:25:13+00:00"
         },
         {
             "name": "typo3/testing-framework",
