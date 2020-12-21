@@ -468,6 +468,13 @@ class FormFileExtensionUpdate implements ChattyInterface, UpgradeWizardInterface
                 continue;
             }
             $flexform = GeneralUtility::xml2array($pluginData['pi_flexform']);
+            if (!is_array($flexform)) {
+                // * There is no data other than a base XML-structure in pi_flexform:
+                //   xml2array returns empty string or newline-character (string)
+                // * pi_flexform is invalid XML:
+                //   xml2array returns an error message (string)
+                continue;
+            }
             $referencedPersistenceIdentifier = $this->getPersistenceIdentifierFromFlexform($flexform);
             $referenceHasNewFileExtension = $this->hasNewFileExtension($referencedPersistenceIdentifier);
             $possibleOldReferencedPersistenceIdentifier = $this->getOldPersistenceIdentifier($referencedPersistenceIdentifier);
