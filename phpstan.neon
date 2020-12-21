@@ -28,6 +28,9 @@ parameters:
     - %currentWorkingDirectory%/typo3/sysext/*/Configuration/*
 
   ignoreErrors:
+    # PHP8 compatibility, as phpstan cannot detect this yet.
+    - "#Class GdImage not found.#"
+
     # ignored errors for level 0
     - '#Variable \$_EXTKEY might not be defined\.#'
     -

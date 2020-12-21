@@ -642,7 +642,7 @@ class Check implements CheckInterface
     {
         if (function_exists('imagecreatetruecolor')) {
             $imageResource = @imagecreatetruecolor(50, 100);
-            if (is_resource($imageResource)) {
+            if ($this->checkImageResource($imageResource)) {
                 imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
@@ -676,7 +676,7 @@ class Check implements CheckInterface
         ) {
             // Do not use data:// wrapper to be independent of allow_url_fopen
             $imageResource = @imagecreatefromgif(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.gif');
-            if (is_resource($imageResource)) {
+            if ($this->checkImageResource($imageResource)) {
                 imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
@@ -731,7 +731,7 @@ class Check implements CheckInterface
         ) {
             // Do not use data:// wrapper to be independent of allow_url_fopen
             $imageResource = @imagecreatefrompng(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.png');
-            if (is_resource($imageResource)) {
+            if ($this->checkImageResource($imageResource)) {
                 imagedestroy($imageResource);
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
@@ -846,5 +846,10 @@ class Check implements CheckInterface
             $bytes *= 1024;
         }
         return (int)$bytes;
+    }
+
+    private function checkImageResource($imageResource): bool
+    {
+        return is_resource($imageResource) || (PHP_MAJOR_VERSION >= 8 && $imageResource instanceof \GdImage);
     }
 }

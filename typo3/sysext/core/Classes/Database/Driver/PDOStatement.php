@@ -24,6 +24,12 @@ use PDO;
 class PDOStatement extends DoctrineDbalPDOStatement
 {
     /**
+     * The method fetchAll() is moved into a separate trait to switch method signatures
+     * depending on the PHP major version in use to support PHP8
+     */
+    use PDOStatementImplementation;
+
+    /**
      * Map resources to string like is done for e.g. in mysqli driver
      *
      * @param mixed $record
@@ -56,24 +62,6 @@ class PDOStatement extends DoctrineDbalPDOStatement
             $record = parent::fetch($fetchMode, $cursorOrientation, $cursorOffset);
             $record = $this->mapResourceToString($record);
             return $record;
-        } catch (\PDOException $exception) {
-            throw new PDOException($exception);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function fetchAll($fetchMode = null, $fetchArgument = null, $ctorArgs = null)
-    {
-        try {
-            $records = parent::fetchAll($fetchMode, $fetchArgument, $ctorArgs);
-
-            if ($records !== false) {
-                $records = array_map([$this, 'mapResourceToString'], $records);
-            }
-
-            return $records;
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
         }
