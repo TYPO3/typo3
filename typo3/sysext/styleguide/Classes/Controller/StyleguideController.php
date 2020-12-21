@@ -76,17 +76,23 @@ class StyleguideController extends ActionController
         $this->view->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $getVars = $this->request->getArguments();
-        $extensionName = $this->request->getControllerExtensionName();
-        $moduleName = $this->request->getPluginName();
-        if (count($getVars) === 0) {
-            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
-            $getVars = ['id', 'M', $modulePrefix];
+        $arguments = $this->request->getArguments();
+        $shortcutArguments = [];
+        if (!empty($arguments['controller']) && !empty($arguments['action'])) {
+            $shortcutArguments['tx_styleguide_help_styleguidestyleguide'] = [
+                'controller' => $arguments['controller'],
+                'action' => $arguments['action']
+            ];
         }
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName($moduleName)
-            ->setGetVariables($getVars);
+            ->setDisplayName(sprintf(
+                '%s - %s',
+                LocalizationUtility::translate($this->languageFilePrefix . 'styleguide', 'styleguide'),
+                LocalizationUtility::translate($this->languageFilePrefix . ($arguments['action'] ?? 'index'), 'styleguide')
+            ))
+            ->setRouteIdentifier('help_StyleguideStyleguide')
+            ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);
     }
 

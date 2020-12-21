@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
 		<header/>
 		<body>
+			<trans-unit id="styleguide" xml:space="preserve">
+				<source>Styleguide</source>
+			</trans-unit>
 			<trans-unit id="backendStyleguide" xml:space="preserve">
 				<source>TYPO3 CMS Backend Styleguide</source>
 			</trans-unit>
