@@ -389,3 +389,7 @@ code {
     flex: 1 0 100%;
     width: 100%;
 }
+
+.modal-backdrop.in {
+    opacity: 0.5;
+}
