@@ -17,26 +17,30 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
+use TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * A request handler which can handle web requests invoked by the frontend.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class FrontendRequestHandler extends AbstractRequestHandler
+class FrontendRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected Dispatcher $dispatcher;
+    protected EnvironmentService $environmentService;
+    protected ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
+    public function __construct(
+        Dispatcher $dispatcher,
+        EnvironmentService $environmentService,
+        ConfigurationManagerInterface $configurationManager
+    ) {
+        $this->dispatcher = $dispatcher;
+        $this->environmentService = $environmentService;
         $this->configurationManager = $configurationManager;
     }
 
@@ -88,5 +92,10 @@ class FrontendRequestHandler extends AbstractRequestHandler
         }
 
         return !in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'], true);
+    }
+
+    public function getPriority(): int
+    {
+        return 100;
     }
 }
