@@ -18,21 +18,24 @@
 
         <form method="post" id="stepInstaller-databaseSelect">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="radio">
                         <label for="t3-install-form-db-select-type-existing">
                             <input id="t3-install-form-db-select-type-existing" type="radio" name="install[values][type]" value="existing" class="radio" checked="checked" />
                             Use an existing empty database:
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
+                        <p>
+                            Select a database.
+                        </p>
                         <select
                             id="t3-install-step-database-existing"
                             name="install[values][existing]"
                             class="form-control"
                             onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
                         >
-                            <option value="">-- Select database --</option>
+                            <option value="">-- Choose --</option>
                             <f:for each="{databaseList}" as="database">
                                 <f:if condition="{database.tables} || {database.readonly}">
                                     <f:then>
@@ -45,6 +48,8 @@
                             </f:for>
                         </select>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="radio">
                         <label for="t3-install-step-database-new">
                             <input
@@ -57,7 +62,7 @@
                             Create a new database:
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <p>
                             Specify a name for your TYPO3 database.
                         </p>
@@ -70,12 +75,11 @@
                             onfocus="document.getElementById('t3-install-form-db-select-type-new').checked=true;"
                         />
                     </div>
-
-                    <div class="form-group">
-                        <button class="btn btn-success pull-right t3js-installer-databaseSelect-execute">
-                            Continue
-                        </button>
-                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success pull-right t3js-installer-databaseSelect-execute">
+                        Continue
+                    </button>
                 </div>
             </div>
         </form>

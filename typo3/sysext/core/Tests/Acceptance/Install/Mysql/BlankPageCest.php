@@ -53,7 +53,7 @@ class BlankPageCest
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create Administrative User / Specify Site Name');
+        $I->waitForText('Create Administrative User & Specify Site Name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'password');
         $I->click('Continue');

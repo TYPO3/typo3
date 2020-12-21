@@ -2,7 +2,7 @@
 
 <div class="t3js-module-content" data-installer-database-data-execute-token="{executeDatabaseDataToken}">
     <div class="typo3-install-content-body">
-        <h3>Create Administrative User / Specify Site Name</h3>
+        <h3>Create Administrative User & Specify Site Name</h3>
 
         <p>Use this account to log into the backend of your site.</p>
         <p>The password you provide for this account is also used to access the <strong>Install Tool</strong>.</p>
@@ -12,78 +12,73 @@
         <div class="t3js-installer-databaseData-output"></div>
         <div class="typo3-install-content-spacer"></div>
 
-        <form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before form-horizontal">
+        <form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before">
             <input type="hidden" value="execute" name="install[set]" />
-            <div class="form-group">
-                <label for="username" class="control-label col-md-2">Username</label>
-                <div class="col-md-10">
-                    <input
-                        class="t3-install-form-input-text form-control"
-                        name="install[values][username]"
-                        id="username"
-                        placeholder="admin"
-                        autocomplete="off"
-                    />
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="control-label col-md-2">Password</label>
-                <div class="col-md-10">
-                    <input
-                        class="t3-install-form-input-text t3-install-form-password-strength form-control"
-                        name="install[values][password]"
-                        id="password"
-                        type="password"
-                        autocomplete="off"
-                    />
-                    <div class="checkbox">
-                        <label>
-                            <input
-                                type="checkbox"
-                                id="show-password"
-                                onchange="if (this.checked==true) { document.getElementById('password').type='text'; } else { document.getElementById('password').type='password'; }"
-                            />
-                            Show password
-                        </label>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                            class="t3-install-form-input-text form-control"
+                            name="install[values][username]"
+                            id="username"
+                            placeholder="admin"
+                            autocomplete="off"
+                        />
+                        <label for="username" class="form-label">Username</label>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-10">
-                    <div class="alert alert-warning">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input
+                            class="t3-install-form-input-text t3-install-form-password-strength form-control"
+                            name="install[values][password]"
+                            id="password"
+                            type="password"
+                            autocomplete="off"
+                            oninput="document.getElementById('t3js-password-alert').removeAttribute('style');"
+                            placeholder="random password"
+                        />
+                        <f:comment><!-- @todo: Add API for input group addons in floating forms--></f:comment>
+                        <button class="btn btn-link" style="position: absolute; bottom: .35em; right: 0; outline: none; box-shadow: none" aria-label="Toggle password visibility" onclick="if (this.previousElementSibling.type === 'password') { this.previousElementSibling.type='text'; this.firstChild.setAttribute('class', 'fa fa-fw fa-eye');} else { this.previousElementSibling.type='password';  this.firstChild.setAttribute('class', 'fa fa-fw fa-lock');}return false"><i class="fa fa-fw fa-lock"></i></button>
+                        <label for="password" class="form-label">Password</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="alert alert-info" role="alert" style="display: none" id="t3js-password-alert">
                         If compromised, this account will provide an attacker with complete access to your installation. <br>A strong password is recommended. Include lower and upper case characters, special characters and numbers. Your password must be at least eight characters long.
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="email" class="control-label col-md-2">Email address</label>
-                <div class="col-md-10">
-                    <input
-                        type="email"
-                        class="t3-install-form-input-text form-control"
-                        name="install[values][email]"
-                        id="email"
-                    />
-                </div>
-            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input
+                            type="email"
+                            class="t3-install-form-input-text form-control"
+                            name="install[values][email]"
+                            id="email"
+                            placeholder="you@me.com"
+                        />
+                        <label for="email" class="form-label">Email address</label>
+                    </div>
 
-            <div class="form-group">
-                <label for="sitename" class="control-label col-md-2">Site name</label>
-                <div class="col-md-10">
-                    <input
-                        class="t3-install-form-input-text form-control"
-                        name="install[values][sitename]"
-                        id="sitename"
-                        type="text"
-                        value="{siteName}"
-                    />
+                    <div class="form-floating mb-3">
+                        <input
+                            class="t3-install-form-input-text form-control"
+                            name="install[values][sitename]"
+                            id="sitename"
+                            type="text"
+                            value="{siteName}"
+                            placeholder="Your new website"
+                        />
+                        <label for="sitename" class="form-label">Site name</label>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success pull-right t3js-installer-databaseData-execute">
+                            Continue
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="clearfix">
-                <button class="btn btn-success pull-right t3js-installer-databaseData-execute">
-                    Continue
-                </button>
             </div>
         </form>
 

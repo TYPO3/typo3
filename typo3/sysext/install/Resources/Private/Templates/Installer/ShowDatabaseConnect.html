@@ -12,130 +12,140 @@
                 <div class="typo3-install-content-spacer"></div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form method="post" class="form-horizontal">
-                            <div class="form-group">
-                                <label for="t3js-connect-database-driver" class="control-label col-md-2">Connection</label>
-                                <div class="col-md-10">
-                                    <select id="t3js-connect-database-driver" class="form-control" name="install[values][availableSet]">
-                                        <f:if condition="{hasMysqliManualConfiguration}">
-                                            <option
-                                                value="mysqliManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == mysqliManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            [MySQLi] Manually configured MySQL TCP/IP connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasMysqliSocketManualConfiguration}">
-                                            <option
-                                                value="mysqliSocketManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == mysqliSocketManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            [MySQLi] Manually configured MySQL socket connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasPdoMysqlManualConfiguration}">
-                                            <option
-                                                value="pdoMysqlManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == pdoMysqlManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            [PDO] Manually configured MySQL TCP/IP connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
-                                            <option
-                                                value="pdoMysqlSocketManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == pdoMysqlSocketManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            [PDO] Manually configured MySQL socket connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasPostgresManualConfiguration}">
-                                            <option
-                                                value="postgresManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == postgresManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            Manually configured PostgreSQL connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasSqliteManualConfiguration}">
-                                            <option
-                                                value="sqliteManualConfiguration"
-                                                {f:if(condition:'{activeAvailableOption} == sqliteManualConfiguration', then: 'selected="selected"')}
-                                            >
-                                            Manually configured SQLite connection
-                                            </option>
-                                        </f:if>
-                                        <f:if condition="{hasConfigurationFromEnvironment}">
-                                            <option
-                                                value="configurationFromEnvironment"
-                                                {f:if(condition:'{activeAvailableOption} == configurationFromEnvironment', then: 'selected="selected"')}
-                                            >
-                                            Configuration from environment variables
-                                            </option>
-                                        </f:if>
-                                    </select>
+                        <form method="post">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-floating">
+                                        <select id="t3js-connect-database-driver" class="form-control" name="install[values][availableSet]" placeholder="sqlite">
+                                            <f:if condition="{hasMysqliManualConfiguration}">
+                                                <option
+                                                    value="mysqliManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == mysqliManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                [MySQLi] Manually configured MySQL TCP/IP connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasMysqliSocketManualConfiguration}">
+                                                <option
+                                                    value="mysqliSocketManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == mysqliSocketManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                [MySQLi] Manually configured MySQL socket connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasPdoMysqlManualConfiguration}">
+                                                <option
+                                                    value="pdoMysqlManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == pdoMysqlManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                [PDO] Manually configured MySQL TCP/IP connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
+                                                <option
+                                                    value="pdoMysqlSocketManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == pdoMysqlSocketManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                [PDO] Manually configured MySQL socket connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasPostgresManualConfiguration}">
+                                                <option
+                                                    value="postgresManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == postgresManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                Manually configured PostgreSQL connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasSqliteManualConfiguration}">
+                                                <option
+                                                    value="sqliteManualConfiguration"
+                                                    {f:if(condition:'{activeAvailableOption} == sqliteManualConfiguration', then: 'selected="selected"')}
+                                                >
+                                                Manually configured SQLite connection
+                                                </option>
+                                            </f:if>
+                                            <f:if condition="{hasConfigurationFromEnvironment}">
+                                                <option
+                                                    value="configurationFromEnvironment"
+                                                    {f:if(condition:'{activeAvailableOption} == configurationFromEnvironment', then: 'selected="selected"')}
+                                                >
+                                                Configuration from environment variables
+                                                </option>
+                                            </f:if>
+                                        </select>
+                                        <label for="t3js-connect-database-driver" class="form-label">Connection</label>
+                                    </div>
                                 </div>
                             </div>
 
                             <f:if condition="{hasMysqliManualConfiguration}">
                                 <div id="mysqliManualConfiguration" class="t3-install-driver-data">
                                     <input type="hidden" value="mysqli" name="install[values][driver]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliManualConfiguration-username" class="control-label col-md-2">
-                                            Username
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliManualConfiguration-username"
-                                                class="form-control"
-                                                type="text"
-                                                value="{mysqliManualConfigurationOptions.username}"
-                                                name="install[values][username]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliManualConfiguration-username"
+                                                    class="form-control"
+                                                    type="text"
+                                                    value="{mysqliManualConfigurationOptions.username}"
+                                                    name="install[values][username]"
+                                                    autocomplete="off"
+                                                    placeholder="db-user"
+                                                />
+                                                <label for="t3-install-step-mysqliManualConfiguration-username" class="form-label">
+                                                    Username
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliManualConfiguration-password"
+                                                    class="form-control"
+                                                    type="password"
+                                                    value="{mysqliManualConfigurationOptions.password}"
+                                                    name="install[values][password]"
+                                                    autocomplete="off"
+                                                    placeholder="password"
+                                                />
+                                                <label for="t3-install-step-mysqliManualConfiguration-password" class="form-label">
+                                                    Password
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliManualConfiguration-password" class="control-label col-md-2">
-                                            Password
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliManualConfiguration-password"
-                                                class="form-control"
-                                                type="password"
-                                                value="{mysqliManualConfigurationOptions.password}"
-                                                name="install[values][password]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliManualConfiguration-host"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{mysqliManualConfigurationOptions.host}"
+                                                    name="install[values][host]"
+                                                    placeholder="127.0.0.1"
+                                                />
+                                                <label for="t3-install-step-mysqliManualConfiguration-host" class="form-label">
+                                                    Host
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliManualConfiguration-host" class="control-label col-md-2">
-                                            Host
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliManualConfiguration-host"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{mysqliManualConfigurationOptions.host}"
-                                                name="install[values][host]"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliManualConfiguration-port" class="control-label col-md-2">
-                                            Port
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliManualConfiguration-port"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{mysqliManualConfigurationOptions.port}"
-                                                name="install[values][port]"
-                                            />
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliManualConfiguration-port"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{mysqliManualConfigurationOptions.port}"
+                                                    name="install[values][port]"
+                                                    placeholder="3306"
+                                                />
+                                                <label for="t3-install-step-mysqliManualConfiguration-port" class="form-label">
+                                                    Port
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -144,50 +154,56 @@
                             <f:if condition="{hasMysqliSocketManualConfiguration}">
                                 <div id="mysqliSocketManualConfiguration" class="t3-install-driver-data">
                                     <input type="hidden" value="mysqli" name="install[values][driver]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliSocketManualConfiguration-username" class="control-label col-md-2">
-                                            Username
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliSocketManualConfiguration-username"
-                                                class="form-control"
-                                                type="text"
-                                                value="{mysqliSocketManualConfigurationOptions.username}"
-                                                name="install[values][username]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliSocketManualConfiguration-username"
+                                                    class="form-control"
+                                                    type="text"
+                                                    value="{mysqliSocketManualConfigurationOptions.username}"
+                                                    name="install[values][username]"
+                                                    autocomplete="off"
+                                                    placeholder="db-user"
+                                                />
+                                                <label for="t3-install-step-mysqliSocketManualConfiguration-username" class="form-label">
+                                                    Username
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliSocketManualConfiguration-password" class="control-label col-md-2">
-                                            Password
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliSocketManualConfiguration-password"
-                                                class="form-control"
-                                                type="password"
-                                                value="{mysqliSocketManualConfigurationOptions.password}"
-                                                name="install[values][password]"
-                                                autocomplete="off"
-                                            />
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliSocketManualConfiguration-password"
+                                                    class="form-control"
+                                                    type="password"
+                                                    value="{mysqliSocketManualConfigurationOptions.password}"
+                                                    name="install[values][password]"
+                                                    autocomplete="off"
+                                                    placeholder="password"
+                                                />
+                                                <label for="t3-install-step-mysqliSocketManualConfiguration-password" class="form-label">
+                                                    Password
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <input type="hidden" value="localhost" name="install[values][host]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-mysqliSocketManualConfiguration-socket" class="control-label col-md-2">
-                                            Socket
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-mysqliSocketManualConfiguration-socket"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{mysqliSocketManualConfigurationOptions.socket}"
-                                                name="install[values][socket]"
-                                                placeholder="Default socket or enter name"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-mysqliSocketManualConfiguration-socket"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{mysqliSocketManualConfigurationOptions.socket}"
+                                                    name="install[values][socket]"
+                                                    placeholder="Default socket or enter name"
+                                                />
+                                                <label for="t3-install-step-mysqliSocketManualConfiguration-socket" class="form-label">
+                                                    Socket
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -196,62 +212,70 @@
                             <f:if condition="{hasPdoMysqlManualConfiguration}">
                                 <div id="pdoMysqlManualConfiguration" class="t3-install-driver-data">
                                     <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlManualConfiguration-username" class="control-label col-md-2">
-                                            Username
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlManualConfiguration-username"
-                                                class="form-control"
-                                                type="text"
-                                                value="{mysqliManualConfigurationOptions.username}"
-                                                name="install[values][username]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlManualConfiguration-username"
+                                                    class="form-control"
+                                                    type="text"
+                                                    value="{mysqliManualConfigurationOptions.username}"
+                                                    name="install[values][username]"
+                                                    autocomplete="off"
+                                                    placeholder="db-user"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlManualConfiguration-username" class="form-label">
+                                                    Username
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlManualConfiguration-password"
+                                                    class="form-control"
+                                                    type="password"
+                                                    value="{pdoMysqlManualConfigurationOptions.password}"
+                                                    name="install[values][password]"
+                                                    autocomplete="off"
+                                                    placeholder="password"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlManualConfiguration-password" class="form-label">
+                                                    Password
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlManualConfiguration-password" class="control-label col-md-2">
-                                            Password
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlManualConfiguration-password"
-                                                class="form-control"
-                                                type="password"
-                                                value="{pdoMysqlManualConfigurationOptions.password}"
-                                                name="install[values][password]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlManualConfiguration-host"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{pdoMysqlManualConfigurationOptions.host}"
+                                                    name="install[values][host]"
+                                                    placeholder="127.0.0.1"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlManualConfiguration-host" class="form-label">
+                                                    Host
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlManualConfiguration-host" class="control-label col-md-2">
-                                            Host
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlManualConfiguration-host"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{pdoMysqlManualConfigurationOptions.host}"
-                                                name="install[values][host]"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlManualConfiguration-port" class="control-label col-md-2">
-                                            Port
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlManualConfiguration-port"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{pdoMysqlManualConfigurationOptions.port}"
-                                                name="install[values][port]"
-                                            />
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlManualConfiguration-port"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{pdoMysqlManualConfigurationOptions.port}"
+                                                    name="install[values][port]"
+                                                    placeholder="port"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlManualConfiguration-port" class="form-label">
+                                                    Port
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -260,50 +284,56 @@
                             <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
                                 <div id="pdoMysqlSocketManualConfiguration" class="t3-install-driver-data">
                                     <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-username" class="control-label col-md-2">
-                                            Username
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-username"
-                                                class="form-control"
-                                                type="text"
-                                                value="{pdoMysqlSocketManualConfigurationOptions.username}"
-                                                name="install[values][username]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlSocketManualConfiguration-username"
+                                                    class="form-control"
+                                                    type="text"
+                                                    value="{pdoMysqlSocketManualConfigurationOptions.username}"
+                                                    name="install[values][username]"
+                                                    autocomplete="off"
+                                                    placeholder="db-user"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlSocketManualConfiguration-username" class="form-label">
+                                                    Username
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-password" class="control-label col-md-2">
-                                            Password
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-password"
-                                                class="form-control"
-                                                type="password"
-                                                value="{pdoMysqlSocketManualConfigurationOptions.password}"
-                                                name="install[values][password]"
-                                                autocomplete="off"
-                                            />
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlSocketManualConfiguration-password"
+                                                    class="form-control"
+                                                    type="password"
+                                                    value="{pdoMysqlSocketManualConfigurationOptions.password}"
+                                                    name="install[values][password]"
+                                                    autocomplete="off"
+                                                    placeholder="password"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlSocketManualConfiguration-password" class="form-label">
+                                                    Password
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <input type="hidden" value="localhost" name="install[values][host]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-socket" class="control-label col-md-2">
-                                            Socket
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-socket"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{pdoMysqlSocketManualConfigurationOptions.socket}"
-                                                name="install[values][socket]"
-                                                placeholder="Default socket or enter name"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-pdoMysqlSocketManualConfiguration-socket"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{pdoMysqlSocketManualConfigurationOptions.socket}"
+                                                    name="install[values][socket]"
+                                                    placeholder="Default socket or enter name"
+                                                />
+                                                <label for="t3-install-step-pdoMysqlSocketManualConfiguration-socket" class="form-label">
+                                                    Socket
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -312,76 +342,87 @@
                             <f:if condition="{hasPostgresManualConfiguration}">
                                 <div id="postgresManualConfiguration" class="t3-install-driver-data">
                                     <input type="hidden" value="pdo_pgsql" name="install[values][driver]"/>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-postgresManualConfiguration-username" class="control-label col-md-2">
-                                            Username
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-postgresManualConfiguration-username"
-                                                class="form-control"
-                                                type="text"
-                                                value="{postgresManualConfigurationOptions.username}"
-                                                name="install[values][username]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-postgresManualConfiguration-database"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{postgresManualConfigurationOptions.database}"
+                                                    name="install[values][database]"
+                                                    placeholder="database"
+                                                />
+                                                <label for="t3-install-step-postgresManualConfiguration-database" class="form-label">
+                                                    Database
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-postgresManualConfiguration-password" class="control-label col-md-2">
-                                            Password
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-postgresManualConfiguration-password"
-                                                class="form-control"
-                                                type="password"
-                                                value="{postgresManualConfigurationOptions.password}"
-                                                name="install[values][password]"
-                                                autocomplete="off"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-postgresManualConfiguration-username"
+                                                    class="form-control"
+                                                    type="text"
+                                                    value="{postgresManualConfigurationOptions.username}"
+                                                    name="install[values][username]"
+                                                    autocomplete="off"
+                                                    placeholder="db-user"
+                                                />
+                                                <label for="t3-install-step-postgresManualConfiguration-username" class="form-label">
+                                                    Username
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-postgresManualConfiguration-password"
+                                                    class="form-control"
+                                                    type="password"
+                                                    value="{postgresManualConfigurationOptions.password}"
+                                                    name="install[values][password]"
+                                                    autocomplete="off"
+                                                    placeholder="password"
+                                                />
+                                                <label for="t3-install-step-postgresManualConfiguration-password" class="form-label">
+                                                    Password
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-postgresManualConfiguration-database" class="control-label col-md-2">
-                                            Database
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-postgresManualConfiguration-database"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{postgresManualConfigurationOptions.database}"
-                                                name="install[values][database]"
-                                            />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-postgresManualConfiguration-host"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{postgresManualConfigurationOptions.host}"
+                                                    name="install[values][host]"
+                                                    placeholder="127.0.0.1"
+                                                />
+                                                <label for="t3-install-step-postgresManualConfiguration-host" class="form-label">
+                                                    Host
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-postgresManualConfiguration-host" class="control-label col-md-2">
-                                            Host
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-postgresManualConfiguration-host"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{postgresManualConfigurationOptions.host}"
-                                                name="install[values][host]"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="t3-install-step-postgresManualConfiguration-port" class="control-label col-md-2">
-                                            Port
-                                        </label>
-                                        <div class="col-md-10">
-                                            <input
-                                                id="t3-install-step-postgresManualConfiguration-port"
-                                                class="t3-install-form-input-text form-control"
-                                                type="text"
-                                                value="{postgresManualConfigurationOptions.port}"
-                                                name="install[values][port]"
-                                            />
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-floating">
+                                                <input
+                                                    id="t3-install-step-postgresManualConfiguration-port"
+                                                    class="t3-install-form-input-text form-control"
+                                                    type="text"
+                                                    value="{postgresManualConfigurationOptions.port}"
+                                                    name="install[values][port]"
+                                                    placeholder=""
+                                                />
+                                                <label for="t3-install-step-postgresManualConfiguration-port" class="form-label">
+                                                    Port
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -398,9 +439,9 @@
                                 </div>
                             </f:if>
 
-                                <button class="btn btn-success pull-right t3js-installer-databaseConnect-execute">
-                                    Continue
-                                </button>
+                            <button class="btn btn-success pull-right t3js-installer-databaseConnect-execute">
+                                Continue
+                            </button>
                         </form>
                     </div>
                 </div>
