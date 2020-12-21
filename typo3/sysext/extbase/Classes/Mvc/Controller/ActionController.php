@@ -578,7 +578,7 @@ abstract class ActionController implements ControllerInterface
         trigger_error(
             sprintf(
                 'Controller action %s does not return an instance of %s which is deprecated.',
-                __CLASS__ . '::' . $this->{$this->actionMethodName},
+                static::class . '::' . $this->actionMethodName,
                 ResponseInterface::class
             ),
             E_USER_DEPRECATED
