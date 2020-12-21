@@ -3,7 +3,7 @@
 //
 // Cards are flexible content containers that are meant to be used for organizing groups of elements.
 // Each card is a collection of the container and corresponding child elements, that can be used as needed.
-// Child Elements are optional but combinung those will bring the best experience.
+// Child Elements are optional but combining those will bring the best experience.
 //
 // Styleguide component.card
 //
@@ -361,6 +361,8 @@ a.card:hover {
 // Header
 //
 .card-header {
+    border-bottom: none;
+
     .card-icon {
         float: left;
         margin-right: $card-padding / 2;
@@ -398,4 +400,11 @@ a.card:hover {
 //
 .card-content {
     height: 100%;
+}
+
+//
+// Footer
+//
+.card-footer {
+    border-top: none;
 }

@@ -138,6 +138,11 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         }
     }
 
+    .checkbox-input {
+        position: absolute;
+        margin-left: -20px;
+    }
+
     .form-check-input:checked + .form-check-label,
     .checkbox-input:checked + .checkbox-label {
         &:before {
