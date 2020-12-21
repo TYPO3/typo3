@@ -206,7 +206,6 @@ class Generator
         if (!empty($commands)) {
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->enableLogging = false;
-            $dataHandler->deleteTree = true;
             $dataHandler->start([], $commands);
             $dataHandler->process_cmdmap();
             BackendUtility::setUpdateSignal('updatePageTree');
