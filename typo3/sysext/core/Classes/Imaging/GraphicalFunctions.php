@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Imaging;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -340,6 +339,8 @@ class GraphicalFunctions
         // ... but if 'processor_effects' is set, enable effects
         if ($gfxConf['processor_effects']) {
             $this->processorEffectsEnabled = true;
+            $this->cmds['jpg'] .= $this->v5_sharpen(10);
+            $this->cmds['jpeg'] .= $this->v5_sharpen(10);
         }
         // Secures that images are not scaled up.
         $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
@@ -2096,6 +2097,9 @@ class GraphicalFunctions
                 $newExt = $info[2];
             } else {
                 $newExt = $this->gif_or_jpg($info[2], $info[0], $info[1]);
+                if (!$params) {
+                    $params = $this->cmds[$newExt];
+                }
             }
         }
         if (!in_array($newExt, $this->imageFileExt, true)) {
@@ -2111,7 +2115,7 @@ class GraphicalFunctions
         // given or if the destination w/h matches the original image
         // dimensions or if the option to not scale the image is set)
         $noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || !empty($options['noScale']);
-        if ($noScale && !$data['crs'] && !$params && !$frame && $newExt === $info[2] && !$mustCreate) {
+        if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
             // Set the new width and height before returning,
             // if the noScale option is set
             if (!empty($options['noScale'])) {
@@ -2121,33 +2125,13 @@ class GraphicalFunctions
             $info[3] = $imagefile;
             return $info;
         }
+        $info[0] = $data[0];
+        $info[1] = $data[1];
         $frame = $this->addFrameSelection ? (int)$frame : 0;
-        $params = ($this->cmds[$newExt] ?? '') . ($params ? ' ' . $params : '');
-        $command = '';
-        // Cropping
-        if (($options['crop'] ?? null) instanceof Area) {
-            /** @var Area $cropArea */
-            $cropArea = $options['crop'];
-            $command .= sprintf(
-                $this->scalecmd . ' %dx%d! -crop %dx%d+%d+%d +repage ' . $params . ' ',
-                $info[0],
-                $info[1],
-                $cropArea->getWidth(),
-                $cropArea->getHeight(),
-                $cropArea->getOffsetLeft(),
-                $cropArea->getOffsetTop()
-            );
+        if (!$params) {
+            $params = $this->cmds[$newExt];
         }
-        // Scaling when required
-        if ($info[0] !== $data[0] || $info[1] !== $data[1]) {
-            $effectsParams = ' ';
-            if ($this->processorEffectsEnabled && in_array($newExt, ['jpg', 'jpeg'], true)) {
-                $effectsParams .= $this->v5_sharpen(10) . ' ';
-            }
-            // Don't scale if original size equals target size
-            $command .= $this->scalecmd . ' ' . $data[0] . 'x' . $data[1] . '! ' . $params . $effectsParams;
-        }
-        // Crop scaling:
+        // Cropscaling:
         if ($data['crs']) {
             if (!$data['origW']) {
                 $data['origW'] = $data[0];
@@ -2157,8 +2141,11 @@ class GraphicalFunctions
             }
             $offsetX = (int)(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
             $offsetY = (int)(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-            $command .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage ' . $params . ' ';
+            $params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! +repage';
         }
+        $command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+        // re-apply colorspace-setting for the resulting image so colors don't appear to dark (sRGB instead of RGB)
+        $command .= ' -colorspace ' . $this->colorspace;
         $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
         if ($this->alternativeOutputKey) {
             $theOutputName = GeneralUtility::shortMD5($command . $cropscale . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
@@ -2176,15 +2163,13 @@ class GraphicalFunctions
             $this->imageMagickExec($imagefile, $output, $command, $frame);
         }
         if (file_exists($output)) {
-            $info[0] = $data[0];
-            $info[1] = $data[1];
-            $info[2] = $newExt;
             $info[3] = $output;
+            $info[2] = $newExt;
             // params might change some image data!
             if ($params) {
                 $info = $this->getImageDimensions($info[3]);
             }
-            if (!$this->dontCompress && $info[2] === $this->gifExtension) {
+            if ($info[2] == $this->gifExtension && !$this->dontCompress) {
                 // Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
                 self::gifCompress($info[3], '');
             }
@@ -2385,28 +2370,28 @@ class GraphicalFunctions
         // If scaling should be performed. Check that input "info" array will not cause division-by-zero
         if (($w || $h) && $info[0] && $info[1]) {
             if ($w && !$h) {
-                $info[1] = (int)ceil($info[1] * ($w / $info[0]));
+                $info[1] = ceil($info[1] * ($w / $info[0]));
                 $info[0] = $w;
             }
             if (!$w && $h) {
-                $info[0] = (int)ceil($info[0] * ($h / $info[1]));
+                $info[0] = ceil($info[0] * ($h / $info[1]));
                 $info[1] = $h;
             }
             if ($w && $h) {
                 if ($max) {
                     $ratio = $info[0] / $info[1];
                     if ($h * $ratio > $w) {
-                        $h = (int)round($w / $ratio);
+                        $h = round($w / $ratio);
                     } else {
-                        $w = (int)round($h * $ratio);
+                        $w = round($h * $ratio);
                     }
                 }
                 if ($crs) {
                     $ratio = $info[0] / $info[1];
                     if ($h * $ratio < $w) {
-                        $h = (int)round($w / $ratio);
+                        $h = round($w / $ratio);
                     } else {
-                        $w = (int)round($h * $ratio);
+                        $w = round($h * $ratio);
                     }
                 }
                 $info[0] = $w;
@@ -2418,13 +2403,13 @@ class GraphicalFunctions
         // Set minimum-measures!
         if (isset($options['minW']) && $out[0] < $options['minW']) {
             if (($max || $crs) && $out[0]) {
-                $out[1] = (int)round($out[1] * $options['minW'] / $out[0]);
+                $out[1] = round($out[1] * $options['minW'] / $out[0]);
             }
             $out[0] = $options['minW'];
         }
         if (isset($options['minH']) && $out[1] < $options['minH']) {
             if (($max || $crs) && $out[1]) {
-                $out[0] = (int)round($out[0] * $options['minH'] / $out[1]);
+                $out[0] = round($out[0] * $options['minH'] / $out[1]);
             }
             $out[1] = $options['minH'];
         }
