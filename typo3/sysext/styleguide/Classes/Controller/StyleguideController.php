@@ -101,46 +101,52 @@ class StyleguideController extends ActionController
     /**
      * Buttons
      */
-    public function buttonsAction(): void
+    public function buttonsAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Index
      */
-    public function indexAction(): void
+    public function indexAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Typography
      */
-    public function typographyAction(): void
+    public function typographyAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Trees
      */
-    public function treesAction(): void
+    public function treesAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Tables
      */
-    public function tablesAction(): void
+    public function tablesAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * TCA
      */
-    public function tcaAction(): void
+    public function tcaAction(): ResponseInterface
     {
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
         $this->view->assign('demoExists', $demoExists);
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
@@ -188,14 +194,15 @@ class StyleguideController extends ActionController
     /**
      * Debug
      */
-    public function debugAction(): void
+    public function debugAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Icons
      */
-    public function iconsAction(): void
+    public function iconsAction(): ResponseInterface
     {
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
@@ -205,25 +212,26 @@ class StyleguideController extends ActionController
                 return strpos($key, 'overlay') === 0;
             }
         );
-
         $this->view->assignMultiple([
             'allIcons' => $allIcons,
             'deprecatedIcons' => $iconRegistry->getDeprecatedIcons(),
             'overlays' => $overlays,
         ]);
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Infobox
      */
-    public function infoboxAction(): void
+    public function infoboxAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * FlashMessages
      */
-    public function flashMessagesAction(): void
+    public function flashMessagesAction(): ResponseInterface
     {
         $loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
         $this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, true);
@@ -231,33 +239,35 @@ class StyleguideController extends ActionController
         $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
         $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
         $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Helpers
      */
-    public function helpersAction(): void
+    public function helpersAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Avatar
      */
-    public function avatarAction(): void
+    public function avatarAction(): ResponseInterface
     {
         $this->view->assign(
             'backendUser',
             $GLOBALS['BE_USER']->user
         );
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
      * Tabs
      */
-    public function tabAction(): void
+    public function tabAction(): ResponseInterface
     {
         $module = GeneralUtility::makeInstance(ModuleTemplate::class);
-
         $menuItems = [
             0 => [
                 'label' => 'First label',
@@ -274,9 +284,11 @@ class StyleguideController extends ActionController
         ];
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
+        return $this->htmlResponse($this->view->render());
     }
 
-    public function modalAction(): void
+    public function modalAction(): ResponseInterface
     {
+        return $this->htmlResponse($this->view->render());
     }
 }
