@@ -79,8 +79,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     {
         // The sha1 hash ensures we have good length for the key.
         $key = sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . 'core-session-backend');
-        // @todo md5 is used as be_sessions.ses_id field only supports 32 characters in stable branches
-        return hash_hmac('md5', $sessionId, $key);
+        return hash_hmac('sha256', $sessionId, $key);
     }
 
     /**

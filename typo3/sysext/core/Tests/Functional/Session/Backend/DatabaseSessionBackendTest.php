@@ -37,7 +37,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      */
     protected $testSessionRecord = [
         // DatabaseSessionBackend::hash('randomSessionId') with encryption key 12345
-        'ses_id' => '76898588caa1baee7984f4dc8adfed3b',
+        'ses_id' => '21c0e911565a67315cdc384889c470fd291feafbfa62e31ecf7409430640bc7a',
         'ses_userid' => 1,
         // serialize(['foo' => 'bar', 'boo' => 'far'])
         'ses_data' => 'a:2:{s:3:"foo";s:3:"bar";s:3:"boo";s:3:"far";}',
@@ -76,7 +76,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
         $expected = array_merge($this->testSessionRecord, ['ses_tstamp' => $GLOBALS['EXEC_TIME']]);
 
-        self::assertEquals($record, $expected);
+        self::assertEquals($expected, $record);
         self::assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
         self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }
@@ -90,7 +90,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
         $expected = array_merge($this->testSessionRecord, ['ses_userid' => 0, 'ses_tstamp' => $GLOBALS['EXEC_TIME']]);
 
-        self::assertEquals($record, $expected);
+        self::assertEquals($expected, $record);
         self::assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
         self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }

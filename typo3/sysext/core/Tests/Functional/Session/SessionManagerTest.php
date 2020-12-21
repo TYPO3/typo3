@@ -33,17 +33,17 @@ class SessionManagerTest extends FunctionalTestCase
     protected $testSessionRecords = [
         'randomSessionId1' => [
             // DatabaseSessionBackend::hash('randomSessionId1') with encryption key 12345
-            'ses_id' => 'e1ad65e4bad3c29e12c754c8e9f5927e',
+            'ses_id' => '92728358061fb01f95498e33ec4661e1edac4b59c18a06f2f80047747c749515',
             'ses_userid' => 1,
         ],
         'randomSessionId2' => [
             // DatabaseSessionBackend::hash('randomSessionId2') with encryption key 12345
-            'ses_id' => '72b1cf1fccc010ddb760c6db03f668db',
+            'ses_id' => '531b1305780519abe3e2c6b8857d2efc51ed1944242a597c0b2dd76f94876897',
             'ses_userid' => 1,
         ],
         'randomSessionId3' => [
             // DatabaseSessionBackend::hash('randomSessionId3') with encryption key 12345
-            'ses_id' => '7ee0836849b95d884108486c4a8973f3',
+            'ses_id' => '696a4c67e53a429327c82f09eaf20b2c634deed68a96d5c1d6cc28cf3d009654',
             'ses_userid' => 2,
         ]
     ];
