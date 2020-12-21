@@ -16,12 +16,14 @@ namespace TYPO3\CMS\Styleguide\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -144,7 +146,7 @@ class StyleguideController extends ActionController
     /**
      * TCA create default data action
      */
-    public function tcaCreateAction(): void
+    public function tcaCreateAction(): ResponseInterface
     {
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($finder->findUidsOfStyleguideEntryPages())) {
@@ -164,15 +166,14 @@ class StyleguideController extends ActionController
             );
         }
         // And redirect to display action
-        $this->forward('tca');
+        return new ForwardResponse('tca');
     }
 
     /**
      * TCA delete default data action
      */
-    public function tcaDeleteAction(): void
+    public function tcaDeleteAction(): ResponseInterface
     {
-        /** @var Generator $generator */
         $generator = GeneralUtility::makeInstance(Generator::class);
         $generator->delete();
         // Tell something was done here
@@ -181,7 +182,7 @@ class StyleguideController extends ActionController
             LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkTitle', 'styleguide')
         );
         // And redirect to display action
-        $this->forward('tca');
+        return new ForwardResponse('tca');
     }
 
     /**
