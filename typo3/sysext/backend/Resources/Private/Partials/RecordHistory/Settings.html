@@ -50,11 +50,10 @@
                                                     </f:then>
                                                 </f:if>
                                             </f:for>
-                                            <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="copymodeSelector">
                                             <f:for each="{values}" as="singleValue" key="singleKey">
-                                                <li><a href="{singleValue.scriptUrl}">
+                                                <li><a href="{singleValue.scriptUrl}" class="dropdown-item">
                                                     <f:if condition="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}">
                                                         <f:then>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
                                                         <f:else>{singleValue.value}</f:else>

@@ -5,13 +5,15 @@
     <f:if condition="{tree}">
         <f:then>
             <f:form name="statistic" action="statistic" class="form-horizontal" arguments="{id:pageUid}">
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <f:form.select name="mode" options="{
+                <div class="row row-cols-auto justify-content-start mb-3">
+                    <div class="col-auto">
+                        <f:form.select class="form-select" name="mode" options="{
                             overview:'{f:translate(key:\'administration.statistics.view.overview\')}',
                             content:'{f:translate(key:\'administration.statistics.view.content\')}'
                             }" value="{mode}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
-                        <f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
+                    </div>
+                    <div class="col-auto">
+                        <f:form.select class="form-select" name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
                     </div>
                 </div>
             </f:form>

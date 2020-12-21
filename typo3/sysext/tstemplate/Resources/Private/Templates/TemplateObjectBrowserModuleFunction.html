@@ -108,36 +108,39 @@
     <f:else>
         <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser'}"/>
         <div class="tsob-menu">
-            <div class="form-inline">
+            <div class="row">
                 <f:if condition="{hasTsBrowserTypes}">
-                    <div class="form-group">
-                        <label class="control-label">
+                    <div class="col-auto">
+                        <label class="col-form-label">
                             <f:translate key="{LLPrefix}browse"/>
                         </label>
                         <f:format.raw>{browserTypeDropdownMenu}</f:format.raw>
                     </div>
                 </f:if>
                 <f:if condition="{hasTopLevelInObjectList}">
-                    <div class="form-group">
-                        <label class="control-label" for="ts_browser_toplevel_{tsBrowserType}">
+                    <div class="col-auto">
+                        <label class="col-form-label" for="ts_browser_toplevel_{tsBrowserType}">
                             <f:translate key="{LLPrefix}objectList"/>
                         </label>
                         <f:format.raw>{objectListDropdownMenu}</f:format.raw>
                     </div>
                 </f:if>
-                <div class="form-group">
-                    <label class="control-label" for="search_field">
+                <div class="col-auto">
+                    <label class="col-form-label" for="search_field">
                         <f:translate key="{LLPrefix}search"/>
                     </label>
-                    <div class="form-group"><input class="form-control" type="search" name="search_field" id="search_field"
-                                                                                value="{postSearchField}"/></div>
+                    <div class="form-group">
+                        <input class="form-control" type="search" name="search_field" id="search_field" value="{postSearchField}"/>
+                    </div>
                 </div>
-                <input class="btn btn-default tsob-search-submit" type="submit" name="search"
-                            value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')}"/>
+                <div class="col-auto">
+                    <label class="col-form-label">&nbsp;</label>
+                    <input class="btn btn-default form-control tsob-search-submit" type="submit" name="search" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')}"/>
+                </div>
             </div>
-            <div class="checkbox">
-                <label for="checkTs_browser_regexsearch">
-                    <f:format.raw>{regexSearchCheckbox}</f:format.raw>
+            <div class="form-check">
+                <f:format.raw>{regexSearchCheckbox}</f:format.raw>
+                <label class="form-check-label" for="checkTs_browser_regexsearch">
                     <f:translate key="{LLPrefix}regExp"/>
                 </label>
             </div>
@@ -178,16 +181,16 @@
         </div>
         <div>
             <h2><f:translate key="{LLPrefix}displayOptions" /></h2>
-            <div class="typo3-listOptions">
-                <div class="checkbox">
-                    <label for="checkTs_browser_showComments">
-                        <f:format.raw>{checkBoxShowComments}</f:format.raw>
+            <div class="mb-3">
+                <div class="form-check">
+                    <f:format.raw>{checkBoxShowComments}</f:format.raw>
+                    <label class="form-check-label" for="checkTs_browser_showComments">
                         <f:translate key="{LLPrefix}displayComments" />
                     </label>
                 </div>
-                <div class="checkbox">
-                    <label for="checkTs_browser_alphaSort">
-                        <f:format.raw>{checkBoxAlphaSort}</f:format.raw>
+                <div class="form-check">
+                    <f:format.raw>{checkBoxAlphaSort}</f:format.raw>
+                    <label class="form-check-label" for="checkTs_browser_alphaSort">
                         <f:translate key="{LLPrefix}sortAlphabetically" />
                     </label>
                 </div>
@@ -200,11 +203,11 @@
             </f:if>
             <f:if condition="{hasConditions}">
                 <h2><f:translate key="{LLPrefix}conditions" /></h2>
-                <div class="typo3-listOptions">
+                <div class="mb-3">
                     <f:for each="{tsConditions}" as="condition">
-                        <div class="checkbox">
-                            <label for="check{condition.key}">
-                                <f:form.checkbox class="checkbox" name="conditions[{condition.key}]" id="check{condition.key}" value="{condition.value}" checked="{condition.isSet}" />
+                        <div class="form-check">
+                            <f:form.checkbox class="checkbox" name="conditions[{condition.key}]" id="check{condition.key}" value="{condition.value}" checked="{condition.isSet}" />
+                            <label class="form-check-label" for="check{condition.key}">
                                 <f:format.raw>{condition.label}</f:format.raw>
                             </label>
                         </div>

@@ -3,20 +3,17 @@
     <div class="t3-form-x-component-inner-wrapper">
         <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
             <f:if condition="{insertRenderablePanelConfiguration.key} != 'page'">
-                <div class="row media">
+                <div class="row">
                     <div class="col-sm-12">
                         <h4 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
                             <span>{insertRenderablePanelConfiguration.label}</span>
                         </h4>
                     </div>
                     <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
-                        <div class="col-sm-4 form-group">
-                            <a class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block" title="{element.key}" data-element-type="{element.key}">
-                                <span class="pull-left">
-                                    <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
-                                    <span>{element.label}</span>
-                                </span>
-                                <span class="clearfix"></span>
+                        <div class="col-4 mb-3">
+                            <a class="text-start t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block" title="{element.key}" data-element-type="{element.key}">
+                                <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
+                                <span>{element.label}</span>
                             </a>
                         </div>
                     </f:for>
