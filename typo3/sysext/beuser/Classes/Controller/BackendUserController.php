@@ -327,9 +327,8 @@ class BackendUserController extends ActionController
      */
     protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
     {
-        // terminating value of persisted session ID (probably hashed value)
+        // terminating value of persisted session ID
         $success = $this->backendUserSessionRepository->terminateSessionByIdentifier($sessionId);
-
         if ($success) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
         }

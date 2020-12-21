@@ -92,28 +92,15 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     public function get(string $sessionId): array
     {
         $query = $this->getQueryBuilder();
-
         $query->select('*')
             ->from($this->configuration['table'])
             ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)));
-
         $result = $query->execute()->fetch();
-
         if (!is_array($result)) {
-            // Check for a non-hashed-version, will be removed in TYPO3 v11
-            $query = $this->getQueryBuilder();
-
-            $result = $query->select('*')
-                ->from($this->configuration['table'])
-                ->where($query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR)))
-                ->execute()
-                ->fetch();
-            if (!is_array($result)) {
-                throw new SessionNotFoundException(
-                    'The session with identifier ' . $sessionId . ' was not found ',
-                    1481885483
-                );
-            }
+            throw new SessionNotFoundException(
+                'The session with identifier ' . $sessionId . ' was not found ',
+                1481885483
+            );
         }
         return $result;
     }
@@ -193,13 +180,6 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
                 $this->configuration['table'],
                 $sessionData,
                 ['ses_id' => $hashedSessionId],
-                ['ses_data' => \PDO::PARAM_LOB]
-            );
-            // Migrate old session data as well to remove old entries and promote them to migrated entries
-            $this->getConnection()->update(
-                $this->configuration['table'],
-                $sessionData,
-                ['ses_id' => $sessionId],
                 ['ses_data' => \PDO::PARAM_LOB]
             );
         } catch (DBALException $e) {

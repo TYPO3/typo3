@@ -142,14 +142,6 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
                 return $decodedValue;
             }
         }
-        // Fallback to the non-hashed-value, will be removed in TYPO3 v11
-        $rawData = $this->redis->get($this->getSessionKeyName($sessionId));
-        if ($rawData !== false) {
-            $decodedValue = json_decode($rawData, true);
-            if (is_array($decodedValue)) {
-                return $decodedValue;
-            }
-        }
         throw new SessionNotFoundException('Session could not be fetched from redis', 1481885583);
     }
 
@@ -163,11 +155,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
     public function remove(string $sessionId): bool
     {
         $this->initializeConnection();
-        $status = $this->redis->del($this->getSessionKeyName($this->hash($sessionId))) >= 1;
-        // Checking for non-hashed-identifier, will be removed in TYPO3 v11
-        $statusLegacy = $this->redis->del($this->getSessionKeyName($sessionId)) >= 1;
-
-        return $status || $statusLegacy;
+        return $this->redis->del($this->getSessionKeyName($this->hash($sessionId))) >= 1;
     }
 
     /**

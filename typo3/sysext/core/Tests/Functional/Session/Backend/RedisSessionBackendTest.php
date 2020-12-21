@@ -166,31 +166,6 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
     /**
      * @test
-     * @covers SessionBackendInterface::update
-     */
-    public function nonHashedSessionIdsAreUpdated()
-    {
-        $testSessionRecord = $this->testSessionRecord;
-        $testSessionRecord['ses_tstamp'] = 1;
-        // simulate old session record by directly inserting it into redis
-        $this->redis->set(
-            'typo3_ses_default_' . sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '_randomSessionId',
-            json_encode($testSessionRecord),
-            ['nx']
-        );
-
-        $updateData = [
-            'ses_data' => serialize(['foo' => 'baz', 'idontwantto' => 'set the world on fire']),
-            'ses_tstamp' => $GLOBALS['EXEC_TIME']
-        ];
-        $expectedMergedData = array_merge($testSessionRecord, $updateData);
-        $this->subject->update('randomSessionId', $updateData);
-        $fetchedRecord = $this->subject->get('randomSessionId');
-        self::assertSame($expectedMergedData, $fetchedRecord);
-    }
-
-    /**
-     * @test
      * @covers SessionBackendInterface::set
      */
     public function existingSessionMustNotBeOverridden()
