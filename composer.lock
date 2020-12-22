@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1025bdc829539f227af0c7fc8efb9ba",
+    "content-hash": "bc12823e434bbe941d614aa67c42ff64",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5274,23 +5274,23 @@
         },
         {
             "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.5.0",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "815214002f44c7c298969acee315ab90c93caf0e"
+                "reference": "846a69134de4e251bac7b1fbdf0103621355b780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/815214002f44c7c298969acee315ab90c93caf0e",
-                "reference": "815214002f44c7c298969acee315ab90c93caf0e",
+                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/846a69134de4e251bac7b1fbdf0103621355b780",
+                "reference": "846a69134de4e251bac7b1fbdf0103621355b780",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
                 "phpstan/phpstan": "^0.12.44",
-                "typo3/cms-core": "^10.4 || 11.0.*@dev",
-                "typo3/cms-extbase": "^10.4 || 11.0.*@dev"
+                "typo3/cms-core": "^10.4 || 11.*.*@dev",
+                "typo3/cms-extbase": "^10.4 || 11.*.*@dev"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.3",
@@ -5311,9 +5311,9 @@
             "description": "TYPO3 rules for PHPStan",
             "support": {
                 "issues": "https://github.com/FriendsOfTYPO3/phpstan-typo3/issues",
-                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.5.0"
+                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.6.0"
             },
-            "time": "2020-09-25T09:00:18+00:00"
+            "time": "2020-12-22T13:54:40+00:00"
         },
         {
             "name": "mikey179/vfsstream",
