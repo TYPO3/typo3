@@ -72,7 +72,7 @@ class UpgradeWizardListCommand extends Command
      */
     protected function bootstrap(): void
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
     }

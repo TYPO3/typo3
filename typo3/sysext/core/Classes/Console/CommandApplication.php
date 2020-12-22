@@ -17,15 +17,18 @@ namespace TYPO3\CMS\Core\Console;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -37,26 +40,27 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class CommandApplication implements ApplicationInterface
 {
-    /**
-     * @var Context
-     */
-    protected $context;
+    protected Context $context;
 
-    /**
-     * @var CommandRegistry
-     */
-    protected $commandRegistry;
+    protected CommandRegistry $commandRegistry;
 
-    /**
-     * Instance of the symfony application
-     * @var Application
-     */
-    protected $application;
+    protected ConfigurationManager $configurationManager;
 
-    public function __construct(Context $context, CommandRegistry $commandRegistry)
-    {
+    protected BootService $bootService;
+
+    protected Application $application;
+
+    public function __construct(
+        Context $context,
+        CommandRegistry $commandRegistry,
+        ConfigurationManager $configurationMananger,
+        BootService $bootService
+    ) {
         $this->context = $context;
         $this->commandRegistry = $commandRegistry;
+        $this->configurationManager = $configurationMananger;
+        $this->bootService = $bootService;
+
         $this->checkEnvironmentOrDie();
         $this->application = new Application('TYPO3 CMS', sprintf(
             '%s (Application Context: <comment>%s</comment>)',
@@ -76,12 +80,31 @@ class CommandApplication implements ApplicationInterface
      */
     public function run(callable $execute = null)
     {
-        $this->initializeContext();
-
         $input = new ArgvInput();
         $output = new ConsoleOutput();
 
-        Bootstrap::loadExtTables();
+        $commandName = $this->getCommandName($input);
+        if ($this->wantsFullBoot($commandName)) {
+            // Do a full boot if command is not a low-level command
+            $container = $this->bootService->getContainer();
+            $this->application->setCommandLoader($container->get(CommandRegistry::class));
+            $this->context = $container->get(Context::class);
+
+            $isLowLevelCommandShortcut = false;
+            try {
+                $realName = $this->application->find($commandName)->getName();
+                // Do not load ext_localconf if a low level command was found
+                // due to using a shortcut
+                $isLowLevelCommandShortcut = !$this->wantsFullBoot($realName);
+            } catch (ExceptionInterface $e) {
+                // Errors must be ignored, full binding/validation happens later when the console application runs.
+            }
+            if (!$isLowLevelCommandShortcut && $this->essentialConfigurationExists()) {
+                $this->bootService->loadExtLocalconfDatabaseAndExtTables();
+            }
+        }
+
+        $this->initializeContext();
         // create the BE_USER object (not logged in yet)
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
@@ -95,6 +118,36 @@ class CommandApplication implements ApplicationInterface
         }
 
         exit($exitCode);
+    }
+
+    protected function wantsFullBoot(string $commandName): bool
+    {
+        if ($commandName === 'help') {
+            return true;
+        }
+        return !$this->commandRegistry->has($commandName);
+    }
+
+    protected function getCommandName(ArgvInput $input): string
+    {
+        try {
+            $input->bind($this->application->getDefinition());
+        } catch (ExceptionInterface $e) {
+            // Errors must be ignored, full binding/validation happens later when the console application runs.
+        }
+
+        return $input->getFirstArgument() ?? 'list';
+    }
+
+    /**
+     * Check if LocalConfiguration.php and PackageStates.php exist
+     *
+     * @return bool TRUE when the essential configuration is available, otherwise FALSE
+     */
+    protected function essentialConfigurationExists(): bool
+    {
+        return file_exists($this->configurationManager->getLocalConfigurationFileLocation())
+            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
     }
 
     /**

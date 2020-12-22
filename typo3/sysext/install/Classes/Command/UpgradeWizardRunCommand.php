@@ -77,7 +77,7 @@ class UpgradeWizardRunCommand extends Command
      */
     protected function bootstrap(): void
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
         $this->upgradeWizardsService->isDatabaseCharsetUtf8() ?: $this->upgradeWizardsService->setDatabaseCharsetUtf8();

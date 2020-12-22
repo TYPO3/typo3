@@ -127,6 +127,9 @@ class ContainerBuilder
             $containerBuilder->setAlias($id, $syntheticId)->setPublic(true);
         }
 
+        // Optional service, set by BootService as back reference to the original bootService
+        $containerBuilder->register('_early.boot-service')->setSynthetic(true)->setPublic(true);
+
         $containerBuilder->compile();
 
         return $containerBuilder;

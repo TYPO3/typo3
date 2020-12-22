@@ -23,6 +23,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 
@@ -49,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
             Console\CommandRegistry::class => [ static::class, 'getConsoleCommandRegistry' ],
             Context\Context::class => [ static::class, 'getContext' ],
+            Core\BootService::class => [ static::class, 'getBootService' ],
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
@@ -137,7 +139,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getListCommand(ContainerInterface $container): Command\ListCommand
     {
         return new Command\ListCommand(
-            $container->get(Console\CommandRegistry::class)
+            $container,
+            $container->get(Core\BootService::class)
         );
     }
 
@@ -155,7 +158,9 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Console\CommandApplication(
             $container->get(Context\Context::class),
-            $container->get(Console\CommandRegistry::class)
+            $container->get(Console\CommandRegistry::class),
+            $container->get(Configuration\ConfigurationManager::class),
+            $container->get(Core\BootService::class)
         );
     }
 
@@ -191,6 +196,17 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getContext(ContainerInterface $container): Context\Context
     {
         return new Context\Context();
+    }
+
+    public static function getBootService(ContainerInterface $container): Core\BootService
+    {
+        if ($container->has('_early.boot-service')) {
+            return $container->get('_early.boot-service');
+        }
+        return new Core\BootService(
+            $container->get(ContainerBuilder::class),
+            $container
+        );
     }
 
     public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory

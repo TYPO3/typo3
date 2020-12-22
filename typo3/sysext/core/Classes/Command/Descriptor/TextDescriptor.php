@@ -32,10 +32,12 @@ use TYPO3\CMS\Core\Console\CommandRegistry;
 class TextDescriptor extends SymfonyTextDescriptor
 {
     private CommandRegistry $commandRegistry;
+    private bool $degraded;
 
-    public function __construct(CommandRegistry $commandRegistry)
+    public function __construct(CommandRegistry $commandRegistry, bool $degraded)
     {
         $this->commandRegistry = $commandRegistry;
+        $this->degraded = $degraded;
     }
 
     /**
@@ -55,6 +57,10 @@ class TextDescriptor extends SymfonyTextDescriptor
                 $this->write(sprintf("%-{$width}s %s\n", $command['name'], strip_tags($command['description'])), true);
             }
             return;
+        }
+
+        if ($this->degraded) {
+            $this->write("<error>Failed to boot dependency injection, only lowlevel commands are available.</error>\n\n", true);
         }
 
         $namespaces = $this->commandRegistry->getNamespaces();
@@ -89,6 +95,10 @@ class TextDescriptor extends SymfonyTextDescriptor
         }
 
         $this->write("\n");
+
+        if ($this->degraded) {
+            $this->write("\n<error>Failed to boot dependency injection, only lowlevel commands are available.</error>\n", true);
+        }
     }
 
     private function describeNamespace(array $namespace, array $commands, int $width): void

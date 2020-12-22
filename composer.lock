@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4c3074ccc16c2e62a19f8ccba3f0998",
+    "content-hash": "ecf8365aa1212f8dec9609b56adab0f2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4373,16 +4373,16 @@
         },
         {
             "name": "typo3/cms-cli",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/cms-cli.git",
-                "reference": "215a0bf5c446b4e0b20f4562bbaf3d6215a5ee82"
+                "reference": "bfb13f4ab6a505104662b79c18108f41c48e9288"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/cms-cli/zipball/215a0bf5c446b4e0b20f4562bbaf3d6215a5ee82",
-                "reference": "215a0bf5c446b4e0b20f4562bbaf3d6215a5ee82",
+                "url": "https://api.github.com/repos/TYPO3/cms-cli/zipball/bfb13f4ab6a505104662b79c18108f41c48e9288",
+                "reference": "bfb13f4ab6a505104662b79c18108f41c48e9288",
                 "shasum": ""
             },
             "require": {
@@ -4400,9 +4400,9 @@
             "homepage": "https://typo3.org",
             "support": {
                 "issues": "https://github.com/TYPO3/cms-cli/issues",
-                "source": "https://github.com/TYPO3/cms-cli/tree/master"
+                "source": "https://github.com/TYPO3/cms-cli/tree/3.0.0"
             },
-            "time": "2018-03-08T20:16:43+00:00"
+            "time": "2021-02-09T12:45:27+00:00"
         },
         {
             "name": "typo3/cms-composer-installers",
@@ -4622,12 +4622,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -4665,8 +4665,8 @@
                 "validate"
             ],
             "support": {
-                "issues": "https://github.com/webmozart/assert/issues",
-                "source": "https://github.com/webmozart/assert/tree/master"
+                "issues": "https://github.com/webmozarts/assert/issues",
+                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
             },
             "time": "2020-07-08T17:02:28+00:00"
         }
