@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"ext-libxml": "*",
-		"typo3/cms-core": "11.0.0"
+		"typo3/cms-core": "11.1.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -30,7 +30,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "11.0.x-dev"
+			"dev-master": "11.1.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {

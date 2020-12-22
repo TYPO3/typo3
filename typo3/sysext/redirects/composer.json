@@ -23,8 +23,8 @@
 		"psr/http-message": "^1.0",
 		"psr/log": "^1.0",
 		"symfony/console": "^5.2",
-		"typo3/cms-backend": "11.0.0",
-		"typo3/cms-core": "11.0.0",
+		"typo3/cms-backend": "11.1.*@dev",
+		"typo3/cms-core": "11.1.*@dev",
 		"typo3fluid/fluid": "^2.6.10 || ^3"
 	},
 	"conflict": {
@@ -36,7 +36,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "11.0.x-dev"
+			"dev-master": "11.1.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "redirects",
