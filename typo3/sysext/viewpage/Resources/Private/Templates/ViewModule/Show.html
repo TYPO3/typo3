@@ -11,16 +11,14 @@
                 </div>
                 <div class="viewpage-topbar-preset">
                 <span class="dropdown">
-                    <button class="dropdown-toggle" type="button" id="viewpage-topbar-preset-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button type="button" id="viewpage-topbar-preset-button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <span class="t3js-viewpage-current-label">
                             {current.label}
                         </span>
-                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="viewpage-topbar-preset-button">
-                        <li role="separator" class="divider"></li>
                         <li>
-                            <a href="#" class="t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'maximized')}" data-width data-height>
+                            <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'maximized')}" data-width data-height>
                                 <span class="viewpage-preset-item">
                                     <span class="viewpage-preset-item-icon">{icons.fullscreen -> f:format.raw()}</span>
                                     <span class="viewpage-preset-item-label">
@@ -33,7 +31,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'custom')}" data-width="{custom.width}" data-height="{custom.height}">
+                            <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'custom')}" data-width="{custom.width}" data-height="{custom.height}">
                                 <span class="viewpage-preset-item">
                                     <span class="viewpage-preset-item-icon">{icons.expand -> f:format.raw()}</span>
                                     <span class="viewpage-preset-item-label t3js-preset-custom-label">
@@ -48,10 +46,10 @@
 
                         <f:for each="{presetGroups}" as="presetGroup" iteration="presetGroupIteration">
                             <f:if condition="{presetGroup}">
-                                <li role="separator" class="divider"></li>
+                                <li><hr class="dropdown-divider"></li>
                                 <f:for each="{presetGroup}" as="preset">
                                     <li>
-                                        <a href="#" class="t3js-change-preset" data-key="{preset.key}" data-label="{preset.label}" data-width="{preset.width}" data-height="{preset.height}">
+                                        <a href="#" class="dropdown-item t3js-change-preset" data-key="{preset.key}" data-label="{preset.label}" data-width="{preset.width}" data-height="{preset.height}">
                                             <span class="viewpage-preset-item">
                                                 <span class="viewpage-preset-item-icon">{icons.{preset.type} -> f:format.raw()}</span>
                                                 <span class="viewpage-preset-item-label">{preset.label}</span>

@@ -108,14 +108,26 @@ $viewpage-topbar-height: 40px;
 }
 
 .viewpage-topbar-preset {
-    button {
+    .dropdown-toggle {
+        color: $viewpage-item-color;
         background-color: transparent;
         border: none;
-        padding-left: 20px;
-        padding-right: 20px;
 
-        span {
-            vertical-align: middle;
+        @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, 0);
+
+        &.show {
+            outline: 0;
+        }
+
+        &:not(.show):hover {
+            background-color: $dropdown-link-hover-bg;
+            outline: 0;
+        }
+
+        &:not(.show):not(:hover):focus {
+            outline: 0;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
         }
     }
 }
@@ -128,6 +140,7 @@ $viewpage-topbar-height: 40px;
         border: 0;
         border-bottom: 1px solid rgba($primary, 0.5);
         transition: all 0.5s ease-in-out;
+        color: $viewpage-item-color;
 
         &:focus,
         &:hover {
