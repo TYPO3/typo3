@@ -329,6 +329,10 @@ label {
     &-footer {
         @extend .card-footer !optional;
     }
+
+    > .table-fit {
+        border: none;
+    }
 }
 
 // .label (badges) fallback
