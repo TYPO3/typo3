@@ -466,7 +466,7 @@ abstract class AbstractLinkBrowserController
 
         $content = '';
         foreach ($this->linkAttributeFields as $attribute) {
-            $content .= $fieldRenderingDefinitions[$attribute];
+            $content .= $fieldRenderingDefinitions[$attribute] ?? '';
         }
 
         // add update button if appropriate
@@ -493,7 +493,7 @@ abstract class AbstractLinkBrowserController
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('target')) . '</label>
                     <div class="col-sm-4">
                         <input type="text" name="ltarget" class="t3js-linkTarget form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
+                            value="' . htmlspecialchars($this->linkAttributeValues['target'] ?? '') . '" />
                     </div>
                     <div class="col-sm-5">
                         <select name="ltarget_type" class="t3js-targetPreselect form-select">
@@ -512,7 +512,7 @@ abstract class AbstractLinkBrowserController
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('title')) . '</label>
                     <div class="col-sm-9">
                         <input type="text" name="ltitle" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['title']) . '" />
+                            value="' . htmlspecialchars($this->linkAttributeValues['title'] ?? '') . '" />
                     </div>
                 </div>
             </form>';
@@ -524,7 +524,7 @@ abstract class AbstractLinkBrowserController
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('class')) . '</label>
                     <div class="col-sm-9">
                         <input type="text" name="lclass" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['class']) . '" />
+                            value="' . htmlspecialchars($this->linkAttributeValues['class'] ?? '') . '" />
                     </div>
                 </div>
             </form>';
@@ -536,7 +536,7 @@ abstract class AbstractLinkBrowserController
                     <label class="col-sm-3 col-form-label">' . htmlspecialchars($lang->getLL('params')) . '</label>
                     <div class="col-sm-9">
                         <input type="text" name="lparams" class="form-control"
-                            value="' . htmlspecialchars($this->linkAttributeValues['params']) . '" />
+                            value="' . htmlspecialchars($this->linkAttributeValues['params'] ?? '') . '" />
                     </div>
                 </div>
             </form>';

@@ -197,7 +197,7 @@ class BackendLayoutRenderer
 
             foreach ($grid->getRows() as $rows) {
                 foreach ($rows->getColumns() as $column) {
-                    if ($translationInfo['mode'] === 'connected') {
+                    if (($translationInfo['mode'] ?? '') === 'connected') {
                         foreach ($column->getItems() as $item) {
                             // check if translation exists
                             foreach ($translatedRows as $translation) {

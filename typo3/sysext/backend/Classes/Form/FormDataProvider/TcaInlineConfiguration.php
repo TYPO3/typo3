@@ -168,10 +168,10 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         ) {
             if (is_array($result['databaseRow'][$parentLanguageField])) {
                 $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
-                    = (int)$result['databaseRow'][$parentLanguageField][0];
+                    = (int)($result['databaseRow'][$parentLanguageField][0] ?? 0);
             } else {
                 $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
-                    = (int)$result['databaseRow'][$parentLanguageField];
+                    = (int)($result['databaseRow'][$parentLanguageField] ?? 0);
             }
         }
 

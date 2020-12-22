@@ -359,7 +359,7 @@ class InputLinkElement extends AbstractFormElement
             case LinkService::TYPE_PAGE:
                 $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
                 // Is this a real page
-                if ($pageRecord['uid']) {
+                if ($pageRecord['uid'] ?? 0) {
                     $fragmentTitle = '';
                     if (isset($linkData['fragment'])) {
                         if (MathUtility::canBeInterpretedAsInteger($linkData['fragment'])) {

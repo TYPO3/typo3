@@ -221,9 +221,12 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function getBodyTagAttributes()
     {
-        return [
-            'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $this->linkParts['url']['file']])
-        ];
+        if (isset($this->linkParts['url']['file'])) {
+            return [
+                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $this->linkParts['url']['file']])
+            ];
+        }
+        return [];
     }
 
     /**

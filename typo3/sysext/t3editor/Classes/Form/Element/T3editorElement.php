@@ -127,7 +127,7 @@ class T3editorElement extends AbstractFormElement
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
-                'effectivePid' => $this->data['effectivePid']
+                'effectivePid' => $this->data['effectivePid'] ?? 0
             ]
         );
 

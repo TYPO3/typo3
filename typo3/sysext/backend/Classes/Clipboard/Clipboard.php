@@ -540,7 +540,7 @@ class Clipboard
     {
         $el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
         if ($el) {
-            return ' (' . ($pad === 'normal' ? ($this->clipData['normal']['mode'] === 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars((string)$el)) . ')';
+            return ' (' . ($pad === 'normal' ? (($this->clipData['normal']['mode'] ?? '') === 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars((string)$el)) . ')';
         }
         return '';
     }

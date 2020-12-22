@@ -90,7 +90,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         return $lang->getLL('page')
             . ' \'' . GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen) . '\''
-            . ' (ID: ' . $id . ($this->linkParts['url']['fragment'] ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
+            . ' (ID: ' . $id . (!empty($this->linkParts['url']['fragment']) ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
     }
 
     /**
@@ -198,7 +198,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
                 'type' => LinkService::TYPE_PAGE,
                 'pageuid' => (int)$this->linkParts['url']['pageuid'],
-                'fragment' => $this->linkParts['url']['fragment']
+                'fragment' => $this->linkParts['url']['fragment'] ?? ''
             ])
         ];
     }

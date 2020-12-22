@@ -54,7 +54,7 @@ class FolderLinkHandler extends FileLinkHandler
      */
     public function getBodyTagAttributes()
     {
-        if ($this->linkParts['url']['folder'] instanceof $this->expectedClass) {
+        if (isset($this->linkParts['url']['folder']) && $this->linkParts['url']['folder'] instanceof $this->expectedClass) {
             return [
                 'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $this->linkParts['url']['folder']])
             ];
