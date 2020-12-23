@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};define(["require","exports","jquery"],(function(t,e,r){"use strict";r=__importDefault(r);return new class{constructor(){r.default(()=>{r.default("a.filelist-translationToggler").on("click",t=>{const e=r.default(t.currentTarget).attr("data-fileid");r.default('div[data-fileid="'+e+'"]').toggle()})})}}}));
+define(["require","exports","TYPO3/CMS/Core/DocumentService","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,n,r){"use strict";return new class{constructor(){n.ready().then(()=>{new r("click",(e,t)=>{const n=t.dataset.fileid;document.querySelector('div[data-fileid="'+n+'"]').classList.toggle("hidden")}).delegateTo(document,"a.filelist-translationToggler")})}}}));

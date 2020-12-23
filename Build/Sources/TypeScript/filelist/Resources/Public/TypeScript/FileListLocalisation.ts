@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 /**
  * Module: TYPO3/CMS/Filelist/FileListLocalisation
@@ -19,11 +20,11 @@ import $ from 'jquery';
  */
 class FileListLocalisation {
   constructor() {
-    $((): void => {
-      $('a.filelist-translationToggler').on('click', (event: JQueryEventObject): void => {
-        const id = $(event.currentTarget).attr('data-fileid');
-        $('div[data-fileid="' + id + '"]').toggle();
-      });
+    DocumentService.ready().then((): void => {
+      new RegularEvent('click', (event: Event, target: HTMLElement): void => {
+        const id = target.dataset.fileid;
+        document.querySelector('div[data-fileid="' + id + '"]').classList.toggle('hidden');
+      }).delegateTo(document, 'a.filelist-translationToggler');
     });
   }
 }

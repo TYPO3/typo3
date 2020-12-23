@@ -12,10 +12,13 @@
  */
 
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 class FileReplace {
   constructor() {
-    this.registerEvents();
+    DocumentService.ready().then((): void => {
+      this.registerEvents();
+    });
   }
 
   private registerEvents(): void {

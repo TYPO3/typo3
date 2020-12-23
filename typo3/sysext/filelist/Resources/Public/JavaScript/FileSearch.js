@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","jquery","TYPO3/CMS/Backend/Input/Clearable"],(function(e,t,l){"use strict";l=__importDefault(l);return new class{constructor(){l.default(()=>{let e;if(null!==(e=document.querySelector('input[name="tx_filelist_file_filelistlist[searchWord]"]'))){const t=""!==e.value;e.clearable({onClear:e=>{t&&e.closest("form").submit()}})}})}}}));
+define(["require","exports","TYPO3/CMS/Core/DocumentService","TYPO3/CMS/Backend/Input/Clearable"],(function(e,t,r){"use strict";return new class{constructor(){r.ready().then(()=>{let e;if(null!==(e=document.querySelector('input[name="tx_filelist_file_filelistlist[searchWord]"]'))){const t=""!==e.value;e.clearable({onClear:e=>{t&&e.closest("form").submit()}})}})}}}));

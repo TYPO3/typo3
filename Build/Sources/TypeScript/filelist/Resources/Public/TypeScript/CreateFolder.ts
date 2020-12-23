@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
@@ -26,7 +26,7 @@ class CreateFolder {
   private changed: boolean = false;
 
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       const mainElement: HTMLElement = document.querySelector('.filelist-create-folder-main');
       if (!(mainElement instanceof HTMLElement)) {
         throw new Error('Main element not found');

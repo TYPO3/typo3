@@ -778,8 +778,8 @@ class FileList
                             }
 
                             // Hide flag button bar when not translated yet
-                            $theData[$field] = ' <div class="localisationData btn-group" data-fileid="' . $fileObject->getUid() . '"' .
-                                (empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
+                            $theData[$field] = ' <div class="localisationData btn-group' . (empty($translations) ? ' hidden' : '') . '" data-fileid="' . $fileObject->getUid() . '">'
+                                . $languageCode . '</div>';
                             $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
                                 '<span title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">'
                                 . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'

@@ -12,7 +12,8 @@
  */
 
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import $ from 'jquery';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 /**
@@ -21,21 +22,20 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
  */
 class FileDelete {
   constructor() {
-    $((): void => {
-      $(document).on('click', '.t3js-filelist-delete', (e: JQueryEventObject): void => {
+    DocumentService.ready().then((): void => {
+      new RegularEvent('click', (e: Event, eventTarget: HTMLElement): void => {
         e.preventDefault();
-        const $anchorElement = $(e.currentTarget);
-        let redirectUrl = $anchorElement.data('redirectUrl');
+        let redirectUrl = eventTarget.dataset.redirectUrl;
         redirectUrl = (redirectUrl)
           ? encodeURIComponent(redirectUrl)
           : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
 
-        const identifier = $anchorElement.data('identifier');
-        const deleteType = $anchorElement.data('deleteType');
-        const deleteUrl = $anchorElement.data('deleteUrl') + '&data[delete][0][data]=' + encodeURIComponent(identifier);
+        const identifier = eventTarget.dataset.identifier;
+        const deleteType = eventTarget.dataset.deleteType;
+        const deleteUrl = eventTarget.dataset.deleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
         const target = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
-        if ($anchorElement.data('check')) {
-          const $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('content'), SeverityEnum.warning, [
+        if (eventTarget.dataset.check) {
+          const $modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.content, SeverityEnum.warning, [
             {
               text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
               active: true,
@@ -49,7 +49,7 @@ class FileDelete {
             },
           ]);
           $modal.on('button.clicked', (evt: JQueryEventObject): void => {
-            const $element = <HTMLInputElement>evt.target;
+            const $element = evt.target as HTMLInputElement;
             const name = $element.name;
             if (name === 'no') {
               Modal.dismiss();
@@ -61,7 +61,7 @@ class FileDelete {
         } else {
           top.list_frame.location.href = target;
         }
-      });
+      }).delegateTo(document, '.t3js-filelist-delete');
     });
   }
 }

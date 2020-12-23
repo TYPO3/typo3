@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 /**
  * Module: TYPO3/CMS/Filelist/RenameFile
@@ -21,10 +21,10 @@ import 'TYPO3/CMS/Backend/Input/Clearable';
  */
 class FileSearch {
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       let searchField: HTMLInputElement;
       if ((searchField = document.querySelector('input[name="tx_filelist_file_filelistlist[searchWord]"]')) !== null) {
-        const searchResultShown = ('' !== searchField.value);
+        const searchResultShown = '' !== searchField.value;
 
         // make search field clearable
         searchField.clearable({
