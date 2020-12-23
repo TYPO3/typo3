@@ -14,14 +14,14 @@
 
         <div class="form-group">
             <label><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></label>
-            <f:form.select name="data[pages][{id}][perms_userid]" options="{beUserData}" value="{currentBeUser}" class="form-control" />
+            <f:form.select name="data[pages][{id}][perms_userid]" options="{beUserData}" value="{currentBeUser}" class="form-select" />
         </div>
 
         <div class="form-group">
             <label><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></label>
             <f:if condition="{f:count(subject:beGroupData)} > 1">
                 <f:then>
-                    <f:form.select name="data[pages][{id}][perms_groupid]" options="{beGroupData}" value="{currentBeGroup}" class="form-control" />
+                    <f:form.select name="data[pages][{id}][perms_groupid]" options="{beGroupData}" value="{currentBeGroup}" class="form-select" />
                 </f:then>
                 <f:else>
                     <div class="alert alert-notice"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:noGroups" /></div>
@@ -74,7 +74,7 @@
 
         <div class="form-group">
             <label for="recursionLevel"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
-            <f:form.select id="recursionLevel" name="mirror[pages][{id}]" options="{recursiveSelectOptions}" class="form-control" />
+            <f:form.select id="recursionLevel" name="mirror[pages][{id}]" options="{recursiveSelectOptions}" class="form-select" />
         </div>
 
         <f:form.hidden name="data[pages][{id}][perms_user]" value="{pageInfo.perms_user}" />

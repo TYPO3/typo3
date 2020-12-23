@@ -2434,7 +2434,7 @@ class BackendUtility
             // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
             $attributes = GeneralUtility::implodeAttributes([
                 'name' => $elementName,
-                'class' => 'form-control mb-3',
+                'class' => 'form-select mb-3',
                 'data-menu-identifier' => $dataMenuIdentifier,
                 'data-global-event' => 'change',
                 'data-action-navigate' => '$data=~s/$value/',
@@ -2496,7 +2496,7 @@ class BackendUtility
             return '
 			<div class="form-group">
 				<!-- Function Menu of module -->
-				<select class="form-control input-sm" ' . $attributes . '>
+				<select class="form-select form-select-sm" ' . $attributes . '>
 					' . implode(LF, $options) . '
 				</select>
 			</div>

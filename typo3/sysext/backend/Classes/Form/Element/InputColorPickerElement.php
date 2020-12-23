@@ -160,7 +160,7 @@ class InputColorPickerElement extends AbstractFormElement
 
         $valuePickerHtml = [];
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
-            $valuePickerHtml[] = '<select class="t3js-colorpicker-value-trigger form-control tceforms-select tceforms-wizardselect">';
+            $valuePickerHtml[] = '<select class="t3js-colorpicker-value-trigger form-select">';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
                 $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';

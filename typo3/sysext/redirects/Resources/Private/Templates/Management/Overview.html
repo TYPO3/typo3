@@ -174,7 +174,7 @@
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="form-group">
             <label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
-            <select id="demand-source-host" class="form-control input-sm" name="demand[source_host]" data-on-change="submit">
+            <select id="demand-source-host" class="form-select" name="demand[source_host]" data-on-change="submit">
                 <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
                 <f:for each="{hosts}" as="host">
                     <f:form.select.option value="{host.name}" selected="{host.name} === {demand.firstSourceHost}">{host.name}</f:form.select.option>
@@ -183,15 +183,15 @@
         </div>
         <div class="form-group">
             <label for="demand-source-path"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></label>
-            <input type="text" id="demand-source-path" class="form-control input-sm" name="demand[source_path]" value="{demand.sourcePath}"/>
+            <input type="text" id="demand-source-path" class="form-control form-control-sm" name="demand[source_path]" value="{demand.sourcePath}"/>
         </div>
         <div class="form-group">
             <label for="demand-target"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
-            <input type="text" id="demand-target" class="form-control input-sm" name="demand[target]" value="{demand.target}"/>
+            <input type="text" id="demand-target" class="form-control form-control-sm" name="demand[target]" value="{demand.target}"/>
         </div>
         <div class="form-group">
             <label for="demand-target-status-code"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
-            <select id="demand-target-status-code" class="form-control input-sm" name="demand[target_statuscode]" data-on-change="submit">
+            <select id="demand-target-status-code" class="form-select" name="demand[target_statuscode]" data-on-change="submit">
                 <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
                 <f:for each="{statusCodes}" as="statusCode">
                     <f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.firstStatusCode}">{statusCode.code}</f:form.select.option>

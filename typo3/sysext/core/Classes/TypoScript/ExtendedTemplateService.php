@@ -1061,7 +1061,7 @@ class ExtendedTemplateService extends TemplateService
                                     }
                                     $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $this->getLanguageService()->sL($label) . '</option>';
                                 }
-                                $p_field = '<select class="form-control" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+                                $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
                             }
                             break;
                         case 'boolean':

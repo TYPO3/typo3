@@ -199,15 +199,15 @@ define(['jquery',
           }
 
           if (folders.length > 1) {
-            savePathSelect = $('<select class="new-form-save-path form-control" id="new-form-save-path" data-identifier="newFormSavePath" />');
+            savePathSelect = $('<select class="new-form-save-path form-select" id="new-form-save-path" data-identifier="newFormSavePath" />');
             for (var i = 0, len = folders.length; i < len; ++i) {
               var option = new Option(folders[i]['label'], folders[i]['value']);
               $(savePathSelect).append(option);
             }
           }
 
-          prototypeNameSelect = $('<select class="new-form-prototype-name form-control" id="new-form-prototype-name" data-identifier="newFormPrototypeName" />');
-          templateSelect = $('<select class="new-form-template form-control" id="new-form-template" data-identifier="newFormTemplate" />');
+          prototypeNameSelect = $('<select class="new-form-prototype-name form-select" id="new-form-prototype-name" data-identifier="newFormPrototypeName" />');
+          templateSelect = $('<select class="new-form-template form-select" id="new-form-template" data-identifier="newFormTemplate" />');
 
           prototypes = _formManagerApp.getPrototypes();
           templates = {};
@@ -574,7 +574,7 @@ define(['jquery',
           MultiStepWizard.set('formPersistenceIdentifier', that.data('formPersistenceIdentifier'));
           MultiStepWizard.set('savePath', folders[0]['value']);
           if (folders.length > 1) {
-            savePathSelect = $('<select class="duplicate-form-save-path form-control" data-identifier="duplicateFormSavePath" />');
+            savePathSelect = $('<select class="duplicate-form-save-path form-select" data-identifier="duplicateFormSavePath" />');
             for (var i = 0, len = folders.length; i < len; ++i) {
               var option = new Option(folders[i]['label'], folders[i]['value']);
               $(savePathSelect).append(option);

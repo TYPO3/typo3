@@ -684,7 +684,7 @@ class QueryGenerator
                     $lineHTML[] = '<div class="form-inline">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
-                        $lineHTML[] = '<select class="form-control" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
+                        $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
                     } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
@@ -694,9 +694,9 @@ class QueryGenerator
                         if (is_array($conf['inputValue'])) {
                             $conf['inputValue'] = $conf['inputValue'][0];
                         }
-                        $lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
                     } else {
-                        $lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
                     }
                     if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
                         $lineHTML[] = $this->makeOptionList($fieldName, $conf, $this->table);
@@ -1039,7 +1039,7 @@ class QueryGenerator
         $out = [];
         if ($draw) {
             $out[] = '<div class="form-inline">';
-            $out[] = '<select class="form-control' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
+            $out[] = '<select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
             $out[] = '	<option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
             $out[] = '	<option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
             $out[] = '</select>';
@@ -1061,7 +1061,7 @@ class QueryGenerator
     public function mkTypeSelect($name, $fieldName, $prepend = 'FIELD_')
     {
         $out = [];
-        $out[] = '<select class="form-control t3js-submit-change" name="' . htmlspecialchars($name) . '">';
+        $out[] = '<select class="form-select t3js-submit-change" name="' . htmlspecialchars($name) . '">';
         $out[] = '<option value=""></option>';
         foreach ($this->fields as $key => $value) {
             if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
@@ -1132,7 +1132,7 @@ class QueryGenerator
         $out[] = '	<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
         $out[] = '</div>';
 
-        $out[] = '<select class="form-control t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';
+        $out[] = '<select class="form-select t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';
         foreach ($this->fields as $key => $value) {
             if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
                 $label = $this->fields[$key]['label'];
@@ -1153,7 +1153,7 @@ class QueryGenerator
     public function mkTableSelect($name, $cur)
     {
         $out = [];
-        $out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
+        $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
         $out[] = '<option value=""></option>';
         foreach ($GLOBALS['TCA'] as $tN => $value) {
             if ($this->getBackendUserAuthentication()->check('tables_select', $tN)) {
@@ -1176,7 +1176,7 @@ class QueryGenerator
     {
         $compOffSet = $comparison >> 5;
         $out = [];
-        $out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
+        $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
         for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
             if ($this->lang['comparison'][$i . '_']) {
                 $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][$i . '_']) . '</option>';

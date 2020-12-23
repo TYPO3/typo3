@@ -10,7 +10,7 @@
                             <label for="number-of-new-folders"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.number_of_folders" /></label> {cshFileNewFolder -> f:format.raw()}
                             <div class="form-control-wrap">
                                 <div class="input-group">
-                                    <select class="form-control form-control-adapt" name="number" id="number-of-new-folders">';
+                                    <select class="form-select" name="number" id="number-of-new-folders">';
                                         <f:for each="{options}" as="option">
                                             <option value="{option.value}"{option.selected}>{option.value}</option>
                                         </f:for>

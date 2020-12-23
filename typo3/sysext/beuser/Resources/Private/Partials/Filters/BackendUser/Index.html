@@ -4,7 +4,7 @@
         <label for="tx_Beuser_username"><f:translate key="userName">Username</f:translate></label>
         <f:form.textfield
             id="tx_Beuser_username"
-            class="form-control input-sm"
+            class="form-control form-control-sm"
             property="userName"
         />
     </div>
@@ -12,7 +12,7 @@
         <label for="tx_Beuser_usertype"><f:translate key="admin">Admin</f:translate></label>
         <f:form.select
             id="tx_Beuser_usertype"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             property="userType"
             options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
         />
@@ -21,7 +21,7 @@
         <label for="tx_Beuser_status"><f:translate key="status">Status</f:translate></label>
         <f:form.select
             id="tx_Beuser_status"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             property="status"
             options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
         />
@@ -30,7 +30,7 @@
         <label for="tx_Beuser_logins"><f:translate key="login">Login</f:translate></label>
         <f:form.select
             id="tx_Beuser_logins"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             property="logins"
             options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
         />
@@ -39,7 +39,7 @@
         <label for="tx_beuser_backendUserGroup"><f:translate key="backendUserGroup">User Group</f:translate></label>
         <f:form.select
             id="tx_beuser_backendUserGroup"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             property="backendUserGroup"
             options="{backendUserGroups}"
             optionLabelField="title"

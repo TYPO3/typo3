@@ -4,7 +4,7 @@
 </h3>
 <div class="form-group">
     <label for="preset-select"><f:translate key="makesavefo_selectPreset" /></label>
-    <f:form.select class="form-control" id="preset-select" name="preset[select]" options="{presetSelectOptions}" />
+    <f:form.select class="form-select" id="preset-select" name="preset[select]" options="{presetSelectOptions}" />
 </div>
 <div class="form-group">
     <f:form.hidden name="not-set" value="1" id="t3js-submit-field" />
@@ -59,7 +59,7 @@
     <f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat"><f:translate key="makesavefo_fileFormat" /></f:be.buttons.csh>
 </h4>
 <div class="form-group">
-    <f:form.select class="form-control" name="tx_impexp[filetype]" options="{filetypeSelectOptions}" value="{inData.filetype}" />
+    <f:form.select class="form-select" name="tx_impexp[filetype]" options="{filetypeSelectOptions}" value="{inData.filetype}" />
 </div>
 <div class="form-group">
     <label for="impexp-filename"><f:translate key="makesavefo_filenameSavedInS" arguments="{0: saveFolder}" /></label>

@@ -1070,7 +1070,7 @@ class PageLayoutController
         }
         $searchLevelLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels');
         $searchStringLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString');
-        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars($searchLevelLabel) . '" id="search_levels">' . implode('', $opt) . '</select>';
+        $lMenu = '<select class="form-select" name="search_levels" title="' . htmlspecialchars($searchLevelLabel) . '" id="search_levels">' . implode('', $opt) . '</select>';
         return '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: none;">
 			<form action="' . htmlspecialchars((string)$listModule) . '" method="post">
                 <div id="typo3-dblist-search">

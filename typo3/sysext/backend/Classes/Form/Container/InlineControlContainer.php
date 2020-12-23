@@ -618,7 +618,7 @@ class InlineControlContainer extends AbstractContainer
         $size = (int)$config['size'];
         $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($possibleRecords) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
         $item = '
-            <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-control t3js-create-new-selector"' . ($size ? ' size="' . $size . '"' : '') . '>
+            <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-select t3js-create-new-selector"' . ($size ? ' size="' . $size . '"' : '') . '>
                 ' . implode('', $opt) . '
             </select>';
 

@@ -74,7 +74,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         if (!is_array($selectedTables)) {
             $selectedTables = [];
         }
-        $tcaSelectHtml = '<select name="tx_scheduler[RecyclerCleanerTCA][]" multiple="multiple" class="form-control" size="10">';
+        $tcaSelectHtml = '<select name="tx_scheduler[RecyclerCleanerTCA][]" multiple="multiple" class="form-select" size="10">';
 
         $options = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {

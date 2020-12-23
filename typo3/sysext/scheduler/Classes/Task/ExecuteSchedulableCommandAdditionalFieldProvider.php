@@ -358,7 +358,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $selectTag = new TagBuilder();
         $selectTag->setTagName('select');
         $selectTag->forceClosingTag(true);
-        $selectTag->addAttribute('class', 'form-control');
+        $selectTag->addAttribute('class', 'form-select');
         $selectTag->addAttribute('name', 'tx_scheduler[task_executeschedulablecommand][command]');
 
         $optionsHtml = '';

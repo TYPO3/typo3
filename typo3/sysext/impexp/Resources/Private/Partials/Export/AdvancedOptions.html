@@ -19,7 +19,7 @@
     <label>
         <f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies"><f:translate key="makeadvanc_selectExtensionsThatThe" /></f:be.buttons.csh>
     </label>
-    <f:form.select class="form-control" name="tx_impexp[extension_dep]" multiple="multiple"
+    <f:form.select class="form-select" name="tx_impexp[extension_dep]" multiple="multiple"
                                     size="{f:if(condition: '{extensions -> f:count()} > 9', then: '10', else: '5')}"
                                     options="{extensions}" value="{inData.extension_dep}"/>
 </div>

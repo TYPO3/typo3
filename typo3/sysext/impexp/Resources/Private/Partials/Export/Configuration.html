@@ -28,13 +28,13 @@
     <label>
         <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode"><f:translate key="makeconfig_levels" /></f:be.buttons.csh>
     </label>
-    <f:form.select class="form-control" name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
+    <f:form.select class="form-select" name="tx_impexp[pagetree][levels]" options="{levelSelectOptions}" value="{inData.pagetree.levels}" />
 </div>
 <div class="form-group">
     <label>
         <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit"><f:translate key="makeconfig_includeTables" /></f:be.buttons.csh>
     </label>
-    <f:form.select class="form-control" name="tx_impexp[pagetree][tables]"
+    <f:form.select class="form-select" name="tx_impexp[pagetree][tables]"
                                 options="{tableSelectOptions}" multiple="multiple" value="{inData.pagetree.tables}"
                                 size="{f:if(condition: '{tableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
 </div>
@@ -78,7 +78,7 @@
     <label>
         <f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations"><f:translate key="makeconfig_includeRelationsToTables" /></f:be.buttons.csh>
     </label>
-    <f:form.select class="form-control" name="tx_impexp[external_ref][tables]"
+    <f:form.select class="form-select" name="tx_impexp[external_ref][tables]"
                                 options="{externalReferenceTableSelectOptions}" multiple="multiple" value="{inData.external_ref.tables}"
                                 size="{f:if(condition: '{externalReferenceTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
 </div>
@@ -86,7 +86,7 @@
     <label>
         <f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations"><f:translate key="makeconfig_useStaticRelationsFor" /></f:be.buttons.csh>
     </label>
-    <f:form.select class="form-control" name="tx_impexp[external_static][tables]"
+    <f:form.select class="form-select" name="tx_impexp[external_static][tables]"
                                 options="{externalStaticTableSelectOptions}" multiple="multiple" value="{inData.external_static.tables}"
                                 size="{f:if(condition: '{externalStaticTableSelectOptions -> f:count()} > 9', then: '10', else: '5')}" />
 </div>

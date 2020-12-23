@@ -207,7 +207,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         if (!empty($filterDropDownOptions)) {
             $filterHtml[] = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">';
             $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
-            $filterHtml[] =         '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
+            $filterHtml[] =         '<select class="form-select form-select-sm t3js-formengine-multiselect-filter-dropdown">';
             $filterHtml[] =             implode(LF, $filterDropDownOptions);
             $filterHtml[] =         '</select>';
             $filterHtml[] =     '</div>';
@@ -220,12 +220,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         $filterHtml[] = '</div>';
 
-        $classes = [];
-        $classes[] = 'form-control';
-        $classes[] = 'tceforms-multiselect';
-        if ($maxItems === 1) {
-            $classes[] = 'form-select-no-siblings';
-        }
         $multipleAttribute = '';
         if ($maxItems !== 1 && $size !== 1) {
             $multipleAttribute = ' multiple="multiple"';
@@ -264,7 +258,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           '<select';
         $html[] =                               ' id="' . $selectedOptionsFieldId . '"';
         $html[] =                               ' size="' . $size . '"';
-        $html[] =                               ' class="' . implode(' ', $classes) . '"';
+        $html[] =                               ' class="form-select"';
         $html[] =                               $multipleAttribute;
         $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
         $html[] =                           '>';
@@ -331,7 +325,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
         $html[] =                               ' id="' . $availableOptionsFieldId . '"';
         $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
-        $html[] =                               ' class="form-control t3js-formengine-select-itemstoselect"';
+        $html[] =                               ' class="form-select t3js-formengine-select-itemstoselect"';
         $html[] =                               ' size="' . $size . '"';
         $html[] =                               ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
         $html[] =                               ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
@@ -434,7 +428,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                   '<select';
         $html[] =                       ' id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '"';
         $html[] =                       ' size="' . $size . '"';
-        $html[] =                       ' class="form-control tceforms-multiselect"';
+        $html[] =                       ' class="form-select"';
         $html[] =                       $multiple;
         $html[] =                       ' data-formengine-input-name="' . htmlspecialchars($fieldName) . '"';
         $html[] =                       ' disabled="disabled">';

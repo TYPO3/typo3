@@ -289,7 +289,7 @@ define(['jquery',
       var $fieldEl;
       switch (appendix) {
         case '_list':
-          $fieldEl = $(':input.tceforms-multiselect[data-formengine-input-name="' + fieldName + '"]', $formEl);
+          $fieldEl = $(':input.form-select[data-formengine-input-name="' + fieldName + '"]', $formEl);
           break;
         case '_avail':
           $fieldEl = $(':input[data-relatedfieldname="' + fieldName + '"]', $formEl);

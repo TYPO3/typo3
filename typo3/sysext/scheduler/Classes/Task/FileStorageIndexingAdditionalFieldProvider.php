@@ -70,7 +70,7 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
 
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
         $fieldId = 'scheduler_fileStorageIndexing_storage';
-        $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,

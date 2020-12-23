@@ -80,7 +80,7 @@ class SelectSingleElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
 
         $selectItems = $parameterArray['fieldConf']['config']['items'];
-        $classList = ['form-control', 'form-control-adapt'];
+        $classList = ['form-select', 'form-control-adapt'];
 
         // Check against inline uniqueness
         /** @var InlineStackProcessor $inlineStackProcessor */

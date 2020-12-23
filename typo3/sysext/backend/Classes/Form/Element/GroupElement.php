@@ -177,7 +177,7 @@ class GroupElement extends AbstractFormElement
             $html[] =           '<select';
             $html[] =               ' size="' . $size . '"';
             $html[] =               ' disabled="disabled"';
-            $html[] =               ' class="form-control tceforms-multiselect"';
+            $html[] =               ' class="form-select"';
             $html[] =               ($maxItems !== 1 && $size !== 1) ? ' multiple="multiple"' : '';
             $html[] =           '>';
             $html[] =               implode(LF, $selectorOptionsHtml);
@@ -250,14 +250,7 @@ class GroupElement extends AbstractFormElement
             'data-maxitems' => (string)$maxItems,
             'size' => (string)$size,
         ];
-        $selectorClasses = [
-            'form-control',
-            'tceforms-multiselect',
-        ];
-        if ($maxItems === 1) {
-            $selectorClasses[] = 'form-select-no-siblings';
-        }
-        $selectorAttributes['class'] = implode(' ', $selectorClasses);
+        $selectorAttributes['class'] = 'form-select';
         if ($maxItems !== 1 && $size !== 1) {
             $selectorAttributes['multiple'] = 'multiple';
         }

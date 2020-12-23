@@ -485,8 +485,11 @@ class SetupModuleController
             $label = $this->getCSH($config['csh'] ?: $fieldName, $label, $fieldName);
             $type = $config['type'];
             $class = $config['class'];
-            if ($type !== 'check') {
+            if ($type !== 'check' && $type !== 'select') {
                 $class .= ' form-control';
+            }
+            if ($type === 'select') {
+                $class .= ' form-select';
             }
             $more = '';
             if ($class) {
@@ -711,7 +714,7 @@ class SetupModuleController
         }
         ksort($languageOptions);
         $languageCode = '
-            <select aria-labelledby="label_lang" id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
+            <select aria-labelledby="label_lang" id="field_lang" name="data[lang]" class="form-select">' . implode('', $languageOptions) . '
             </select>';
         if ($backendUser->uc['lang'] && !@is_dir(Environment::getLabelsPath() . '/' . $backendUser->uc['lang'])) {
             $languageUnavailableWarning = htmlspecialchars(sprintf($language->getLL('languageUnavailable'), $language->getLL('lang_' . $backendUser->uc['lang']))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($language->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
@@ -755,7 +758,7 @@ class SetupModuleController
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }
-        return '<select id="field_startModule" aria-labelledby="label_startModule" name="data[startModule]" class="form-control">' . $startModuleSelect . '</select>';
+        return '<select id="field_startModule" aria-labelledby="label_startModule" name="data[startModule]" class="form-select">' . $startModuleSelect . '</select>';
     }
 
     /**

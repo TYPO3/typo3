@@ -24,7 +24,7 @@
 <div class="linkvalidator-function-menu">
     <h4><f:render section="levelTitle" /></h4>
     <div>
-        <select name="{prefix}_search_levels" class="form-control">
+        <select name="{prefix}_search_levels" class="form-select">
             <option value="0"{f:if(condition: '{selectedLevel} == 0', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
             <option value="1"{f:if(condition: '{selectedLevel} == 1', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
             <option value="2"{f:if(condition: '{selectedLevel} == 2', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>

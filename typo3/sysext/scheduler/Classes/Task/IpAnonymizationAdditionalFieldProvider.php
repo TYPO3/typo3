@@ -77,7 +77,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
         $fieldId = 'task_ipAnonymization_table';
         $fieldHtml = [];
         // Add table drop down html
-        $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
+        $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
         $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.table',
@@ -136,7 +136,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
                 . '</option>';
         }
 
-        $fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . $fieldHtml . '</select>';
+        $fieldHtml = '<select class="form-select" name="' . $fieldName . '" id="' . $fieldId . '">' . $fieldHtml . '</select>';
 
         $fieldConfiguration = [
             'code' => $fieldHtml,

@@ -7,7 +7,7 @@
         <input type="text" class="form-control" name="shortcut-title" value="{selectedShortcut.label}"/>
     </div>
     <div class="form-group">
-        <select class="form-control" name="shortcut-group">
+        <select class="form-select" name="shortcut-group">
             <f:for each="{shortcutGroups}" key="shortcutGroupId" as="shortcutGroupTitle">
                 <option value="{shortcutGroupId}" {f:if(condition: '{selectedShortcutGroupId} == {shortcutGroupId}', then: 'selected="selected"')}>{shortcutGroupTitle}</option>
             </f:for>

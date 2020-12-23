@@ -169,7 +169,7 @@ class SelectSingleBoxElement extends AbstractFormElement
     {
         $selectItems = $parameterArray['fieldConf']['config']['items'];
         $size = (int)$config['size'];
-        $cssPrefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
+        $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 
         if ($config['autoSizeMax']) {
             $size = MathUtility::forceIntegerInRange(
@@ -183,8 +183,8 @@ class SelectSingleBoxElement extends AbstractFormElement
             'name' => $parameterArray['itemFormElName'] . '[]',
             'multiple' => 'multiple',
             'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            'id' => StringUtility::getUniqueId($cssPrefix),
-            'class' => 'form-control ' . $cssPrefix,
+            'id' => StringUtility::getUniqueId($prefix),
+            'class' => 'form-select ',
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
         ];
         if ($size) {

@@ -198,7 +198,7 @@ class TextElement extends AbstractFormElement
                     . '.value=this.options[this.selectedIndex].value';
             }
             $valuePickerHtml[] = '<select';
-            $valuePickerHtml[] =  ' class="form-control tceforms-select tceforms-wizardselect"';
+            $valuePickerHtml[] =  ' class="form-select form-control-adapt"';
             $valuePickerHtml[] =  ' onchange="' . htmlspecialchars($assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc)) . '"';
             $valuePickerHtml[] = '>';
             $valuePickerHtml[] = '<option></option>';

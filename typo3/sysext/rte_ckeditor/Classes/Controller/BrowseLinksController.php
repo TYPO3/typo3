@@ -398,7 +398,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         if (!$targetSelectorConfig['disabled']) {
             $targetSelector = '
-						<select name="ltarget_type" class="t3js-targetPreselect form-control">
+						<select name="ltarget_type" class="t3js-targetPreselect form-select">
 							<option value=""></option>
 							<option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
 							<option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>
@@ -474,7 +474,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                             ' . htmlspecialchars($this->getLanguageService()->getLL('class')) . '
                         </label>
                         <div class="col-sm-9">
-                            <select name="lclass" class="t3js-class-selector form-control">
+                            <select name="lclass" class="t3js-class-selector form-select">
                                 ' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] . '
                             </select>
                         </div>

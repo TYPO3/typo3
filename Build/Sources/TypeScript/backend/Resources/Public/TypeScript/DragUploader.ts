@@ -374,7 +374,7 @@ class DragUploaderPlugin {
           ).format('YYYY-MM-DD HH:mm'),
         ),
         $('<td />').append(
-          $('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
+          $('<select />', {class: 'form-select t3js-actions', 'data-override': i}).append(
             (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.use_existing']) : ''),
             $('<option />', {'selected': this.defaultAction === Action.SKIP})
               .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.skip']),
@@ -410,7 +410,7 @@ class DragUploaderPlugin {
     $modal.find('.modal-footer').prepend(
       $('<span/>').addClass('form-inline').append(
         $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
-        $('<select/>', {class: 'form-control t3js-actions-all'}).append(
+        $('<select/>', {class: 'form-select t3js-actions-all'}).append(
           $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
           (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
           $('<option/>', {'selected': this.defaultAction === Action.SKIP})

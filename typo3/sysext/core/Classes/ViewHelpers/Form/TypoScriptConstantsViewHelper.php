@@ -182,7 +182,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setTagName('select');
         $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getFieldName($configuration));
-        $this->tag->addAttribute('class', 'form-control');
+        $this->tag->addAttribute('class', 'form-select');
         $optionValueArray = $configuration['generic'];
         $output = '';
         $languageService = $this->getLanguageService();

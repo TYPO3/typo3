@@ -464,7 +464,7 @@ abstract class AbstractLinkBrowserController
                             value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
                     </div>
                     <div class="col-sm-5">
-                        <select name="ltarget_type" class="t3js-targetPreselect form-control">
+                        <select name="ltarget_type" class="t3js-targetPreselect form-select">
                             <option value=""></option>
                             <option value="_top">' . htmlspecialchars($lang->getLL('top')) . '</option>
                             <option value="_blank">' . htmlspecialchars($lang->getLL('newWindow')) . '</option>

@@ -61,7 +61,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
         $fieldName = 'tx_scheduler[scheduler_optimizeDatabaseTables_selectedTables][]';
         $fieldId = 'scheduler_optimizeDatabaseTables_selectedTables';
         $fieldOptions = $this->getDatabaseTableOptions($taskInfo['scheduler_optimizeDatabaseTables_selectedTables']);
-        $fieldHtml = '<select class="form-control" name="' . $fieldName
+        $fieldHtml = '<select class="form-select" name="' . $fieldName
             . '" id="' . $fieldId
             . '" class="from-control" size="10" multiple="multiple">'
             . $fieldOptions

@@ -21,7 +21,7 @@
             property="userOrGroup"
             options="{userGroups}"
             additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             id="belog-users"
         />
     </div>
@@ -33,7 +33,7 @@
             options="{settings.selectableNumberOfLogEntries}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
             additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             id="belog-max"
         />
     </div>
@@ -46,7 +46,7 @@
                         property="workspaceUid"
                         options="{workspaces}"
                         additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                        class="form-control input-sm"
+                        class="form-select form-select-sm"
                         id="belog-workspaces"
                     />
                 </div>
@@ -60,7 +60,7 @@
                 property="depth"
                 options="{pageDepths}"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                class="form-control input-sm"
+                class="form-select form-select-sm"
                 id="belog-depth"
             />
         </div>
@@ -73,7 +73,7 @@
             options="{settings.selectableTimeFrames}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
             additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             id="belog-time"
         />
     </div>
@@ -85,7 +85,7 @@
             options="{settings.selectableActions}"
             optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
             additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-control input-sm"
+            class="form-select form-select-sm"
             id="belog-action"
         />
     </div>
@@ -116,7 +116,7 @@
                         name="manualDateStart"
                         value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStart}')}\")}"
                         id="manualDateStart"
-                        class="form-control input-sm t3js-datetimepicker t3js-clearable"
+                        class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
                         data="{date-type: 'datetime'}"
                         />
                 <f:form.hidden
@@ -138,7 +138,7 @@
                         name="manualDateStop"
                         value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStop}')}"
                         id="manualDateStop"
-                        class="form-control input-sm t3js-datetimepicker t3js-clearable"
+                        class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
                         data="{date-type: 'datetime'}"
                         />
                 <f:form.hidden property="manualDateStop"

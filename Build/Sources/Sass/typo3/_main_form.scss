@@ -52,11 +52,9 @@ span.typo3-moduleHeader img {
 // Input group additions
 //
 .input-group-icon {
-    width: 32px;
     vertical-align: middle;
 
     img {
-        width: 100%;
         max-height: 18px;
     }
 }
@@ -185,47 +183,14 @@ fieldset[disabled] .form-control {
     }
 }
 
-@mixin select-chevron {
-    background-image: url('#{$path-sysext}/core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg');
-    background-position: right 4px center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    padding-right: 24px;
-}
-
 //
 // Select
 //
 select {
-    &.form-control {
+    &.form-select {
         &[multiple],
-        &[size] {
+        &[size]:not([size="1"]) {
             min-height: 156px;
-            width: 100% !important;
-        }
-
-        &[size="1"] {
-            height: $input-height-base;
-            min-height: 0;
-        }
-
-        &[size="1"],
-        &:not([multiple]):not([size]),
-        &:not([size]) {
-            appearance: none;
-
-            &::-ms-expand {
-                display: none;
-            }
-
-            &:not(.form-select-no-siblings) {
-                @include select-chevron;
-            }
-
-            &.input-sm,
-            .form-group-sm & {
-                line-height: 16px;
-            }
         }
 
         > optgroup {
@@ -483,8 +448,8 @@ select {
     .form-multigroup-item-wizard {
         margin-bottom: 5px;
 
-        + select.form-control[multiple],
-        + select.form-control[size] {
+        + select.form-select[multiple],
+        + select.form-select[size] {
             min-height: 125px;
         }
     }

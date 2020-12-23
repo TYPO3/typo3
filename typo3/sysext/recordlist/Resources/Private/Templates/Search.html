@@ -12,7 +12,7 @@
                         </div>
                         <div class="col-12 col-sm-3">
                             <label for="search_levels"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels" /></label>
-                            <select class="form-control" name="search_levels" title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')}" id="search_levels">
+                            <select class="form-select" name="search_levels" title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')}" id="search_levels">
                                 <f:for each="{searchLevelsFromTSconfig}" as="searchLevelFromTsConfig" key="level">
                                     <option {f:if(condition: '{level} == {selectedSearchLevel}', then: ' selected="selected"')} value="{level}">
                                         <f:translate id="LLL:{searchLevelFromTsConfig}">{searchLevelFromTsConfig}</f:translate>
