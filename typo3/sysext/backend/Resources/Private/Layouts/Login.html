@@ -1,3 +1,4 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="typo3-login">
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
@@ -5,9 +6,7 @@
                 <div class="panel panel-lg panel-login">
                     <div class="panel-body">
                         <div class="typo3-login-logo">
-                            <a href="{loginUrl}" id="t3js-login-url" data-referrer-check-enabled="{f:if(condition: '{referrerCheckEnabled}', then: '1', else: '0')}">
-                                <img src="{logo}" class="typo3-login-image" alt="" />
-                            </a>
+                            <img src="{logo}" class="typo3-login-image" alt="" />
                         </div>
                         <f:if condition="{formType} == 'LoginForm'">
                             <f:then>
@@ -127,4 +126,7 @@
             </div>
         </f:if>
     </div>
+    <f:comment>This link is only used for protection of the backend.</f:comment>
+    <a href="{loginUrl}" id="t3js-login-url" data-referrer-check-enabled="{f:if(condition: '{referrerCheckEnabled}', then: '1', else: '0')}" aria-hidden="true" tabindex="-1"></a>
 </div>
+</html>

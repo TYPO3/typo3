@@ -35,7 +35,7 @@ class BackendLogin {
       formFields: '.t3js-login-formfields',
       interfaceField: '.t3js-login-interface-field',
       loginForm: '#typo3-login-form',
-      loginUrlWrapper: 't3js-login-url',
+      loginUrlLink: 't3js-login-url',
       submitButton: '.t3js-login-submit',
       submitHandler: null,
       useridentField: '.t3js-login-userident-field',
@@ -113,10 +113,10 @@ class BackendLogin {
 
   private checkDocumentReferrerSupport(): void {
     const referrerRefreshed = Client.get('referrerRefresh') === '1';
-    const loginUrlWrapper = document.getElementById(this.options.loginUrlWrapper) as HTMLAnchorElement;
-    if (loginUrlWrapper === null
-      || typeof loginUrlWrapper.dataset.referrerCheckEnabled === 'undefined'
-      || loginUrlWrapper.dataset.referrerCheckEnabled !== '1'
+    const loginUrlLink = document.getElementById(this.options.loginUrlLink) as HTMLAnchorElement;
+    if (loginUrlLink === null
+      || typeof loginUrlLink.dataset.referrerCheckEnabled === 'undefined'
+      || loginUrlLink.dataset.referrerCheckEnabled !== '1'
     ) {
       return;
     }
@@ -135,7 +135,7 @@ class BackendLogin {
       this.ready = false;
 
       Client.set('referrerRefresh', '1');
-      loginUrlWrapper.click();
+      loginUrlLink.click();
     }
   }
 

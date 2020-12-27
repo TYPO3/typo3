@@ -99,6 +99,16 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     }
 }
 
+#t3js-login-url {
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    cursor: default;
+}
+
 //
 // Logo
 //
