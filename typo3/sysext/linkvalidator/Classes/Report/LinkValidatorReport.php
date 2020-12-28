@@ -518,7 +518,7 @@ class LinkValidatorReport
         $hookObj = $this->hookObjectsArr[$row['link_type']];
 
         // Construct link to edit the content element
-        $requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
+        $requestUri = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() .
             '&id=' . $this->id .
             '&search_levels=' . $this->searchLevel['report'] .
             // add record_uid as query parameter for rechecking after edit

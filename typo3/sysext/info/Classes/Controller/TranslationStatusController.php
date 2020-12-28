@@ -202,7 +202,7 @@ class TranslationStatusController
                         $data['row']['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ]);
             $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
@@ -259,7 +259,7 @@ class TranslationStatusController
                                     $row['uid'] => 'edit'
                                 ]
                             ],
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                         ]);
                         $info = str_replace('###LANG_UID###', (string)$languageId, $viewPageLink);
                         $info .= '<a href="' . htmlspecialchars($editUrl)
@@ -304,7 +304,7 @@ class TranslationStatusController
                     ]
                 ],
                 'columnsOnly' => 'title,nav_title,l18n_cfg,hidden',
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
@@ -333,7 +333,7 @@ class TranslationStatusController
                             ]
                         ],
                         'columnsOnly' => 'title,nav_title,hidden',
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                     ]);
                     $editButton = '<a href="' . htmlspecialchars($editUrl)
                         . '" class="btn btn-default" title="' . $lang->sL(
@@ -344,7 +344,7 @@ class TranslationStatusController
                 }
                 // Create new overlay records:
                 $createLink = (string)$uriBuilder->buildUriFromRoute('tce_db', [
-                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                 ]);
                 $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new-' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'

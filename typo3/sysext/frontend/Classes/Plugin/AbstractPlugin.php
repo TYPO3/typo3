@@ -908,7 +908,7 @@ class AbstractPlugin
                 'beforeLastTag' => 1,
                 'iconTitle' => $title
             ], $oConf);
-            $content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
+            $content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode($this->cObj->getRequest()->getAttribute('normalizedParams')->getRequestUri()));
         }
         return $content;
     }

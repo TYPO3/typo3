@@ -357,7 +357,7 @@ class PageLayoutView implements LoggerAwareInterface
                             'sys_language_uid' => $lP,
                             'colPos' => $columnId,
                             'uid_pid' => $id,
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                         ];
                         $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
                             ?? 'new_content_element_wizard';
@@ -375,7 +375,7 @@ class PageLayoutView implements LoggerAwareInterface
                                     'sys_language_uid' => $lP
                                 ]
                             ],
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     }
@@ -465,7 +465,7 @@ class PageLayoutView implements LoggerAwareInterface
                                         'sys_language_uid' => $row['sys_language_uid'],
                                         'colPos' => $row['colPos'],
                                         'uid_pid' => -$row['uid'],
-                                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                                     ];
                                     $routeName = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['newContentElementWizard.']['override']
                                         ?? 'new_content_element_wizard';
@@ -477,7 +477,7 @@ class PageLayoutView implements LoggerAwareInterface
                                                 -$row['uid'] => 'new'
                                             ]
                                         ],
-                                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                                     ];
                                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                 }
@@ -771,7 +771,7 @@ class PageLayoutView implements LoggerAwareInterface
                             'sys_language_uid' => $languageId
                         ]
                     ],
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 if ($this->getBackendUser()->check('tables_modify', 'pages')) {
@@ -812,7 +812,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 $this->id => 'edit'
                             ]
                         ],
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     if ($this->getBackendUser()->check('tables_modify', 'pages')) {
@@ -938,7 +938,7 @@ class PageLayoutView implements LoggerAwareInterface
         $icons = '';
         // Edit whole of column:
         if ($editParams && $this->hasContentModificationAndAccessPermissions() && $this->getBackendUser()->checkLanguageAccess(0)) {
-            $link = $this->uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+            $link = $this->uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
             $icons = '<a href="' . htmlspecialchars($link) . '"  title="'
                 . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
                 . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1039,7 +1039,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $row['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid'],
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid'],
             ];
             $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-tt_content-' . $row['uid'];
 
@@ -1538,7 +1538,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $row['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid']
             ];
             $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $str . '</a>';
@@ -1597,7 +1597,7 @@ class PageLayoutView implements LoggerAwareInterface
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $targetUrl = BackendUtility::getLinkToDataHandlerAction(

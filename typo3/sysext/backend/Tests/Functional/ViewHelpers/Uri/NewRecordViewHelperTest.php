@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Uri;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -26,6 +29,14 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class NewRecordViewHelperTest extends FunctionalTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
+    }
+
     /**
      * @test
      */

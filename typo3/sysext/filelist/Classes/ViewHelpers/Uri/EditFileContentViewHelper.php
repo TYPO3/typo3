@@ -51,7 +51,7 @@ class EditFileContentViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         if (empty($arguments['returnUrl'])) {
-            $arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $arguments['returnUrl'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri();
         }
 
         /** @var \TYPO3\CMS\Core\Resource\AbstractFile $file */

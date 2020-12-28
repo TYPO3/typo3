@@ -123,7 +123,7 @@ class SiteConfigurationController
      */
     protected function overviewAction(ServerRequestInterface $request): void
     {
-        $this->configureOverViewDocHeader();
+        $this->configureOverViewDocHeader($request->getAttribute('normalizedParams')->getRequestUri());
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
@@ -627,13 +627,15 @@ class SiteConfigurationController
 
     /**
      * Create document header buttons of "overview" action
+     *
+     * @param string $requestUri
      */
-    protected function configureOverViewDocHeader(): void
+    protected function configureOverViewDocHeader(string $requestUri): void
     {
         $iconFactory = $this->moduleTemplate->getIconFactory();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref(GeneralUtility::getIndpEnv('REQUEST_URI'))
+            ->setHref($requestUri)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);

@@ -73,7 +73,7 @@ class ModuleLinkViewHelper extends AbstractViewHelper
             ArrayUtility::mergeRecursiveWithOverrule($parameters, GeneralUtility::explodeUrl2Array($arguments['query']));
         }
         if ($arguments['currentUrlParameterName'] !== null) {
-            $parameters[$arguments['currentUrlParameterName']] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $parameters[$arguments['currentUrlParameterName']] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri();
         }
 
         return (string)$uriBuilder->buildUriFromRoute($arguments['route'], $parameters);

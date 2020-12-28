@@ -75,7 +75,7 @@ class ElementBrowserController
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('wizard_link', $_GET), 303);
         }
-        return new HtmlResponse($this->main());
+        return new HtmlResponse($this->main($request));
     }
 
     /**
@@ -83,7 +83,7 @@ class ElementBrowserController
      *
      * @return string HTML content
      */
-    protected function main()
+    protected function main(ServerRequestInterface $request)
     {
         $content = '';
 
@@ -103,6 +103,9 @@ class ElementBrowserController
         // if type was not rendered use default rendering functions
         if (!$browserRendered) {
             $browser = $this->getElementBrowserInstance();
+            if (is_callable([$browser, 'setRequest'])) {
+                $browser->setRequest($request);
+            }
 
             $backendUser = $this->getBackendUser();
             $modData = $backendUser->getModuleData('browse_links.php', 'ses');

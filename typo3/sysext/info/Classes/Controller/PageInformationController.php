@@ -105,7 +105,9 @@ class PageInformationController
             . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<span class="btn btn-default btn-sm">|</span>')
             . '</div>'
             . '</div>'
-            . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth']);
+            // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
+            // @todo: Refactor mess and have $request available
+            . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $GLOBALS['TYPO3_REQUEST']);
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
@@ -199,9 +201,11 @@ class PageInformationController
      *
      * @param int $id Page id
      * @param int $depth
+     * @param ServerRequestInterface $request
      * @return string HTML for the listing
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function getTable_pages($id, int $depth = 0)
+    protected function getTable_pages($id, int $depth = 0, ServerRequestInterface $request)
     {
         $out = '';
         $lang = $this->getLanguageService();
@@ -229,13 +233,13 @@ class PageInformationController
             if ($this->getBackendUser()->doesUserHaveAccess($row, Permission::PAGE_EDIT) && $row['uid'] > 0) {
                 $editUids[] = $row['uid'];
             }
-            $out .= $this->pages_drawItem($row, $this->fieldArray);
+            $out .= $this->pages_drawItem($row, $this->fieldArray, $request);
             // Traverse all pages selected:
             foreach ($theRows as $sRow) {
                 if ($this->getBackendUser()->doesUserHaveAccess($sRow, Permission::PAGE_EDIT)) {
                     $editUids[] = $sRow['uid'];
                 }
-                $out .= $this->pages_drawItem($sRow, $this->fieldArray);
+                $out .= $this->pages_drawItem($sRow, $this->fieldArray, $request);
             }
             // Header line is drawn
             $theData = [];
@@ -257,7 +261,7 @@ class PageInformationController
                             ]
                         ],
                         'columnsOnly' => $field,
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     ];
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
@@ -374,9 +378,11 @@ class PageInformationController
      *
      * @param array $row Record array
      * @param array $fieldArr Field list
+     * @param ServerRequestInterface $request
      * @return string HTML for the item
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function pages_drawItem($row, $fieldArr)
+    protected function pages_drawItem($row, $fieldArr, ServerRequestInterface $request)
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $theIcon = $this->getIcon($row);
@@ -402,7 +408,7 @@ class PageInformationController
                                     $row['uid'] => 'edit'
                                 ]
                             ],
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                         ];
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

@@ -271,7 +271,7 @@ class GridColumnItem extends AbstractGridObject
                 'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
                 'colPos' => $this->column->getColumnNumber(),
                 'uid_pid' => -$this->record['uid'],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ];
             $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
@@ -282,7 +282,7 @@ class GridColumnItem extends AbstractGridObject
                         -$this->record['uid'] => 'new'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ];
             $routeName = 'record_edit';
         }
@@ -334,7 +334,7 @@ class GridColumnItem extends AbstractGridObject
                     $this->record['uid'] => 'edit',
                 ]
             ],
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $this->record['uid'],
+            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $this->record['uid'],
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-tt_content-' . $this->record['uid'];

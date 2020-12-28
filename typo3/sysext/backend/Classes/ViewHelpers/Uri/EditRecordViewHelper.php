@@ -72,7 +72,7 @@ class EditRecordViewHelper extends AbstractViewHelper
             throw new \InvalidArgumentException('Uid must be a positive integer, ' . $arguments['uid'] . ' given.', 1526128259);
         }
         if (empty($arguments['returnUrl'])) {
-            $arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $arguments['returnUrl'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

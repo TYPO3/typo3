@@ -340,7 +340,7 @@ class PageLayoutContext
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                 ];
                 $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);

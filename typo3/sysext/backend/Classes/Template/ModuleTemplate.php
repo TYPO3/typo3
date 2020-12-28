@@ -530,7 +530,7 @@ class ModuleTemplate
         trigger_error('Method makeShortcutIcon() is deprecated and will be removed in v12. Please use ShortcutButton->setArguments() instead.', E_USER_DEPRECATED);
         $gvList = 'route,id,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
-        $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
+        $pathInfo = parse_url($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
         // Fallback for alt_mod. We still pass in the old xMOD... stuff,
         // but TBE_MODULES only knows about "record_edit".
         // We still need to pass the xMOD name to createShortcut below,

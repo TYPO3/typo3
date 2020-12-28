@@ -90,7 +90,7 @@ class TypoScriptTemplateInformationModuleFunctionController
             ],
             'columnsOnly' => $field,
             'createExtension' => 0,
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
         ];
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -186,7 +186,7 @@ class TypoScriptTemplateInformationModuleFunctionController
                     ]
                 ],
                 'createExtension' => 0,
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ];
             $assigns['editAllUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 

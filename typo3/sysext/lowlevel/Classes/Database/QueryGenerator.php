@@ -898,7 +898,7 @@ class QueryGenerator
                         $row['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                     . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&')
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'

@@ -284,7 +284,7 @@ class PagePositionMap
                     'positionPid' => $pid,
                     'newPageId'   => $newPagePID,
                     'cmd'         => 'crPage',
-                    'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl'   => $this->R_URI
                 ]
             );
             return (string)$url;

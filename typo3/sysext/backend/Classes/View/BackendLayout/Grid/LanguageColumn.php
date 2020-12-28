@@ -131,7 +131,7 @@ class LanguageColumn extends AbstractGridObject
                     'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
                 ]
             ],
-            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

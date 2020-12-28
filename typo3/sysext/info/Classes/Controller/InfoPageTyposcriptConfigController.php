@@ -116,7 +116,7 @@ class InfoPageTyposcriptConfigController
                                 ]
                             ],
                             'columnsOnly' => 'TSconfig,tsconfig_includes',
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                         ];
                         $line['editIcon'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $line['editTitle'] = 'editTSconfig';
@@ -137,7 +137,7 @@ class InfoPageTyposcriptConfigController
                             ]
                         ],
                         'columnsOnly' => 'TSconfig,tsconfig_includes',
-                        'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
                     ];
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editIcon = htmlspecialchars($url);

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -77,6 +78,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      * @var array
      */
     protected $thumbnailConfiguration = [];
+
+    protected ?ServerRequestInterface $request = null;
 
     /**
      * Loads additional JavaScript
@@ -319,7 +322,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 'type' => 'file',
                 'table' => '_FILE',
                 'uid' => $fileObject->getCombinedIdentifier(),
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
             ]);
 
             // Combine the stuff:
@@ -474,5 +477,15 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     public function getScriptUrl()
     {
         return $this->thisScript;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->request ?? $GLOBALS['TYPO3_REQUEST'];
     }
 }

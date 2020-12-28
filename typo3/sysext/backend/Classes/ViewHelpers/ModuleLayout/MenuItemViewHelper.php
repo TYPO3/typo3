@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers\ModuleLayout;
 
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\ViewHelpers\ModuleLayoutViewHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -98,6 +97,6 @@ class MenuItemViewHelper extends AbstractViewHelper
      */
     protected static function isCurrentUri(string $uri): bool
     {
-        return GeneralUtility::getIndpEnv('REQUEST_URI') === $uri;
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() === $uri;
     }
 }

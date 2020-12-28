@@ -125,7 +125,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (empty($this->arguments['returnUrl'])) {
-            $this->arguments['returnUrl'] = GeneralUtility::getIndpEnv('REQUEST_URI');
+            $this->arguments['returnUrl'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

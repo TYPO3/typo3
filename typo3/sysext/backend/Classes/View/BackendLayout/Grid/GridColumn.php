@@ -155,7 +155,7 @@ class GridColumn extends AbstractGridObject
         );
         $editParam = '&edit[tt_content][' . implode(',', $this->getAllContainedItemUids()) . ']=edit' . $pageTitleParamForAltDoc;
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return $uriBuilder->buildUriFromRoute('record_edit') . $editParam . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+        return $uriBuilder->buildUriFromRoute('record_edit') . $editParam . '&returnUrl=' . rawurlencode($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
     }
 
     public function getNewContentUrl(): string
@@ -169,7 +169,7 @@ class GridColumn extends AbstractGridObject
                 'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
                 'colPos' => $this->getColumnNumber(),
                 'uid_pid' => $pageId,
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ];
             $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
@@ -186,7 +186,7 @@ class GridColumn extends AbstractGridObject
                         'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
                     ]
                 ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
             ];
             $routeName = 'record_edit';
         }

@@ -6490,6 +6490,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getEnvironmentVariable($key)
     {
+        if ($key === 'REQUEST_URI') {
+            return $this->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+        }
         return GeneralUtility::getIndpEnv($key);
     }
 

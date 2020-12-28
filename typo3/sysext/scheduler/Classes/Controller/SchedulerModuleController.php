@@ -175,7 +175,7 @@ class SchedulerModuleController
         // Prepare main content
         $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
         $previousCMD = Action::cast($parsedBody['previousCMD'] ?? $queryParams['previousCMD'] ?? null);
-        $content .= $this->getModuleContent($previousCMD);
+        $content .= $this->getModuleContent($previousCMD, $request->getAttribute('normalizedParams')->getRequestUri());
         $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
 
         $this->getButtons($request);
@@ -231,9 +231,10 @@ class SchedulerModuleController
      * Generate the module's content
      *
      * @param Action $previousAction
+     * @param string $requestUri
      * @return string HTML of the module's main content
      */
-    protected function getModuleContent(Action $previousAction): string
+    protected function getModuleContent(Action $previousAction, string $requestUri): string
     {
         $content = '';
         $sectionTitle = '';
@@ -279,7 +280,7 @@ class SchedulerModuleController
                     case Action::EDIT:
                         try {
                             // Try adding or editing
-                            $content .= $this->editTaskAction();
+                            $content .= $this->editTaskAction($requestUri);
                             $sectionTitle = $this->getLanguageService()->getLL('action.' . $this->getCurrentAction());
                         } catch (\LogicException|\UnexpectedValueException|\OutOfBoundsException $e) {
                             // Catching all types of exceptions that were previously handled and
@@ -506,9 +507,10 @@ class SchedulerModuleController
     /**
      * Return a form to add a new task or edit an existing one
      *
+     * @param string $requestUri
      * @return string HTML form to add or edit a task
      */
-    protected function editTaskAction(): string
+    protected function editTaskAction(string $requestUri): string
     {
         $this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'EditTask.html');
 
@@ -709,7 +711,7 @@ class SchedulerModuleController
         }
         $this->view->assign('additionalFields', $additionalFieldList);
 
-        $this->view->assign('returnUrl', (string)GeneralUtility::getIndpEnv('REQUEST_URI'));
+        $this->view->assign('returnUrl', $requestUri);
         $this->view->assign('table', implode(LF, $table));
         $this->view->assign('now', $this->getServerTime());
         $this->view->assign('frequencyOptions', (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions']);

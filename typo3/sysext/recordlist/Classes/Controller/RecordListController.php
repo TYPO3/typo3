@@ -252,7 +252,7 @@ class RecordListController
 					}
 				}
 				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="' . (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$id . ';
@@ -281,7 +281,7 @@ class RecordListController
         // Show the selector to add page translations and the list of translations of the current page
         // but only when in "default" mode
         if ($id && !$dblist->csvOutput && !$search_field && !$cmd && !$table) {
-            $output .= $this->languageSelector($id);
+            $output .= $this->languageSelector($id, $request->getAttribute('normalizedParams')->getRequestUri());
             $pageTranslationsDatabaseRecordList = clone $dblist;
             $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
             $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
@@ -405,9 +405,11 @@ class RecordListController
      * that are not disabled with page TS.
      *
      * @param int $id Page id for which to create a new translation record of pages
+     * @param string $requestUri
      * @return string HTML <select> element (if there were items for the box anyways...)
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function languageSelector(int $id): string
+    protected function languageSelector(int $id, string $requestUri): string
     {
         if (!$this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
             return '';
@@ -447,7 +449,7 @@ class RecordListController
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                    'returnUrl' => $requestUri
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $params = [];

@@ -21,6 +21,9 @@ use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -79,6 +82,10 @@ class PageLayoutViewTest extends FunctionalTestCase
         ]);
         $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy'], [$eventDispatcher->reveal()]);
         $this->subject->_set('siteLanguages', $site->getLanguages());
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
 
     /**

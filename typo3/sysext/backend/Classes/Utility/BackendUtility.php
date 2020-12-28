@@ -2385,14 +2385,14 @@ class BackendUtility
      * Returns a URL with a command to TYPO3 Datahandler
      *
      * @param string $parameters Set of GET params to send. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-     * @param string $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI')
+     * @param string $redirectUrl Redirect URL, default is to use $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
      * @return string
      */
     public static function getLinkToDataHandlerAction($parameters, $redirectUrl = '')
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('tce_db') . $parameters . '&redirect=';
-        $url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
+        $url .= rawurlencode($redirectUrl ?: $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
         return $url;
     }
 
