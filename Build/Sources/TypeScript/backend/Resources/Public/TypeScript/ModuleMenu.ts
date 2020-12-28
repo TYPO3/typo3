@@ -200,6 +200,10 @@ class ModuleMenu {
   }
 
   private initialize(): void {
+    if (document.querySelector('.t3js-modulemenu') === null) {
+      return;
+    }
+
     const me = this;
     let deferred = $.Deferred();
     deferred.resolve();

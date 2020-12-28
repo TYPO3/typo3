@@ -23,7 +23,7 @@ class RegularEvent implements EventInterface {
     this.callback = callback;
   }
 
-  public bindTo(element: EventTarget) {
+  public bindTo(element: EventTarget): void {
     this.boundElement = element;
     element.addEventListener(this.eventName, this.callback);
   }
