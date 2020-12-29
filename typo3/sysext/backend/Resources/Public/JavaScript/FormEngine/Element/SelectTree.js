@@ -95,7 +95,7 @@ define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
         })
           .append('g')
           .attr('class', 'tree-check')
-          .on('click', function(d) {
+          .on('click', function(event, d) {
             _this.selectNode(d);
           });
 

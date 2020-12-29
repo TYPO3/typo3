@@ -620,7 +620,7 @@ module.exports = function (grunt) {
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
                        'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
                      */
-          'd3.js': 'd3/build/d3.min.js',
+          'd3.js': 'd3/dist/d3.min.js',
           /**
            * copy needed parts of jquery
            */

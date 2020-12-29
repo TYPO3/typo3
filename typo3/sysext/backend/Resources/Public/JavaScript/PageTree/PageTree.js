@@ -241,7 +241,6 @@ define(['jquery',
     };
 
     PageTree.prototype.nodeRightClick = function(node) {
-      d3.event.preventDefault();
       var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
 
       if ($node.length) {
@@ -369,7 +368,8 @@ define(['jquery',
         .call(this.dragDrop.drag())
         .attr('data-table', 'pages')
         .attr('data-context', 'tree')
-        .on('contextmenu', function(node) {
+        .on('contextmenu', function(event, node) {
+          event.preventDefault();
           _this.dispatch.call('nodeRightClick', node, this);
         });
 
@@ -382,7 +382,7 @@ define(['jquery',
         .attr('visibility', function(node) {
           return (node.stopPageTree && (node.depth !== 0)) ? 'visible' : 'hidden';
         })
-        .on('click', function(node) {
+        .on('click', function(event, node) {
           _this.setTemporaryMountPoint(node.identifier);
         });
 
@@ -439,7 +439,7 @@ define(['jquery',
 
           return position;
         })
-        .on('click', function(node) {
+        .on('click', function(event, node) {
           if (node.identifier !== 0) {
             clicks++;
 
@@ -633,8 +633,8 @@ define(['jquery',
         .style('height', _this.settings.nodeHeight + 'px')
         .attr('type', 'text')
         .attr('value', node.name)
-        .on('keydown', function() {
-          var code = d3.event.keyCode;
+        .on('keydown', function(event) {
+          var code = event.keyCode;
 
           if (code === 13 || code === 9) { //enter || tab
             var newName = this.value.trim();

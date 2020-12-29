@@ -240,8 +240,7 @@ define(
       /**
        * Add keydown handling to allow keyboard navigation inside the tree
        */
-      handleKeyboardInteraction: function() {
-        var e = d3.event;
+      handleKeyboardInteraction: function(e) {
         var currentNode = d3.select(e.target).datum();
         var keyTypesEnum = KeyTypes.KeyTypesEnum;
         var charCodes = [
@@ -720,18 +719,18 @@ define(
           .attr('height', this.settings.nodeHeight)
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('transform', this.getNodeBgTransform)
-          .on('mouseover', function(node) {
+          .on('mouseover', function(event, node) {
             _this.nodeBgEvents().mouseOver(node, this);
           })
-          .on('mouseout', function(node) {
+          .on('mouseout', function(event, node) {
             _this.nodeBgEvents().mouseOut(node, this);
           })
-          .on('click', function(node) {
+          .on('click', function(event, node) {
             _this.selectNode(node);
             _this.switchFocusNode(node);
           })
-          .on('contextmenu', function(node) {
-            _this.dispatch.call('nodeRightClick', node, this);
+          .on('contextmenu', function(event, node) {
+            _this.dispatch.call('nodeRightClick', event, node, this);
           });
       },
 
@@ -877,7 +876,7 @@ define(
           .attr('class', 'toggle')
           .attr('visibility', this.getToggleVisibility)
           .attr('transform', 'translate(-8, -8)')
-          .on('click', function(node) {
+          .on('click', function(event, node) {
             _this.chevronClick(node);
           });
 
@@ -900,7 +899,7 @@ define(
             .attr('class', 'node-icon-container')
             .attr('title', this.getNodeTitle)
             .attr('data-bs-toggle', 'tooltip')
-            .on('click', function(node) {
+            .on('click', function(event, node) {
               _this.clickOnIcon(node, this);
             });
 
@@ -955,7 +954,7 @@ define(
           })
           .attr('dy', 5)
           .attr('class', 'node-name')
-          .on('click', function(node) {
+          .on('click', function(event, node) {
             _this.clickOnLabel(node, this);
           });
       },
@@ -987,10 +986,10 @@ define(
           .attr('transform', this.getNodeTransform)
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
-          .on('mouseover', function(node) {
+          .on('mouseover', function(event, node) {
             _this.nodeBgEvents().mouseOver(node, this);
           })
-          .on('mouseout', function(node) {
+          .on('mouseout', function(event, node) {
             _this.nodeBgEvents().mouseOut(node, this);
           });
 

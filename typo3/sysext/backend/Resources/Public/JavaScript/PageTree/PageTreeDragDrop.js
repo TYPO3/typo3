@@ -90,7 +90,7 @@ define([
         return 'translate(' + (svgWidth - node.x) + ', -10)';
       };
 
-      self.dragStart = function(node) {
+      self.dragStart = function(event, node) {
         if (tree.settings.isDragAnDrop !== true || node.depth === 0) {
           return false;
         }
@@ -130,11 +130,11 @@ define([
             .attr('transform', self.getDropZoneCloseTransform(node));
         }
 
-        $.extend(self, _this.setDragStart());
+        $.extend(self, _this.setDragStart(event));
       };
 
-      self.dragDragged = function(node) {
-        if (_this.isDragNodeDistanceMore(self, 10)) {
+      self.dragDragged = function(event, node) {
+        if (_this.isDragNodeDistanceMore(event, self, 10)) {
           self.startDrag = true;
         } else {
           return false;
@@ -168,12 +168,12 @@ define([
         var left = 18;
         var top = 15;
 
-        if (d3.event.sourceEvent && d3.event.sourceEvent.pageX) {
-          left += d3.event.sourceEvent.pageX;
+        if (event.sourceEvent && event.sourceEvent.pageX) {
+          left += event.sourceEvent.pageX;
         }
 
-        if (d3.event.sourceEvent && d3.event.sourceEvent.pageY) {
-          top += d3.event.sourceEvent.pageY;
+        if (event.sourceEvent && event.sourceEvent.pageY) {
+          top += event.sourceEvent.pageY;
         }
 
         $(document).find('.node-dd').css({
@@ -217,7 +217,7 @@ define([
               .attr('data-open', 'false');
           }
 
-          _this.changeNodeClasses();
+          _this.changeNodeClasses(event);
         }
       };
 
@@ -355,7 +355,7 @@ define([
         _this.timeout = {}
       }
 
-      if (_this.tree.settings.nodeOver.node.hasChildren && !_this.tree.settings.nodeOver.node.expanded) {
+      if (_this.tree.settings.nodeOver.node && _this.tree.settings.nodeOver.node.hasChildren && !_this.tree.settings.nodeOver.node.expanded) {
         if (_this.timeout.node != _this.tree.settings.nodeOver.node) {
           _this.timeout.node = _this.tree.settings.nodeOver;
           clearTimeout(_this.timeout.time);
@@ -372,7 +372,7 @@ define([
       }
     },
 
-    changeNodeClasses: function() {
+    changeNodeClasses: function(event) {
       var elementNodeBg = this.tree.svg.select('.node-over');
       var $svg = $(this.tree.svg.node());
       var $nodesWrap = $svg.find('.nodes-wrapper');
@@ -389,7 +389,7 @@ define([
             .attr('width', '100%');
         }
 
-        var coordinates = d3.mouse(elementNodeBg.node());
+        var coordinates = d3.pointer(event, elementNodeBg.node());
         var y = coordinates[1];
 
         if (y < 3) {
@@ -506,29 +506,31 @@ define([
     /**
      * Check if node is dragged at least @distance
      *
+     * @param {Event} event
      * @param {Object} data
      * @param {Integer} distance
      * @returns {boolean}
      */
-    isDragNodeDistanceMore: function(data, distance) {
+    isDragNodeDistanceMore: function(event, data, distance) {
       return (data.startDrag ||
-        (((data.startPageX - distance) > d3.event.sourceEvent.pageX) ||
-          ((data.startPageX + distance) < d3.event.sourceEvent.pageX) ||
-          ((data.startPageY - distance) > d3.event.sourceEvent.pageY) ||
-          ((data.startPageY + distance) < d3.event.sourceEvent.pageY)));
+        (((data.startPageX - distance) > event.sourceEvent.pageX) ||
+          ((data.startPageX + distance) < event.sourceEvent.pageX) ||
+          ((data.startPageY - distance) > event.sourceEvent.pageY) ||
+          ((data.startPageY + distance) < event.sourceEvent.pageY)));
     },
 
     /**
      * Sets the same parameters on start for method drag() and dragToolbar()
      *
+     * @param {Event} event
      * @returns {{startPageX, startPageY, startDrag: boolean}}
      */
-    setDragStart: function() {
+    setDragStart: function(event) {
       $('body iframe').css({'pointer-events': 'none'});
 
       return {
-        startPageX: d3.event.sourceEvent.pageX,
-        startPageY: d3.event.sourceEvent.pageY,
+        startPageX: event.sourceEvent.pageX,
+        startPageY: event.sourceEvent.pageY,
         startDrag: false
       };
     },
@@ -550,17 +552,17 @@ define([
       var _this = this;
       var tree = _this.tree;
 
-      self.dragStart = function() {
+      self.dragStart = function(event) {
         self.id = $(this).data('node-type');
         self.name = $(this).attr('title');
         self.tooltip = $(this).attr('tooltip');
         self.icon = $(this).data('tree-icon');
         self.isDragged = false;
-        $.extend(self, _this.setDragStart());
+        $.extend(self, _this.setDragStart(event));
       };
 
-      self.dragDragged = function() {
-        if (_this.isDragNodeDistanceMore(self, 10)) {
+      self.dragDragged = function(event) {
+        if (_this.isDragNodeDistanceMore(event, self, 10)) {
           self.startDrag = true;
         } else {
           return;
@@ -582,12 +584,12 @@ define([
         var left = 18;
         var top = 15;
 
-        if (d3.event.sourceEvent && d3.event.sourceEvent.pageX) {
-          left += d3.event.sourceEvent.pageX;
+        if (event.sourceEvent && event.sourceEvent.pageX) {
+          left += event.sourceEvent.pageX;
         }
 
-        if (d3.event.sourceEvent && d3.event.sourceEvent.pageY) {
-          top += d3.event.sourceEvent.pageY;
+        if (event.sourceEvent && event.sourceEvent.pageY) {
+          top += event.sourceEvent.pageY;
         }
 
         _this.openNodeTimeout();
@@ -598,10 +600,10 @@ define([
           display: 'block'
         });
 
-        _this.changeNodeClasses();
+        _this.changeNodeClasses(event);
       };
 
-      self.dragEnd = function() {
+      self.dragEnd = function(event) {
         _this.setDragEnd();
 
         if (!self.startDrag) {
@@ -812,8 +814,8 @@ define([
         .style('height', _this.tree.settings.nodeHeight + 'px')
         .attr('text', 'text')
         .attr('value', newNode.name)
-        .on('keydown', function() {
-          var code = d3.event.keyCode;
+        .on('keydown', function(event) {
+          var code = event.keyCode;
 
           if (code === 13 || code === 9) { // enter || tab
             _this.tree.nodeIsEdit = false;
