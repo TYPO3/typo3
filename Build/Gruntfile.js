@@ -620,12 +620,7 @@ module.exports = function (grunt) {
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
                        'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
                      */
-          /**
-           * d3/d3.js requires a patch  https://github.com/d3/d3-request/pull/34/files
-           * to solve issue with basic auth in Chrome 64, see https://forge.typo3.org/issues/83741
-           * for now the file is manually patched by us, thus can't be automatically updated
-           */
-          // 'd3/d3.js': 'd3/build/d3.min.js',
+          'd3.js': 'd3/build/d3.min.js',
           /**
            * copy needed parts of jquery
            */

@@ -18,6 +18,7 @@ define(
   [
     'jquery',
     'd3',
+    'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/ContextMenu',
     'TYPO3/CMS/Backend/Modal',
     'TYPO3/CMS/Backend/Severity',
@@ -26,7 +27,7 @@ define(
     'TYPO3/CMS/Backend/Tooltip',
     'TYPO3/CMS/Backend/Enum/KeyTypes'
   ],
-  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
+  function($, d3, AjaxRequest, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
     'use strict';
 
     /**
@@ -416,8 +417,17 @@ define(
         var _this = this;
         _this.nodesAddPlaceholder();
 
-        d3.json(this.settings.dataUrl, function(error, json) {
-          if (error) {
+        (new AjaxRequest(this.settings.dataUrl))
+          .get({cache: 'no-cache'})
+          .then(function(response) {
+            return response.resolve();
+          })
+          .then(function(json) {
+            var nodes = Array.isArray(json) ? json : [];
+            _this.replaceData(nodes);
+            _this.nodesRemovePlaceholder();
+          })
+          .catch(function(error) {
             var title = TYPO3.lang.pagetree_networkErrorTitle;
             var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
@@ -431,12 +441,7 @@ define(
 
             _this.nodesRemovePlaceholder();
             throw error;
-          }
-
-          var nodes = Array.isArray(json) ? json : [];
-          _this.replaceData(nodes);
-          _this.nodesRemovePlaceholder();
-        });
+          });
       },
 
       /**

@@ -16,6 +16,7 @@
  */
 define(['jquery',
     'd3',
+    'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
     'TYPO3/CMS/Backend/SvgTree',
@@ -23,7 +24,7 @@ define(['jquery',
     'TYPO3/CMS/Backend/Storage/Persistent',
     'TYPO3/CMS/Backend/Notification'
   ],
-  function($, d3, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
+  function($, d3, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
     'use strict';
 
     /**
@@ -169,38 +170,35 @@ define(['jquery',
 
       _this.nodesAddPlaceholder();
 
-      d3.request(top.TYPO3.settings.ajaxUrls.record_process)
-        .header('X-Requested-With', 'XMLHttpRequest')
-        .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function(error) {
-          _this.errorNotification(error);
-          throw error;
+      (new AjaxRequest(top.TYPO3.settings.ajaxUrls.record_process))
+        .post(params, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
         })
-        .post(params, function(data) {
-          if (data) {
-            var response = JSON.parse(data.response);
-
-            if (response && response.hasErrors) {
-              if (response.messages) {
-                $.each(response.messages, function(id, message) {
-                  Notification.error(
-                    message.title,
-                    message.message
-                  );
-                });
-              } else {
-                _this.errorNotification();
-              }
-
-              _this.nodesContainer.selectAll('.node').remove();
-              _this.update();
-              _this.nodesRemovePlaceholder();
+        .then(function(response) {
+          return response.resolve();
+        })
+        .then(function(response) {
+          if (response && response.hasErrors) {
+            if (response.messages) {
+              $.each(response.messages, function(id, message) {
+                Notification.error(
+                  message.title,
+                  message.message
+                );
+              });
             } else {
-              _this.refreshOrFilterTree();
+              _this.errorNotification();
             }
+
+            _this.nodesContainer.selectAll('.node').remove();
+            _this.update();
+            _this.nodesRemovePlaceholder();
           } else {
-            _this.errorNotification();
+            _this.refreshOrFilterTree();
           }
+        })
+        .catch(function(error) {
+          _this.errorNotification(error);
         });
     };
 
@@ -315,23 +313,14 @@ define(['jquery',
       }
       var _this = this;
       _this.nodesAddPlaceholder();
-      d3.json(_this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth, function(error, json) {
-          if (error) {
-            var title = TYPO3.lang.pagetree_networkErrorTitle;
-            var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
-            if (error && error.target && (error.target.status || error.target.statusText)) {
-              title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
-            }
 
-            Notification.error(
-              title,
-              desc);
-
-            _this.nodesRemovePlaceholder();
-            throw error;
-          }
-
+      (new AjaxRequest(_this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth))
+        .get({cache: 'no-cache'})
+        .then(function(response) {
+          return response.resolve();
+        })
+        .then(function(json) {
           var nodes = Array.isArray(json) ? json : [];
           //first element is a parent
           nodes.shift();
@@ -347,8 +336,22 @@ define(['jquery',
           _this.update();
           _this.nodesRemovePlaceholder();
           _this.switchFocusNode(parentNode);
-        });
+        })
+        .catch(function (error) {
+          var title = TYPO3.lang.pagetree_networkErrorTitle;
+          var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
+          if (error && error.target && (error.target.status || error.target.statusText)) {
+            title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
+          }
+
+          Notification.error(
+            title,
+            desc);
+
+          _this.nodesRemovePlaceholder();
+          throw error;
+        });
     };
 
     PageTree.prototype.updateNodeBgClass = function(nodeBg) {
@@ -457,8 +460,22 @@ define(['jquery',
       var _this = this;
       _this.nodesAddPlaceholder();
 
-      d3.json(_this.settings.filterUrl + '&q=' + _this.searchQuery, function(error, json) {
-        if (error) {
+      (new AjaxRequest(_this.settings.filterUrl + '&q=' + _this.searchQuery))
+        .get({cache: 'no-cache'})
+        .then(function(response) {
+          return response.resolve();
+        })
+        .then(function(json) {
+          var nodes = Array.isArray(json) ? json : [];
+          if (nodes.length > 0) {
+            if (_this.originalNodes.length === 0) {
+              _this.originalNodes = JSON.stringify(_this.nodes);
+            }
+            _this.replaceData(nodes);
+          }
+          _this.nodesRemovePlaceholder();
+        })
+        .catch(function(error) {
           var title = TYPO3.lang.pagetree_networkErrorTitle;
           var desc = TYPO3.lang.pagetree_networkErrorDesc;
 
@@ -472,17 +489,7 @@ define(['jquery',
 
           _this.nodesRemovePlaceholder();
           throw error;
-        }
-
-        var nodes = Array.isArray(json) ? json : [];
-        if (nodes.length > 0) {
-          if (_this.originalNodes.length === 0) {
-            _this.originalNodes = JSON.stringify(_this.nodes);
-          }
-          _this.replaceData(nodes);
-        }
-        _this.nodesRemovePlaceholder();
-      });
+        });
     };
 
     PageTree.prototype.refreshOrFilterTree = function() {
@@ -520,37 +527,34 @@ define(['jquery',
       var params = 'pid=' + pid;
       var _this = this;
 
-      d3.request(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point)
-        .header('X-Requested-With', 'XMLHttpRequest')
-        .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function(error) {
-          _this.errorNotification(error);
-          throw error;
+      (new AjaxRequest(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point))
+        .post(params, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
         })
-        .post(params, function(data) {
-          if (data) {
-            var response = JSON.parse(data.response);
-
-            if (response && response.hasErrors) {
-              if (response.messages) {
-                $.each(response.messages, function(id, message) {
-                  Notification.error(
-                    message.title,
-                    message.message
-                  );
-                });
-              } else {
-                _this.errorNotification();
-              }
-
-              _this.update();
+        .then(function(response) {
+          return response.resolve();
+        })
+        .then(function(response) {
+          if (response && response.hasErrors) {
+            if (response.messages) {
+              $.each(response.messages, function(id, message) {
+                Notification.error(
+                  message.title,
+                  message.message
+                );
+              });
             } else {
-              _this.addMountPoint(response.mountPointPath);
-              _this.refreshOrFilterTree();
+              _this.errorNotification();
             }
+
+            _this.update();
           } else {
-            _this.errorNotification();
+            _this.addMountPoint(response.mountPointPath);
+            _this.refreshOrFilterTree();
           }
+        })
+        .catch(function(error) {
+          _this.errorNotification(error);
         });
     };
 
@@ -569,41 +573,37 @@ define(['jquery',
       //remove old node from svg tree
       _this.nodesAddPlaceholder(node);
 
-      d3.request(top.TYPO3.settings.ajaxUrls.record_process)
-        .header('X-Requested-With', 'XMLHttpRequest')
-        .header('Content-Type', 'application/x-www-form-urlencoded')
-        .on('error', function(error) {
-          _this.errorNotification(error);
-          throw error;
+      (new AjaxRequest(top.TYPO3.settings.ajaxUrls.record_process))
+        .post(params, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
         })
-        .post(params, function(data) {
-          if (data) {
-            var response = JSON.parse(data.response);
-
-            if (response && response.hasErrors) {
-              if (response.messages) {
-                $.each(response.messages, function(id, message) {
-                  Notification.error(
-                    message.title,
-                    message.message
-                  );
-                });
-              } else {
-                _this.errorNotification();
-              }
-
-              _this.nodesAddPlaceholder();
-              _this.refreshOrFilterTree();
+        .then(function(response) {
+          return response.resolve();
+        })
+        .then(function(response) {
+          if (response && response.hasErrors) {
+            if (response.messages) {
+              $.each(response.messages, function(id, message) {
+                Notification.error(
+                  message.title,
+                  message.message
+                );
+              });
             } else {
-              node.name = node.newName;
-              _this.svg.select('.node-placeholder[data-uid="' + node.stateIdentifier + '"]').remove();
-              _this.refreshOrFilterTree();
-              _this.nodesRemovePlaceholder();
+              _this.errorNotification();
             }
-          } else {
-            _this.errorNotification();
-          }
 
+            _this.nodesAddPlaceholder();
+            _this.refreshOrFilterTree();
+          } else {
+            node.name = node.newName;
+            _this.svg.select('.node-placeholder[data-uid="' + node.stateIdentifier + '"]').remove();
+            _this.refreshOrFilterTree();
+            _this.nodesRemovePlaceholder();
+          }
+        })
+        .catch(function(error) {
+          _this.errorNotification(error);
         });
     };
 
