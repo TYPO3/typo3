@@ -773,6 +773,8 @@ define([
       newNode.y = newNode.y || newNode.target.y;
       newNode.x = newNode.x || newNode.target.x;
 
+      _this.tree.nodeIsEdit = true;
+
       if (options.position === 'in') {
         newNode.depth++;
         newNode.parents.unshift(index);
@@ -800,7 +802,6 @@ define([
       _this.tree.prepareDataForVisibleNodes();
       _this.tree.update();
       _this.tree.removeEditedText();
-      _this.tree.nodeIsEdit = true;
 
       d3.select(_this.tree.svg.node().parentNode)
         .append('input')
