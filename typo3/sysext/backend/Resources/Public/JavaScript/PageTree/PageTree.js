@@ -344,7 +344,11 @@ define(['jquery',
           _this.prepareDataForVisibleNodes();
           _this.update();
           _this.nodesRemovePlaceholder();
-          _this.switchFocusNode(parentNode);
+
+          // Focus node only if it's not currently in edit mode
+          if (!_this.nodeIsEdit) {
+            _this.switchFocusNode(parentNode);
+          }
         });
 
     };
