@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
@@ -143,6 +144,51 @@ class ObjectConverterTest extends FunctionalTestCase
         );
 
         self::assertSame('foo', $result->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function collectionTypesAreConsideredInMapping()
+    {
+        $class = new class() {
+            /**
+             * @var ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal>
+             */
+            protected ObjectStorage $collection;
+
+            /**
+             * @return ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal>
+             */
+            public function getCollection(): ObjectStorage
+            {
+                return $this->collection;
+            }
+
+            /**
+             * @param ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal> $collection
+             */
+            public function setCollection(ObjectStorage $collection): void
+            {
+                $this->collection = $collection;
+            }
+        };
+
+        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapperConfiguration = new PropertyMappingConfiguration();
+        $propertyMapperConfiguration->allowAllProperties();
+        $propertyMapperConfiguration->forProperty('collection.*')->allowAllProperties();
+
+        $result = $propertyMapper->convert(
+            ['collection' => [['name' => 'Zebra'], ['name' => 'Lion']]],
+            get_class($class),
+            $propertyMapperConfiguration
+        );
+
+        self::assertSame(2, $result->getCollection()->count());
+        self::assertSame('Zebra', $result->getCollection()->current()->getName());
+        $result->getCollection()->next();
+        self::assertSame('Lion', $result->getCollection()->current()->getName());
     }
 
     /**

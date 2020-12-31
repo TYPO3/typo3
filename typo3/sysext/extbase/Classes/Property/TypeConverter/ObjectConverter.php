@@ -151,6 +151,10 @@ class ObjectConverter extends AbstractTypeConverter
             if ($methodParameter->getType() === null) {
                 throw new InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
             }
+            $property = $classSchema->getProperty($propertyName);
+            if ($property->getElementType() !== null) {
+                return $methodParameter->getType() . '<' . $property->getElementType() . '>';
+            }
             return $methodParameter->getType();
         }
         try {
