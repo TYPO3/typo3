@@ -165,9 +165,10 @@ define(['jquery',
     }
 
     if (isMultiple || isList) {
+      var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
+
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
-        var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
         $fieldEl.find('option').each(function() {
           $availableFieldEl
             .find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]')
@@ -231,6 +232,7 @@ define(['jquery',
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
         FormEngineValidation.markFieldAsChanged($originalFieldEl);
+        FormEngine.Validation.validateField($availableFieldEl);
       }
 
     } else {
@@ -247,8 +249,6 @@ define(['jquery',
 
       // Change the selected value
       $fieldEl.val(value);
-    }
-    if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
       FormEngine.Validation.validateField($fieldEl);
     }
   };

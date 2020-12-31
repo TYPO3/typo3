@@ -318,9 +318,12 @@ define([
             $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
             if ($relatedField.length) {
               selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
-            } else {
+            } else if (field instanceof HTMLSelectElement) {
               selected = field.querySelectorAll('option:checked').length;
+            } else {
+              selected = field.querySelectorAll('input:checked').length;
             }
+
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
