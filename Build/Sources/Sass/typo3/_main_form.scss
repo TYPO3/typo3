@@ -339,7 +339,8 @@ select {
         display: table-cell;
         width: 100%;
 
-        .col-icon img {
+        .col-icon img,
+        .inline-icon img {
             max-width: 2em;
             max-height: 2em;
         }

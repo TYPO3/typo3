@@ -162,7 +162,7 @@ class SelectCheckBoxElement extends AbstractFormElement
             $fieldWizardHtml = $fieldWizardResult['html'];
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
-            $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
+            $html[] = '<div class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
             $html[] = $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
@@ -198,11 +198,11 @@ class SelectCheckBoxElement extends AbstractFormElement
                                             . ($item['checked'] ? 'checked=checked ' : '')
                                             . ($item['disabled'] ? 'disabled=disabled ' : '') . '>';
                         $tableRows[] =    '</td>';
-                        $tableRows[] =    '<td class="col-icon">';
-                        $tableRows[] =        '<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>';
-                        $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="col-title">';
-                        $tableRows[] =        '<label class="label-block nowrap-disabled" for="' . $item['id'] . '">' . htmlspecialchars($this->appendValueToLabelInDebugMode($item['title'], $item['value']), ENT_COMPAT, 'UTF-8', false) . '</label>';
+                        $tableRows[] =        '<label class="label-block nowrap-disabled" for="' . $item['id'] . '">';
+                        $tableRows[] =            '<span class="inline-icon">' . $item['icon'] . '</span>';
+                        $tableRows[] =            htmlspecialchars($this->appendValueToLabelInDebugMode($item['title'], $item['value']), ENT_COMPAT, 'UTF-8', false);
+                        $tableRows[] =        '</label>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="text-right">' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';
@@ -233,7 +233,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =                    '<th class="col-checkbox">';
                     $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" data-bs-trigger="hover" data-bs-placement="right" data-title="' . $title . '" data-bs-toggle="tooltip" />';
                     $html[] =                    '</th>';
-                    $html[] =                    '<th class="col-title" colspan="2"><label for="' . $checkboxId . '">' . $title . '</label></th>';
+                    $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
                     $html[] =                    '<th class="text-right">' . $resetGroupBtn . '</th>';
                     $html[] =                '</tr>';
                     $html[] =            '</thead>';

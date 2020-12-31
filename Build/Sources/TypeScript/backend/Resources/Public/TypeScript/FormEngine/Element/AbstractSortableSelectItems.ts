@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 
@@ -117,6 +116,8 @@ export abstract class AbstractSortableSelectItems {
       e.preventDefault();
 
       const relatedFieldName = target.dataset.fieldname;
+      const relatedField = FormEngine.getFieldElement(relatedFieldName).get(0) as HTMLSelectElement;
+      const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName,'_avail').get(0) as HTMLSelectElement;
 
       if (target.classList.contains('t3js-btn-moveoption-top')) {
         AbstractSortableSelectItems.moveOptionToTop(fieldElement);
@@ -129,14 +130,14 @@ export abstract class AbstractSortableSelectItems {
       } else if (target.classList.contains('t3js-btn-removeoption')) {
         AbstractSortableSelectItems.removeOption(
           fieldElement,
-          <HTMLSelectElement>FormEngine.getFieldElement(relatedFieldName, '_avail').get(0),
+          relatedAvailableValuesField,
         );
       }
 
-      FormEngine.updateHiddenFieldValueFromSelect(fieldElement, FormEngine.getFieldElement(relatedFieldName).get(0));
+      FormEngine.updateHiddenFieldValueFromSelect(fieldElement, relatedField);
       FormEngine.legacyFieldChangedCb();
-      FormEngineValidation.markFieldAsChanged($(fieldElement));
-      FormEngineValidation.validateField(fieldElement);
+      FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
+      FormEngineValidation.validateField(relatedAvailableValuesField);
     });
   }
 }
