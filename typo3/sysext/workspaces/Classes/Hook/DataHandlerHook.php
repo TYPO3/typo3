@@ -341,13 +341,13 @@ class DataHandlerHook
         $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         if ($tableSupportsVersioning) {
             // Create version of record first, if it does not exist
-            if (empty($workspaceVersion['uid'])) {
+            if (empty($versionedRecord['uid'])) {
                 $dataHandler->versionizeRecord($table, $uid, 'MovePointer');
                 $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
                 if ((int)$resolvedPid !== (int)$propArr['pid']) {
                     $this->moveRecord_processFields($dataHandler, $resolvedPid, $table, $uid);
                 }
-            } elseif ($dataHandler->isRecordCopied($table, $uid) && (int)$dataHandler->copyMappingArray[$table][$uid] === (int)$workspaceVersion['uid']) {
+            } elseif ($dataHandler->isRecordCopied($table, $uid) && (int)$dataHandler->copyMappingArray[$table][$uid] === (int)$versionedRecord['uid']) {
                 // If the record has been versioned before (e.g. cascaded parent-child structure), create only the move-placeholders
                 if ((int)$resolvedPid !== (int)$propArr['pid']) {
                     $this->moveRecord_processFields($dataHandler, $resolvedPid, $table, $uid);
