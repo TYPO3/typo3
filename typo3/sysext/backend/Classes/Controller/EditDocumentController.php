@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
+use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
@@ -56,6 +57,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Main backend controller almost always used if some database record is edited in the backend.
@@ -1211,7 +1213,7 @@ class EditDocumentController
                                 $title = $this->getLanguageService()
                                     ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
                                 $editForm .= $this->getInfobox($message, $title);
-                            } catch (DatabaseRecordException $e) {
+                            } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
                                 $editForm .= $this->getInfobox($e->getMessage());
                             }
                         } // End of for each uid
@@ -1995,9 +1997,8 @@ class EditDocumentController
      *
      ***************************/
     /**
-     * Make selector box for creating new translation for a record or switching to edit the record in an existing
-     * language.
-     * Displays only languages which are available for the current page.
+     * Make selector box for creating new translation for a record or switching to edit the record
+     * in an existing language. Displays only languages which are available for the current page.
      *
      * @param string $table Table name
      * @param int $uid Uid for which to create a new language
@@ -2005,10 +2006,11 @@ class EditDocumentController
      */
     protected function languageSwitch(string $table, int $uid, $pid = null)
     {
+        $backendUser = $this->getBackendUser();
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
         // Table editable and activated for languages?
-        if ($this->getBackendUser()->check('tables_modify', $table)
+        if ($backendUser->check('tables_modify', $table)
             && $languageField
             && $transOrigPointerField
         ) {
@@ -2057,6 +2059,8 @@ class EditDocumentController
                     } else {
                         $rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
                     }
+                    // List of language id's that should not be added to the selector
+                    $noAddOption = [];
                     if ($rowCurrent[$transOrigPointerField] || $currentLanguage === 0) {
                         // Get record in other languages to see what's already available
 
@@ -2066,7 +2070,7 @@ class EditDocumentController
                         $queryBuilder->getRestrictions()
                             ->removeAll()
                             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+                            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
 
                         $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
                             ->from($table)
@@ -2087,6 +2091,20 @@ class EditDocumentController
                             ->execute();
 
                         while ($row = $result->fetch()) {
+                            if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                                $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
+                                if (!empty($workspaceVersion)) {
+                                    $versionState = VersionState::cast($workspaceVersion['t3ver_state']);
+                                    if ($versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+                                        // If a workspace delete placeholder exists for this translation: Mark
+                                        // this language as "don't add to selector" and continue with next row,
+                                        // otherwise an edit link to a delete placeholder would be created, which
+                                        // does not make sense.
+                                        $noAddOption[] = (int)$row[$languageField];
+                                        continue;
+                                    }
+                                }
+                            }
                             $rowsByLang[$row[$languageField]] = $row;
                         }
                     }
@@ -2129,7 +2147,7 @@ class EditDocumentController
                             }
                             $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                         }
-                        if ($addOption) {
+                        if ($addOption && !in_array($languageId, $noAddOption, true)) {
                             $menuItem = $languageMenu->makeMenuItem()
                                 ->setTitle($selectorOptionLabel)
                                 ->setHref($href);

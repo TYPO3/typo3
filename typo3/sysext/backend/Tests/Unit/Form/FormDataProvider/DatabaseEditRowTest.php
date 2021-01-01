@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
+use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -131,6 +132,28 @@ class DatabaseEditRowTest extends UnitTestCase
             self::assertSame('tt_content', $e->getTableName());
             self::assertSame(10, $e->getUid());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function addDataThrowsWorkspaceDeletePlaceholderExeptionWithDeletePlaceholderRecord()
+    {
+        $this->expectException(DatabaseRecordWorkspaceDeletePlaceholderException::class);
+        $this->expectExceptionCode(1608658396);
+        $GLOBALS['TCA']['tt_content']['ctrl']['versioningWS'] = 1;
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'edit',
+            'vanillaUid' => 10,
+        ];
+        $resultRow = [
+            'uid' => 10,
+            'pid' => 123,
+            't3ver_state' => 2,
+        ];
+        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->addData($input);
     }
 
     /**
