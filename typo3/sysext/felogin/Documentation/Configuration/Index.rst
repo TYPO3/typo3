@@ -76,11 +76,6 @@ templateFile
    Description
          The Template File
 
-         In TYPO3 6.2 the frontend form is not shown if you use
-         css_styled_content version 4.5. In this case you must define the
-         template in TypoScript constants:
-         :code:`styles.content.loginform.templateFile = EXT:felogin/template.html`
-
 
 
 .. _feloginbaseurl:
