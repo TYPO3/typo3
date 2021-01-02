@@ -44,3 +44,11 @@ entities:
           languageVariants:
             - self: {id: 1101, title: 'DE: Willkommen', language: 1, slug: '/willkommen'}
             - self: {id: 1102, title: 'NL: Welkom', language: 3, slug: '/welkom'}
+        - self: {id: 1200, title: 'EN: Contact', slug: '/contact', canonical_link: 'https://www.typo3.org'}
+          languageVariants:
+            - self: {id: 1201, title: 'DE: Kontakt', language: 1, slug: '/kontakt'}
+            - self: {id: 1202, title: 'DE-CH: Kontakt', language: 2, slug: '/kontakt'}
+        - self: {id: 1300, title: 'EN: About', slug: '/about'}
+          languageVariants:
+            - self: {id: 1301, title: 'DE: Uber', language: 1, slug: '/uber'}
+            - self: {id: 1302, title: 'DE-CH: Uber', language: 2, slug: '/uber', canonical_link: 'https://acme.com/de/uber'}
