@@ -121,10 +121,7 @@ class AjaxDataHandler {
 
       // make the AJAX call to toggle the visibility
       this.process(params).then((result: ResponseInterface): void => {
-        // print messages on errors
-        if (result.hasErrors) {
-          this.handleErrors(result);
-        } else {
+        if (!result.hasErrors) {
           // adjust overlay icon
           this.toggleRow($rowElement);
         }
@@ -242,10 +239,7 @@ class AjaxDataHandler {
         $iconElement = $anchorElement.find(Identifiers.icon);
         $iconElement.replaceWith(icon);
       });
-      // print messages on errors
-      if (result.hasErrors) {
-        this.handleErrors(result);
-      } else {
+      if (!result.hasErrors) {
         const $panel = $anchorElement.closest('.panel');
         const $panelHeading = $panel.find('.panel-heading');
         const $translatedRowElements = $table.find('[data-l10nparent=' + uid + ']').closest('tr[data-uid]');
