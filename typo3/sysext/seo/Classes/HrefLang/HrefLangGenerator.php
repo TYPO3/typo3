@@ -17,8 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\HrefLang;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor;
@@ -59,16 +65,25 @@ class HrefLangGenerator
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
         /** @var SiteLanguage $siteLanguage */
         $siteLanguage = $event->getRequest()->getAttribute('language');
+        $pageId = (int)$this->getTypoScriptFrontendController()->id;
+
         foreach ($languages['languagemenu'] as $language) {
             if ($language['available'] === 1 && !empty($language['link'])) {
+                $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $event->getRequest());
+                if (!empty($page['canonical_link'])) {
+                    // do not set hreflang when canonical is set
+                    continue;
+                }
+
                 $href = $this->getAbsoluteUrl($language['link'], $siteLanguage);
                 $hrefLangs[$language['hreflang']] = $href;
             }
         }
 
         if (count($hrefLangs) > 1) {
-            $href = $this->getAbsoluteUrl($languages['languagemenu'][0]['link'], $siteLanguage);
-            $hrefLangs['x-default'] = $href;
+            if (array_key_exists($languages['languagemenu'][0]['hreflang'], $hrefLangs)) {
+                $hrefLangs['x-default'] = $hrefLangs[$languages['languagemenu'][0]['hreflang']];
+            }
         }
 
         $event->setHrefLangs($hrefLangs);
@@ -99,5 +114,25 @@ class HrefLangGenerator
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getTranslatedPageRecord(int $pageId, int $languageId, ServerRequestInterface $request): array
+    {
+        $site = $request->getAttribute('site');
+        if (!$site instanceof SiteInterface) {
+            return $this->getTypoScriptFrontendController()->page;
+        }
+
+        $targetSiteLanguage = $site->getLanguageById($languageId);
+        $languageAspect = LanguageAspectFactory::createFromSiteLanguage($targetSiteLanguage);
+
+        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('language', $languageAspect);
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        if ($languageId > 0) {
+            return $pageRepository->getPageOverlay($pageId, $languageId);
+        }
+        return $pageRepository->getPage($pageId);
     }
 }
