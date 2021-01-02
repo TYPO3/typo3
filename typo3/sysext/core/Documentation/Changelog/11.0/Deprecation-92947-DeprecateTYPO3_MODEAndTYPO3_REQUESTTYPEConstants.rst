@@ -168,7 +168,7 @@ is called before a controller action is executed. It should be noted that fallin
 :php:`$GLOBALS['TYPO3_REQUEST']` is a technical debt in itself, the TYPO3 core will try to reduce the need
 for this fallback over time. A call using this fallback looks like::
 
-    if (ApplicationType::fromRequest($GLOBALS['REQUEST_TYPE'])->isFrontend())
+    if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend())
         ...
     }
 
