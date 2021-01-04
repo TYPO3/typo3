@@ -163,6 +163,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface
      */
     protected $currentFinisher;
+    
+    /**
+     * @var string
+     */
+    protected $honeypotIdentifier = 'name_name';
 
     /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
@@ -322,7 +327,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return;
         }
 
-        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
+        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse', 'identifier']);
 
         if (!$this->isFirstRequest()) {
             $elementsCount = count($this->lastDisplayedPage->getElements());
@@ -353,7 +358,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             return;
         }
 
-        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse']);
+        ArrayUtility::assertAllArrayKeysAreValid($renderingOptions['honeypot'], ['enable', 'formElementToUse', 'identifier']);
 
         if (!$this->isAfterLastPage()) {
             $elementsCount = count($this->currentPage->getElements());
@@ -373,7 +378,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
             $elementsCount = count($this->currentPage->getElements());
             $randomElementNumber = random_int(0, $elementsCount - 1);
-            $honeypotName = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, random_int(5, 26));
+            if (isset($renderingOptions['honeypot']['identifier']) && !empty($renderingOptions['honeypot']['identifier'])) {
+                $honeypotName = $renderingOptions['honeypot']['identifier'];
+            } else {
+                $honeypotName = $this->honeypotIdentifier;
+            }
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];
             $honeypotElement = $this->currentPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
