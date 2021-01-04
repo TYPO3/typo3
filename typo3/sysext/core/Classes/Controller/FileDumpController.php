@@ -81,30 +81,38 @@ class FileDumpController
             }
         }
 
+        $processingInstructions = [];
+
         // Apply cropping, if possible
-        if (!$file instanceof ProcessedFile) {
-            $cropVariant = $parameters['cv'] ?: 'default';
+        if (!empty($parameters['cv'])) {
+            $cropVariant = $parameters['cv'];
             $cropString = $file instanceof FileReference ? $file->getProperty('crop') : '';
             $cropArea = CropVariantCollection::create((string)$cropString)->getCropArea($cropVariant);
-            $processingInstructions = [
-                'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file),
-            ];
+            $processingInstructions = array_merge(
+                $processingInstructions,
+                [
+                    'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file),
+                ]
+            );
+        }
 
-            // Apply width/height, if given
-            if (!empty($parameters['s'])) {
-                $size = GeneralUtility::trimExplode(':', $parameters['s']);
-                $processingInstructions = array_merge(
-                    $processingInstructions,
-                    [
-                        'width' => $size[0] ?? null,
-                        'height' => $size[1] ?? null,
-                        'minWidth' => $size[2] ? (int)$size[2] : null,
-                        'minHeight' => $size[3] ? (int)$size[3] : null,
-                        'maxWidth' => $size[4] ? (int)$size[4] : null,
-                        'maxHeight' => $size[5] ? (int)$size[5] : null
-                    ]
-                );
-            }
+        // Apply width/height, if given
+        if (!empty($parameters['s'])) {
+            $size = GeneralUtility::trimExplode(':', $parameters['s']);
+            $processingInstructions = array_merge(
+                $processingInstructions,
+                [
+                    'width' => $size[0] ?? null,
+                    'height' => $size[1] ?? null,
+                    'minWidth' => $size[2] ? (int)$size[2] : null,
+                    'minHeight' => $size[3] ? (int)$size[3] : null,
+                    'maxWidth' => $size[4] ? (int)$size[4] : null,
+                    'maxHeight' => $size[5] ? (int)$size[5] : null
+                ]
+            );
+        }
+
+        if (!empty($processingInstructions) && !($file instanceof ProcessedFile)) {
             if (is_callable([$file, 'getOriginalFile'])) {
                 // Get the original file from the file reference
                 $file = $file->getOriginalFile();
