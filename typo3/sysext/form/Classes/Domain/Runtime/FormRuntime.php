@@ -163,11 +163,16 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface
      */
     protected $currentFinisher;
-    
+
     /**
      * @var string
      */
     protected $honeypotIdentifier = 'name_name';
+
+    /**
+     * @var string
+     */
+    protected $honeypotPlaceholder = 'Name';
 
     /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
@@ -395,6 +400,13 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
                 $this->currentPage->moveElementBefore($honeypotElement, $referenceElement);
             }
             $this->setHoneypotNameInSession($this->currentPage, $honeypotName);
+
+            // Add placeholder
+            if (isset($renderingOptions['honeypot']['placeholder']) && !empty($renderingOptions['honeypot']['placeholder'])) {
+                $honeypotElement->setProperty('placeholder', $renderingOptions['honeypot']['placeholder']);
+            } else {
+                $honeypotElement->setProperty('placeholder', $this->honeypotPlaceholder);
+            }
         }
     }
 
