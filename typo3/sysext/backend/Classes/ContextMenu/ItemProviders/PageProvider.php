@@ -448,7 +448,9 @@ class PageProvider extends RecordProvider
      */
     protected function canBeViewed(): bool
     {
-        return !$this->isRoot() && !$this->isDeleted();
+        return !$this->isRoot()
+            && !$this->isDeleted()
+            && !$this->isExcludedDoktype();
     }
 
     /**
@@ -615,5 +617,21 @@ class PageProvider extends RecordProvider
             return $this->backendUser->checkLanguageAccess((int)$this->record[$languageField]);
         }
         return true;
+    }
+
+    /**
+     * Returns true if the page doktype is excluded
+     *
+     * @return bool
+     */
+    protected function isExcludedDoktype(): bool
+    {
+        $excludeDoktypes = [
+            PageRepository::DOKTYPE_RECYCLER,
+            PageRepository::DOKTYPE_SYSFOLDER,
+            PageRepository::DOKTYPE_SPACER
+        ];
+
+        return in_array((int)($this->record['doktype'] ?? 0), $excludeDoktypes, true);
     }
 }
