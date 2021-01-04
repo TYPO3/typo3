@@ -324,7 +324,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
         $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
         $html[] =                               ' id="' . $availableOptionsFieldId . '"';
-        $html[] =                               ' data-formengine-input-name="' . htmlspecialchars($elementName) . '"';
         $html[] =                               ' class="form-select t3js-formengine-select-itemstoselect"';
         $html[] =                               ' size="' . $size . '"';
         $html[] =                               ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
