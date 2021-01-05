@@ -23,11 +23,6 @@ The following TSconfig options have been added:
 
 .. code-block:: typoscript
 
-   # defines whether a preview link should be generated and populating
-   # the sys_preview database. A new variable {previewLink}
-   # is then available within the templated email
-   tx_workspaces.emails.stageChangeNotification.generatePreviewLink = 0
-
    # path where to look for templates / layouts / partials
    tx_workspaces.emails.layoutRootPaths.100 = EXT:myproject/...
    tx_workspaces.emails.partialRootPaths.100 = EXT:myproject/...

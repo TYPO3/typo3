@@ -4,7 +4,6 @@ defined('TYPO3_MODE') or die();
 
 // add default notification options to every page
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-tx_workspaces.emails.stageChangeNotification.generatePreviewLink = 0
 tx_workspaces.emails.layoutRootPaths.90 = EXT:workspaces/Resources/Private/Layouts/
 tx_workspaces.emails.partialRootPaths.90 = EXT:workspaces/Resources/Private/Partials/
 tx_workspaces.emails.templateRootPaths.90 = EXT:workspaces/Resources/Private/Templates/Email/
