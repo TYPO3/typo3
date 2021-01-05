@@ -51,6 +51,8 @@ use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
  */
 class EnvironmentController extends AbstractController
 {
+    private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf'];
+
     /**
      * @var LateBootService
      */
@@ -911,6 +913,7 @@ class EnvironmentController extends AbstractController
         $imageProcessor->filenamePrefix = 'installTool-';
         $imageProcessor->dontCompress = true;
         $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
+        $imageProcessor->setImageFileExt(self::IMAGE_FILE_EXT);
         return $imageProcessor;
     }
 
@@ -1086,10 +1089,10 @@ class EnvironmentController extends AbstractController
             'success' => true,
         ];
         foreach ($testResult as $resultKey => $value) {
-            if ($resultKey === 'referenceFile') {
+            if ($resultKey === 'referenceFile' && !empty($testResult['referenceFile'])) {
                 $fileExt = end(explode('.', $testResult['referenceFile']));
                 $responseData['referenceFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['referenceFile']));
-            } elseif ($resultKey === 'outputFile') {
+            } elseif ($resultKey === 'outputFile' && !empty($testResult['outputFile'])) {
                 $fileExt = end(explode('.', $testResult['outputFile']));
                 $responseData['outputFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['outputFile']));
             } else {
