@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -77,9 +78,18 @@ class StageChangeNotification
         $elementRecord = (array)BackendUtility::getRecord($elementTable, $elementUid);
         $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
         $pageUid = $this->findFirstPageId($elementTable, $elementUid, $elementRecord);
-
         $emailConfig = BackendUtility::getPagesTSconfig($pageUid)['tx_workspaces.']['emails.'] ?? [];
         $emailConfig = GeneralUtility::removeDotsFromTS($emailConfig);
+
+        $previewLink = '';
+        try {
+            $languageId = $elementRecord[$GLOBALS['TCA'][$elementTable]['ctrl']['languageField'] ?? ''] ?? 0;
+            $previewLink = $this->previewUriBuilder->buildUriForPage($pageUid, $languageId);
+        } catch (UnableToLinkToPageException $e) {
+            // Generating a preview for a page that is is a delete placeholder
+            // in workspaces fails. No preview link in this case.
+        }
+
         $viewPlaceholders = [
             'pageId' => $pageUid,
             'workspace' => $workspaceRecord,
@@ -89,12 +99,8 @@ class StageChangeNotification
             'recordTitle' => $recordTitle,
             'affectedElements' => $affectedElements,
             'nextStage' => $this->stagesService->getStageTitle($stageId),
-            'comparisonView' => (string)$this->previewUriBuilder->buildUriForWorkspaceSplitPreview($pageUid)
+            'previewLink' => $previewLink
         ];
-
-        if ($emailConfig['stageChangeNotification']['generatePreviewLink']) {
-            $viewPlaceholders['previewLink'] = $this->previewUriBuilder->buildUriForPage($pageUid, 0);
-        }
 
         $sentEmails = [];
         foreach ($recipients as $recipientData) {

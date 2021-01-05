@@ -10,7 +10,6 @@ At the TYPO3 site "{typo3.sitename}" in workspace "{workspace.title}" ({workspac
 
 The first entry was "{recordTitle}" at location "{rootLine}" in the page tree.
 
-See the changes in the comparison view {comparisonView}.
 <f:if condition="{previewLink}">
 See a preview of the changed page here {previewLink}
 </f:if>
