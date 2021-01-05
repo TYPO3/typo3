@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Beuser\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
@@ -372,8 +373,11 @@ class BackendUserController extends ActionController
             );
             $this->eventDispatcher->dispatch($event);
 
-            $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
-            throw new ImmediateResponseException(new RedirectResponse($redirectUrl, 303), 1607271592);
+            $redirectUri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+                'main',
+                $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? [] : ['commandLI' => '1']
+            );
+            throw new ImmediateResponseException(new RedirectResponse($redirectUri, 303), 1607271592);
         }
     }
 
