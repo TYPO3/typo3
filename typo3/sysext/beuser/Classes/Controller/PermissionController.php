@@ -175,10 +175,7 @@ class PermissionController extends ActionController
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxPermission')
             ->setDisplayName($this->getShortcutTitle())
-            ->setArguments([
-                'route' => GeneralUtility::_GP('route'),
-                'id' => (int)$this->id,
-            ]);
+            ->setArguments(['id' => (int)$this->id]);
         $buttonBar->addButton($shortcutButton);
     }
 

@@ -138,10 +138,7 @@ class ViewModuleController
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_ViewpageView')
             ->setDisplayName($this->getShortcutTitle($pageId))
-            ->setArguments([
-                'route' => $route,
-                'id' => $pageId,
-            ]);
+            ->setArguments(['id' => $pageId]);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 

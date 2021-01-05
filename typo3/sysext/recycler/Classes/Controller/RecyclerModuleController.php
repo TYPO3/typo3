@@ -159,10 +159,7 @@ class RecyclerModuleController
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_RecyclerRecycler')
             ->setDisplayName($this->getShortcutTitle())
-            ->setArguments([
-                'route' => $route,
-                'id' => (int)$this->id
-            ]);
+            ->setArguments(['id' => (int)$this->id]);
         $buttonBar->addButton($shortcutButton);
 
         $reloadButton = $buttonBar->makeLinkButton()

@@ -124,10 +124,7 @@ class ConfigurationController
         $shortcutButton
             ->setRouteIdentifier('system_config')
             ->setDisplayName($configurationProvider->getLabel())
-            ->setArguments([
-                'route' => $request->getQueryParams()['route'],
-                'tree' => $configurationProviderIdentifier,
-            ]);
+            ->setArguments(['tree' => $configurationProviderIdentifier]);
         $moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
 
         // Main drop down in doc header

@@ -665,10 +665,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         $shortCutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('file_FilelistList')
             ->setDisplayName($this->getShortcutTitle())
-            ->setArguments([
-                'route' => GeneralUtility::_GP('route'),
-                'id' => $this->id,
-            ]);
+            ->setArguments(['id' => $this->id]);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Upload button (only if upload to this directory is allowed)

@@ -593,7 +593,6 @@ class DatabaseRecordList
             $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
             $queryParams = $request->getQueryParams();
             $arguments = [
-                'route' => $queryParams['route'],
                 'id' => $this->id
             ];
             $potentialArguments = [

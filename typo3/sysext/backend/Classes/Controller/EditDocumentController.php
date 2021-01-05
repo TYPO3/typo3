@@ -1800,9 +1800,7 @@ class EditDocumentController
                 'returnNewPageId',
                 'noView'
             ];
-            $arguments = [
-                'route' => $queryParams['route'],
-            ];
+            $arguments = [];
             foreach ($potentialArguments as $argument) {
                 if (!empty($queryParams[$argument])) {
                     $arguments[$argument] = $queryParams[$argument];

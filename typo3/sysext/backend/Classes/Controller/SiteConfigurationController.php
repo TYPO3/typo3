@@ -123,7 +123,7 @@ class SiteConfigurationController
      */
     protected function overviewAction(ServerRequestInterface $request): void
     {
-        $this->configureOverViewDocHeader($request->getQueryParams()['route']);
+        $this->configureOverViewDocHeader();
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
@@ -627,10 +627,8 @@ class SiteConfigurationController
 
     /**
      * Create document header buttons of "overview" action
-     *
-     * @param string $route
      */
-    protected function configureOverViewDocHeader(string $route): void
+    protected function configureOverViewDocHeader(): void
     {
         $iconFactory = $this->moduleTemplate->getIconFactory();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -641,10 +639,7 @@ class SiteConfigurationController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('site_configuration')
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'))
-            ->setArguments([
-                'route' => $route
-            ]);
+            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 

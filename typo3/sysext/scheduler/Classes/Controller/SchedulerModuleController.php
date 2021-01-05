@@ -1373,7 +1373,6 @@ class SchedulerModuleController
 
         // Shortcut
         $shortcutArguments = [
-            'route' => $queryParams['route'],
             'CMD' => (string)Action::cast($queryParams['CMD'] ?? null),
             'SET' => [
                 'function' => $this->MOD_SETTINGS['function'],

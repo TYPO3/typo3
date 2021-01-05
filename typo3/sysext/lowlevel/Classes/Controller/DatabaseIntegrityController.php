@@ -143,7 +143,6 @@ class DatabaseIntegrityController
             ->setRouteIdentifier($this->moduleName)
             ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
             ->setArguments([
-                'route' => $request->getQueryParams()['route'],
                 'SET' => [
                     'function' => $this->MOD_SETTINGS['function'] ?? '',
                     'search' => $this->MOD_SETTINGS['search'] ?? 'raw',

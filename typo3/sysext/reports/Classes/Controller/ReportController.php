@@ -116,7 +116,6 @@ class ReportController
             ->setRouteIdentifier('system_reports')
             ->setDisplayName($this->shortcutName)
             ->setArguments([
-                'route' => $request->getQueryParams()['route'],
                 'action' => $action,
                 'extension' => $extension,
                 'report' => $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'] ?? '',

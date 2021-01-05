@@ -272,10 +272,8 @@ class InfoModuleController
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         // Shortcut
-        $queryParams = $request->getQueryParams();
         $shortcutArguments = [
-            'route' => $queryParams['route'],
-            'id' => $queryParams['id'] ?? 0,
+            'id' => $request->getQueryParams()['id'] ?? 0,
         ];
         foreach (array_keys($this->MOD_MENU) as $key) {
             if (!empty($this->MOD_SETTINGS[$key])) {
