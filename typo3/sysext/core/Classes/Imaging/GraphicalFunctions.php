@@ -1193,6 +1193,15 @@ class GraphicalFunctions
     }
 
     /**
+     * @param array $imageFileExt
+     * @internal Only used for ext:install, not part of TYPO3 Core API.
+     */
+    public function setImageFileExt(array $imageFileExt): void
+    {
+        $this->imageFileExt = $imageFileExt;
+    }
+
+    /**
      * Renders a regular text and takes care of a possible line break automatically.
      *
      * @param resource $im (See argument for PHP function imageTTFtext())
