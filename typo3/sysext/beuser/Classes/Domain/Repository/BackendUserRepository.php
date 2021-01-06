@@ -57,8 +57,6 @@ class BackendUserRepository extends BackendUserGroupRepository
     {
         $constraints = [];
         $query = $this->createQuery();
-        // Find invisible as well, but not deleted
-        $constraints[] = $query->equals('deleted', 0);
         $query->setOrderings(['userName' => QueryInterface::ORDER_ASCENDING]);
         // Username
         if ($demand->getUserName() !== '') {
@@ -109,7 +107,9 @@ class BackendUserRepository extends BackendUserGroupRepository
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%')
             ]);
         }
-        $query->matching($query->logicalAnd($constraints));
+        if ($constraints !== []) {
+            $query->matching($query->logicalAnd($constraints));
+        }
         /** @var QueryResult $result */
         $result = $query->execute();
         return $result;
@@ -145,7 +145,6 @@ class BackendUserRepository extends BackendUserGroupRepository
     {
         $query = parent::createQuery();
         $query->getQuerySettings()->setIgnoreEnableFields(true);
-        $query->getQuerySettings()->setIncludeDeleted(true);
         return $query;
     }
 
