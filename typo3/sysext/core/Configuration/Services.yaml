@@ -200,9 +200,6 @@ services:
   Psr\Http\Message\ResponseFactoryInterface:
     alias: TYPO3\CMS\Core\Http\ResponseFactory
     public: true
-  TYPO3\CMS\Core\Http\ResponseFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\ResponseFactory
-    public: true
   Psr\Http\Message\ServerRequestFactoryInterface:
     alias: TYPO3\CMS\Core\Http\ServerRequestFactory
     public: true

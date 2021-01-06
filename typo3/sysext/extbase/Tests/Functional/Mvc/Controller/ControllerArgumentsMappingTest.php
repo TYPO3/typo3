@@ -115,6 +115,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
 
         $response = $this->controller->processRequest($this->request);
 
+        $response->getBody()->rewind();
         self::assertEquals($expectedTitle, $response->getBody()->getContents());
     }
 }

@@ -29,8 +29,9 @@ All installations that use Extbase controller actions which don't return an inst
 Migration
 =========
 
-Since the core follows not only PSR-7 (https://www.php-fig.org/psr/psr-7/) but also PSR-17 (https://www.php-fig.org/psr/psr-17/),
-which defines how response factories should look like, the core provides a factory to create various different response types.
+Since the core follows not only PSR-7 (https://www.php-fig.org/psr/psr-7/)
+but also PSR-17 (https://www.php-fig.org/psr/psr-17/),
+the PSR-17 response factory should be used.
 The response factory is available in all extbase controllers and can be used as a shorthand function to create responses for html and json,
 the two most used content types. The factory can also be used to create a blank response object whose content and headers can be set freely.
 
@@ -43,7 +44,10 @@ Example:
        $items = $this->itemRepository->findAll();
        $this->view->assign('items', $items);
 
-       return $this->responseFactory->createHtmlResponse($this->view->render());
+       $response = $this->responseFactory->createResponse()
+           ->withAddedHeader('Content-Type', 'text/html; charset=utf-8');
+       $response->getBody()->write($this->view->render());
+       return $response;
    }
 
 This example only shows the most common use case. It causes html with a :html:`Content-Type: text/html` header and
@@ -77,11 +81,13 @@ Example:
        $items = $this->itemRepository->findAll();
        $this->view->assign('items', $items);
 
-       return $this->responseFactory
-           ->createHtmlResponse($this->view->render())
+       $response = $this->responseFactory
+           ->createResponse()
            ->withHeader('Cache-Control', 'must-revalidate')
-           ->withStatus(200, 'Super ok!')
-       ;
+           ->withHeader('Content-Type', 'text/html; charset=utf-8')
+           ->withStatus(200, 'Super ok!');
+       $response->getBody()->write($this->view->render());
+       return $response;
    }
 
 .. tip::

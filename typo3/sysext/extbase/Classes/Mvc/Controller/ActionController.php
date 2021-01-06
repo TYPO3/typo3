@@ -16,10 +16,10 @@
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1141,8 +1141,9 @@ abstract class ActionController implements ControllerInterface
      */
     protected function htmlResponse(string $html = null): ResponseInterface
     {
-        return $this->responseFactory->createHtmlResponse(
-            $html ?? $this->view->render()
-        );
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8');
+        $response->getBody()->write($html ?? $this->view->render());
+        return $response;
     }
 }

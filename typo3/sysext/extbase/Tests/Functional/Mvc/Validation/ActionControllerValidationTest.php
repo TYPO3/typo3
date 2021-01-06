@@ -113,6 +113,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         foreach ($titleErrors as $titleError) {
             self::assertContains($titleError->getCode(), $expectedErrorCodes);
         }
+        $response->getBody()->rewind();
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
@@ -178,6 +179,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             }
         }
 
+        $response->getBody()->rewind();
         self::assertEquals('testFormAction', $response->getBody()->getContents());
     }
 
