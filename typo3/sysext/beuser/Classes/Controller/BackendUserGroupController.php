@@ -16,12 +16,12 @@
 namespace TYPO3\CMS\Beuser\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -73,7 +73,7 @@ class BackendUserGroupController extends ActionController
                 'paginator' => $paginator,
                 'pagination' => $pagination,
                 'totalAmountOfBackendUserGroups' => $backendUsers->count(),
-                'route' => GeneralUtility::_GP('route'),
+                'route' => $this->getRequest()->getAttribute('route')->getPath(),
                 'action' => $this->request->getControllerActionName(),
                 'controller' => $this->request->getControllerName(),
                 'compareGroupUidList' => array_map(static function ($value) { // uid as key and force value to 1
@@ -102,7 +102,7 @@ class BackendUserGroupController extends ActionController
 
         $this->view->assignMultiple([
             'shortcutLabel' => 'compareBackendUsersGroups',
-            'route' => GeneralUtility::_GP('route'),
+            'route' => $this->getRequest()->getAttribute('route')->getPath(),
             'action' => $this->request->getControllerActionName(),
             'controller' => $this->request->getControllerName(),
             'compareGroupList' => $compareData,
@@ -159,5 +159,13 @@ class BackendUserGroupController extends ActionController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return ServerRequestInterface
+     */
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

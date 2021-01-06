@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Backend\Utility;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -2578,6 +2580,7 @@ class BackendUtility
      * @param string $addParams Additional parameters to pass to the script.
      * @param string $script The script to send the &id to, if empty it's automatically found
      * @return string The complete script URL
+     * @todo Check if this can be removed or replaced by routing
      */
     protected static function buildScriptUrl($mainParams, $addParams, $script = '')
     {
@@ -2588,9 +2591,11 @@ class BackendUtility
             $script = PathUtility::basename(Environment::getCurrentScript());
         }
 
-        if ($routePath = GeneralUtility::_GP('route')) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
+        ) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoutePath($routePath, $mainParams);
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoutePath($route->getPath(), $mainParams);
             $scriptUrl .= $addParams;
         } else {
             $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;

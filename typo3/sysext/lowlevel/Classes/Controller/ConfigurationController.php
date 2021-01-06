@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
@@ -83,8 +82,7 @@ class ConfigurationController
         $moduleState['regexSearch'] = (bool)($postValues['regexSearch'] ?? $moduleState['regexSearch'] ?? false);
 
         // Prepare array renderer class, apply search and expand / collapse states
-        $route = GeneralUtility::makeInstance(Router::class)->match(GeneralUtility::_GP('route'));
-        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $route);
+        $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $request->getAttribute('route'));
         $arrayBrowser->regexMode = $moduleState['regexSearch'];
         $node = $queryParams['node'];
         if ($searchString) {

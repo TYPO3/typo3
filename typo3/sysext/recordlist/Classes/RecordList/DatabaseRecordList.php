@@ -46,7 +46,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -3162,14 +3161,10 @@ class DatabaseRecordList
             $urlParameters['sortRev'] = $this->sortRev;
         }
 
-        $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
-
-        if ($routePath = GeneralUtility::_GP('route')) {
-            $url = (string)$this->uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
-        } else {
-            $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . HttpUtility::buildQueryString($urlParameters, '?');
-        }
-        return $url;
+        return (string)$this->uriBuilder->buildUriFromRoutePath(
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath(),
+            array_merge_recursive($urlParameters, $this->overrideUrlParameters)
+        );
     }
 
     /**

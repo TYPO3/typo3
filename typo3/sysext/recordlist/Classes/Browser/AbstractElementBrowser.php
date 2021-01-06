@@ -101,12 +101,9 @@ abstract class AbstractElementBrowser
      */
     protected function determineScriptUrl()
     {
-        if ($routePath = GeneralUtility::_GP('route')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->thisScript = (string)$uriBuilder->buildUriFromRoutePath($routePath);
-        } else {
-            $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
-        }
+        $this->thisScript = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoutePath(
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath()
+        );
     }
 
     protected function initVariables()

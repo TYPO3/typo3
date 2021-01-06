@@ -15,11 +15,16 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -83,6 +88,10 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     protected function setPageTree(Export $export, $pidToStart, $depth = 1)
     {
         $permsClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+        GeneralUtility::makeInstance(Router::class)->addRoute('module_key', new Route('/some/Path', []));
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest(new Uri()))
+            ->withAttribute('route', new Route('/some/Path', []))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $permsClause);

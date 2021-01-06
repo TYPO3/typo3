@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Beuser\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -126,7 +127,7 @@ class BackendUserController extends ActionController
     {
         $view->assignMultiple([
             'shortcutLabel' => 'backendUsers',
-            'route' => GeneralUtility::_GP('route'),
+            'route' => $this->getRequest()->getAttribute('route')->getPath(),
             'action' => $this->request->getControllerActionName(),
             'controller' => $this->request->getControllerName(),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
@@ -265,7 +266,7 @@ class BackendUserController extends ActionController
             );
         } else {
             GeneralUtility::makeInstance(PasswordReset::class)->initiateReset(
-                $GLOBALS['TYPO3_REQUEST'],
+                $this->getRequest(),
                 $context,
                 $user->getEmail()
             );
@@ -414,6 +415,14 @@ class BackendUserController extends ActionController
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return ServerRequestInterface
+     */
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**

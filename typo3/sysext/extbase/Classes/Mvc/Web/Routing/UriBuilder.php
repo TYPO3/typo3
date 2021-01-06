@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -650,13 +652,15 @@ class UriBuilder
             }
         } else {
             $id = GeneralUtility::_GP('id');
-            $route = GeneralUtility::_GP('route');
             if ($id !== null) {
                 $arguments['id'] = $id;
             }
-            if ($route !== null) {
-                $arguments['route'] = $route;
-            }
+        }
+        // @todo Should be replaced as soon as we have a PSR-7 object here
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
+        ) {
+            $arguments['route'] = $route->getPath();
         }
         ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
         $arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
