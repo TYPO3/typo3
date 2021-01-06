@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -64,9 +65,13 @@ class SwitchUserViewHelper extends AbstractViewHelper
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
         $title = LocalizationUtility::translate('switchBackMode', 'beuser') ?? '';
-        return '<a class="btn btn-default" href="' .
-            htmlspecialchars(GeneralUtility::linkThisScript(['SwitchUser' => $backendUser->getUid()])) .
-            '" target="_top" title="' . htmlspecialchars($title) . '">' .
+        $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            'system_BeuserTxBeuser',
+            [
+                'SwitchUser' => $backendUser->getUid(),
+            ]
+        );
+        return '<a class="btn btn-default" href="' . htmlspecialchars((string)$uri) . '" target="_top" title="' . htmlspecialchars($title) . '">' .
             $iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() . '</a>';
     }
 }
