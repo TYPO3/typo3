@@ -59,8 +59,9 @@ class UserInformationService
         // Setup dummy user to allow fetching all group data
         // @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::fetchGroups
         $user->user = [
-            'uid' => 3016,
+            'uid' => PHP_INT_MAX,
             'options' => 3,
+            'workspace_id' => -99,
             $user->usergroup_column => $groupId
         ];
         $user->fetchGroupData();
