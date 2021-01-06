@@ -198,6 +198,14 @@
                         </td>
                     </f:for>
                 </tr>
+                <tr>
+                    <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</th>
+                    <f:for each="{compareUserList}" as="compareData">
+                        <td>
+                            <f:render partial="Compare/Information" section="nonExcludeFields" arguments="{nonExcludeFields:compareData.non_exclude_fields,id:compareData.user.uid}"/>
+                        </td>
+                    </f:for>
+                </tr>
                 <f:if condition="{compareUserList.0.workspaces}">
                     <tr>
                         <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms')}</th>
