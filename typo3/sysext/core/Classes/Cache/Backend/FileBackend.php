@@ -218,23 +218,10 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      */
     public function remove($entryIdentifier)
     {
-        if ($entryIdentifier !== PathUtility::basename($entryIdentifier)) {
-            throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073035);
-        }
-        if ($entryIdentifier === '') {
-            throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1298114279);
-        }
         if ($this->frozen === true) {
             throw new \RuntimeException(sprintf('Cannot remove cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier), 1323344193);
         }
-        $pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        if (file_exists($pathAndFilename) === false) {
-            return false;
-        }
-        if (@unlink($pathAndFilename) === false) {
-            return false;
-        }
-        return true;
+        return parent::remove($entryIdentifier);
     }
 
     /**

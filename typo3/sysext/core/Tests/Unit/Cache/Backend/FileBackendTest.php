@@ -598,7 +598,7 @@ class FileBackendTest extends UnitTestCase
     public function removeThrowsExceptionForInvalidIdentifier(string $identifier): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1282073035);
+        $this->expectExceptionCode(1334756960);
 
         $mockCache = $this->createMock(AbstractFrontend::class);
         $mockCache->expects(self::atLeastOnce())->method('getIdentifier')->willReturn('UnitTestCache');
