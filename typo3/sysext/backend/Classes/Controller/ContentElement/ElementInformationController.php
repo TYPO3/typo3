@@ -318,14 +318,7 @@ class ElementInformationController
 
             // Check if there is a FileRenderer
             if ($fileRenderer !== null) {
-                $preview['fileRenderer'] = $fileRenderer->render(
-                    $this->fileObject,
-                    $width,
-                    $height,
-                    [],
-                    true
-                );
-
+                $preview['fileRenderer'] = $fileRenderer->render($this->fileObject, $width, $height);
             // else check if we can create an Image preview
             } elseif ($this->fileObject->isImage()) {
                 $preview['fileObject'] = $this->fileObject;

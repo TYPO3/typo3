@@ -15,9 +15,12 @@
 
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class VideoTagRenderer
@@ -125,8 +128,22 @@ class VideoTagRenderer implements FileRendererInterface
         return sprintf(
             '<video%s><source src="%s" type="%s"></video>',
             empty($attributes) ? '' : ' ' . implode(' ', $attributes),
-            htmlspecialchars((string)$file->getPublicUrl($usedPathsRelativeToCurrentScript)),
+            htmlspecialchars($this->getSource($file, $usedPathsRelativeToCurrentScript)),
             $file->getMimeType()
         );
+    }
+
+    protected function getSource(FileInterface $file, bool $usedPathsRelativeToCurrentScript): string
+    {
+        $source = (string)$file->getPublicUrl($usedPathsRelativeToCurrentScript);
+
+        // We need an absolute path for the backend
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
+            $source = PathUtility::getAbsoluteWebPath($source);
+        }
+
+        return $source;
     }
 }
