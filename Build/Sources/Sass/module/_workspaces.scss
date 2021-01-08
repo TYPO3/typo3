@@ -6,7 +6,7 @@
     tr.collapse {
         display: none;
 
-        &.in {
+        &.show {
             display: table-row;
         }
     }

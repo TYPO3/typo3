@@ -293,10 +293,9 @@ class Backend extends Workspaces {
       }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
       .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
         const $me = $(e.currentTarget);
-        const $target = this.elements.$tableBody.find($me.data('bs-target'));
         let iconIdentifier;
 
-        if ($target.first().attr('aria-expanded') === 'true') {
+        if ($me.first().attr('aria-expanded') === 'true') {
           iconIdentifier = 'apps-pagetree-expand';
         } else {
           iconIdentifier = 'apps-pagetree-collapse';

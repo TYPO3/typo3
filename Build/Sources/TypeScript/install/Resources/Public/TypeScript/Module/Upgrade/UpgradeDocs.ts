@@ -201,7 +201,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const $items = modalContent.find('div.item');
     if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
-      this.currentModal.find('.panel-version .panel-collapse.in').collapse('hide');
+      this.currentModal.find('.panel-version .panel-collapse.show').collapse('hide');
       $items.removeClass('hidden searchhit filterhit');
       return false;
     }
