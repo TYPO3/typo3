@@ -14,8 +14,8 @@
  */
 
 // Exit early if php requirement is not satisfied.
-if (PHP_VERSION_ID < 70200) {
-    die('This version of TYPO3 CMS requires PHP 7.2 or above');
+if (PHP_VERSION_ID < 70200 || PHP_VERSION_ID >= 80000) {
+    die('This version of TYPO3 CMS requires PHP >= 7.2 and < 8.0');
 }
 
 // Set up the application for the frontend
