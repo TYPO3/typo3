@@ -32,7 +32,7 @@ Extbase property injection can be replaced by one of the following methods:
 
 - constructor injection: works both with core and extbase dependency injection and is well suited to make extensions compatible for multiple TYPO3 versions.
 - setter injection: Basically the same as constructor injection. Both the core and extbase DI can handle setter injection and both are supported in different TYPO3 versions.
-- (core) property injection: This kind of injection can be used but it requires the configuration of services via a :file:`Services.yaml` in the :file:Configuration folder of an extension.
+- (core) property injection: This kind of injection can be used but it requires the configuration of services via a :file:`Services.yaml` in the :file:`Configuration` folder of an extension.
 
 
 Given the following example for a :php:`@Extbase\Inject` annotation based injection:
@@ -62,6 +62,6 @@ service as constructor argument and removing the :php:`@Extbase\Inject` annotati
 
 Please consult the dependency-injection_ documentation for more information.
 
-.. _dependency-injection https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/DependencyInjection/Index.html
+.. _dependency-injection: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/DependencyInjection/Index.html
 
 .. index:: PHP-API, FullyScanned, ext:extbase
