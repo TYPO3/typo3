@@ -13,6 +13,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+// Exit early if php requirement is not satisfied.
+if (PHP_VERSION_ID < 70400 || PHP_VERSION_ID >= 90000) {
+    die('This version of TYPO3 CMS requires PHP >= 7.4 and < 9.0');
+}
+
 /**
  * Command Line Interface module dispatcher
  * that executes commands
