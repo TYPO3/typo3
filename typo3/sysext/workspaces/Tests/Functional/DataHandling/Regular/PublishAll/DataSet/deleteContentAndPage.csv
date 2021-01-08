@@ -27,9 +27,6 @@
 ,310,90,256,0,0,0,0,0,0,0,0,0,"Regular Element #10",,,,
 ,311,90,512,0,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10",,,,
 ,312,90,768,0,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,,
-# 320 is discarded now since page 89 has been deleted
-,320,89,512,1,0,0,0,298,2,2,0,298,"Regular Element #2",,,,
-,321,89,512,1,0,0,0,298,1,2,0,298,"Regular Element #2",,,,
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,

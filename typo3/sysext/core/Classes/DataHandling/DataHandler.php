@@ -4609,44 +4609,39 @@ class DataHandler implements LoggerAwareInterface
         if ($table === 'pages') {
             $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
         } else {
-            $this->deleteVersionsForRecord($table, $uid, $forceHardDelete);
+            $this->discardWorkspaceVersionsOfRecord($table, $uid);
             $this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
         }
     }
 
     /**
-     * Delete versions for element from any table
+     * Discard workspace overlays of a live record: When a live row
+     * is deleted, all existing workspace overlays are discarded.
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @internal should only be used from within DataHandler
      */
-    public function deleteVersionsForRecord($table, $uid, $forceHardDelete)
+    protected function discardWorkspaceVersionsOfRecord($table, $uid): void
     {
-        $versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid,t3ver_wsid,t3ver_state', $this->BE_USER->workspace ?: null);
-        if (is_array($versions)) {
-            foreach ($versions as $verRec) {
-                if (!$verRec['_CURRENT_VERSION']) {
-                    $currentUserWorkspace = null;
-                    if ((int)$verRec['t3ver_wsid'] !== (int)$this->BE_USER->workspace) {
-                        // If deleting records from 'foreign' / 'other' workspaces, the be user must be put into
-                        // this workspace temporarily so stuff like refindex updating is registered for this workspace
-                        // when deleting records in there.
-                        $currentUserWorkspace = $this->BE_USER->workspace;
-                        $this->BE_USER->workspace = (int)$verRec['t3ver_wsid'];
-                    }
-                    if ($table === 'pages') {
-                        $this->deletePages($verRec['uid'], true, $forceHardDelete);
-                    } else {
-                        $this->deleteRecord($table, $verRec['uid'], true, $forceHardDelete);
-                    }
-                    if ($currentUserWorkspace !== null) {
-                        // Switch back workspace
-                        $this->BE_USER->workspace = $currentUserWorkspace;
-                    }
-                }
+        $versions = BackendUtility::selectVersionsOfRecord($table, $uid, '*', null);
+        if ($versions === null) {
+            // Null is returned by selectVersionsOfRecord() when table is not workspace aware.
+            return;
+        }
+        foreach ($versions as $record) {
+            if ($record['_CURRENT_VERSION'] ?? false) {
+                // The live record is included in the result from selectVersionsOfRecord()
+                // and marked as '_CURRENT_VERSION'. Skip this one.
+                continue;
             }
+            // BE user must be put into this workspace temporarily so stuff like refindex updating
+            // is properly registered for this workspace when discarding records in there.
+            $currentUserWorkspace = $this->BE_USER->workspace;
+            $this->BE_USER->workspace = (int)$record['t3ver_wsid'];
+            $this->discard($table, null, $record);
+            // Switch user back to original workspace
+            $this->BE_USER->workspace = $currentUserWorkspace;
         }
     }
 
@@ -4717,12 +4712,25 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
+        $recordToDelete = [];
+        $recordWorkspaceId = 0;
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
+            $recordToDelete = BackendUtility::getRecord($table, $uid);
+            $recordWorkspaceId = (int)$recordToDelete['t3ver_wsid'];
+        }
+
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
         [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
         $databaseErrorMessage = '';
-        if ($deleteField && !$forceHardDelete) {
+        if ($recordWorkspaceId > 0) {
+            // If this is a workspace record, use discard
+            $this->BE_USER->workspace = $recordWorkspaceId;
+            $this->discard($table, null, $recordToDelete);
+            // Switch user back to original workspace
+            $this->BE_USER->workspace = $currentUserWorkspace;
+        } elseif ($deleteField && !$forceHardDelete) {
             $updateFields = [
                 $deleteField => $undeleteRecord ? 0 : 1
             ];
@@ -4875,7 +4883,12 @@ class DataHandler implements LoggerAwareInterface
                 $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
                 $queryBuilder
                     ->select('uid')
-                    ->from($table);
+                    ->from($table)
+                    // order by uid is needed here to process possible live records first - overlays always
+                    // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
+                    // leading to hard to debug issues. This is especially relevant for the
+                    // discardWorkspaceVersionsOfRecord() call below.
+                    ->addOrderBy('uid');
 
                 if ($isPageTranslation) {
                     // Only delete records in the specified language
@@ -4914,14 +4927,14 @@ class DataHandler implements LoggerAwareInterface
 
                 while ($row = $statement->fetch()) {
                     // Delete any further workspace overlays of the record in question, then delete the record.
-                    $this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
+                    $this->discardWorkspaceVersionsOfRecord($table, $row['uid']);
                     $this->deleteRecord($table, $row['uid'], true, $forceHardDelete);
                 }
             }
         }
 
         // Delete any further workspace overlays of the record in question, then delete the record.
-        $this->deleteVersionsForRecord('pages', $uid, $forceHardDelete);
+        $this->discardWorkspaceVersionsOfRecord('pages', $uid);
         $this->deleteRecord('pages', $uid, true, $forceHardDelete);
     }
 

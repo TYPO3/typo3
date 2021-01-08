@@ -4,8 +4,6 @@
 ,88,1,256,1,88,0,0,0,0,"DataHandlerTest","/data-handler",,,,,,
 ,89,88,256,1,0,0,0,0,0,"Relations","/data-handler/relations",,,,,,
 ,90,88,512,1,0,0,0,0,0,"Target","/data-handler/target",,,,,,
-,91,88,768,1,89,1,4,0,89,"Relations","/data-handler/relations",,,,,,
-,92,88,128,1,0,1,1,0,0,"Testing #1","/data-handler/testing-1",,,,,,
 "sys_workspace",,,,,,,,,,,,,,,,,
 ,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
 ,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
@@ -29,8 +27,6 @@
 ,310,90,256,1,0,0,0,0,0,0,0,0,"Regular Element #10",,,,
 ,311,90,512,1,1,0,310,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10",,,,
 ,312,90,768,1,2,0,311,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10",,,,
-# 320 is set to deleted now since page 89 has been deleted
-,320,89,512,1,0,0,0,298,2,2,0,298,"Regular Element #2",,,,
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,
