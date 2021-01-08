@@ -4,6 +4,7 @@
         data-page="{pageId}"
         data-group-id="{groupId}"
         data-groupname="{groupname}"
+        title="{groupname}"
     >
         <f:if condition="{groupId} == 0">
             <f:then>
@@ -20,7 +21,7 @@
                         <f:comment>
                             A group name can be resolved
                         </f:comment>
-                        {groupname -> f:format.crop(maxCharacters:20)}
+                        {groupname}
                     </f:then>
                     <f:else>
                         <f:comment>

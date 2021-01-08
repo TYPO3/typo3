@@ -5,6 +5,7 @@
         data-page="{pageId}"
         data-owner="{userId}"
         data-username="{username}"
+        title="{username}"
     >
         <f:if condition="{userId} == 0">
             <f:then>
@@ -21,7 +22,7 @@
                         <f:comment>
                             A user name can be resolved
                         </f:comment>
-                        {username -> f:format.crop(maxCharacters:20)}
+                        {username}
                     </f:then>
                     <f:else>
                         <f:comment>
