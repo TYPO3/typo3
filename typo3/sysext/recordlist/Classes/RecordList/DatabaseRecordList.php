@@ -502,7 +502,7 @@ class DatabaseRecordList
                     ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
-            if (!in_array($this->pageRow['doktype'] ?? null, $this->getNoViewWithDokTypes($modulePageTsConfig))) {
+            if ($this->id !== 0 && !in_array($this->pageRow['doktype'] ?? null, $this->getNoViewWithDokTypes($modulePageTsConfig))) {
                 $previewDataAttributes = PreviewUriBuilder::create((int)$this->id)
                     ->withRootLine(BackendUtility::BEgetRootLine($this->id))
                     ->buildDispatcherDataAttributes();
