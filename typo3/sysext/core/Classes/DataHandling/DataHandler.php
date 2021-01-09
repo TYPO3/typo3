@@ -3019,7 +3019,7 @@ class DataHandler implements LoggerAwareInterface
                                 $this->deleteAction($table, $id);
                                 break;
                             case 'undelete':
-                                $this->undeleteRecord($table, $id);
+                                $this->undeleteRecord((string)$table, (int)$id);
                                 break;
                         }
                         $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
@@ -4558,7 +4558,7 @@ class DataHandler implements LoggerAwareInterface
 
     /*********************************************
      *
-     * Cmd: Deleting
+     * Cmd: delete
      *
      ********************************************/
     /**
@@ -4646,21 +4646,7 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Undelete a single record
-     *
-     * @param string $table Table name
-     * @param int $uid Record UID
-     * @internal should only be used from within DataHandler
-     */
-    public function undeleteRecord($table, $uid)
-    {
-        if ($this->isRecordUndeletable($table, $uid)) {
-            $this->deleteRecord($table, $uid, true, false, true);
-        }
-    }
-
-    /**
-     * Deleting/Undeleting a record
+     * Deleting a record
      * This function may not be used to delete pages-records unless the underlying records are already deleted
      * Deletes a record regardless of versioning state (live or offline, doesn't matter, the uid decides)
      * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
@@ -4669,10 +4655,9 @@ class DataHandler implements LoggerAwareInterface
      * @param int $uid Record UID
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @param bool $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false, $undeleteRecord = false)
+    public function deleteRecord($table, $uid, $noRecordCheck = false, $forceHardDelete = false)
     {
         $currentUserWorkspace = (int)$this->BE_USER->workspace;
         $uid = (int)$uid;
@@ -4681,12 +4666,11 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         // Skip processing already deleted records
-        if (!$forceHardDelete && !$undeleteRecord && $this->hasDeletedRecord($table, $uid)) {
+        if (!$forceHardDelete && $this->hasDeletedRecord($table, $uid)) {
             return;
         }
 
         // Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-        $deletedRecord = $forceHardDelete || $undeleteRecord;
         $fullLanguageAccessCheck = true;
         if ($table === 'pages') {
             // If this is a page translation, the full language access check should not be done
@@ -4695,7 +4679,7 @@ class DataHandler implements LoggerAwareInterface
                 $fullLanguageAccessCheck = false;
             }
         }
-        $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $deletedRecord, $fullLanguageAccessCheck);
+        $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $forceHardDelete, $fullLanguageAccessCheck);
         if (!$hasEditAccess) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
@@ -4732,19 +4716,17 @@ class DataHandler implements LoggerAwareInterface
             $this->BE_USER->workspace = $currentUserWorkspace;
         } elseif ($deleteField && !$forceHardDelete) {
             $updateFields = [
-                $deleteField => $undeleteRecord ? 0 : 1
+                $deleteField => 1
             ];
             if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
                 $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
             }
-            // before (un-)deleting this record, check for child records or references
-            $this->deleteRecord_procFields($table, $uid, $undeleteRecord);
+            // before deleting this record, check for child records or references
+            $this->deleteRecord_procFields($table, $uid);
             try {
-                // Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
-                if (!$undeleteRecord) {
-                    $this->deletedRecords[$table][] = (int)$uid;
-                    $this->deleteL10nOverlayRecords($table, $uid);
-                }
+                // Delete all l10n records as well
+                $this->deletedRecords[$table][] = (int)$uid;
+                $this->deleteL10nOverlayRecords($table, $uid);
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($table)
                     ->update($table, $updateFields, ['uid' => (int)$uid]);
@@ -4762,12 +4744,12 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         if ($this->enableLogging) {
-            $state = $undeleteRecord ? SystemLogDatabaseAction::INSERT : SystemLogDatabaseAction::DELETE;
+            $state = SystemLogDatabaseAction::DELETE;
             if ($databaseErrorMessage === '') {
                 if ($forceHardDelete) {
                     $message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
                 } else {
-                    $message = $state === 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
+                    $message = 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
                 }
                 $propArr = $this->getRecordProperties($table, $uid);
                 $pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -4784,15 +4766,11 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Add history entry
-        if ($undeleteRecord) {
-            $this->getRecordHistoryStore()->undeleteRecord($table, $uid, $this->correlationId);
-        } else {
-            $this->getRecordHistoryStore()->deleteRecord($table, $uid, $this->correlationId);
-        }
+        $this->getRecordHistoryStore()->deleteRecord($table, $uid, $this->correlationId);
 
         // Update reference index with table/uid on left side (recuid)
         $this->updateRefIndex($table, $uid);
-        // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted / undeleted.
+        // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted.
         $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $currentUserWorkspace);
     }
 
@@ -5008,43 +4986,15 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Determines whether a record can be undeleted.
-     *
-     * @param string $table Table name of the record
-     * @param int $uid uid of the record
-     * @return bool Whether the record can be undeleted
-     * @internal should only be used from within DataHandler
-     */
-    public function isRecordUndeletable($table, $uid)
-    {
-        $result = false;
-        $record = BackendUtility::getRecord($table, $uid, 'pid', '', false);
-        if ($record['pid']) {
-            $page = BackendUtility::getRecord('pages', $record['pid'], 'deleted, title, uid', '', false);
-            // The page containing the record is not deleted, thus the record can be undeleted:
-            if (!$page['deleted']) {
-                $result = true;
-            } else {
-                $this->log($table, $uid, SystemLogDatabaseAction::DELETE, '', SystemLogErrorClassification::USER_ERROR, 'Record cannot be undeleted since the page containing it is deleted! Undelete page "' . $page['title'] . ' (UID: ' . $page['uid'] . ')" first');
-            }
-        } else {
-            // The page containing the record is on rootlevel, so there is no parent record to check, and the record can be undeleted:
-            $result = true;
-        }
-        return $result;
-    }
-
-    /**
      * Before a record is deleted, check if it has references such as inline type or MM references.
      * If so, set these child records also to be deleted.
      *
      * @param string $table Record Table
      * @param string $uid Record UID
-     * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
      * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procFields($table, $uid, $undeleteRecord = false)
+    public function deleteRecord_procFields($table, $uid)
     {
         $conf = $GLOBALS['TCA'][$table]['columns'];
         $row = BackendUtility::getRecord($table, $uid, '*', '', false);
@@ -5052,7 +5002,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         foreach ($row as $field => $value) {
-            $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'], $undeleteRecord);
+            $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config']);
         }
     }
 
@@ -5065,11 +5015,10 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Record field
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
-     * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
      * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = false)
+    public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf)
     {
         if ($conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
@@ -5089,12 +5038,8 @@ class DataHandler implements LoggerAwareInterface
 
                     // Walk through the items and remove them
                     foreach ($dbAnalysis->itemArray as $v) {
-                        if (!$undeleteRecord) {
-                            if ($enableCascadingDelete) {
-                                $this->deleteAction($v['table'], $v['id']);
-                            }
-                        } else {
-                            $this->undeleteRecord($v['table'], $v['id']);
+                        if ($enableCascadingDelete) {
+                            $this->deleteAction($v['table'], $v['id']);
                         }
                     }
                 }
@@ -5154,6 +5099,167 @@ class DataHandler implements LoggerAwareInterface
 
     /*********************************************
      *
+     * Cmd: undelete / restore
+     *
+     ********************************************/
+
+    /**
+     * Restore live records by setting soft-delete flag to 0.
+     *
+     * Usually only used by ext:recycler.
+     * Connected relations (eg. inline) are restored, too.
+     * Additional existing localizations are not restored.
+     *
+     * @param string $table Record table name
+     * @param int $uid Record uid
+     */
+    protected function undeleteRecord(string $table, int $uid): void
+    {
+        $record = BackendUtility::getRecord($table, $uid, '*', '', false);
+        $deleteField = (string)($GLOBALS['TCA'][$table]['ctrl']['delete'] ?? '');
+        $timestampField = (string)($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? '');
+
+        if ($record === null
+            || $deleteField === ''
+            || !isset($record[$deleteField])
+            || (bool)$record[$deleteField] === false
+            || ($timestampField !== '' && !isset($record[$timestampField]))
+            || (int)$this->BE_USER->workspace > 0
+            || (BackendUtility::isTableWorkspaceEnabled($table) && (int)($record['t3ver_wsid'] ?? 0) > 0)
+        ) {
+            // Return early and silently, if:
+            // * Record not found
+            // * Table is not soft-delete aware
+            // * Record does not have deleted field - db analyzer not up-to-date?
+            // * Record is not deleted - may eventually happen via recursion with self referencing records?
+            // * Table is tstamp aware, but field does not exist - db analyzer not up-to-date?
+            // * User is in a workspace - does not make sense
+            // * Record is in a workspace - workspace records are not soft-delete aware
+            return;
+        }
+
+        $recordPid = (int)($record['pid'] ?? 0);
+        if ($recordPid > 0) {
+            // Record is not on root level. Parent page record must exist and must not be deleted itself.
+            $page = BackendUtility::getRecord('pages', $recordPid, 'deleted', '', false);
+            if ($page === null || !isset($page['deleted']) || (bool)$page['deleted'] === true) {
+                $this->log(
+                    $table,
+                    $uid,
+                    SystemLogDatabaseAction::DELETE,
+                    0,
+                    SystemLogErrorClassification::USER_ERROR,
+                    sprintf('Record "%s:%s" can\'t be restored: The page:%s containing it does not exist or is soft-deleted.', $table, $uid, $recordPid),
+                    0,
+                    [],
+                    $recordPid
+                );
+                return;
+            }
+        }
+
+        // @todo: When restoring a not-default language record, it should be verified the default language
+        // @todo: record is *not* set to deleted. Maybe even verify a possible l10n_source chain is not deleted?
+
+        if (!$this->BE_USER->recordEditAccessInternals($table, $record, false, true)) {
+            // User misses access permissions to record
+            $this->log(
+                $table,
+                $uid,
+                SystemLogDatabaseAction::DELETE,
+                0,
+                SystemLogErrorClassification::USER_ERROR,
+                sprintf('Record "%s:%s" can\'t be restored: Insufficient user permissions.', $table, $uid),
+                0,
+                [],
+                $recordPid
+            );
+            return;
+        }
+
+        // Restore referenced child records
+        $this->undeleteRecordRelations($table, $uid, $record);
+
+        // Restore record
+        $updateFields[$deleteField] = 0;
+        if ($timestampField !== '') {
+            $updateFields[$timestampField] = $GLOBALS['EXEC_TIME'];
+        }
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table)
+            ->update(
+                $table,
+                $updateFields,
+                ['uid' => $uid]
+            );
+
+        if ($this->enableLogging) {
+            $this->log(
+                $table,
+                $uid,
+                SystemLogDatabaseAction::INSERT,
+                0,
+                SystemLogErrorClassification::MESSAGE,
+                sprintf('Record "%s:%s" was restored on page:%s', $table, $uid, $recordPid),
+                0,
+                [],
+                $recordPid
+            );
+        }
+
+        // Register cache clearing of page, or parent page if a page is restored.
+        $this->registerRecordIdForPageCacheClearing($table, $uid, $recordPid);
+        // Add history entry
+        $this->getRecordHistoryStore()->undeleteRecord($table, $uid, $this->correlationId);
+        // Update reference index with table/uid on left side (recuid)
+        $this->updateRefIndex($table, $uid);
+        // Update reference index with table/uid on right side (ref_uid). Important if children of a relation were restored.
+        $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, 0);
+    }
+
+    /**
+     * Check if a to-restore record has inline references and restore them.
+     *
+     * @param string $table Record table name
+     * @param int $uid Record uid
+     * @param array $record Record row
+     * @todo: Add functional test undelete coverage to verify details, some details seem to be missing.
+     */
+    protected function undeleteRecordRelations(string $table, int $uid, array $record): void
+    {
+        foreach ($record as $fieldName => $value) {
+            $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'] ?? [];
+            $fieldType = (string)($fieldConfig['type'] ?? '');
+            if (empty($fieldConfig) || !is_array($fieldConfig) || $fieldType === '') {
+                continue;
+            }
+            $foreignTable = (string)($fieldConfig['foreign_table'] ?? '');
+            if ($fieldType === 'inline') {
+                // @todo: Inline MM not handled here, and what about group / select?
+                if ($foreignTable === ''
+                    || !in_array($this->getInlineFieldType($fieldConfig), ['list', 'field'], true)
+                ) {
+                    continue;
+                }
+                $relationHandler = $this->createRelationHandlerInstance();
+                $relationHandler->start($value, $foreignTable, '', $uid, $table, $fieldConfig);
+                $relationHandler->undeleteRecord = true;
+                foreach ($relationHandler->itemArray as $reference) {
+                    $this->undeleteRecord($reference['table'], (int)$reference['id']);
+                }
+            } elseif ($this->isReferenceField($fieldConfig)) {
+                $allowedTables = $fieldType === 'group' ? ($fieldConfig['allowed'] ?? '') : $foreignTable;
+                $relationHandler = $this->createRelationHandlerInstance();
+                $relationHandler->start($value, $allowedTables, $fieldConfig['MM'] ?? '', $uid, $table, $fieldConfig);
+                foreach ($relationHandler->itemArray as $reference) {
+                    // @todo: Unsure if this is ok / enough. Needs coverage.
+                    $this->updateRefIndex($reference['table'], $reference['id']);
+                }
+            }
+        }
+    }
+
+    /*********************************************
+     *
      * Cmd: Workspace discard & flush
      *
      ********************************************/
@@ -5169,6 +5275,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Database table name
      * @param int|null $uid Uid of live or versioned record to be discarded, or null if $record is given
      * @param array|null $record Record row that should be discarded. Used instead of $uid within recursion.
+     * @internal should only be used from within DataHandler
      */
     public function discard(string $table, ?int $uid, array $record = null): void
     {
@@ -5357,7 +5464,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
             } elseif ($this->isReferenceField($fieldConfig) && !empty($fieldConfig['MM'])) {
-                $this->discardMmRelations($table, $fieldConfig, $record);
+                $this->discardMmRelations($fieldConfig, $record);
             }
             // @todo not inline and not mm - probably not handled correctly and has no proper test coverage yet
         }
@@ -5367,11 +5474,10 @@ class DataHandler implements LoggerAwareInterface
      * When a workspace record row is discarded that has mm relations, existing mm table rows need
      * to be deleted. The method performs the delete operation depending on TCA field configuration.
      *
-     * @param string $table Handled table name
      * @param array $fieldConfig TCA configuration of this field
      * @param array $record The full record of a left- or ride-side relation
      */
-    protected function discardMmRelations(string $table, array $fieldConfig, array $record): void
+    protected function discardMmRelations(array $fieldConfig, array $record): void
     {
         $recordUid = (int)$record['uid'];
         $mmTableName = $fieldConfig['MM'];

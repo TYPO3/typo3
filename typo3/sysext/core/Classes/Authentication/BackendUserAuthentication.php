@@ -747,7 +747,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @return bool TRUE if OK, otherwise FALSE
      * @internal should only be used from within TYPO3 Core
      */
-    public function recordEditAccessInternals($table, $idOrRow, $newRecord = false, $deletedRecord = false, $checkFullLanguageAccess = false)
+    public function recordEditAccessInternals($table, $idOrRow, $newRecord = false, $deletedRecord = false, $checkFullLanguageAccess = false): bool
     {
         if (!isset($GLOBALS['TCA'][$table])) {
             return false;
