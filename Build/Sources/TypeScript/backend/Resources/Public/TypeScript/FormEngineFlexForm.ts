@@ -127,7 +127,7 @@ class FlexFormElement {
           $section.addClass('t3-flex-section--deleted');
 
           $section.on('transitionend', (): void => {
-            $section.remove();
+            $section.hide();
           });
 
           FormEngine.Validation.validate(this.$el.get(0));
