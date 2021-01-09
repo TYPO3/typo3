@@ -73,7 +73,7 @@ Have a nice day.</source>
 			<trans-unit id="login.error.capslock" resname="login.error.capslock">
 				<source>Attention: Caps lock enabled!</source>
 			</trans-unit>
-			<trans-unit id="login.error.capslock" resname="login.error.capslockStatus">
+			<trans-unit id="login.error.capslockStatus" resname="login.error.capslockStatus">
 				<source>Caps lock enabled</source>
 			</trans-unit>
 			<trans-unit id="login.interface" resname="login.interface">

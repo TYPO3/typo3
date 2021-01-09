@@ -48,18 +48,20 @@
                                         </div>
                                     </form>
                                 </div>
-                                <nav aria-label="{f:translate(key: 'login.navigation.loginProvider')}">
-                                    <f:comment>role is for VoiceOver</f:comment>
-                                    <ul class="list-unstyled typo3-login-links" role="list">
-                                        <f:for each="{loginProviders}" as="provider" key="providerKey">
-                                            <f:if condition="{provider.label}">
-                                                <f:if condition="{loginProviderIdentifier} != {providerKey}">
-                                                    <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
+                                <f:if condition="{loginProviders->f:count()} > 1">
+                                    <nav aria-label="{f:translate(key: 'login.navigation.loginProvider')}">
+                                        <f:comment>role is for VoiceOver</f:comment>
+                                        <ul class="list-unstyled typo3-login-links" role="list">
+                                            <f:for each="{loginProviders}" as="provider" key="providerKey">
+                                                <f:if condition="{provider.label}">
+                                                    <f:if condition="{loginProviderIdentifier} != {providerKey}">
+                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
+                                                    </f:if>
                                                 </f:if>
-                                            </f:if>
-                                        </f:for>
-                                    </ul>
-                                </nav>
+                                            </f:for>
+                                        </ul>
+                                    </nav>
+                                </f:if>
                                 <f:if condition="{enablePasswordReset}">
                                     <f:render section="ResetPassword" arguments="{_all}" optional="true" />
                                 </f:if>
