@@ -435,7 +435,8 @@ class PageProvider extends RecordProvider
         if (!$this->languageAccess) {
             return false;
         }
-        return !$this->isDeletePlaceholder()
+        return !$this->isRoot()
+            && !$this->isDeletePlaceholder()
             && !$this->isRecordLocked()
             && !$this->isDeletionDisabledInTS()
             && $this->hasPagePermission(Permission::PAGE_DELETE);
@@ -589,7 +590,7 @@ class PageProvider extends RecordProvider
      */
     protected function canBeToggled(string $fieldName, int $value): bool
     {
-        if (!$this->languageAccess) {
+        if (!$this->languageAccess || $this->isRoot()) {
             return false;
         }
         if (!empty($GLOBALS['TCA'][$this->table]['columns'][$fieldName]['exclude'])

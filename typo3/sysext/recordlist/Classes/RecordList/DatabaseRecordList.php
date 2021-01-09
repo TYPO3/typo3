@@ -657,7 +657,8 @@ class DatabaseRecordList
                     ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
             }
-            if (!in_array($this->pageRow['doktype'] ?? null, $noViewDokTypes)) {
+
+            if ($this->id !== 0 && !in_array($this->pageRow['doktype'] ?? null, $noViewDokTypes)) {
                 $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id));
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
