@@ -75,6 +75,11 @@ class LanguagePackCommand extends Command
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');
         $skipExtensions = (array)$input->getOption('skip-extension');
+
+        // Condition for the scheduler command, e.g. "de fr pt"
+        if (count($isos) === 1 && strpos($isos[0], ' ') !== false) {
+            $isos = GeneralUtility::trimExplode(' ', $isos[0], true);
+        }
         if (empty($isos)) {
             $isos = $languagePackService->getActiveLanguages();
         }
