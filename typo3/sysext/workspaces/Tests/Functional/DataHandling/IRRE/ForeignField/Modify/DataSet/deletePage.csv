@@ -45,7 +45,6 @@
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,
-,"054faee34565a031b01d0403ffab9129","pages",91,"tx_irretutorial_hotels",,,,0,1,"tx_irretutorial_1nff_hotel",6,,,,,,
 ,"0be6b4051958ba5e752ac09f1b88ac7a","tx_irretutorial_1nff_offer",5,"prices",,,,2,0,"tx_irretutorial_1nff_price",9,,,,,,
 ,"0db25b4f2fa1f8ab4d3296280222e2b5","tx_irretutorial_1nff_hotel",5,"offers",,,,0,0,"tx_irretutorial_1nff_offer",8,,,,,,
 ,"0fc0d09ae681642e4bc17ef8e338b20e","tx_irretutorial_1nff_offer",5,"prices",,,,0,0,"tx_irretutorial_1nff_price",7,,,,,,

@@ -54,7 +54,3 @@
 ,"5aa620d796bedb2df9724db6d47487f8","tt_content",331,"image",,,,1,0,"sys_file_reference",129,,,,,,,,
 ,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",,,,0,0,"sys_workspace_stage",1,,,,,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,,,
-,"36f1ed8936df905a25f6454b259f05eb","sys_file_reference",130,"uid_local",,,,0,1,"sys_file",21,,,,,,,,
-,"69bd4dfe47d34722a1668f50c7f2deaa","sys_file_reference",131,"uid_local",,,,0,1,"sys_file",1,,,,,,,,
-,"4a9997099941b19dc087053b0d087362","tt_content",332,"image",,,,0,1,"sys_file_reference",130,,,,,,,,
-,"6c3a5722561aa19faa40a7c7742f686b","tt_content",332,"image",,,,1,1,"sys_file_reference",131,,,,,,,,
