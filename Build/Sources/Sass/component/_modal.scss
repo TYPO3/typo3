@@ -323,6 +323,10 @@ $modal-danger-border: darken($danger, 5%);
     }
 
     .modal-footer {
+        .btn + .btn {
+            margin-left: 0.5em;
+        }
+
         .progress-bar {
             &.inactive {
                 background: none;
