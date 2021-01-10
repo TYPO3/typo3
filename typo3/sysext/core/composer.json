@@ -29,6 +29,7 @@
 		"bacon/bacon-qr-code": "^2.0",
 		"christian-riesen/base32": "^1.5",
 		"cogpowered/finediff": "~0.3.1",
+		"composer-runtime-api": "^2.0",
 		"doctrine/annotations": "^1.11",
 		"doctrine/dbal": "^2.13",
 		"doctrine/instantiator": "^1.4",

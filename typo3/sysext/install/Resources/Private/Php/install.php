@@ -94,11 +94,6 @@
  *   can exist yet.
  */
 
-// Exit early if php requirement is not satisfied.
-if (PHP_VERSION_ID < 70400 || PHP_VERSION_ID >= 90000) {
-    die('This version of TYPO3 CMS requires PHP >= 7.4 and < 9.0');
-}
-
 call_user_func(function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
     \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(1, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_INSTALL);

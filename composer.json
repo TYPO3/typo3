@@ -38,6 +38,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
+		"composer-runtime-api": "^2.0",
 		"bacon/bacon-qr-code": "^2.0",
 		"christian-riesen/base32": "^1.5",
 		"cogpowered/finediff": "~0.3.1",
@@ -86,7 +87,6 @@
 		"typo3fluid/fluid": "^2.7.0"
 	},
 	"require-dev": {
-		"composer-runtime-api": "^2.0",
 		"codeception/codeception": "^4.1.12",
 		"codeception/lib-asserts": "^1.13.2",
 		"codeception/module-asserts": "^1.3.1",
