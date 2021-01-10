@@ -49,6 +49,21 @@ plugin.tx_seo {
             }
           }
         }
+        records_without_workspace_settings {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = sys_news
+            sortField = uid
+            lastModifiedField = tstamp
+            pid = 11
+            url {
+              pageId = 1
+              fieldToParameterMap {
+                uid = tx_example_news[id]
+              }
+            }
+          }
+        }
       }
     }
   }

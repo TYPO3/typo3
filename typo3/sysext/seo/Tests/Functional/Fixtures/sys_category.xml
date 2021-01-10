@@ -39,4 +39,19 @@
 		<title>Alternative language</title>
 		<sys_language_uid>1</sys_language_uid>
 	</sys_category>
+	<sys_category>
+		<uid>4</uid>
+		<pid>11</pid>
+		<tstamp>1610245386</tstamp>
+		<crdate>1610245386</crdate>
+		<deleted>0</deleted>
+		<hidden>0</hidden>
+		<starttime>0</starttime>
+		<endtime>0</endtime>
+		<sorting>64</sorting>
+		<t3ver_wsid>1</t3ver_wsid>
+		<t3ver_state>1</t3ver_state>
+		<title>Category in workspace</title>
+		<sys_language_uid>0</sys_language_uid>
+	</sys_category>
 </data>
