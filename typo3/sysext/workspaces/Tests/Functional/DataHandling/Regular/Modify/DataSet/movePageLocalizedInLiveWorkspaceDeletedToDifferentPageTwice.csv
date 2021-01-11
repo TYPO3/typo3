@@ -5,8 +5,7 @@
 ,89,88,256,0,0,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations",,
 ,90,88,512,0,0,0,0,0,0,0,0,0,0,"Target","/data-handler/target",,
 ,91,88,256,0,0,1,89,89,0,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations",,
-# @todo: The delete placeholder information is lost here since the record is turned into a move placeholder!
-,92,1,128,0,0,1,89,89,91,1,4,0,91,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations",,
+,92,1,128,0,0,1,89,89,91,1,2,0,91,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations",,
 ,93,1,128,0,0,0,0,0,89,1,4,0,89,"Relations","/data-handler/relations",,
 "sys_workspace",,,,,,,,,,,,,,,,,
 ,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"

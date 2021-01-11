@@ -1426,18 +1426,31 @@ class DataHandlerHook
             $destPid = -$movedTargetRecordInWorkspace['uid'];
         }
         $dataHandler->moveRecord_raw($table, $versionedRecordUid, $destPid);
-        // Update the state of this record now
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($table)
-            ->update(
-                $table,
-                [
-                    't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
-                ],
-                [
-                    'uid' => (int)$versionedRecordUid
-                ]
-            );
+
+        $versionedRecord = BackendUtility::getRecord($table, $versionedRecordUid, 'uid,t3ver_state');
+        if (!VersionState::cast($versionedRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            // Update the state of this record to a move placeholder. This is allowed if the
+            // record is a 'changed' (t3ver_state=0) record: Changing a record and moving it
+            // around later, should switch it from 'changed' to 'moved'. Deleted placeholders
+            // however are an 'end-state', they should not be switched to a move placeholder.
+            // Scenario: For a live page that has a localization, the localization is first
+            // marked as to-delete in workspace, creating a delete placeholder for that
+            // localization. Later, the page is moved around, moving the localization along
+            // with the default language record. The localization should then NOT be switched
+            // from 'to-delete' to 'moved', this would loose the 'to-delete' information.
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable($table)
+                ->update(
+                    $table,
+                    [
+                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
+                    ],
+                    [
+                        'uid' => (int)$versionedRecordUid
+                    ]
+                );
+        }
+
         // Check for the localizations of that element and move them as well
         $dataHandler->moveL10nOverlayRecords($table, $liveUid, $destPid, $originalRecordDestinationPid);
     }
