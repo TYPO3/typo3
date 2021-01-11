@@ -1,5 +1,7 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 <f:if condition="{loginNewsItems}">
-    <div class="panel-carousel carousel slide t3js-login-news-carousel" id="loginNews" data-bs-interval="0" data-bs-ride="carousel">
+    <section class="typo3-login-carousel carousel slide t3js-login-news-carousel" id="loginNews" data-bs-interval="0" data-bs-ride="carousel">
         <div class="carousel-inner">
             <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
                 <div class="carousel-item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
@@ -11,13 +13,14 @@
         </div>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
             <a class="left typo3-login-carousel-control" href="#loginNews" role="button" data-bs-slide="prev">
-            <i class="fa fa-angle-left"></i>
-            <span class="sr-only"><f:translate key="login.news.previous" /></span>
+                <i class="fa fa-angle-left"></i>
+                <span class="sr-only"><f:translate key="login.news.previous" /></span>
             </a>
             <a class="right typo3-login-carousel-control" href="#loginNews" role="button" data-bs-slide="next">
                 <i class="fa fa-angle-right"></i>
                 <span class="sr-only"><f:translate key="login.news.next" /></span>
             </a>
         </f:if>
-    </div>
+    </section>
 </f:if>
+</html>

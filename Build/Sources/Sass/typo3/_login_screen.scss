@@ -138,6 +138,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 .card-login {
     border-color: darken($login-bg, 10%);
     border-radius: $login-border-radius;
+    overflow: visible;
 
     .card-heading {
         padding: 2.5em 2.5em 0;
@@ -194,6 +195,11 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 //
 // Carousel
 //
+
+.typo3-login-carousel {
+    padding: $card-spacer-x;
+}
+
 .typo3-login-carousel-control {
     top: 50%;
     margin-top: -30px;
