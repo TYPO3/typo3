@@ -89,40 +89,12 @@ class RelationHandler
     protected $firstTable = '';
 
     /**
-     * Will contain the second table name in the $tablelist (for negative ids)
-     *
-     * @var string
-     */
-    protected $secondTable = '';
-
-    /**
      * If TRUE, uid_local and uid_foreign are switched, and the current table
      * is inserted as tablename - this means you display a foreign relation "from the opposite side"
      *
      * @var bool
      */
     protected $MM_is_foreign = false;
-
-    /**
-     * Field name at the "local" side of the MM relation
-     *
-     * @var string
-     */
-    protected $MM_oppositeField = '';
-
-    /**
-     * Only set if MM_is_foreign is set
-     *
-     * @var string
-     */
-    protected $MM_oppositeTable = '';
-
-    /**
-     * Only set if MM_is_foreign is set
-     *
-     * @var array
-     */
-    protected $MM_oppositeFieldConf = [];
 
     /**
      * Is empty by default; if MM_is_foreign is set and there is more than one table
@@ -281,7 +253,6 @@ class RelationHandler
         $conf = (array)$conf;
         // SECTION: MM reverse relations
         $this->MM_is_foreign = (bool)($conf['MM_opposite_field'] ?? false);
-        $this->MM_oppositeField = $conf['MM_opposite_field'] ?? null;
         $this->MM_table_where = $conf['MM_table_where'] ?? null;
         $this->MM_hasUidField = $conf['MM_hasUidField'] ?? null;
         $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
@@ -290,19 +261,21 @@ class RelationHandler
         if (!empty($conf['MM_oppositeUsage']) && is_array($conf['MM_oppositeUsage'])) {
             $this->MM_oppositeUsage = $conf['MM_oppositeUsage'];
         }
+        $mmOppositeTable = '';
         if ($this->MM_is_foreign) {
             $allowedTableList = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             // Normally, $conf['allowed'] can contain a list of tables,
             // but as we are looking at a MM relation from the foreign side,
-            // it only makes sense to allow one one table in $conf['allowed']
-            [$this->MM_oppositeTable] = GeneralUtility::trimExplode(',', $allowedTableList);
-            // Only add the current table name if there is more than one allowed field
-            // We must be sure this has been done at least once before accessing the "columns" part of TCA for a table.
-            $this->MM_oppositeFieldConf = $GLOBALS['TCA'][$this->MM_oppositeTable]['columns'][$this->MM_oppositeField]['config'];
-            if ($this->MM_oppositeFieldConf['allowed']) {
-                $oppositeFieldConf_allowed = explode(',', $this->MM_oppositeFieldConf['allowed']);
-                if (count($oppositeFieldConf_allowed) > 1 || $this->MM_oppositeFieldConf['allowed'] === '*') {
-                    $this->MM_isMultiTableRelationship = $oppositeFieldConf_allowed[0];
+            // it only makes sense to allow one table in $conf['allowed'].
+            [$mmOppositeTable] = GeneralUtility::trimExplode(',', $allowedTableList);
+            // Only add the current table name if there is more than one allowed
+            // field. We must be sure this has been done at least once before accessing
+            // the "columns" part of TCA for a table.
+            $mmOppositeAllowed = (string)($GLOBALS['TCA'][$mmOppositeTable]['columns'][$conf['MM_opposite_field'] ?? '']['config']['allowed'] ?? '');
+            if ($mmOppositeAllowed !== '') {
+                $mmOppositeAllowedTables = explode(',', $mmOppositeAllowed);
+                if ($mmOppositeAllowed === '*' || count($mmOppositeAllowedTables) > 1) {
+                    $this->MM_isMultiTableRelationship = $mmOppositeAllowedTables[0];
                 }
             }
         }
@@ -332,14 +305,11 @@ class RelationHandler
         // Is the first table
         $this->firstTable = key($this->tableArray);
         next($this->tableArray);
-        // If the second table is set and the ID number is less than zero (later)
-        // then the record is regarded to come from the second table...
-        $this->secondTable = key($this->tableArray);
         // Now, populate the internal itemArray and tableArray arrays:
         // If MM, then call this function to do that:
         if ($MMtable) {
             if ($MMuid) {
-                $this->readMM($MMtable, $MMuid);
+                $this->readMM($MMtable, $MMuid, $mmOppositeTable);
                 $this->purgeItemArray();
             } else {
                 // Revert to readList() for new records in order to load possible default values from $itemlist
@@ -409,9 +379,12 @@ class RelationHandler
     protected function readList($itemlist, array $configuration)
     {
         if ((string)trim($itemlist) != '') {
-            $tempItemArray = GeneralUtility::trimExplode(',', $itemlist);
             // Changed to trimExplode 31/3 04; HMENU special type "list" didn't work
             // if there were spaces in the list... I suppose this is better overall...
+            $tempItemArray = GeneralUtility::trimExplode(',', $itemlist);
+            // If the second table is set and the ID number is less than zero (later)
+            // then the record is regarded to come from the second table...
+            $secondTable = (string)(key($this->tableArray) ?? '');
             foreach ($tempItemArray as $key => $val) {
                 // Will be set to "true" if the entry was a real table/id
                 $isSet = false;
@@ -426,7 +399,7 @@ class RelationHandler
                     // Otherwise if the id number is LESS than zero, use the second table, otherwise the first table
                     $theTable = trim($parts[1] ?? '')
                         ? strrev(trim($parts[1] ?? ''))
-                        : ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
+                        : ($secondTable && $theID < 0 ? $secondTable : $this->firstTable);
                     // If the ID is not blank and the table name is among the names in the inputted tableList
                     if (
                         (string)$theID != ''
@@ -435,7 +408,7 @@ class RelationHandler
                         && $theTable && isset($this->tableArray[$theTable])
                     ) {
                         // Get ID as the right value:
-                        $theID = $this->secondTable ? abs((int)$theID) : (int)$theID;
+                        $theID = $secondTable ? abs((int)$theID) : (int)$theID;
                         // Register ID/table name in internal arrays:
                         $this->itemArray[$key]['id'] = $theID;
                         $this->itemArray[$key]['table'] = $theTable;
@@ -537,8 +510,9 @@ class RelationHandler
      *
      * @param string $tableName MM Tablename
      * @param int $uid Local UID
+     * @param string $mmOppositeTable Opposite table name
      */
-    protected function readMM($tableName, $uid)
+    protected function readMM($tableName, $uid, $mmOppositeTable)
     {
         $key = 0;
         $theTable = null;
@@ -573,7 +547,7 @@ class RelationHandler
                 }
                 $queryBuilder->andWhere($expression);
             }
-            $theTable = $this->MM_oppositeTable;
+            $theTable = $mmOppositeTable;
         } else {
             // Default
             $uidLocal_field = 'uid_local';
