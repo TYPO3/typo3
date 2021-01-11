@@ -135,12 +135,8 @@ class PageActions {
       '<div class="form-group">' +
       '<div class="input-group input-group-lg">' +
       '<input class="form-control t3js-title-edit-input">' +
-      '<span class="input-group-btn">' +
       '<button class="btn btn-default" type="button" data-action="submit"><span class="t3-icon fa fa-floppy-o"></span></button> ' +
-      '</span>' +
-      '<span class="input-group-btn">' +
       '<button class="btn btn-default" type="button" data-action="cancel"><span class="t3-icon fa fa-times"></span></button> ' +
-      '</span>' +
       '</div>' +
       '</div>' +
       '</form>',
