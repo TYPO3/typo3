@@ -35,7 +35,7 @@ class FileDelete {
         const deleteUrl = eventTarget.dataset.deleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
         const target = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
         if (eventTarget.dataset.check) {
-          const $modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.content, SeverityEnum.warning, [
+          const $modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.bsContent, SeverityEnum.warning, [
             {
               text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
               active: true,

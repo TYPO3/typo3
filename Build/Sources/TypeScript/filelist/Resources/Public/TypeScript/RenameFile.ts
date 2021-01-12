@@ -45,10 +45,15 @@ class RenameFile {
     const destinationField = form.querySelector('input[name="data[rename][0][destination]"]') as HTMLInputElement;
     const conflictModeField = form.querySelector('input[name="data[rename][0][conflictMode]"]') as HTMLInputElement;
 
-    new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments({
-      fileName: fileNameField.value,
-      fileTarget: destinationField.value,
-    }).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<void> => {
+    const data: any = {
+      fileName: fileNameField.value
+    };
+    // destination is not set if we deal with a folder
+    if (destinationField !== null) {
+      data.fileTarget = destinationField.value;
+    }
+
+    new AjaxRequest(TYPO3.settings.ajaxUrls.file_exists).withQueryArguments(data).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<void> => {
       const result = await response.resolve();
 
       const fileExists: boolean = typeof result.uid !== 'undefined';
@@ -84,7 +89,10 @@ class RenameFile {
 
         modal.on('button.clicked', (event: any): void => {
           if (event.target.name !== 'cancel') {
-            conflictModeField.value = event.target.name;
+            // conflictMode is not set if we deal with a folder
+            if (conflictModeField !== null) {
+              conflictModeField.value = event.target.name;
+            }
             form.submit();
           }
           Modal.dismiss();
