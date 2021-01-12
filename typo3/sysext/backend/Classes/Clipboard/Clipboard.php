@@ -390,7 +390,9 @@ class Clipboard
                             $size = $folder ? '' : '(' . GeneralUtility::formatSize((int)$fileObject->getSize()) . 'bytes)';
                             if (!$folder && $fileObject->isImage()) {
                                 $thumb = [
-                                    'image' => $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(),
+                                    'image' => PathUtility::getAbsoluteWebPath(
+                                        $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl() ?? ''
+                                    ),
                                     'title' => htmlspecialchars($fileObject->getName())
                                 ];
                             }
