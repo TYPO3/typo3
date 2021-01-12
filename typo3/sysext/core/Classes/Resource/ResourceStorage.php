@@ -2340,7 +2340,7 @@ class ResourceStorage implements ResourceStorageInterface
         $returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 
         $this->eventDispatcher->dispatch(
-            new AfterFolderRenamedEvent($returnObject)
+            new AfterFolderRenamedEvent($returnObject, $folderObject)
         );
         return $returnObject;
     }

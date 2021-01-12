@@ -149,6 +149,17 @@ services:
         method: 'removeFromRepositoryAfterFileDeleted'
         event: TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent
 
+  # synchronize folder relations
+  TYPO3\CMS\Core\Resource\SynchronizeFolderRelations:
+    tags:
+      - name: event.listener
+        identifier: 'synchronize-file-collections-after-folder-renamed'
+        method: 'synchronizeFileCollectionsAfterRename'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent
+      - name: event.listener
+        identifier: 'synchronize-filemounts-after-folder-renamed'
+        method: 'synchronizeFilemountsAfterRename'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent
 
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here

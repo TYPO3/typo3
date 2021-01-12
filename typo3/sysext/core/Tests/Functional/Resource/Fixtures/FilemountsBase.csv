@@ -1,0 +1,10 @@
+"sys_filemounts",,,,,,
+,"uid","pid","deleted","hidden","path","base"
+,1,0,0,0,"/foo/bar/",1
+,2,0,0,1,"/foo/bar/",1
+,3,0,0,0,"/foo/bar/baz/",1
+,4,0,0,0,"/foo/bar/foo/bar/",1
+,5,0,0,0,"/foo/bar/foo/bar/foo/bar/",1
+,6,0,1,0,"/foo/bar/baz/",1
+,7,0,0,0,"/foo/bar/baz/",2
+,8,0,0,0,"/baz/foo/bar/",1

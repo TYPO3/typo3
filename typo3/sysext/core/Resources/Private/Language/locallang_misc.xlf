@@ -405,6 +405,9 @@
 			<trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038">
 				<source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
 			</trans-unit>
+			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed" resname="synchronizeRelations.afterFolderRenamed">
+				<source>%d %s records referencing the renamed directory were updated.</source>
+			</trans-unit>
 			<trans-unit id="liveSearch_title" resname="liveSearch_title">
 				<source>Short result list</source>
 			</trans-unit>

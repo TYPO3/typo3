@@ -26,18 +26,22 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class AfterFolderRenamedEvent
 {
-    /**
-     * @var Folder
-     */
-    private $folder;
+    private Folder $folder;
+    private Folder $sourceFolder;
 
-    public function __construct(Folder $folder)
+    public function __construct(Folder $folder, Folder $sourceFolder)
     {
         $this->folder = $folder;
+        $this->sourceFolder = $sourceFolder;
     }
 
     public function getFolder(): Folder
     {
         return $this->folder;
+    }
+
+    public function getSourceFolder(): Folder
+    {
+        return $this->sourceFolder;
     }
 }
