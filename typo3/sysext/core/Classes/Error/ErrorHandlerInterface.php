@@ -24,6 +24,9 @@ interface ErrorHandlerInterface
     /**
      * Registers this class as default error handler
      *
+     * If dependencies need to be added using injector methods, the error handler may
+     * also be registered later on, within the optional registerErrorHandler() method.
+     *
      * @param int $errorHandlerErrors The integer representing the E_* error level which should be
      */
     public function __construct($errorHandlerErrors);
