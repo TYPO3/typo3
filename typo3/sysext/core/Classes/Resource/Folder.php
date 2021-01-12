@@ -408,6 +408,20 @@ class Folder implements FolderInterface
     }
 
     /**
+     * Fetches a file from a folder, must be a direct descendant of a folder.
+     *
+     * @param string $fileName
+     * @return File|ProcessedFile|null
+     */
+    public function getFile(string $fileName)
+    {
+        if ($this->storage->hasFileInFolder($fileName, $this)) {
+            return $this->storage->getFileInFolder($fileName, $this);
+        }
+        return null;
+    }
+
+    /**
      * Checks if a folder exists in this folder.
      *
      * @param string $name
