@@ -409,7 +409,7 @@ class LoginController implements LoggerAwareInterface
                 );
             } else {
                 $logo = $extConf['loginLogo'];
-                $logoAlt = trim($extConf['loginLogoAlt']);
+                $logoAlt = trim($extConf['loginLogoAlt'] ?? '');
                 if (empty($logoAlt)) {
                     trigger_error('Login logo without alt-text is not accessible and will fall back to "TYPO3 CMS logo" in v12. Configure alt-text in the backend extension.', E_USER_DEPRECATED);
                 }
