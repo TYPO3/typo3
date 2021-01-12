@@ -424,6 +424,9 @@ class Bootstrap
             if (is_callable([$errorHandler, 'setDebugMode'])) {
                 $errorHandler->setDebugMode($displayErrors === 1);
             }
+            if (is_callable([$errorHandler, 'registerErrorHandler'])) {
+                $errorHandler->registerErrorHandler();
+            }
         }
         if (!empty($exceptionHandlerClassName)) {
             // Registering the exception handler is done in the constructor

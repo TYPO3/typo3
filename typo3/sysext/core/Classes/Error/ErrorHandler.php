@@ -68,7 +68,6 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         $excludedErrors = E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR;
         // reduces error types to those a custom error handler can process
         $this->errorHandlerErrors = (int)$errorHandlerErrors & ~$excludedErrors;
-        set_error_handler([$this, 'handleError'], $this->errorHandlerErrors);
     }
 
     /**
@@ -90,6 +89,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
     public function setDebugMode($debugMode)
     {
         $this->debugMode = (bool)$debugMode;
+    }
+
+    public function registerErrorHandler()
+    {
+        set_error_handler([$this, 'handleError'], $this->errorHandlerErrors);
     }
 
     /**
