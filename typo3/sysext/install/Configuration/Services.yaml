@@ -14,3 +14,6 @@ services:
 
   TYPO3\CMS\Install\Controller\BackendModuleController:
     tags: ['backend.controller']
+
+  TYPO3\CMS\Install\Service\Typo3tempFileService:
+    public: true
