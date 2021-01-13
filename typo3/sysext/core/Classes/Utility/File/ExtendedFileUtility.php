@@ -696,8 +696,8 @@ class ExtendedFileUtility extends BasicFileUtility
                 $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 121, 'You don\'t have full access to the destination directory "%s"!', [$targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.YouDontHaveFullAccessToTheDestinationDirectory', [$targetFolderObject->getIdentifier()]);
             } catch (InvalidTargetFolderException $e) {
-                $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 122, 'Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!', [$sourceFolderObject->getName(), $targetFolderObject->getName()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied', [$sourceFolderObject->getName(), $targetFolderObject->getName()]);
+                $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 122, 'Cannot copy folder "%s" into target folder "%s", because there is already a folder or file with that name in the target folder!', [$sourceFolderObject->getName(), $targetFolderObject->getName()]);
+                $this->addMessageToFlashMessageQueue('FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied', [$sourceFolderObject->getName(), $targetFolderObject->getIdentifier()]);
             } catch (ExistingTargetFolderException $e) {
                 $this->writeLog(SystemLogFileAction::COPY, SystemLogErrorClassification::USER_ERROR, 123, 'Target "%s" already exists!', [$targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.TargetAlreadyExists', [$targetFolderObject->getIdentifier()]);

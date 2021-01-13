@@ -2249,7 +2249,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = null, $conflictMode = DuplicationBehavior::RENAME)
     {
-        // @todo implement the $conflictMode handling
+        $conflictMode = DuplicationBehavior::cast($conflictMode);
         $this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
         $returnObject = null;
         $sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToCopy->getName());
@@ -2258,20 +2258,24 @@ class ResourceStorage implements ResourceStorageInterface
                 new BeforeFolderCopiedEvent($folderToCopy, $targetParentFolder, $sanitizedNewFolderName)
             );
         }
+        if ($conflictMode->equals(DuplicationBehavior::CANCEL) && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
+            throw new InvalidTargetFolderException(
+                sprintf(
+                    'Cannot copy folder "%s" into target folder "%s", because there is already a folder or file with that name in the target folder!',
+                    $sanitizedNewFolderName,
+                    $targetParentFolder->getIdentifier()
+                ),
+                1422723059
+            );
+        }
+        // Folder exists and we should find another name, let's find another one
+        if ($conflictMode->equals(DuplicationBehavior::RENAME) && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
+            $sanitizedNewFolderName = $this->getUniqueName($targetParentFolder, $sanitizedNewFolderName);
+        }
         $sourceStorage = $folderToCopy->getStorage();
         // call driver method to move the file
         // that also updates the file object properties
         if ($sourceStorage === $this) {
-            if ($this->isWithinFolder($folderToCopy, $targetParentFolder)) {
-                throw new InvalidTargetFolderException(
-                    sprintf(
-                        'Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!',
-                        $folderToCopy->getName(),
-                        $targetParentFolder->getName()
-                    ),
-                    1422723059
-                );
-            }
             $this->driver->copyFolderWithinStorage($folderToCopy->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
             $returnObject = $this->getFolder($targetParentFolder->getSubfolder($sanitizedNewFolderName)->getIdentifier());
         } else {
@@ -2642,7 +2646,7 @@ class ResourceStorage implements ResourceStorageInterface
         // The destinations file
         $theDestFile = $origFileInfo['basename'];
         // If the file does NOT exist we return this fileName
-        if (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier()) || $dontCheckForUnique) {
+        if ($dontCheckForUnique || (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier()) && !$this->driver->folderExistsInFolder($theDestFile, $folder->getIdentifier()))) {
             return $theDestFile;
         }
         // Well the fileName in its pure form existed. Now we try to append
@@ -2661,7 +2665,7 @@ class ResourceStorage implements ResourceStorageInterface
             // The destinations file
             $theDestFile = $theTestFile;
             // If the file does NOT exist we return this fileName
-            if (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier())) {
+            if (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier()) && !$this->driver->folderExistsInFolder($theDestFile, $folder->getIdentifier())) {
                 return $theDestFile;
             }
         }
