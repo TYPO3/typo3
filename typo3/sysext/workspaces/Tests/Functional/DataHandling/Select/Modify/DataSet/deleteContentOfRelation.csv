@@ -22,6 +22,8 @@
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,
 ,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",,,,0,0,"sys_workspace_stage",1,
+,"98a793c05985daac9bfc537e0d8fc08b","tt_content",299,"tx_testdatahandler_select",,,,0,1,"tx_testdatahandler_element",2,
+,"9e50e2d84c69c9f744701bb17b81abfd","tt_content",299,"tx_testdatahandler_select",,,,1,1,"tx_testdatahandler_element",3,
 ,"d333521843e8774369e112581bd4643b","tt_content",297,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",2,
 ,"d7065184b2d510f3fada875169bc8c57","tt_content",297,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",1,
 ,"f54bf3a4ddc51685c0586b31015312cb","tt_content",298,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",3,

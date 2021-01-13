@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Reference index processing and relation extraction
@@ -304,14 +303,6 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected function generateDataUsingRecord(string $tableName, array $record): array
     {
-        if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-            // Never write relations for t3ver_state = 2 delete placeholder records
-            $versionState = VersionState::cast($record['t3ver_state'] ?? 0);
-            if ($versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
-                return [];
-            }
-        }
-
         $this->relations = [];
         // Get all relations from record:
         $recordRelations = $this->getRelations($tableName, $record);

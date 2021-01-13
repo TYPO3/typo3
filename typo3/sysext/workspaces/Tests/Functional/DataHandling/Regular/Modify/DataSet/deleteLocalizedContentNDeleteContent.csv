@@ -35,6 +35,7 @@
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"01a3ce8c4e3b2bb1aa439dc29081f996","sys_workspace_stage",1,"responsible_persons",,,,0,0,"be_users",3,,,,,,
 ,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,,,,,,
+,"1aabb1deaec63ac369ca0b48bb8ed261","tt_content",321,"l18n_parent",,,,0,1,"tt_content",299,,,,,,
 ,"25426f92d44dd2ccf416108462b446e3","sys_workspace",1,"custom_stages",,,,0,0,"sys_workspace_stage",1,,,,,,
 ,"25f3b71b67f29fa33fbfd4fa2d930b70","tt_content",302,"l18n_parent",,,,0,0,"tt_content",297,,,,,,
 ,"4433e80cbec985130824d6d302ad293f","pages",91,"sys_language_uid",,,,0,1,"sys_language",1,,,,,,
