@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
@@ -70,7 +68,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SilentConfigurationUpgradeService::class => [ static::class, 'getSilentConfigurationUpgradeService' ],
             Service\SilentTemplateFileUpgradeService::class => [ static::class, 'getSilentTemplateFileUpgradeService' ],
             Service\WebServerConfigurationFileService::class => [ static::class, 'getWebServerConfigurationFileService' ],
-            Service\Typo3tempFileService::class => [ static::class, 'getTypo3tempFileService' ],
             Service\UpgradeWizardsService::class => [ static::class, 'getUpgradeWizardsService' ],
             Middleware\Installer::class => [ static::class, 'getInstallerMiddleware' ],
             Middleware\Maintenance::class => [ static::class, 'getMaintenanceMiddleware' ],
@@ -188,14 +185,6 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Service\WebServerConfigurationFileService::class);
     }
 
-    public static function getTypo3tempFileService(ContainerInterface $container): Service\Typo3tempFileService
-    {
-        return new Service\Typo3tempFileService(
-            $container->get(ProcessedFileRepository::class),
-            $container->get(StorageRepository::class)
-        );
-    }
-
     public static function getUpgradeWizardsService(ContainerInterface $container): Service\UpgradeWizardsService
     {
         return new Service\UpgradeWizardsService();
@@ -264,7 +253,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\MaintenanceController(
             $container->get(Service\LateBootService::class),
             $container->get(Service\ClearCacheService::class),
-            $container->get(Service\Typo3tempFileService::class),
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container->get(Locales::class)

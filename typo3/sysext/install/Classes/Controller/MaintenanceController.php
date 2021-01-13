@@ -59,11 +59,6 @@ class MaintenanceController extends AbstractController
     private $clearCacheService;
 
     /**
-     * @var Typo3tempFileService
-     */
-    private $typo3tempFileService;
-
-    /**
      * @var ConfigurationManager
      */
     private $configurationManager;
@@ -81,14 +76,12 @@ class MaintenanceController extends AbstractController
     public function __construct(
         LateBootService $lateBootService,
         ClearCacheService $clearCacheService,
-        Typo3tempFileService $typo3tempFileService,
         ConfigurationManager $configurationManager,
         PasswordHashFactory $passwordHashFactory,
         Locales $locales
     ) {
         $this->lateBootService = $lateBootService;
         $this->clearCacheService = $clearCacheService;
-        $this->typo3tempFileService = $typo3tempFileService;
         $this->configurationManager = $configurationManager;
         $this->passwordHashFactory = $passwordHashFactory;
         $this->locales = $locales;
@@ -134,7 +127,9 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $typo3tempFileService = $container->get(Typo3tempFileService::class);
+
         $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTypo3tempFiles.html');
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
@@ -143,7 +138,7 @@ class MaintenanceController extends AbstractController
         return new JsonResponse(
             [
                 'success' => true,
-                'stats' => $this->typo3tempFileService->getDirectoryStatistics(),
+                'stats' => $typo3tempFileService->getDirectoryStatistics(),
                 'html' => $view->render(),
                 'buttons' => [
                     [
@@ -163,19 +158,20 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $typo3tempFileService = $container->get(Typo3tempFileService::class);
         $messageQueue = new FlashMessageQueue('install');
         $folder = $request->getParsedBody()['install']['folder'];
         // storageUid is an optional post param if FAL storages should be cleaned
         $storageUid = $request->getParsedBody()['install']['storageUid'] ?? null;
         if ($storageUid === null) {
-            $this->typo3tempFileService->clearAssetsFolder($folder);
+            $typo3tempFileService->clearAssetsFolder($folder);
             $messageQueue->enqueue(new FlashMessage('The directory "' . $folder . '" has been cleared successfully', 'Directory cleared'));
         } else {
             $storageUid = (int)$storageUid;
             // We have to get the stats before deleting files, otherwise we're not able to retrieve the amount of files anymore
-            $stats = $this->typo3tempFileService->getStatsFromStorageByUid($storageUid);
-            $failedDeletions = $this->typo3tempFileService->clearProcessedFiles($storageUid);
+            $stats = $typo3tempFileService->getStatsFromStorageByUid($storageUid);
+            $failedDeletions = $typo3tempFileService->clearProcessedFiles($storageUid);
             if ($failedDeletions) {
                 $messageQueue->enqueue(new FlashMessage(
                     'Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/var/log/typo3_*.log)',
