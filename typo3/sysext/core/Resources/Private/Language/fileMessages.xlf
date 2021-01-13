@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied" resname="FileUtility.CannotCopyFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeCopied">
-				<source>Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!</source>
+				<source>Cannot copy folder "%s" into target folder "%s", because there is already a folder or file with that name in the target folder!</source>
 			</trans-unit>
 			<trans-unit id="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved" resname="FileUtility.CannotMoveFolderIntoTargetFolderBecauseTheTargetFolderIsAlreadyWithinTheFolderToBeMoved">
 				<source>Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!</source>

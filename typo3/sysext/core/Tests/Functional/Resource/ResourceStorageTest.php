@@ -16,6 +16,10 @@
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -427,5 +431,89 @@ class ResourceStorageTest extends FunctionalTestCase
             GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/bar', true);
             GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/baz', true);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function copyFolderThrowsErrorWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
+    {
+        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+
+        $this->expectException(InvalidTargetFolderException::class);
+        $this->expectExceptionCode(1422723059);
+        $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
+    }
+
+    /**
+     * @test
+     */
+    public function copyFolderGeneratesNewFolderNameWhenFolderAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
+    {
+        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+
+        $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
+
+        $newFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo_01');
+        self::assertInstanceOf(Folder::class, $newFolder);
+    }
+
+    /**
+     * @test
+     */
+    public function copyFileThrowsErrorWhenFileWithSameNameAlreadyExistsInTargetFolderAndConflictModeIsCancel(): void
+    {
+        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::CANCEL);
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
+
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+
+        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+
+        $this->expectException(ExistingTargetFileNameException::class);
+        $this->expectExceptionCode(1320291064);
+        $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
+    }
+
+    /**
+     * @test
+     */
+    public function copyFileGeneratesNewFileNameWhenFileAlreadyExistsInTargetFolderAndConflictModeIsRename(): void
+    {
+        $conflictMode = DuplicationBehavior::cast(DuplicationBehavior::RENAME);
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
+        $this->setUpBackendUserFromFixture(1);
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
+        file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
+
+        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+
+        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+
+        $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
+
+        $newFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/bar_01.txt');
+        self::assertInstanceOf(File::class, $newFile);
     }
 }
