@@ -74,12 +74,15 @@ class TcaGroup implements FormDataProviderInterface
                     );
                 }
 
+                // In case of vanilla uid, 0 is used to query relations by splitting $databaseRowFieldContent (possible defVals)
+                $MMuid = MathUtility::canBeInterpretedAsInteger($result['databaseRow']['uid']) ? $result['databaseRow']['uid'] : 0;
+
                 $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
                 $relationHandler->start(
                     $databaseRowFieldContent,
                     $fieldConfig['config']['allowed'],
                     $fieldConfig['config']['MM'],
-                    $result['databaseRow']['uid'],
+                    $MMuid,
                     $result['tableName'],
                     $fieldConfig['config']
                 );
