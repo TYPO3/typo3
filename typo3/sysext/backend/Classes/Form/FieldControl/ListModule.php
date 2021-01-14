@@ -81,6 +81,7 @@ class ListModule extends AbstractNode
                     'pid' => $pid,
                 ],
                 'table' => $this->data['tableName'],
+                'field' => $this->data['fieldName'],
                 'uid' => $this->data['databaseRow']['uid'],
                 'returnUrl' => $this->data['returnUrl'],
             ],

@@ -45,14 +45,10 @@ class ListController extends AbstractWizardController
 
         // Wizard parameters, coming from FormEngine linking to this wizard.
         $parameters = $parsedBody['P'] ?? $queryParams['P'] ?? null;
-        // Table to show, if none, then all tables are listed in list module.
-        $table = $parsedBody['table'] ?? $queryParams['table'] ?? null;
         $id = $parsedBody['id'] ?? $queryParams['id'] ?? null;
-        $origRow = BackendUtility::getRecord($parameters['table'], $parameters['uid']);
-        $tsConfig = BackendUtility::getTCEFORM_TSconfig(
-            $table,
-            is_array($origRow) ? $origRow : ['pid' => $parameters['pid']]
-        );
+        $table = $parameters['table'] ?? '';
+        $origRow = BackendUtility::getRecord($table, $parameters['uid']);
+        $tsConfig = BackendUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid']]);
 
         if (strpos($parameters['params']['pid'], '###') === 0 && substr($parameters['params']['pid'], -3) === '###') {
             $keyword = substr($parameters['params']['pid'], 3, -3);
