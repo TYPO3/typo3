@@ -18,8 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
+use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -99,7 +103,7 @@ class AuthenticationService
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
             ->setTemplate('Security/InstallToolLogin')
             ->setRequest($request);
-        GeneralUtility::makeInstance(Mailer::class)->send($email);
+        $this->sendEmail($email);
     }
 
     /**
@@ -122,7 +126,32 @@ class AuthenticationService
             ->setTemplate('Security/InstallToolLoginAttempt')
             ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5))
             ->setRequest($request);
-        GeneralUtility::makeInstance(Mailer::class)->send($email);
+        $this->sendEmail($email);
+    }
+
+    /**
+     * Sends an email and gracefully logs if the mail could not be sent due to configuration errors.
+     *
+     * @param RawMessage $email
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
+    protected function sendEmail(RawMessage $email): void
+    {
+        try {
+            GeneralUtility::makeInstance(Mailer::class)->send($email);
+        } catch (TransportException $e) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to mailer settings error', [
+                'recipientList' => $this->getSenderEmailAddress(),
+                'exception' => $e
+            ]);
+        } catch (RfcComplianceException $e) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to invalid email address', [
+                'recipientList' => $this->getSenderEmailAddress(),
+                'exception' => $e
+            ]);
+        }
     }
 
     /**
