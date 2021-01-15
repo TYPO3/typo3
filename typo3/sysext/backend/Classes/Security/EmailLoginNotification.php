@@ -18,6 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
@@ -35,8 +39,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is not part of TYPO3 API as this is an internal hook
  */
-class EmailLoginNotification
+class EmailLoginNotification implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var int
      */
@@ -106,6 +112,20 @@ class EmailLoginNotification
                 'language' => $user->uc['lang'] ?? 'default',
                 'headline' => $headline
             ]);
-        GeneralUtility::makeInstance(Mailer::class)->send($email);
+        try {
+            GeneralUtility::makeInstance(Mailer::class)->send($email);
+        } catch (TransportException $e) {
+            $this->logger->warning('Could not send notification email to "' . $recipient . '" due to mailer settings error', [
+                'userId' => $user->user['uid'] ?? 0,
+                'recipientList' => $recipients,
+                'exception' => $e
+            ]);
+        } catch (RfcComplianceException $e) {
+            $this->logger->warning('Could not send notification email to "' . $recipient . '" due to invalid email address', [
+                'userId' => $user->user['uid'] ?? 0,
+                'recipientList' => $recipients,
+                'exception' => $e
+            ]);
+        }
     }
 }
