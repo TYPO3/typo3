@@ -36,7 +36,7 @@ class LinkPopup {
 
     const itemName = this.controlElement.dataset.itemName;
     const url = this.controlElement.getAttribute('href')
-      + '&P[currentValue]=' + encodeURIComponent(document.editform[itemName].value)
+      + '&P[currentValue]=' + encodeURIComponent(document.forms.namedItem('editform')[itemName].value)
       + '&P[currentSelectedValues]=' + encodeURIComponent(FormEngine.getFieldElement(itemName).val());
 
     Modal.advanced({

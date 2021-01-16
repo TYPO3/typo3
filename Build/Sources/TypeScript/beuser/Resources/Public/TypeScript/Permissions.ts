@@ -11,13 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-
-declare global {
-  interface Document { editform: any; }
-}
+import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 
 /**
  * Module: TYPO3/CMS/Beuser/Permissions
@@ -31,88 +28,149 @@ class Permissions {
 
   private ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
 
-  constructor() {
-    this.initializeEvents();
+  /**
+   * Owner-related: Update the HTML view and show the original owner
+   */
+  private static restoreOwner(element: HTMLElement): void {
+    let page = element.dataset.page;
+    let username = element.dataset.username;
+    let usernameHtml = username;
+    if (typeof username === 'undefined') {
+      username = '[not set]';
+      usernameHtml = `<span class="not_set">${username}</span>`;
+    }
+
+    let span = document.createElement('span');
+    span.id = `o_${page}`;
+
+    let aSelector = document.createElement('a');
+    aSelector.classList.add('ug_selector', 'changeowner');
+    aSelector.setAttribute('data-page', page);
+    aSelector.setAttribute('data-owner', element.dataset.owner);
+    aSelector.setAttribute('data-username', username);
+    aSelector.innerHTML = usernameHtml;
+    span.appendChild(aSelector);
+
+    // Replace content
+    const container = document.getElementById('o_' + page);
+    while (container.firstChild) {
+      container.firstChild.remove();
+    }
+    container.appendChild(span);
+  }
+
+  /**
+   * Group-related: Update the HTML view and show the original group
+   */
+  private static restoreGroup(element: HTMLElement): void {
+    let page = element.dataset.page;
+    let groupname = element.dataset.groupname;
+    let groupnameHtml = groupname;
+    if (typeof groupname === 'undefined') {
+      groupname = '[not set]';
+      groupnameHtml = `<span class="not_set">${groupname}</span>`;
+    }
+
+    let span = document.createElement('span');
+    span.id = `g_${page}`;
+
+    let aSelector = document.createElement('a');
+    aSelector.classList.add('ug_selector', 'changegroup');
+    aSelector.setAttribute('data-page', page);
+    aSelector.setAttribute('data-group-id', element.dataset.groupId);
+    aSelector.setAttribute('data-groupname', groupname);
+    aSelector.innerHTML = groupnameHtml;
+    span.appendChild(aSelector);
+
+    // Replace content
+    const container = document.getElementById('g_' + page);
+    while (container.firstChild) {
+      container.firstChild.remove();
+    }
+    container.appendChild(span);
   }
 
   /**
    * Changes the value of the permissions in the form
    */
-  public setCheck(checknames: string, varname: string): void {
-    if (document.editform[varname]) {
-      let res = document.editform[varname].value;
-      for (let a = 1; a <= 5; a++) {
-        document.editform[checknames + '[' + a + ']'].checked = (res & Math.pow(2, a - 1));
-      }
+  private static setPermissionCheckboxes(checknames: string, permissionValue: number): void {
+    const permissionCheckboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(`input[type="checkbox"][name^="${checknames}"]`);
+    for (let permissionCheckbox of permissionCheckboxes) {
+      const value = parseInt(permissionCheckbox.value, 10);
+      permissionCheckbox.checked = (permissionValue & value) === value;
     }
   }
 
   /**
    * checks for a change of the permissions in the form
    */
-  public checkChange(checknames: string, varname: string): void {
-    let res = 0;
-    for (let a = 1; a <= 5; a++) {
-      if (document.editform[checknames + '[' + a + ']'].checked) {
-        res |= Math.pow(2, a - 1);
-      }
+  private static updatePermissionValue(checknames: string, varname: string): void {
+    let permissionValue = 0;
+    const checkedPermissionCheckboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(`input[type="checkbox"][name^="${checknames}"]:checked`);
+    for (let permissionCheckbox of checkedPermissionCheckboxes) {
+      permissionValue |= parseInt(permissionCheckbox.value, 10);
     }
-    document.editform[varname].value = res | (checknames === 'tx_beuser_system_beusertxpermission[check][perms_user]' ? 1 : 0);
-    this.setCheck(checknames, varname);
+    document.forms.namedItem('editform')[varname].value = permissionValue | (checknames === 'tx_beuser_system_beusertxpermission[check][perms_user]' ? 1 : 0);
+  }
+
+  constructor() {
+    this.initializeCheckboxGroups();
+    this.initializeEvents();
   }
 
   /**
    * Changes permissions by sending an AJAX request to the server
    */
-  public setPermissions($element: JQuery): void {
-    let page = $element.data('page');
-    let who = $element.data('who');
-    let elementSelector = '#' + page + '_' + who;
+  private setPermissions(element: HTMLElement): void {
+    let page = element.dataset.page;
+    let who = element.dataset.who;
 
     (new AjaxRequest(this.ajaxUrl)).post({
       page: page,
       who: who,
-      permissions: $element.data('permissions'),
-      mode: $element.data('mode'),
-      bits: $element.data('bits'),
+      permissions: element.dataset.permissions,
+      mode: element.dataset.mode,
+      bits: element.dataset.bits,
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
+      const element = document.getElementById(page + '_' + who);
       // Replace content
-      $(elementSelector).replaceWith(data);
+      element.outerHTML = data;
       // Reinitialize tooltip
-      $(elementSelector).find('button').tooltip();
+      Tooltip.initialize('[data-bs-toggle="tooltip"]');
     });
   }
 
   /**
    * changes the flag to lock the editing on a page by sending an AJAX request
    */
-  public toggleEditLock($element: JQuery): void {
-    let page = $element.data('page');
+  private toggleEditLock(element: HTMLElement): void {
+    let page = element.dataset.page;
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'toggle_edit_lock',
       page: page,
-      editLockState: $element.data('lockstate'),
+      editLockState: element.dataset.lockstate,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#el_' + page).replaceWith(await response.resolve());
+      document.getElementById('el_' + page).outerHTML = await response.resolve();
     });
   }
 
   /**
    * Owner-related: Set the new owner of a page by executing an ajax call
    */
-  public changeOwner($element: JQuery): void {
-    let page = $element.data('page');
+  private changeOwner(element: HTMLElement): void {
+    let page = element.dataset.page;
+    const container: HTMLElement = document.getElementById('o_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_owner',
       page: page,
-      ownerUid: $element.data('owner'),
-      newOwnerUid: $('#new_page_owner').val(),
+      ownerUid: element.dataset.owner,
+      newOwnerUid: (container.getElementsByTagName('select')[0] as HTMLSelectElement).value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#o_' + page).replaceWith(await response.resolve());
+      container.outerHTML = await response.resolve();
     });
   }
 
@@ -120,166 +178,128 @@ class Permissions {
    * Owner-related: load the selector for selecting
    * the owner of a page by executing an ajax call
    */
-  public showChangeOwnerSelector($element: JQuery): void {
-    let page = $element.data('page');
+  private showChangeOwnerSelector(element: HTMLElement): void {
+    let page = element.dataset.page;
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_owner_selector',
       page: page,
-      ownerUid: $element.data('owner'),
-      username: $element.data('username'),
+      ownerUid: element.dataset.owner,
+      username: element.dataset.username,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#o_' + page).replaceWith(await response.resolve());
+      document.getElementById('o_' + page).outerHTML = await response.resolve();
     });
-  }
-
-  /**
-   * Owner-related: Update the HTML view and show the original owner
-   */
-  public restoreOwner($element: JQuery): void {
-    let page = $element.data('page');
-    let username = $element.data('username');
-    let usernameHtml = username;
-    if (typeof username === 'undefined') {
-      username = $('<span>', {
-        'class': 'not_set',
-        'text': '[not set]',
-      });
-      usernameHtml = username.html();
-      username = username.text();
-    }
-
-    let html = $('<span/>', {
-      'id': 'o_' + page,
-    });
-    let aSelector = $('<a/>', {
-      'class': 'ug_selector changeowner',
-      'data-page': page,
-      'data-owner': $element.data('owner'),
-      'data-username': usernameHtml,
-      'text': username,
-    });
-    html.append(aSelector);
-
-    // Replace content
-    $('#o_' + page).replaceWith(html);
   }
 
   /**
    * Group-related: Set the new group by executing an ajax call
    */
-  public changeGroup($element: JQuery): void {
-    let page = $element.data('page');
+  private changeGroup(element: HTMLElement): void {
+    let page = element.dataset.page;
+    const container: HTMLElement = document.getElementById('g_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_group',
       page: page,
-      groupUid: $element.data('groupId'),
-      newGroupUid: $('#new_page_group').val(),
+      groupUid: element.dataset.groupId,
+      newGroupUid: (container.getElementsByTagName('select')[0] as HTMLSelectElement).value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#g_' + page).replaceWith(await response.resolve());
+      container.outerHTML = await response.resolve();
     });
   }
 
   /**
    * Group-related: Load the selector by executing an ajax call
    */
-  public showChangeGroupSelector($element: JQuery): void {
-    let page = $element.data('page');
-
+  private showChangeGroupSelector(element: HTMLElement): void {
+    let page = element.dataset.page;
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'show_change_group_selector',
       page: page,
-      groupUid: $element.data('groupId'),
-      groupname: $element.data('groupname'),
+      groupUid: element.dataset.groupId,
+      groupname: element.dataset.groupname,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#g_' + page).replaceWith(await response.resolve());
+      document.getElementById('g_' + page).outerHTML = await response.resolve();
     });
   }
 
-  /**
-   * Group-related: Update the HTML view and show the original group
-   */
-  public restoreGroup($element: JQuery): void {
-    let page = $element.data('page');
-    let groupname = $element.data('groupname');
-    let groupnameHtml = groupname;
-    if (typeof groupname === 'undefined') {
-      groupname = $('<span>', {
-        'class': 'not_set',
-        'text': '[not set]',
-      });
-      groupnameHtml = groupname.html();
-      groupname = groupname.text();
-    }
-    let html = $('<span/>', {
-      'id': 'g_' + page,
+  private initializeCheckboxGroups(): void {
+    const checkboxGroups: NodeListOf<HTMLInputElement> = document.querySelectorAll('[data-checkbox-group]');
+    checkboxGroups.forEach((checkboxGroupCheckbox): void => {
+      const permissionGroup = checkboxGroupCheckbox.dataset.checkboxGroup;
+      const permissionValue = parseInt(checkboxGroupCheckbox.value, 10);
+      Permissions.setPermissionCheckboxes(permissionGroup, permissionValue);
     });
-    let aSelector = $('<a/>', {
-      'class': 'ug_selector changegroup',
-      'data-page': page,
-      'data-group': $element.data('groupId'),
-      'data-groupname': groupnameHtml,
-      'text': groupname,
-    });
-    html.append(aSelector);
-
-    // Replace content
-    $('#g_' + page).replaceWith(html);
   }
 
   /**
    * initializes events using deferred bound to document
    * so AJAX reloads are no problem
    */
-  public initializeEvents(): void {
-    // Click events to change permissions (in template Index.html)
-    $(this.options.containerSelector).on('click', '.change-permission', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-      this.setPermissions($(evt.currentTarget));
-    }).on('click', '.editlock', (evt: JQueryEventObject): void => {
+  private initializeEvents(): void {
+    const containerSelector = document.querySelector(this.options.containerSelector);
+    const editControllerSelector = document.querySelector(this.options.editControllerSelector);
+
+    if (containerSelector !== null) {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.setPermissions(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.change-permission');
+
       // Click event for lock state
-      evt.preventDefault();
-      this.toggleEditLock($(evt.currentTarget));
-    }).on('click', '.changeowner', (evt: JQueryEventObject): void => {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.toggleEditLock(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.editlock');
+
       // Click event to change owner
-      evt.preventDefault();
-      this.showChangeOwnerSelector($(evt.currentTarget));
-    }).on('click', '.changegroup', (evt: JQueryEventObject): void => {
-      // click event to change group
-      evt.preventDefault();
-      this.showChangeGroupSelector($(evt.currentTarget));
-    }).on('click', '.restoreowner', (evt: JQueryEventObject): void => {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.showChangeOwnerSelector(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.changeowner');
+
+      // Click event to change group
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.showChangeGroupSelector(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.changegroup');
+
       // Add click handler for restoring previous owner
-      evt.preventDefault();
-      this.restoreOwner($(evt.currentTarget));
-    }).on('click', '.saveowner', (evt: JQueryEventObject): void => {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        Permissions.restoreOwner(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.restoreowner');
+
       // Add click handler for saving owner
-      evt.preventDefault();
-      this.changeOwner($(evt.currentTarget));
-    }).on('click', '.restoregroup', (evt: JQueryEventObject): void => {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.changeOwner(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.saveowner');
+
       // Add click handler for restoring previous group
-      evt.preventDefault();
-      this.restoreGroup($(evt.currentTarget));
-    }).on('click', '.savegroup', (evt: JQueryEventObject): void => {
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        Permissions.restoreGroup(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.restoregroup');
+
       // Add click handler for saving group
-      evt.preventDefault();
-      this.changeGroup($(evt.currentTarget));
-    });
-    // Click events to change permissions (in template Edit.html)
-    $(this.options.editControllerSelector).on('click', '[data-check-change-permissions]', (evt: JQueryEventObject): void => {
-      const $target: JQuery = $(evt.currentTarget);
-      const args = $target.data('checkChangePermissions').split(',').map((item: string) => item.trim());
-      this.checkChange.apply(this, args);
-    });
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        e.preventDefault();
+        this.changeGroup(currentTarget as HTMLElement);
+      }).delegateTo(containerSelector, '.savegroup');
+    }
+
+    if (editControllerSelector !== null) {
+      // Click events to change permissions (in template Edit.html)
+      new RegularEvent('click', (e: Event, currentTarget: Element): void => {
+        const args = (currentTarget as HTMLElement).dataset.checkChangePermissions.split(',').map((item: string) => item.trim());
+        Permissions.updatePermissionValue.apply(this, args);
+      }).delegateTo(editControllerSelector, '[data-check-change-permissions]');
+    }
   }
 }
 
-let permissionObject: Permissions = new Permissions();
-// expose to global
-TYPO3.Permissions = permissionObject;
-
-export = permissionObject;
+export = new Permissions();
