@@ -608,13 +608,14 @@ class LoginController implements LoggerAwareInterface
             ->getQueryBuilderForTable($systemNewsTable);
         $systemNews = [];
         $systemNewsRecords = $queryBuilder
-            ->select('title', 'content', 'crdate')
+            ->select('uid', 'title', 'content', 'crdate')
             ->from($systemNewsTable)
             ->orderBy('crdate', 'DESC')
             ->execute()
             ->fetchAll();
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = [
+                'uid' => $systemNewsRecord['uid'],
                 'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$systemNewsRecord['crdate']),
                 'header' => $systemNewsRecord['title'],
                 'content' => $systemNewsRecord['content']

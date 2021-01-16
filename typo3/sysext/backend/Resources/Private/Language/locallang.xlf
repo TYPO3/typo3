@@ -79,6 +79,12 @@ Have a nice day.</source>
 			<trans-unit id="login.interface" resname="login.interface">
 				<source>Interface</source>
 			</trans-unit>
+			<trans-unit id="login.news.header" resname="login.news.header">
+				<source>System News</source>
+			</trans-unit>
+			<trans-unit id="login.news.date" resname="login.news.date">
+				<source>Date</source>
+			</trans-unit>
 			<trans-unit id="login.news.previous" resname="login.news.previous">
 				<source>Previous</source>
 			</trans-unit>

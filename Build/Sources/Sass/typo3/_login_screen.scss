@@ -23,6 +23,7 @@ $login-input-border-radius: 2px;
 $login-input-border-color: #949494;
 $login-input-padding-vertical: $padding-large-vertical;
 $login-input-padding-horizontal: $padding-large-horizontal;
+$login-container-padding-horizontal: 2.5em;
 
 //
 // Login
@@ -133,7 +134,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 }
 
 //
-// card
+// Bootstrap card
 //
 .card-login {
     border-color: darken($login-bg, 10%);
@@ -141,18 +142,18 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     overflow: visible;
 
     .card-heading {
-        padding: 2.5em 2.5em 0;
+        padding: 2.5em $login-container-padding-horizontal 0;
         border-top-left-radius: $login-border-radius - 1;
         border-top-right-radius: $login-border-radius - 1;
     }
 
     .card-body {
-        padding: 1.75em 2.5em 2.5em;
+        padding: 1.75em $login-container-padding-horizontal 2.5em;
         border-bottom: 3px solid $login-highlight;
     }
 
     .card-footer {
-        padding: 1.5em 2.5em;
+        padding: 1.5em $login-container-padding-horizontal;
         border-bottom-left-radius: $login-border-radius - 1;
         border-bottom-right-radius: $login-border-radius - 1;
     }
@@ -197,7 +198,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 //
 
 .typo3-login-carousel {
-    padding: $card-spacer-x;
+    padding: $login-container-padding-horizontal; // use horizontal padding also as vertical padding
 }
 
 .typo3-login-carousel-control {
@@ -205,11 +206,11 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     margin-top: -30px;
     height: 60px;
     line-height: 60px;
-    width: 10px;
+    width: 20px;
     background-color: #fff;
     text-align: center;
     position: absolute;
-    opacity: 0.25;
+    opacity: 0.75;
 
     @include transition(opacity 0.2s ease-in-out);
 
@@ -218,29 +219,17 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     }
 
     &.left {
-        left: -10px;
+        left: -20px;
         border: 1px solid darken($login-bg, 10%);
         border-right: 0;
         border-radius: 2px 0 0 2px;
     }
 
     &.right {
-        right: -10px;
+        right: -20px;
         border: 1px solid darken($login-bg, 10%);
         border-left: 0;
         border-radius: 0 2px 2px 0;
-    }
-
-    @media (min-width: $screen-sm-min) {
-        width: 20px;
-
-        &.left {
-            left: -20px;
-        }
-
-        &.right {
-            right: -20px;
-        }
     }
 }
 
@@ -260,7 +249,7 @@ $login-input-padding-horizontal: $padding-large-horizontal;
 
 .typo3-login-copyright-text {
     font-size: 0.95em;
-    margin-top: $line-height-computed;
+    padding-top: 1em;
     color: $login-copyright-text;
 
     .fa {

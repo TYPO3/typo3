@@ -1,26 +1,38 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{loginNewsItems}">
-    <section class="typo3-login-carousel carousel slide t3js-login-news-carousel" id="loginNews" data-bs-interval="0" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
-                <div class="carousel-item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
-                    <h3 class="typo3-login-news-heading">{item.header}</h3>
-                    <f:format.html>{item.content}</f:format.html>
-                    <span class="text-muted">{item.date}</span>
-                </div>
-            </f:for>
-        </div>
+    <section class="typo3-login-news" aria-labelledby="loginNewsHeader">
+        <h2 id="loginNewsHeader" class="sr-only"><f:translate key="login.news.header" /></h2>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
-            <a class="left typo3-login-carousel-control" href="#loginNews" role="button" data-bs-slide="prev">
-                <i class="fa fa-angle-left"></i>
-                <span class="sr-only"><f:translate key="login.news.previous" /></span>
-            </a>
-            <a class="right typo3-login-carousel-control" href="#loginNews" role="button" data-bs-slide="next">
-                <i class="fa fa-angle-right"></i>
-                <span class="sr-only"><f:translate key="login.news.next" /></span>
-            </a>
+            <f:then>
+                <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews"
+                    data-bs-interval="0" data-bs-ride="carousel">
+                    <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="sr-only"><f:translate key="login.news.previous"/></span>
+                    </button>
+                    <button type="button" class="right typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="next">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <span class="sr-only"><f:translate key="login.news.next"/></span>
+                    </button>
+                    <div class="carousel-inner" aria-live="polite">
+                        <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
+                            <div role="group" aria-labelledby="loginNewsItem-{item.uid}" class="carousel-item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
+                                <f:render section="Item" arguments="{item: item}"/>
+                            </div>
+                        </f:for>
+                    </div>
+                </div>
+            </f:then>
+            <f:else>
+                <f:render section="Item"/>
+            </f:else>
         </f:if>
     </section>
 </f:if>
+
+<f:section name="Item">
+    <p id="loginNewsItem-{item.uid}" class="typo3-login-news-heading">{item.header}</p>
+    <f:format.html>{item.content}</f:format.html>
+    <p class="text-muted"><span class="sr-only"><f:translate key="login.news.date"/></span>{item.date}</p>
+</f:section>
 </html>
