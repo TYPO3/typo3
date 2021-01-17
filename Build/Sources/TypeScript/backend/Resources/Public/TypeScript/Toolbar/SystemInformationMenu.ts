@@ -47,7 +47,7 @@ class SystemInformationMenu {
     // ensure all default classes are available and previous
     // (at this time in processing unknown) class is removed
     $counter.removeClass();
-    $counter.addClass('t3js-systeminformation-counter toolbar-item-badge badge');
+    $counter.addClass('t3js-systeminformation-counter toolbar-item-badge badge rounded-pill');
     // badgeClass e.g. could be 'badge-info', 'badge-danger', ...
     if (badgeClass !== '') {
       $counter.addClass(badgeClass);
