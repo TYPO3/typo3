@@ -59,21 +59,7 @@
                             </f:if>
                         </td>
                         <td class="col-control nowrap">
-                            <div class="btn-group">
-                                <f:if condition="{file.isEditable}">
-                                    <f:then>
-                                        <a href="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
-                                            class="btn btn-default filelist-file-edit"
-                                            title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent' )}"
-                                        >
-                                            <core:icon identifier="actions-page-open" />
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
-                                    </f:else>
-                                </f:if>
-
+                            <div class="btn-group position-static">
                                 <f:if condition="{file.IsMetadataEditable}">
                                     <f:then>
                                         <a href="{be:uri.editRecord(uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
@@ -101,47 +87,6 @@
                                     </f:else>
                                 </f:if>
 
-                                <f:if condition="{file.isReplaceable}">
-                                    <f:then>
-                                        <a href="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
-                                            class="btn btn-default filelist-file-replace"
-                                            title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace' )}"
-                                        >
-                                            <core:icon identifier="actions-edit-replace" />
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
-                                    </f:else>
-                                </f:if>
-
-                                <f:if condition="{file.isRenamable}">
-                                    <f:then>
-                                        <a href="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
-                                            class="btn btn-default filelist-file-rename"
-                                            title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename' )}"
-                                        >
-                                            <core:icon identifier="actions-edit-rename" />
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
-                                    </f:else>
-                                </f:if>
-
-                                <f:if condition="{file.isReadable}">
-                                    <f:then>
-                                        <a href="#" class="btn btn-default filelist-file-info"
-                                            title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info' )}"
-                                            data-identifier="{file.identifier}"
-                                        >
-                                            <core:icon identifier="actions-document-info" />
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
-                                    </f:else>
-                                </f:if>
 
                                 <f:if condition="{file.copyable}">
                                     <f:then>
@@ -197,6 +142,51 @@
                                         <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
                                     </f:else>
                                 </f:if>
+                                <div class="btn-group dropdown position-static">
+                                    <a href="actions_{file.hashedIdentifier}" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false"><core:icon identifier="actions-menu-alternative" /></a>' .
+                                    <ul id="actions_{file.hashedIdentifier}" class="dropdown-menu dropdown-list">
+                                        <f:if condition="{file.isRenamable}">
+                                            <li>
+                                                <a href="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
+                                                    class="dropdown-item filelist-file-rename"
+                                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename')}"
+                                                >
+                                                    <core:icon identifier="actions-edit-rename" /> {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename')}
+                                                </a>
+                                            </li>
+                                        </f:if>
+                                        <f:if condition="{file.isReadable}">
+                                            <li>
+                                                <a href="#" class="dropdown-item filelist-file-info"
+                                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}"
+                                                    data-identifier="{file.identifier}"
+                                                >
+                                                    <core:icon identifier="actions-document-info" /> {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}
+                                                </a>
+                                            </li>
+                                        </f:if>
+                                        <f:if condition="{file.isEditable}">
+                                            <li>
+                                                <a href="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
+                                                    class="dropdown-item filelist-file-edit"
+                                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent')}"
+                                                >
+                                                    <core:icon identifier="actions-page-open" /> {f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent')}
+                                                </a>
+                                            </li>
+                                        </f:if>
+                                        <f:if condition="{file.isReplaceable}">
+                                            <li>
+                                                <a href="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
+                                                    class="dropdown-item filelist-file-replace"
+                                                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace')}"
+                                                >
+                                                    <core:icon identifier="actions-edit-replace" /> {f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace')}
+                                                </a>
+                                            </li>
+                                        </f:if>
+                                    </ul>
+                                </div>
                             </div>
                         </td>
                         <td class="nowrap">{file.extension}</td>

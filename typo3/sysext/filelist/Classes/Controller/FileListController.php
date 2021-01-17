@@ -275,7 +275,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             'reverse' => '',
             'displayThumbs' => '',
             'clipBoard' => '',
-            'bigControlPanel' => ''
         ];
         // CLEANSE SETTINGS
         $this->MOD_SETTINGS = BackendUtility::getModuleData(
@@ -312,14 +311,8 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     protected function initializeIndexAction()
     {
         // Apply predefined values for hidden checkboxes
-        // Set predefined value for DisplayBigControlPanel:
         $backendUser = $this->getBackendUser();
         $userTsConfig = $backendUser->getTSConfig();
-        if (($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'activated') {
-            $this->MOD_SETTINGS['bigControlPanel'] = true;
-        } elseif (($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'deactivated') {
-            $this->MOD_SETTINGS['bigControlPanel'] = false;
-        }
         // Set predefined value for DisplayThumbnails:
         if (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'activated') {
             $this->MOD_SETTINGS['displayThumbs'] = true;
@@ -393,8 +386,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
                 $this->MOD_SETTINGS['sort'],
                 (bool)($this->MOD_SETTINGS['reverse'] ?? false),
-                (bool)($this->MOD_SETTINGS['clipBoard'] ?? false),
-                (bool)($this->MOD_SETTINGS['bigControlPanel'] ?? false)
+                (bool)($this->MOD_SETTINGS['clipBoard'] ?? false)
             );
             // Generate the list, if accessible
             if ($this->folderObject->getStorage()->isBrowsable()) {
@@ -435,18 +427,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->assign('headline', $this->getModuleHeadline());
 
             $this->view->assign('checkboxes', [
-                'bigControlPanel' => [
-                    'enabled' => ($userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] ?? '') === 'selectable',
-                    'label' => htmlspecialchars($this->getLanguageService()->getLL('bigControlPanel')),
-                    'html' => BackendUtility::getFuncCheck(
-                        $this->id,
-                        'SET[bigControlPanel]',
-                        $this->MOD_SETTINGS['bigControlPanel'] ?? '',
-                        '',
-                        '',
-                        'id="bigControlPanel"'
-                    ),
-                ],
                 'displayThumbs' => [
                     'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && ($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'selectable',
                     'label' => htmlspecialchars($this->getLanguageService()->getLL('displayThumbs')),
@@ -783,18 +763,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $addParams .= '&tx_filelist_file_filelistlist%5BsearchWord%5D=' . htmlspecialchars($searchWord);
         }
         $this->view->assign('checkboxes', [
-            'bigControlPanel' => [
-                'enabled' => $userTsConfig['options.']['file_list.']['enableDisplayBigControlPanel'] === 'selectable',
-                'label' => htmlspecialchars($this->getLanguageService()->getLL('bigControlPanel')),
-                'html' => BackendUtility::getFuncCheck(
-                    $this->id,
-                    'SET[bigControlPanel]',
-                    $this->MOD_SETTINGS['bigControlPanel'] ?? '',
-                    '',
-                    $addParams,
-                    'id="bigControlPanel"'
-                ),
-            ],
             'displayThumbs' => [
                 'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] === 'selectable',
                 'label' => htmlspecialchars($this->getLanguageService()->getLL('displayThumbs')),

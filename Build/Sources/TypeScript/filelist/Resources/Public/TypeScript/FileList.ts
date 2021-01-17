@@ -92,7 +92,7 @@ class Filelist {
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {
         event.preventDefault();
         Filelist.openInfoPopup('_FILE', target.dataset.identifier);
-      }).delegateTo(document, 'a.btn.filelist-file-info');
+      }).delegateTo(document, 'a.filelist-file-info');
 
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {
         event.preventDefault();
@@ -106,7 +106,7 @@ class Filelist {
           ? encodeURIComponent(url)
           : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
         top.list_frame.location.href = url + '&redirect=' + redirectUrl;
-      }).delegateTo(document, 'a.btn.filelist-file-copy');
+      }).delegateTo(document, 'a.filelist-file-copy');
 
       // clipboard events
       const clipboardCmd = document.querySelector('[data-event-name="filelist:clipboard:cmd"]');

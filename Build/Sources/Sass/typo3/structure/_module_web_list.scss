@@ -5,6 +5,18 @@
 .recordlist {
     overflow: unset;
 
+    .recordlist-heading {
+        font-weight: 700;
+        background-color: #d7d7d7;
+        padding: 0.625rem 1rem;
+
+        > a,
+        > span {
+            padding: 4px 0;
+            display: inline-block;
+        }
+    }
+
     table tr {
         td.deletePlaceholder {
             text-decoration: line-through;

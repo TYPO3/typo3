@@ -1193,7 +1193,6 @@ return [
         'checkStoredRecords' => true,
         'checkStoredRecordsLoose' => true,
         'defaultUserTSconfig' => 'options.enableBookmarks=1
-            options.file_list.enableDisplayBigControlPanel=selectable
             options.file_list.enableDisplayThumbnails=selectable
             options.file_list.enableClipBoard=selectable
             options.file_list.thumbnail {
@@ -1223,7 +1222,6 @@ return [
         ',
         // String (exclude). Enter lines of default backend user/group TSconfig.
         'defaultPageTSconfig' => '
-            mod.web_list.enableDisplayBigControlPanel=selectable
             mod.web_list.enableClipBoard=selectable
             mod.web_list.tableDisplayOrder {
                 be_users.after = be_groups

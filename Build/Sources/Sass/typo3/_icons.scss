@@ -17,3 +17,15 @@
         font-size: 14px;
     }
 }
+
+.dropdown-toggle-no-chevron:after {
+    display: none;
+}
+
+.dropdown-list .dropdown-item {
+    .icon {
+        margin-right: 0.5rem;
+    }
+
+    padding: 0.375rem 1rem 0.375rem 0.75rem;
+}

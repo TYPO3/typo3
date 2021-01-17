@@ -3,9 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="bigControlPanel" resname="bigControlPanel">
-				<source>Extended view</source>
-			</trans-unit>
 			<trans-unit id="clipBoard" resname="clipBoard">
 				<source>Show clipboard</source>
 			</trans-unit>

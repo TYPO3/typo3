@@ -132,7 +132,7 @@ class RecordListController
         // Loading module configuration:
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         // Clean up settings:
-        $MOD_SETTINGS = BackendUtility::getModuleData(['bigControlPanel' => '', 'clipBoard' => ''], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
+        $MOD_SETTINGS = BackendUtility::getModuleData(['clipBoard' => ''], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
         // main
         $lang = $this->getLanguageService();
         // Loading current page record and checking access:
@@ -150,12 +150,6 @@ class RecordListController
         }
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
         // Apply predefined values for hidden checkboxes
-        // Set predefined value for DisplayBigControlPanel:
-        if ($this->modTSconfig['enableDisplayBigControlPanel'] === 'activated') {
-            $MOD_SETTINGS['bigControlPanel'] = true;
-        } elseif ($this->modTSconfig['enableDisplayBigControlPanel'] === 'deactivated') {
-            $MOD_SETTINGS['bigControlPanel'] = false;
-        }
         // Set predefined value for Clipboard:
         if (isset($this->modTSconfig['enableClipBoard'])) {
             if ($this->modTSconfig['enableClipBoard'] === 'activated') {
@@ -330,16 +324,6 @@ class RecordListController
 					-->
 					<div class="typo3-listOptions">
 						<form action="" method="post">';
-
-            // Add "display bigControlPanel" checkbox:
-            if ($this->modTSconfig['enableDisplayBigControlPanel'] === 'selectable') {
-                $body .= '<div class="form-check">' .
-                    BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $MOD_SETTINGS['bigControlPanel'] ?? '', '', $table ? '&table=' . $table : '', 'id="checkLargeControl"') .
-                    '<label for="checkLargeControl" class="form-check-label">' .
-                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('largeControl'))) .
-                    '</label>' .
-                    '</div>';
-            }
 
             // Add "clipboard" checkbox:
             if ($this->modTSconfig['enableClipBoard'] === 'selectable') {

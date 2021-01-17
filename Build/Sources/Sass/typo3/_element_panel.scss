@@ -115,24 +115,6 @@ $panel-lg-padding: 35px;
     }
 }
 
-.recordlist {
-    .table-fit {
-        margin-bottom: 0;
-    }
-
-    // 'panel-heading' is replaced with '.card-header' in twbs4
-    .card-header,
-    .panel-heading {
-        padding: 0.625rem 1rem;
-
-        > a,
-        > span {
-            padding: 4px 0;
-            display: inline-block;
-        }
-    }
-}
-
 //
 // Panel hover
 //

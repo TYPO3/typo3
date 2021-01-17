@@ -2,14 +2,6 @@
     Listing options for extended view, clipboard and thumbnails
 -->
 <div class="typo3-listOptions">
-    <f:if condition="{checkboxes.bigControlPanel.enabled}">
-        <div class="form-check">
-            {checkboxes.bigControlPanel.html -> f:format.raw()}
-            <label for="bigControlPanel" class="form-check-label">
-                {checkboxes.bigControlPanel.label}
-            </label>
-        </div>
-    </f:if>
     <f:if condition="{checkboxes.displayThumbs.enabled}">
         <div class="form-check">
             {checkboxes.displayThumbs.html -> f:format.raw()}

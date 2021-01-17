@@ -212,9 +212,8 @@ class FileList
      * @param string $sort Sorting column
      * @param bool $sortRev Sorting direction
      * @param bool $clipBoard
-     * @param bool $bigControlPanel Show clipboard flag
      */
-    public function start(Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = false, $bigControlPanel = false)
+    public function start(Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = false)
     {
         $this->folderObject = $folderObject;
         $this->counter = 0;
@@ -223,12 +222,9 @@ class FileList
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
         // Cleaning rowlist for duplicates and place the $titleCol as the first column always!
-        $rowlist = 'file,_LOCALIZATION_,fileext,tstamp,size,rw,_REF_';
+        $rowlist = 'file,_LOCALIZATION_,_CONTROL_,fileext,tstamp,size,rw,_REF_';
         if ($clipBoard) {
-            $rowlist = str_replace('_LOCALIZATION_,', '_LOCALIZATION_,_CLIPBOARD_,', $rowlist);
-        }
-        if ($bigControlPanel) {
-            $rowlist = str_replace('_LOCALIZATION_,', '_LOCALIZATION_,_CONTROL_,', $rowlist);
+            $rowlist = str_replace('_CONTROL_,', '_CONTROL_,_CLIPBOARD_,', $rowlist);
         }
         $this->fieldArray = explode(',', $rowlist);
     }
@@ -343,8 +339,8 @@ class FileList
         }
 
         return '
-            <div class="panel panel-default">
-                <div class="table-fit">
+            <div class="mb-4 mt-4">
+                <div class="table-fit mb-0">
                     <table class="table table-striped table-hover" id="typo3-filelist">
                         <thead>' . $this->addElement('', $theData, 'th') . '</thead>
                         <tbody>' . $iOut . '</tbody>
@@ -1133,8 +1129,36 @@ class FileList
             $hookObject->manipulateEditIcons($cells, $this);
         }
         unset($cells['__fileOrFolderObject']);
-        // Compile items into a DIV-element:
-        return '<div class="btn-group">' . implode('', $cells) . '</div>';
+        // Compile items into a dropdown
+        $cellOutput = '';
+        $output = '';
+        foreach ($cells as $key => $action) {
+            if (in_array($key, ['view', 'metadata', 'delete'])) {
+                $output .= $action;
+                continue;
+            }
+            if ($action === $this->spaceIcon) {
+                continue;
+            }
+            // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
+            $action = str_replace('btn btn-default', 'dropdown-item', $action);
+            $title = [];
+            preg_match('/title="([^"]*)"/', $action, $title);
+            if (empty($title)) {
+                preg_match('/aria-label="([^"]*)"/', $action, $title);
+            }
+            if (!empty($title[1] ?? '')) {
+                $action = str_replace('</a>', ' ' . $title[1] . '</a>', $action);
+                $action = str_replace('</button>', ' ' . $title[1] . '</button>', $action);
+            }
+            $cellOutput .= '<li>' . $action . '</li>';
+        }
+        $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
+        $output .= '<div class="btn-group dropdown position-static">' .
+            '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
+            '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
+            '</div>';
+        return '<div class="btn-group position-static">' . $output . '</div>';
     }
 
     /**

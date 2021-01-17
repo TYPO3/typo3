@@ -753,16 +753,16 @@ class DatabaseRecordList
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
-            <div class="panel panel-space panel-default recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
+            <div class="recordlist mb-4 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
                 <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
                     <input type="hidden" name="cmd_table" />
                     <input type="hidden" name="cmd" />
-                    <div class="panel-heading">
+                    <div class="recordlist-heading">
                     ' . $tableHeader . '
                     </div>
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
-                        <div class="table-fit">
-                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
+                        <div class="table-fit mb-0">
+                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover mb-0">
                                 ' . $columnsOutput . $rowOutput . '
                             </table>
                         </div>
@@ -1517,35 +1517,6 @@ class DatabaseRecordList
                 }
             }
 
-            // "Up/Down" links
-            if ($permsEdit && ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) && !$this->sortField && !$this->searchLevels) {
-                if (!$isL10nOverlay && !$isDeletePlaceHolder && isset($this->currentTable['prev'][$row['uid']])) {
-                    // Up
-                    $params = [];
-                    $params['redirect'] = $this->listURL();
-                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['prev'][$row['uid']];
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
-                    $moveUpAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
-                        . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
-                } else {
-                    $moveUpAction = $this->spaceIcon;
-                }
-                $this->addActionToCellGroup($cells, $moveUpAction, 'moveUp');
-
-                if (!$isL10nOverlay && !$isDeletePlaceHolder && !empty($this->currentTable['next'][$row['uid']])) {
-                    // Down
-                    $params = [];
-                    $params['redirect'] = $this->listURL();
-                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['next'][$row['uid']];
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
-                    $moveDownAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
-                        . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
-                } else {
-                    $moveDownAction = $this->spaceIcon;
-                }
-                $this->addActionToCellGroup($cells, $moveDownAction, 'moveDown');
-            }
-
             // "Hide/Unhide" links:
             $hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? null;
             if ($hiddenField !== null
@@ -1580,6 +1551,35 @@ class DatabaseRecordList
                     }
                 }
                 $this->addActionToCellGroup($cells, $hideAction, 'hide');
+            }
+
+            // "Up/Down" links
+            if ($permsEdit && ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) && !$this->sortField && !$this->searchLevels) {
+                if (!$isL10nOverlay && !$isDeletePlaceHolder && isset($this->currentTable['prev'][$row['uid']])) {
+                    // Up
+                    $params = [];
+                    $params['redirect'] = $this->listURL();
+                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['prev'][$row['uid']];
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
+                    $moveUpAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
+                        . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
+                } else {
+                    $moveUpAction = $this->spaceIcon;
+                }
+                $this->addActionToCellGroup($cells, $moveUpAction, 'moveUp');
+
+                if (!$isL10nOverlay && !$isDeletePlaceHolder && !empty($this->currentTable['next'][$row['uid']])) {
+                    // Down
+                    $params = [];
+                    $params['redirect'] = $this->listURL();
+                    $params['cmd'][$table][$row['uid']]['move'] = $this->currentTable['next'][$row['uid']];
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
+                    $moveDownAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
+                        . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
+                } else {
+                    $moveDownAction = $this->spaceIcon;
+                }
+                $this->addActionToCellGroup($cells, $moveDownAction, 'moveDown');
             }
 
             // "Delete" link:
@@ -1711,17 +1711,31 @@ class DatabaseRecordList
             }
         }
 
-        $output = '<!-- CONTROL PANEL: ' . $table . ':' . $row['uid'] . ' -->';
+        $output = '';
         foreach ($cells as $classification => $actions) {
-            $visibilityClass = ($classification !== 'primary' && !($this->moduleData['bigControlPanel'] ?? false) ? 'collapsed' : 'expanded');
-            if ($visibilityClass === 'collapsed') {
+            if ($classification !== 'primary') {
                 $cellOutput = '';
                 foreach ($actions as $action) {
-                    $cellOutput .= $action;
+                    if ($action === $this->spaceIcon) {
+                        continue;
+                    }
+                    // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.
+                    $action = str_replace('btn btn-default', 'dropdown-item', $action);
+                    $title = [];
+                    preg_match('/title="([^"]*)"/', $action, $title);
+                    if (empty($title)) {
+                        preg_match('/aria-label="([^"]*)"/', $action, $title);
+                    }
+                    if (!empty($title[1] ?? '')) {
+                        $action = str_replace('</a>', ' ' . $title[1] . '</a>', $action);
+                        $action = str_replace('</button>', ' ' . $title[1] . '</button>', $action);
+                    }
+                    $cellOutput .= '<li>' . $action . '</li>';
                 }
-                $output .= ' <div class="btn-group">' . // @todo add label / tooltip
-                    '<span id="actions_' . $table . '_' . $row['uid'] . '" class="btn-group collapse collapse-horizontal width">' . $cellOutput . '</span>' .
-                    '<button type="button" data-bs-target="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default collapsed" data-bs-toggle="collapse" aria-expanded="false"><span class="t3-icon fa fa-ellipsis-h"></span></button>' .
+                $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
+                $output .= ' <div class="btn-group dropdown position-static">' . // @todo add label / tooltip
+                    '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
+                    '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
                     '</div>';
             } else {
                 $output .= ' <div class="btn-group">' . implode('', $actions) . '</div>';
@@ -2155,10 +2169,10 @@ class DatabaseRecordList
     {
         $cellsMap = [
             'primary' => [
-                'view', 'edit', 'hide', 'delete', 'stat'
+                'edit', 'hide', 'delete', 'moveUp', 'moveDown',
             ],
             'secondary' => [
-                'viewBig', 'history', 'perms', 'new', 'move', 'moveUp', 'moveDown', 'moveLeft', 'moveRight', 'version'
+                'view', 'viewBig', 'history', 'stat', 'perms', 'new', 'move', 'moveLeft', 'moveRight', 'version'
             ]
         ];
         $classification = in_array($actionKey, $cellsMap['primary']) ? 'primary' : 'secondary';
