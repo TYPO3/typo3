@@ -91,24 +91,26 @@
                                     <span id="el_{data.row.uid}">
                                         <f:if condition="{data.row.editlock}">
                                             <f:then>
-                                                <a
+                                                <button
+                                                    type="button"
                                                     class="editlock btn btn-default"
                                                     data-page="{data.row.uid}"
                                                     data-lockstate="1"
                                                     title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr')}"
                                                 >
                                                     <core:icon identifier="actions-lock" />
-                                                </a>
+                                                </button>
                                             </f:then>
                                             <f:else>
-                                                <a
+                                                <button
+                                                    type="button"
                                                     class="editlock btn btn-default"
                                                     data-page="{data.row.uid}"
                                                     data-lockstate="0"
                                                     title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr2')}"
                                                 >
                                                     <core:icon identifier="actions-unlock" />
-                                                </a>
+                                                </button>
                                             </f:else>
                                         </f:if>
                                     </span>

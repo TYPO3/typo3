@@ -154,14 +154,15 @@ class Permissions {
     let html = $('<span/>', {
       'id': 'o_' + page,
     });
-    let aSelector = $('<a/>', {
-      'class': 'ug_selector changeowner',
+    let buttonSelector = $('<button/>', {
+      'type': 'button',
+      'class': 'ug_selector changeowner btn btn-link',
       'data-page': page,
       'data-owner': $element.data('owner'),
       'data-username': usernameHtml,
       'text': username,
     });
-    html.append(aSelector);
+    html.append(buttonSelector);
 
     // Replace content
     $('#o_' + page).replaceWith(html);
@@ -220,14 +221,15 @@ class Permissions {
     let html = $('<span/>', {
       'id': 'g_' + page,
     });
-    let aSelector = $('<a/>', {
-      'class': 'ug_selector changegroup',
+    let buttonSelector = $('<button/>', {
+      'type': 'button',
+      'class': 'ug_selector changegroup btn btn-link',
       'data-page': page,
-      'data-group': $element.data('groupId'),
+      'data-group-id': $element.data('groupId'),
       'data-groupname': groupnameHtml,
       'text': groupname,
     });
-    html.append(aSelector);
+    html.append(buttonSelector);
 
     // Replace content
     $('#g_' + page).replaceWith(html);

@@ -1,7 +1,8 @@
 {namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <span id="o_{pageId}">
-    <a
-        class="ug_selector changeowner"
+    <button
+        type="button"
+        class="ug_selector changeowner btn btn-link"
         data-page="{pageId}"
         data-owner="{userId}"
         data-username="{username}"
@@ -34,5 +35,5 @@
                 </f:if>
             </f:else>
         </f:if>
-    </a>
+    </button>
 </span>
