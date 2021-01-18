@@ -119,11 +119,12 @@ class ListUtility implements SingletonInterface
             foreach ($this->packageManager->getAvailablePackages() as $package) {
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
+                    $icon = ExtensionManagementUtility::getExtensionIcon($package->getPackagePath());
                     $this->availableExtensions[$package->getPackageKey()] = [
                         'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
-                        'icon' => PathUtility::getAbsoluteWebPath($package->getPackagePath() . ExtensionManagementUtility::getExtensionIcon($package->getPackagePath())),
+                        'icon' => $icon ? PathUtility::getAbsoluteWebPath($package->getPackagePath() . $icon) : '',
                     ];
                 }
             }

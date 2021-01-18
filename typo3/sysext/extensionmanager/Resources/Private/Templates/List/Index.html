@@ -100,7 +100,12 @@
                     </td>
                     <td>
                         <f:if condition="{extension.icon}">
-                            <img class="extension-icon" src="{extension.icon}" alt="" />
+                            <f:then>
+                                <img class="extension-icon" src="{extension.icon}" alt="" />
+                            </f:then>
+                            <f:else>
+                                <core:icon identifier="empty-empty" />
+                            </f:else>
                         </f:if>
                         <span title="{extension.description}">{extension.title}</span>
                     </td>
