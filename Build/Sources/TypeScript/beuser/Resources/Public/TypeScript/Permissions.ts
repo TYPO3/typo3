@@ -43,13 +43,14 @@ class Permissions {
     let span = document.createElement('span');
     span.id = `o_${page}`;
 
-    let aSelector = document.createElement('a');
-    aSelector.classList.add('ug_selector', 'changeowner');
-    aSelector.setAttribute('data-page', page);
-    aSelector.setAttribute('data-owner', element.dataset.owner);
-    aSelector.setAttribute('data-username', username);
-    aSelector.innerHTML = usernameHtml;
-    span.appendChild(aSelector);
+    let buttonSelector = document.createElement('button');
+    buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-link');
+    buttonSelector.setAttribute('type', 'button');
+    buttonSelector.setAttribute('data-page', page);
+    buttonSelector.setAttribute('data-owner', element.dataset.owner);
+    buttonSelector.setAttribute('data-username', username);
+    buttonSelector.innerHTML = usernameHtml;
+    span.appendChild(buttonSelector);
 
     // Replace content
     const container = document.getElementById('o_' + page);
@@ -74,13 +75,14 @@ class Permissions {
     let span = document.createElement('span');
     span.id = `g_${page}`;
 
-    let aSelector = document.createElement('a');
-    aSelector.classList.add('ug_selector', 'changegroup');
-    aSelector.setAttribute('data-page', page);
-    aSelector.setAttribute('data-group-id', element.dataset.groupId);
-    aSelector.setAttribute('data-groupname', groupname);
-    aSelector.innerHTML = groupnameHtml;
-    span.appendChild(aSelector);
+    let buttonSelector = document.createElement('button');
+    buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-link');
+    buttonSelector.setAttribute('type', 'button');
+    buttonSelector.setAttribute('data-page', page);
+    buttonSelector.setAttribute('data-group-id', element.dataset.groupId);
+    buttonSelector.setAttribute('data-groupname', groupname);
+    buttonSelector.innerHTML = groupnameHtml;
+    span.appendChild(buttonSelector);
 
     // Replace content
     const container = document.getElementById('g_' + page);

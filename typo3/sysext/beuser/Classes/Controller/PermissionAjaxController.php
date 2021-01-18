@@ -201,16 +201,16 @@ class PermissionAjaxController
         $elementId = 'o_' . $page;
         $options = '<option value="0"></option>' . $options;
         $selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
-        $saveButton = '<a class="saveowner btn btn-default" data-page="' . $page . '" data-owner="' . $ownerUid
-                        . '" data-element-id="' . $elementId . '" title="Change owner">'
+        $saveButton = '<button class="saveowner btn btn-default" data-page="' . $page . '" data-owner="' . $ownerUid
+                        . '" data-element-id="' . $elementId . '" title="Change owner" type="button">'
                         . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                        . '</a>';
-        $cancelButton = '<a class="restoreowner btn btn-default" data-page="' . $page . '"  data-owner="' . $ownerUid
+                        . '</button>';
+        $cancelButton = '<button class="restoreowner btn btn-default" data-page="' . $page . '"  data-owner="' . $ownerUid
                         . '" data-element-id="' . $elementId . '"'
                         . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '')
-                        . ' title="Cancel">'
+                        . ' title="Cancel" type="button">'
                         . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render()
-                        . '</a>';
+                        . '</button>';
         return '<span id="' . $elementId . '">'
             . $selector
             . '<span class="btn-group">'
@@ -258,16 +258,16 @@ class PermissionAjaxController
         $elementId = 'g_' . $page;
         $options = '<option value="0"></option>' . $options;
         $selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
-        $saveButton = '<a class="savegroup btn btn-default" data-page="' . $page . '" data-group-id="' . $groupUid
-                        . '" data-element-id="' . $elementId . '" title="Change group">'
+        $saveButton = '<button class="savegroup btn btn-default" data-page="' . $page . '" data-group-id="' . $groupUid
+                        . '" data-element-id="' . $elementId . '" title="Change group" type="button">'
                         . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                        . '</a>';
-        $cancelButton = '<a class="restoregroup btn btn-default" data-page="' . $page . '" data-group-id="' . $groupUid
+                        . '</button>';
+        $cancelButton = '<button class="restoregroup btn btn-default" data-page="' . $page . '" data-group-id="' . $groupUid
                         . '" data-element-id="' . $elementId . '"'
                         . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '')
-                        . ' title="Cancel">'
+                        . ' title="Cancel" type="button">'
                         . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render()
-                        . '</a>';
+                        . '</button>';
         return '<span id="' . $elementId . '">'
             . $selector
             . '<span class="btn-group">'
@@ -288,13 +288,13 @@ class PermissionAjaxController
     {
         $page = (int)$page;
         if ($editLockState === 1) {
-            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page
+            $ret = '<span id="el_' . $page . '"><button type="button" class="editlock btn btn-default" data-page="' . $page
                     . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">'
-                    . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</a></span>';
+                    . $this->iconFactory->getIcon('actions-lock', Icon::SIZE_SMALL)->render() . '</button></span>';
         } else {
-            $ret = '<span id="el_' . $page . '"><a class="editlock btn btn-default" data-page="' . $page .
+            $ret = '<span id="el_' . $page . '"><button type="button" class="editlock btn btn-default" data-page="' . $page .
                     '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">'
-                    . $this->iconFactory->getIcon('actions-unlock', Icon::SIZE_SMALL)->render() . '</a></span>';
+                    . $this->iconFactory->getIcon('actions-unlock', Icon::SIZE_SMALL)->render() . '</button></span>';
         }
         return $ret;
     }
