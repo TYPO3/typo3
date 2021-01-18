@@ -39,9 +39,9 @@
 <h2><f:translate key="{LLPrefix}displayOptions"/></h2>
 <div class="tst-analyzer-options">
     <f:for each="{checkboxes}" as="checkbox">
-        <div class="checkbox">
-            <label for="{checkbox.id}">
-                <f:format.raw>{checkbox.label}</f:format.raw>
+        <div class="form-check">
+            <f:format.raw>{checkbox.label}</f:format.raw>
+            <label class="form-check-label" for="{checkbox.id}">
                 <f:translate key="{LLPrefix}{checkbox.ll}"/>
             </label>
         </div>

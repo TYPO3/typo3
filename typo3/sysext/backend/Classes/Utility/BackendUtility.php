@@ -2532,7 +2532,7 @@ class BackendUtility
         $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
         $attributes = GeneralUtility::implodeAttributes([
             'type' => 'checkbox',
-            'class' => 'checkbox',
+            'class' => 'form-check-input',
             'name' => $elementName,
             'value' => '1',
             'data-global-event' => 'change',

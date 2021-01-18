@@ -187,7 +187,7 @@ class CheckboxToggleElement extends AbstractFormElement
         $uniqueId = StringUtility::getUniqueId('_');
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
         return '
-            <div class="form-check benni checkbox-type-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check form-switch' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
@@ -196,7 +196,7 @@ class CheckboxToggleElement extends AbstractFormElement
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    <span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
                 </label>
             </div>';
     }

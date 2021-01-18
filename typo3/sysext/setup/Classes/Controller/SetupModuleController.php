@@ -534,13 +534,14 @@ class SetupModuleController
                         ' />';
                     break;
                 case 'check':
-                    $html = $label . '<div class="checkbox"><label><input id="field_' . htmlspecialchars($fieldName) . '"
+                    $html = $label . '<div class="form-check form-switch"><input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
+                        class="form-check-input"
                         aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
-                        ' /></label></div>';
+                        ' /></div>';
                     $label = '';
                     break;
                 case 'select':

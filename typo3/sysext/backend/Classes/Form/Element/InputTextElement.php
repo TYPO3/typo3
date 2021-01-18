@@ -286,10 +286,10 @@ class InputTextElement extends AbstractFormElement
             $checked = $itemValue !== null ? ' checked="checked"' : '';
             $fullElement = [];
             $fullElement[] = '<div class="t3-form-field-disable"></div>';
-            $fullElement[] = '<div class="checkbox t3-form-field-eval-null-checkbox">';
-            $fullElement[] =     '<label for="' . $nullControlNameEscaped . '">';
-            $fullElement[] =         '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
-            $fullElement[] =         '<input type="checkbox" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . ' />';
+            $fullElement[] = '<div class="form-check t3-form-field-eval-null-checkbox">';
+            $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
+            $fullElement[] =     '<input type="checkbox" class="form-check-input" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . ' />';
+            $fullElement[] =     '<label class="form-check-label" for="' . $nullControlNameEscaped . '">';
             $fullElement[] =         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';
@@ -319,10 +319,10 @@ class InputTextElement extends AbstractFormElement
                 );
             }
             $fullElement = [];
-            $fullElement[] = '<div class="checkbox t3js-form-field-eval-null-placeholder-checkbox">';
-            $fullElement[] =     '<label for="' . $nullControlNameEscaped . '">';
-            $fullElement[] =         '<input type="hidden" name="' . $nullControlNameEscaped . '" value="' . $fallbackValue . '" />';
-            $fullElement[] =         '<input type="checkbox" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . $disabled . ' />';
+            $fullElement[] = '<div class="form-check t3js-form-field-eval-null-placeholder-checkbox">';
+            $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="' . $fallbackValue . '" />';
+            $fullElement[] =     '<input type="checkbox" class="form-check-input" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . $disabled . ' />';
+            $fullElement[] =     '<label class="form-check-label" for="' . $nullControlNameEscaped . '">';
             $fullElement[] =         $overrideLabel;
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';

@@ -1500,17 +1500,19 @@ class QueryGenerator
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
                 $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
-                $orderBy[] = '<div class="checkbox">';
-                $orderBy[] = '	<label for="checkQueryOrderDesc">';
-                $orderBy[] =        BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . ' Descending';
+                $orderBy[] = '<div class="form-check">';
+                $orderBy[] = BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] = '	<label class="form-check-label" for="checkQueryOrderDesc">';
+                $orderBy[] =        'Descending';
                 $orderBy[] = '	</label>';
                 $orderBy[] = '</div>';
 
                 if ($orderByArr[0]) {
                     $orderBy[] = $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '');
-                    $orderBy[] = '<div class="checkbox">';
-                    $orderBy[] = '	<label for="checkQueryOrder2Desc">';
-                    $orderBy[] =        BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . ' Descending';
+                    $orderBy[] = '<div class="form-check">';
+                    $orderBy[] = BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] = '	<label class="form-check-label" for="checkQueryOrder2Desc">';
+                    $orderBy[] =        'Descending';
                     $orderBy[] = '	</label>';
                     $orderBy[] = '</div>';
                 }

@@ -275,6 +275,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     public function renderCheckbox(array $configuration): string
     {
         $this->tag->addAttribute('type', 'checkbox');
+        $this->tag->addAttribute('class', 'form-check-input');
         $this->tag->addAttribute('name', $this->getFieldName($configuration));
         $this->tag->addAttribute('value', 1);
         $this->addIdAttribute($configuration);
@@ -282,7 +283,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
             $this->tag->addAttribute('checked', 'checked');
         }
         $hiddenField = $this->renderHiddenFieldForEmptyValue($configuration);
-        return '<div class="checkbox">' . $hiddenField . '<label>' . $this->tag->render() . '</label></div>';
+        return '<div class="form-check">' . $hiddenField . $this->tag->render() . '</div>';
     }
 
     /**

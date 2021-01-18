@@ -676,9 +676,9 @@ class PageLayoutController
         if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {
             // Toggle hidden ContentElements
             $tableOutput .= '
-                <div class="checkbox">
-                    <label for="checkTt_content_showHidden">
-                        <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
+                <div class="form-check">
+                    <input type="checkbox" id="checkTt_content_showHidden" class="form-check-input" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
+                    <label class="form-check-label" for="checkTt_content_showHidden">
                         ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
                     </label>
                 </div>';

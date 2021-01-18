@@ -17,43 +17,15 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 //
 // Component
 //
-.checkbox {
-    .checkbox-input {
-        opacity: 0;
-    }
-
-    .checkbox-label {
-        position: relative;
-        display: inline-flex;
-        align-items: baseline;
-        padding: 0;
-        min-height: 0;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .checkbox-label-switch,
-    .checkbox-label-icon {
-        flex-shrink: 0;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .checkbox-label-text {
-        padding-left: 6px;
-        position: relative;
-        display: inline-flex;
-    }
-
-    input + .help-link {
-        margin-left: 0.5rem;
-        font-weight: normal;
-    }
-}
-
 .form-check {
-    padding-left: 0;
-
     .form-check-input {
-        opacity: 0;
+        opacity: 1;
+    }
+
+    &.form-check-type-icon-toggle {
+        .form-check-input {
+            opacity: 0;
+        }
     }
 
     .form-check-label {
@@ -65,16 +37,10 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         transition: all 0.3s ease-in-out;
     }
 
-    .checkbox-label-switch,
-    .checkbox-label-icon {
+    .form-check-label-switch,
+    .form-check-label-icon {
         flex-shrink: 0;
         transition: all 0.3s ease-in-out;
-    }
-
-    .checkbox-label-text {
-        padding-left: 1rem;
-        position: relative;
-        display: inline-flex;
     }
 
     input + .help-link {
@@ -85,8 +51,8 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 //
 // Disabled
 //
-.checkbox {
-    .checkbox-input:disabled + .checkbox-label {
+.form-check {
+    .form-check-input:disabled + .form-check-label {
         opacity: 0.5;
     }
 }
@@ -95,75 +61,33 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 // Toggle
 //
 // Markup:
-// <div class="checkbox checkbox-type-toggle">
-//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-toggle">
-//     <label class="checkbox-label" for="checkbox-toggle">
-//         <span class="checkbox-label-text">foo</span>
+// <div class="form-check form-switch">
+//     <input type="checkbox" class="form-check-input" value="1" id="checkbox-toggle">
+//     <label class="form-check-label" for="checkbox-toggle">
+//         <span class="form-check-label-text">foo</span>
 //     </label>
 // </div>
 //
 // Styleguide component.checkbox.1
 //
-.checkbox-type-toggle {
-    .form-check-label,
-    .checkbox-label {
-        overflow: visible;
-        padding-left: 36px;
+.form-switch {
+    .form-check-input {
+        background-color: lighten($checkbox-bg, 10%);
+        height: 16px;
 
-        &:before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: 0;
-            padding-left: 0;
-            width: 36px;
-            height: 20px;
-            background-color: lighten($checkbox-bg, 10%);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-
-        &:after {
-            content: '';
-            position: absolute;
-            background-color: #fff;
-            height: 12px;
-            width: 12px;
-            top: 3px;
-            left: 5px;
-            border-radius: 50%;
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
-            transition: all 0.3s ease-in-out;
-        }
-    }
-
-    .checkbox-input {
-        position: absolute;
-        margin-left: -20px;
-    }
-
-    .form-check-input:checked + .form-check-label,
-    .checkbox-input:checked + .checkbox-label {
-        &:before {
+        &:checked {
+            border-color: $input-border-color;
             background-color: $checkbox-bg-active;
         }
 
-        &:after {
-            left: 19px;
-        }
-    }
-
-    .form-check-input:focus + .form-check-label,
-    .checkbox-input:focus + .checkbox-label {
-        &:before {
+        &:focus {
+            border-color: $input-border-focus;
             box-shadow: $checkbox-focus-shadow;
-            border: $checkbox-focus-border;
         }
     }
 
     .form-check-label {
-        padding-left: 19px;
+        line-height: 1.8em;
     }
 }
 
@@ -171,18 +95,18 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 // Labeled Toggle
 //
 // Markup:
-// <div class="checkbox checkbox-type-labeled-toggle">
-//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-labeled-toggle">
-//     <label class="checkbox-label" for="checkbox-labeled-toggle">
-//         <span class="checkbox-label-switch">
-//             <span class="checkbox-label-switch-checked">
+// <div class="form-check checkbox-type-labeled-toggle">
+//     <input type="checkbox" class="form-check-input" value="1" id="checkbox-labeled-toggle">
+//     <label class="form-check-label" for="checkbox-labeled-toggle">
+//         <span class="form-check-label-switch">
+//             <span class="form-check-label-switch-checked">
 //                 Enabled
 //             </span>
-//             <span class="checkbox-label-switch-unchecked">
+//             <span class="form-check-label-switch-unchecked">
 //                 Disabled
 //             </span>
 //         </span>
-//         <span class="checkbox-label-text">
+//         <span class="form-check-label-text">
 //             Foo
 //         </span>
 //     </label>
@@ -190,11 +114,18 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 //
 // Styleguide component.checkbox.2
 //
-.checkbox-type-labeled-toggle {
-    .checkbox-label-switch {
+.form-check-type-labeled-toggle {
+    padding-left: 0;
+
+    .form-check-input {
+        display: none;
+    }
+
+    .form-check-label-switch {
         height: 24px;
         background-color: $checkbox-bg-inactive;
         border-radius: 2px;
+        margin-right: 0.5rem;
         border: 1px solid rgba(0, 0, 0, 0.3);
         color: #fff;
         display: inline-flex;
@@ -203,38 +134,38 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         text-align: center;
     }
 
-    .checkbox-label-switch-checked,
-    .checkbox-label-switch-unchecked {
+    .form-check-label-switch-checked,
+    .form-check-label-switch-unchecked {
         padding-left: 8px;
         padding-right: 8px;
         flex-grow: 1;
         user-select: none;
     }
 
-    .checkbox-label-switch-checked {
+    .form-check-label-switch-checked {
         order: 2;
     }
 
-    .checkbox-label-switch-unchecked {
+    .form-check-label-switch-unchecked {
         order: 1;
     }
 
-    .checkbox-input:checked + .checkbox-label {
-        .checkbox-label-switch {
+    .form-check-input:checked + .form-check-label {
+        .form-check-label-switch {
             background-color: $checkbox-bg-active;
 
-            .checkbox-label-switch-checked {
+            .form-check-label-switch-checked {
                 order: 1;
             }
 
-            .checkbox-label-switch-unchecked {
+            .form-check-label-switch-unchecked {
                 order: 2;
             }
         }
     }
 
-    .checkbox-input:focus + .checkbox-label {
-        .checkbox-label-switch {
+    .form-check-input:focus + .form-check-label {
+        .form-check-label-switch {
             box-shadow: $checkbox-focus-shadow;
             border: $checkbox-focus-border;
         }
@@ -245,18 +176,18 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 // Icon Toggle
 //
 // Markup:
-// <div class="checkbox checkbox-type-icon-toggle">
-//     <input type="checkbox" class="checkbox-input" value="1" id="checkbox-icon-toggle">
-//     <label class="checkbox-label" for="checkbox-icon-toggle">
-//         <span class="checkbox-label-icon">
-//             <span class="checkbox-label-icon-checked">
+// <div class="form-check form-check-type-icon-toggle">
+//     <input type="checkbox" class="form-check-input" value="1" id="checkbox-icon-toggle">
+//     <label class="form-check-label" for="checkbox-icon-toggle">
+//         <span class="form-check-label-icon">
+//             <span class="form-check-label-icon-checked">
 //                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-check" data-identifier="actions-check">
 //                     <span class="icon-markup">
 //                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.3 4.8l-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z" class="icon-color"></path></svg>
 //                     </span>
 //                 </span>
 //             </span>
-//             <span class="checkbox-label-icon-unchecked">
+//             <span class="form-check-label-icon-unchecked">
 //                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
 //                     <span class="icon-markup">
 //                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.9 5.5L9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z" class="icon-color"></path></svg>
@@ -264,17 +195,19 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 //                 </span>
 //             </span>
 //         </span>
-//         <span class="checkbox-label-text">foo</span>
+//         <span class="form-check-label-text">foo</span>
 //     </label>
 // </div>
 //
 // Styleguide component.checkbox.3
 //
-.checkbox-type-icon-toggle {
-    .checkbox-label-icon {
+.form-check-type-icon-toggle {
+    padding-left: 0;
+
+    .form-check-label-icon {
         border-radius: 2px;
-        width: 24px;
         height: 24px;
+        width: 24px;
         padding-top: 2px;
         padding-bottom: 2px;
         text-align: center;
@@ -283,33 +216,35 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         border: 1px solid rgba(0, 0, 0, 0.3);
     }
 
-    .checkbox-label-icon-checked {
+    .form-check-label-text {
+        padding-left: 0.5rem;
+    }
+
+    .form-check-label-icon-checked {
         display: none;
     }
 
-    .checkbox-label-icon-unchecked {
+    .form-check-label-icon-unchecked {
         display: inline-block;
     }
 
-    .form-check-input:checked + .form-check-label,
-    .checkbox-input:checked + .checkbox-label {
-        .checkbox-label-icon {
+    .form-check-input:checked + .form-check-label {
+        .form-check-label-icon {
             background-color: $checkbox-bg-active;
             color: #fff;
         }
 
-        .checkbox-label-icon-checked {
+        .form-check-label-icon-checked {
             display: inline-block;
         }
 
-        .checkbox-label-icon-unchecked {
+        .form-check-label-icon-unchecked {
             display: none;
         }
     }
 
-    .form-check-input:focus + .form-check-label,
-    .checkbox-input:focus + .checkbox-label {
-        .checkbox-label-icon {
+    .form-check-input:focus + .form-check-label {
+        .form-check-label-icon {
             box-shadow: $checkbox-focus-shadow;
             border: $checkbox-focus-border;
         }

@@ -189,9 +189,9 @@ class FileUploadController
                 <input type="hidden" name="data[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
                 <input type="hidden" name="data[upload][1][data]" value="1" />
             </div>
-            <div class="checkbox">
-                <label for="overwriteExistingFiles">
-                <input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />
+                <label class="form-check-label" for="overwriteExistingFiles"> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label>
             </div>
             <div>
                 <input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" />

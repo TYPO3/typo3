@@ -187,24 +187,24 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
         $uniqueId = StringUtility::getUniqueId('_');
         $checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter . $uniqueId;
         return '
-            <div class="checkbox checkbox-type-labeled-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check form-check-type-labeled-toggle' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
-                    class="checkbox-input"
+                    class="form-check-input"
                     value="1"
                     data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
                     ' . $checkboxParameters . '
                     ' . (!$disabled ? '' : ' disabled="disabled"') . '
                     id="' . $checkboxId . '" />
-                <label class="checkbox-label" for="' . $checkboxId . '">
-                    <span class="checkbox-label-switch">
-                        <span class="checkbox-label-switch-checked">
+                <label class="form-check-label" for="' . $checkboxId . '">
+                    <span class="form-check-label-switch">
+                        <span class="form-check-label-switch-checked">
                             ' . $config['items'][$itemCounter]['labelChecked'] . '
                         </span>
-                        <span class="checkbox-label-switch-unchecked">
+                        <span class="form-check-label-switch-unchecked">
                             ' . $config['items'][$itemCounter]['labelUnchecked'] . '
                         </span>
                     </span>
-                    <span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
                 </label>
             </div>';
     }

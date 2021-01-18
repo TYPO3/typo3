@@ -112,10 +112,12 @@
                         <f:else>{key}, </f:else>
                     </f:if>
                 </f:for>
-                <label for="checkExclude">
-                    <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />
-                    <f:translate key="makeconfig_clearAllExclusions" />
-                </label>
+                <div class="form-check">
+                    <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" class="form-check-input" />
+                    <label for="checkExclude" class="form-check-label">
+                        <f:translate key="makeconfig_clearAllExclusions" />
+                    </label>
+                </div>
             </f:then>
             <f:else>
                     <f:translate key="makeconfig_noManuallyExcludedElementsYet" />
@@ -123,10 +125,12 @@
         </f:if>
     </p>
     <p class="form-control-static">
-        <label for="checkExcludeDisabled">
-            <f:form.checkbox name="tx_impexp[excludeDisabled]" id="checkExcludeDisabled" value="1" checked="{inData.excludeDisabled}" />
-            <f:translate key="makeconfig_excludeDisabledElements" />
-        </label>
+        <div class="form-check">
+            <f:form.checkbox name="tx_impexp[excludeDisabled]" id="checkExcludeDisabled" value="1" checked="{inData.excludeDisabled}" class="form-check-input" />
+            <label for="checkExcludeDisabled" class="form-check-label">
+                <f:translate key="makeconfig_excludeDisabledElements" />
+            </label>
+        </div>
     </p>
 </div>
 

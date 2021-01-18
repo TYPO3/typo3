@@ -198,10 +198,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'label' => $label
         ];
         $fieldId = 'task_emailOnBrokenLinkOnly';
-        $fieldCode = '<div class="checkbox"><label>'
-            . '<input type="checkbox" name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldId . '" '
-            . ((bool)$taskInfo['emailOnBrokenLinkOnly'] ? 'checked="checked"' : '')
-            . '></label></div>';
+        $fieldCode = '<div class="form-check">'
+            . '<input type="checkbox" class="form-check-input" name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="'
+            . $fieldId . '" ' . ((bool)$taskInfo['emailOnBrokenLinkOnly'] ? 'checked="checked"' : '')
+            . '></div>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.emailOnBrokenLinkOnly');
         $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [

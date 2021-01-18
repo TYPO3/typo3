@@ -200,7 +200,7 @@ class CheckboxElement extends AbstractFormElement
         $iconUnchecked = $this->iconFactory->getIcon($iconIdentifierUnchecked, Icon::SIZE_SMALL)->render('inline');
 
         return '
-            <div class="form-check checkbox-type-icon-toggle' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check form-check-type-icon-toggle' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
@@ -209,11 +209,11 @@ class CheckboxElement extends AbstractFormElement
                     ' . ($disabled ? ' disabled="disabled"' : '') . '
                     id="' . $checkboxId . '" />
                 <label class="form-check-label" for="' . $checkboxId . '">
-                    <span class="checkbox-label-icon">
-                        <span class="checkbox-label-icon-checked">' . $iconChecked . '</span>
-                        <span class="checkbox-label-icon-unchecked">' . $iconUnchecked . '</span>
+                    <span class="form-check-label-icon">
+                        <span class="form-check-label-icon-checked">' . $iconChecked . '</span>
+                        <span class="form-check-label-icon-unchecked">' . $iconUnchecked . '</span>
                     </span>
-                    <span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
+                    <span class="form-check-label-text">' . $this->appendValueToLabelInDebugMode(($label ? htmlspecialchars($label) : '&nbsp;'), $formElementValue) . '</span>
                 </label>
             </div>';
     }

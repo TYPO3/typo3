@@ -52,15 +52,17 @@
                         </f:then>
                         <f:else>
                             <f:if condition="{item.type} == 'checkbox'">
-                                <div class="checkbox">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            value="1"
-                                            class="t3js-localConfiguration-pathValue"
-                                            data-path="{sectionName}/{item.key}"
-                                            {f:if(condition: item.checked, then:'checked="checked"')}
-                                        />
+                                <div class="form-check">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        value="1"
+                                        class="t3js-localConfiguration-pathValue"
+                                        id="{sectionName}_{item.key}"
+                                        data-path="{sectionName}/{item.key}"
+                                        {f:if(condition: item.checked, then:'checked="checked"')}
+                                    />
+                                    <label class="form-check-label" for="{sectionName}_{item.key}">
                                         {item.description -> f:format.raw()}
                                     </label>
                                 </div>

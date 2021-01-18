@@ -11,17 +11,17 @@
             <input class="form-control" type="search" id="lowlevel-searchString" name="searchString" value="{searchString}" />
         </div>
         <div class="form-group">
-            <div class="checkbox">
-                <label for="lowlevel-regexSearch">
-                    <input type="hidden" name="regexSearch" value="0" />
-                    <input
-                        type="checkbox"
-                        class="checkbox"
-                        name="regexSearch"
-                        id="lowlevel-regexSearch"
-                        value="1"
-                        {f:if(condition:'{regexSearch}', then: ' checked')}
-                    >
+            <div class="form-check">
+                <input type="hidden" name="regexSearch" value="0" />
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    name="regexSearch"
+                    id="lowlevel-regexSearch"
+                    value="1"
+                    {f:if(condition:'{regexSearch}', then: ' checked')}
+                >
+                <label for="lowlevel-regexSearch" class="form-check-label">
                     <f:translate key="useRegExp" />
                 </label>
             </div>

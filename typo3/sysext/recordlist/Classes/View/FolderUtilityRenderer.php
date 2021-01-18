@@ -170,9 +170,9 @@ class FolderUtilityRenderer
             $markup[] = '</div>';
         }
 
-        $markup[] = '<div class="checkbox">';
-        $markup[] = '    <label>';
-        $markup[] = '    <input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />';
+        $markup[] = '<div class="form-check">';
+        $markup[] = '    <input type="checkbox" class="form-check-input" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />';
+        $markup[] = '    <label class="form-check-label" for="overwriteExistingFiles">';
         $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles'));
         $markup[] = '    </label>';
         $markup[] = '</div>';

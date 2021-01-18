@@ -5,11 +5,13 @@
             <table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
                 <thead>
                 <tr>
-                    <th class="col-checkbox checkbox" colspan="2">
-                        <label>
-                            <input type="checkbox" class="checkbox checkAll" {f:if(condition:'{allChecked}', then: ' checked="checked"')} />
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
-                        </label>
+                    <th class="col-checkbox" colspan="2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input checkAll" id="checkAll" {f:if(condition:'{allChecked}', then: ' checked="checked"')} />
+                            <label class="form-check-label" for="checkAll">
+                                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
+                            </label>
+                        </div>
                     </th>
                 </tr>
                 </thead>

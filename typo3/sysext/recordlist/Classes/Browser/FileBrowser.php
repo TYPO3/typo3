@@ -405,7 +405,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $_MCONF['name'] = 'file_list';
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
             $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
-            $thumbNailCheck = '<div class="checkbox" style="padding:5px 0 15px 0"><label for="checkDisplayThumbs">'
+            $thumbNailCheck = '<div class="form-check form-switch">'
                 . BackendUtility::getFuncCheck(
                     '',
                     'SET[displayThumbs]',
@@ -414,10 +414,11 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                     $addParams,
                     'id="checkDisplayThumbs"'
                 )
+                . '<label for="checkDisplayThumbs" class="form-check-label">'
                 . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '</label></div>';
-            $out .= $thumbNailCheck;
+            $out .= '<div class="pt-2 float-end">' . $thumbNailCheck . '</div>';
         } else {
-            $out .= '<div style="padding-top: 15px;"></div>';
+            $out .= '<div class="pt-2"></div>';
         }
         return $out;
     }

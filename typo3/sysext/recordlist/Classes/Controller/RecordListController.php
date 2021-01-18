@@ -338,9 +338,9 @@ class RecordListController
 
             // Add "display bigControlPanel" checkbox:
             if ($modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
-                $body .= '<div class="checkbox">' .
-                    '<label for="checkLargeControl">' .
+                $body .= '<div class="form-check">' .
                     BackendUtility::getFuncCheck($id, 'SET[bigControlPanel]', $MOD_SETTINGS['bigControlPanel'] ?? '', '', $table ? '&table=' . $table : '', 'id="checkLargeControl"') .
+                    '<label for="checkLargeControl" class="form-check-label">' .
                     BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('largeControl'))) .
                     '</label>' .
                     '</div>';
@@ -349,9 +349,9 @@ class RecordListController
             // Add "clipboard" checkbox:
             if ($modTSconfig['properties']['enableClipBoard'] === 'selectable') {
                 if ($dblist->showClipboard) {
-                    $body .= '<div class="checkbox">' .
-                        '<label for="checkShowClipBoard">' .
+                    $body .= '<div class="form-check">' .
                         BackendUtility::getFuncCheck($id, 'SET[clipBoard]', $MOD_SETTINGS['clipBoard'], '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
+                        '<label class="form-check-label" for="checkShowClipBoard">' .
                         BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
                         '</label>' .
                         '</div>';

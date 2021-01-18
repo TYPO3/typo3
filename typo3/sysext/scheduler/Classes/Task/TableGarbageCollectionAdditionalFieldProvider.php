@@ -83,7 +83,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
 
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_allTables]';
         $fieldId = 'task_tableGarbageCollection_allTables';
-        $fieldHtml = '<div class="checkbox"><label><input type="checkbox" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '"></label></div>';
+        $fieldHtml = '<div class="form-check"><input class="form-check-input" type="checkbox" ' . $checked . ' name="' . $fieldName . '" id="' . $fieldId . '"></div>';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',

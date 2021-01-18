@@ -18,17 +18,17 @@
                         <h4>{feature.label}</h4>
                     </div>
                     <div class="card-content">
-                        <div class="checkbox checkbox-type-toggle">
+                        <div class="form-check form-switch">
                             <input
                                 type="checkbox"
-                                class="checkbox-input"
+                                class="form-check-input"
                                 value="1"
                                 name="install[values][{feature.name}]"
                                 id="t3-install-tool-features-{feature.name}"
                                 {f:if(condition: '{feature.value} == 1', then: 'checked="checked"')}
                             />
-                            <label class="checkbox-label" for="t3-install-tool-features-{feature.name}">
-                                <span class="checkbox-label-text" style="margin-top: -4px; padding-left: 12px;">
+                            <label class="form-check-label" for="t3-install-tool-features-{feature.name}">
+                                <span class="form-check-label-text" style="margin-top: -4px; padding-left: 12px;">
                                     <span>
                                         {feature.description}<br/>
                                         <strong>Default setting: {f:if(condition: '{feature.default} == 1', then: 'Enabled', else: 'Disabled')}</strong>
