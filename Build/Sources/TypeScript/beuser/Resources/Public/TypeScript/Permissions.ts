@@ -104,15 +104,16 @@ class Permissions {
    */
   public changeOwner($element: JQuery): void {
     let page = $element.data('page');
+    const $container = $('#o_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_owner',
       page: page,
       ownerUid: $element.data('owner'),
-      newOwnerUid: $('#new_page_owner').val(),
+      newOwnerUid: $container.find('select[name="new_page_owner"]').val(),
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#o_' + page).replaceWith(await response.resolve());
+      $container.replaceWith(await response.resolve());
     });
   }
 
@@ -171,15 +172,16 @@ class Permissions {
    */
   public changeGroup($element: JQuery): void {
     let page = $element.data('page');
+    const $container = $('#g_' + page);
 
     (new AjaxRequest(this.ajaxUrl)).post({
       action: 'change_group',
       page: page,
       groupUid: $element.data('groupId'),
-      newGroupUid: $('#new_page_group').val(),
+      newGroupUid: $container.find('select[name="new_page_group"]').val(),
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#g_' + page).replaceWith(await response.resolve());
+      $container.replaceWith(await response.resolve());
     });
   }
 
