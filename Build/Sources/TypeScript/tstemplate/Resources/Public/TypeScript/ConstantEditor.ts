@@ -43,7 +43,7 @@ class ConstantEditor {
     const $defaultDiv = $('#defaultTS-' + constantName);
     const $userDiv = $('#userTS-' + constantName);
     const $checkBox = $('#check-' + constantName);
-    const toggleState = $editIcon.data('toggle');
+    const toggleState = $editIcon.data('bsToggle');
 
     if (toggleState === 'edit') {
       $defaultDiv.hide();
