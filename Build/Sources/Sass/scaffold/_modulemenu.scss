@@ -79,13 +79,17 @@
 // Name
 //
 .modulemenu-name {
-    @extend .sr-only;
-
     overflow: hidden;
     flex-grow: 1;
     margin-left: 1em;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.modulemenu {
+    .modulemenu-name {
+        @extend .sr-only;
+    }
 }
 
 //

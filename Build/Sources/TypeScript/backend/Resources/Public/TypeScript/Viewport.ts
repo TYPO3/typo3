@@ -37,7 +37,6 @@ class Viewport {
   public doLayout(): void {
     this.NavigationContainer.cleanup();
     this.NavigationContainer.calculateScrollbar();
-    $('.t3js-topbar-header').css('padding-right', $('.t3js-scaffold-toolbar').outerWidth());
   }
 
   private initialize(): void {

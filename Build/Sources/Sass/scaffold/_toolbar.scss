@@ -24,12 +24,8 @@ $toolbar-navigation-search-hover-bg: $toolbar-dropdown-link-hover-bg;
 $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 .toolbar {
-    padding: 8px;
-
-    @media (min-width: $scaffold-breakpoint) {
-        padding: 0;
-        background-color: $scaffold-topbar-bg;
-    }
+    padding: 0;
+    background-color: $scaffold-topbar-bg;
 
     &:after {
         clear: both;
@@ -58,7 +54,6 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 
 // Toolbar Item
 .toolbar-item {
-    padding: 4px;
     position: relative;
     display: block;
     float: left;
@@ -73,7 +68,6 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     }
 
     @media (min-width: $scaffold-breakpoint) {
-        padding: 0;
         width: auto;
         margin-left: 1px;
     }
@@ -96,20 +90,37 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         }
     }
 
+    .dropdown-text a {
+        display: inline;
+    }
+
     @media (max-width: $scaffold-breakpoint-max) {
         .dropdown-menu {
             overflow: auto;
             padding: $grid-gutter-width / 2;
             position: fixed;
-            max-height: 90%;
-            max-width: 90%;
+            width: 100%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+
+            hr {
+                margin-left: -$grid-gutter-width / 2;
+                margin-right: -$grid-gutter-width / 2;
+            }
+        }
+
+        .dropdown-headline,
+        .dropdown-headline + hr {
+            display: none;
         }
 
         .dropdown-backdrop {
             background: rgba(0, 0, 0, 0.65);
+        }
+
+        .dropdown-table-title {
+            white-space: normal;
         }
     }
 }
@@ -207,22 +218,8 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         opacity: 1;
     }
 
-    .dropdown-menu {
-        @media (max-width: $scaffold-breakpoint-max) {
-            top: 114px;
-            left: 14px;
-            right: 14px;
-            width: auto;
-            max-width: none;
-            max-height: none;
-            transform: none;
-            bottom: 14px;
-        }
-
-        @media (min-width: $scaffold-breakpoint) {
-            left: auto;
-            right: 0;
-        }
+    input[type=search]::-webkit-search-cancel-button {
+        display: none;
     }
 
     .autocomplete-suggestions {
@@ -246,11 +243,16 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         color: $white;
         background-color: $toolbar-navigation-search-bg;
     }
+
+    .form-control-holder > .form-control {
+        padding-left: 0;
+    }
 }
 
 .toolbar-item-search-field {
     color: $white;
     background-color: $toolbar-navigation-search-bg;
+    padding-left: 1.5rem;
     margin: 0;
     border-radius: 0;
     border: 1px solid rgba(0, 0, 0, 0.5);

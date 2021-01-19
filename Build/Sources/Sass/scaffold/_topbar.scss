@@ -114,6 +114,15 @@ $toolbar-item-padding-horizontal: 15px;
         .toolbar-item-search {
             display: block;
             width: 100%;
+            padding: 0;
+
+            .form-control-icon {
+                display: none;
+            }
+
+            input[type=search] {
+                padding-left: 1.25rem;
+            }
         }
     }
 

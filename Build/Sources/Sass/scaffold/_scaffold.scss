@@ -52,8 +52,15 @@ body {
     background-color: $scaffold-bg;
     color: $scaffold-color;
     position: relative;
-    padding-top: $scaffold-topbar-height;
     height: 100vh;
+}
+
+.scaffold-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    height: $scaffold-topbar-height;
 }
 
 //
@@ -63,7 +70,7 @@ body {
     background-color: $scaffold-topbar-bg;
     color: $scaffold-topbar-color;
     height: $scaffold-topbar-height;
-    position: fixed;
+    flex-grow: 1;
     top: 0;
     right: 0;
     left: 0;
@@ -101,16 +108,9 @@ body {
 // Toolbar
 //
 .scaffold-toolbar {
-    overflow: auto;
     background-color: $scaffold-toolbar-bg;
     color: $scaffold-toolbar-color;
     z-index: $scaffold-toolbar-zindex;
-    position: fixed;
-    top: $scaffold-topbar-height;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: none;
 
     .dropdown-menu a,
     a {
@@ -130,6 +130,8 @@ body {
         color: $scaffold-toolbar-color;
     }
 
+    display: none;
+
     @media (min-width: $scaffold-breakpoint) {
         overflow: visible;
         background-color: transparent;
@@ -144,7 +146,18 @@ body {
 .scaffold-toolbar-expanded,
 .scaffold-search-expanded {
     .scaffold-toolbar {
+        .toolbar {
+            background-color: $scaffold-modulemenu-bg;
+        }
+
         @media (max-width: $scaffold-breakpoint-max) {
+            .toolbar-item {
+                padding: 4px;
+            }
+
+            min-height: calc(100vh - #{$scaffold-topbar-height});
+            padding: 8px;
+            flex: 1 0 100%;
             display: block;
         }
     }
@@ -235,10 +248,6 @@ body {
 // Medium Screen
 //
 .scaffold {
-    @media (min-width: $scaffold-breakpoint) {
-        padding-left: $scaffold-modulemenu-snapped-width;
-    }
-
     .scaffold-modulemenu {
         width: $scaffold-modulemenu-snapped-width;
 
@@ -250,7 +259,6 @@ body {
 
 .scaffold-modulemenu-expanded {
     display: block;
-    padding-left: $scaffold-modulemenu-expanded-width;
 
     .scaffold-modulemenu {
         width: $scaffold-modulemenu-expanded-width;
