@@ -132,6 +132,9 @@
 			<trans-unit id="displayThumbs" resname="displayThumbs">
 				<source>Display thumbnails</source>
 			</trans-unit>
+			<trans-unit id="no_files" resname="no_files">
+				<source>No files found in %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

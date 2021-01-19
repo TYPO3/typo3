@@ -187,9 +187,10 @@ class FileController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $this->file = $parsedBody['data'] ?? $queryParams['data'] ?? null;
-        if ($this->file === null) {
-            // This happens in clipboard mode only
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect'] ?? $queryParams['redirect'] ?? '');
+        $redirectUrl = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? '';
+        if ($this->file === null || !empty($redirectUrl)) {
+            // This in clipboard mode or when a new folder is created
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($redirectUrl);
         } else {
             $mode = key($this->file);
             $elementKey = key($this->file[$mode]);

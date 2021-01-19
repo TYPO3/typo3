@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -70,11 +69,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $searchWord;
 
     /**
-     * @var FileRepository
-     */
-    protected $fileRepository;
-
-    /**
      * @var array
      */
     protected $thumbnailConfiguration = [];
@@ -88,7 +82,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
-        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 
         $thumbnailConfig = $this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.'] ?? [];
         if (isset($thumbnailConfig['width']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['width'])) {
@@ -242,8 +235,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $extensionList = !empty($extensionList) && $extensionList[0] === '*' ? [] : $extensionList;
             $files = $this->getFilesInFolder($folder, $extensionList);
         }
-        $filesCount = count($files);
-
+        if (empty($files)) {
+            return '<div class="shadow-sm bg-info bg-gradient p-4 pb-2 pt-2 mb-3">' . sprintf(htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:no_files')), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()) . '</div>';
+        }
         $lines = [];
 
         // Create the header of current folder:
@@ -257,15 +251,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
 					<a href="#" class="btn btn-default disabled" id="t3js-importSelection" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . '</a>
 					<a href="#" class="btn btn-default" id="t3js-toggleSelection" title="' . htmlspecialchars($lang->getLL('toggleSelection')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>
 				</th>
-				<th class="nowrap">&nbsp;</th>
 			</tr>';
-
-        if ($filesCount === 0) {
-            $lines[] = '
-				<tr>
-					<td colspan="4">No files found.</td>
-				</tr>';
-        }
 
         foreach ($files as $fileObject) {
             // Thumbnail/size generation:
@@ -283,8 +269,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
                 $clickIcon = '<img src="' . PathUtility::getAbsoluteWebPath($imageUrl) . '"'
                     . ' width="' . $processedFile->getProperty('width') . '"'
-                    . ' height="' . $processedFile->getProperty('height') . '"'
-                    . ' hspace="5" vspace="5" border="1" />';
+                    . ' height="' . $processedFile->getProperty('height') . '" class="me-1" />';
             } else {
                 $clickIcon = '';
                 $pDim = '';
@@ -308,7 +293,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $ATag .= '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>';
                 $ATag_alt = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . $size . '" data-file-index="' . $filesIndex . '" data-close="1">';
                 $ATag_e = '</a>';
-                $bulkCheckBox = '<label class="btn btn-default btn-checkbox"><input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /><span class="t3-icon fa"></span></label>';
+                $bulkCheckBox = '<label class="mb-0 btn btn-default btn-checkbox"><input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /><span class="t3-icon fa"></span></label>';
             } else {
                 $ATag = '';
                 $ATag_alt = '';
@@ -329,38 +314,31 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
             // Show element:
             $lines[] = '
-					<tr class="file_list_normal">
-						<td class="col-title nowrap">' . $filenameAndIcon . '&nbsp;</td>
+					<tr>
+						<td class="col-title nowrap">' . $filenameAndIcon . '</td>
 						<td class="col-control">
 							<div class="btn-group">' . $ATag . $ATag_e . '
 							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
-						<td class="col-clipboard" valign="top">' . $bulkCheckBox . '</td>
-						<td class="nowrap">&nbsp;' . $pDim . '</td>
+						<td class="col-clipboard">' . $bulkCheckBox . '</td>
 					</tr>';
             if ($pDim) {
                 $lines[] = '
 					<tr>
-						<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
+						<td colspan="3">' . $ATag_alt . $clickIcon . $ATag_e . $pDim . '</td>
 					</tr>';
             }
         }
 
         $markup = [];
-        $markup[] = '<h3>' . htmlspecialchars($lang->getLL('files')) . ' ' . $filesCount . ':</h3>';
         $markup[] = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->getFileSearchField($this->searchWord);
         $markup[] = '<div id="filelist">';
-        $markup[] = '   ' . $this->getBulkSelector($filesCount);
-        $markup[] = '   <!-- Filelisting -->';
-        $markup[] = '   <div class="table-fit">';
-        $markup[] = '       <table class="table table-striped table-hover" id="typo3-filelist">';
-        $markup[] = '           ' . implode('', $lines);
-        $markup[] = '       </table>';
-        $markup[] = '   </div>';
+        $markup[] = '   ' . $this->getBulkSelector();
+        $markup[] = '     <table class="table table-sm table-responsive table-striped table-hover" id="typo3-filelist">';
+        $markup[] = '         ' . implode('', $lines);
+        $markup[] = '     </table>';
         $markup[] = ' </div>';
-        $content = implode('', $markup);
-
-        return $content;
+        return implode('', $markup);
     }
 
     /**
@@ -384,15 +362,11 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Get the HTML data required for a bulk selection of files of the TYPO3 Element Browser.
      *
-     * @param int $filesCount Number of files currently displayed
-     * @return string HTML data required for a bulk selection of files - if $filesCount is 0, nothing is returned
+     * @return string HTML data required for a bulk selection of files
      */
-    protected function getBulkSelector($filesCount)
+    protected function getBulkSelector(): string
     {
         $_MCONF = [];
-        if (!$filesCount) {
-            return '';
-        }
 
         $lang = $this->getLanguageService();
         $out = '';

@@ -18,6 +18,9 @@
 			<trans-unit id="create_folder.title" resname="create_folder.title">
 				<source>Create new folder</source>
 			</trans-unit>
+			<trans-unit id="create_folder.placeholder" resname="create_folder.placeholder">
+				<source>Your new folder name</source>
+			</trans-unit>
 			<trans-unit id="create_folder.submit" resname="create_folder.submit">
 				<source>Create folder</source>
 			</trans-unit>
