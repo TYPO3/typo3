@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Class responsible for fetching the content data related to a BackendLayout
@@ -256,7 +257,7 @@ class ContentFetcher
         $output = [];
         while ($row = $result->fetch()) {
             BackendUtility::workspaceOL('tt_content', $row, -99, true);
-            if ($row) {
+            if ($row && !VersionState::cast($row['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $output[] = $row;
             }
         }
