@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Grid Column Item
@@ -218,11 +217,6 @@ class GridColumnItem extends AbstractGridObject
         return $enableCols['disabled'] && $row[$enableCols['disabled']]
             || $enableCols['starttime'] && $row[$enableCols['starttime']] > $GLOBALS['EXEC_TIME']
             || $enableCols['endtime'] && $row[$enableCols['endtime']] && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'];
-    }
-
-    public function isDeletePlaceholder(): bool
-    {
-        return VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER);
     }
 
     public function isEditable(): bool
