@@ -1068,8 +1068,11 @@ class Indexer
         $maxL = MathUtility::forceIntegerInRange($this->conf['index_descrLgd'], 0, 255, 200);
         if ($maxL) {
             $bodyDescription = preg_replace('/\s+/u', ' ', $contentArr['body']);
-            // Shorten the string:
-            $bodyDescription = mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
+            // Shorten the string. If the database has the wrong character set
+            // set the string is probably truncated again. mb_strcut can not be
+            // used here because it's not part of the fallback package
+            // symfony/polyfill-mbstring in case of the missing ext:mbstring.
+            $bodyDescription = \mb_substr($bodyDescription, 0, $maxL, 'utf-8');
         }
         return $bodyDescription;
     }
