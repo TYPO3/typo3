@@ -107,6 +107,8 @@ class LoginController
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected LoginProviderResolver $loginProviderResolver;
 
+    protected ?ServerRequestInterface $currentRequest = null;
+
     public function __construct(
         Typo3Information $typo3Information,
         EventDispatcherInterface $eventDispatcher,
@@ -319,14 +321,15 @@ class LoginController
 
         // Initialize interface selectors:
         $this->makeInterfaceSelector($request);
-        $this->renderHtmlViaLoginProvider();
+        $this->renderHtmlViaLoginProvider($request);
 
         $this->moduleTemplate->setContent($this->view->render());
         return $this->moduleTemplate->renderContent();
     }
 
-    protected function renderHtmlViaLoginProvider(): void
+    protected function renderHtmlViaLoginProvider(ServerRequestInterface $request): void
     {
+        $this->currentRequest = $request;
         $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($this->loginProviderIdentifier);
         /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
@@ -338,6 +341,7 @@ class LoginController
             )
         );
         $loginProvider->render($this->view, $this->pageRenderer, $this);
+        $this->currentRequest = null;
     }
 
     /**
@@ -514,5 +518,10 @@ class LoginController
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    public function getCurrentRequest(): ?ServerRequestInterface
+    {
+        return $this->currentRequest;
     }
 }

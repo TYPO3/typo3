@@ -38,9 +38,14 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));
-        if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-            $view->assign('presetUsername', GeneralUtility::_GP('u'));
-            $view->assign('presetPassword', GeneralUtility::_GP('p'));
+        $request = $loginController->getCurrentRequest();
+        if ($request !== null && $request->getAttribute('normalizedParams')->isHttps()) {
+            $username = $request->getParsedBody()['u'] ?? $request->getQueryParams()['u'] ?? null;
+            $password = $request->getParsedBody()['p'] ?? $request->getQueryParams()['p'] ?? null;
+            $view->assignMultiple([
+                'presetUsername' => $username,
+                'presetPassword' => $password,
+            ]);
         }
 
         $view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
