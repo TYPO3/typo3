@@ -5,10 +5,10 @@
 .popover {
     padding: 0;
 
-    &-title {
-        font-size: 15px;
+    &-header {
+        margin-top: 0;
         border-bottom: 0;
-        padding: 12px 14px;
+        padding: 0.75rem;
     }
 
     &-content {
