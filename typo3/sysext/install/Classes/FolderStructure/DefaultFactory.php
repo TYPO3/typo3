@@ -252,7 +252,7 @@ class DefaultFactory
     protected function getPublicStructure(string $publicPath, array $subStructure): array
     {
         $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
-        $publicPathParts = array_reverse(mb_split('/', $publicPath));
+        $publicPathParts = array_reverse(explode('/', $publicPath));
 
         $lastNode = null;
         foreach ($publicPathParts as $publicPathPart) {
