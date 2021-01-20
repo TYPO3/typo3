@@ -28,22 +28,9 @@ class Viewport {
   public readonly consumerScope: any = ConsumerScope;
 
   constructor() {
-    $((): void => this.initialize());
     this.Topbar = new Topbar();
     this.NavigationContainer = new NavigationContainer(this.consumerScope);
     this.ContentContainer = new ContentContainer(this.consumerScope);
-  }
-
-  public doLayout(): void {
-    this.NavigationContainer.cleanup();
-    this.NavigationContainer.calculateScrollbar();
-  }
-
-  private initialize(): void {
-    this.doLayout();
-    new ThrottleEvent('resize', () => {
-      this.doLayout();
-    }, 100).bindTo(window);
   }
 }
 

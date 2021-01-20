@@ -202,15 +202,19 @@ class BackendController
     {
         $this->executeHook('renderPreProcess');
 
+        $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
+        $hasModules = count($this->moduleStorage) > 0;
+        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $hasModules ? ' scaffold-modulemenu-expanded' : '') . '">';
+
         // Prepare the scaffolding, at this point extension may still add javascript and css
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $view = $moduleTemplate->getView();
         $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . 'Backend/Main.html'));
-        $view->assign('moduleMenuCollapsed', $this->getCollapseStateOfMenu());
+        $moduleTemplate->setBodyTag($bodyTag);
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
-        $view->assign('hasModules', count($this->moduleStorage) > 0);
+        $view->assign('hasModules', $hasModules);
 
         if (!empty($this->css)) {
             $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);

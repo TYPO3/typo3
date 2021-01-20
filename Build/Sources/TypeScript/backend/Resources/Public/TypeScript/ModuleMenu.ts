@@ -103,8 +103,6 @@ class ModuleMenu {
    * @param {boolean} collapse
    */
   private static toggleMenu(collapse?: boolean): void {
-    Viewport.NavigationContainer.cleanup();
-
     const $mainContainer = $(ScaffoldIdentifierEnum.scaffold);
     const expandedClass = 'scaffold-modulemenu-expanded';
 
@@ -125,8 +123,6 @@ class ModuleMenu {
         collapsed: collapse,
       },
     );
-
-    Viewport.doLayout();
   }
 
   /**
@@ -148,11 +144,7 @@ class ModuleMenu {
 
     button.attributes.getNamedItem('aria-expanded').value = (!ariaExpanded).toString();
 
-    $(moduleGroupContainer).stop().slideToggle({
-      'complete': function() {
-        Viewport.doLayout();
-      }
-    });
+    $(moduleGroupContainer).stop().slideToggle();
   }
 
   /**
@@ -240,7 +232,6 @@ class ModuleMenu {
       if (top.currentModuleLoaded) {
         ModuleMenu.highlightModuleMenuItem(top.currentModuleLoaded);
       }
-      Viewport.doLayout();
     });
   }
 
@@ -508,8 +499,6 @@ class ModuleMenu {
           // compatibility
           top.currentSubScript = moduleData.link;
           top.currentModuleLoaded = moduleName;
-
-          Viewport.doLayout();
         },
         this,
       ),

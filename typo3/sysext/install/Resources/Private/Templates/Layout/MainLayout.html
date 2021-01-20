@@ -26,82 +26,80 @@
     </f:then>
 
     <f:else>
-        <div class="scaffold t3js-scaffold scaffold-modulemenu-expanded">
-            <div class="t3js-scaffold-header">
-                <div class="scaffold-topbar t3js-scaffold-topbar">
-                    <div class="topbar">
-                        <div class="topbar-header t3js-topbar-header" style="padding-left: 0">
-                            <div class="topbar-header-site">
-                                <a href="" target="_top" title="TYPO3.CMS">
-                                    <span class="topbar-header-site-logo">
-                                        <img src="{f:uri.resource(path: 'Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="">
+        <div class="scaffold-header t3js-scaffold-header">
+            <div class="scaffold-topbar t3js-scaffold-topbar">
+                <div class="topbar">
+                    <div class="topbar-header t3js-topbar-header" style="padding-left: 0">
+                        <div class="topbar-header-site">
+                            <a href="" target="_top" title="TYPO3.CMS">
+                                <span class="topbar-header-site-logo">
+                                    <img src="{f:uri.resource(path: 'Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="">
+                                </span>
+                                <span class="topbar-header-site-title">
+                                    <span class="topbar-header-site-name">Admin tool on site: {siteName}</span>
+                                    <span class="topbar-header-site-version">TYPO3 CMS {currentTypo3Version}</span>
+                                </span>
+                            </a>
+                            <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool" style="margin-top: 7px; margin-right: 15px;">
+                                <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-logout" data-identifier="actions-logout">
+                                    <span class="icon-markup">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
                                     </span>
-                                    <span class="topbar-header-site-title">
-                                        <span class="topbar-header-site-name">Admin tool on site: {siteName}</span>
-                                        <span class="topbar-header-site-version">TYPO3 CMS {currentTypo3Version}</span>
-                                    </span>
-                                </a>
-                                <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool" style="margin-top: 7px; margin-right: 15px;">
-                                    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-logout" data-identifier="actions-logout">
-                                        <span class="icon-markup">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M9 10v4H2V2h7v4h1V1.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V10H9z"></path><path d="M10.983 5.041a.5.5 0 0 1 .812-.39l3.7 2.96a.5.5 0 0 1 0 .78l-3.7 2.96a.5.5 0 0 1-.812-.39V9H6V7h4.983V5.041z"></path></g></svg>
-                                        </span>
-                                    </span>
-                                    Logout
-                                </button>
-                            </div>
+                                </span>
+                                Logout
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-                <div class="modulemenu t3js-modulemenu" role="menubar" data-role="modulemenu" id="modulemenu">
-                    <ul class="modulemenu-group-container">
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
-                        <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
-                        <li class="modulemenu-group-spacer"></li>
-                        <li data-level="1">
-                            <button
-                                title="Switch to Backend"
-                                class="modulemenu-action t3js-modulemenu-action"
-                                role="menuitem"
-                                id="backend"
-                                data-modulename="backend"
-                                data-link="index.php"
-                            >
-                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-web" size="default" alternativeMarkupIdentifier="inline"/></span>
-                                <span class="modulemenu-name">Switch to Backend</span>
-                                <span class="modulemenu-indicator" aria-hidden="true"></span>
-                            </button>
-                        </li>
-                        <li data-level="1">
-                            <button
-                                title="Switch to Frontend"
-                                class="modulemenu-action t3js-modulemenu-action"
-                                role="menuitem"
-                                id="frontend"
-                                data-modulename="frontend"
-                                data-link="../index.php"
-                            >
-                                <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-site" size="default" alternativeMarkupIdentifier="inline"/></span>
-                                <span class="modulemenu-name">Switch to Frontend</span>
-                                <span class="modulemenu-indicator" aria-hidden="true"></span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+        <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+            <div class="modulemenu t3js-modulemenu" role="menubar" data-role="modulemenu" id="modulemenu">
+                <ul class="modulemenu-group-container">
+                    <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'maintenance', label: 'Maintenance'}" />
+                    <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'settings', label: 'Settings'}" />
+                    <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'upgrade', label: 'Upgrade'}" />
+                    <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
+                    <li class="modulemenu-group-spacer"></li>
+                    <li data-level="1">
+                        <button
+                            title="Switch to Backend"
+                            class="modulemenu-action t3js-modulemenu-action"
+                            role="menuitem"
+                            id="backend"
+                            data-modulename="backend"
+                            data-link="index.php"
+                        >
+                            <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-web" size="default" alternativeMarkupIdentifier="inline"/></span>
+                            <span class="modulemenu-name">Switch to Backend</span>
+                            <span class="modulemenu-indicator" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                    <li data-level="1">
+                        <button
+                            title="Switch to Frontend"
+                            class="modulemenu-action t3js-modulemenu-action"
+                            role="menuitem"
+                            id="frontend"
+                            data-modulename="frontend"
+                            data-link="../index.php"
+                        >
+                            <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-site" size="default" alternativeMarkupIdentifier="inline"/></span>
+                            <span class="modulemenu-name">Switch to Frontend</span>
+                            <span class="modulemenu-indicator" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                </ul>
             </div>
+        </div>
 
-            <div class="scaffold-content t3js-scaffold-content" style="padding-top:25px; overflow: auto;">
-                <div class="container-fluid">
-                    <div class="t3js-module-body">
-                        <div id="t3js-ui-block" class="ui-block">
-                            <core:icon identifier="spinner-circle" size="large" />
-                            <h2 id="t3js-ui-block-detail">Loading cards</h2>
-                        </div>
+        <div class="scaffold-content t3js-scaffold-content">
+            <div class="container-fluid" style="padding-top:25px;">
+                <div class="t3js-module-body">
+                    <div id="t3js-ui-block" class="ui-block">
+                        <core:icon identifier="spinner-circle" size="large" />
+                        <h2 id="t3js-ui-block-detail">Loading cards</h2>
                     </div>
                 </div>
             </div>

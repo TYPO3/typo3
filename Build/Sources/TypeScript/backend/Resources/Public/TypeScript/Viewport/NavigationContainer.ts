@@ -40,11 +40,6 @@ class NavigationContainer extends AbstractContainer {
     $(ScaffoldIdentifierEnum.scaffold).toggleClass('scaffold-content-navigation-expanded');
   }
 
-  public cleanup(): void {
-    $(ScaffoldIdentifierEnum.moduleMenu).removeAttr('style');
-    $(ScaffoldIdentifierEnum.content).removeAttr('style');
-  }
-
   public hide(): void {
     $(TopbarIdentifiersEnum.buttonNavigationComponent).prop('disabled', true);
     Icons.getIcon(
@@ -98,26 +93,6 @@ class NavigationContainer extends AbstractContainer {
 
   public refresh(): any {
     return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentNavigationIframe)[0]).contentWindow.location.reload();
-  }
-
-  public calculateScrollbar(): void {
-    this.cleanup();
-    const $scaffold = $(ScaffoldIdentifierEnum.scaffold);
-    const $moduleMenuContainer = $(ScaffoldIdentifierEnum.moduleMenu);
-    const $contentContainer = $(ScaffoldIdentifierEnum.content);
-    const $moduleMenu = $('.t3js-modulemenu');
-    $moduleMenuContainer.css('overflow', 'auto');
-    const moduleMenuContainerWidth = $moduleMenuContainer.outerWidth();
-    const moduleMenuWidth = $moduleMenu.outerWidth();
-    $moduleMenuContainer.removeAttr('style').css('overflow', 'hidden');
-    if ($scaffold.hasClass('scaffold-modulemenu-expanded') === false) {
-      $moduleMenuContainer.width(moduleMenuContainerWidth + (moduleMenuContainerWidth - moduleMenuWidth));
-      $contentContainer.css('left', moduleMenuContainerWidth + (moduleMenuContainerWidth - moduleMenuWidth));
-    } else {
-      $moduleMenuContainer.removeAttr('style');
-      $contentContainer.removeAttr('style');
-    }
-    $moduleMenuContainer.css('overflow', 'auto');
   }
 }
 
