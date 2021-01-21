@@ -96,15 +96,14 @@ class RedirectModeHandler
         $groupUids = array_keys($groups);
 
         // take the first group with a redirect page
-        $redirectPageId = $this->frontendUserGroupRepository->findRedirectPageIdByGroupId(
-            array_shift($groupUids)
-        );
-
-        if ($redirectPageId === null) {
-            return '';
+        foreach ($groupUids as $groupUid) {
+            $redirectPageId = (int)$this->frontendUserGroupRepository
+                ->findRedirectPageIdByGroupId($groupUid);
+            if ($redirectPageId > 0) {
+                return $this->buildUriForPageUid($redirectPageId);
+            }
         }
-
-        return $this->buildUriForPageUid($redirectPageId);
+        return '';
     }
 
     /**
