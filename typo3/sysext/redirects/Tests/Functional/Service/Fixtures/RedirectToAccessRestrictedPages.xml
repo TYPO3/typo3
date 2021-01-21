@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Root</title>
+        <slug>/</slug>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <fe_group>0</fe_group>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>Access restricted page</title>
+        <slug>/access-restricted</slug>
+        <hidden>0</hidden>
+        <deleted>0</deleted>
+        <!-- Access restricted to fe_group=1 -->
+        <fe_group>1</fe_group>
+    </pages>
+    <sys_redirect>
+        <uid>1</uid>
+        <pid>0</pid>
+        <disabled>0</disabled>
+        <deleted>0</deleted>
+        <source_host>acme.com</source_host>
+        <source_path>/redirect-to-access-restricted-site</source_path>
+        <target>t3://page?uid=2</target>
+    </sys_redirect>
+</dataset>
