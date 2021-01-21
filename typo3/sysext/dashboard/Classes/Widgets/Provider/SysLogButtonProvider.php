@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
@@ -53,11 +52,9 @@ class SysLogButtonProvider implements ButtonProviderInterface
     public function getLink(): string
     {
         if (ExtensionManagementUtility::isLoaded('belog')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            return (string)$uriBuilder->buildUriFromRoute(
-                'system_BelogLog',
-                ['tx_belog_system_beloglog[constraint][action]' => -1]
-            );
+            return 'javascript:top.goToModule('
+                . GeneralUtility::quoteJSvalue('system_BelogLog') . ', '
+                . GeneralUtility::quoteJSvalue('&' . http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])) . ');';
         }
 
         return '';
