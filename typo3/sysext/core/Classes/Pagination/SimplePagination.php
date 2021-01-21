@@ -80,4 +80,12 @@ final class SimplePagination implements PaginationInterface
 
         return $this->paginator->getKeyOfLastPaginatedItem() + 1;
     }
+
+    /**
+     * @return int[]
+     */
+    public function getAllPageNumbers(): array
+    {
+        return range($this->getFirstPageNumber(), $this->getLastPageNumber());
+    }
 }

@@ -48,6 +48,7 @@ class SimplePaginationTest extends UnitTestCase
         self::assertSame(2, $pagination->getLastPageNumber());
         self::assertNull($pagination->getPreviousPageNumber());
         self::assertSame(2, $pagination->getNextPageNumber());
+        self::assertSame([1, 2], $pagination->getAllPageNumbers());
     }
 
     /**
@@ -67,6 +68,7 @@ class SimplePaginationTest extends UnitTestCase
         self::assertSame(2, $pagination->getLastPageNumber());
         self::assertSame(1, $pagination->getPreviousPageNumber());
         self::assertNull($pagination->getNextPageNumber());
+        self::assertSame([1, 2], $pagination->getAllPageNumbers());
     }
 
     /**
@@ -86,6 +88,7 @@ class SimplePaginationTest extends UnitTestCase
         self::assertSame(5, $pagination->getLastPageNumber());
         self::assertSame(1, $pagination->getPreviousPageNumber());
         self::assertSame(3, $pagination->getNextPageNumber());
+        self::assertSame([1, 2, 3, 4, 5], $pagination->getAllPageNumbers());
     }
 
     /**
@@ -104,6 +107,7 @@ class SimplePaginationTest extends UnitTestCase
         self::assertSame(1, $pagination->getLastPageNumber());
         self::assertNull($pagination->getPreviousPageNumber());
         self::assertNull($pagination->getNextPageNumber());
+        self::assertSame([1], $pagination->getAllPageNumbers());
     }
 
     /**
@@ -123,5 +127,6 @@ class SimplePaginationTest extends UnitTestCase
         self::assertSame(3, $pagination->getLastPageNumber());
         self::assertNull($pagination->getPreviousPageNumber());
         self::assertNull($pagination->getNextPageNumber());
+        self::assertSame([1, 2, 3], $pagination->getAllPageNumbers());
     }
 }
