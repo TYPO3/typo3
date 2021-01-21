@@ -1,4 +1,7 @@
-<h1>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:title')}</h1>
+<h1>
+    {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:title')}
+    <f:if condition="{recordTable}">[{recordTable} : {recordUid}]</f:if>
+</h1>
 <f:render partial="RecordHistory/Settings" arguments="{_all}" />
 <f:if condition="{showDifferences}">
     <f:render partial="RecordHistory/MultipleDiff" arguments="{_all}" />

@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="title" resname="title">
-				<source>Show record history</source>
+				<source>Record History / Undo</source>
 			</trans-unit>
 			<trans-unit id="time" resname="time">
 				<source>Time</source>
@@ -58,10 +58,10 @@
 				<source>unMark this change</source>
 			</trans-unit>
 			<trans-unit id="elementHistory" resname="elementHistory">
-				<source>You are currently seeing the history for an element.</source>
+				<source>You are currently seeing the history for an element</source>
 			</trans-unit>
 			<trans-unit id="elementHistory_link" resname="elementHistory_link">
-				<source>Show the full page history!</source>
+				<source>Show the full page history</source>
 			</trans-unit>
 			<trans-unit id="linkRecordHistory" resname="linkRecordHistory">
 				<source>Limit history to this record</source>
@@ -111,11 +111,8 @@
 			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="showInsertDelete" resname="showInsertDelete">
-				<source>Show inserts/deletes of records</source>
-			</trans-unit>
 			<trans-unit id="noDifferences" resname="noDifferences">
-				<source>There are no differences to the current page!</source>
+				<source>There are no differences to the current page</source>
 			</trans-unit>
 			<trans-unit id="editLockIsActive" resname="editLockIsActive">
 				<source>Editing is blocked for non-admins</source>

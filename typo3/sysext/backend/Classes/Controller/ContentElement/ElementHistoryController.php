@@ -23,9 +23,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,11 +51,11 @@ class ElementHistoryController
     protected $historyObject;
 
     /**
-     * Display diff or not (0-no diff, 1-inline)
+     * Display inline differences or not
      *
-     * @var int
+     * @var bool
      */
-    protected $showDiff = 1;
+    protected $showDiff = true;
 
     /**
      * @var array
@@ -68,15 +70,10 @@ class ElementHistoryController
     protected $moduleTemplate;
 
     /**
-     * Restrict editing by non-Admins (0-no, 1-yes)
-     *
-     * @var bool
+     * @var string
      */
-    protected $editLock = false;
+    protected string $returnUrl = '';
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
@@ -93,23 +90,26 @@ class ElementHistoryController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
+
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+
         $lastHistoryEntry = (int)($parsedBody['historyEntry'] ?? $queryParams['historyEntry'] ?? 0);
         $rollbackFields = $parsedBody['rollbackFields'] ?? $queryParams['rollbackFields'] ?? null;
         $element = $parsedBody['element'] ?? $queryParams['element'] ?? null;
-        $displaySettings = $this->prepareDisplaySettings($request);
-        $this->view->assign('currentSelection', $displaySettings);
+        $moduleSettings = $this->processSettings($request);
 
-        $this->showDiff = (int)$displaySettings['showDiff'];
+        $this->showDiff = (bool)$moduleSettings['showDiff'];
 
         // Start history object
         $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element, $rollbackFields);
-        $this->historyObject->setShowSubElements((int)$displaySettings['showSubElements']);
+        $this->historyObject->setShowSubElements((bool)$moduleSettings['showSubElements']);
         $this->historyObject->setLastHistoryEntryNumber($lastHistoryEntry);
-        if ($displaySettings['maxSteps']) {
-            $this->historyObject->setMaxSteps((int)$displaySettings['maxSteps']);
+        if ($moduleSettings['maxSteps']) {
+            $this->historyObject->setMaxSteps((int)$moduleSettings['maxSteps']);
         }
 
         // Do the actual logic now (rollback, show a diff for certain changes,
@@ -122,38 +122,47 @@ class ElementHistoryController
             } elseif ($lastHistoryEntry) {
                 $completeDiff = $this->historyObject->getDiff($changeLog);
                 $this->displayMultipleDiff($completeDiff);
-                $this->view->assign('showDifferences', true);
-                $this->view->assign('fullViewUrl', $this->buildUrl(['historyEntry' => '']));
+                $button = $buttonBar->makeLinkButton()
+                    ->setHref($this->buildUrl(['historyEntry' => '']))
+                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:fullView'))
+                    ->setShowLabelText(true);
+                $buttonBar->addButton($button);
             }
             if ($this->historyObject->getElementString() !== '') {
                 $this->displayHistory($changeLog);
             }
         }
 
-        /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
-        $normalizedParams = $request->getAttribute('normalizedParams');
         $elementData = $this->historyObject->getElementInformation();
+        $editLock = false;
         if (!empty($elementData)) {
-            $this->setPagePath($elementData[0], $elementData[1]);
-            $this->editLock = $this->getEditLockFromElement($elementData[0], $elementData[1]);
+            [$elementTable, $elementUid] = $elementData;
+            $this->setPagePath($elementTable, $elementUid);
+            $editLock = $this->getEditLockFromElement($elementTable, $elementUid);
             // Get link to page history if the element history is shown
-            if ($elementData[0] !== 'pages') {
-                $this->view->assign('singleElement', true);
-                $parentPage = BackendUtility::getRecord($elementData[0], $elementData[1], '*', '', false);
+            if ($elementTable !== 'pages') {
+                $parentPage = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
                 if ($parentPage['pid'] > 0 && BackendUtility::readPageAccess($parentPage['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW))) {
-                    $this->view->assign('fullHistoryUrl', $this->buildUrl([
-                        'element' => 'pages:' . $parentPage['pid'],
-                        'historyEntry' => '',
-                        'returnUrl' => $normalizedParams->getRequestUri(),
-                    ]));
+                    $button = $buttonBar->makeLinkButton()
+                        ->setHref($this->buildUrl([
+                            'element' => 'pages:' . $parentPage['pid'],
+                            'historyEntry' => '',
+                        ]))
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL))
+                        ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link'))
+                        ->setShowLabelText(true);
+                    $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 2);
                 }
             }
         }
 
-        $this->view->assign('editLock', $this->editLock);
+        $this->view->assign('editLock', $editLock);
+        $this->view->assign('moduleSettings', $moduleSettings);
+        $this->view->assign('settingsFormUrl', $this->buildUrl());
 
         // Setting up the buttons and markers for docheader
-        $this->getButtons($request);
+        $this->getButtons();
         // Build the <body> for the module
         $this->moduleTemplate->setContent($this->view->render());
 
@@ -170,10 +179,10 @@ class ElementHistoryController
     {
         $uid = (int)$uid;
 
+        $record = BackendUtility::getRecord($table, $uid, '*', '', false);
         if ($table === 'pages') {
             $pageId = $uid;
         } else {
-            $record = BackendUtility::getRecord($table, $uid, '*', '', false);
             $pageId = $record['pid'];
         }
 
@@ -181,102 +190,40 @@ class ElementHistoryController
         if (is_array($pageAccess)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageAccess);
         }
+        $this->view->assign('recordTable', $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
+        $this->view->assign('recordUid', $uid);
     }
 
-    /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function getButtons(ServerRequestInterface $request)
+    protected function getButtons(): void
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
         $helpButton = $buttonBar->makeHelpButton()
             ->setModuleName('xMOD_csh_corebe')
             ->setFieldName('history_log');
         $buttonBar->addButton($helpButton);
 
-        // Get returnUrl parameter
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-
-        if ($returnUrl) {
+        if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
-                ->setHref($returnUrl)
+                ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setShowLabelText(true)
+                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
     }
 
-    /**
-     * Displays settings evaluation
-     *
-     * @param ServerRequestInterface $request
-     * @return array
-     */
-    protected function prepareDisplaySettings(ServerRequestInterface $request)
+    protected function processSettings(ServerRequestInterface $request): array
     {
-        $selector = [];
         // Get current selection from UC, merge data, write it back to UC
-        $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
-            ? $this->getBackendUser()->uc['moduleData']['history']
-            : ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1];
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $currentSelectionOverride = $parsedBody['settings'] ?? $queryParams['settings'] ?? null;
-
+        $currentSelection = $this->getBackendUser()->getModuleData('history');
+        if (!is_array($currentSelection)) {
+            $currentSelection = ['maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1];
+        }
+        $currentSelectionOverride = $request->getParsedBody()['settings'] ?? null;
         if (is_array($currentSelectionOverride) && !empty($currentSelectionOverride)) {
             $currentSelection = array_merge($currentSelection, $currentSelectionOverride);
-            $this->getBackendUser()->uc['moduleData']['history'] = $currentSelection;
-            $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
+            $this->getBackendUser()->pushModuleData('history', $currentSelection);
         }
-
-        // Display selector for number of history entries
-        $selector['maxSteps'] = [
-            10 => [
-                'value' => 10
-            ],
-            20 => [
-                'value' => 20
-            ],
-            50 => [
-                'value' => 50
-            ],
-            100 => [
-                'value' => 100
-            ],
-            999 => [
-                'value' => 'maxSteps_all'
-            ]
-        ];
-        $selector['showDiff'] = [
-            0 => [
-                'value' => 'showDiff_no'
-            ],
-            1 => [
-                'value' => 'showDiff_inline'
-            ]
-        ];
-        $selector['showSubElements'] = [
-            0 => [
-                'value' => 'no'
-            ],
-            1 => [
-                'value' => 'yes'
-            ]
-        ];
-
-        $scriptUrl = GeneralUtility::linkThisScript();
-
-        foreach ($selector as $key => $values) {
-            foreach ($values as $singleKey => $singleVal) {
-                $selector[$key][$singleKey]['scriptUrl'] = $scriptUrl . '&settings[' . $key . ']=' . $singleKey;
-            }
-        }
-        $this->view->assign('settings', $selector);
         return $currentSelection;
     }
 
@@ -320,6 +267,7 @@ class ElementHistoryController
             $this->view->assign('revertAllUrl', $this->buildUrl(['rollbackFields' => 'ALL']));
             $this->view->assign('multipleDiff', $lines);
         }
+        $this->view->assign('showDifferences', true);
     }
 
     /**
@@ -443,6 +391,10 @@ class ElementHistoryController
         }
         $params['historyEntry'] = $this->historyObject->getLastHistoryEntryNumber();
 
+        if (!empty($this->returnUrl)) {
+            $params['returnUrl'] = $this->returnUrl;
+        }
+
         // Merging overriding values:
         $params = array_merge($params, $overrideParameters);
 
@@ -490,7 +442,6 @@ class ElementHistoryController
      */
     protected function initializeView()
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
         $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
@@ -505,7 +456,7 @@ class ElementHistoryController
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
@@ -515,7 +466,7 @@ class ElementHistoryController
     /**
      * Gets the current backend user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {

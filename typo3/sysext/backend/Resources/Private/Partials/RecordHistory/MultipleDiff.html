@@ -2,18 +2,16 @@
 <div>
     <f:if condition="{revertAllUrl}">
         <f:then>
-            <a href="{revertAllUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
-            <div
-                style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
-                <f:for each="{multipleDiff}" as="historyRow" key="key">
-                    <h3>
-                        <a href="{historyRow.revertRecordUrl}" class="btn btn-default" style="margin-right: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a>
-                        {historyRow.title}
-                    </h3>
-                    <div>
+            <a href="{revertAllUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
+            <div class="ps-2 pt-2 pb-1 mt-2 history-block">
+                <f:for each="{multipleDiff}" as="historyRow">
+                    <div class="row mb-2">
+                        <div class="col-auto"><a href="{historyRow.revertRecordUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a></div>
+                        <div class="col"><h4>{historyRow.title}</h4></div>
+                    </div>
+                    <div class="row">
                         <f:if condition="{historyRow.insertDelete} || {historyRow.differences -> f:count()}">
-                            <div
-                                style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
+                            <div class="ps-2 pb-1 ms-3 history-block">
                                 <f:if condition="{historyRow.insertDelete} == 'delete'">
                                     <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong><br/>
                                 </f:if>

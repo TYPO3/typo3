@@ -1,73 +1,36 @@
-<div>
-    <f:if condition="{singleElement}">
-        <h3>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory')}</h3>
-        <f:if condition="{fullHistoryUrl}">
-            <a href="{fullHistoryUrl}" class="btn btn-default" style="margin-bottom: 5px;">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link')}</a>
-        </f:if>
-    </f:if>
-    <div id="element-history-settings">
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:settings')}</div>
-                    <table class="table">
-                        <f:for each="{settings}" as="values" key="key">
-                            <tr>
-                                <td>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{key}')}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector"
-                                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <f:for each="{currentSelection}" as="currentSelectionValue" key="currentSelectionKey">
-                                                <f:if condition="{currentSelectionKey} == {key}">
-                                                    <f:then>
-                                                        <f:if condition="{currentSelectionValue}">
-                                                            <f:then>
-                                                                <f:for each="{values}" as="singleValue" key="singleKey">
-                                                                    <f:if condition="{currentSelectionValue} == {singleKey}">
-                                                                        <f:then>
-                                                                            <f:if condition="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}">
-                                                                                <f:then>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
-                                                                                <f:else>{singleValue.value}</f:else>
-                                                                            </f:if>
-                                                                        </f:then>
-                                                                    </f:if>
-                                                                </f:for>
-                                                            </f:then>
-                                                            <f:else>
-                                                                <f:for each="{values}" as="singleValue" iteration="iterator">
-                                                                    <f:if condition="{iterator.isFirst}">
-                                                                        <f:then>
-                                                                            <f:if condition="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}">
-                                                                                <f:then>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
-                                                                                <f:else>{singleValue.value}</f:else>
-                                                                            </f:if>
-                                                                        </f:then>
-                                                                    </f:if>
-                                                                </f:for>
-                                                            </f:else>
-                                                        </f:if>
-                                                    </f:then>
-                                                </f:if>
-                                            </f:for>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="copymodeSelector">
-                                            <f:for each="{values}" as="singleValue" key="singleKey">
-                                                <li><a href="{singleValue.scriptUrl}" class="dropdown-item">
-                                                    <f:if condition="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}">
-                                                        <f:then>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:{singleValue.value}')}</f:then>
-                                                        <f:else>{singleValue.value}</f:else>
-                                                    </f:if>
-                                                </a></li>
-                                            </f:for>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </f:for>
-                    </table>
+<div id="element-history-settings" class="container-settings">
+    <form action="{settingsFormUrl}" name="recordHistorySettingsForm" method="post">
+        <div class="row row-cols-auto g-3">
+            <div class="col">
+                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:maxSteps" /></label>
+                <select class="form-select form-select-sm" name="settings[maxSteps]" data-global-event="change" data-action-submit="$form">
+                    <option value="10" {f:if(condition: '{moduleSettings.maxSteps} == 10', then :'selected')}>10</option>
+                    <option value="20" {f:if(condition: '{moduleSettings.maxSteps} == 20', then :'selected')}>20</option>
+                    <option value="50" {f:if(condition: '{moduleSettings.maxSteps} == 50', then :'selected')}>50</option>
+                    <option value="100" {f:if(condition: '{moduleSettings.maxSteps} == 100', then :'selected')}>100</option>
+                    <option value="999" {f:if(condition: '{moduleSettings.maxSteps} == 999', then :'selected')}><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:maxSteps_all" /></option>
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showDiff" /></label>
+                <div class="form-check form-switch">
+                    <input type="hidden" value="0" name="settings[showDiff]" />
+                    <input type="checkbox" value="1" name="settings[showDiff]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showDiff}', then: 'checked')} />
+                    <label class="form-check-label">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showDiff_inline" />
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showSubElements" /></label>
+                <div class="form-check form-switch">
+                    <input type="hidden" value="0" name="settings[showSubElements]" />
+                    <input type="checkbox" value="1" name="settings[showSubElements]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showSubElements}', then: 'checked')} />
+                    <label class="form-check-label">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes" />
+                    </label>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>

@@ -62,20 +62,22 @@ $diff-title-bgcolor: #fafafa;
 .diff-item-result {
     font-family: $font-family-monospace;
     width: 100%;
-    white-space: pre;
-    word-break: break-all;
+    white-space: pre-wrap;
+    word-break: break-word;
     word-wrap: break-word;
 
     del {
         color: $diff-color-remove;
         background-color: lighten($diff-color-remove, 58%);
         text-decoration: none;
+        display: inline-block;
     }
 
     ins {
         color: $diff-color-add;
         background-color: lighten($diff-color-add, 58%);
         text-decoration: none;
+        display: inline-block;
     }
 
     &.diff-item-result-inline {
