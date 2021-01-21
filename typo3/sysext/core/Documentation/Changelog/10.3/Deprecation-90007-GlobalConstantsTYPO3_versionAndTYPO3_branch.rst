@@ -21,7 +21,7 @@ Impact
 ======
 
 No PHP :php:`E_USER_DEPRECATED` error is triggered, however the constants will work during
-TYPO3 v10, and be removed with TYPO3 v11.
+TYPO3 v10 and TYPO3 v11, but will be removed with TYPO3 v12.
 
 
 Affected Installations
@@ -35,7 +35,7 @@ Migration
 =========
 
 It is highly recommended to use the :php:`Typo3Version` class instead of
-the constants, as they will removed.
+the constants, as they will be removed in a future TYPO3 version.
 
 Check the Extension Scanner in the Upgrade section of TYPO3 to see
 if any extensions you use might be affected.
