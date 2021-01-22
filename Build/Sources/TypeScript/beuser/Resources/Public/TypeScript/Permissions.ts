@@ -29,70 +29,6 @@ class Permissions {
   private ajaxUrl: string = TYPO3.settings.ajaxUrls.user_access_permissions;
 
   /**
-   * Owner-related: Update the HTML view and show the original owner
-   */
-  private static restoreOwner(element: HTMLElement): void {
-    let page = element.dataset.page;
-    let username = element.dataset.username;
-    let usernameHtml = username;
-    if (typeof username === 'undefined') {
-      username = '[not set]';
-      usernameHtml = `<span class="not_set">${username}</span>`;
-    }
-
-    let span = document.createElement('span');
-    span.id = `o_${page}`;
-
-    let buttonSelector = document.createElement('button');
-    buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-link');
-    buttonSelector.setAttribute('type', 'button');
-    buttonSelector.setAttribute('data-page', page);
-    buttonSelector.setAttribute('data-owner', element.dataset.owner);
-    buttonSelector.setAttribute('data-username', username);
-    buttonSelector.innerHTML = usernameHtml;
-    span.appendChild(buttonSelector);
-
-    // Replace content
-    const container = document.getElementById('o_' + page);
-    while (container.firstChild) {
-      container.firstChild.remove();
-    }
-    container.appendChild(span);
-  }
-
-  /**
-   * Group-related: Update the HTML view and show the original group
-   */
-  private static restoreGroup(element: HTMLElement): void {
-    let page = element.dataset.page;
-    let groupname = element.dataset.groupname;
-    let groupnameHtml = groupname;
-    if (typeof groupname === 'undefined') {
-      groupname = '[not set]';
-      groupnameHtml = `<span class="not_set">${groupname}</span>`;
-    }
-
-    let span = document.createElement('span');
-    span.id = `g_${page}`;
-
-    let buttonSelector = document.createElement('button');
-    buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-link');
-    buttonSelector.setAttribute('type', 'button');
-    buttonSelector.setAttribute('data-page', page);
-    buttonSelector.setAttribute('data-group-id', element.dataset.groupId);
-    buttonSelector.setAttribute('data-groupname', groupname);
-    buttonSelector.innerHTML = groupnameHtml;
-    span.appendChild(buttonSelector);
-
-    // Replace content
-    const container = document.getElementById('g_' + page);
-    while (container.firstChild) {
-      container.firstChild.remove();
-    }
-    container.appendChild(span);
-  }
-
-  /**
    * Changes the value of the permissions in the form
    */
   private static setPermissionCheckboxes(checknames: string, permissionValue: number): void {
@@ -195,6 +131,52 @@ class Permissions {
   }
 
   /**
+   * Owner-related: Update the HTML view and show the original owner
+   */
+  private restoreOwner(element: HTMLElement): void {
+    const page = element.dataset.page;
+    const username = element.dataset.username ?? element.dataset.ifNotSet;
+    const span = document.createElement('span');
+    span.setAttribute('id', `o_${page}`);
+
+    const buttonSelector = document.createElement('button');
+    buttonSelector.classList.add('ug_selector', 'changeowner', 'btn', 'btn-link');
+    buttonSelector.setAttribute('type', 'button');
+    buttonSelector.setAttribute('data-page', page);
+    buttonSelector.setAttribute('data-owner', element.dataset.owner);
+    buttonSelector.setAttribute('data-username', username);
+    buttonSelector.innerText = username;
+    span.appendChild(buttonSelector);
+
+    // Replace content
+    const container = document.getElementById('o_' + page);
+    container.parentNode.replaceChild(span, container);
+  }
+
+  /**
+   * Group-related: Update the HTML view and show the original group
+   */
+  private restoreGroup(element: HTMLElement): void {
+    const page = element.dataset.page;
+    const groupname = element.dataset.groupname ?? element.dataset.ifNotSet;
+    const span = document.createElement('span');
+    span.setAttribute('id', `g_${page}`);
+
+    const buttonSelector = document.createElement('button');
+    buttonSelector.classList.add('ug_selector', 'changegroup', 'btn', 'btn-link');
+    buttonSelector.setAttribute('type', 'button');
+    buttonSelector.setAttribute('data-page', page);
+    buttonSelector.setAttribute('data-group-id', element.dataset.groupId);
+    buttonSelector.setAttribute('data-groupname', groupname);
+    buttonSelector.innerText = groupname;
+    span.appendChild(buttonSelector);
+
+    // Replace content
+    const container = document.getElementById('g_' + page);
+    container.parentNode.replaceChild(span, container);
+  }
+
+  /**
    * Group-related: Set the new group by executing an ajax call
    */
   private changeGroup(element: HTMLElement): void {
@@ -272,7 +254,7 @@ class Permissions {
       // Add click handler for restoring previous owner
       new RegularEvent('click', (e: Event, currentTarget: Element): void => {
         e.preventDefault();
-        Permissions.restoreOwner(currentTarget as HTMLElement);
+        this.restoreOwner(currentTarget as HTMLElement);
       }).delegateTo(containerSelector, '.restoreowner');
 
       // Add click handler for saving owner
@@ -284,7 +266,7 @@ class Permissions {
       // Add click handler for restoring previous group
       new RegularEvent('click', (e: Event, currentTarget: Element): void => {
         e.preventDefault();
-        Permissions.restoreGroup(currentTarget as HTMLElement);
+        this.restoreGroup(currentTarget as HTMLElement);
       }).delegateTo(containerSelector, '.restoregroup');
 
       // Add click handler for saving group

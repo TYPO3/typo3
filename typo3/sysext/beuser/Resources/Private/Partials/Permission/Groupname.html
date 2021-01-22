@@ -12,9 +12,7 @@
                 <f:comment>
                     No group set -> [not set]
                 </f:comment>
-                <span class="not_set">
-                    [<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:notSet" />]
-                </span>
+                [<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:notSet" />]
             </f:then>
             <f:else>
                 <f:if condition="{groupname}">
@@ -28,9 +26,7 @@
                         <f:comment>
                             Group was deleted -> [deleted]
                         </f:comment>
-                        <span class="not_set" title="{groupId}">
-                            [<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:deleted" />]
-                        </span>
+                        [<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:deleted" />]
                     </f:else>
                 </f:if>
             </f:else>

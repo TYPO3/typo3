@@ -206,7 +206,7 @@ class PermissionAjaxController
                         . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
                         . '</button>';
         $cancelButton = '<button class="restoreowner btn btn-default" data-page="' . $page . '"  data-owner="' . $ownerUid
-                        . '" data-element-id="' . $elementId . '"'
+                        . '" data-element-id="' . $elementId . '" data-if-not-set="[not set]"'
                         . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '')
                         . ' title="Cancel" type="button">'
                         . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render()
@@ -263,7 +263,7 @@ class PermissionAjaxController
                         . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
                         . '</button>';
         $cancelButton = '<button class="restoregroup btn btn-default" data-page="' . $page . '" data-group-id="' . $groupUid
-                        . '" data-element-id="' . $elementId . '"'
+                        . '" data-element-id="' . $elementId . '" data-if-not-set="[not set]"'
                         . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '')
                         . ' title="Cancel" type="button">'
                         . $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render()
