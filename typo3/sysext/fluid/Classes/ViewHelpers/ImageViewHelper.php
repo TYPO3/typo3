@@ -199,7 +199,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
                 if (empty($this->arguments['alt'])) {
                     $this->tag->addAttribute('alt', $image->hasProperty('alternative') ? $image->getProperty('alternative') : '');
                 }
-                $title = $image->hasProperty('title') ? $image->getProperty('title') : '';
+                // Add title-attribute from property if not already set and the property is not an empty string
+                $title = (string)($image->hasProperty('title') ? $image->getProperty('title') : '');
                 if (empty($this->arguments['title']) && $title !== '') {
                     $this->tag->addAttribute('title', $title);
                 }
