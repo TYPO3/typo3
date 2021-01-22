@@ -444,6 +444,12 @@
 			<trans-unit id="viewPort_tooltipDebugPanelSplitDrag" resname="viewPort_tooltipDebugPanelSplitDrag">
 				<source>Drag to resize or click to collapse the Debug Panel.</source>
 			</trans-unit>
+			<trans-unit id="viewport_navigation_show" resname="viewport_navigation_show">
+				<source>Show Navigation</source>
+			</trans-unit>
+			<trans-unit id="viewport_navigation_hide" resname="viewport_navigation_hide">
+				<source>Hide Navigation</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

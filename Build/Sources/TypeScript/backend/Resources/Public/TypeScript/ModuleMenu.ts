@@ -440,11 +440,6 @@ class ModuleMenu {
       e.preventDefault();
       ModuleMenu.toggleMenu(true);
     }).bindTo(document.querySelector('.t3js-scaffold-content-overlay'));
-
-    new RegularEvent('click', (e: Event): void => {
-      e.preventDefault();
-      Viewport.NavigationContainer.toggle();
-    }).bindTo(document.querySelector('.t3js-topbar-button-navigationcomponent'));
   }
 
   /**
@@ -481,7 +476,7 @@ class ModuleMenu {
               ),
             );
           } else {
-            Viewport.NavigationContainer.hide();
+            Viewport.NavigationContainer.hide(true);
           }
 
           ModuleMenu.highlightModuleMenuItem(moduleName);

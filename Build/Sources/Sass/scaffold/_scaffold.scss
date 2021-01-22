@@ -255,3 +255,100 @@ body {
         }
     }
 }
+
+.scaffold-content-navigation-drag {
+    display: none;
+    flex: 0 0 auto;
+    width: 1px;
+    height: 100%;
+    user-select: none;
+    z-index: 3;
+    background-color: rgb(200, 200, 200);
+    transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
+
+    &:hover {
+        background-color: rgb(150, 150, 150);
+
+        &:after {
+            border-right: 2px solid rgb(150, 150, 150);
+        }
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 8px;
+        margin-left: -5px;
+        border-right: 2px solid transparent;
+    }
+
+    &.resizing {
+        &:before {
+            background-color: transparent;
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            user-select: none;
+            z-index: 2;
+        }
+    }
+
+    .scaffold-content-navigation-expanded & {
+        display: block;
+        cursor: ew-resize;
+    }
+}
+
+.scaffold-content-navigation-switcher {
+    display: none;
+
+    .scaffold-content-navigation-available & {
+        width: auto;
+        height: 100%;
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        border-right: 1px solid #c3c3c3;
+        padding: 4px 4px 4px 2px;
+        background: #eee;
+    }
+
+    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
+        position: static;
+        display: block;
+        width: 0;
+        height: 30px;
+        border-right: 0;
+        background: transparent;
+        transform: translate(-36px, 4px);
+        z-index: 3;
+        padding: 0;
+    }
+
+    .scaffold-content-navigation-switcher-btn {
+        display: inline-block;
+        padding: 4px;
+        line-height: 1em;
+    }
+
+    .scaffold-content-navigation-switcher-open {
+        display: inline-block;
+
+        .scaffold-content-navigation-expanded & {
+            display: none;
+        }
+    }
+
+    .scaffold-content-navigation-switcher-close {
+        display: none;
+
+        .scaffold-content-navigation-expanded & {
+            display: inline-block;
+        }
+    }
+}

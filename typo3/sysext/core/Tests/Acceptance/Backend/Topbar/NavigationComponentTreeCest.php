@@ -43,11 +43,11 @@ class NavigationComponentTreeCest
         $I->waitForElement($treeArea);
         $I->see('New TYPO3 site', $treeArea);
         $I->wantTo('check Page Module for Collapse');
-        $I->click('button.t3js-topbar-button-navigationcomponent');
+        $I->click('button.scaffold-content-navigation-switcher-close');
         $I->waitForElementNotVisible($treeArea);
         $I->cantSee('New TYPO3 site', $treeArea);
         $I->wantTo('check Page Module for Expands');
-        $I->click('button.t3js-topbar-button-navigationcomponent');
+        $I->click('button.scaffold-content-navigation-switcher-open');
         $I->waitForElement($treeArea);
 
         $I->see('New TYPO3 site', $treeArea);
@@ -65,10 +65,10 @@ class NavigationComponentTreeCest
         $I->see('fileadmin', '.t3js-module-body');
         $I->switchToMainFrame();
         $I->wantTo('check File Module for Collapse');
-        $I->click('button.t3js-topbar-button-navigationcomponent');
+        $I->click('button.scaffold-content-navigation-switcher-close');
         $I->waitForElementNotVisible('.scaffold-content-navigation-expanded');
         $I->wantTo('check File Module for Expands');
-        $I->click('button.t3js-topbar-button-navigationcomponent');
+        $I->click('button.scaffold-content-navigation-switcher-open');
         $I->switchToIFrame('nav_frame');
         $I->waitForElement('.t3js-module-body');
         $I->see('fileadmin', '.t3js-module-body');

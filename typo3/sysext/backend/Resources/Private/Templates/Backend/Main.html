@@ -12,6 +12,15 @@
             <iframe name="nav_frame" src="about:blank" id="typo3-navigationContainerIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.navFrame')}" scrolling="no" class="scaffold-content-navigation-iframe t3js-scaffold-content-navigation-iframe"></iframe>
         </div>
     </div>
+    <div class="scaffold-content-navigation-switcher t3js-scaffold-content-navigation-switcher">
+        <button class="btn btn-default scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc:viewport_navigation_show')}">
+            <core:icon identifier="actions-chevron-right" size="small" />
+        </button>
+        <button class="btn btn-default scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc:viewport_navigation_hide')}">
+            <core:icon identifier="actions-chevron-left" size="small" />
+        </button>
+    </div>
+    <div class="scaffold-content-navigation-drag t3js-scaffold-content-navigation-drag"></div>
     <div class="scaffold-content-module t3js-scaffold-content-module">
         <iframe name="list_frame" id="typo3-contentIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.listFrame')}" scrolling="no" class="scaffold-content-module-iframe t3js-scaffold-content-module-iframe"></iframe>
     </div>

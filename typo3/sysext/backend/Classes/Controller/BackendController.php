@@ -269,7 +269,6 @@ class BackendController
         }
 
         $view->assign('hasModules', count($this->moduleStorage) > 0);
-        $view->assign('modulesHaveNavigationComponent', $this->backendModuleRepository->modulesHaveNavigationComponent());
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);

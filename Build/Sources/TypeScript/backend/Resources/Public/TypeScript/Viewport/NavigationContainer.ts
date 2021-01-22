@@ -13,18 +13,26 @@
 
 import {NavigationComponentInterface} from './NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
-import {TopbarIdentifiersEnum} from '../Enum/Viewport/TopbarIdentifiers';
 import {AbstractContainer} from './AbstractContainer';
 import $ from 'jquery';
 import PageTree = require('./PageTree');
-import Icons = require('./../Icons');
 import TriggerRequest = require('../Event/TriggerRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
 
 class NavigationContainer extends AbstractContainer {
   public PageTree: PageTree = null;
   private instance: NavigationComponentInterface = null;
+  private readonly parent: HTMLElement;
+  private readonly container: HTMLElement;
+  private readonly switcher: HTMLElement = null;
 
+  public constructor(consumerScope: any, navigationSwitcher?: HTMLElement)
+  {
+    super(consumerScope);
+    this.parent = document.querySelector(ScaffoldIdentifierEnum.scaffold);
+    this.container = document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
+    this.switcher = navigationSwitcher;
+  }
   /**
    * Public method used by Navigation components to register themselves.
    * See TYPO3/CMS/Backend/PageTree/PageTreeElement->initialize
@@ -37,34 +45,50 @@ class NavigationContainer extends AbstractContainer {
   }
 
   public toggle(): void {
-    $(ScaffoldIdentifierEnum.scaffold).toggleClass('scaffold-content-navigation-expanded');
+    this.parent.classList.toggle('scaffold-content-navigation-expanded');
   }
 
-  public hide(): void {
-    $(TopbarIdentifiersEnum.buttonNavigationComponent).prop('disabled', true);
-    Icons.getIcon(
-      'actions-pagetree',
-      Icons.sizes.small,
-      'overlay-readonly',
-      null,
-      Icons.markupIdentifiers.inline,
-    ).then((icon: string): void => {
-      $(TopbarIdentifiersEnum.buttonNavigationComponent).html(icon);
-    });
-    $(ScaffoldIdentifierEnum.scaffold).removeClass('scaffold-content-navigation-expanded');
-    $(ScaffoldIdentifierEnum.contentModule).removeAttr('style');
+  public hide(hideSwitcher: boolean): void {
+    this.parent.classList.remove('scaffold-content-navigation-expanded');
+    this.parent.classList.remove('scaffold-content-navigation-available');
+    if (hideSwitcher && this.switcher) {
+      $(this.switcher).hide();
+    }
+  }
+
+  public getPosition(): DOMRect {
+    return this.container.getBoundingClientRect();
+  }
+
+  public getWidth(): number {
+    if (this.container) {
+      return <number>this.container.offsetWidth;
+    }
+    return 0;
+  }
+
+  public autoWidth(): void {
+    if (this.container) {
+      this.container.style.width = 'auto';
+    }
+  }
+
+  public setWidth(width: number): void {
+    width = width > 300 ? width : 300;
+    if (this.container) {
+      this.container.style.width = width + 'px';
+    }
   }
 
   public show(component: string): void {
-    $(TopbarIdentifiersEnum.buttonNavigationComponent).prop('disabled', false);
-    Icons.getIcon('actions-pagetree', Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
-      $(TopbarIdentifiersEnum.buttonNavigationComponent).html(icon);
-    });
-
     $(ScaffoldIdentifierEnum.contentNavigationDataComponent).hide();
     if (typeof component !== undefined) {
-      $(ScaffoldIdentifierEnum.scaffold).addClass('scaffold-content-navigation-expanded');
+      this.parent.classList.add('scaffold-content-navigation-expanded');
+      this.parent.classList.add('scaffold-content-navigation-available');
       $(ScaffoldIdentifierEnum.contentNavigation + ' [data-component="' + component + '"]').show();
+    }
+    if (this.switcher) {
+      $(this.switcher).show();
     }
   }
 
@@ -78,7 +102,7 @@ class NavigationContainer extends AbstractContainer {
       new TriggerRequest('typo3.setUrl', interactionRequest),
     );
     deferred.then((): void => {
-      $(ScaffoldIdentifierEnum.scaffold).addClass('scaffold-content-navigation-expanded');
+      this.parent.classList.add('scaffold-content-navigation-expanded');
       $(ScaffoldIdentifierEnum.contentNavigationIframe).attr('src', urlToLoad);
     });
     return deferred;

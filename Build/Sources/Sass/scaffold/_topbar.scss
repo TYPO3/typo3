@@ -68,10 +68,6 @@ $toolbar-item-padding-horizontal: 15px;
         }
     }
 
-    &.topbar-button-navigationcomponent {
-        left: $topbar-button-width;
-    }
-
     &.topbar-button-toolbar {
         right: $topbar-button-width;
     }
@@ -83,12 +79,6 @@ $toolbar-item-padding-horizontal: 15px;
 
 .scaffold-modulemenu-expanded {
     .topbar-button.topbar-button-modulemenu {
-        background-color: $topbar-button-active-bg;
-    }
-}
-
-.scaffold-content-navigation-expanded {
-    .topbar-button-navigationcomponent {
         background-color: $topbar-button-active-bg;
     }
 }
@@ -147,10 +137,10 @@ $toolbar-item-padding-horizontal: 15px;
 // Header
 //
 .topbar-header {
-    padding-left: $topbar-button-width * 2;
+    padding-left: $topbar-button-width;
 
     @media (max-width: $scaffold-breakpoint-max) {
-        padding-right: ($topbar-button-width * 2) !important;
+        padding-right: ($topbar-button-width) !important;
     }
 }
 

@@ -310,6 +310,10 @@ class BackendModuleRepository implements SingletonInterface
         return $modules;
     }
 
+    /**
+     * @return bool
+     * @todo deprecate
+     */
     public function modulesHaveNavigationComponent(): bool
     {
         /** @var BackendModule $module */
