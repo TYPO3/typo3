@@ -66,8 +66,9 @@
                             data-navigate-value="{f:uri.action(action:actionName, arguments:'{search:search, currentPage: \'$[value]\'}')}"
                             data-value-selector="input[name='paginator-target-page']">
                             <input
-                                min="1"
-                                data-number-of-pages="{pagination.lastPageNumber}"
+                                min="{pagination.firstPageNumber}"
+                                max="{pagination.lastPageNumber}"
+                                data-number-of-pages="{paginator.numberOfPages}"
                                 name="paginator-target-page"
                                 class="form-control form-control-sm paginator-input"
                                 value="{paginator.currentPageNumber}"

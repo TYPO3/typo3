@@ -113,7 +113,7 @@ class SimplePaginationTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkWithPaginatorWhoseCurrentPageIsOutOfBounds()
+    public function checkPaginatorWithOutOfBoundsCurrentPage(): void
     {
         $paginator = $this->paginator
             ->withItemsPerPage(5)
@@ -121,12 +121,13 @@ class SimplePaginationTest extends UnitTestCase
         ;
         $pagination = new SimplePagination($paginator);
 
-        self::assertSame(0, $pagination->getStartRecordNumber());
-        self::assertSame(0, $pagination->getEndRecordNumber());
+        self::assertSame(11, $pagination->getStartRecordNumber());
+        self::assertSame(14, $pagination->getEndRecordNumber());
+        self::assertSame(3, $paginator->getCurrentPageNumber());
         self::assertSame(1, $pagination->getFirstPageNumber());
-        self::assertSame(3, $pagination->getLastPageNumber());
-        self::assertNull($pagination->getPreviousPageNumber());
+        self::assertSame(2, $pagination->getPreviousPageNumber());
         self::assertNull($pagination->getNextPageNumber());
+        self::assertSame(3, $pagination->getLastPageNumber());
         self::assertSame([1, 2, 3], $pagination->getAllPageNumbers());
     }
 }

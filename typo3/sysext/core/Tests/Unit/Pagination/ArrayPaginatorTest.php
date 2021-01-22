@@ -125,6 +125,22 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
+    public function paginatorSetsCurrentPageToLastPageIfCurrentPageExceedsMaximum(): void
+    {
+        $paginator = new ArrayPaginator(
+            $this->fixture,
+            3,
+            10
+        );
+
+        self::assertEquals(2, $paginator->getCurrentPageNumber());
+        self::assertEquals(2, $paginator->getNumberOfPages());
+        self::assertCount(4, $paginator->getPaginatedItems());
+    }
+
+    /**
+     * @test
+     */
     public function paginatorProperlyCalculatesOnlyOnePage()
     {
         $paginator = new ArrayPaginator(
