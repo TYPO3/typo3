@@ -124,8 +124,8 @@
         .panel-heading {
             position: relative;
 
-            a.link-action {
-                cursor: pointer;
+            button.link-action {
+                padding: 0;
             }
 
             strong {

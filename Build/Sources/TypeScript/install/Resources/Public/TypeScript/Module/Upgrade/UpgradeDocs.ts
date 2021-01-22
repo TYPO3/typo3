@@ -285,7 +285,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   private markRead(element: any): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('upgrade-docs-mark-read-token');
-    const $button = $(element).closest('a');
+    const $button = $(element).closest('button');
     $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
     $button.find('i').toggleClass('fa-check fa-ban');
     $button.closest('.panel').appendTo(this.findInModal('.panel-body-read'));
@@ -305,7 +305,7 @@ class UpgradeDocs extends AbstractInteractableModule {
   private unmarkRead(element: any): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('upgrade-docs-unmark-read-token');
-    const $button = $(element).closest('a');
+    const $button = $(element).closest('button');
     const version = $button.closest('.panel').data('item-version');
     $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
     $button.find('i').toggleClass('fa-check fa-ban');

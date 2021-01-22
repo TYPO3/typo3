@@ -8,16 +8,16 @@
         <h3 class="panel-title">
             <f:if condition="{read}">
                 <f:then>
-                    <a class="link-action t3js-upgradeDocs-unmarkRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as not read">
+                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-unmarkRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as not read">
                         <i class="fa fa-lg fa-ban"></i>
                         <span class="sr-only">restore this document</span>
-                    </a>
+                    </button>
                 </f:then>
                 <f:else>
-                    <a class="link-action t3js-upgradeDocs-markRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
+                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-markRead pull-right" data-filepath="{fileArray.filepath}" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as read">
                         <i class="fa fa-lg fa-check"></i>
                         <span class="sr-only">ignore this document</span>
-                    </a>
+                    </button>
                 </f:else>
             </f:if>
             <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">

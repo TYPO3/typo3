@@ -12,7 +12,7 @@
             </p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/Cache">Flush cache</a>
+            <button type="button" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/Cache">Flush cache</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -21,7 +21,7 @@
             <p class="card-text">Compare and update the database table and field definitions of your installation against the specification defined for every activated extension.</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/DatabaseAnalyzer">Analyze database</a>
+            <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/DatabaseAnalyzer">Analyze database</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -30,7 +30,7 @@
             <p class="card-text">Clears temporary files including concatenated JS/CSS files and processed images.</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/ClearTypo3tempFiles">Scan temporary files</a>
+            <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/ClearTypo3tempFiles">Scan temporary files</button>
         </div>
     </div>
     <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
@@ -47,7 +47,7 @@
             </f:then>
             <f:else>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/DumpAutoload">Dump autoload</a>
+                    <button type="button" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/DumpAutoload">Dump autoload</button>
                 </div>
             </f:else>
         </f:if>
@@ -58,7 +58,7 @@
             <p class="card-text">Truncates persistent database tables, which are not related to caching.</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/ClearTables">Scan tables</a>
+            <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/ClearTables">Scan tables</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -67,7 +67,7 @@
             <p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-default" data-modal-size="small" data-require="TYPO3/CMS/Install/Module/Maintenance/CreateAdmin">Create Administrator</a>
+            <button type="button" class="btn btn-default" data-modal-size="small" data-require="TYPO3/CMS/Install/Module/Maintenance/CreateAdmin">Create Administrator</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -76,7 +76,7 @@
             <p class="card-text">Clears preferences and settings for all backend users. The <code>uc</code> field is then set to an empty string.</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/ResetBackendUserUc">Reset backend user preferences</a>
+            <button type="button" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/ResetBackendUserUc">Reset backend user preferences</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -85,7 +85,7 @@
             <p class="card-text">Download and update language packs for installed extensions.</p>
         </div>
         <div class="card-footer">
-            <a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/LanguagePacks">Manage languages</a>
+            <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Maintenance/LanguagePacks">Manage languages</button>
         </div>
     </div>
 </div>
