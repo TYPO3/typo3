@@ -193,7 +193,7 @@ class ContextMenu {
         const $me = $(event.currentTarget);
 
         if ($me.hasClass('list-group-item-submenu')) {
-          this.openSubmenu(level, $me);
+          this.openSubmenu(level, $me, false);
           return;
         }
 
@@ -224,7 +224,7 @@ class ContextMenu {
           case 'Right': // IE/Edge specific value
           case 'ArrowRight':
             if ($currentItem.hasClass('list-group-item-submenu')) {
-              this.openSubmenu(level, $currentItem);
+              this.openSubmenu(level, $currentItem, true);
             } else {
               return; // allow default behaviour of right key
             }
@@ -254,7 +254,7 @@ class ContextMenu {
         // if not returned yet, prevent the default action of the event.
         event.preventDefault();
       });
-      $obj.css(this.getPosition($obj)).show();
+      $obj.css(this.getPosition($obj, false)).show();
       // focus the first element on creation to enable keyboard shortcuts
       $('li.list-group-item[tabindex=-1]', $obj).first().focus();
     }
@@ -323,22 +323,22 @@ class ContextMenu {
   /**
    * @param {number} level
    * @param {JQuery} $item
+   * @param {boolean} keyboard
    */
-  private openSubmenu(level: number, $item: JQuery): void {
+  private openSubmenu(level: number, $item: JQuery, keyboard: boolean): void {
     this.eventSources.push($item[0]);
     const $obj = $('#contentMenu' + (level + 1)).html('');
     $item.next().find('.list-group').clone(true).appendTo($obj);
-    $obj.css(this.getPosition($obj)).show();
+    $obj.css(this.getPosition($obj, keyboard)).show();
     $('.list-group-item[tabindex=-1]',$obj).first().focus();
   }
 
-  private getPosition($obj: JQuery): {[key: string]: string} {
+  private getPosition($obj: JQuery, keyboard: boolean): {[key: string]: string} {
     let x = 0, y = 0;
-    let source = this.eventSources[this.eventSources.length - 1]
-    if (source) {
-      const boundingRect = source.getBoundingClientRect();
-      x = boundingRect.right;
-      y = boundingRect.top;
+    if (this.eventSources.length && (this.mousePos.X === null || keyboard)) {
+      const boundingRect = this.eventSources[this.eventSources.length - 1].getBoundingClientRect();
+      x = this.eventSources.length > 1 ? boundingRect.right : boundingRect.x;
+      y = boundingRect.y;
     } else {
       x = this.mousePos.X;
       y = this.mousePos.Y;
