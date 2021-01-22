@@ -143,6 +143,22 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function paginatorSetsCurrentPageToLastPageIfCurrentPageExceedsMaximum(): void
+    {
+        $paginator = new QueryResultPaginator(
+            $this->postRepository->findAll(),
+            3,
+            10
+        );
+
+        self::assertEquals(2, $paginator->getCurrentPageNumber());
+        self::assertEquals(2, $paginator->getNumberOfPages());
+        self::assertCount(4, $paginator->getPaginatedItems());
+    }
+
+    /**
+     * @test
+     */
     public function paginatorProperlyCalculatesOnlyOnePage()
     {
         $paginator = new QueryResultPaginator(
