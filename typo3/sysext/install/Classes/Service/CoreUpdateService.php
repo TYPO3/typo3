@@ -141,8 +141,9 @@ class CoreUpdateService
             $success = false;
             $this->messages->enqueue(new FlashMessage(
                 'To perform an update, the folder structure of this TYPO3 CMS instance must'
-                    . ' stick to the conventions, or the update process could lead to unexpected'
-                    . ' results and may be hazardous to your system',
+                . ' stick to the conventions, or the update process could lead to unexpected results'
+                . ' and may be hazardous to your system. Please check your directory status in the'
+                . ' “Environment” module under “Directory Status”.',
                 'Automatic TYPO3 CMS core update not possible: Folder structure has errors or warnings',
                 FlashMessage::ERROR
             ));
@@ -165,7 +166,8 @@ class CoreUpdateService
             if (!$result) {
                 $success = false;
                 $this->messages->enqueue(new FlashMessage(
-                    'Could not write a file in path "' . Environment::getPublicPath() . '/"!',
+                    'Could not write a file in path "' . Environment::getPublicPath() . '/"!'
+                    . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                     'Automatic TYPO3 CMS core update not possible: No write access to document root',
                     FlashMessage::ERROR
                 ));
@@ -176,7 +178,8 @@ class CoreUpdateService
                 if (!is_link($link)) {
                     $success = false;
                     $this->messages->enqueue(new FlashMessage(
-                        'Could not create a symbolic link in path "' . Environment::getPublicPath() . '/"!',
+                        'Could not create a symbolic link in path "' . Environment::getPublicPath() . '/"!'
+                        . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                         'Automatic TYPO3 CMS core update not possible: No symlink creation possible',
                         FlashMessage::ERROR
                     ));
@@ -194,7 +197,8 @@ class CoreUpdateService
                 if (!$result) {
                     $success = false;
                     $this->messages->enqueue(new FlashMessage(
-                        'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!',
+                        'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!'
+                        . ' Please check your directory status in the “Environment” module under “Directory Status”.',
                         'Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location',
                         FlashMessage::ERROR
                     ));
