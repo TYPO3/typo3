@@ -32,6 +32,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *    <f:asset.css identifier="identifier123">
  *       .foo { color: black; }
  *    </f:asset.css>
+ *
+ * See also :ref:`_changelog-Feature-90522-IntroduceAssetCollector`
  */
 class CssViewHelper extends AbstractTagBasedViewHelper
 {
@@ -78,7 +80,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument(
             'priority',
             'boolean',
-            'Define whether the css should be put in the <head> tag above-the-fold or somewhere in the body part.',
+            'Define whether the CSS should be included before other CSS. CSS will always be output in the <head> tag.',
             false,
             false
         );
