@@ -11,8 +11,9 @@
         });
     </script>
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
-    <f:if condition="{forms}">
+    <f:if condition="{paginator.paginatedItems}">
         <f:then>
+            <f:render partial="FormManager/Pagination" arguments="{_all}" />
             <div class="panel panel-space panel-default recordlist">
                 <div class="panel-heading">
                     <span><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_existing_forms" /></span>
@@ -30,7 +31,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <f:for each="{forms}" as="form">
+                            <f:for each="{paginator.paginatedItems}" as="form">
                                 <tr>
                                     <td class="col-icon nowrap">
                                         <f:if condition="{form.invalid}">
@@ -108,6 +109,7 @@
                 </div>
             </div>
         </div>
+        <f:render partial="FormManager/Pagination" arguments="{_all}" />
     </f:then>
     <f:else>
         <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">

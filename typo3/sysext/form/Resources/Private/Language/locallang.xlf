@@ -125,6 +125,28 @@
             <trans-unit id="form.configuration.module.provider" resname="form.configuration.module.provider" xml:space="preserve">
                 <source>Form: YAML Configuration</source>
             </trans-unit>
+
+            <trans-unit id="pagination.previous" resname="pagination.previous">
+                <source>Previous</source>
+            </trans-unit>
+            <trans-unit id="pagination.next" resname="pagination.next">
+                <source>Next</source>
+            </trans-unit>
+            <trans-unit id="pagination.first" resname="pagination.first">
+                <source>First</source>
+            </trans-unit>
+            <trans-unit id="pagination.last" resname="pagination.last">
+                <source>Last</source>
+            </trans-unit>
+            <trans-unit id="pagination.forms" resname="pagination.forms">
+                <source>Forms</source>
+            </trans-unit>
+            <trans-unit id="pagination.page" resname="pagination.page">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="pagination.refresh" resname="pagination.refresh">
+                <source>Refresh</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -51,6 +53,8 @@ class FormManagerController extends AbstractBackendController
      */
     protected $databaseService;
 
+    protected int $limit = 20;
+
     /**
      * @param \TYPO3\CMS\Form\Service\DatabaseService $databaseService
      * @internal
@@ -70,18 +74,28 @@ class FormManagerController extends AbstractBackendController
     /**
      * Displays the Form Manager
      *
+     * @param int $page
      * @internal
      */
-    public function indexAction()
+    public function indexAction(int $page = 1)
     {
         $this->registerDocheaderButtons();
         $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
-        $this->view->assign('forms', $this->getAvailableFormDefinitions());
-        $this->view->assign('stylesheets', $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']));
-        $this->view->assign('dynamicRequireJsModules', $this->formSettings['formManager']['dynamicRequireJsModules']);
-        $this->view->assign('formManagerAppInitialData', $this->getFormManagerAppInitialData());
+        $forms = $this->getAvailableFormDefinitions();
+        $arrayPaginator = new ArrayPaginator($forms, $page, $this->limit);
+        $pagination = new SimplePagination($arrayPaginator);
+
+        $this->view->assignMultiple(
+            [
+                'paginator' => $arrayPaginator,
+                'pagination' => $pagination,
+                'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
+                'dynamicRequireJsModules' => $this->formSettings['formManager']['dynamicRequireJsModules'],
+                'formManagerAppInitialData' => $this->getFormManagerAppInitialData()
+            ]
+        );
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
             $this->getPageRenderer()->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
