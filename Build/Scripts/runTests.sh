@@ -34,6 +34,9 @@ setUpDockerComposeDotEnv() {
     echo "MYSQL_VERSION=${MYSQL_VERSION}" >> .env
     echo "POSTGRES_VERSION=${POSTGRES_VERSION}" >> .env
     echo "PHP_VERSION=${PHP_VERSION}" >> .env
+    echo "CHUNKS=${CHUNKS}" >> .env
+    echo "THISCHUNK=${THISCHUNK}" >> .env
+
     # Set a custom database driver provided by option: -a
     [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
 }
@@ -51,19 +54,6 @@ Usage: $0 [options] [file]
 No arguments: Run all unit tests with PHP 7.2
 
 Options:
-    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
-        Only with -s functional
-        Specifies to use another driver, following combinations are available:
-            - mysql
-                - mysqli (default)
-                - pdo_mysql
-            - mariadb
-                - mysqli (default)
-                - pdo_mysql
-            - mssql
-                - sqlsrv (default)
-                - pdo_sqlsrv
-
     -s <...>
         Specifies which test suite to run
             - acceptance: backend acceptance tests
@@ -97,6 +87,19 @@ Options:
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
+    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
+        Only with -s functional
+        Specifies to use another driver, following combinations are available:
+            - mysql
+                - mysqli (default)
+                - pdo_mysql
+            - mariadb
+                - mysqli (default)
+                - pdo_mysql
+            - mssql
+                - sqlsrv (default)
+                - pdo_sqlsrv
+
     -d <mariadb|mysql|mssql|postgres|sqlite>
         Only with -s install|functional
         Specifies on which DBMS tests are performed
@@ -129,6 +132,11 @@ Options:
             - 11
             - 12
             - 13
+
+    -c <chunk/numberOfChunks>
+        Only with -s functional|acceptance
+        Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
+        Example -c 3/13
 
     -p <7.2|7.3|7.4|8.0>
         Specifies the PHP minor version to be used
@@ -241,6 +249,8 @@ CGLCHECK_DRY_RUN=""
 MARIADB_VERSION="10.3"
 MYSQL_VERSION="5.5"
 POSTGRES_VERSION="10"
+CHUNKS=0
+THISCHUNK=0
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -248,13 +258,22 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=();
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:s:d:i:j:k::p:e:xy:o:nhuv" OPT; do
+while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
     case ${OPT} in
+        s)
+            TEST_SUITE=${OPTARG}
+            ;;
         a)
             DATABASE_DRIVER=${OPTARG}
             ;;
-        s)
-            TEST_SUITE=${OPTARG}
+        c)
+            if ! [[ ${OPTARG} =~ ^([0-9]+\/[0-9]+)$ ]]; then
+                INVALID_OPTIONS+=(${OPTARG})
+            else
+                # Split "2/13" - run chunk 2 of 13 chunks
+                THISCHUNK=`echo ${OPTARG} | cut -d '/' -f1`
+                CHUNKS=`echo ${OPTARG} | cut -d '/' -f2`
+            fi
             ;;
         d)
             DBMS=${OPTARG}
@@ -343,6 +362,9 @@ fi
 case ${TEST_SUITE} in
     acceptance)
         setUpDockerComposeDotEnv
+        if [ ${CHUNKS} -gt 1 ]; then
+            docker-compose run acceptance_split
+        fi
         docker-compose run prepare_acceptance_backend_mariadb
         docker-compose run acceptance_backend_mariadb
         SUITE_EXIT_CODE=$?
@@ -474,6 +496,9 @@ case ${TEST_SUITE} in
         ;;
     functional)
         setUpDockerComposeDotEnv
+        if [ ${CHUNKS} -gt 1 ]; then
+            docker-compose run functional_split
+        fi
         case ${DBMS} in
             mariadb)
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
