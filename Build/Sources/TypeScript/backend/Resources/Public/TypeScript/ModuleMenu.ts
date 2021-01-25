@@ -420,16 +420,16 @@ class ModuleMenu {
    * Initialize events for label toggle and help menu
    */
   private initializeTopBarEvents(): void {
-    const helpMenu = document.querySelector('.t3js-helpmenu');
+    const toolbar = document.querySelector('.t3js-scaffold-toolbar');
 
     new RegularEvent('keydown', (e: KeyboardEvent, target: HTMLButtonElement) => {
       this.keyboardNavigation(e, target);
-    }).delegateTo(helpMenu, '.t3js-modulemenu-action');
+    }).delegateTo(toolbar, '.t3js-modulemenu-action');
 
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
       this.showModule(target.id, '', e);
-    }).delegateTo(helpMenu, '.t3js-modulemenu-action[data-link]');
+    }).delegateTo(toolbar, '.t3js-modulemenu-action[data-link]');
 
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
