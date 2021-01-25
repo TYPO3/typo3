@@ -294,8 +294,8 @@ class TranslationStatusController
 				</tr>';
         }
         // Put together HEADER:
-        $tCells = [];
-        $tCells[] = '<td>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</td>';
+        $headerCells = [];
+        $headerCells[] = '<th>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</th>';
         if (is_array($langRecUids[0])) {
             $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
@@ -313,9 +313,9 @@ class TranslationStatusController
         } else {
             $editIco = '';
         }
-        $tCells[] = '<td class="col-border-left" colspan="2">' . $lang->sL(
+        $headerCells[] = '<th class="col-border-left" colspan="2">' . $lang->sL(
             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default'
-        ) . '&nbsp;' . $editIco . '</td>';
+        ) . '&nbsp;' . $editIco . '</th>';
         foreach ($this->siteLanguages as $siteLanguage) {
             $languageId = $siteLanguage->getLanguageId();
             if ($languageId === 0) {
@@ -323,7 +323,7 @@ class TranslationStatusController
             }
             if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === $languageId) {
                 // Title:
-                $tCells[] = '<td class="col-border-left">' . htmlspecialchars($siteLanguage->getTitle()) . '</td>';
+                $headerCells[] = '<th class="col-border-left">' . htmlspecialchars($siteLanguage->getTitle()) . '</th>';
                 // Edit language overlay records:
                 if (is_array($langRecUids[$languageId])) {
                     $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
@@ -350,8 +350,8 @@ class TranslationStatusController
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
                 ) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
 
-                $tCells[] = '<td class="btn-group">' . $editButton . $newButton . '</td>';
-                $tCells[] = '<td>&nbsp;</td>';
+                $headerCells[] = '<th class="btn-group">' . $editButton . $newButton . '</th>';
+                $headerCells[] = '<th>&nbsp;</th>';
             }
         }
 
@@ -360,7 +360,7 @@ class TranslationStatusController
                 '<table class="table table-striped table-hover" id="langTable">' .
                     '<thead>' .
                         '<tr>' .
-                            implode('', $tCells) .
+                            implode('', $headerCells) .
                         '</tr>' .
                     '</thead>' .
                     '<tbody>' .

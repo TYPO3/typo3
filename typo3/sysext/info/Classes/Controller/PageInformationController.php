@@ -242,14 +242,12 @@ class PageInformationController
                 $out .= $this->pages_drawItem($sRow, $this->fieldArray, $request);
             }
             // Header line is drawn
-            $theData = [];
+            $headerCells = [];
             $editIdList = implode(',', $editUids);
             // Traverse fields (as set above) in order to create header values:
             foreach ($this->fieldArray as $field) {
-                if ($editIdList
-                    && isset($GLOBALS['TCA']['pages']['columns'][$field])
-                    && $field !== 'uid'
-                ) {
+                $editButton = '';
+                if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field !== 'uid') {
                     $iTitle = sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
                         rtrim(trim($lang->sL(BackendUtility::getItemLabel('pages', $field))), ':')
@@ -265,26 +263,24 @@ class PageInformationController
                     ];
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    $eI = '<a class="btn btn-default" href="' . htmlspecialchars($url)
+                    $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                         . '" title="' . htmlspecialchars($iTitle) . '">'
                         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
-                } else {
-                    $eI = '';
                 }
                 switch ($field) {
                     case 'title':
-                        $theData[$field] = $eI . '&nbsp;<strong>'
+                        $headerCells[$field] = $editButton . '&nbsp;<strong>'
                             . $lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
                             . '</strong>';
                         break;
                     case 'uid':
-                        $theData[$field] = '';
+                        $headerCells[$field] = '';
                         break;
                     default:
                         if (strpos($field, 'table_') === 0) {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
-                                $theData[$field] = '&nbsp;' .
+                                $headerCells[$field] = '&nbsp;' .
                                     '<span title="' .
                                     htmlspecialchars($lang->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) .
                                     '">' .
@@ -292,7 +288,7 @@ class PageInformationController
                                     '</span>';
                             }
                         } else {
-                            $theData[$field] = $eI . '&nbsp;<strong>'
+                            $headerCells[$field] = $editButton . '&nbsp;<strong>'
                                 . htmlspecialchars($lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
                                 . '</strong>';
                         }
@@ -301,7 +297,7 @@ class PageInformationController
             $out = '<div class="table-fit">'
                 . '<table class="table table-striped table-hover typo3-page-pages">'
                 . '<thead>'
-                . $this->addElement($theData)
+                . $this->addElement($headerCells)
                 . '</thead>'
                 . '<tbody>'
                 . $out
@@ -401,7 +397,10 @@ class PageInformationController
                     $theData[$field] = $row[$field] ? '<strong>x</strong>' : '&nbsp;';
                     break;
                 case 'uid':
+                    $uid = 0;
+                    $editButton = '';
                     if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
+                        $uid = (int)$row['uid'];
                         $urlParameters = [
                             'edit' => [
                                 'pages' => [
@@ -415,20 +414,22 @@ class PageInformationController
                         $attributes = PreviewUriBuilder::create((int)$row['uid'])
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();
-                        $eI =
+                        $editButton =
                             '<a href="#" ' . $attributes . ' class="btn btn-default" title="' .
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
                             '</a>';
-                        $eI .=
+                        $editButton .=
                             '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
                             $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
                             '</a>';
-                    } else {
-                        $eI = '';
                     }
-                    $theData[$field] = '<div class="btn-group" role="group">' . $eI . '</div>';
+                    // Since the uid is overwritten with the edit button markup we need to store
+                    // the actual uid to be able to add it as data attribute to the table data cell.
+                    // This also makes distinction between record rows and the header line simpler.
+                    $theData['_UID_'] = $uid;
+                    $theData[$field] = '<div class="btn-group" role="group">' . $editButton . '</div>';
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
@@ -521,14 +522,18 @@ class PageInformationController
     protected function addElement($data)
     {
         // Start up:
-        $l10nParent = isset($data['_l10nparent_']) ? (int)$data['_l10nparent_'] : 0;
-        $out = '
-		<tr data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
+        $attributes = '';
+        $rowTag = 'th';
+        if (isset($data['_UID_'])) {
+            $l10nParent = isset($data['_l10nparent_']) ? (int)$data['_l10nparent_'] : 0;
+            $attributes = ' data-uid="' . $data['_UID_'] . '" data-l10nparent="' . $l10nParent . '"';
+            $rowTag = 'td';
+        }
+        $out = '<tr' . $attributes . '>';
         // Init rendering.
         $colsp = '';
         $lastKey = '';
         $c = 0;
-        $ccount = 0;
         // __label is used as the label key to circumvent problems with uid used as label (see #67756)
         // as it was introduced later on, check if it really exists before using it
         $fields = $this->fieldArray;
@@ -541,11 +546,10 @@ class PageInformationController
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey];
                     $out .= '
-						<td class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</td>';
+						<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;
-                $ccount++;
             } else {
                 if (!$lastKey) {
                     $lastKey = $vKey;
@@ -561,7 +565,7 @@ class PageInformationController
         if ($lastKey) {
             $cssClass = $this->addElement_tdCssClass[$lastKey];
             $out .= '
-				<td class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</td>';
+				<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
         }
         $out .= '</tr>';
         return $out;
