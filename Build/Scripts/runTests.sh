@@ -612,6 +612,12 @@ case ${DBMS} in
         DBMS_OUTPUT="DBMS not recognized: $DBMS"
         exit 1
 esac
+
+# Print summary
+if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+    # Turn off verbose mode for the script summary
+    set +x
+fi
 echo "" >&2
 echo "###########################################################################" >&2
 if [[ ${TEST_SUITE} =~ ^(functional|install|acceptance)$ ]]; then
@@ -631,4 +637,5 @@ fi
 echo "###########################################################################" >&2
 echo "" >&2
 
+# Exit with code of test suite - This script return non-zero if the executed test failed.
 exit $SUITE_EXIT_CODE
