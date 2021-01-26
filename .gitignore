@@ -39,6 +39,7 @@ nbproject
 /Build/typings/*
 !/Build/typings/no-def*
 /Build/testing-docker/local/.env
+/Build/testing-docker/local/macos_passwd
 /typo3/sysext/*/Resources/Private/TypeScript/*.js
 /typo3/sysext/*/Resources/Public/JavaScript/*.js.map
 typo3/sysext/core/Tests/Acceptance/AcceptanceTests-Job-*

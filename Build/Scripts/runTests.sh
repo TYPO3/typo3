@@ -39,6 +39,8 @@ setUpDockerComposeDotEnv() {
 
     # Set a custom database driver provided by option: -a
     [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
+
+    echo "PASSWD_PATH=${PASSWD_PATH}" >> .env
 }
 
 # Load help text into $HELP
@@ -252,6 +254,7 @@ MYSQL_VERSION="5.5"
 POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
+PASSWD_PATH=/etc/passwd
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -350,6 +353,20 @@ fi
 
 # Move "7.2" to "php72", the latter is the docker container name
 DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
+
+# Some scripts rely on a proper /etc/passwd that includes the user that runs the
+# containers, for instance to determine users $HOME. yarn v1 is espcecially picky
+# here since it fails if it can't write a .yarnrc file to users home ...
+# MacOS in it's endless wisdom however decided that /etc/passwd is a stupid thing
+# and does not write an entry for the standard user in it. In turn, stuff like yarn fails.
+# As a solution, we detect if the user executing the script is within /etc/passwd
+# and volume mount that file within containers. If not, we create a fake passwd file
+# and mount that one.
+[ -z ${USER} ] && USER=`id -u -n`
+if [ `grep -c "^${USER}:" /etc/passwd` -ne 1 ]; then
+    echo "${USER}:x:$(id -u $USER):$(id -g $USER):$(id -gn $USER):${HOME}:/bin/bash" > macos_passwd
+    PASSWD_PATH="./macos_passwd"
+fi
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))

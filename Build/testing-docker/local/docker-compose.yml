@@ -82,7 +82,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -226,7 +226,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -266,7 +266,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -307,7 +307,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     command: >
       /bin/sh -c "
@@ -333,7 +333,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -351,7 +351,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -369,7 +369,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -387,7 +387,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -404,7 +404,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -422,7 +422,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -439,7 +439,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -456,7 +456,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -473,7 +473,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -490,7 +490,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -507,7 +507,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -524,7 +524,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -541,7 +541,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -558,7 +558,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -578,7 +578,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -600,7 +600,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -617,7 +617,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -634,7 +634,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -651,7 +651,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -668,7 +668,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -690,7 +690,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -709,7 +709,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -751,7 +751,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER:-mysqli}"
@@ -805,7 +805,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER:-mysqli}"
@@ -860,7 +860,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER:-sqlsrv}"
@@ -916,7 +916,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: pdo_pgsql
@@ -962,7 +962,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: pdo_sqlite
@@ -994,7 +994,7 @@ services:
     user: ${HOST_UID}
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -1012,7 +1012,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -1030,7 +1030,7 @@ services:
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
+    - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -1048,7 +1048,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -1073,7 +1073,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
@@ -1098,7 +1098,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}/Build
     command: >
@@ -1117,7 +1117,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
+      - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
