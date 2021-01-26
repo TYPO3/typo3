@@ -224,8 +224,8 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        yarn install \
-          && ./node_modules/grunt/bin/grunt css
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        node_modules/grunt/bin/grunt css
       "
 
   build_javascript:
@@ -242,8 +242,8 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        yarn install \
-          && ./node_modules/grunt/bin/grunt scripts
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        node_modules/grunt/bin/grunt scripts
       "
 
   cgl_git:
@@ -502,7 +502,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        composer install;
+        COMPOSER_CACHE_DIR=".cache/composer" composer install --no-progress --no-interaction;
       "
 
   composer_install_max:
@@ -520,7 +520,7 @@ services:
           set -x
         fi
         composer config --unset platform.php;
-        composer update --no-progress --no-interaction;
+        COMPOSER_CACHE_DIR=".cache/composer" composer update --no-progress --no-interaction;
         composer dumpautoload;
       "
 
@@ -539,7 +539,7 @@ services:
           set -x
         fi
         composer config platform.php ${PHP_VERSION}.0;
-        composer update --prefer-lowest --no-progress --no-interaction;
+        COMPOSER_CACHE_DIR=".cache/composer" composer update --prefer-lowest --no-progress --no-interaction;
         composer dumpautoload;
       "
 
@@ -864,8 +864,8 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        yarn install \
-          && ./node_modules/grunt/bin/grunt stylelint;
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        node_modules/grunt/bin/grunt stylelint;
       "
 
   lint_typescript:
@@ -882,8 +882,8 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        yarn install \
-          && ./node_modules/grunt/bin/grunt tslint;
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        node_modules/grunt/bin/grunt tslint;
       "
 
   unit:
@@ -950,10 +950,9 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        yarn install \
-          && cd .. \
-          && Build/node_modules/karma/bin/karma start \
-            vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.js --single-run
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        cd ..;
+        Build/node_modules/karma/bin/karma start vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.js --single-run
       "
 
   unitRandom:
