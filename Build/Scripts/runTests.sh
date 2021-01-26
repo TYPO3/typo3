@@ -37,15 +37,14 @@ setUpDockerComposeDotEnv() {
     echo "PHP_VERSION=${PHP_VERSION}" >> .env
     echo "CHUNKS=${CHUNKS}" >> .env
     echo "THISCHUNK=${THISCHUNK}" >> .env
+    echo "PASSWD_PATH=${PASSWD_PATH}" >> .env
 }
 
 # Options -a and -d depend on each other. The function
 # validates input combinations and sets defaults.
 handleDbmsAndDriverOptions() {
     case ${DBMS} in
-        mariadb)
-            ;&
-        mysql)
+        mysql|mariadb)
             [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="mysqli"
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
@@ -63,16 +62,13 @@ handleDbmsAndDriverOptions() {
                 exit 1
             fi
             ;;
-        postgres)
-            ;&
-        sqlite)
+        postgres|sqlite)
             if ! [ -z ${DATABASE_DRIVER} ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1
             fi
-            DATABASE_DRIVER=""
             ;;
     esac
 }
@@ -288,11 +284,13 @@ EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
+DATABASE_DRIVER=""
 MARIADB_VERSION="10.3"
 MYSQL_VERSION="5.5"
 POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
+PASSWD_PATH=/etc/passwd
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -391,6 +389,20 @@ fi
 
 # Move "7.4" to "php74", the latter is the docker container name
 DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
+
+# Some scripts rely on a proper /etc/passwd that includes the user that runs the
+# containers, for instance to determine users $HOME. yarn v1 is espcecially picky
+# here since it fails if it can't write a .yarnrc file to users home ...
+# MacOS in it's endless wisdom however decided that /etc/passwd is a stupid thing
+# and does not write an entry for the standard user in it. In turn, stuff like yarn fails.
+# As a solution, we detect if the user executing the script is within /etc/passwd
+# and volume mount that file within containers. If not, we create a fake passwd file
+# and mount that one.
+[ -z ${USER} ] && USER=`id -u -n`
+if [ `grep -c "^${USER}:" /etc/passwd` -ne 1 ]; then
+    echo "${USER}:x:$(id -u $USER):$(id -g $USER):$(id -gn $USER):${HOME}:/bin/bash" > macos_passwd
+    PASSWD_PATH="./macos_passwd"
+fi
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
