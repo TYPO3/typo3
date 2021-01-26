@@ -57,7 +57,7 @@ No arguments: Run all unit tests with PHP 7.2
 Options:
     -s <...>
         Specifies which test suite to run
-            - acceptance: backend acceptance tests
+            - acceptance: main backend acceptance tests
             - acceptancePagetree: backend acceptance tests for page tree
             - acceptanceInstallTool: acceptance tests for stand alone install tool
             - buildCss: execute scss to css builder
@@ -79,6 +79,7 @@ Options:
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
             - composerValidate: "composer validate"
+            - docBlockCheck: Scan php doc blocks for validity
             - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
             - install: installation acceptance tests, only with -d mariadb|postgres|sqlite
@@ -86,6 +87,7 @@ Options:
             - lintScss: SCSS linting
             - lintTypescript: TS linting
             - lintHtml: HTML linting
+            - phpstan: phpstan tests
             - unit (default): PHP unit tests
             - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
@@ -509,6 +511,12 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    docBlockCheck)
+        setUpDockerComposeDotEnv
+        docker-compose run doc_block_check
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     fixCsvFixtures)
         setUpDockerComposeDotEnv
         docker-compose run fix_csv_fixtures
@@ -585,7 +593,7 @@ case ${TEST_SUITE} in
         ;;
     lint)
         setUpDockerComposeDotEnv
-        docker-compose run lint
+        docker-compose run lint_php
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
@@ -604,6 +612,12 @@ case ${TEST_SUITE} in
     lintHtml)
         setUpDockerComposeDotEnv
         docker-compose run lint_html
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    phpstan)
+        setUpDockerComposeDotEnv
+        docker-compose run phpstan
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

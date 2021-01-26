@@ -640,6 +640,20 @@ services:
         composer validate;
       "
 
+  doc_block_check:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+    - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        Build/Scripts/docBlockChecker.php;
+      "
+
   functional_split:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
@@ -913,7 +927,7 @@ services:
         fi
       "
 
-  lint:
+  lint_php:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
@@ -982,6 +996,21 @@ services:
         fi
         YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
         node_modules/grunt/bin/grunt eslint;
+      "
+
+  phpstan:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        mkdir -p .cache
+        bin/phpstan analyse --no-progress --no-interaction --memory-limit 4G
       "
 
   unit:
