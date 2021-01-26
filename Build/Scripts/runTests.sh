@@ -69,6 +69,7 @@ Options:
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
             - checkFilePathLength: test core file paths do not exceed maximum length
             - checkGitSubmodule: test core git has no sub modules defined
+            - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
             - checkXlf: test .xlf files for integrity
@@ -446,6 +447,12 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    checkGruntClean)
+        setUpDockerComposeDotEnv
+        docker-compose run check_grunt_clean
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     checkPermissions)
         setUpDockerComposeDotEnv
         docker-compose run check_permissions
@@ -539,6 +546,11 @@ case ${TEST_SUITE} in
     install)
         setUpDockerComposeDotEnv
         case ${DBMS} in
+            mysql)
+                docker-compose run prepare_acceptance_install_mysql
+                docker-compose run acceptance_install_mysql
+                SUITE_EXIT_CODE=$?
+                ;;
             mariadb)
                 docker-compose run prepare_acceptance_install_mariadb
                 docker-compose run acceptance_install_mariadb

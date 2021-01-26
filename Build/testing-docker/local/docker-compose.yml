@@ -103,6 +103,46 @@ services:
         $${COMMAND}
       "
 
+  prepare_acceptance_install_mysql:
+    image: alpine:3.8
+    links:
+      - mysql
+      - chrome
+      - web
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        echo Waiting for database start...;
+        while ! nc -z mysql 3306; do
+          sleep 1;
+        done;
+        echo Database is up;
+      "
+  acceptance_install_mysql:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    environment:
+      typo3InstallMysqlDatabaseHost: mysql
+      typo3InstallMysqlDatabaseName: func_test
+      typo3InstallMysqlDatabaseUsername: root
+      typo3InstallMysqlDatabasePassword: funcp
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        mkdir -p typo3temp/var/tests/ \
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
+       "
+
   prepare_acceptance_install_mariadb:
     image: alpine:3.8
     links:
@@ -435,6 +475,28 @@ services:
           echo \"Found a submodule definition in repository\";
           exit 1;
         fi
+      "
+
+  check_grunt_clean:
+    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}/Build
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        node_modules/grunt/bin/grunt build;
+        cd ..;
+        git add *;
+        git status;
+        git status | grep -q \"nothing to commit, working tree clean\"
       "
 
   check_permissions:
