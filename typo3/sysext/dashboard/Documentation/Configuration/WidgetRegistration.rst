@@ -6,7 +6,7 @@ Each of the widgets can be registered with different configurations as documente
 
 .. include:: /Shared/DifferenceRegistrationAndImplementation.rst.txt
 
-The below example will use the RSS Widget as an concrete example.
+The below example will use the RSS Widget as a concrete example.
 
 .. _register-new-widget:
 
