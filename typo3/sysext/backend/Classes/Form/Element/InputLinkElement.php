@@ -379,7 +379,7 @@ class InputLinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_URL:
                 $data = [
-                    'text' => $this->getDomainByUrl($linkData['url']),
+                    'text' => $linkData['url'],
                     'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
 
                 ];
@@ -446,17 +446,6 @@ class InputLinkElement extends AbstractFormElement
 
         $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
         return $data;
-    }
-
-    /**
-     * @param string $uriString
-     *
-     * @return string
-     */
-    protected function getDomainByUrl(string $uriString): string
-    {
-        $data = parse_url($uriString);
-        return $data['host'] ?? $uriString;
     }
 
     /**
