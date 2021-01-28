@@ -135,6 +135,8 @@ declare module 'flatpickr/flatpickr.min';
 declare module 'moment';
 declare module 'Sortable';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
+declare module 'TYPO3/CMS/Backend/PageTree/PageTree';
+declare module 'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 

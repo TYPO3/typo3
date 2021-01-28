@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {NavigationComponentInterface} from './NavigationComponentInterface';
+import {TreeInterface} from './TreeInterface';
 
-class PageTree {
-  private readonly instance: NavigationComponentInterface = null;
+class PageTree implements TreeInterface {
+  private readonly instance: TreeInterface = null;
 
-  constructor(instance: NavigationComponentInterface) {
+  constructor(instance: TreeInterface) {
     this.instance = instance;
   }
 

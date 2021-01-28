@@ -11,16 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-
-interface SetTemporaryMountPoint {
-  (pid: number): void;
-}
-
-export interface NavigationComponentInterface {
-  initialize: Function;
-  refreshOrFilterTree: Function;
-  setTemporaryMountPoint: SetTemporaryMountPoint;
-  unsetTemporaryMountPoint: Function;
-  selectNode: Function;
-  getFirstNode: Function;
+export interface TreeInterface {
+  refreshTree?(): void;
+  refreshOrFilterTree?(): void;
+  setTemporaryMountPoint(pid: number): void;
+  unsetTemporaryMountPoint(): void;
+  selectNode(node: any): void;
+  getFirstNode(): any;
 }

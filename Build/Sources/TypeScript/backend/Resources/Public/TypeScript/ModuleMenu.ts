@@ -12,7 +12,6 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {NavigationComponentInterface} from './Viewport/NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from './Enum/Viewport/ScaffoldIdentifier';
 import $ from 'jquery';
 import PersistentStorage = require('./Storage/Persistent');
@@ -22,6 +21,7 @@ import TriggerRequest = require('./Event/TriggerRequest');
 import InteractionRequest = require('./Event/InteractionRequest');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import {PageTreeElement} from './PageTree/PageTreeElement';
 
 interface Module {
   name: string;
@@ -527,7 +527,8 @@ class ModuleMenu {
         }));
     }
 
-    require([navigationComponentId], (NavigationComponent: NavigationComponentInterface): void => {
+    require([navigationComponentId], (__esModule: any): void => {
+      const NavigationComponent = Object.values(__esModule)[0] as typeof PageTreeElement;
       NavigationComponent.initialize('#navigationComponent-' + componentCssName);
       Viewport.NavigationContainer.show(navigationComponentId);
       me.loadedNavigationComponentId = navigationComponentId;

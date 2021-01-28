@@ -11,17 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {NavigationComponentInterface} from './NavigationComponentInterface';
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
 import $ from 'jquery';
 import PageTree = require('./PageTree');
 import TriggerRequest = require('../Event/TriggerRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
+import {TreeInterface} from 'TYPO3/CMS/Backend/Viewport/TreeInterface';
 
 class NavigationContainer extends AbstractContainer {
   public PageTree: PageTree = null;
-  private instance: NavigationComponentInterface = null;
+  private instance: TreeInterface = null;
   private readonly parent: HTMLElement;
   private readonly container: HTMLElement;
   private readonly switcher: HTMLElement = null;
@@ -37,9 +37,9 @@ class NavigationContainer extends AbstractContainer {
    * Public method used by Navigation components to register themselves.
    * See TYPO3/CMS/Backend/PageTree/PageTreeElement->initialize
    *
-   * @param {NavigationComponentInterface} component
+   * @param {TreeInterface} component
    */
-  public setComponentInstance(component: NavigationComponentInterface): void {
+  public setComponentInstance(component: TreeInterface): void {
     this.instance = component;
     this.PageTree = new PageTree(component);
   }

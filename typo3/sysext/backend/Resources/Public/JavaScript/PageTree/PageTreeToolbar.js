@@ -10,279 +10,41 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/**
- * Module: TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar
- */
-define(['jquery',
-    'TYPO3/CMS/Backend/Icons',
-    'd3',
-    'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
-    'TYPO3/CMS/Core/Event/DebounceEvent',
-    'TYPO3/CMS/Backend/Tooltip',
-    'TYPO3/CMS/Backend/SvgTree',
-    'TYPO3/CMS/Backend/Input/Clearable'
-  ],
-  function($, Icons, d3, PageTreeDragDrop, DebounceEvent) {
-    'use strict';
-
-    /**
-     * TreeToolbar class
-     *
-     * @constructor
-     * @exports TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar
-     */
-    var TreeToolbar = function() {
-      this.settings = {
-        toolbarSelector: 'tree-toolbar',
-        searchInput: '.search-input',
-        target: '.svg-toolbar',
-        filterTimeout: 450
-      };
-
-      /**
-       * jQuery object wrapping the SvgTree
-       *
-       * @type {jQuery}
-       */
-      this.$treeWrapper = null;
-
-      /**
-       * SvgTree instance
-       *
-       * @type {SvgTree}
-       */
-      this.tree = null;
-
-      /**
-       * State of the hide unchecked toggle button
-       *
-       * @type {boolean}
-       * @private
-       */
-      this._hideUncheckedState = false;
-
-      /**
-       * Toolbar template
-       *
-       * @type {jQuery}
-       */
-      this.template = null;
-    };
-
-    /**
-     * Toolbar initialization
-     *
-     * @param {String} treeSelector
-     * @param {Object} settings
-     */
-    TreeToolbar.prototype.initialize = function(treeSelector, settings) {
-      var _this = this;
-      _this.$treeWrapper = $(treeSelector);
-
-      this.dragDrop = PageTreeDragDrop;
-      this.dragDrop.init(this);
-      if (!_this.$treeWrapper.data('svgtree-initialized') || typeof _this.$treeWrapper.data('svgtree') !== 'object') {
-        //both toolbar and tree are loaded independently through require js,
-        //so we don't know which is loaded first
-        //in case of toolbar being loaded first, we wait for an event from svgTree
-        _this.$treeWrapper.on('svgTree.initialized', _this.render.bind(_this));
-        return;
-      }
-
-      $.extend(this.settings, settings);
-      this.render();
-    };
-
-    /**
-     * Create toolbar template
-     */
-    TreeToolbar.prototype.createTemplate = function() {
-      var _this = this;
-
-      var $template = $(
-        '<div class="' + _this.settings.toolbarSelector + '">' +
-        '<div class="svg-toolbar__menu">' +
-        '<div class="btn-group">' +
-        '<div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="filter">' +
-        '<button class="svg-toolbar__btn" data-tree-icon="actions-filter" title="' + TYPO3.lang['tree.buttonFilter'] + '"></button>' +
-        '</div>' +
-        '</div>' +
-        '<div class="x-btn btn btn-default btn-sm x-btn-noicon js-svg-refresh">' +
-        '<button class="svg-toolbar__btn" data-tree-icon="actions-refresh" title="' + TYPO3.lang['labels.refresh'] + '"></button>' +
-        '</div>' +
-        '</div>' +
-        '<div class="svg-toolbar__submenu">' +
-        '<div class="svg-toolbar__submenu-item" data-tree-submenu="filter">' +
-        '<input type="text" class="form-control search-input" placeholder="' + TYPO3.lang['tree.searchTermInfo'] + '">' +
-        '</div>' +
-        '<div class="svg-toolbar__submenu-item" data-tree-submenu="page-new">' +
-        '</div>' +
-        '</div>' +
-        '</div>'
-      );
-
-      if (this.tree.settings.doktypes && this.tree.settings.doktypes.length) {
-        var $buttons = $template.find('[data-tree-submenu=page-new]');
-        $template.find('.svg-toolbar__menu .btn-group').prepend('<div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="page-new">' +
-          '<button class="svg-toolbar__btn" data-tree-icon="actions-page-new" title="' + TYPO3.lang['tree.buttonNewNode'] + '"></button>' +
-          '</div>'
-        );
-
-        $.each(this.tree.settings.doktypes, function(id, e) {
-          _this.tree.fetchIcon(e.icon, false);
-          $buttons.append('<div class="svg-toolbar__drag-node" data-tree-icon="' + e.icon + '" data-node-type="' + e.nodeType + '" title="' + e.title + '" tooltip="' + e.tooltip + '"></div>');
-        });
-      }
-
-      _this.template = $template;
-    };
-
-    /**
-     * Renders toolbar
-     */
-    TreeToolbar.prototype.render = function() {
-      var _this = this;
-      this.tree = this.$treeWrapper.data('svgtree');
-
-      $.extend(this.settings, this.tree.settings);
-      this.createTemplate();
-
-      var $toolbar = $(this.settings.target).append(this.template);
-
-      //get icons
-      $toolbar.find('[data-tree-icon]').each(function() {
-        var $this = $(this);
-
-        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small).then(function(icon) {
-          $this.append(icon);
-          _this.tree.setWrapperHeight();
-        });
-      });
-
-      //toggle toolbar submenu
-      $toolbar.find('[data-tree-show-submenu]').each(function() {
-        $(this).on('click', function() {
-          var $this = $(this);
-          var name = $this.attr('data-tree-show-submenu');
-          var $submenu = $toolbar.find('[data-tree-submenu=' + name + ']');
-
-          $toolbar.find('[data-tree-show-submenu]').not(this).removeClass('active');
-          $this.addClass('active');
-
-          $toolbar.find('[data-tree-submenu]').not($submenu).removeClass('active');
-          $submenu.addClass('active');
-
-          let input = $submenu.find('input').get(0);
-          if (input) {
-            input.clearable({
-              onClear: function () {
-                _this.tree.resetFilter();
-                _this.tree.prepareDataForVisibleNodes();
-                _this.tree.update();
-              }
-            });
-          }
-          $submenu.find('input').trigger('focus');
-        });
-      });
-
-      $toolbar.find('.js-svg-refresh').on('click', this.refreshTree.bind(this));
-
-      var d3Toolbar = d3.select('.svg-toolbar');
-
-      $.each(this.tree.settings.doktypes, function(id, e) {
-        if (e.icon) {
-          d3Toolbar
-            .selectAll('[data-tree-icon=' + e.icon + ']')
-            .call(_this.dragDrop.dragToolbar());
-        } else {
-          console.warn('Missing icon definition for doktype: ' + e.nodeType);
-        }
-      });
-
-      new DebounceEvent('input', function (e) {
-        this.search(e.target);
-      }.bind(this), this.settings.filterTimeout).bindTo(document.querySelector(this.settings.searchInput));
-
-      $toolbar.find('[data-bs-toggle="tooltip"]').tooltip();
-
-      if ($('[data-tree-show-submenu="page-new"]').length) {
-        $('[data-tree-show-submenu="page-new"]').trigger('click');
-      } else {
-        $('.svg-toolbar__menu :first-child:not(.js-svg-refresh)').trigger('click');
-      }
-    };
-
-    /**
-     * Refresh tree
-     */
-    TreeToolbar.prototype.refreshTree = function() {
-      const searchInput = document.querySelector(this.settings.target + ' ' + this.settings.searchInput);
-      this.tree.refreshOrFilterTree();
-    };
-
-    /**
-     * Find node by name
-     *
-     * @param {HTMLElement} input
-     */
-    TreeToolbar.prototype.search = function(input) {
-      this.tree.searchQuery =  $(input).val().trim();
-      this.tree.refreshOrFilterTree();
-      this.tree.prepareDataForVisibleNodes();
-      this.tree.update();
-    };
-
-    /**
-     * Show only checked items
-     *
-     * @param {HTMLElement} input
-     */
-    TreeToolbar.prototype.toggleHideUnchecked = function(input) {
-      var _this = this;
-
-      this._hideUncheckedState = !this._hideUncheckedState;
-
-      if (this._hideUncheckedState) {
-        this.tree.nodes.forEach(function(node) {
-          if (node.checked) {
-            _this.showParents(node);
-            node.expanded = true;
-            node.hidden = false;
-          } else {
-            node.hidden = true;
-            node.expanded = false;
-          }
-        });
-      } else {
-        this.tree.nodes.forEach(function(node) {
-          node.hidden = false;
-        });
-      }
-
-      this.tree.prepareDataForVisibleNodes();
-      this.tree.update();
-    };
-
-    /**
-     * Finds and show all parents of node
-     *
-     * @param {Node} node
-     * @returns {Boolean}
-     */
-    TreeToolbar.prototype.showParents = function(node) {
-      if (node.parents.length === 0) {
-        return true;
-      }
-
-      var parent = this.tree.nodes[node.parents[0]];
-      parent.hidden = false;
-
-      //expand parent node
-      parent.expanded = true;
-      this.showParents(parent);
-    };
-
-    return TreeToolbar;
-  });
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","d3","jquery","lit-html","lit-element","TYPO3/CMS/Core/lit-helper","TYPO3/CMS/Backend/PageTree/PageTreeDragDrop","TYPO3/CMS/Core/Event/DebounceEvent"],(function(e,t,s,r,i,a,n,o,l){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.PageTreeToolbar=void 0,r=__importDefault(r),l=__importDefault(l);t.PageTreeToolbar=class{constructor(){this.settings={toolbarSelector:"tree-toolbar",searchInput:".search-input",target:".svg-toolbar",filterTimeout:450},this.hideUncheckedState=!1,this.dragDrop=o}initialize(e,t={}){this.$treeWrapper=r.default(e),this.$treeWrapper.data("svgtree-initialized")&&"object"==typeof this.$treeWrapper.data("svgtree")?(Object.assign(this.settings,t),this.render()):this.$treeWrapper.on("svgTree.initialized",()=>this.render())}refreshTree(){this.tree.refreshOrFilterTree()}search(e){this.tree.searchQuery=e.value.trim(),this.tree.refreshOrFilterTree(),this.tree.prepareDataForVisibleNodes(),this.tree.update()}toggleHideUnchecked(e){this.hideUncheckedState=!this.hideUncheckedState,this.hideUncheckedState?this.tree.nodes.forEach(e=>{e.checked?(this.showParents(e),e.expanded=!0,e.hidden=!1):(e.hidden=!0,e.expanded=!1)}):this.tree.nodes.forEach(e=>{e.hidden=!1}),this.tree.prepareDataForVisibleNodes(),this.tree.update()}showParents(e){if(0===e.parents.length)return;const t=this.tree.nodes[e.parents[0]];t.hidden=!1,t.expanded=!0,this.showParents(t)}showSubmenu(e){this.targetEl.querySelectorAll("[data-tree-show-submenu]").forEach(t=>{t.dataset.treeShowSubmenu===e?t.classList.add("active"):t.classList.remove("active")}),this.targetEl.querySelectorAll("[data-tree-submenu]").forEach(t=>{t.dataset.treeSubmenu===e?t.classList.add("active"):t.classList.remove("active")});const t=this.targetEl.querySelector('[data-tree-submenu="'+e+'"]').querySelector("input");t&&(t.focus(),t.clearable({onClear:()=>{this.tree.resetFilter(),this.tree.prepareDataForVisibleNodes(),this.tree.update()}}))}render(){this.tree=this.$treeWrapper.data("svgtree"),Object.assign(this.settings,this.tree.settings),this.targetEl=document.querySelector(this.settings.target),i.render(this.renderTemplate(),this.targetEl),this.tree.setWrapperHeight();const e=s.select(".svg-toolbar");r.default.each(this.tree.settings.doktypes,(t,s)=>{s.icon?e.selectAll("[data-tree-icon="+s.icon+"]").call(this.dragDrop.dragToolbar()):console.warn("Missing icon definition for doktype: "+s.nodeType)}),new l.default("input",e=>{this.search(e.target)},this.settings.filterTimeout).bindTo(document.querySelector(this.settings.searchInput)),r.default(this.targetEl).find('[data-bs-toggle="tooltip"]').tooltip();const t=this.targetEl.querySelector('[data-tree-show-submenu="page-new"]'),a=this.targetEl.querySelector(".svg-toolbar__menu :first-child:not(.js-svg-refresh)");(t||a).click()}renderTemplate(){return a.html`
+      <div class="${this.settings.toolbarSelector}">
+        <div class="svg-toolbar__menu">
+          <div class="btn-group">
+            ${this.tree.settings.doktypes&&this.tree.settings.doktypes.length>0?a.html`
+              <div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="page-new" @click="${()=>this.showSubmenu("page-new")}">
+                <button class="svg-toolbar__btn" data-tree-icon="actions-page-new" title="${n.lll("tree.buttonNewNode")}">
+                  ${n.icon("actions-page-new","small")}
+                </button>
+              </div>
+            `:""}
+            <div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="filter" @click="${()=>this.showSubmenu("filter")}">
+              <button class="svg-toolbar__btn" data-tree-icon="actions-filter" title="${n.lll("tree.buttonFilter")}">
+                ${n.icon("actions-filter","small")}
+              </button>
+            </div>
+          </div>
+          <div class="x-btn btn btn-default btn-sm x-btn-noicon js-svg-refresh" @click="${()=>this.refreshTree()}">
+            <button class="svg-toolbar__btn" data-tree-icon="actions-refresh" title="${n.lll("labels.refresh")}">
+              ${n.icon("actions-refresh","small")}
+            </button>
+          </div>
+        </div>
+        <div class="svg-toolbar__submenu">
+          <div class="svg-toolbar__submenu-item" data-tree-submenu="filter">
+            <input type="text" class="form-control search-input" placeholder="${n.lll("tree.searchTermInfo")}">
+          </div>
+          <div class="svg-toolbar__submenu-item" data-tree-submenu="page-new">
+            ${this.tree.settings.doktypes&&this.tree.settings.doktypes.length?this.tree.settings.doktypes.map(e=>(this.tree.fetchIcon(e.icon,!1),a.html`
+                  <div class="svg-toolbar__drag-node" data-tree-icon="${e.icon}" data-node-type="${e.nodeType}"
+                       title="${e.title}" tooltip="${e.tooltip}">
+                    ${n.icon(e.icon,"small")}
+                  </div>
+                `)):""}
+          </div>
+        </div>
+      </div>
+    `}}}));
