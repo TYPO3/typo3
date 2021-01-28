@@ -207,9 +207,6 @@
                                 </td>
                                 <td class="col-word-break">
                                     <belog:formatDetails logEntry="{logItem}"/>
-                                    <f:if condition="{logItem.detailsNumber} > 0">
-                                        (msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
-                                    </f:if>
                                 </td>
                                 <td>
                                     <f:if condition="{logItem.error} == 1">

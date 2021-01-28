@@ -70,7 +70,7 @@ class AuthenticationService extends AbstractAuthenticationService
         $user = $this->fetchUserRecord($this->login['uname']);
         if (!is_array($user)) {
             // Failed login attempt (no username found)
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP###, username \'%s\' not found!!', [$this->login['uname']]);
+            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP###, username \'%s\' not found!', [$this->login['uname']]);
             $this->logger->info('Login-attempt from username \'' . $this->login['uname'] . '\' not found!', [
                 'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR']
             ]);
