@@ -19,6 +19,6 @@ namespace TYPO3\CMS\Backend\Exception;
 
 use TYPO3\CMS\Core\Error\Http\AbstractClientErrorException;
 
-class BackendLockedException extends AbstractClientErrorException
+class BackendAccessDeniedException extends AbstractClientErrorException
 {
 }
