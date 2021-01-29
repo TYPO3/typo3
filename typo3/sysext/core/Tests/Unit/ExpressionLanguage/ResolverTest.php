@@ -86,6 +86,16 @@ class ResolverTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse()
+    {
+        $request = new ServerRequest();
+        $expressionLanguageResolver = new Resolver('default', [], $request);
+        self::assertFalse($expressionLanguageResolver->evaluate('ELSE'));
+    }
+
+    /**
      * @return array
      */
     public function basicExpressionsWithVariablesDataHandler(): array
