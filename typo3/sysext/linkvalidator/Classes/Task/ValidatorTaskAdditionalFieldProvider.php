@@ -124,7 +124,6 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . htmlspecialchars((string)$taskInfo['page'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.page');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $pageTitle = '';
         if (!empty($taskInfo['page'])) {
             $pageTitle = $this->getPageTitle((int)$taskInfo['page']);
@@ -133,6 +132,8 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'browser' => 'page',
             'pageTitle' => $pageTitle,
             'code' => $fieldCode,
+            'cshTable' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         // input for depth
@@ -155,9 +156,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         $fieldCode .= '</select>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.depth');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         $fieldId = 'task_languages';
@@ -168,9 +170,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . htmlspecialchars((string)$taskInfo['languages'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.languages');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         $fieldId = 'task_configuration';
@@ -180,9 +183,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . htmlspecialchars((string)$taskInfo['configuration'])
             . '</textarea>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.conf');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         $fieldId = 'task_email';
@@ -192,9 +196,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . htmlspecialchars((string)$taskInfo['email'])
             . '</textarea>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.email');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         $fieldId = 'task_emailOnBrokenLinkOnly';
@@ -203,9 +208,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . $fieldId . '" ' . ((bool)$taskInfo['emailOnBrokenLinkOnly'] ? 'checked="checked"' : '')
             . '></div>';
         $label = $lang->sL($this->languageFile . ':tasks.validate.emailOnBrokenLinkOnly');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         $fieldId = 'task_emailTemplateName';
@@ -216,9 +222,10 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             . htmlspecialchars((string)$taskInfo['emailTemplateName'])
             . '">';
         $label = $lang->sL($this->languageFile . ':tasks.validate.emailTemplateName');
-        $label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
         $additionalFields[$fieldId] = [
             'code' => $fieldCode,
+            'cshKey' => 'linkvalidator',
+            'cshLabel' => $fieldId,
             'label' => $label
         ];
         return $additionalFields;
