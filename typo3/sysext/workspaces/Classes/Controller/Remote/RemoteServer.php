@@ -247,15 +247,17 @@ class RemoteServer
         $historyService = GeneralUtility::makeInstance(HistoryService::class);
         $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
 
-        $prevStage = $this->stagesService->getPrevStage($parameter->stage);
-        $nextStage = $this->stagesService->getNextStage($parameter->stage);
-
-        if (isset($prevStage[0])) {
-            $prevStage = current($prevStage);
+        if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
+            $prevStage = $this->stagesService->getPrevStage($parameter->stage);
+            if (isset($prevStage[0])) {
+                $prevStage = current($prevStage);
+            }
         }
-
-        if (isset($nextStage[0])) {
-            $nextStage = current($nextStage);
+        if ($this->stagesService->isNextStageAllowedForUser($parameter->stage)) {
+            $nextStage = $this->stagesService->getNextStage($parameter->stage);
+            if (isset($nextStage[0])) {
+                $nextStage = current($nextStage);
+            }
         }
 
         return [
@@ -272,8 +274,8 @@ class RemoteServer
                     // escape/sanitize the others
                     'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
                     'label_Stage' => htmlspecialchars($this->stagesService->getStageTitle($parameter->stage)),
-                    'label_PrevStage' => $prevStage,
-                    'label_NextStage' => $nextStage,
+                    'label_PrevStage' => $prevStage ?? false,
+                    'label_NextStage' => $nextStage ?? false,
                     'stage_position' => (int)$stagePosition['position'],
                     'stage_count' => (int)$stagePosition['count'],
                     'parent' => [

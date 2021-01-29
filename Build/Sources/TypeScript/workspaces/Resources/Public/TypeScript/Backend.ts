@@ -851,7 +851,7 @@ class Backend extends Workspaces {
         ),
       );
 
-      if ($tr.data('stage') !== $tr.data('prevStage')) {
+      if (item.label_PrevStage !== false && $tr.data('stage') !== $tr.data('prevStage')) {
         modalButtons.push({
           text: item.label_PrevStage.title,
           active: true,
@@ -864,16 +864,18 @@ class Backend extends Workspaces {
         });
       }
 
-      modalButtons.push({
-        text: item.label_NextStage.title,
-        active: true,
-        btnClass: 'btn-default',
-        name: 'nextstage',
-        trigger: (): void => {
-          Modal.currentModal.trigger('modal-dismiss');
-          this.sendToStage($tr, 'next');
-        },
-      });
+      if (item.label_NextStage !== false) {
+        modalButtons.push({
+          text: item.label_NextStage.title,
+          active: true,
+          btnClass: 'btn-default',
+          name: 'nextstage',
+          trigger: (): void => {
+            Modal.currentModal.trigger('modal-dismiss');
+            this.sendToStage($tr, 'next');
+          },
+        });
+      }
       modalButtons.push({
         text: TYPO3.lang.close,
         active: true,
