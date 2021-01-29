@@ -860,15 +860,21 @@ class SearchController extends ActionController
         $entries = [];
         foreach ($searchWords as $val) {
             $entries[] = [
-                'word' => $val['sword'],
+                mb_substr($val['sword'], 0, 50),
                 // Time stamp
-                'tstamp' => $GLOBALS['EXEC_TIME'],
+                $GLOBALS['EXEC_TIME'],
                 // search page id for indexed search stats
-                'pageid' => $GLOBALS['TSFE']->id
+                $GLOBALS['TSFE']->id
             ];
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
-        $connection->bulkInsert('index_stat_word', $entries);
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('index_stat_word')
+            ->bulkInsert(
+                'index_stat_word',
+                $entries,
+                [ 'word', 'tstamp', 'pageid' ],
+                [ \PDO::PARAM_STR, \PDO::PARAM_INT, \PDO::PARAM_INT ]
+            );
     }
 
     /**
