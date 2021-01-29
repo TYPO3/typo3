@@ -48,16 +48,16 @@
 			<trans-unit id="task_email.description" resname="task_email.description">
 				<source>Email address to which an email report is sent.</source>
 			</trans-unit>
-			<trans-unit id="task_emailonbrokenlinkonly.alttitle" resname="task_emailonbrokenlinkonly.alttitle">
+			<trans-unit id="task_emailOnBrokenLinkOnly.alttitle" resname="task_emailOnBrokenLinkOnly.alttitle">
 				<source>Mailing option</source>
 			</trans-unit>
-			<trans-unit id="task_emailonbrokenlinkonly.description" resname="task_emailonbrokenlinkonly.description">
+			<trans-unit id="task_emailOnBrokenLinkOnly.description" resname="task_emailOnBrokenLinkOnly.description">
 				<source>Only send an email, if new broken links were found.</source>
 			</trans-unit>
-			<trans-unit id="task_emailfile.alttitle" resname="task_emailfile.alttitle">
+			<trans-unit id="task_emailTemplateFile.alttitle" resname="task_emailTemplateFile.alttitle">
 				<source>Email template file</source>
 			</trans-unit>
-			<trans-unit id="task_emailfile.description" resname="task_emailfile.description">
+			<trans-unit id="task_emailTemplateFile.description" resname="task_emailTemplateFile.description">
 				<source>Define a template to be used for the email.</source>
 			</trans-unit>
 		</body>
