@@ -588,7 +588,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If user is admin TRUE is also returned
      * Please see the document Inside TYPO3 for examples.
      *
-     * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets"
+     * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets", "mfa_providers"
      * @param string $value String to search for in the groupData-list
      * @return bool TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
      */
@@ -1222,6 +1222,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['modules'] = $this->user['userMods'];
             // Add available widgets
             $this->groupData['available_widgets'] = $this->user['available_widgets'] ?? '';
+            // Add allowed mfa providers
+            $this->groupData['mfa_providers'] = $this->user['mfa_providers'] ?? '';
             // Add Allowed Languages
             $this->groupData['allowed_languages'] = $this->user['allowed_languages'];
             // Set user value for workspace permissions.
@@ -1252,6 +1254,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 // Gather permission detail fields
                 $this->groupData['modules'] .= ',' . $groupInfo['groupMods'];
                 $this->groupData['available_widgets'] .= ',' . $groupInfo['availableWidgets'];
+                $this->groupData['mfa_providers'] .= ',' . $groupInfo['mfa_providers'];
                 $this->groupData['tables_select'] .= ',' . $groupInfo['tables_select'];
                 $this->groupData['tables_modify'] .= ',' . $groupInfo['tables_modify'];
                 $this->groupData['pagetypes_select'] .= ',' . $groupInfo['pagetypes_select'];
@@ -1291,6 +1294,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['custom_options'] = StringUtility::uniqueList($this->groupData['custom_options'] ?? '');
             $this->groupData['modules'] = StringUtility::uniqueList($this->groupData['modules'] ?? '');
             $this->groupData['available_widgets'] = StringUtility::uniqueList($this->groupData['available_widgets'] ?? '');
+            $this->groupData['mfa_providers'] = StringUtility::uniqueList($this->groupData['mfa_providers'] ?? '');
             $this->groupData['file_permissions'] = StringUtility::uniqueList($this->groupData['file_permissions'] ?? '');
 
             // Check if the user access to all web mounts set

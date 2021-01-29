@@ -206,6 +206,12 @@ return [
         ]
     ],
 
+    // Multi-factor authentication configuration
+    'mfa' => [
+        'path' => '/mfa',
+        'target' => Controller\MfaAjaxController::class . '::handleRequest'
+    ],
+
     // Render flash messages
     'flashmessages_render' => [
         'path' => '/flashmessages/render',

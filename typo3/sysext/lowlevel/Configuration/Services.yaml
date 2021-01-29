@@ -199,3 +199,11 @@ services:
         identifier: 'eventListeners'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:eventListeners'
         after: 'siteConfiguration'
+
+  lowlevel.configuration.module.provider.mfaproviders:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\MfaProvidersProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'mfaProviders'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:mfaProviders'
+        after: 'eventListeners'

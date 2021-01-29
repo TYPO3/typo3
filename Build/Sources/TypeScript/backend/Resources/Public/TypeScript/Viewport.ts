@@ -36,7 +36,9 @@ class Viewport {
     this.Topbar = new Topbar();
     this.NavigationContainer = new NavigationContainer(this.consumerScope, navigationSwitcher);
     this.ContentContainer = new ContentContainer(this.consumerScope);
-    this.NavigationContainer.setWidth(<number>Persistent.get('navigation.width'));
+    if (document.querySelector(ScaffoldIdentifierEnum.contentNavigation)) {
+      this.NavigationContainer.setWidth(<number>Persistent.get('navigation.width'));
+    }
     window.addEventListener('resize', this.fallbackNavigationSizeIfNeeded, {passive: true});
     if (navigationSwitcher) {
       navigationSwitcher.addEventListener('mouseup', this.toggleNavigation, {passive: true});

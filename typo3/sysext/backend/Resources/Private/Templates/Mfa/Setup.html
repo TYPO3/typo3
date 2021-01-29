@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.title" arguments="{0: '{provider.title -> f:translate(id: provider.title)}'}"/></h1>
+
+<div class="row g-6">
+    <div class="col">
+        <form
+            action="{f:be.uri(route:'mfa', parameters:'{action: \'activate\'}')}"
+            method="post"
+            enctype="multipart/form-data"
+            name="activate"
+            id="mfaConfigurationController">
+            <input type="hidden" name="identifier" value="{provider.identifier}" />
+            {providerContent -> f:format.raw()}
+        </form>
+    </div>
+    <f:if condition="{provider.setupInstructions}">
+        <div class="alert alert-info alert-dismissible col-md-4">
+            <div class="alert-heading">
+                <h4><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions"/></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions.close')}"></button>
+            </div>
+            <div class="alert-body">
+                <f:format.nl2br>{provider.setupInstructions -> f:translate(id: provider.setupInstructions)}</f:format.nl2br>
+            </div>
+        </div>
+    </f:if>
+</div>
+
+</html>

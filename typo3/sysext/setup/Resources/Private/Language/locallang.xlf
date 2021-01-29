@@ -318,8 +318,29 @@
 			<trans-unit id="passwordCurrent" resname="passwordCurrent">
 				<source>Current password</source>
 			</trans-unit>
-			<trans-unit id="passwordHeader" resname="passwordHeader">
-				<source>Password</source>
+			<trans-unit id="accountSecurity" resname="accountSecurity">
+				<source>Account security</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders" resname="mfaProviders">
+				<source>Multi-factor authentication providers</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.notAvailable" resname="mfaProviders.notAvailable">
+				<source>Currently no multi-factor authentication providers are available.</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.description" resname="mfaProviders.description">
+				<source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.lockedMfaProviders" resname="mfaProviders.lockedMfaProviders">
+				<source>Some providers are currently locked!</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.enabled" resname="mfaProviders.enabled">
+				<source>Enabled</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.setupLinkTitle" resname="mfaProviders.setupLinkTitle">
+				<source>Setup multi-factor authentication</source>
+			</trans-unit>
+			<trans-unit id="mfaProviders.manageLinkTitle" resname="mfaProviders.manageLinkTitle">
+				<source>Manage your MFA providers</source>
 			</trans-unit>
 			<trans-unit id="setupWasUpdated" resname="setupWasUpdated">
 				<source>User settings were updated.</source>

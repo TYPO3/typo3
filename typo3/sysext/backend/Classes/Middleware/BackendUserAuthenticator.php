@@ -23,6 +23,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -72,7 +74,16 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER']->start();
+        try {
+            $GLOBALS['BE_USER']->start();
+        } catch (MfaRequiredException $mfaRequiredException) {
+            // If MFA is required and we are not already on the "auth_mfa"
+            // route, force the user to it for further authentication
+            if ($route->getOption('_identifier') !== 'auth_mfa') {
+                return $this->redirectToMfaAuthProcess($GLOBALS['BE_USER'], $mfaRequiredException->getProvider());
+            }
+        }
+
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
         if ($this->isLoggedInBackendUserRequired($route)) {
@@ -138,6 +149,30 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         UserSessionManager::create('BE')->collectGarbage();
     }
 
+    /**
+     * Initiate a redirect to the auth_mfa route with the given
+     * provider and necessary cookies and headers appended.
+     *
+     * @param BackendUserAuthentication $user
+     * @param MfaProviderManifestInterface $provider
+     * @return ResponseInterface
+     */
+    protected function redirectToMfaAuthProcess(
+        BackendUserAuthentication $user,
+        MfaProviderManifestInterface $provider
+    ): ResponseInterface {
+        // GLOBALS[LANG] needs to be set up, because the UriBuilder is generating a token, which in turn
+        // needs the FormProtectionFactory, which then builds a Message Closure with GLOBALS[LANG] (hacky, yes!)
+        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($user);
+        $uri = GeneralUtility::makeInstance(UriBuilder::class)
+            ->buildUriFromRoute('auth_mfa', ['identifier' => $provider->getIdentifier()]);
+        $response = new RedirectResponse($uri);
+        // Add necessary cookies and headers to the response so
+        // the already passed authentication step is not lost.
+        $response = $user->appendCookieToResponse($response);
+        $response = $this->applyHeadersToResponse($response);
+        return $response;
+    }
     /**
      * Check if the user is required for the request.
      * If we're trying to do a login or an ajax login, don't require a user.

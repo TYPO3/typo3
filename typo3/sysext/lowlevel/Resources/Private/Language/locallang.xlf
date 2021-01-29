@@ -39,6 +39,9 @@
 			<trans-unit id="eventListeners" resname="eventListeners">
 				<source>Event Listeners (PSR-14)</source>
 			</trans-unit>
+			<trans-unit id="mfaProviders" resname="mfaProviders">
+				<source>MFA providers</source>
+			</trans-unit>
 			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>

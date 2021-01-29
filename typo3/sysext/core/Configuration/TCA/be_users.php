@@ -58,6 +58,14 @@ return [
                 'autocomplete' => false,
             ]
         ],
+        'mfa' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.mfa',
+            'config' => [
+                'type' => 'none',
+                'renderType' => 'mfaInfo',
+                'eval' => 'password' // Fallback to prevent raw data being displayed in the backend
+            ]
+        ],
         'usergroup' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup',
             'config' => [
@@ -346,7 +354,7 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                disable, admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+                disable, admin, username, password, mfa, avatar, usergroup, realName, email, lang, lastlogin,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.rights,
                 userMods, allowed_languages,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
@@ -361,7 +369,7 @@ return [
         '],
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                disable, admin, username, password, avatar, usergroup, realName, email, lang, lastlogin,
+                disable, admin, username, password, mfa, avatar, usergroup, realName, email, lang, lastlogin,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.options,
                 TSconfig, db_mountpoints, options, file_mountpoints,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,

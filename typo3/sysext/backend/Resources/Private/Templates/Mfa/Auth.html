@@ -1,0 +1,69 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="typo3-login">
+    <div class="typo3-login-inner">
+        <div class="typo3-login-container">
+            <div class="typo3-login-wrap">
+                <div class="card card-login">
+                    <header class="card-heading">
+                        <h2 class="text-center">{provider.title -> f:translate(id: provider.title)}</h2>
+                    </header>
+                    <main class="card-body">
+                        <f:if condition="{isLocked} || {hasAuthError}">
+                            <div id="t3-login-error">
+                                <div class="alert alert-danger">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.{f:if(condition: isLocked, then: 'locked', else: 'authError')}"/>
+                                </div>
+                            </div>
+                        </f:if>
+                        <f:if condition="!{isLocked}">
+                            <f:then>
+                                <form
+                                    action="{f:be.uri(route:'auth_mfa', parameters:'{action: \'verify\'}')}"
+                                    method="post"
+                                    enctype="multipart/form-data"
+                                    name="verify"
+                                    id="mfaController">
+                                    <input type="hidden" name="identifier" value="{provider.identifier}" />
+                                    {providerContent -> f:format.raw()}
+                                    <div class="form-group" id="t3-login-submit-section">
+                                        <button class="btn btn-block btn-login" type="submit" name="submit" autocomplete="off">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.submit"/>
+                                        </button>
+                                    </div>
+                                </form>
+                            </f:then>
+                            <f:else>
+                                <f:comment>In case, the provider is temporarily locked, still allow to render provider specific content.</f:comment>
+                                {providerContent -> f:format.raw()}
+                            </f:else>
+                        </f:if>
+                        <div class="cancel-authentication">
+                            <div class="text-right">
+                                <f:be.link route="auth_mfa" parameters="{action: 'cancel'}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel')}">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel"/>
+                                </f:be.link>
+                            </div>
+                        </div>
+                    </main>
+                    <f:if condition="{alternativeProviders}">
+                        <footer class="card-footer">
+                            <h5><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders"/></h5>
+                            <ul class="list-group px-lg-4">
+                                <f:for each="{alternativeProviders}" as="alternativeProvider">
+                                    <li>
+                                        <f:be.link route="auth_mfa" parameters="{identifier: alternativeProvider.identifier}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use', arguments: {0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'})}">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use" arguments="{0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'}"/>
+                                        </f:be.link>
+                                    </li>
+                                </f:for>
+                            </ul>
+                        </footer>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

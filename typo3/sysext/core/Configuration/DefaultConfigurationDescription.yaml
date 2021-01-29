@@ -263,6 +263,17 @@ BE:
         passwordResetForAdmins:
           type: bool
           description: 'Enable password reset functionality on the backend login for TYPO3 Administrators as well. Disable this option for increased security.'
+        requireMfa:
+          type: int
+          allowedValues:
+            '0': 'Do not require multi-factor authentication'
+            '1': 'Require multi-factor authentication for all users'
+            '2': 'Require multi-factor authentication only for non-admin users'
+            '3': 'Require multi-factor authentication only for admin users'
+          description: 'Define users which should be required to set up multi-factor authentication.'
+        recommendedMfaProvider:
+          type: text
+          description: 'Set the identifier of the multi-factor authentication provider, recommended for all users.'
         lockIP:
             type: int
             allowedValues:

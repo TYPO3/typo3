@@ -24,6 +24,9 @@
 			<trans-unit id="availableWidgets" resname="userMods">
 				<source>Dashboard widgets</source>
 			</trans-unit>
+			<trans-unit id="mfa_providers" resname="mfa_providers">
+				<source>Allowed multi-factor authentication providers</source>
+			</trans-unit>
 			<trans-unit id="allowed_languages" resname="allowed_languages">
 				<source>Limit to languages</source>
 			</trans-unit>
@@ -53,6 +56,9 @@
 			</trans-unit>
 			<trans-unit id="be_users.password" resname="be_users.password">
 				<source>Password</source>
+			</trans-unit>
+			<trans-unit id="be_users.mfa" resname="be_users.mfa">
+				<source>Multi-factor authentication</source>
 			</trans-unit>
 			<trans-unit id="be_users.avatar" resname="be_users.avatar">
 				<source>Avatar</source>

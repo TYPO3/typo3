@@ -1,0 +1,37 @@
+<fieldset class="row">
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label for="recoveryCodes" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.1"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.InputLabel"/>
+            </label>
+            <div class=form-field-item">
+            <span id="recoveryCodesHelp" class="text-muted">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.InputHelp"/>
+            </span>
+                <div class="form-control-wrap mt-1">
+                    <textarea type="text" id="recoveryCodes" name="recoveryCodes" class="form-control" readonly="readonly" style="min-height: 10rem;">{recoveryCodes}</textarea>
+                </div>
+            </div>
+            <button type="button" onclick="window.location.reload();" class="btn btn-default btn-sm" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.reloadTitle')}">
+                <core:icon identifier="actions-refresh" />
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.reloadLabel"/>
+            </button>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label for="name" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.2"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.name.label"/>
+            </label>
+            <div class=form-field-item">
+            <span id="nameHelp" class="text-muted">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.name.help"/>
+            </span>
+                <div class="form-control-wrap mt-1">
+                    <input type="text" id="name" name="name" value="" class="form-control"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="checksum" value="{checksum}"/>
+</fieldset>

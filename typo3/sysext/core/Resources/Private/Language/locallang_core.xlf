@@ -151,6 +151,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.cancel" resname="labels.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="labels.deactivate" resname="labels.deactivate">
+				<source>Deactivate</source>
+			</trans-unit>
 			<trans-unit id="labels.hidden" resname="labels.hidden">
 				<source>Hidden</source>
 			</trans-unit>
@@ -414,6 +417,18 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.label.search_levels" resname="labels.label.search_levels">
 				<source>Search levels</source>
+			</trans-unit>
+			<trans-unit id="labels.active" resname="labels.active">
+				<source>Active</source>
+			</trans-unit>
+			<trans-unit id="labels.locked" resname="labels.locked">
+				<source>Locked</source>
+			</trans-unit>
+			<trans-unit id="labels.mfa.enabled" resname="labels.mfa.enabled">
+				<source>MFA enabled</source>
+			</trans-unit>
+			<trans-unit id="labels.mfa.disabled" resname="labels.mfa.disabled">
+				<source>MFA disabled</source>
 			</trans-unit>
 			<trans-unit id="labels.recordReadonly" resname="labels.recordReadonly">
 				<source>The table is defined as readonly and can't be edited.</source>
@@ -911,6 +926,18 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="buttons.recreateSlugExplanation" resname="buttons.recreateSlugExplanation">
 				<source>Recalculate URL segment from page title</source>
+			</trans-unit>
+			<trans-unit id="buttons.deactivateMfa" resname="buttons.deactivateMfa">
+				<source>Deactivate multi-factor authentication</source>
+			</trans-unit>
+			<trans-unit id="buttons.deactivateMfaProvider" resname="buttons.deactivateMfaProvider">
+				<source>Deactivate %s</source>
+			</trans-unit>
+			<trans-unit id="buttons.deactivateMfa.confirmation.text" resname="deactivateMfa.confirmation.text">
+				<source>Are you sure you want to deactivate all active providers? This action can not be undone and will be applied immediately!</source>
+			</trans-unit>
+			<trans-unit id="buttons.deactivateMfaProvider.confirmation.text" resname="deactivateMfaProvider.confirmation.text">
+				<source>Are you sure you want to deactivate %s? This action can not be undone and will be applied immediately!</source>
 			</trans-unit>
 			<trans-unit id="slugCreation.success.page" resname="slugCreation.success.page">
 				<source>This page will be reachable via %s</source>

@@ -53,6 +53,15 @@ services:
   TYPO3\CMS\Backend\Controller\HelpController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\MfaConfigurationController:
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Backend\Controller\MfaController:
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Backend\Controller\MfaAjaxController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 

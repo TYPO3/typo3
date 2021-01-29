@@ -1,0 +1,26 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:if condition="!{isLocked}">
+    <f:then>
+        <div class="form-field-item">
+            <div class="form-control-wrap">
+                <div class="form-control-holder">
+                    <div class="form-control-clearable form-control">
+                        <input type="text" id="recoveryCode" class="form-control input-login" name="rc" value="" autofocus="autofocus" required="required" maxlength="8" minlength="8" pattern="[0-9]+" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:then>
+    <f:else>
+        <p>
+            <core:icon identifier="actions-lock"/>
+            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:locked"/>
+        </p>
+    </f:else>
+</f:if>
+
+</html>

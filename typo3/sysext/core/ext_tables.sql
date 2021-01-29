@@ -13,6 +13,7 @@ CREATE TABLE be_groups (
 	tables_modify text,
 	groupMods text,
 	availableWidgets text,
+	mfa_providers text,
 	file_mountpoints text,
 	file_permissions text,
 	TSconfig text,
@@ -58,6 +59,7 @@ CREATE TABLE be_users (
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
 	category_perms text,
+	mfa mediumblob,
 	KEY username (username)
 );
 

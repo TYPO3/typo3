@@ -93,6 +93,7 @@ class NodeFactory
         // special renderType for type="user" on sys_file_storage is_public column
         'userSysFileStorageIsPublic' => Element\UserSysFileStorageIsPublicElement::class,
         'fileInfo' => Element\FileInfoElement::class,
+        'mfaInfo' => Element\MfaInfoElement::class,
         'slug' => Element\InputSlugElement::class,
         'passthrough' => Element\PassThroughElement::class,
 

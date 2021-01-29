@@ -11,7 +11,8 @@
                 </td>
                 <td class="col-title">
                     <b>{onlineUser.backendUser.userName}</b>
-                    <span class="label label-success"><f:translate key="online" /></span><br />
+                    <span class="label label-success"><f:translate key="online" /></span>
+                    <bu:mfaStatus userUid="{onlineUser.backendUser.uid}"/><br />
                     {onlineUser.backendUser.realName}
                 </td>
             </f:then>

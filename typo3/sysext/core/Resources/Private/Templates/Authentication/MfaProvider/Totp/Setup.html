@@ -1,0 +1,59 @@
+<fieldset class="row">
+    <div class="col-lg-4">
+        <div class="mt-3">
+            <label for="qr-code" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.1a"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.qrCode.label"/>
+            </label>
+            <div class="form-field-item">
+            <span id="qrCodeHelp" class="text-muted">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.qrCode.help"/>
+            </span>
+                <div class="form-control-wrap mt-1">
+                    <div id="qr-code" class="border float-start">{qrCode -> f:format.raw()}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="mt-3 mb-3">
+            <label for="secret" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.1b"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.secret.label"/>
+            </label>
+            <div class="form-field-item">
+                <span id="secretHelp" class="text-muted">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.secret.help"/>
+                </span>
+                <div class="form-control-wrap mt-1">
+                    <input type="text" id="secret" name="secret" value="{secret}" readonly="readonly" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.2"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.name.label"/>
+            </label>
+            <div class="form-field-item">
+                <span id="nameHelp" class="text-muted">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.name.help"/>
+                </span>
+                <div class="form-control-wrap mt-1">
+                    <input type="text" id="name" name="name" value="" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="totp" class="form-label">
+                <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.3"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totpInputLabel"/>
+            </label>
+            <div class="form-field-item">
+                <span id="totpHelp" class="text-muted">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totpInputHelp"/>
+                </span>
+                <div class="form-control-wrap mt-1">
+                    <input type="text" id="totp" name="totp" value="" required="required" class="form-control" maxlength="6" minlength="6" pattern="[0-9]+"/>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="checksum" value="{checksum}"/>
+    </div>
+</fieldset>

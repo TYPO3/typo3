@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="table-fit">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.head"/>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.name"/>
+                    </td>
+                    <td>
+                        <f:if condition="{name}">
+                            <f:then>
+                                {name}
+                            </f:then>
+                            <f:else>
+                                <input type="text" id="name" name="name" value="" class="form-control" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.nameInputPlaceholder')}"/>
+                            </f:else>
+                        </f:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.lastUsed"/>
+                    </td>
+                    <td>
+                        <f:if condition="{lastUsed}">
+                            <f:then>{lastUsed}</f:then>
+                            <f:else><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.lastUsed.default"/></f:else>
+                        </f:if>
+                    </td>
+                </tr>
+                <f:if condition="{updated}">
+                    <tr>
+                        <td>
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:edit.table.lastUpdated"/>
+                        </td>
+                        <td>
+                            {updated}
+                        </td>
+                    </tr>
+                </f:if>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

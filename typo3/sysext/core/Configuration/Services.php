@@ -19,6 +19,7 @@ return function (ContainerConfigurator $container, ContainerBuilder $containerBu
 
     $containerBuilder->addCompilerPass(new DependencyInjection\SingletonPass('typo3.singleton'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerAwarePass('psr.logger_aware'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.request_handler'));

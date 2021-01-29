@@ -1,0 +1,48 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:variable name="providerTitle" value="{provider.title -> f:translate(id: provider.title)}"/>
+
+<h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.title" arguments="{0: providerTitle}"/></h1>
+<p><f:format.nl2br>{provider.description -> f:translate(id: provider.description)}</f:format.nl2br></p>
+
+<form
+    action="{f:be.uri(route:'mfa', parameters:'{action: \'save\'}')}"
+    method="post"
+    enctype="multipart/form-data"
+    name="edit"
+    id="mfaConfigurationController">
+    <input type="hidden" name="identifier" value="{provider.identifier}" />
+    <div class="mb-3">
+        {providerContent -> f:format.raw()}
+    </div>
+    <div class="mfa-provider-settings">
+        <f:if condition="{provider.defaultProviderAllowed}">
+            <div class="row mb-3">
+                <div class="col-md-5">
+                    <h4><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.defaultProvider"/></h4>
+                    <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.defaultProvider.description"/></p>
+                    <div class="form-check">
+                        <input type="checkbox" name="defaultProvider" id="defaultProvider" class="form-check-input" value="1" {f:if(condition: isDefaultProvider, then: 'checked="checked"')} />
+                        <label class="form-check-label" for="defaultProvider">
+                    <span class="form-check-label-text">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.defaultProvider.inputLabel"/>
+                    </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </f:if>
+        <div class="row">
+            <div class="col">
+                <h4><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.deactivateProvider"/></h4>
+                <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.deactivateProvider.description"/></p>
+                <f:be.link route="mfa" parameters="{action: 'deactivate', identifier: provider.identifier}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.deactivateProvider.linkTitle', arguments: '{0: providerTitle}')}" class="btn btn-danger">
+                    <core:icon identifier="actions-toggle-off" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.deactivateProvider.linkText"/>
+                </f:be.link>
+            </div>
+        </div>
+    </div>
+</form>
+
+</html>

@@ -180,6 +180,12 @@
 			<trans-unit id="online" resname="online">
 				<source>online</source>
 			</trans-unit>
+			<trans-unit id="lockedMfaProviders" resname="lockedMfaProviders">
+				<source>Locked MFA providers</source>
+			</trans-unit>
+			<trans-unit id="mfaEnabled" resname="mfaEnabled">
+				<source>MFA enabled</source>
+			</trans-unit>
 			<trans-unit id="visibility.hide" resname="visibility.hide">
 				<source>Hide</source>
 			</trans-unit>

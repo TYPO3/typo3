@@ -64,6 +64,18 @@ return [
         'target' => Controller\LoginController::class . '::refreshAction'
     ],
 
+    // Authentication endpoint for Multi-factor authentication
+    'auth_mfa' => [
+        'path' => '/auth/mfa',
+        'target' => Controller\MfaController::class . '::handleRequest'
+    ],
+
+    // Multi-factor authentication configuration
+    'mfa' => [
+        'path' => '/mfa',
+        'target' => Controller\MfaConfigurationController::class . '::handleRequest'
+    ],
+
     /** Wizards */
     // Register table wizard
     'wizard_table' => [

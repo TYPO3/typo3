@@ -62,6 +62,7 @@ CREATE TABLE fe_users (
 	TSconfig text,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
+	mfa mediumblob,
 
 	KEY parent (pid,username(100)),
 	KEY username (username(100)),

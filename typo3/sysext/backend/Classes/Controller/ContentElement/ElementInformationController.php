@@ -351,6 +351,11 @@ class ElementInformationController
                 continue;
             }
 
+            // @todo Add meaningful information for mfa field. For the time being we don't display anything at all.
+            if ($this->type === 'db' && $name === 'mfa' && in_array($this->table, ['be_users', 'fe_users'], true)) {
+                continue;
+            }
+
             // not a real field -> skip
             if ($this->type === 'file' && $name === 'fileinfo') {
                 continue;

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1611662325" source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms">
+		<header/>
+		<body>
+			<trans-unit id="overview.title" resname="overview.title">
+				<source>Multi-factor Authentication Overview</source>
+			</trans-unit>
+			<trans-unit id="overview.badge.active" resname="overview.badge.active">
+				<source>Active</source>
+			</trans-unit>
+			<trans-unit id="overview.badge.locked" resname="overview.badge.locked">
+				<source>Locked</source>
+			</trans-unit>
+			<trans-unit id="overview.defaultProvider" resname="overview.defaultProvider">
+				<source>Default provider</source>
+			</trans-unit>
+			<trans-unit id="overview.unlockLinkTitle" resname="overview.unlockLinkTitle">
+				<source>Unlock %s</source>
+			</trans-unit>
+			<trans-unit id="overview.unlockLinkLabel" resname="overview.unlockLinkLabel">
+				<source>Unlock</source>
+			</trans-unit>
+			<trans-unit id="overview.editLinkTitle" resname="overview.editLinkTitle">
+				<source>Edit %s</source>
+			</trans-unit>
+			<trans-unit id="overview.editLinkLabel" resname="overview.editLinkLabel">
+				<source>Edit / Change</source>
+			</trans-unit>
+			<trans-unit id="overview.deactivateLinkTitle" resname="overview.deactivateLinkTitle">
+				<source>Deactivate %s</source>
+			</trans-unit>
+			<trans-unit id="overview.deactivateLinkLabel" resname="overview.deactivateLinkLabel">
+				<source>Deactivate</source>
+			</trans-unit>
+			<trans-unit id="overview.setupLinkTitle" resname="overview.setupLinkTitle">
+				<source>Setup %s</source>
+			</trans-unit>
+			<trans-unit id="overview.setupLinkLabel" resname="overview.setupLinkLabel">
+				<source>Setup</source>
+			</trans-unit>
+			<trans-unit id="overview.setupRequired.title" resname="overview.setupRequired.title">
+				<source>Multi-factor authentication required</source>
+			</trans-unit>
+			<trans-unit id="overview.setupRequired.message" resname="overview.setupRequired.message">
+				<source>
+					Your installation requires MFA. Therefore please setup one of the following providers to be
+					able to continue to use the backend.
+				</source>
+			</trans-unit>
+			<trans-unit id="overview.noProviders.title" resname="overview.noProviders.title">
+				<source>No multi-factor authentication providers</source>
+			</trans-unit>
+			<trans-unit id="overview.noProviders.message" resname="overview.noProviders.message">
+				<source>There are currently no multi-factor authentication providers available.</source>
+			</trans-unit>
+			<trans-unit id="overview.noProviders.errorMessage" resname="overview.noProviders.errorMessage">
+				<source>
+					You are required to setup MFA but there are no providers to activate available. You should contact
+					your administrator to solve this.
+				</source>
+			</trans-unit>
+			<trans-unit id="providerNotFound" resname="providerNotFound">
+				<source>Selected MFA provider was not found!</source>
+			</trans-unit>
+			<trans-unit id="setup.instructions" resname="setup.instructions">
+				<source>Setup instructions</source>
+			</trans-unit>
+			<trans-unit id="setup.instructions.close" resname="setup.instructions.close">
+				<source>Close setup instructions</source>
+			</trans-unit>
+			<trans-unit id="setup.title" resname="setup.title">
+				<source>Set up %s</source>
+			</trans-unit>
+			<trans-unit id="edit.title" resname="edit.title">
+				<source>Edit %s</source>
+			</trans-unit>
+			<trans-unit id="edit.defaultProvider" resname="edit.defaultProvider">
+				<source>Default provider</source>
+			</trans-unit>
+			<trans-unit id="edit.defaultProvider.description" resname="edit.defaultProvider.description">
+				<source>Select this as your default provider for login into the TYPO3 backend.</source>
+			</trans-unit>
+			<trans-unit id="edit.defaultProvider.inputLabel" resname="edit.defaultProvider.inputLabel">
+				<source>Use as default provider</source>
+			</trans-unit>
+			<trans-unit id="edit.deactivateProvider" resname="edit.deactivateProvider">
+				<source>Deactivate provider</source>
+			</trans-unit>
+			<trans-unit id="edit.deactivateProvider.description" resname="edit.deactivateProvider.description">
+				<source>If you don't want to use this provider anymore, you can deactivate it here.</source>
+			</trans-unit>
+			<trans-unit id="edit.deactivateProvider.linkTitle" resname="edit.deactivateProvider.linkTitle">
+				<source>Deactivate %s</source>
+			</trans-unit>
+			<trans-unit id="edit.deactivateProvider.linkText" resname="edit.deactivateProvider.linkText">
+				<source>Deactivate this provider</source>
+			</trans-unit>
+			<trans-unit id="activate.failure" resname="activate.failure">
+				<source>Could not activate MFA provider %s. Please try again.</source>
+			</trans-unit>
+			<trans-unit id="activate.success" resname="activate.success">
+				<source>Successfully activated MFA provider %s.</source>
+			</trans-unit>
+			<trans-unit id="deactivate.failure" resname="deactivate.failure">
+				<source>Could not deactivate MFA provider %s. Please try again.</source>
+			</trans-unit>
+			<trans-unit id="deactivate.success" resname="deactivate.success">
+				<source>Successfully deactivated MFA provider %s.</source>
+			</trans-unit>
+			<trans-unit id="unlock.failure" resname="unlock.failure">
+				<source>Could not unlock MFA provider %s. Please try again.</source>
+			</trans-unit>
+			<trans-unit id="unlock.success" resname="unlock.success">
+				<source>Successfully unlocked MFA provider %s.</source>
+			</trans-unit>
+			<trans-unit id="save.failure" resname="save.failure">
+				<source>Could not update MFA provider %s. Please try again.</source>
+			</trans-unit>
+			<trans-unit id="save.success" resname="save.success">
+				<source>Successfully updated MFA provider %s.</source>
+			</trans-unit>
+			<trans-unit id="auth.authError" resname="auth.authError">
+				<source>Authentication was not succesful</source>
+			</trans-unit>
+			<trans-unit id="auth.submit" resname="auth.submit">
+				<source>Verify</source>
+			</trans-unit>
+			<trans-unit id="auth.cancel" resname="auth.cancel">
+				<source>Go back</source>
+			</trans-unit>
+			<trans-unit id="auth.locked" resname="auth.locked">
+				<source>This provider is temporarily locked!</source>
+			</trans-unit>
+			<trans-unit id="auth.alternativeProviders" resname="auth.alternativeProviders">
+				<source>Alternative providers</source>
+			</trans-unit>
+			<trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use">
+				<source>Use %s</source>
+			</trans-unit>
+			<trans-unit id="ajax.success">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="ajax.error">
+				<source>An error occurred</source>
+			</trans-unit>
+			<trans-unit id="ajax.invalidRequest">
+				<source>Invalid request could not be processed</source>
+			</trans-unit>
+			<trans-unit id="ajax.insufficientPermissions">
+				<source>Your are not allowed to perfom this action</source>
+			</trans-unit>
+			<trans-unit id="ajax.deactivate.providersNotDeactivated">
+				<source>No provider was deactivated</source>
+			</trans-unit>
+			<trans-unit id="ajax.deactivate.providersDeactivated">
+				<source>Successfully deactivated all active providers for user %s</source>
+			</trans-unit>
+			<trans-unit id="ajax.deactivate.providerNotFound">
+				<source>Provider %s could not be found</source>
+			</trans-unit>
+			<trans-unit id="ajax.deactivate.providerNotDeactivated">
+				<source>Could not deactivate provider %s</source>
+			</trans-unit>
+			<trans-unit id="ajax.deactivate.providerDeactivated">
+				<source>Successfully deactivated provider %s for user %s</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

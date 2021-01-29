@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -83,7 +84,13 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     {
         // New backend user object
         $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
-        $backendUserObject->start();
+        try {
+            $backendUserObject->start();
+        } catch (MfaRequiredException $e) {
+            // Do nothing, as the user is not fully authenticated - has not
+            // passed required multi-factor authentication - via the backend.
+            return null;
+        }
         $backendUserObject->unpack_uc();
         if (!empty($backendUserObject->user['uid'])) {
             $this->setBackendUserAspect($backendUserObject, (int)$backendUserObject->user['workspace_id']);

@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
@@ -262,7 +264,15 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
-        $this->checkAuthentication();
+        try {
+            $this->checkAuthentication();
+        } catch (MfaRequiredException $mfaRequiredException) {
+            // Ensure the cookie is still set to keep the user session available
+            if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
+                $this->setSessionCookie();
+            }
+            throw $mfaRequiredException;
+        }
         // Set cookie if generally enabled or if the current session is a non-session cookie (FE permalogin)
         if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
             $this->setSessionCookie();
@@ -607,6 +617,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->regenerateSessionId();
             }
 
+            // Check if multi-factor authentication is required
+            $this->evaluateMfaRequirements();
+
             if ($activeLogin) {
                 // User logged in - write that to the log!
                 if ($this->writeStdLog) {
@@ -634,6 +647,34 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->handleLoginFailure();
             }
         }
+    }
+
+    /**
+     * This method checks if the user is authenticated but has not succeeded in
+     * passing his MFA challenge. This method can therefore only be used if a user
+     * has been authenticated against his first authentication method (username+password
+     * or any other authentication token).
+     *
+     * @throws MfaRequiredException
+     * @internal
+     */
+    protected function evaluateMfaRequirements(): void
+    {
+        // MFA has been validated already, nothing to do
+        if ($this->getSessionData('mfa')) {
+            return;
+        }
+        // If the user session does not contain the 'mfa' key - indicating that MFA is already
+        // passed - get the first provider for authentication, which is either the default provider
+        // or the first active provider (based on the providers configured ordering).
+        $provider = GeneralUtility::makeInstance(MfaProviderRegistry::class)->getFirstAuthenticationAwareProvider($this);
+        // Throw an exception (hopefully called in a middleware) when an active provider for the user exists
+        if ($provider !== null) {
+            throw new MfaRequiredException($provider, 1613687097);
+        }
+        // @todo If user has no active providers, check if the user is required to
+        //       setup MFA and redirect to a standalone registration controller.
+        //       Currently we just let the user proceed to its original target.
     }
 
     /**

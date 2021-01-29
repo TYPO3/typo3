@@ -68,6 +68,31 @@ services:
   TYPO3\CMS\Core\Controller\FileDumpController:
     public: true
 
+  TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry:
+    public: true
+
+  TYPO3\CMS\Core\Authentication\Mfa\Provider\TotpProvider:
+    tags:
+      - name: mfa.provider
+        identifier: 'totp'
+        title: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.title'
+        description: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description'
+        setupInstructions: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.setupInstructions'
+        icon: 'content-coffee'
+        defaultProviderAllowed: true
+        before: 'recovery-codes'
+
+  TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodesProvider:
+    tags:
+      - name: mfa.provider
+        identifier: 'recovery-codes'
+        title: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.title'
+        description: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.description'
+        setupInstructions: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.setupInstructions'
+        icon: 'content-text-columns'
+        defaultProviderAllowed: false
+        after: 'totp'
+
   TYPO3\CMS\Core\Core\ClassLoadingInformation:
     public: false
     tags:
