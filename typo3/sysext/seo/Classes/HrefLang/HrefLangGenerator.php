@@ -69,7 +69,7 @@ class HrefLangGenerator
         $pageId = (int)$this->getTypoScriptFrontendController()->id;
 
         foreach ($languages['languagemenu'] as $language) {
-            if ($language['available'] === 1 && !empty($language['link']) && $language['hreflang']) {
+            if (!empty($language['link']) && $language['hreflang']) {
                 $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $event->getRequest());
                 if (!empty($page['canonical_link'])) {
                     // do not set hreflang when canonical is set

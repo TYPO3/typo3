@@ -37,6 +37,7 @@ entities:
     - self: {id: 1, title: 'German', code: 'de'}
     - self: {id: 2, title: 'Swiss German', code: 'de'}
     - self: {id: 3, title: 'Dutch', code: 'nl'}
+    - self: {id: 4, title: 'French', code: 'fr'}
   page:
     - self: {id: *idAcmeRootPage, title: 'EN: Root', root: true, slug: '/'}
       children:
@@ -52,3 +53,7 @@ entities:
           languageVariants:
             - self: {id: 1301, title: 'DE: Uber', language: 1, slug: '/uber'}
             - self: {id: 1302, title: 'DE-CH: Uber', language: 2, slug: '/uber', canonical_link: 'https://acme.com/de/uber'}
+        - self: {id: 1400, title: 'EN: Products', slug: '/products'}
+          languageVariants:
+            - self: {id: 1401, title: 'DE: Produkte', language: 1, slug: '/produkte'}
+            - self: {id: 1402, title: 'DE-CH: Produkte', language: 2, slug: '/produkte'}

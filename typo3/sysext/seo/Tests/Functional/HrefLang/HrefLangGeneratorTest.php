@@ -45,6 +45,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
         'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8', 'iso' => 'nl', 'hrefLang' => '', 'direction' => ''],
+        'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
     ];
 
     public static function setUpBeforeClass(): void
@@ -69,8 +70,9 @@ class HrefLangGeneratorTest extends FunctionalTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('DE', '/de'),
-                $this->buildLanguageConfiguration('DE-CH', '/de-ch'),
+                $this->buildLanguageConfiguration('DE-CH', '/de-ch', ['DE'], 'fallback'),
                 $this->buildLanguageConfiguration('NL', '/nl'),
+                $this->buildLanguageConfiguration('FR', '/fr'),
             ]
         );
 
@@ -113,11 +115,14 @@ class HrefLangGeneratorTest extends FunctionalTestCase
     public function checkHrefLangOutputDataProvider(): array
     {
         return [
-            'No translation available, so no hreflang tags expected' => [
+            'No translation available, so only hreflang tags expected for default language and fallback languages' => [
                 'https://acme.com/',
-                [],
                 [
-                    '<link rel="alternate" hreflang='
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/"/>',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/"/>',
+                ],
+                [
+                    '<link rel="alternate" hreflang="de-DE"'
                 ]
             ],
             'English page, with German translation' => [
@@ -184,6 +189,27 @@ class HrefLangGeneratorTest extends FunctionalTestCase
                     '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/uber"/>',
                 ]
             ],
+            'Swiss german page with fallback to German, without content' => [
+                'https://acme.com/de-ch/produkte',
+                [
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/products"/>',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/products"/>',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/produkte"/>',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/produkte"/>',
+                ],
+                []
+            ],
+            'Languages with fallback should have hreflang even when page record is not translated, strict languages without translations shouldnt' => [
+                'https://acme.com/hello',
+                [
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/willkommen"/>',
+                ],
+                [
+                    '<link rel="alternate" hreflang="fr-FR"',
+
+                ]
+            ],
+
         ];
     }
 
