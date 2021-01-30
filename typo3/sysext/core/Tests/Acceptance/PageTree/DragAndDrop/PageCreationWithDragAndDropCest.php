@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 class PageCreationWithDragAndDropCest
 {
     protected static string $treeNode = '#typo3-pagetree-tree .nodes .node';
-    protected static string $dragNode = '#svg-toolbar .svg-toolbar__drag-node';
+    protected static string $dragNode = '#typo3-pagetree-toolbar .svg-toolbar__drag-node';
     protected static string $nodeEditInput = '.node-edit';
 
     /**

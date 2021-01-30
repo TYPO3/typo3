@@ -319,17 +319,27 @@ span.dragIcon {
 // Tree
 //
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php],
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body,
-[id=typo3-pagetree-treeContainer] {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body {
     background-color: $navigation-bg;
     height: 100%;
 }
 
-[id=typo3-pagetree-tree] {
-    height: 100%;
+.scaffold-content-navigation-component {
+    &,
+    .svg-tree,
+    .svg-tree > div,
+    .navigation-tree-container {
+        flex: 1 0 0;
+        display: flex;
+        flex-direction: column;
+    }
 
-    .x-panel-body {
-        height: 100% !important;
+    .svg-tree-wrapper {
+        flex: 1 0 0;
+    }
+
+    .navigation-tree-container {
+        background-color: $navigation-bg;
     }
 }
 

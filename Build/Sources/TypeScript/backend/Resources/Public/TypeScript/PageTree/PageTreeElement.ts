@@ -31,12 +31,12 @@ export class PageTreeElement {
     // let SvgTree know it shall be visible
     // @todo Replace jQuery event with CustomEvent
     if (targetEl && targetEl.childNodes.length > 0) {
-      $('#typo3-pagetree').trigger('isVisible');
+      $('.svg-tree', targetEl).trigger('isVisible');
       return;
     }
 
     render(PageTreeElement.renderTemplate(), targetEl);
-    const treeEl = targetEl.querySelector('#typo3-pagetree-tree');
+    const treeEl = targetEl.querySelector('.svg-tree-wrapper');
 
     // Ensure tooltips don't stay when scrolling the pagetree
     $(treeEl).on('scroll', () => {
@@ -58,10 +58,10 @@ export class PageTreeElement {
         tree.initialize(treeEl, configuration);
         viewPort.NavigationContainer.setComponentInstance(tree);
         // the toolbar relies on settings retrieved in this step
-        const toolbar = document.getElementById('svg-toolbar');
+        const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
         if (!toolbar.dataset.treeShowToolbar) {
           const pageTreeToolbar = new PageTreeToolbar();
-          pageTreeToolbar.initialize('#typo3-pagetree-tree');
+          pageTreeToolbar.initialize('#typo3-pagetree-tree', toolbar);
           toolbar.dataset.treeShowToolbar = 'true';
         }
       });
@@ -71,9 +71,9 @@ export class PageTreeElement {
     return html`
       <div id="typo3-pagetree" class="svg-tree">
         <div>
-          <div id="svg-toolbar" class="svg-toolbar"></div>
-          <div id="typo3-pagetree-treeContainer">
-            <div id="typo3-pagetree-tree" class="svg-tree-wrapper" style="height:1000px;">
+          <div id="typo3-pagetree-toolbar" class="svg-toolbar"></div>
+          <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
+            <div id="typo3-pagetree-tree" class="svg-tree-wrapper">
               <div class="node-loader">
                 ${icon('spinner-circle-light', 'small')}
               </div>

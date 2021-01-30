@@ -24,11 +24,11 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\SiteConfiguration;
 
 class PageTreeFilterCest
 {
-    protected $filterInputFieldClearButton = '#typo3-pagetree #svg-toolbar span[data-identifier=actions-close]';
-    protected $filterButton = '#typo3-pagetree #svg-toolbar button[data-tree-icon=actions-filter]';
-    protected $filterInputField = '#typo3-pagetree #svg-toolbar .search-input';
-    protected $pageTreeReloadButton = '#typo3-pagetree #svg-toolbar button[data-tree-icon=actions-refresh]';
-    protected $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    protected $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
+    protected $filterButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-filter]';
+    protected $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
+    protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-refresh]';
+    protected $inPageTree = '#typo3-pagetree-tree .nodes';
 
     public function _before(BackendTester $I, PageTree $pageTree, SiteConfiguration $siteConfiguration)
     {

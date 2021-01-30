@@ -167,7 +167,6 @@ define(
         $.extend(this.settings, settings);
         var _this = this;
         this.wrapper = $wrapper;
-        this.setWrapperHeight();
         this.dispatch = d3.dispatch(
           'updateNodes',
           'updateSvg',
@@ -226,8 +225,9 @@ define(
           _this.update();
         });
 
-        $('#typo3-pagetree').on('isVisible', function() {
-          _this.updateWrapperHeight();
+        this.wrapper.on('isVisible', function() {
+          _this.updateScrollPosition();
+          _this.update();
         });
 
         this.wrapper.data('svgtree', this);
@@ -350,8 +350,9 @@ define(
       resize: function() {
         var _this = this;
         $(window).on('resize', function() {
-          if ($('#typo3-pagetree').is(':visible')) {
-            _this.updateWrapperHeight();
+          if ($(_this.wrapper).is(':visible')) {
+            _this.updateScrollPosition();
+            _this.update();
           }
         });
       },
@@ -383,25 +384,6 @@ define(
       },
 
       /**
-       * Update svg wrapper height
-       */
-      updateWrapperHeight: function() {
-        var _this = this;
-
-        _this.setWrapperHeight();
-        _this.updateScrollPosition();
-        _this.update();
-      },
-
-      /**
-       * Set svg wrapper height
-       */
-      setWrapperHeight: function() {
-        var treeWrapperHeight = ($('body').height() - $('#svg-toolbar').outerHeight() - $('.scaffold-topbar').height());
-        $('#typo3-pagetree-tree').height(treeWrapperHeight);
-      },
-
-      /**
        * Updates variables used for visible nodes calculation
        */
       updateScrollPosition: function() {
@@ -426,6 +408,9 @@ define(
             var nodes = Array.isArray(json) ? json : [];
             _this.replaceData(nodes);
             _this.nodesRemovePlaceholder();
+            // @todo: needed?
+            _this.updateScrollPosition();
+            _this.update();
           })
           .catch(function(error) {
             var title = TYPO3.lang.pagetree_networkErrorTitle;

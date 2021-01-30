@@ -28,7 +28,6 @@ export class PageTreeToolbar
   private settings = {
     toolbarSelector: 'tree-toolbar',
     searchInput: '.search-input',
-    target: '.svg-toolbar',
     filterTimeout: 450
   };
 
@@ -43,8 +42,9 @@ export class PageTreeToolbar
     this.dragDrop = pageTreeDragDrop;
   }
 
-  public initialize(treeSelector: string, settings: any = {}): void {
+  public initialize(treeSelector: string, toolbar: HTMLElement, settings: any = {}): void {
     this.$treeWrapper = $(treeSelector);
+    this.targetEl = toolbar;
 
     if (!this.$treeWrapper.data('svgtree-initialized')
       || typeof this.$treeWrapper.data('svgtree') !== 'object'
@@ -149,9 +149,7 @@ export class PageTreeToolbar
     // @todo Better use initialize() settings, drop this assignment here
     Object.assign(this.settings, this.tree.settings);
 
-    this.targetEl = document.querySelector(this.settings.target);
     render(this.renderTemplate(), this.targetEl);
-    this.tree.setWrapperHeight();
 
     const d3Toolbar = d3.select('.svg-toolbar');
     $.each(this.tree.settings.doktypes, (id: number, item: any) => {
@@ -167,7 +165,7 @@ export class PageTreeToolbar
     new DebounceEvent('input', (evt: InputEvent) => {
       this.search(evt.target as HTMLInputElement);
     }, this.settings.filterTimeout)
-      .bindTo(document.querySelector(this.settings.searchInput));
+      .bindTo(this.targetEl.querySelector(this.settings.searchInput));
 
     $(this.targetEl).find('[data-bs-toggle="tooltip"]').tooltip();
 
