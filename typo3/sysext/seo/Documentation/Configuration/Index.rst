@@ -217,6 +217,7 @@ If you want to have a fallback og:image or twitter:image, you can use this littl
      meta {
        og:image.stdWrap.cObject = TEXT
        og:image.stdWrap.cObject {
+         if.isFalse.field = og_image
          stdWrap.typolink {
            parameter.stdWrap.cObject = IMG_RESOURCE
            parameter.stdWrap.cObject.file = EXT:your_extension/Resources/Public/Backend/OgImage.svg
@@ -226,6 +227,7 @@ If you want to have a fallback og:image or twitter:image, you can use this littl
        }
        twitter:image.stdWrap.cObject = TEXT
        twitter:image.stdWrap.cObject {
+         if.isFalse.field = twitter_image
          stdWrap.typolink {
            parameter.stdWrap.cObject = IMG_RESOURCE
            parameter.stdWrap.cObject.file = EXT:your_extension/Resources/Public/Backend/TwitterCardImage.svg
