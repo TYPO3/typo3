@@ -43,7 +43,7 @@ CREATE TABLE be_users (
 	avatar int(11) unsigned NOT NULL default '0',
 	password varchar(100) DEFAULT '' NOT NULL,
 	admin tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	usergroup varchar(255) DEFAULT '' NOT NULL,
+	usergroup text,
 	lang varchar(6) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	db_mountpoints text,

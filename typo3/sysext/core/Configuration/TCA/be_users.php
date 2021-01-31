@@ -73,7 +73,6 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
                 'size' => 5,
-                'maxitems' => 20,
                 'fieldControl' => [
                     'editPopup' => [
                         'disabled' => false,

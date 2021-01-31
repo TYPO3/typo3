@@ -42,7 +42,7 @@ CREATE TABLE fe_sessions (
 CREATE TABLE fe_users (
 	username varchar(255) DEFAULT '' NOT NULL,
 	password varchar(100) DEFAULT '' NOT NULL,
-	usergroup tinytext,
+	usergroup text,
 	name varchar(160) DEFAULT '' NOT NULL,
 	first_name varchar(50) DEFAULT '' NOT NULL,
 	middle_name varchar(50) DEFAULT '' NOT NULL,

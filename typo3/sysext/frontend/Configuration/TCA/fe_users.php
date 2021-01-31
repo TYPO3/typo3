@@ -49,8 +49,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
                 'size' => 6,
-                'minitems' => 1,
-                'maxitems' => 50
+                'minitems' => 1
             ]
         ],
         'name' => [
