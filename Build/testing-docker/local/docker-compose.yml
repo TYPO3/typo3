@@ -23,14 +23,12 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: "Test1234!"
       MSSQL_PID: Developer
-    tmpfs:
-      - /var/lib/mssql:rw,noexec,nosuid
 
   postgres:
     image: postgres:${POSTGRES_VERSION}
     environment:
       POSTGRES_PASSWORD: funcp
-      POSTGRES_USER: ${HOST_USER}
+      POSTGRES_USER: funcu
     tmpfs:
       - /var/lib/postgresql/data:rw,noexec,nosuid
 
@@ -141,7 +139,7 @@ services:
         fi
         mkdir -p typo3temp/var/tests/ \
           && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
-       "
+      "
 
   prepare_acceptance_install_mariadb:
     image: alpine:3.8
@@ -180,7 +178,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --html reports.html
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_postgres:
@@ -206,7 +204,7 @@ services:
     environment:
       typo3InstallPostgresqlDatabaseHost: postgres
       typo3InstallPostgresqlDatabaseName: ${HOST_USER}
-      typo3InstallPostgresqlDatabaseUsername: ${HOST_USER}
+      typo3InstallPostgresqlDatabaseUsername: funcu
       typo3InstallPostgresqlDatabasePassword: funcp
     working_dir: ${CORE_ROOT}
     volumes:
@@ -220,7 +218,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --html reports.html
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_sqlite:
@@ -247,7 +245,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --html reports.html
+          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --xml reports.xml --html reports.html
       "
 
   build_css:
@@ -823,7 +821,7 @@ services:
     environment:
       typo3DatabaseDriver: pdo_pgsql
       typo3DatabaseName: bamboo
-      typo3DatabaseUsername: ${HOST_USER}
+      typo3DatabaseUsername: funcu
       typo3DatabaseHost: postgres
       typo3DatabasePassword: funcp
       typo3TestingRedisHost: redis4
@@ -866,10 +864,6 @@ services:
       - ${HOST_HOME}:${HOST_HOME}
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-      # @todo: sqlite DB is currently written to functional-doc-root (typo3temp/var/test-functional-xy/) /test.sqlite
-      # This directory is mapped to the local dir, so it is hard disk and not a tmpfs. sqlite functionals would speed
-      # up significantly if typo3/testing-framework would accept an environment variable to locate test.sqlite file on
-      # some tmpfs mount. Note this is not an issue within bamboo since in bamboo the entire core checkout is a tmpfs already.
     environment:
       typo3DatabaseDriver: pdo_sqlite
       typo3TestingRedisHost: redis4
