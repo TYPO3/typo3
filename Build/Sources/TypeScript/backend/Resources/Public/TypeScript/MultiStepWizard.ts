@@ -159,7 +159,7 @@ class MultiStepWizard {
     this.initializeEvents();
 
     this.getComponent().on('wizard-visible', (): void => {
-      this.runSlideCallback(firstSlide, this.setup.$carousel.find('.item').first());
+      this.runSlideCallback(firstSlide, this.setup.$carousel.find('.carousel-item').first());
     }).on('wizard-dismissed', (): void => {
       this.setup = $.extend(true, {}, this.originalSetup);
     });
@@ -451,7 +451,7 @@ class MultiStepWizard {
    * @private
    */
   private addProgressBar(): void {
-    let realSlideCount = this.setup.$carousel.find('.item').length - 1;
+    let realSlideCount = this.setup.$carousel.find('.carousel-item').length - 1;
     let slideCount = Math.max(1, realSlideCount);
     let initialStep;
     let $modal = this.setup.$carousel.closest('.modal');
@@ -528,13 +528,13 @@ class MultiStepWizard {
       if (typeof slideContent === 'object') {
         slideContent = slideContent.html();
       }
-      slides += '<div class="item" data-bs-slide="' + currentSlide.identifier + '" data-step="' + i + '">' + slideContent + '</div>';
+      slides += '<div class="carousel-item" data-bs-slide="' + currentSlide.identifier + '" data-step="' + i + '">' + slideContent + '</div>';
     }
 
     slides += '</div></div>';
 
     this.setup.$carousel = $(slides);
-    this.setup.$carousel.find('.item').first().addClass('active');
+    this.setup.$carousel.find('.carousel-item').first().addClass('active');
 
     return this.setup.$carousel;
   }
