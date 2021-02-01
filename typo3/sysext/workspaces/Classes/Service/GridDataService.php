@@ -240,6 +240,8 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
                     $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false: true;
+                    // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
+                    $versionArray['expanded'] = false;
 
                     $versionArray = array_merge(
                         $versionArray,

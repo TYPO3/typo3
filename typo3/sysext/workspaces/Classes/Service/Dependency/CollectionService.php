@@ -22,6 +22,7 @@ use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
 use TYPO3\CMS\Workspaces\Dependency\EventCallback;
+use TYPO3\CMS\Workspaces\Dependency\ReferenceEntity;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
@@ -201,7 +202,7 @@ class CollectionService implements SingletonInterface
             $this->dataArray[$parentIdentifier][GridDataService::GridColumn_Collection] = $collection;
             $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionLevel] = $collectionLevel;
             $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionCurrent] = md5($parentIdentifier);
-            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionChildren] = count($parent->getChildren());
+            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionChildren] = $this->getCollectionChildrenCount($parent->getChildren());
             $nextParentIdentifier = $parentIdentifier;
             $collectionLevel++;
         }
@@ -223,5 +224,20 @@ class CollectionService implements SingletonInterface
                 unset($this->dataArray[$childIdentifier]);
             }
         }
+    }
+
+    /**
+     * Return count of children, present in the data array
+     *
+     * @param ReferenceEntity[] $children
+     * @return int
+     */
+    protected function getCollectionChildrenCount(array $children): int
+    {
+        return count(
+            array_filter($children, function (ReferenceEntity $child) {
+                return isset($this->dataArray[$child->getElement()->__toString()]);
+            })
+        );
     }
 }
