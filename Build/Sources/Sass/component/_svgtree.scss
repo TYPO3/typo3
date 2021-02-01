@@ -266,7 +266,7 @@ $svgColors: (
 }
 
 .nodes-drop-zone {
-    &[data-open='false'] {
+    &[data-open='false']:not(.animating) {
         display: none;
     }
 

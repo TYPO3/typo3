@@ -18,8 +18,8 @@
  *
  * Extends TYPO3/CMS/Backend/SvgTree component.
  */
-define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
-  function(d3, SvgTree) {
+define(['d3-selection', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
+  function(d3selection, SvgTree) {
     'use strict';
 
     /**
@@ -64,11 +64,11 @@ define(['d3', 'TYPO3/CMS/Backend/SvgTree', 'TYPO3/CMS/Backend/FormEngine'],
           .selectAll('.tree-check use')
           .attr('visibility', function(node) {
             var checked = Boolean(node.checked);
-            if (d3.select(this).classed('icon-checked') && checked) {
+            if (d3selection.select(this).classed('icon-checked') && checked) {
               return 'visible';
-            } else if (d3.select(this).classed('icon-indeterminate') && node.indeterminate && !checked) {
+            } else if (d3selection.select(this).classed('icon-indeterminate') && node.indeterminate && !checked) {
               return 'visible';
-            } else if (d3.select(this).classed('icon-check') && !node.indeterminate && !checked) {
+            } else if (d3selection.select(this).classed('icon-check') && !node.indeterminate && !checked) {
               return 'visible';
             } else {
               return 'hidden';

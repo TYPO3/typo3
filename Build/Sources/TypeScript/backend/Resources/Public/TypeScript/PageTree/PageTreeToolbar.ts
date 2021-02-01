@@ -12,7 +12,7 @@
  */
 
 /** @ts-ignore */
-import d3 = require('d3');
+import {select as d3select} from 'd3-selection';
 import $ from 'jquery';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
@@ -151,7 +151,7 @@ export class PageTreeToolbar
 
     render(this.renderTemplate(), this.targetEl);
 
-    const d3Toolbar = d3.select('.svg-toolbar');
+    const d3Toolbar = d3select('.svg-toolbar');
     $.each(this.tree.settings.doktypes, (id: number, item: any) => {
       if (item.icon) {
         d3Toolbar

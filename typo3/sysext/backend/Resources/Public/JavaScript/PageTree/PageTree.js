@@ -15,7 +15,7 @@
  * Module: TYPO3/CMS/Backend/PageTree/PageTree
  */
 define(['jquery',
-    'd3',
+    'd3-selection',
     'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
@@ -24,7 +24,7 @@ define(['jquery',
     'TYPO3/CMS/Backend/Storage/Persistent',
     'TYPO3/CMS/Backend/Notification'
   ],
-  function($, d3, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
+  function($, d3selection, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
     'use strict';
 
     /**
@@ -621,7 +621,7 @@ define(['jquery',
       _this.removeEditedText();
       _this.nodeIsEdit = true;
 
-      d3.select(_this.svg.node().parentNode)
+      d3selection.select(_this.svg.node().parentNode)
         .append('input')
         .attr('class', 'node-edit')
         .style('top', function() {
@@ -674,7 +674,7 @@ define(['jquery',
 
     PageTree.prototype.removeEditedText = function() {
       var _this = this;
-      var inputWrapper = d3.selectAll('.node-edit');
+      var inputWrapper = d3selection.selectAll('.node-edit');
 
       if (inputWrapper.size()) {
         try {

@@ -18,11 +18,12 @@
  */
 define([
   'jquery',
-  'd3',
+  'd3-selection',
+  'd3-drag',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Core/SecurityUtility'
-], function($, d3, Modal, Severity, SecurityUtility) {
+], function($, d3selection, d3drag, Modal, Severity, SecurityUtility) {
   'use strict';
 
   var securityUtility = new SecurityUtility();
@@ -32,7 +33,7 @@ define([
    * prevent clicks from being wrongly detected as drag attempts.
    */
   var createD3 = function() {
-    return d3.drag()
+    return d3drag.drag()
       .clickDistance(5);
   };
 
@@ -59,7 +60,7 @@ define([
     /**
      * Drag and drop for nodes
      *
-     * Returns initialized d3.drag() function
+     * Returns initialized d3drag.drag() function
      */
     drag: function() {
       var self = {};
@@ -75,7 +76,7 @@ define([
       self.getDropZoneOpenTransform = function(node) {
         var svgWidth = parseFloat(tree.svg.style('width')) || 300;
 
-        return 'translate(' + (svgWidth - 58 - node.x) + ', -10)';
+        return 'translate(' + (svgWidth - 58 - node.x) + 'px, -10px)';
       };
 
       /**
@@ -87,7 +88,40 @@ define([
       self.getDropZoneCloseTransform = function(node) {
         var svgWidth = parseFloat(tree.svg.style('width')) || 300;
 
-        return 'translate(' + (svgWidth - node.x) + ', -10)';
+        return 'translate(' + (svgWidth - node.x) + 'px, -10px)';
+      };
+
+      /**
+       * Animates the drop zone next to given node
+       *
+       * @param {string} action
+       * @param {SVGElement} dropZone
+       * @param {Node} node
+       * @param {Function} onfinish
+       */
+      self.animateDropZone = function (action, dropZone, node, onfinish) {
+        dropZone.classList.add('animating');
+        dropZone.dataset.open = action === 'show';
+        var keyframes = [
+          { transform: self.getDropZoneCloseTransform(node) },
+          { transform: self.getDropZoneOpenTransform(node) }
+        ];
+        if (action !== 'show') {
+          keyframes = keyframes.reverse();
+        }
+        var done = function() {
+          dropZone.style.transform = keyframes[1].transform;
+          dropZone.classList.remove('animating');
+          onfinish && onfinish();
+        };
+        if ('animate' in dropZone) {
+          dropZone.animate(keyframes, {
+            duration: 300,
+            easing: 'cubic-bezier(.02, .01, .47, 1)'
+          }).onfinish = done;
+        } else {
+          done();
+        }
       };
 
       self.dragStart = function(event, node) {
@@ -125,9 +159,8 @@ define([
             .attr('dx', 5)
             .attr('dy', 15);
 
-          _this.dropZoneDelete
-            .attr('data-open', 'false')
-            .attr('transform', self.getDropZoneCloseTransform(node));
+          _this.dropZoneDelete.node().dataset.open = false;
+          _this.dropZoneDelete.node().style.transform = self.getDropZoneCloseTransform(node);
         }
 
         $.extend(self, _this.setDragStart(event));
@@ -199,10 +232,7 @@ define([
           }
 
           if (_this.dropZoneDelete && _this.dropZoneDelete.attr('data-open') !== 'true' && tree.isOverSvg) {
-            _this.dropZoneDelete
-              .transition(300)
-              .attr('transform', self.getDropZoneOpenTransform(node))
-              .attr('data-open', 'true');
+            self.animateDropZone('show', _this.dropZoneDelete.node(), node);
           }
         } else if (!tree.settings.nodeOver.node) {
           _this.addNodeDdClass({$nodeDd: $nodeDd, $nodesWrap: $nodesWrap, className: 'nodrop'});
@@ -211,10 +241,7 @@ define([
             .style('display', 'none');
         } else {
           if (_this.dropZoneDelete && _this.dropZoneDelete.attr('data-open') !== 'false') {
-            _this.dropZoneDelete
-              .transition(300)
-              .attr('transform', self.getDropZoneCloseTransform(node))
-              .attr('data-open', 'false');
+            self.animateDropZone('hide', _this.dropZoneDelete.node(), node);
           }
 
           _this.changeNodeClasses(event);
@@ -224,11 +251,13 @@ define([
       self.dragEnd = function(event, node) {
         _this.setDragEnd();
 
-        if (_this.dropZoneDelete) {
-          _this.dropZoneDelete
-            .transition(300)
-            .attr('transform', self.getDropZoneCloseTransform(node))
-            .remove();
+        if (_this.dropZoneDelete &&_this.dropZoneDelete.attr('data-open') === 'true') {
+          var dropZone = _this.dropZoneDelete;
+          self.animateDropZone('hide', _this.dropZoneDelete.node(), node, function() {
+            dropZone.remove();
+            _this.dropZoneDelete = null;
+          });
+        } else {
           _this.dropZoneDelete = null;
         }
 
@@ -389,7 +418,7 @@ define([
             .attr('width', '100%');
         }
 
-        var coordinates = d3.pointer(event, elementNodeBg.node());
+        var coordinates = d3selection.pointer(event, elementNodeBg.node());
         var y = coordinates[1];
 
         if (y < 3) {
@@ -805,7 +834,7 @@ define([
       _this.tree.update();
       _this.tree.removeEditedText();
 
-      d3.select(_this.tree.svg.node().parentNode)
+      d3selection.select(_this.tree.svg.node().parentNode)
         .append('input')
         .attr('class', 'node-edit')
         .style('top', newNode.y + _this.tree.settings.marginTop + 'px')

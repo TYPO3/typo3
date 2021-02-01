@@ -17,7 +17,8 @@
 define(
   [
     'jquery',
-    'd3',
+    'd3-selection',
+    'd3-dispatch',
     'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/ContextMenu',
     'TYPO3/CMS/Backend/Modal',
@@ -27,7 +28,7 @@ define(
     'TYPO3/CMS/Backend/Tooltip',
     'TYPO3/CMS/Backend/Enum/KeyTypes'
   ],
-  function($, d3, AjaxRequest, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
+  function($, d3selection, d3dispatch, AjaxRequest, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
     'use strict';
 
     /**
@@ -167,7 +168,7 @@ define(
         $.extend(this.settings, settings);
         var _this = this;
         this.wrapper = $wrapper;
-        this.dispatch = d3.dispatch(
+        this.dispatch = d3dispatch.dispatch(
           'updateNodes',
           'updateSvg',
           'loadDataAfter',
@@ -188,7 +189,7 @@ define(
          *   </g>
          * </svg>
          */
-        this.d3wrapper = d3
+        this.d3wrapper = d3selection
           .select($wrapper[0]);
         this.svg = this.d3wrapper.append('svg')
           .attr('version', '1.1')
@@ -241,7 +242,7 @@ define(
        * Add keydown handling to allow keyboard navigation inside the tree
        */
       handleKeyboardInteraction: function(e) {
-        var currentNode = d3.select(e.target).datum();
+        var currentNode = d3selection.select(e.target).datum();
         var keyTypesEnum = KeyTypes.KeyTypesEnum;
         var charCodes = [
           keyTypesEnum.ENTER,
@@ -665,7 +666,7 @@ define(
                     return '0';
                   }
                 } else {
-                  if (d3.select(focusableElement).datum() === node) {
+                  if (d3selection.select(focusableElement).datum() === node) {
                     return '0';
                   }
                 }
