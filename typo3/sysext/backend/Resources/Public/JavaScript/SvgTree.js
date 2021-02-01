@@ -16,7 +16,6 @@
  */
 define(
   [
-    'jquery',
     'd3-selection',
     'd3-dispatch',
     'TYPO3/CMS/Core/Ajax/AjaxRequest',
@@ -28,7 +27,7 @@ define(
     'TYPO3/CMS/Backend/Tooltip',
     'TYPO3/CMS/Backend/Enum/KeyTypes'
   ],
-  function($, d3selection, d3dispatch, AjaxRequest, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
+  function(d3selection, d3dispatch, AjaxRequest, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
     'use strict';
 
     /**
@@ -129,10 +128,10 @@ define(
       this.dispatch = null;
 
       /**
-       * jQuery object of wrapper holding the SVG
+       * Html Element of the wrapper holding the SVG
        * Height of this wrapper is important (we only render as many nodes as fit in the wrapper
        *
-       * @type {jQuery}
+       * @type {HTMLElement}
        */
       this.wrapper = null;
       this.viewportHeight = 0;
@@ -154,20 +153,18 @@ define(
       /**
        * Initializes the tree component - created basic markup, loads and renders data
        *
-       * @param {String} selector
+       * @param {HTMLElement} selector
        * @param {Object} settings
        */
       initialize: function(selector, settings) {
-        var $wrapper = $(selector);
-
         // Do nothing if already initialized
-        if ($wrapper.data('svgtree-initialized')) {
+        if (selector.dataset.svgTreeInitialized) {
           return false;
         }
 
-        $.extend(this.settings, settings);
+        Object.assign(this.settings, settings);
         var _this = this;
-        this.wrapper = $wrapper;
+        this.wrapper = selector;
         this.dispatch = d3dispatch.dispatch(
           'updateNodes',
           'updateSvg',
@@ -189,8 +186,7 @@ define(
          *   </g>
          * </svg>
          */
-        this.d3wrapper = d3selection
-          .select($wrapper[0]);
+        this.d3wrapper = d3selection.select(this.wrapper);
         this.svg = this.d3wrapper.append('svg')
           .attr('version', '1.1')
           .attr('width', '100%')
@@ -221,19 +217,24 @@ define(
         this.updateScrollPosition();
         this.loadData();
 
-        this.wrapper.on('resize scroll', function() {
+        this.wrapper.addEventListener('resize', function() {
           _this.updateScrollPosition();
           _this.update();
         });
 
-        this.wrapper.on('isVisible', function() {
+        this.wrapper.addEventListener('scroll', function() {
           _this.updateScrollPosition();
           _this.update();
         });
 
-        this.wrapper.data('svgtree', this);
-        this.wrapper.data('svgtree-initialized', true);
-        this.wrapper.trigger('svgTree.initialized');
+        this.wrapper.addEventListener('svg-tree:visible', function() {
+          _this.updateScrollPosition();
+          _this.update();
+        });
+
+        this.wrapper.svgtree = this;
+        this.wrapper.dataset.svgTreeInitialized = 'true';
+        this.wrapper.dispatchEvent(new Event('svg-tree:initialized'));
         this.resize();
         return true;
       },
@@ -262,16 +263,15 @@ define(
         switch (e.keyCode) {
           case keyTypesEnum.END:
             // scroll to end, select last node
-            this.scrollTop = this.wrapper[0].lastElementChild.scrollHeight + this.settings.nodeHeight - this.viewportHeight;
-            this.wrapper.scrollTop(this.scrollTop);
-            this.updateScrollPosition();
+            this.scrollTop = this.wrapper.lastElementChild.getBoundingClientRect().height + this.settings.nodeHeight - this.viewportHeight;
+            parentDomNode.scrollIntoView({behavior: "smooth", block: "end"});
             this.update();
             this.switchFocus(parentDomNode.lastElementChild);
             break;
           case keyTypesEnum.HOME:
             // scroll to top, select first node
             this.scrollTop = this.nodes[0].y;
-            this.wrapper.scrollTop(this.scrollTop);
+            this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
             this.update();
             this.switchFocus(parentDomNode.firstElementChild);
             break;
@@ -339,7 +339,7 @@ define(
         } else {
           return false;
         }
-        this.wrapper.scrollTop(this.scrollTop);
+        this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
         this.update();
         return true;
       },
@@ -349,8 +349,8 @@ define(
        */
       resize: function() {
         var _this = this;
-        $(window).on('resize', function() {
-          if ($(_this.wrapper).is(':visible')) {
+        window.addEventListener('resize', function() {
+          if (_this.wrapper.getClientRects().length > 0) {
             _this.updateScrollPosition();
             _this.update();
           }
@@ -387,9 +387,11 @@ define(
        * Updates variables used for visible nodes calculation
        */
       updateScrollPosition: function() {
-        this.viewportHeight = this.wrapper.height();
-        this.scrollTop = this.wrapper.scrollTop();
+        this.viewportHeight = this.wrapper.getBoundingClientRect().height;
+        this.scrollTop = this.wrapper.scrollTop;
         this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
+        // disable tooltips when scrolling
+        Tooltip.hide(this.wrapper.querySelectorAll('[data-bs-toggle=tooltip]'));
       },
 
       /**
@@ -457,7 +459,8 @@ define(
         nodes = nodes || this.nodes;
         nodes = nodes.map(function(node, index) {
           if (typeof node.command === 'undefined') {
-            node = $.extend({}, _this.settings.defaultProperties, node);
+            var newNode = {};
+            Object.assign(newNode, _this.settings.defaultProperties, node);
           }
           node.expanded = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
           node.parents = [];
@@ -509,15 +512,24 @@ define(
       },
 
       nodesRemovePlaceholder: function() {
-        $('.svg-tree').find('.node-loader').hide();
-        $('.svg-tree').find('.svg-tree-loader').hide();
+        if (document.querySelector('.node-loader')) {
+          document.querySelector('.node-loader').style.display = 'none';
+        }
+        if (document.querySelector('.svg-tree-loader')) {
+          document.querySelector('.svg-tree-loader').style.display = 'none';
+        }
       },
 
       nodesAddPlaceholder: function(node) {
         if (node) {
-          $('.svg-tree').find('.node-loader').css({top: node.y + this.settings.marginTop}).show();
+          if (document.querySelector('.node-loader')) {
+            document.querySelector('.node-loader').style.top = node.y + this.settings.marginTop;
+            document.querySelector('.node-loader').style.display = 'block';
+          }
         } else {
-          $('.svg-tree').find('.svg-tree-loader').show();
+          if (document.querySelector('.svg-tree-loader')) {
+            document.querySelector('.svg-tree-loader').style.display = 'block';
+          }
         }
       },
 
@@ -617,7 +629,7 @@ define(
         var position = Math.floor(Math.max(_this.scrollTop - (_this.settings.nodeHeight * 2), 0) / _this.settings.nodeHeight);
 
         var visibleNodes = this.data.nodes.slice(position, position + visibleRows);
-        var focusableElement = this.wrapper[0].querySelector('[tabindex="0"]');
+        var focusableElement = this.wrapper.querySelector('[tabindex="0"]');
         var checkedNodeInViewport = visibleNodes.find(function (node) {
           return node.checked;
         });
@@ -730,8 +742,10 @@ define(
             _this.selectNode(node);
             _this.switchFocusNode(node);
           })
-          .on('contextmenu', function(event, node) {
-            _this.dispatch.call('nodeRightClick', event, node, this);
+          .on('contextmenu', function(event, element) {
+            event.preventDefault();
+            var selection = this;
+            _this.dispatch.call('nodeRightClick', element, selection);
           });
       },
 
@@ -837,9 +851,12 @@ define(
         this.textPosition = 10;
 
         if (this.settings.showIcons) {
-          var iconsArray = $.map(this.data.icons, function(value) {
-            if (value.icon !== '') return value;
-          });
+          var iconsArray = [];
+          for (var key in this.data.icons) {
+            if (this.data.icons[key].icon !== '') {
+              iconsArray.push(this.data.icons[key]);
+            }
+          }
 
           var icons = this.iconsContainer
             .selectAll('.icon-def')
@@ -928,8 +945,7 @@ define(
             "hide": 50
           },
           trigger: 'hover',
-          container: 'body',
-          placement: 'right',
+          placement: 'right'
         });
 
         this.dispatch.call('updateSvg', this, nodeEnter);

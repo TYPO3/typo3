@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {Tooltip} from 'bootstrap';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
@@ -30,7 +29,6 @@ export class TreeToolbar
     toggleHideUnchecked: 'hide-unchecked-btn'
   };
 
-  private $treeWrapper: JQuery;
   private treeContainer: HTMLElement;
   private tree: any;
 
@@ -47,15 +45,15 @@ export class TreeToolbar
 
   public initialize(treeContainer: HTMLElement): void {
     this.treeContainer = treeContainer;
-    this.$treeWrapper = $(treeContainer);
 
-    if (!this.$treeWrapper.data('svgtree-initialized')
-      || typeof this.$treeWrapper.data('svgtree') !== 'object'
+    if (!this.treeContainer.dataset.svgTreeInitialized
+      || typeof (this.treeContainer as any).svgtree !== 'object'
     ) {
       //both toolbar and tree are loaded independently through require js,
       //so we don't know which is loaded first
       //in case of toolbar being loaded first, we wait for an event from svgTree
-      this.$treeWrapper.on('svgTree.initialized', () => this.render());
+      this.treeContainer.addEventListener('svg-tree:initialized', this.render.bind(this));
+
       return;
     }
 
@@ -137,7 +135,8 @@ export class TreeToolbar
   }
 
   private render(): void {
-    this.tree = this.$treeWrapper.data('svgtree');
+    this.tree = (this.treeContainer as any).svgtree;
+
     // @todo Better use initialize() settings, drop this assignment here
     Object.assign(this.settings, this.tree.settings);
 

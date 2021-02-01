@@ -13,7 +13,6 @@
 
 /** @ts-ignore */
 import {select as d3select} from 'd3-selection';
-import $ from 'jquery';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
@@ -31,28 +30,27 @@ export class PageTreeToolbar
     filterTimeout: 450
   };
 
-  private $treeWrapper: JQuery;
+  private treeContainer: any;
   private targetEl: HTMLElement;
 
   private tree: any;
   private dragDrop: any;
-  private hideUncheckedState = false;
 
   public constructor() {
     this.dragDrop = pageTreeDragDrop;
   }
 
-  public initialize(treeSelector: string, toolbar: HTMLElement, settings: any = {}): void {
-    this.$treeWrapper = $(treeSelector);
+  public initialize(treeContainer: HTMLElement, toolbar: HTMLElement, settings: any = {}): void {
+    this.treeContainer = treeContainer;
     this.targetEl = toolbar;
 
-    if (!this.$treeWrapper.data('svgtree-initialized')
-      || typeof this.$treeWrapper.data('svgtree') !== 'object'
+    if (!this.treeContainer.dataset.svgTreeInitialized
+      || typeof this.treeContainer.svgtree !== 'object'
     ) {
       //both toolbar and tree are loaded independently through require js,
       //so we don't know which is loaded first
       //in case of toolbar being loaded first, we wait for an event from svgTree
-      this.$treeWrapper.on('svgTree.initialized', () => this.render());
+      this.treeContainer.addEventListener('svg-tree:initialized', () => this.render());
       return;
     }
 
@@ -65,50 +63,10 @@ export class PageTreeToolbar
   }
 
   private search(inputEl: HTMLInputElement): void {
-    this.tree.searchQuery =  inputEl.value.trim()
+    this.tree.searchQuery = inputEl.value.trim()
     this.tree.refreshOrFilterTree();
     this.tree.prepareDataForVisibleNodes();
     this.tree.update();
-  }
-
-  /**
-   * Show only checked items
-   * @todo Not sure, whether this is actually used
-   */
-  private toggleHideUnchecked(inputEl: HTMLElement): void {
-    this.hideUncheckedState = !this.hideUncheckedState;
-    if (this.hideUncheckedState) {
-      this.tree.nodes.forEach((node: any) => {
-        if (node.checked) {
-          this.showParents(node);
-          node.expanded = true;
-          node.hidden = false;
-        } else {
-          node.hidden = true;
-          node.expanded = false;
-        }
-      });
-    } else {
-      this.tree.nodes.forEach((node: any) => {
-        node.hidden = false;
-      });
-    }
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
-  }
-
-  /**
-   * Finds and show all parents of node
-   */
-  private showParents(node: any): void {
-    if (node.parents.length === 0) {
-      return;
-    }
-    const parent = this.tree.nodes[node.parents[0]];
-    parent.hidden = false;
-    //expand parent node
-    parent.expanded = true;
-    this.showParents(parent);
   }
 
   private showSubmenu(name: string): void {
@@ -145,14 +103,14 @@ export class PageTreeToolbar
 
   private render(): void
   {
-    this.tree = this.$treeWrapper.data('svgtree');
+    this.tree = this.treeContainer.svgtree;
     // @todo Better use initialize() settings, drop this assignment here
     Object.assign(this.settings, this.tree.settings);
 
     render(this.renderTemplate(), this.targetEl);
 
     const d3Toolbar = d3select('.svg-toolbar');
-    $.each(this.tree.settings.doktypes, (id: number, item: any) => {
+    this.tree.settings.doktypes.forEach((item: any, id: number) => {
       if (item.icon) {
         d3Toolbar
           .selectAll('[data-tree-icon=' + item.icon + ']')
@@ -166,8 +124,6 @@ export class PageTreeToolbar
       this.search(evt.target as HTMLInputElement);
     }, this.settings.filterTimeout)
       .bindTo(this.targetEl.querySelector(this.settings.searchInput));
-
-    $(this.targetEl).find('[data-bs-toggle="tooltip"]').tooltip();
 
     // @todo That always was a hack, to be replace with proper internal state handling
     const newPageSubmenu = this.targetEl.querySelector('[data-tree-show-submenu="page-new"]') as HTMLButtonElement;

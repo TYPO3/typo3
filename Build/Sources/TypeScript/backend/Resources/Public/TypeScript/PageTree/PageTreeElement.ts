@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon} from 'TYPO3/CMS/Core/lit-helper';
@@ -29,19 +28,13 @@ export class PageTreeElement {
     const targetEl = document.querySelector(selector);
 
     // let SvgTree know it shall be visible
-    // @todo Replace jQuery event with CustomEvent
     if (targetEl && targetEl.childNodes.length > 0) {
-      $('.svg-tree', targetEl).trigger('isVisible');
+      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
       return;
     }
 
     render(PageTreeElement.renderTemplate(), targetEl);
-    const treeEl = targetEl.querySelector('.svg-tree-wrapper');
-
-    // Ensure tooltips don't stay when scrolling the pagetree
-    $(treeEl).on('scroll', () => {
-      $(treeEl).find('[data-bs-toggle=tooltip]').tooltip('hide');
-    });
+    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
 
     const tree = new PageTree();
     const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
@@ -61,7 +54,7 @@ export class PageTreeElement {
         const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
         if (!toolbar.dataset.treeShowToolbar) {
           const pageTreeToolbar = new PageTreeToolbar();
-          pageTreeToolbar.initialize('#typo3-pagetree-tree', toolbar);
+          pageTreeToolbar.initialize(treeEl, toolbar);
           toolbar.dataset.treeShowToolbar = 'true';
         }
       });

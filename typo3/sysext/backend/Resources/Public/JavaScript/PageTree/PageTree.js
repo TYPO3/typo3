@@ -14,7 +14,7 @@
 /**
  * Module: TYPO3/CMS/Backend/PageTree/PageTree
  */
-define(['jquery',
+define([
     'd3-selection',
     'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/Icons',
@@ -24,7 +24,7 @@ define(['jquery',
     'TYPO3/CMS/Backend/Storage/Persistent',
     'TYPO3/CMS/Backend/Notification'
   ],
-  function($, d3selection, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
+  function(d3selection, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
     'use strict';
 
     /**
@@ -93,11 +93,12 @@ define(['jquery',
     PageTree.prototype.addMountPoint = function(breadcrumb) {
       var _this = this;
 
-      if (_this.wrapper.parent().find('.node-mount-point').length) {
-        _this.wrapper.parent().find('.node-mount-point').remove();
+      var existingMountPointInfo = _this.wrapper.parentNode.querySelector('.node-mount-point');
+      if (existingMountPointInfo) {
+        existingMountPointInfo.parentNode.removeChild(existingMountPointInfo);
       }
 
-      _this.mountPoint = _this.wrapper.before(
+      _this.wrapper.insertAdjacentHTML('beforebegin',
         '<div class="node-mount-point">' +
         '<div class="node-mount-point__icon" data-tree-icon="actions-document-info"></div>' +
         '<div class="node-mount-point__text"><div>' + breadcrumb + '</div></div>' +
@@ -105,19 +106,17 @@ define(['jquery',
         '</div>'
       );
 
-      _this.wrapper.parent()
-        .find('[data-tree-icon=actions-close]')
-        .on('click', function() {
+      _this.wrapper.parentNode
+        .querySelector('[data-tree-icon=actions-close]')
+        .addEventListener('click', function() {
           top.TYPO3.Backend.NavigationContainer.PageTree.unsetTemporaryMountPoint();
-          _this.wrapper.parent().find('.node-mount-point').remove();
+          _this.wrapper.parentNode.querySelector('.node-mount-point').remove();
         });
 
-      //get icons
-      _this.wrapper.parent().find('.node-mount-point [data-tree-icon]').each(function() {
-        var $this = $(this);
-
-        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small, null, null, 'inline').then(function(icon) {
-          $this.append(icon);
+      // get icons
+      _this.wrapper.parentNode.querySelectorAll('.node-mount-point [data-tree-icon]').forEach(function(iconElement) {
+        Icons.getIcon(iconElement.dataset.treeIcon, Icons.sizes.small, null, null, 'inline').then(function(icon) {
+          iconElement.insertAdjacentHTML('beforeend', icon);
         });
       });
     };
@@ -180,7 +179,7 @@ define(['jquery',
         .then(function(response) {
           if (response && response.hasErrors) {
             if (response.messages) {
-              $.each(response.messages, function(id, message) {
+              response.messages.forEach(function(message) {
                 Notification.error(
                   message.title,
                   message.message
@@ -240,31 +239,31 @@ define(['jquery',
       );
     };
 
-    PageTree.prototype.nodeRightClick = function(node) {
-      var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
+    PageTree.prototype.nodeRightClick = function(selection) {
+      var node = selection.closest('svg').querySelector('.nodes .node[data-state-id="' + this.stateIdentifier + '"]');
 
-      if ($node.length) {
+      if (node) {
         ContextMenu.show(
-          $node.data('table'),
+          node.dataset.table,
           this.identifier,
-          $node.data('context'),
-          $node.data('iteminfo'),
-          $node.data('parameters'),
+          node.dataset.context,
+          node.dataset.iteminfo,
+          node.dataset.parameters,
           node
         );
       }
     };
 
-    PageTree.prototype.contextmenu = function(node) {
-      var $node = $(node).closest('svg').find('.nodes .node[data-state-id=' + this.stateIdentifier + ']');
+    PageTree.prototype.contextmenu = function(selection) {
+      var node = selection.closest('svg').querySelector('.nodes .node[data-state-id="' + this.stateIdentifier + '"]');
 
-      if ($node.length) {
+      if (node) {
         ContextMenu.show(
-          $node.data('table'),
+          node.dataset.table,
           this.identifier,
-          $node.data('context'),
-          $node.data('iteminfo'),
-          $node.data('parameters'),
+          node.dataset.context,
+          node.dataset.iteminfo,
+          node.dataset.parameters,
           node
         );
       }
@@ -368,9 +367,10 @@ define(['jquery',
         .call(this.dragDrop.drag())
         .attr('data-table', 'pages')
         .attr('data-context', 'tree')
-        .on('contextmenu', function(event, node) {
+        .on('contextmenu', function(event, element) {
           event.preventDefault();
-          _this.dispatch.call('nodeRightClick', node, this);
+          var selection = this;
+          _this.dispatch.call('nodeRightClick', element, selection);
         });
 
       var nodeStop = nodes
@@ -541,7 +541,7 @@ define(['jquery',
         .then(function(response) {
           if (response && response.hasErrors) {
             if (response.messages) {
-              $.each(response.messages, function(id, message) {
+              response.messages.forEach(function(message) {
                 Notification.error(
                   message.title,
                   message.message
@@ -587,7 +587,7 @@ define(['jquery',
         .then(function(response) {
           if (response && response.hasErrors) {
             if (response.messages) {
-              $.each(response.messages, function(id, message) {
+              response.messages.forEach(function(message) {
                 Notification.error(
                   message.title,
                   message.message

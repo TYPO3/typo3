@@ -33,25 +33,25 @@ class Tooltip {
   }
 
   /**
-   * Show tooltip on $element
+   * Show tooltip on element(s)
    *
-   * @param {Object} $element
+   * @param {Object} elements
    * @param {String} title
    */
-  public show($element: JQuery, title: string): void {
-    $element
+  public show(elements: JQuery | NodeList | HTMLElement, title: string): void {
+    $(elements)
       .attr('data-bs-placement', 'auto')
       .attr('data-title', title)
       .tooltip('show');
   }
 
   /**
-   * Hide tooltip on $element
+   * Hide tooltip on element(s)
    *
-   * @param {Object} $element
+   * @param {Object} elements
    */
-  public hide($element: JQuery): void {
-    $element.tooltip('hide');
+  public hide(elements: JQuery | NodeList | HTMLElement): void {
+    $(elements).tooltip('hide');
   }
 }
 
