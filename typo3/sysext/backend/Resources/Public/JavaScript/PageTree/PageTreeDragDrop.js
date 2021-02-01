@@ -221,7 +221,7 @@ define([
         }
       };
 
-      self.dragEnd = function(node) {
+      self.dragEnd = function(event, node) {
         _this.setDragEnd();
 
         if (_this.dropZoneDelete) {
