@@ -7,26 +7,15 @@
 }
 
 .sortableHandle {
-    cursor: move;
+    cursor: move !important;
 }
 
 //
 // TCEforms Sections
 //
-.t3-flex-section {
-    clear: both;
-    margin: 5px 0;
-}
-
 .t3-form-field-add-flexsection {
     border-top: 1px solid #cdcdcd;
     padding: 10px 5px 5px 0;
-}
-
-.t3-form-flex,
-.t3-form-field-container-flexsections {
-    margin: 5px 0;
-    clear: both;
 }
 
 // preview image in sys_file records

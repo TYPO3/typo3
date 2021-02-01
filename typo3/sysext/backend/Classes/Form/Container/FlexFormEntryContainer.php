@@ -44,9 +44,6 @@ class FlexFormEntryContainer extends AbstractContainer
             $options['renderType'] = 'flexFormTabsContainer';
         }
 
-        $resultArray = $this->nodeFactory->create($options)->render();
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
-
-        return $resultArray;
+        return $this->nodeFactory->create($options)->render();
     }
 }

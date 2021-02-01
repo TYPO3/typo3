@@ -70,6 +70,9 @@ class FlexFormSectionContainer extends AbstractContainer
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);
         }
 
+        $containerId = sprintf('flexform-section-container-%s-%s', $this->data['fieldName'], $flexFormFieldName);
+        $sectionContainerId = sprintf('flexform-section-%s-%s', $this->data['fieldName'], $flexFormFieldName);
+
         // "New container" handling: Creates buttons for each possible container with all relevant information for the ajax call.
         $containerTemplatesHtml = [];
         foreach ($flexFormDataStructureArray['el'] as $flexFormContainerName => $flexFormFieldDefinition) {
@@ -92,6 +95,7 @@ class FlexFormSectionContainer extends AbstractContainer
             $containerTemplateHtml[] =     'data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
             $containerTemplateHtml[] =     'data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
             $containerTemplateHtml[] =     'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
+            $containerTemplateHtml[] =     'data-target="#' . htmlspecialchars($sectionContainerId) . '"';
             $containerTemplateHtml[] = '>';
             $containerTemplateHtml[] =    $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $containerTemplateHtml[] =    htmlspecialchars(GeneralUtility::fixed_lgd_cs($containerTitle, 30));
@@ -118,19 +122,19 @@ class FlexFormSectionContainer extends AbstractContainer
         $html = [];
         $html[] = '<div class="panel panel-tab">';
         $html[] =     '<div class="panel-body">';
-        $html[] =         '<div class="t3-form-field-container t3-form-flex">';
+        $html[] =         '<div class="t3-form-field-container t3-form-flex" id="' . htmlspecialchars($containerId) . '" data-section="#' . htmlspecialchars($sectionContainerId) . '">';
         $html[] =             '<div class="t3-form-field-label-flexsection">';
         $html[] =                 '<h4>';
         $html[] =                     htmlspecialchars($sectionTitle);
         $html[] =                 '</h4>';
         $html[] =             '</div>';
-        $html[] =             '<div class="t3js-form-field-toggle-flexsection t3-form-flexsection-toggle">';
-        $html[] =                 '<a class="btn btn-default" href="#" title="' . $toggleAll . '">';
+        $html[] =             '<div class="form-group">';
+        $html[] =                 '<button class="btn btn-default t3-form-flexsection-toggle" type="button" title="' . $toggleAll . '" data-expand-all="false">';
         $html[] =                     $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
-        $html[] =                 '</a>';
+        $html[] =                 '</button>';
         $html[] =             '</div>';
         $html[] =             '<div';
-        $html[] =                 'id="flexform-container-' . htmlspecialchars($flexFormFieldName) . '"';
+        $html[] =                 'id="' . htmlspecialchars($sectionContainerId) . '"';
         $html[] =                 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
         $html[] =                 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
         $html[] =             '>';
@@ -142,6 +146,11 @@ class FlexFormSectionContainer extends AbstractContainer
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/FlexFormSectionContainer' => '
+            function(FlexFormSectionContainer) {
+                new FlexFormSectionContainer(' . GeneralUtility::quoteJSvalue($containerId) . ');
+            }'
+        ];
 
         return $resultArray;
     }

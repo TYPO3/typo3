@@ -144,8 +144,6 @@ interface JQuery {
 
   dragUploader(options?: any): JQuery;
 
-  t3FormEngineFlexFormElement(options?: any): JQuery;
-
   // To be able to use devbridge-autocomplete we have to override the definition of jquerui
   autocomplete(options?: { [key: string]: any }): any;
   disablePagingAction(): void;

@@ -269,7 +269,7 @@ class RichTextElement extends AbstractFormElement
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
                             CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         });
-                        $(document).on(\'flexform:sorting-changed\', function() {
+                        document.addEventListener(\'formengine:flexform:sorting-changed\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
                             CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         });
