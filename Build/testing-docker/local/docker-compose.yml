@@ -101,6 +101,103 @@ services:
         $${COMMAND}
       "
 
+  prepare_acceptance_backend_mysql:
+    image: alpine:3.8
+    links:
+      - mysql
+      - chrome
+      - web
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        echo Waiting for database start...;
+        while ! nc -z mysql 3306; do
+          sleep 1;
+        done;
+        echo Database is up;
+      "
+  acceptance_backend_mysql:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    environment:
+      typo3DatabaseName: func_test
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: funcp
+      typo3DatabaseHost: mysql
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        if [ ${CHUNKS} -gt 0 ]; then
+          echo \"Running chunk ${THISCHUNK}\"
+          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+        else
+          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+        fi
+        mkdir -p typo3temp/var/tests/
+        $${COMMAND}
+      "
+
+  prepare_acceptance_backend_postgres:
+    image: alpine:3.8
+    links:
+      - postgres
+      - chrome
+      - web
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        echo Waiting for database start...;
+        while ! nc -z postgres 5432; do
+          sleep 1;
+        done;
+        echo Database is up;
+      "
+  acceptance_backend_postgres:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    environment:
+      typo3DatabaseDriver: pdo_pgsql
+      typo3DatabaseName: bamboo
+      typo3DatabaseUsername: funcu
+      typo3DatabaseHost: postgres
+      typo3DatabasePassword: funcp
+      typo3TestingRedisHost: redis4
+      typo3TestingMemcachedHost: memcached1-5
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        if [ ${CHUNKS} -gt 0 ]; then
+          echo \"Running chunk ${THISCHUNK}\"
+          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+        else
+          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+        fi
+        mkdir -p typo3temp/var/tests/
+        $${COMMAND}
+      "
+
   prepare_acceptance_install_mysql:
     image: alpine:3.8
     links:
