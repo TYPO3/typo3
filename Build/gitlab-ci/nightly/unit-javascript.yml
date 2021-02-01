@@ -1,0 +1,11 @@
+unit javascript:
+  stage: integrity
+  only:
+    - schedules
+  cache:
+    key: master-composer-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitJavascript

@@ -1,0 +1,32 @@
+unit php 7.4 pre-merge:
+  stage: main
+  except:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit deprecated php 7.4 pre-merge:
+  stage: main
+  except:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit random php 7.4 pre-merge:
+  stage: main
+  except:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+unit javascript pre-merge:
+  stage: main
+  except:
+    - schedules
+  cache:
+    key: master-composer-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitJavascript

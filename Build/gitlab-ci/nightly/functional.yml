@@ -1,0 +1,164 @@
+functional mariadb 10.3 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional max mariadb 10.3 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional min mariadb 10.3 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+functional mssql php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  parallel: 12
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional max mssql php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  parallel: 12
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional min mssql php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  parallel: 12
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+functional mysql 5.5 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional max mysql 5.5 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional min mysql 5.5 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+functional postgres 10 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional max postgres 10 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional min postgres 10 php 7.4:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+functional sqlite php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional max sqlite php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+functional min sqlite php 7.4:
+  stage: functional2
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  parallel: 6
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

@@ -1,0 +1,69 @@
+variables:
+  # When a branch derives from master or 10.4 or something, composer stumbles
+  # if the repos has been 'shallow cloned', can't determine the source branch
+  # and fails with package conflicts. Having a full clone by setting depth 0
+  # prevents this, so we don't need to fiddle with COMPOSER_ROOT_VERSION env var.
+  GIT_DEPTH: 0
+
+cache:
+  # Default caching of .cache directory if a job does not override it.
+  # General rule: Keep them as small as possibles since that is less unpack work.
+  # Jobs that do the same thing, should use the same key. Jobs that derivate from
+  # defaults, should have an own cache.
+  # Examples: master-composer, master-composer-js, master-composer-min-js, 10.4-composer
+  # For job runtime, it does not matter much if there are many caches,
+  # it is more important that single jobs don't unpack too much every time.
+  # The default key is: "Cache everything created by a 'composer install' for master branch.
+  # This means jobs using this default key should not create additional stuff in .cache
+  # directory, for instance by calling a 'yarn install' or 'composer min' or similar.
+  key: master-composer
+  paths:
+    - .cache
+
+services:
+  # Each job starts two containers: This dind container that starts a docker
+  # daemon, plus a casual container that executes runTests.sh for single jobs
+  # to start containers within the dind container.
+  - name: docker:19.03-dind
+    alias: docker
+
+# This is *never* overridden in single jobs. All jobs start a 'dind' service
+# so runTests.sh starts 'sub' containers within the dind container, and this
+# main entry point container executes runTests.sh to start containers.
+image: typo3/core-testing-docker:latest
+
+stages:
+  # Stages for pre-merge
+  - early
+  - main
+  # Stages for nightly
+  - integrity
+  - unit
+  - acceptance
+  - acceptance2
+  - functional
+  - functional2
+
+include:
+  # Pre-merge tests are triggered by pushing to changes to gerrit.
+  # A push to gerrit has a change-id and a patch-set, a gerrit-gitlab-adapter
+  # turns this into a branch 'change-patchset' which executes the pipeline
+  - local: 'Build/gitlab-ci/pre-merge/early.yml'
+  - local: 'Build/gitlab-ci/pre-merge/acceptance-install.yml'
+  - local: 'Build/gitlab-ci/pre-merge/acceptance-backend.yml'
+  - local: 'Build/gitlab-ci/pre-merge/acceptance-pagetree.yml'
+  - local: 'Build/gitlab-ci/pre-merge/acceptance-installtool.yml'
+  - local: 'Build/gitlab-ci/pre-merge/integrity.yml'
+  - local: 'Build/gitlab-ci/pre-merge/functional.yml'
+  - local: 'Build/gitlab-ci/pre-merge/lint.yml'
+  - local: 'Build/gitlab-ci/pre-merge/unit.yml'
+  # Nightly tests are triggered by gitlab schedules
+  - local: 'Build/gitlab-ci/nightly/integrity.yml'
+  - local: 'Build/gitlab-ci/nightly/lint.yml'
+  - local: 'Build/gitlab-ci/nightly/unit-javascript.yml'
+  - local: 'Build/gitlab-ci/nightly/unit.yml'
+  - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
+  - local: 'Build/gitlab-ci/nightly/acceptance-installtool.yml'
+  - local: 'Build/gitlab-ci/nightly/acceptance-backend.yml'
+  - local: 'Build/gitlab-ci/nightly/acceptance-pagetree.yml'
+  - local: 'Build/gitlab-ci/nightly/functional.yml'

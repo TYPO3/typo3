@@ -1,0 +1,118 @@
+unit php 7.4:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit deprecated php 7.4:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit random 1 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+unit random 2 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+
+unit max php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit max deprecated php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit max random 1 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+unit max random 2 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+
+unit min php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit min deprecated php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit min random 1 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+unit min random 2 php 7.4:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4

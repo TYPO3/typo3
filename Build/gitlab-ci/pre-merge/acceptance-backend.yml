@@ -1,0 +1,13 @@
+acceptance backend mariadb php 7.4 pre-merge:
+  stage: main
+  except:
+    - schedules
+  retry: 1
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 10
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s acceptance -p 7.4 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
