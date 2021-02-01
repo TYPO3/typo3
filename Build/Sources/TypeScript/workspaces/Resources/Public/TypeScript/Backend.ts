@@ -571,13 +571,15 @@ class Backend extends Workspaces {
       const item = result.data[i];
       const $actions = $('<div />', {class: 'btn-group'});
       let $integrityIcon: JQuery;
+      let hasSubitems = item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '';
       $actions.append(
         this.getAction(
-          item.Workspaces_CollectionChildren > 0 && item.Workspaces_CollectionCurrent !== '',
+          hasSubitems,
           'expand',
-          'apps-pagetree-collapse',
+          (item.expanded ? 'apps-pagetree-expand' : 'apps-pagetree-collapse'),
         ).attr('title', TYPO3.lang['tooltip.expand'])
           .attr('data-bs-target', '[data-collection="' + item.Workspaces_CollectionCurrent + '"]')
+          .attr('aria-expanded', !hasSubitems || item.expanded ? 'true' : 'false')
           .attr('data-bs-toggle', 'collapse'),
         this.getAction(
           item.hasChanges,
@@ -648,8 +650,12 @@ class Backend extends Workspaces {
       };
 
       if (item.Workspaces_CollectionParent !== '') {
+        // fetch parent and see if this one is expanded
+        let parentItem = result.data.find((element: any) => {
+          return element.Workspaces_CollectionCurrent === item.Workspaces_CollectionParent;
+        });
         rowConfiguration['data-collection'] = item.Workspaces_CollectionParent;
-        rowConfiguration.class = 'collapse';
+        rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' :  '');
       }
 
       this.elements.$tableBody.append(
