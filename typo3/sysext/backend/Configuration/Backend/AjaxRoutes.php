@@ -113,6 +113,20 @@ return [
         'target' => Controller\Page\TreeController::class . '::setTemporaryMountPointAction'
     ],
 
+    // Get data for file storage tree
+    'filestorage_tree_data' => [
+        'path' => '/filestorage/tree/fetchData',
+        'methods' => ['GET'],
+        'target' => Controller\FileStorage\TreeController::class . '::fetchDataAction'
+    ],
+
+    // Get filtered data for filestorage tree
+    'filestorage_tree_filter' => [
+        'path' => '/filestorage/tree/filterData',
+        'methods' => ['GET'],
+        'target' => Controller\FileStorage\TreeController::class . '::filterDataAction'
+    ],
+
     // Get shortcut edit form
     'shortcut_editform' => [
         'path' => '/shortcut/editform',

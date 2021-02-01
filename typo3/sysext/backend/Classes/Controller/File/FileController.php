@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -134,8 +136,9 @@ class FileController
     {
         $this->init($request);
         $this->main();
+        $includeMessages = (bool)($request->getQueryParams()['includeMessages'] ?? false);
         $errors = $this->fileProcessor->getErrorMessages();
-        if (!empty($errors)) {
+        if (!$includeMessages && !empty($errors)) {
             return (new HtmlResponse('<t3err>' . implode(',', $errors) . '</t3err>'))->withStatus(500, '(AJAX)');
         }
         $flatResult = [];
@@ -147,6 +150,24 @@ class FileController
                     }
                 } else {
                     $flatResult[$action][] = $this->flattenResultDataValue($result);
+                }
+            }
+        }
+
+        // Used in the FileStorageTree when moving / copying folders
+        if ($includeMessages) {
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+            if (!empty($messages)) {
+                foreach ($messages as $message) {
+                    $flatResult['messages'][] = [
+                        'title'    => $message->getTitle(),
+                        'message'  => $message->getMessage(),
+                        'severity' => $message->getSeverity()
+                    ];
+                    if ($message->getSeverity() === AbstractMessage::ERROR) {
+                        $flatResult['hasErrors'] = true;
+                    }
                 }
             }
         }

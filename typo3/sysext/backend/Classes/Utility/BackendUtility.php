@@ -2660,16 +2660,10 @@ class BackendUtility
             } else {
                 switch ($set) {
                     case 'updatePageTree':
+                    case 'updateFolderTree':
                         $signals[] = '
 								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer.PageTree) {
 									top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-								}
-							';
-                        break;
-                    case 'updateFolderTree':
-                        $signals[] = '
-								if (top && top.nav_frame && top.nav_frame.location) {
-									top.nav_frame.location.reload(true);
 								}';
                         break;
                     case 'updateModuleMenu':

@@ -39,6 +39,9 @@
 			<trans-unit id="move_page" resname="move_page">
 				<source>Move page</source>
 			</trans-unit>
+			<trans-unit id="move_folder" resname="move_folder">
+				<source>Move folder</source>
+			</trans-unit>
 			<trans-unit id="deleteItem" resname="deleteItem">
 				<source>Delete</source>
 			</trans-unit>

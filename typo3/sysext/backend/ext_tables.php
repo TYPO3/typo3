@@ -77,3 +77,6 @@ $GLOBALS['TBE_STYLES']['skins']['backend'] = [
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf'
     ]
 );
+
+// Register the folder tree core navigation component
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'TYPO3/CMS/Backend/Tree/FileStorageTreeContainer');

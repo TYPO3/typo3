@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
@@ -47,9 +48,10 @@ class FalMetadataCest
      *
      * @param BackendTester $I
      * @param PageTree $pageTree
+     * @param FileTree $fileTree
      * @throws \Exception
      */
-    public function checkIfUpdatedFileMetadataIsUpdatedInContent(BackendTester $I, PageTree $pageTree)
+    public function checkIfUpdatedFileMetadataIsUpdatedInContent(BackendTester $I, PageTree $pageTree, FileTree $fileTree)
     {
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
@@ -88,12 +90,11 @@ class FalMetadataCest
         $I->amGoingTo('Change default metadata');
         $I->switchToMainFrame();
         $I->click('Filelist');
-        $I->switchToIFrame('nav_frame');
         $I->waitForText('fileadmin');
-        $I->click('styleguide');
+        $fileTree->openPath(['styleguide']);
 
-        $I->switchToWindow();
         $I->switchToContentFrame();
+        $I->see('styleguide', 'h1');
         $I->click('bus_lane.jpg');
         $I->waitForText('Edit File Metadata "bus_lane.jpg" on root level');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_file_metadata]") and contains(@data-formengine-input-name, "[title]")]', 'Test title');

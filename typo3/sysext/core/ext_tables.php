@@ -69,7 +69,6 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
     null,
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
-        'navigationFrameModule' => 'file_navframe',
         'name' => 'file',
         'workspaces' => 'online,custom',
         'iconIdentifier' => 'modulegroup-file'

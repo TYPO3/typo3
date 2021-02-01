@@ -55,7 +55,7 @@ class Icon
     /**
      * The identifier for a possible overlay icon
      *
-     * @var Icon
+     * @var Icon|null
      */
     protected $overlayIcon;
 
@@ -154,7 +154,7 @@ class Icon
     }
 
     /**
-     * @return Icon
+     * @return Icon|null
      */
     public function getOverlayIcon()
     {

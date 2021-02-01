@@ -632,7 +632,7 @@ class FileList
         $href = (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
         $triggerTreeUpdateAttribute = sprintf(
             ' data-tree-update-request="%s"',
-            htmlspecialchars('folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()))
+            htmlspecialchars($folderObject->getCombinedIdentifier())
         );
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {

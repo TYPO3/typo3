@@ -348,6 +348,12 @@
 			<trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc">
 				<source>Got unexpected response from the server. Please check logs for details.</source>
 			</trans-unit>
+			<trans-unit id="tree_networkError" resname="tree_networkError">
+				<source>Navigation loading error</source>
+			</trans-unit>
+			<trans-unit id="tree_networkErrorDescription" resname="tree_networkErrorDescription">
+				<source>Got unexpected response from the server. Please check logs for details.</source>
+			</trans-unit>
 			<trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded">
 				<source>Too many files selected</source>
 			</trans-unit>
