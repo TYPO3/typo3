@@ -46,6 +46,13 @@ class HiddenViewHelper extends AbstractFormFieldViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
+        $this->registerArgument(
+            'respectSubmittedDataValue',
+            'bool',
+            'enable or disable the usage of the submitted values',
+            false,
+            true
+        );
     }
 
     /**
@@ -57,7 +64,7 @@ class HiddenViewHelper extends AbstractFormFieldViewHelper
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
-        $this->setRespectSubmittedDataValue(true);
+        $this->setRespectSubmittedDataValue((bool)($this->arguments['respectSubmittedDataValue'] ?? true));
 
         $this->tag->addAttribute('type', 'hidden');
         $this->tag->addAttribute('name', $name);
