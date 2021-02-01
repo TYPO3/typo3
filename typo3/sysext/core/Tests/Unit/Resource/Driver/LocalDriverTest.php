@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamContent;
-use org\bovigo\vfs\vfsStreamWrapper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -1158,79 +1156,6 @@ class LocalDriverTest extends BaseTestCase
         // Change permissions back to writable, so the sub-folder can be removed in tearDown
         chmod($basedir . '/someForbiddenFolder', 0777);
         self::assertEquals(['r' => false, 'w' => false], $result);
-    }
-
-    /**
-     * Dataprovider for getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser test
-     *
-     * @return array group, filemode and expected result
-     */
-    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider(): array
-    {
-        $data = [];
-        // On some OS, the posix_* functions do not exist
-        if (function_exists('posix_getgid')) {
-            $data = [
-                'current group, readable/writable' => [
-                    posix_getgid(),
-                    48,
-                    ['r' => true, 'w' => true]
-                ],
-                'current group, readable/not writable' => [
-                    posix_getgid(),
-                    32,
-                    ['r' => true, 'w' => false]
-                ],
-                'current group, not readable/not writable' => [
-                    posix_getgid(),
-                    0,
-                    ['r' => false, 'w' => false]
-                ]
-            ];
-        }
-        $data = array_merge_recursive($data, [
-            'arbitrary group, readable/writable' => [
-                vfsStream::GROUP_USER_1,
-                6,
-                ['r' => true, 'w' => true]
-            ],
-            'arbitrary group, readable/not writable' => [
-                vfsStream::GROUP_USER_1,
-                436,
-                ['r' => true, 'w' => false]
-            ],
-            'arbitrary group, not readable/not writable' => [
-                vfsStream::GROUP_USER_1,
-                432,
-                ['r' => false, 'w' => false]
-            ]
-        ]);
-        return $data;
-    }
-
-    /**
-     * @test
-     * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
-     * @param int $group
-     * @param int $permissions
-     * @param array $expectedResult
-     */
-    public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser(int $group, int $permissions, array $expectedResult): void
-    {
-        if (Environment::isWindows()) {
-            self::markTestSkipped('Test skipped if run on Windows system');
-        }
-        $this->addToMount([
-            'testfile' => 'asdfg'
-        ]);
-        $subject = $this->createDriver();
-        /** @var $fileObject vfsStreamContent */
-        $fileObject = vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
-        // just use an "arbitrary" user here - it is only important that
-        $fileObject->chown(vfsStream::OWNER_USER_1);
-        $fileObject->chgrp($group);
-        $fileObject->chmod($permissions);
-        self::assertEquals($expectedResult, $subject->getPermissions('/testfile'));
     }
 
     /**
