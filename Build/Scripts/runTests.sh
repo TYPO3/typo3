@@ -107,7 +107,7 @@ Options:
                 - pdo_sqlsrv
 
     -d <mariadb|mysql|mssql|postgres|sqlite>
-        Only with -s install|functional
+        Only with -s install|functional|acceptance
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use MySQL server
@@ -373,9 +373,30 @@ case ${TEST_SUITE} in
         if [ ${CHUNKS} -gt 1 ]; then
             docker-compose run acceptance_split
         fi
-        docker-compose run prepare_acceptance_backend_mariadb
-        docker-compose run acceptance_backend_mariadb
-        SUITE_EXIT_CODE=$?
+        case ${DBMS} in
+            mysql)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_acceptance_backend_mysql
+                docker-compose run acceptance_backend_mysql
+                SUITE_EXIT_CODE=$?
+                ;;
+            mariadb)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_acceptance_backend_mariadb
+                docker-compose run acceptance_backend_mariadb
+                SUITE_EXIT_CODE=$?
+                ;;
+            postgres)
+                docker-compose run prepare_acceptance_backend_postgres
+                docker-compose run acceptance_backend_postgres
+                SUITE_EXIT_CODE=$?
+                ;;
+            *)
+                echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+        esac
         docker-compose down
         ;;
     acceptancePagetree)
@@ -574,11 +595,13 @@ case ${TEST_SUITE} in
         setUpDockerComposeDotEnv
         case ${DBMS} in
             mysql)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_install_mysql
                 docker-compose run acceptance_install_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mariadb)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_install_mariadb
                 docker-compose run acceptance_install_mariadb
                 SUITE_EXIT_CODE=$?
