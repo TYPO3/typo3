@@ -68,7 +68,7 @@ class Localization {
           if ($triggerButton.data('allowTranslate')) {
             actions.push(
               '<div class="row">'
-              + '<div class="btn-group col-sm-3">'
+              + '<div class="col-sm-3">'
               + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-translate">'
               + localizeIconMarkup
               + '<input type="radio" name="mode" id="mode_translate" value="localize" style="display: none">'
@@ -84,7 +84,7 @@ class Localization {
           if ($triggerButton.data('allowCopy')) {
             actions.push(
               '<div class="row">'
-              + '<div class="col-sm-3 btn-group">'
+              + '<div class="col-sm-3">'
               + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-copy">'
               + copyIconMarkup
               + '<input type="radio" name="mode" id="mode_copy" value="copyFromLanguage" style="display: none">'
@@ -307,7 +307,9 @@ class Localization {
 
               if ($me.data('helptext')) {
                 const $container = $(optionEvt.delegateTarget);
+                $container.find('.t3js-localization-option').removeClass('active');
                 $container.find('.t3js-helptext').addClass('text-muted');
+                $me.addClass('active');
                 $container.find($me.data('helptext')).removeClass('text-muted');
               }
               this.localizationMode = $radio.val();

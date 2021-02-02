@@ -99,6 +99,10 @@ $modal-danger-border: darken($danger, 5%);
             vertical-align: middle;
         }
     }
+
+    .progress {
+        flex-basis: 100%;
+    }
 }
 
 .modal-content {
