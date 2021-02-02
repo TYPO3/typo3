@@ -38,21 +38,21 @@ services:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/tutorial-getting-started/master/en-us/Index.html'
+      $link: 'https://docs.typo3.org/m/typo3/tutorial-getting-started/10.4/en-us/Index.html'
       $target: '_blank'
 
   dashboard.buttons.docTypoScriptReference:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Index.html'
+      $link: 'https://docs.typo3.org/m/typo3/reference-typoscript/10.4/en-us/Index.html'
       $target: '_blank'
 
   dashboard.buttons.docTSconfig:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
       $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.content.label'
-      $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/master/en-us/Index.html'
+      $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/10.4/en-us/Index.html'
       $target: '_blank'
 
   dashboard.views.widget:
