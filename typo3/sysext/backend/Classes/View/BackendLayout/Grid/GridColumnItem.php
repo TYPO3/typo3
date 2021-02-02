@@ -227,14 +227,14 @@ class GridColumnItem extends AbstractGridObject
 
     public function isEditable(): bool
     {
-        $languageId = $this->context->getSiteLanguage()->getLanguageId();
-        if ($this->getBackendUser()->isAdmin()) {
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->isAdmin()) {
             return true;
         }
         $pageRecord = $this->context->getPageRecord();
-        return !$pageRecord['editlock']
-            && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && ($languageId === null || $this->getBackendUser()->checkLanguageAccess($languageId));
+        return !(bool)($pageRecord['editlock'] ?? false)
+            && $backendUser->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
+            && $backendUser->recordEditAccessInternals('tt_content', $this->record);
     }
 
     public function isDragAndDropAllowed(): bool
