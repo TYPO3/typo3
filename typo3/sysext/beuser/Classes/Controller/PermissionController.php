@@ -177,6 +177,12 @@ class PermissionController extends ActionController
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments(['id' => (int)$this->id]);
         $buttonBar->addButton($shortcutButton);
+
+        $helpButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('perm_module');
+
+        $buttonBar->addButton($helpButton);
     }
 
     /**
@@ -240,9 +246,6 @@ class PermissionController extends ActionController
         }
         $tree->getTree($this->id, $this->depth);
         $this->view->assign('viewTree', $tree->tree);
-
-        // CSH for permissions setting
-        $this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', '', '<span class="btn btn-default btn-sm">|</span>'));
     }
 
     /**
