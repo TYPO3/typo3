@@ -52,11 +52,15 @@ final class ConsoleCommandPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $commandServiceDefinition = $container->findDefinition($serviceName)->setPublic(true);
             $commandName = null;
+            $description = null;
+            $hidden = false;
             $aliases = [];
             foreach ($tags as $attributes) {
                 if (!isset($attributes['command'])) {
                     continue;
                 }
+                $description = $attributes['description'] ?? $description;
+                $hidden = (bool)($attributes['hidden'] ?? $hidden);
                 $commandRegistryDefinition->addMethodCall('addLazyCommand', [
                     $attributes['command'],
                     $serviceName,
@@ -70,6 +74,12 @@ final class ConsoleCommandPass implements CompilerPassInterface
                 }
             }
             $commandServiceDefinition->addMethodCall('setName', [$commandName]);
+            if ($description) {
+                $commandServiceDefinition->addMethodCall('setDescription', [$description]);
+            }
+            if ($hidden) {
+                $commandServiceDefinition->addMethodCall('setHidden', [true]);
+            }
             if ($aliases) {
                 $commandServiceDefinition->addMethodCall('setAliases', [$aliases]);
             }
