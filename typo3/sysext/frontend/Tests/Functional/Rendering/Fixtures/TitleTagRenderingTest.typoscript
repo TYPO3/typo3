@@ -16,3 +16,16 @@ page.typeNum = 0
 [request.getQueryParams()['pageTitleTS'] == '1' || request.getParsedBody()['pageTitleTS'] == '1']
   config.pageTitle.case = upper
 [end]
+
+[request.getQueryParams()['pageTitleFirst'] == 1 || request.getParsedBody()['pageTitleFirst'] == 1]
+  config.pageTitleFirst = 1
+[end]
+
+[request.getQueryParams()['pageTitleSeparator'] == 'typoscriptText' || request.getParsedBody()['pageTitleSeparator'] == 'typoscriptText']
+  config.pageTitleSeparator = |
+[end]
+
+[request.getQueryParams()['pageTitleSeparator'] == 'typoscriptStdwrap' || request.getParsedBody()['pageTitleSeparator'] == 'typoscriptStdwrap']
+  config.pageTitleSeparator = -
+  config.pageTitleSeparator.noTrimWrap = | | |
+[end]
