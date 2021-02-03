@@ -55,9 +55,7 @@ class AutoPublishCommand extends Command
      */
     public function configure()
     {
-        $this
-            ->setDescription('Publish a workspace with a publication date.')
-            ->setHelp('Some workspaces can have an auto-publish publication date to put all "ready to publish" content online on a certain date.');
+        $this->setHelp('Some workspaces can have an auto-publish publication date to put all "ready to publish" content online on a certain date.');
     }
 
     /**

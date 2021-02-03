@@ -75,7 +75,6 @@ class SchedulerCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Start the TYPO3 Scheduler from the command line.')
             ->setHelp('If no parameter is given, the scheduler executes any tasks that are overdue to run.
 Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
             ->addOption(

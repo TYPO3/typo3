@@ -60,7 +60,6 @@ class ResetPasswordCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Trigger a password reset for a backend user.')
             ->addArgument(
                 'backendurl',
                 InputArgument::REQUIRED,

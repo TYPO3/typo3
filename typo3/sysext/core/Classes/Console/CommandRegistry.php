@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Console;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
+use Symfony\Component\Console\Descriptor\ApplicationDescription;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -39,6 +40,13 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
      * @var array[]
      */
     protected $commandConfigurations = [];
+
+    /**
+     * Map of command aliases
+     *
+     * @var array[]
+     */
+    protected $aliases = [];
 
     /**
      * @param ContainerInterface $container
@@ -115,11 +123,98 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     /**
      * @internal
      */
-    public function addLazyCommand(string $commandName, string $serviceName, bool $schedulable = true): void
+    public function getNamespaces(): array
     {
+        $namespaces = [];
+        foreach ($this->commandConfigurations as $commandName => $configuration) {
+            if ($configuration['hidden']) {
+                continue;
+            }
+            if ($configuration['aliasFor'] !== null) {
+                continue;
+            }
+            $namespace = $configuration['namespace'];
+            $namespaces[$namespace]['id'] = $namespace;
+            $namespaces[$namespace]['commands'][] = $commandName;
+        }
+
+        ksort($namespaces);
+        foreach ($namespaces as &$commands) {
+            ksort($commands);
+        }
+
+        return $namespaces;
+    }
+
+    /**
+     * Gets the commands (registered in the given namespace if provided).
+     *
+     * The array keys are the full names and the values the command instances.
+     *
+     * @return array An array of Command descriptors
+     * @internal
+     */
+    public function filter(string $namespace = null): array
+    {
+        $commands = [];
+        foreach ($this->commandConfigurations as $commandName => $configuration) {
+            if ($configuration['hidden']) {
+                continue;
+            }
+            if ($namespace !== null && $namespace !== $this->extractNamespace($commandName, substr_count($namespace, ':') + 1)) {
+                continue;
+            }
+            if ($configuration['aliasFor'] !== null) {
+                continue;
+            }
+
+            $commands[$commandName] = $configuration;
+            $commands[$commandName]['aliases'] = $this->aliases[$commandName] ?? [];
+        }
+
+        return $commands;
+    }
+
+    /**
+     * @internal
+     */
+    public function addLazyCommand(
+        string $commandName,
+        string $serviceName,
+        string $description = null,
+        bool $hidden = false,
+        bool $schedulable = false,
+        string $aliasFor = null
+    ): void {
         $this->commandConfigurations[$commandName] = [
+            'name' => $aliasFor ?? $commandName,
             'serviceName' => $serviceName,
+            'description' => $description,
+            'hidden' => $hidden,
             'schedulable' => $schedulable,
+            'aliasFor' => $aliasFor,
+            'namespace' => $this->extractNamespace($commandName, 1),
         ];
+
+        if ($aliasFor !== null) {
+            $this->aliases[$aliasFor][] = $commandName;
+        }
+    }
+
+    /**
+     * Returns the namespace part of the command name.
+     *
+     * This method is not part of public API and should not be used directly.
+     *
+     * @return string The namespace of the command
+     */
+    private function extractNamespace(string $name, int $limit = null): string
+    {
+        $parts = explode(':', $name, -1);
+        if (count($parts) === 0) {
+            return ApplicationDescription::GLOBAL_NAMESPACE;
+        }
+
+        return implode(':', $limit === null ? $parts : array_slice($parts, 0, $limit));
     }
 }

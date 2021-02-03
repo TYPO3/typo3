@@ -27,14 +27,6 @@ use TYPO3\CMS\Core\Core\Environment;
 class UnlockBackendCommand extends Command
 {
     /**
-     * Configure the command by defining the name, options and arguments
-     */
-    protected function configure()
-    {
-        $this->setDescription('Unlock the TYPO3 Backend');
-    }
-
-    /**
      * Executes the command for removing the lock file
      *
      * @param InputInterface $input

@@ -57,7 +57,6 @@ class MissingRelationsCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Find all record references pointing to a non-existing record')
             ->setHelp('
 Assumptions:
 - a perfect integrity of the reference index table (always update the reference index table before using this tool!)

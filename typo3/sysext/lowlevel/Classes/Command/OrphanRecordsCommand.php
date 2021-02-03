@@ -49,7 +49,6 @@ class OrphanRecordsCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Find and delete records that have lost their connection with the page tree.')
             ->setHelp('Assumption: All actively used records on the website from TCA configured tables are located in the page tree exclusively.
 
 All records managed by TYPO3 via the TCA array configuration has to belong to a page in the page tree, either directly or indirectly as a version of another record.

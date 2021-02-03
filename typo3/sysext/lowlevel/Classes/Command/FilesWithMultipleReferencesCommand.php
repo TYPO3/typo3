@@ -59,7 +59,6 @@ class FilesWithMultipleReferencesCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Looking for files from TYPO3 managed records which are referenced more than once')
             ->setHelp('
 Assumptions:
 - a perfect integrity of the reference index table (always update the reference index table before using this tool!)

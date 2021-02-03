@@ -35,13 +35,12 @@ class ReferenceIndexUpdateCommand extends Command
      */
     public function configure()
     {
-        $this->setDescription('Update the reference index of TYPO3')
-            ->addOption(
-                'check',
-                'c',
-                InputOption::VALUE_NONE,
-                'Only check the reference index of TYPO3'
-            );
+        $this->addOption(
+            'check',
+            'c',
+            InputOption::VALUE_NONE,
+            'Only check the reference index of TYPO3'
+        );
     }
 
     /**

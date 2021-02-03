@@ -40,7 +40,6 @@ class ImportCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Imports a T3D / XML file with content into a page tree')
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,

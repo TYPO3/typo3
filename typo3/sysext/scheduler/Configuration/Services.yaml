@@ -11,6 +11,7 @@ services:
     tags:
       - name: 'console.command'
         command: 'scheduler:run'
+        description: 'Start the TYPO3 Scheduler from the command line.'
         schedulable: false
 
   TYPO3\CMS\Scheduler\SystemInformation\ToolbarItemProvider:

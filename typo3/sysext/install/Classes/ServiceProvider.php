@@ -315,9 +315,21 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry
     {
-        $commandRegistry->addLazyCommand('language:update', Command\LanguagePackCommand::class);
-        $commandRegistry->addLazyCommand('upgrade:run', Command\UpgradeWizardRunCommand::class);
-        $commandRegistry->addLazyCommand('upgrade:list', Command\UpgradeWizardListCommand::class);
+        $commandRegistry->addLazyCommand(
+            'language:update',
+            Command\LanguagePackCommand::class,
+            'Update the language files of all activated extensions'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:run',
+            Command\UpgradeWizardRunCommand::class,
+            'Run upgrade wizard. Without arguments all available wizards will be run.'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:list',
+            Command\UpgradeWizardListCommand::class,
+            'List available upgrade wizards.'
+        );
         return $commandRegistry;
     }
 }

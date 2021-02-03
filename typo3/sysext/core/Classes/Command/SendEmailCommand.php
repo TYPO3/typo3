@@ -42,7 +42,6 @@ class SendEmailCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Sends emails from the spool')
             ->addOption('message-limit', null, InputOption::VALUE_REQUIRED, 'The maximum number of messages to send.')
             ->addOption('time-limit', null, InputOption::VALUE_REQUIRED, 'The time limit for sending messages (in seconds).')
             ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).')

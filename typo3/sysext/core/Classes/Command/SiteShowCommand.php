@@ -46,12 +46,11 @@ class SiteShowCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Shows the configuration of the specified site. Specify the identifier via "site:show <identifier>".')
-            ->addArgument(
-                'identifier',
-                InputArgument::REQUIRED,
-                'The identifier of the site'
-            );
+        $this->addArgument(
+            'identifier',
+            InputArgument::REQUIRED,
+            'The identifier of the site'
+        );
     }
 
     /**

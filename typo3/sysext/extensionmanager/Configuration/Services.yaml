@@ -14,6 +14,7 @@ services:
     tags:
       - name: 'console.command'
         command: 'extension:activate'
+        description: 'Activates an extension by key'
         schedulable: false
       - name: 'console.command'
         command: 'extensionmanager:extension:install'
@@ -27,6 +28,7 @@ services:
   TYPO3\CMS\Extensionmanager\Command\DeactivateExtensionCommand:
     tags:
       - name: 'console.command'
+        description: 'Deactivates an extension by key'
         command: 'extension:deactivate'
         schedulable: false
       - name: 'console.command'

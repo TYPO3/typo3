@@ -56,22 +56,31 @@ final class ConsoleCommandPass implements CompilerPassInterface
             $hidden = false;
             $aliases = [];
             foreach ($tags as $attributes) {
-                if (!isset($attributes['command'])) {
-                    continue;
-                }
+                $command = $attributes['command'] ?? null;
                 $description = $attributes['description'] ?? $description;
                 $hidden = (bool)($attributes['hidden'] ?? $hidden);
-                $commandRegistryDefinition->addMethodCall('addLazyCommand', [
-                    $attributes['command'],
-                    $serviceName,
-                    (bool)($attributes['schedulable'] ?? true)
-                ]);
-                $isAlias = isset($commandName) || ($attributes['alias'] ?? false);
+                $schedulable = (bool)($attributes['schedulable'] ?? true);
+                $aliasFor = null;
+                if ($command === null) {
+                    continue;
+                }
+
+                $isAlias = $commandName !== null || ($attributes['alias'] ?? false);
                 if (!$isAlias) {
                     $commandName = $attributes['command'];
                 } else {
+                    $aliasFor = $commandName;
                     $aliases[] = $attributes['command'];
                 }
+
+                $commandRegistryDefinition->addMethodCall('addLazyCommand', [
+                    $command,
+                    $serviceName,
+                    $description,
+                    $hidden,
+                    $schedulable,
+                    $aliasFor
+                ]);
             }
             $commandServiceDefinition->addMethodCall('setName', [$commandName]);
             if ($description) {

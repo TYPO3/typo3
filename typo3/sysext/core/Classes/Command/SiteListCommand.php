@@ -41,14 +41,6 @@ class SiteListCommand extends Command
     }
 
     /**
-     * Defines the allowed options for this command
-     */
-    protected function configure()
-    {
-        $this->setDescription('Shows the list of sites available to the system.');
-    }
-
-    /**
      * Shows a table with all configured sites
      *
      * @inheritdoc

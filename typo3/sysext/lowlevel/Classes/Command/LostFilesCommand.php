@@ -50,7 +50,6 @@ class LostFilesCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Looking for files in the uploads/ folder which does not have a reference in TYPO3 managed records.')
             ->setHelp('
 Assumptions:
 - a perfect integrity of the reference index table (always update the reference index table before using this tool!)

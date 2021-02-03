@@ -34,7 +34,6 @@ class LockBackendCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Lock the TYPO3 Backend')
             ->addArgument(
                 'redirect',
                 InputArgument::OPTIONAL,

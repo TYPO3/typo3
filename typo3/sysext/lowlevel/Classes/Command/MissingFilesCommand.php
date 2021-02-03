@@ -50,7 +50,6 @@ class MissingFilesCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Find all file references from records pointing to a missing (non-existing) file.')
             ->setHelp('
 Assumptions:
 - a perfect integrity of the reference index table (always update the reference index table before using this tool!)

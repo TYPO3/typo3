@@ -18,9 +18,6 @@
 			<trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode">
 				<source>HTTP Status Code for the redirect, 301 is the default</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.description" resname="cleanupRedirectsCommand.description">
-				<source>Cleanup old redirects periodically for given constraints like days, hit count or domains.</source>
-			</trans-unit>
 			<trans-unit id="cleanupRedirectsCommand.label.days" resname="cleanupRedirectsCommand.label.days">
 				<source>Cleanup redirects older than provided number of days</source>
 			</trans-unit>

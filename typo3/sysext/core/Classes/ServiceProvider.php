@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core;
 use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -42,6 +43,9 @@ class ServiceProvider extends AbstractServiceProvider
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
             Charset\CharsetConverter::class => [ static::class, 'getCharsetConverter' ],
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
+            Command\ListCommand::class => [ static::class, 'getListCommand' ],
+            HelpCommand::class => [ static::class, 'getHelpCommand' ],
+            Command\DumpAutoloadCommand::class => [ static::class, 'getDumpAutoloadCommand' ],
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
             Console\CommandRegistry::class => [ static::class, 'getConsoleCommandRegistry' ],
             Context\Context::class => [ static::class, 'getContext' ],
@@ -80,6 +84,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function getExtensions(): array
     {
         return [
+            Console\CommandRegistry::class => [ static::class, 'configureCommands' ],
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
@@ -124,6 +129,23 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSiteConfiguration(ContainerInterface $container): Configuration\SiteConfiguration
     {
         return self::new($container, Configuration\SiteConfiguration::class, [Environment::getConfigPath() . '/sites']);
+    }
+
+    public static function getListCommand(ContainerInterface $container): Command\ListCommand
+    {
+        return new Command\ListCommand(
+            $container->get(Console\CommandRegistry::class)
+        );
+    }
+
+    public static function getHelpCommand(ContainerInterface $container): HelpCommand
+    {
+        return new HelpCommand();
+    }
+
+    public static function getDumpAutoloadCommand(ContainerInterface $container): Command\DumpAutoloadCommand
+    {
+        return new Command\DumpAutoloadCommand();
     }
 
     public static function getConsoleCommandApplication(ContainerInterface $container): Console\CommandApplication
@@ -340,5 +362,18 @@ class ServiceProvider extends AbstractServiceProvider
         return $eventDispatcher ?? new EventDispatcher\EventDispatcher(
             new EventDispatcher\ListenerProvider($container)
         );
+    }
+
+    public static function configureCommands(ContainerInterface $container, Console\CommandRegistry $commandRegistry): Console\CommandRegistry
+    {
+        $commandRegistry->addLazyCommand('list', Command\ListCommand::class, 'Lists commands');
+
+        $commandRegistry->addLazyCommand('help', HelpCommand::class, 'Displays help for a command');
+
+        $commandRegistry->addLazyCommand('dumpautoload', Command\DumpAutoloadCommand::class, 'Updates class loading information in non-composer mode.', Environment::isComposerMode());
+        $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
+        $commandRegistry->addLazyCommand('extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
+
+        return $commandRegistry;
     }
 }

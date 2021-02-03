@@ -34,6 +34,7 @@ class DumpAutoloadCommand extends Command
      */
     protected function configure()
     {
+        $this->setName('dumpautoload');
         $this->setDescription('Updates class loading information in non-composer mode.');
         $this->setHelp('This command is only needed during development. The extension manager takes care of creating or updating this info properly during extension (de-)activation.');
         $this->setAliases([

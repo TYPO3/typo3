@@ -44,9 +44,7 @@ class CleanupPreviewLinksCommand extends Command
      */
     public function configure()
     {
-        $this
-            ->setDescription('Clean up expired preview links from shared workspace previews.')
-            ->setHelp('Look for preview links within the database table "sys_preview" that have been expired and and remove them. This command should be called regularly when working with workspaces.');
+        $this->setHelp('Look for preview links within the database table "sys_preview" that have been expired and and remove them. This command should be called regularly when working with workspaces.');
     }
 
     /**

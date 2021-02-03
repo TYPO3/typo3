@@ -47,7 +47,6 @@ class CleanupRedirectsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription($this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang.xlf:cleanupRedirectsCommand.description'))
             ->addOption(
                 'domain',
                 'd',

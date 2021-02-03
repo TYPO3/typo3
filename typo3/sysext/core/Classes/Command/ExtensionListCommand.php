@@ -50,7 +50,6 @@ class ExtensionListCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Shows the list of extensions available to the system.')
             ->addOption(
                 'all',
                 'a',

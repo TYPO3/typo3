@@ -52,7 +52,6 @@ class DeletedRecordsCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Permanently deletes all records marked as "deleted" in the database.')
             ->setHelp('Traverse page tree and find and flush deleted records. If you want to get more detailed information, use the --verbose option.')
             ->addOption(
                 'pid',

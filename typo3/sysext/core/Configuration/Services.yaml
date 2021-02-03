@@ -10,30 +10,18 @@ services:
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
     tags: ['container.env_var_processor']
 
-  TYPO3\CMS\Core\Command\DumpAutoloadCommand:
-    tags:
-      - name: 'console.command'
-        command: 'dumpautoload'
-        schedulable: false
-      - name: 'console.command'
-        command: 'extensionmanager:extension:dumpclassloadinginformation'
-        alias: true
-        schedulable: false
-      - name: 'console.command'
-        command: 'extension:dumpclassloadinginformation'
-        alias: true
-        schedulable: false
-
   TYPO3\CMS\Core\Command\ExtensionListCommand:
     tags:
       - name: 'console.command'
         command: 'extension:list'
+        description: 'Shows the list of extensions available to the system'
         schedulable: false
 
   TYPO3\CMS\Core\Command\SendEmailCommand:
     tags:
       - name: 'console.command'
         command: 'mailer:spool:send'
+        description: 'Sends emails from the spool'
       - name: 'console.command'
         command: 'swiftmailer:spool:send'
         alias: true
@@ -44,12 +32,14 @@ services:
     tags:
       - name: 'console.command'
         command: 'site:list'
+        description: 'Shows the list of sites available to the system'
         schedulable: false
 
   TYPO3\CMS\Core\Command\SiteShowCommand:
     tags:
       - name: 'console.command'
         command: 'site:show'
+        description: 'Shows the configuration of the specified site'
         schedulable: false
 
   TYPO3\CMS\Core\Configuration\SiteConfiguration:

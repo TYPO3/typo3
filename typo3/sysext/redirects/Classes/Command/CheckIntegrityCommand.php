@@ -48,14 +48,12 @@ class CheckIntegrityCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Check integrity of redirects')
-            ->addArgument(
-                'site',
-                InputArgument::OPTIONAL,
-                'If set, then only pages of a specific site are checked',
-                ''
-            );
+        $this->addArgument(
+            'site',
+            InputArgument::OPTIONAL,
+            'If set, then only pages of a specific site are checked',
+            ''
+        );
     }
 
     /**

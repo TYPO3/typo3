@@ -78,7 +78,6 @@ class WorkspaceVersionRecordsCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Find all versioned records and possibly cleans up invalid records in the database.')
             ->setHelp('Traverse page tree and find versioned records. Also list all versioned records, additionally with some inconsistencies in the database, which can cleaned up with the "action" option. If you want to get more detailed information, use the --verbose option.')
             ->addOption(
                 'pid',

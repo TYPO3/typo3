@@ -11,41 +11,49 @@ services:
     tags:
       - name: 'console.command'
         command: 'syslog:list'
+        description: 'Show entries from the sys_log database table of the last 24 hours.'
 
   TYPO3\CMS\Lowlevel\Command\MissingFilesCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:missingfiles'
+        description: 'Find all file references from records pointing to a missing (non-existing) file.'
 
   TYPO3\CMS\Lowlevel\Command\LostFilesCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:lostfiles'
+        description: 'Looking for files in the uploads/ folder which does not have a reference in TYPO3 managed records.'
 
   TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:multiplereferencedfiles'
+        description: 'Looking for files from TYPO3 managed records which are referenced more than once'
 
   TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:missingrelations'
+        description: 'Find all record references pointing to a non-existing record'
 
   TYPO3\CMS\Lowlevel\Command\DeletedRecordsCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:deletedrecords'
+        description: 'Permanently deletes all records marked as "deleted" in the database.'
 
   TYPO3\CMS\Lowlevel\Command\OrphanRecordsCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:orphanrecords'
+        description: 'Find and delete records that have lost their connection with the page tree.'
 
   TYPO3\CMS\Lowlevel\Command\CleanFlexFormsCommand:
     tags:
       - name: 'console.command'
         command: 'cleanup:flexforms'
+        description: 'Updates all database records which have a FlexForm field and the XML data does not match the chosen datastructure.'
 
   TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry:
     public: true

@@ -14,3 +14,4 @@ services:
     tags:
       - name: 'console.command'
         command: 'impexp:import'
+        description: 'Imports a T3D / XML file with content into a page tree'

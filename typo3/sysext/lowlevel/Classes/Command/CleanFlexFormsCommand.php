@@ -52,7 +52,6 @@ class CleanFlexFormsCommand extends Command
     public function configure()
     {
         $this
-            ->setDescription('Updates all database records which have a FlexForm field and the XML data does not match the chosen datastructure.')
             ->setHelp('Traverse page tree and find and clean/update records with dirty FlexForm values. If you want to get more detailed information, use the --verbose option.')
             ->addOption(
                 'pid',
