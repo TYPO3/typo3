@@ -18,7 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Notification;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -36,8 +40,10 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  *
  * @internal This is a concrete implementation of sending out emails, and not part of the public TYPO3 Core API
  */
-class StageChangeNotification
+class StageChangeNotification implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var StagesService
      */
@@ -109,7 +115,21 @@ class StageChangeNotification
                 continue;
             }
             $sentEmails[] = $recipientData['email'];
-            $this->sendEmail($recipientData, $emailConfig, $viewPlaceholders);
+            try {
+                $this->sendEmail($recipientData, $emailConfig, $viewPlaceholders);
+            } catch (TransportException $e) {
+                $this->logger->warning('Could not send notification email to "' . $recipientData['email'] . '" due to mailer settings error', [
+                    'recipientList' => array_column($recipients, 'email'),
+                    'exception' => $e
+                ]);
+                // At this point we break since the next attempts will also fail due to the invalid mailer settings
+                break;
+            } catch (RfcComplianceException $e) {
+                $this->logger->warning('Could not send notification email to "' . $recipientData['email'] . '" due to invalid email address', [
+                    'recipientList' => [$recipientData['email']],
+                    'exception' => $e
+                ]);
+            }
         }
     }
 
