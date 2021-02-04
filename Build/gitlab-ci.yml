@@ -36,6 +36,7 @@ stages:
   # Stages for pre-merge
   - early
   - main
+  - notify
   # Stages for nightly
   - integrity
   - unit
@@ -57,6 +58,7 @@ include:
   - local: 'Build/gitlab-ci/pre-merge/functional.yml'
   - local: 'Build/gitlab-ci/pre-merge/lint.yml'
   - local: 'Build/gitlab-ci/pre-merge/unit.yml'
+  - local: 'Build/gitlab-ci/pre-merge/notify.yml'
   # Nightly tests are triggered by gitlab schedules
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
   - local: 'Build/gitlab-ci/nightly/lint.yml'

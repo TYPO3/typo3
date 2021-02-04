@@ -1,0 +1,43 @@
+gerrit vote positive:
+  stage: notify
+  except:
+    - schedules
+  when: on_success
+  script: |
+    # When branch is of form '12345-12', vote on gerrit
+    if [[ "$CI_COMMIT_REF_NAME" =~ ^[[:digit:]]+\-[[:digit:]]+$ ]]; then
+      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f1`
+      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
+      MESSAGE="Core CI is happy: $CI_PIPELINE_URL"
+      curl -X POST \
+        --header "authorization: Basic $CORE_CI_GERRIT_AUTH" \
+        --header "cache-control: no-cache" \
+        --header "content-type: application/json" \
+        --data "{ \
+          \"message\": \"$MESSAGE\", \
+          \"labels\":{\"Verified\": +1} \
+        }" \
+        https://review.typo3.org/a/changes/$CHANGE/revisions/$PATCHSET/review
+    fi
+
+gerrit vote negative:
+  stage: notify
+  except:
+    - schedules
+  when: on_failure
+  script: |
+    # When branch is of form '12345-12', vote on gerrit
+    if [[ "$CI_COMMIT_REF_NAME" =~ ^[[:digit:]]+\-[[:digit:]]+$ ]]; then
+      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f1`
+      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
+      MESSAGE="Core CI is not happy: $CI_PIPELINE_URL"
+      curl -X POST \
+        --header "authorization: Basic $CORE_CI_GERRIT_AUTH" \
+        --header "cache-control: no-cache" \
+        --header "content-type: application/json" \
+        --data "{ \
+          \"message\": \"$MESSAGE\", \
+          \"labels\":{\"Verified\": -1} \
+        }" \
+        https://review.typo3.org/a/changes/$CHANGE/revisions/$PATCHSET/review
+    fi

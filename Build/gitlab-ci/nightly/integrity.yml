@@ -11,7 +11,6 @@ cgl:
   only:
     - schedules
   script:
-    - ls -lha
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s cglGit -n -p 7.4
 
