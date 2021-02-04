@@ -12,6 +12,7 @@
 */
 
 import SelectTree = require('TYPO3/CMS/Backend/FormEngine/Element/SelectTree');
+import {TreeToolbar} from './TreeToolbar';
 
 class SelectTreeElement {
   private readonly treeWrapper: HTMLElement = null;
@@ -48,10 +49,8 @@ class SelectTreeElement {
     tree.dispatch.on('nodeSelectedAfter.requestUpdate', this.callback);
 
     if (this.recordField.dataset.treeShowToolbar) {
-      require(['TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar'], (TreeToolbar: any): void => {
-        const selectTreeToolbar = new TreeToolbar();
-        selectTreeToolbar.initialize(this.treeWrapper);
-      });
+      const selectTreeToolbar = new TreeToolbar();
+      selectTreeToolbar.initialize(this.treeWrapper);
     }
   }
 
