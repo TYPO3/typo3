@@ -1,7 +1,9 @@
 functional mariadb 10.3 php 7.4 pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
@@ -10,7 +12,9 @@ functional mariadb 10.3 php 7.4 pre-merge:
 functional postgres 10 php 7.4 pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
@@ -19,7 +23,9 @@ functional postgres 10 php 7.4 pre-merge:
 functional sqlite php 7.4 pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4

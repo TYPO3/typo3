@@ -1,7 +1,9 @@
 gerrit vote positive:
   stage: notify
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   when: on_success
   script: |
     # When branch is of form '12345-12', vote on gerrit
@@ -23,7 +25,9 @@ gerrit vote positive:
 gerrit vote negative:
   stage: notify
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   when: on_failure
   script: |
     # When branch is of form '12345-12', vote on gerrit

@@ -1,36 +1,47 @@
 lint scss pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   cache:
     key: master-js
     paths:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintScss
+
 lint typescript pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   cache:
     key: master-js
     paths:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintTypescript
+
 lint html pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   cache:
     key: master-js
     paths:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintHtml
+
 lint php 7.4 pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   script:
     - Build/Scripts/runTests.sh -s lint -p 7.4

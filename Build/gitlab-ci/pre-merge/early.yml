@@ -1,7 +1,9 @@
 cgl pre-merge:
   stage: early
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s cglGit -n -p 7.4
@@ -9,6 +11,8 @@ cgl pre-merge:
 composer validate pre-merge:
   stage: early
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 7.4

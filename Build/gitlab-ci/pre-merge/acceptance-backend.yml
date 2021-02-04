@@ -1,7 +1,9 @@
 acceptance backend mariadb php 7.4 pre-merge:
   stage: main
   except:
-    - schedules
+    refs:
+      - schedules
+      - master
   retry: 1
   artifacts:
     when: on_failure

@@ -8,6 +8,7 @@ lint scss:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintScss
+
 lint typescript:
   stage: integrity
   only:
@@ -18,6 +19,7 @@ lint typescript:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintTypescript
+
 lint html:
   stage: integrity
   only:
@@ -28,6 +30,7 @@ lint html:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s lintHtml
+
 lint php 7.4:
   stage: integrity
   only:
