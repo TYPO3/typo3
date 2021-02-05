@@ -15,6 +15,7 @@ import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon} from 'TYPO3/CMS/Core/lit-helper';
 import PageTree = require('TYPO3/CMS/Backend/PageTree/PageTree');
+import {PageTreeDragDrop} from './PageTreeDragDrop';
 import viewPort from '../Viewport';
 import {PageTreeToolbar} from './PageTreeToolbar';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
@@ -37,6 +38,7 @@ export class PageTreeElement {
     const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
 
     const tree = new PageTree();
+    const dragDrop = new PageTreeDragDrop(tree);
     const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
     (new AjaxRequest(configurationUrl)).get()
       .then(async (response: AjaxResponse): Promise<void> => {
@@ -48,12 +50,12 @@ export class PageTreeElement {
           filterUrl: filterUrl,
           showIcons: true
         });
-        tree.initialize(treeEl, configuration);
+        tree.initialize(treeEl, dragDrop, configuration);
         viewPort.NavigationContainer.setComponentInstance(tree);
         // the toolbar relies on settings retrieved in this step
         const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
         if (!toolbar.dataset.treeShowToolbar) {
-          const pageTreeToolbar = new PageTreeToolbar();
+          const pageTreeToolbar = new PageTreeToolbar(dragDrop);
           pageTreeToolbar.initialize(treeEl, toolbar);
           toolbar.dataset.treeShowToolbar = 'true';
         }

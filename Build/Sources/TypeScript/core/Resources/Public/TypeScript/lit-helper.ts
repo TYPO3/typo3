@@ -19,12 +19,14 @@ import Icons = require('TYPO3/CMS/Backend/Icons');
 
 import 'TYPO3/CMS/Backend/Element/SpinnerElement';
 
-export const renderHTML = (result: TemplateResult): string => {
+export const renderElement = (result: TemplateResult): HTMLElement => {
   const anvil = document.createElement('div');
   render(result, anvil);
-  return anvil.innerHTML;
+  return anvil;
+}
+export const renderHTML = (result: TemplateResult): string => {
+  return renderElement(result).innerHTML;
 };
-
 export const lll = (key: string): string => {
   if (!window.TYPO3 || !window.TYPO3.lang || typeof window.TYPO3.lang[key] !== 'string') {
     return '';

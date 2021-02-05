@@ -18,13 +18,13 @@ define([
     'd3-selection',
     'TYPO3/CMS/Core/Ajax/AjaxRequest',
     'TYPO3/CMS/Backend/Icons',
-    'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop',
+    'TYPO3/CMS/Backend/PageTree/PageTreeDragHandler',
     'TYPO3/CMS/Backend/SvgTree',
     'TYPO3/CMS/Backend/ContextMenu',
     'TYPO3/CMS/Backend/Storage/Persistent',
     'TYPO3/CMS/Backend/Notification'
   ],
-  function(d3selection, AjaxRequest, Icons, PageTreeDragDrop, SvgTree, ContextMenu, Persistent, Notification) {
+  function(d3selection, AjaxRequest, Icons, PageTreeDragHandler, SvgTree, ContextMenu, Persistent, Notification) {
     'use strict';
 
     /**
@@ -62,9 +62,10 @@ define([
      * SelectTree initialization
      *
      * @param {String} selector
+     * @param {PageTreeDragDrop} dragDrop
      * @param {Object} settings
      */
-    PageTree.prototype.initialize = function(selector, settings) {
+    PageTree.prototype.initialize = function(selector, dragDrop, settings) {
       var _this = this;
 
       if (!_super_.initialize.call(_this, selector, settings)) {
@@ -77,8 +78,7 @@ define([
       _this.dispatch.on('contextmenu.pageTree', _this.contextmenu);
       _this.dispatch.on('updateSvg.pageTree', _this.updateSvg);
       _this.dispatch.on('prepareLoadedNode.pageTree', _this.prepareLoadedNode);
-      _this.dragDrop = PageTreeDragDrop;
-      _this.dragDrop.init(_this);
+      _this.dragDrop = dragDrop;
 
       if (_this.settings.temporaryMountPoint) {
         _this.addMountPoint(_this.settings.temporaryMountPoint);
@@ -357,14 +357,14 @@ define([
     };
 
     PageTree.prototype.updateNodeBgClass = function(nodeBg) {
-      return _super_.updateNodeBgClass.call(this, nodeBg).call(this.dragDrop.drag());
+      return _super_.updateNodeBgClass.call(this, nodeBg).call(this.initializeDragForNode());
     };
 
     PageTree.prototype.nodesUpdate = function(nodes) {
       var _this = this;
 
       nodes = _super_.nodesUpdate.call(this, nodes)
-        .call(this.dragDrop.drag())
+        .call(this.initializeDragForNode())
         .attr('data-table', 'pages')
         .attr('data-context', 'tree')
         .on('contextmenu', function(event, element) {
@@ -685,6 +685,129 @@ define([
         }
       }
     };
+
+    /**
+     * Drag & Drop related code
+     */
+
+    /**
+     * Initializes a drag&drop when called on the page tree. Should be moved somewhere else at some point
+     * @returns {*}
+     */
+    PageTree.prototype.initializeDragForNode = function() {
+      return this.dragDrop.connectDragHandler(new PageTreeDragHandler.PageTreeNodeDragHandler(this, this.dragDrop))
+    };
+
+    /**
+     * Add new node to the tree (used in drag+drop)
+     *
+     * @type {Object} options
+     * @private
+     */
+    PageTree.prototype.addNewNode = function(options) {
+      var target = options.target;
+      var index = this.nodes.indexOf(target);
+      var newNode = {};
+      newNode.command = 'new';
+      newNode.type = options.type;
+      newNode.identifier = -1;
+      newNode.target = target;
+      newNode.parents = target.parents;
+      newNode.parentsStateIdentifier = target.parentsStateIdentifier;
+      newNode.depth = target.depth;
+      newNode.position = options.position;
+      newNode.name = (typeof options.title !== 'undefined') ? options.title : TYPO3.lang['tree.defaultPageTitle'];
+      newNode.y = newNode.y || newNode.target.y;
+      newNode.x = newNode.x || newNode.target.x;
+
+      this.nodeIsEdit = true;
+
+      if (options.position === 'in') {
+        newNode.depth++;
+        newNode.parents.unshift(index);
+        newNode.parentsStateIdentifier.unshift(this.nodes[index].stateIdentifier);
+        this.nodes[index].hasChildren = true;
+        this.showChildren(this.nodes[index]);
+      }
+
+      if (options.position === 'in' || options.position === 'after') {
+        index++;
+      }
+
+      if (options.icon) {
+        newNode.icon = options.icon;
+      }
+
+      if (newNode.position === 'before') {
+        var positionAndTarget = this.dragDrop.setNodePositionAndTarget(index);
+        newNode.position = positionAndTarget[0];
+        newNode.target = positionAndTarget[1];
+      }
+
+      this.nodes.splice(index, 0, newNode);
+      this.setParametersNode();
+      this.prepareDataForVisibleNodes();
+      this.update();
+      this.removeEditedText();
+
+      d3selection.select(this.svg.node().parentNode)
+        .append('input')
+        .attr('class', 'node-edit')
+        .style('top', newNode.y + this.settings.marginTop + 'px')
+        .style('left', newNode.x + this.textPosition + 5 + 'px')
+        .style('width', this.settings.width - (newNode.x + this.textPosition + 20) + 'px')
+        .style('height', this.settings.nodeHeight + 'px')
+        .attr('text', 'text')
+        .attr('value', newNode.name)
+        .on('keydown', function(event) {
+          var target = event.target;
+          var code = event.keyCode;
+          if (code === 13 || code === 9) { // enter || tab
+            this.nodeIsEdit = false;
+            var newName = target.value.trim();
+            if (newName.length) {
+              newNode.name = newName;
+              this.removeEditedText();
+              this.sendChangeCommand(newNode);
+            } else {
+              this.removeNode(newNode);
+            }
+          } else if (code === 27) { // esc
+            this.nodeIsEdit = false;
+            this.removeNode(newNode);
+          }
+        }.bind(this))
+        .on('blur', function(event) {
+          if (this.nodeIsEdit && (this.nodes.indexOf(newNode) > -1)) {
+            var target = event.target;
+            var newName = target.value.trim();
+            if (newName.length) {
+              newNode.name = newName;
+              this.removeEditedText();
+              this.sendChangeCommand(newNode);
+            } else {
+              this.removeNode(newNode);
+            }
+          }
+        }.bind(this))
+        .node()
+        .select();
+    }
+
+    PageTree.prototype.removeNode = function(newNode) {
+      var index = this.nodes.indexOf(newNode);
+      // if newNode is only one child
+      if (this.nodes[index - 1].depth != newNode.depth
+        && (!this.nodes[index + 1] || this.nodes[index + 1].depth != newNode.depth)) {
+        this.nodes[index - 1].hasChildren = false;
+      }
+      this.nodes.splice(index, 1);
+      this.setParametersNode();
+      this.prepareDataForVisibleNodes();
+      this.update();
+      this.removeEditedText();
+    };
+
 
     return PageTree;
   });

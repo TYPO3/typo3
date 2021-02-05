@@ -16,6 +16,8 @@
     "@types/chosen-js": "^1.8.1",
     "@types/chrome": "^0.0.123",
     "@types/ckeditor": "^4.9.10",
+    "@types/d3-drag": "^2.0.0",
+    "@types/d3-selection": "^2.0.0",
     "@types/imagesloaded": "^4.1.2",
     "@types/jasmine": "^3.5.14",
     "@types/jquery": "2.0.47",

@@ -16,8 +16,9 @@ import {select as d3select} from 'd3-selection';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
-import pageTreeDragDrop = require('TYPO3/CMS/Backend/PageTree/PageTreeDragDrop');
+import {PageTreeDragDrop} from './PageTreeDragDrop';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
+import {ToolbarDragHandler} from 'TYPO3/CMS/Backend/PageTree/PageTreeDragHandler';
 
 /**
  * @exports TYPO3/CMS/Backend/PageTree/PageTreeToolbar
@@ -34,10 +35,10 @@ export class PageTreeToolbar
   private targetEl: HTMLElement;
 
   private tree: any;
-  private dragDrop: any;
+  private readonly dragDrop: any;
 
-  public constructor() {
-    this.dragDrop = pageTreeDragDrop;
+  public constructor(dragDrop: PageTreeDragDrop) {
+    this.dragDrop = dragDrop;
   }
 
   public initialize(treeContainer: HTMLElement, toolbar: HTMLElement, settings: any = {}): void {
@@ -114,7 +115,7 @@ export class PageTreeToolbar
       if (item.icon) {
         d3Toolbar
           .selectAll('[data-tree-icon=' + item.icon + ']')
-          .call(this.dragDrop.dragToolbar());
+          .call(this.dragToolbar(item));
       } else {
         console.warn('Missing icon definition for doktype: ' + item.nodeType);
       }
@@ -178,5 +179,14 @@ export class PageTreeToolbar
         </div>
       </div>
     `;
+  }
+
+  /**
+   * Register Drag and drop for toolbar new elements
+   *
+   * Returns method from d3drag
+   */
+  private dragToolbar(itm: any) {
+    return this.dragDrop.connectDragHandler(new ToolbarDragHandler(itm, this.tree, this.dragDrop));
   }
 }
