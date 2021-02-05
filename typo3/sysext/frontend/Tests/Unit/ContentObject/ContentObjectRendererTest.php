@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -1550,10 +1551,10 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeSiteWithBaseVariants(): void
     {
         $packageManager = new PackageManager(new DependencyOrderingService());
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
+            $packageManager,
+            new NullFrontend('core')
+        ));
         putenv('LOCAL_DEVELOPMENT=1');
 
         $site = new Site('my-site', 123, [

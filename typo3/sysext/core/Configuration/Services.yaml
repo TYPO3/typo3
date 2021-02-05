@@ -144,6 +144,11 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader:
+    public: true
+    arguments:
+      $coreCache: '@cache.core'
+
   TYPO3\CMS\Core\Page\AssetRenderer:
     public: true
     arguments:

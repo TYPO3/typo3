@@ -19,10 +19,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
 
 use Prophecy\Argument;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
+use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -38,14 +38,10 @@ class ResolverTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
 
         $cacheFrontendProphecy = $this->prophesize(PhpFrontend::class);
         $cacheFrontendProphecy->require(Argument::any())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::any(), Argument::any())->willReturn(null);
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheManagerProphecy->getCache('core')->willReturn($cacheFrontendProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $corePackageProphecy = $this->prophesize(PackageInterface::class);
@@ -53,7 +49,11 @@ class ResolverTest extends UnitTestCase
         $packageManagerProphecy->getActivePackages()->willReturn([
             $corePackageProphecy->reveal()
         ]);
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
+
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
+            $packageManagerProphecy->reveal(),
+            $cacheFrontendProphecy->reveal()
+        ));
     }
 
     /**

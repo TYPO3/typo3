@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -86,6 +87,10 @@ class AbstractConditionMatcherTest extends UnitTestCase
 
     protected function initConditionMatcher()
     {
+        GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
+            GeneralUtility::makeInstance(PackageManager::class),
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('core')
+        ));
         // test the abstract methods via the backend condition matcher
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');
         $this->evaluateExpressionMethod->setAccessible(true);
