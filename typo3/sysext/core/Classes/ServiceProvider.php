@@ -128,7 +128,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getSiteConfiguration(ContainerInterface $container): Configuration\SiteConfiguration
     {
-        return self::new($container, Configuration\SiteConfiguration::class, [Environment::getConfigPath() . '/sites']);
+        return self::new($container, Configuration\SiteConfiguration::class, [
+            Environment::getConfigPath() . '/sites',
+            $container->get('cache.core')
+        ]);
     }
 
     public static function getListCommand(ContainerInterface $container): Command\ListCommand

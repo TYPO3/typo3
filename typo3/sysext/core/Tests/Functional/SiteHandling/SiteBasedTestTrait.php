@@ -65,7 +65,8 @@ trait SiteBasedTestTrait
             $configuration['errorHandling'] = $errorHandling;
         }
         $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/'
+            $this->instancePath . '/typo3conf/sites/',
+            $this->getContainer()->get('cache.core')
         );
 
         try {
@@ -86,7 +87,8 @@ trait SiteBasedTestTrait
         array $overrides
     ) {
         $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/'
+            $this->instancePath . '/typo3conf/sites/',
+            $this->getContainer()->get('cache.core')
         );
         $configuration = $siteConfiguration->load($identifier);
         $configuration = array_merge($configuration, $overrides);

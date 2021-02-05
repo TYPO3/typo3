@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -37,6 +36,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SiteConfiguration implements SingletonInterface
 {
+    protected PhpFrontend $cache;
+
     /**
      * @var string
      */
@@ -68,10 +69,15 @@ class SiteConfiguration implements SingletonInterface
 
     /**
      * @param string $configPath
+     * @param PhpFrontend $coreCache
      */
-    public function __construct(string $configPath)
+    public function __construct(string $configPath, PhpFrontend $coreCache = null)
     {
         $this->configPath = $configPath;
+        // The following fallback to GeneralUtility;:getContainer() is only used in acceptance tests
+        // @todo: Fix testing-framework/typo3/sysext/core/Classes/Configuration/SiteConfiguration.php
+        // to inject the cache instance
+        $this->cache = $coreCache ?? GeneralUtility::getContainer()->get('cache.core');
     }
 
     /**
@@ -151,7 +157,7 @@ class SiteConfiguration implements SingletonInterface
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
         // Check if the data is already cached
-        $siteConfiguration = $useCache ? $this->getCache()->require($this->cacheIdentifier) : false;
+        $siteConfiguration = $useCache ? $this->cache->require($this->cacheIdentifier) : false;
         if ($siteConfiguration !== false) {
             return $siteConfiguration;
         }
@@ -169,7 +175,7 @@ class SiteConfiguration implements SingletonInterface
             $identifier = basename($fileInfo->getPath());
             $siteConfiguration[$identifier] = $configuration;
         }
-        $this->getCache()->set($this->cacheIdentifier, 'return ' . var_export($siteConfiguration, true) . ';');
+        $this->cache->set($this->cacheIdentifier, 'return ' . var_export($siteConfiguration, true) . ';');
 
         return $siteConfiguration;
     }
@@ -223,7 +229,7 @@ class SiteConfiguration implements SingletonInterface
         $yamlFileContents = Yaml::dump($newConfiguration, 99, 2);
         GeneralUtility::writeFile($fileName, $yamlFileContents);
         $this->firstLevelCache = null;
-        $this->getCache()->remove($this->cacheIdentifier);
+        $this->cache->remove($this->cacheIdentifier);
     }
 
     /**
@@ -239,7 +245,7 @@ class SiteConfiguration implements SingletonInterface
         if (!$result) {
             throw new \RuntimeException('Unable to rename folder sites/' . $currentIdentifier, 1522491300);
         }
-        $this->getCache()->remove($this->cacheIdentifier);
+        $this->cache->remove($this->cacheIdentifier);
         $this->firstLevelCache = null;
     }
 
@@ -261,19 +267,8 @@ class SiteConfiguration implements SingletonInterface
             throw new SiteNotFoundException('Site configuration file ' . $this->configFileName . ' within the site ' . $siteIdentifier . ' not found.', 1522866184);
         }
         @unlink($fileName);
-        $this->getCache()->remove($this->cacheIdentifier);
+        $this->cache->remove($this->cacheIdentifier);
         $this->firstLevelCache = null;
-    }
-
-    /**
-     * Short-hand function for the cache
-     *
-     * @return PhpFrontend
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    protected function getCache(): PhpFrontend
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
     }
 
     /**

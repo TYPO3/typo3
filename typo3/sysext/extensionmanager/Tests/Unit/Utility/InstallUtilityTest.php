@@ -302,7 +302,7 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
         file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', $config);
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
 
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
@@ -370,7 +370,7 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($configDir . '/sites/' . $siteIdentifier);
         file_put_contents($configDir . '/' . $existingSiteConfig, $config);
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
 
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());

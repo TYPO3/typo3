@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -53,15 +52,15 @@ class SiteConfigurationTest extends UnitTestCase
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
         $this->testFilesToDelete[] = $basePath;
-        $cacheManager = $this->prophesize(CacheManager::class);
         $coreCacheProphecy = $this->prophesize(PhpFrontend::class);
         $coreCacheProphecy->require(Argument::any())->willReturn(false);
         $coreCacheProphecy->set(Argument::any(), Argument::any())->willReturn(null);
         $coreCacheProphecy->remove(Argument::any(), Argument::any())->willReturn(null);
-        $cacheManager->getCache('core')->willReturn($coreCacheProphecy->reveal());
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
 
-        $this->siteConfiguration = new SiteConfiguration($this->fixturePath);
+        $this->siteConfiguration = new SiteConfiguration(
+            $this->fixturePath,
+            $coreCacheProphecy->reveal()
+        );
     }
 
     /**

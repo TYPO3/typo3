@@ -44,6 +44,7 @@ services:
 
   TYPO3\CMS\Core\Configuration\SiteConfiguration:
     arguments:
+      $coreCache: '@cache.core'
       $configPath: "%env(TYPO3:configPath)%/sites"
 
   TYPO3\CMS\Core\Package\UnitTestPackageManager:

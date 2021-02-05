@@ -2542,9 +2542,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('dummy'));
+        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy')));
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
@@ -2992,7 +2992,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites'));
+        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy')));
         $linkText = 'Nice Text';
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample'
