@@ -196,6 +196,8 @@ class LoginController implements LoggerAwareInterface
     /**
      * Validate the email address.
      *
+     * Restricted to POST method in Configuration/Backend/Routes.php
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
@@ -258,6 +260,8 @@ class LoginController implements LoggerAwareInterface
     /**
      * Updates the password in the database.
      *
+     * Restricted to POST method in Configuration/Backend/Routes.php
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
@@ -270,7 +274,7 @@ class LoginController implements LoggerAwareInterface
         }
         $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
         // Token is invalid
-        if ($request->getMethod() !== 'POST' || !$passwordReset->isValidResetTokenFromRequest($request)) {
+        if (!$passwordReset->isValidResetTokenFromRequest($request)) {
             return $this->passwordResetAction($request);
         }
         $this->init($request);

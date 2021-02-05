@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
+use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -56,6 +57,7 @@ class Router implements SingletonInterface
     public function addRoute($routeIdentifier, $route)
     {
         $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
+        $symfonyRoute->setMethods($route->getMethods());
         $this->routeCollection->add($routeIdentifier, $symfonyRoute);
     }
 
@@ -124,12 +126,26 @@ class Router implements SingletonInterface
             (string)HttpUtility::idn_to_ascii($request->getUri()->getHost()),
             $request->getUri()->getScheme()
         );
-        $result = (new UrlMatcher($this->routeCollection, $context))->match($path);
-        $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
-        if ($matchedSymfonyRoute === null) {
-            throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);
+        try {
+            $result = (new UrlMatcher($this->routeCollection, $context))->match($path);
+            $matchedSymfonyRoute = $this->routeCollection->get($result['_route']);
+            if ($matchedSymfonyRoute === null) {
+                throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);
+            }
+        } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
+            throw new MethodNotAllowedException($e->getMessage(), 1612649842);
+        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
+            throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1612649840);
         }
-        return (new Route($matchedSymfonyRoute->getPath(), $matchedSymfonyRoute->getOptions()))
-            ->setOption('_identifier', $result['_route']);
+        // Apply matched method to route
+        $matchedOptions = $matchedSymfonyRoute->getOptions();
+        $methods = $matchedOptions['methods'] ?? [];
+        unset($matchedOptions['methods']);
+        $route = new Route($matchedSymfonyRoute->getPath(), $matchedOptions);
+        if (count($methods) > 0) {
+            $route->setMethods($methods);
+        }
+        $route->setOption('_identifier', $result['_route']);
+        return $route;
     }
 }

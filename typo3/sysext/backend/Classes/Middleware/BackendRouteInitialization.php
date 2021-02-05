@@ -21,11 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -73,6 +75,8 @@ class BackendRouteInitialization implements MiddlewareInterface
             $queryParams = $request->getQueryParams();
             $queryParams['route'] = $route->getPath();
             $request = $request->withQueryParams($queryParams);
+        } catch (MethodNotAllowedException $e) {
+            return new Response(null, 405);
         } catch (ResourceNotFoundException $e) {
             // Route not found in system
             $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');

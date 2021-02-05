@@ -111,8 +111,13 @@ class ServiceProvider extends AbstractServiceProvider
 
         foreach ($routesFromPackages as $name => $options) {
             $path = $options['path'];
+            $methods = $options['methods'] ?? [];
             unset($options['path']);
+            unset($options['methods']);
             $route = new Route($path, $options);
+            if (count($methods) > 0) {
+                $route->setMethods($methods);
+            }
             $router->addRoute($name, $route);
         }
 

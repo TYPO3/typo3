@@ -42,6 +42,7 @@ return [
     'password_forget_initiate_reset' => [
         'path' => '/login/password-reset/initiate-reset',
         'access' => 'public',
+        'methods' => ['POST'],
         'target' => Controller\LoginController::class . '::initiatePasswordResetAction'
     ],
     'password_reset_validate' => [
@@ -52,6 +53,7 @@ return [
     'password_reset_finish' => [
         'path' => '/login/password-reset/finish',
         'access' => 'public',
+        'methods' => ['POST'],
         'target' => Controller\LoginController::class . '::passwordResetFinishAction'
     ],
 

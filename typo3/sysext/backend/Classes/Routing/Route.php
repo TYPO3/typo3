@@ -27,6 +27,8 @@ class Route
      */
     protected $path = '/';
 
+    protected array $methods = [];
+
     /**
      * @var array
      */
@@ -66,6 +68,32 @@ class Route
     public function setPath($pattern)
     {
         $this->path = '/' . ltrim(trim($pattern), '/');
+        return $this;
+    }
+
+    /**
+     * Returns the uppercased HTTP methods this route is restricted to.
+     * An empty array means that any method is allowed.
+     *
+     * @return string[] The methods
+     */
+    public function getMethods(): array
+    {
+        return $this->methods;
+    }
+
+    /**
+     * Sets the HTTP methods (e.g. ['POST']) this route is restricted to.
+     * An empty array means that any method is allowed.
+     *
+     * This method implements a fluent interface.
+     *
+     * @param string[] $methods The array of allowed methods
+     * @return self
+     */
+    public function setMethods(array $methods): self
+    {
+        $this->methods = array_map('strtoupper', $methods);
         return $this;
     }
 
