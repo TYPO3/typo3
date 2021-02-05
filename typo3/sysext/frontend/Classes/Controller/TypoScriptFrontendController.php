@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1091,7 +1092,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // If still no page...
             if ($requestedPageIsHidden || (empty($requestedPageRowWithoutGroupCheck) && empty($this->page))) {
                 $message = 'The requested page does not exist!';
-                $this->logger->error($message);
+                $this->logPageAccessFailure($message, $request);
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                         $request,
@@ -1107,7 +1108,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Spacer and sysfolders is not accessible in frontend
         if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
             $message = 'The requested page does not exist!';
-            $this->logger->error($message);
+            $this->logPageAccessFailure($message, $request);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
@@ -1159,7 +1160,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // If not rootline we're off...
         if (empty($this->rootLine)) {
             $message = 'The requested page didn\'t have a proper connection to the tree-root!';
-            $this->logger->error($message);
+            $this->logPageAccessFailure($message, $request);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                     $request,
@@ -1177,6 +1178,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->checkRootlineForIncludeSection()) {
             if (empty($this->rootLine)) {
                 $message = 'The requested page was not accessible!';
+                $this->logPageAccessFailure($message, $request);
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                         $request,
@@ -1983,7 +1985,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
         ) {
             $message = 'Page is not available in default language.';
-            $this->logger->error($message);
+            $this->logPageAccessFailure($message, $request);
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
                 $message,
@@ -3491,6 +3493,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
+    }
+
+    /**
+     * Log the page access failure with additional request information
+     *
+     * @param string $message
+     * @param ServerRequestInterface $request
+     */
+    protected function logPageAccessFailure(string $message, ServerRequestInterface $request): void
+    {
+        $context = ['pageId' => $this->id];
+        if (($normalizedParams = $request->getAttribute('normalizedParams')) instanceof NormalizedParams) {
+            $context['requestUrl'] = $normalizedParams->getRequestUrl();
+        }
+        $this->logger->error($message, $context);
     }
 
     /**
