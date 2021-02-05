@@ -243,6 +243,10 @@ class LoginRefresh {
         method: 'POST',
         action: TYPO3.settings.ajaxUrls.login,
       }).append(
+        $('<div />').append(
+          $('<input />', {type: 'text', name: 'username', class: 'd-none', value: TYPO3.configuration.username}),
+          $('<input />', {type: 'hidden', name: 'userident', id: 't3-loginrefresh-userident'})
+        ),
         $('<div />', {class: 'form-group'}).append(
           $('<input />', {
             type: 'password',
@@ -250,13 +254,14 @@ class LoginRefresh {
             autofocus: 'autofocus',
             class: 'form-control',
             placeholder: TYPO3.lang['mess.refresh_login_password'],
-            'data-rsa-encryption': 't3-loginrefres-userident',
+            'data-rsa-encryption': 't3-loginrefresh-userident',
           }),
         ),
-        $('<input />', {type: 'hidden', name: 'username', value: TYPO3.configuration.username}),
-        $('<input />', {type: 'hidden', name: 'userident', id: 't3-loginrefres-userident'}),
       ),
     );
+    // Added to disable DOM warnings in browser consoles
+    this.$loginForm.find('.modal-body .d-none').attr('autocomplete', 'username');
+    this.$loginForm.find('.modal-body .form-control').attr('autocomplete', 'current-password');
     this.$loginForm.find('.modal-footer').append(
       $('<a />', {
         href: this.logoutUrl,
