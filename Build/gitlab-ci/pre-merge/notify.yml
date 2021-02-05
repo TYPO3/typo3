@@ -6,20 +6,20 @@ gerrit vote positive:
       - master
   when: on_success
   script: |
-    # When branch is of form '12345-12', vote on gerrit
-    if [[ "$CI_COMMIT_REF_NAME" =~ ^[[:digit:]]+\-[[:digit:]]+$ ]]; then
-      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f1`
-      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
-      MESSAGE="Core CI is happy: $CI_PIPELINE_URL"
+    # When branch is of form 'gerrit-12345-12', vote on gerrit
+    if [[ "$CI_COMMIT_REF_NAME" =~ ^gerrit\-[[:digit:]]+\-[[:digit:]]+$ ]]; then
+      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
+      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f3`
       curl -X POST \
-        --header "authorization: Basic $CORE_CI_GERRIT_AUTH" \
         --header "cache-control: no-cache" \
         --header "content-type: application/json" \
         --data "{ \
-          \"message\": \"$MESSAGE\", \
-          \"labels\":{\"Verified\": +1} \
+          \"change\": $CHANGE, \
+          \"patchset\": $PATCHSET, \
+          \"pipeline\": \"$CI_PIPELINE_URL\", \
+          \"status\": \"success\" \
         }" \
-        https://review.typo3.org/a/changes/$CHANGE/revisions/$PATCHSET/review
+        https://gerrit-adapter.core.b13.dev/gitlab-patch
     fi
 
 gerrit vote negative:
@@ -30,18 +30,18 @@ gerrit vote negative:
       - master
   when: on_failure
   script: |
-    # When branch is of form '12345-12', vote on gerrit
-    if [[ "$CI_COMMIT_REF_NAME" =~ ^[[:digit:]]+\-[[:digit:]]+$ ]]; then
-      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f1`
-      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
-      MESSAGE="Core CI is not happy: $CI_PIPELINE_URL"
+    # When branch is of form 'gerrit-12345-12', vote on gerrit
+    if [[ "$CI_COMMIT_REF_NAME" =~ ^gerrit\-[[:digit:]]+\-[[:digit:]]+$ ]]; then
+      CHANGE=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f2`
+      PATCHSET=`echo $CI_COMMIT_REF_NAME | cut -d '-' -f3`
       curl -X POST \
-        --header "authorization: Basic $CORE_CI_GERRIT_AUTH" \
         --header "cache-control: no-cache" \
         --header "content-type: application/json" \
         --data "{ \
-          \"message\": \"$MESSAGE\", \
-          \"labels\":{\"Verified\": -1} \
+          \"change\": $CHANGE, \
+          \"patchset\": $PATCHSET, \
+          \"pipeline\": \"$CI_PIPELINE_URL\", \
+          \"status\": \"failed\" \
         }" \
-        https://review.typo3.org/a/changes/$CHANGE/revisions/$PATCHSET/review
+        https://gerrit-adapter.core.b13.dev/gitlab-patch
     fi
