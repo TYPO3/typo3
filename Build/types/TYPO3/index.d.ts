@@ -131,7 +131,6 @@ interface Window {
  */
 declare module 'muuri';
 declare module 'cm/lib/codemirror';
-declare module 'Sortable';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';

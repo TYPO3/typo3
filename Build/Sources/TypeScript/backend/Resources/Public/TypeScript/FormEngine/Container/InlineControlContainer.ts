@@ -17,7 +17,7 @@ import {MessageUtility} from '../../Utility/MessageUtility';
 import {AjaxDispatcher} from './../InlineRelation/AjaxDispatcher';
 import {InlineResponseInterface} from './../InlineRelation/InlineResponseInterface';
 import NProgress = require('nprogress');
-import Sortable = require('Sortable');
+import Sortable from 'sortablejs';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import Icons = require('../../Icons');

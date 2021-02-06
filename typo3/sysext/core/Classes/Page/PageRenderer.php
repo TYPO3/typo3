@@ -1380,6 +1380,7 @@ class PageRenderer implements SingletonInterface
             'jquery/minicolors' => $corePath . 'jquery.minicolors',
             'd3' => $corePath . 'd3/d3',
             'Sortable' => $corePath . 'Sortable.min',
+            'sortablejs' => $corePath . 'Sortable.min',
             'tablesort' => $corePath . 'tablesort',
             'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
             'broadcastchannel' => $corePath . 'broadcastchannel-polyfill',
