@@ -36,9 +36,16 @@ class Filelist {
     Filelist.emitTreeUpdateRequest(
       mainElement.dataset.filelistCurrentFolderHash
     );
-    // update recentIds (for whatever reason)
-    if (top.fsMod && top.fsMod.recentIds instanceof Object) {
-      top.fsMod.recentIds.file = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
+    // update recentIds so the current id will be used on accessing the FileList module again
+    if (top.fsMod) {
+      const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
+      // top.fsMod.recentIds should always be set by BackendController::generateJavascript(),
+      // however let's check the type to prevent unnecessary type errors.
+      if (typeof top.fsMod.recentIds !== 'object') {
+        top.fsMod.recentIds = {file: id};
+      } else {
+        top.fsMod.recentIds.file = id;
+      }
     }
   }
 
