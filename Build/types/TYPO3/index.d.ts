@@ -133,7 +133,6 @@ declare module 'muuri';
 declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'moment';
-declare module 'Sortable';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
 declare module 'TYPO3/CMS/Backend/PageTree/PageTree';
 declare module 'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop';

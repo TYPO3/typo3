@@ -22,6 +22,7 @@
     "@types/jqueryui": "^1.12.13",
     "@types/nprogress": "^0.2.0",
     "@types/requirejs": "^2.1.32",
+    "@types/sortablejs": "^1.10.6",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
     "@typescript-eslint/typescript-estree": "^4.2.0",

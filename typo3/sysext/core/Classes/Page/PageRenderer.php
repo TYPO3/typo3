@@ -1391,7 +1391,8 @@ class PageRenderer implements SingletonInterface
             'd3-selection' => $corePath . 'd3-selection',
             'd3-drag' => $corePath . 'd3-drag',
             'd3-dispatch' => $corePath . 'd3-dispatch',
-            'Sortable' => $corePath . 'Sortable.min',
+            'Sortable' => $corePath . 'Sortable.min', // @deprecated since v11, will be removed in v12
+            'sortablejs' => $corePath . 'Sortable.min',
             'tablesort' => $corePath . 'tablesort',
             'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
             'broadcastchannel' => $corePath . 'broadcastchannel-polyfill',
