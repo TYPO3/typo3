@@ -1,5 +1,5 @@
-acceptance pagetree mariadb php 7.4:
-  stage: acceptance2
+acceptance pagetree mariadb php 7.4 locked:
+  stage: acceptance
   only:
     - schedules
   artifacts:
@@ -12,7 +12,7 @@ acceptance pagetree mariadb php 7.4:
     - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.4
 
 acceptance pagetree mariadb php 7.4 max:
-  stage: acceptance2
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -29,7 +29,7 @@ acceptance pagetree mariadb php 7.4 max:
     - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.4
 
 acceptance pagetree mariadb php 7.4 min:
-  stage: acceptance2
+  stage: acceptance
   only:
     - schedules
   cache:

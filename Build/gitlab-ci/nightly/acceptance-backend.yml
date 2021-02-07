@@ -1,5 +1,5 @@
-acceptance backend mariadb php 7.4:
-  stage: acceptance2
+acceptance backend mariadb php 7.4 locked:
+  stage: acceptance
   only:
     - schedules
   artifacts:
@@ -11,8 +11,8 @@ acceptance backend mariadb php 7.4:
   script:
       - Build/Scripts/runTests.sh -s composerInstall -p 7.4
       - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend max mariadb php 7.4:
-  stage: acceptance2
+acceptance backend mariadb php 7.4 max:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -28,8 +28,8 @@ acceptance backend max mariadb php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend min mariadb php 7.4:
-  stage: acceptance2
+acceptance backend mariadb php 7.4 min:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -45,99 +45,3 @@ acceptance backend min mariadb php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-
-acceptance backend mysql php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend max mysql php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  cache:
-    key: master-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend min mysql php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  cache:
-    key: master-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-
-acceptance backend postgres php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend max postgres php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  cache:
-    key: master-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance backend min postgres php 7.4:
-  stage: acceptance
-  only:
-    - schedules
-  cache:
-    key: master-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

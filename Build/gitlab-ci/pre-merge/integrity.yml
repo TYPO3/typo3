@@ -1,16 +1,12 @@
-phpstan php 7.4 pre-merge:
+annotations php 7.4 pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - master
-  cache:
-    key: master-composer-phpstan
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s phpstan -p 7.4
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
 
 doc block check php 7.4 pre-merge:
   stage: main
@@ -22,15 +18,18 @@ doc block check php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s docBlockCheck -p 7.4
 
-annotations php 7.4 pre-merge:
+grunt clean pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - master
+  cache:
+    key: master-js
+    paths:
+      - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
+    - Build/Scripts/runTests.sh -s checkGruntClean
 
 integration various php 7.4 pre-merge:
   stage: main
@@ -54,7 +53,16 @@ integration various php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s checkBom -p 7.4
     - Build/Scripts/runTests.sh -s checkComposer -p 7.4
 
-grunt clean pre-merge:
+lint php 7.4 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - master
+  script:
+    - Build/Scripts/runTests.sh -s lint -p 7.4
+
+lint scss ts html pre-merge:
   stage: main
   except:
     refs:
@@ -65,4 +73,20 @@ grunt clean pre-merge:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s checkGruntClean
+    - Build/Scripts/runTests.sh -s lintScss
+    - Build/Scripts/runTests.sh -s lintTypescript
+    - Build/Scripts/runTests.sh -s lintHtml
+
+phpstan php 7.4 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - master
+  cache:
+    key: master-composer-phpstan
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s phpstan -p 7.4

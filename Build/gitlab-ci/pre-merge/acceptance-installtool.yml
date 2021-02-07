@@ -1,4 +1,4 @@
-acceptance install tool mariadb php 7.4 pre-merge:
+acceptance installtool mariadb php 7.4 pre-merge:
   stage: main
   except:
     refs:

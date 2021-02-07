@@ -1,5 +1,5 @@
-acceptance install mariadb php 7.4:
-  stage: acceptance2
+acceptance install mariadb php 7.4 locked:
+  stage: acceptance
   only:
     - schedules
   artifacts:
@@ -10,8 +10,41 @@ acceptance install mariadb php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
+acceptance install mariadb php 7.4 max:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
+acceptance install mariadb php 7.4 min:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
+
 acceptance install mysql php 7.4:
-  stage: acceptance2
+  stage: acceptance
   only:
     - schedules
   artifacts:
@@ -22,49 +55,8 @@ acceptance install mysql php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
-acceptance install postgres php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
-acceptance install sqlite php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
-
-acceptance install max mariadb php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  cache:
-    key: master-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
-acceptance install max mysql php 7.4:
-  stage: acceptance2
+acceptance install mysql php 7.4 max:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -79,57 +71,8 @@ acceptance install max mysql php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
-acceptance install max postgres php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  cache:
-    key: master-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
-acceptance install max sqlite php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  cache:
-    key: master-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
-
-acceptance install min mariadb php 7.4:
-  stage: acceptance2
-  only:
-    - schedules
-  cache:
-    key: master-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  retry: 1
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
-    - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
-acceptance install min mysql php 7.4:
-  stage: acceptance2
+acceptance install mysql php 7.4 min:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -144,8 +87,37 @@ acceptance install min mysql php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
-acceptance install min postgres php 7.4:
-  stage: acceptance2
+
+acceptance install postgres php 7.4 locked:
+  stage: acceptance
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
+acceptance install postgres php 7.4 max:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
+acceptance install postgres php 7.4 min:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -160,8 +132,37 @@ acceptance install min postgres php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
-acceptance install min sqlite php 7.4:
-  stage: acceptance2
+
+acceptance install sqlite php 7.4 locked:
+  stage: acceptance
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
+acceptance install sqlite php 7.4 max:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
+acceptance install sqlite php 7.4 min:
+  stage: acceptance
   only:
     - schedules
   cache:
@@ -176,4 +177,3 @@ acceptance install min sqlite php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
-

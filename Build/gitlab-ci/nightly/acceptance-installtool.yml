@@ -1,4 +1,4 @@
-acceptance install tool mariadb php 7.4:
+acceptance installtool mariadb php 7.4:
   stage: acceptance
   only:
     - schedules

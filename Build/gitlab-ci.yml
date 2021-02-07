@@ -41,7 +41,6 @@ stages:
   - integrity
   - unit
   - acceptance
-  - acceptance2
   - functional
   - functional2
 
@@ -56,13 +55,10 @@ include:
   - local: 'Build/gitlab-ci/pre-merge/acceptance-installtool.yml'
   - local: 'Build/gitlab-ci/pre-merge/integrity.yml'
   - local: 'Build/gitlab-ci/pre-merge/functional.yml'
-  - local: 'Build/gitlab-ci/pre-merge/lint.yml'
   - local: 'Build/gitlab-ci/pre-merge/unit.yml'
   - local: 'Build/gitlab-ci/pre-merge/notify.yml'
   # Nightly tests are triggered by gitlab schedules
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
-  - local: 'Build/gitlab-ci/nightly/lint.yml'
-  - local: 'Build/gitlab-ci/nightly/unit-javascript.yml'
   - local: 'Build/gitlab-ci/nightly/unit.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-installtool.yml'

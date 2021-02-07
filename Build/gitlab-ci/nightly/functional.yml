@@ -1,4 +1,4 @@
-functional mariadb 10.3 php 7.4:
+functional mariadb 10.3 php 7.4 locked:
   stage: functional
   only:
     - schedules
@@ -6,7 +6,7 @@ functional mariadb 10.3 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional max mariadb 10.3 php 7.4:
+functional mariadb 10.3 php 7.4 max:
   stage: functional
   only:
     - schedules
@@ -18,7 +18,7 @@ functional max mariadb 10.3 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional min mariadb 10.3 php 7.4:
+functional mariadb 10.3 php 7.4 min:
   stage: functional
   only:
     - schedules
@@ -31,7 +31,7 @@ functional min mariadb 10.3 php 7.4:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional mssql php 7.4:
+functional mssql php 7.4 locked:
   stage: functional2
   only:
     - schedules
@@ -39,7 +39,7 @@ functional mssql php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional max mssql php 7.4:
+functional mssql php 7.4 max:
   stage: functional2
   only:
     - schedules
@@ -51,7 +51,7 @@ functional max mssql php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional min mssql php 7.4:
+functional mssql php 7.4 min:
   stage: functional2
   only:
     - schedules
@@ -64,7 +64,7 @@ functional min mssql php 7.4:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional mysql 5.5 php 7.4:
+functional mysql 5.5 php 7.4 locked:
   stage: functional
   only:
     - schedules
@@ -72,7 +72,7 @@ functional mysql 5.5 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional max mysql 5.5 php 7.4:
+functional mysql 5.5 php 7.4 max:
   stage: functional
   only:
     - schedules
@@ -84,7 +84,7 @@ functional max mysql 5.5 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional min mysql 5.5 php 7.4:
+functional mysql 5.5 php 7.4 min:
   stage: functional
   only:
     - schedules
@@ -97,7 +97,7 @@ functional min mysql 5.5 php 7.4:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional postgres 10 php 7.4:
+functional postgres 10 php 7.4 locked:
   stage: functional
   only:
     - schedules
@@ -105,7 +105,7 @@ functional postgres 10 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional max postgres 10 php 7.4:
+functional postgres 10 php 7.4 max:
   stage: functional
   only:
     - schedules
@@ -117,7 +117,7 @@ functional max postgres 10 php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional min postgres 10 php 7.4:
+functional postgres 10 php 7.4 min:
   stage: functional
   only:
     - schedules
@@ -130,7 +130,7 @@ functional min postgres 10 php 7.4:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional sqlite php 7.4:
+functional sqlite php 7.4 locked:
   stage: functional2
   only:
     - schedules
@@ -138,7 +138,7 @@ functional sqlite php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional max sqlite php 7.4:
+functional sqlite php 7.4 max:
   stage: functional2
   only:
     - schedules
@@ -150,7 +150,7 @@ functional max sqlite php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-functional min sqlite php 7.4:
+functional sqlite php 7.4 min:
   stage: functional2
   only:
     - schedules
