@@ -1,0 +1,97 @@
+unit javascript pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  cache:
+    key: 10.4-composer-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitJavascript
+
+unit php 7.4 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit php 7.4 pre-merge deprecated:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit php 7.4 pre-merge random:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+
+unit php 7.3 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unit -p 7.3
+unit php 7.3 pre-merge deprecated:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.3
+unit php 7.3 pre-merge random:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.3
+
+unit php 7.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unit -p 7.2
+unit php 7.2 pre-merge deprecated:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.2
+unit php 7.2 pre-merge random:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.2

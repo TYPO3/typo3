@@ -1,0 +1,14 @@
+acceptance pagetree mariadb php 7.3 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "10.4"
+  retry: 1
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.3

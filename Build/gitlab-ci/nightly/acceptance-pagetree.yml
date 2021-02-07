@@ -1,0 +1,46 @@
+acceptance pagetree mariadb php 7.4 locked:
+  stage: acceptance
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.4
+
+acceptance pagetree mariadb php 7.3 max:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: 10.4-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
+    - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.3
+
+acceptance pagetree mariadb php 7.2 min:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: 10.4-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  retry: 1
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
+    - Build/Scripts/runTests.sh -s acceptancePagetree -p 7.2
