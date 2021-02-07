@@ -1,0 +1,83 @@
+annotations php 7.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 7.2
+
+grunt clean pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  cache:
+    key: 9.5-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s checkGruntClean
+
+integration various php 7.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.2
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.2
+    # broken on gitlab for now
+    # @todo: try to set up gitlab with FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR and have a non-root user setup for containers
+    # @todo: or relax the test script a bit
+    # - Build/Scripts/runTests.sh -s checkPermissions -p 7.2
+    - Build/Scripts/runTests.sh -s checkXlf -p 7.2
+    - Build/Scripts/runTests.sh -s checkRst -p 7.2
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.2
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.2
+    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 7.2
+    - Build/Scripts/runTests.sh -s checkBom -p 7.2
+    - Build/Scripts/runTests.sh -s checkComposer -p 7.2
+
+lint php 7.2 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s lint -p 7.2
+lint php 7.3 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s lint -p 7.3
+lint php 7.4 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s lint -p 7.4
+
+lint scss ts pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  cache:
+    key: 9.5-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s lintScss
+    - Build/Scripts/runTests.sh -s lintTypescript

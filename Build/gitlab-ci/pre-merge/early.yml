@@ -1,0 +1,18 @@
+cgl pre-merge:
+  stage: early
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s cglGit -n -p 7.2
+
+composer validate pre-merge:
+  stage: early
+  except:
+    refs:
+      - schedules
+      - "9.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerValidate -p 7.2

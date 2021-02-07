@@ -263,6 +263,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
 
     /**
      * @test
+     * @requires OSFAMILY Linux (bug in the C libraries on BSD/OSX | unavailable locale on Windows)
      */
     public function optionsAreSortedByLabelIfSortByOptionLabelIsSetAndLocaleEqualsUtf8()
     {
@@ -274,9 +275,6 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
             $this->setLocale(LC_TIME, $locale);
         } catch (Exception $e) {
             $this->markTestSkipped('Locale ' . $locale . ' is not available.');
-        }
-        if (false !== stripos(PHP_OS, 'Darwin')) {
-            $this->markTestSkipped('Test skipped caused by a bug in the C libraries on BSD/OSX');
         }
 
         $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');

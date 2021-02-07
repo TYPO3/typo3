@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Redirect;
  */
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 /**
  * Tests concerning Sites Module
@@ -34,11 +35,21 @@ class SiteModuleCest
     /**
      * @param BackendTester $I
      */
-    public function createNewRecordIfNoneExist(BackendTester $I)
+    public function createNewRecordIfNoneExist(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Sites');
         $I->switchToContentFrame();
         $I->canSee('Site Configuration', 'h1');
+
+        try {
+            $I->amGoingTo('delete the auto generated config in order to create one manually');
+            $I->click('Delete site configuration');
+            $modalDialog->canSeeDialog();
+            $modalDialog->clickButtonInDialog('Delete');
+            $I->switchToContentFrame();
+        } catch (\Exception $e) {
+            // Don't do anything if there is no site configuration
+        }
 
         $I->amGoingTo('create a new site configuration when none are in the system, yet');
         $I->click('Add new site configuration for this site');

@@ -1,0 +1,290 @@
+unit javascript:
+  stage: integrity
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-js
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitJavascript
+
+unit php 7.2 locked:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unit -p 7.2
+unit php 7.2 locked deprecated:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.2
+unit php 7.2 locked random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.2
+
+unit php 7.2 max:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.2
+    - Build/Scripts/runTests.sh -s unit -p 7.2
+unit php 7.2 max deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.2
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.2
+unit php 7.2 max random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.2
+
+unit php 7.2 min:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
+    - Build/Scripts/runTests.sh -s unit -p 7.2
+unit php 7.2 min deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.2
+unit php 7.2 min random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.2
+
+unit php 7.3 locked:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unit -p 7.3
+unit php 7.3 locked deprecated:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.3
+unit php 7.3 locked random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.3
+
+unit php 7.3 max:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
+    - Build/Scripts/runTests.sh -s unit -p 7.3
+unit php 7.3 max deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.3
+unit php 7.3 max random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.3
+
+unit php 7.3 min:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.3
+    - Build/Scripts/runTests.sh -s unit -p 7.3
+unit php 7.3 min deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.3
+unit php 7.3 min random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.3
+
+unit php 7.4 locked:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit php 7.4 locked deprecated:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit php 7.4 locked random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+
+unit php 7.4 max locked:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit php 7.4 max deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit php 7.4 max random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
+
+unit php 7.4 min locked:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unit -p 7.4
+unit php 7.4 min deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
+unit php 7.4 min random:
+  stage: unit
+  parallel: 2
+  only:
+    - schedules
+  cache:
+    key: 9.5-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
