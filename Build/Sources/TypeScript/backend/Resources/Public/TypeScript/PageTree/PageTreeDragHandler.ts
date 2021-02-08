@@ -138,7 +138,7 @@ export class ToolbarDragHandler implements DragDropHandler {
 
     this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
 
-    if (this.tree.settings.isDragAnDrop !== true || !this.tree.settings.nodeOver.node || !this.tree.isOverSvg) {
+    if (this.tree.settings.isDragAnDrop !== true || !this.tree.hoveredNode || !this.tree.isOverSvg) {
       return false;
     }
 
@@ -149,7 +149,7 @@ export class ToolbarDragHandler implements DragDropHandler {
         tooltip: this.tooltip,
         icon: this.icon,
         position: this.tree.settings.nodeDragPosition,
-        target: this.tree.settings.nodeOver.node
+        target: this.tree.hoveredNode
       });
     }
     return true;
@@ -173,6 +173,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
   private isDragged: boolean = false;
   private tree: any;
   private dragDrop: any;
+  private nodeIsOverDelete: boolean = false;
 
   constructor(tree: any, dragDrop: any) {
     this.tree = tree;
@@ -192,17 +193,17 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
         .append('g')
         .attr('class', 'nodes-drop-zone')
         .attr('height', this.tree.settings.nodeHeight);
-      this.tree.nodeIsOverDelete = false;
+      this.nodeIsOverDelete = false;
       this.dropZoneDelete.append('rect')
         .attr('height', this.tree.settings.nodeHeight)
         .attr('width', '50px')
         .attr('x', 0)
         .attr('y', 0)
         .on('mouseover', () => {
-          this.tree.nodeIsOverDelete = true;
+          this.nodeIsOverDelete = true;
         })
         .on('mouseout', () => {
-          this.tree.nodeIsOverDelete = false;
+          this.nodeIsOverDelete = false;
         });
 
       this.dropZoneDelete.append('text')
@@ -270,7 +271,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
     });
 
     if (node.isOver
-      || (this.tree.settings.nodeOver.node && this.tree.settings.nodeOver.node.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+      || (this.tree.hoveredNode && this.tree.hoveredNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
       || !this.tree.isOverSvg) {
 
       this.dragDrop.addNodeDdClass($nodesWrap, $nodeDd, 'nodrop');
@@ -284,7 +285,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
       if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open !== 'true' && this.tree.isOverSvg) {
         this.animateDropZone('show', this.dropZoneDelete.node(), node);
       }
-    } else if (!this.tree.settings.nodeOver.node) {
+    } else if (!this.tree.hoveredNode) {
       this.dragDrop.addNodeDdClass($nodesWrap, $nodeDd, 'nodrop');
       this.tree.nodesBgContainer
         .selectAll('.node-bg__border')
@@ -316,7 +317,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
 
     let $svg = $(event.sourceEvent.target).closest('svg');
     let $nodesBg = $svg.find('.nodes-bg');
-    let droppedNode = this.tree.settings.nodeOver.node;
+    let droppedNode = this.tree.hoveredNode;
     this.isDragged = false;
 
     this.dragDrop.addNodeDdClass($svg.find('.nodes-wrapper'), null, '', true);
@@ -327,7 +328,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
 
     if (
       !(node.isOver
-        || (this.tree.settings.nodeOver.node && this.tree.settings.nodeOver.node.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+        || (droppedNode && droppedNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
         || !this.tree.settings.canNodeDrag
         || !this.tree.isOverSvg
       )
@@ -368,7 +369,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
           }
           Modal.dismiss();
         });
-    } else if (this.tree.nodeIsOverDelete) {
+    } else if (this.nodeIsOverDelete) {
       let options = this.dragDrop.changeNodePosition(droppedNode, 'delete');
       if (this.tree.settings.displayDeleteConfirmation) {
         let $modal = Modal.confirm(

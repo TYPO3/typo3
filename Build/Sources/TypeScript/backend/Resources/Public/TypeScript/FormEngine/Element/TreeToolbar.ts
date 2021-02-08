@@ -29,7 +29,7 @@ export class TreeToolbar
     toggleHideUnchecked: 'hide-unchecked-btn'
   };
 
-  private treeContainer: HTMLElement;
+  private readonly treeContainer: HTMLElement;
   private tree: any;
 
   /**
@@ -39,13 +39,9 @@ export class TreeToolbar
    */
   private hideUncheckedState: boolean = false;
 
-  public constructor(settings: any = {}) {
-    Object.assign(this.settings, settings);
-  }
-
-  public initialize(treeContainer: HTMLElement): void {
+  public constructor(treeContainer: HTMLElement, settings: any = {}) {
     this.treeContainer = treeContainer;
-
+    Object.assign(this.settings, settings);
     if (!this.treeContainer.dataset.svgTreeInitialized
       || typeof (this.treeContainer as any).svgtree !== 'object'
     ) {
@@ -53,11 +49,9 @@ export class TreeToolbar
       //so we don't know which is loaded first
       //in case of toolbar being loaded first, we wait for an event from svgTree
       this.treeContainer.addEventListener('svg-tree:initialized', this.render.bind(this));
-
-      return;
+    } else {
+      this.render();
     }
-
-    this.render();
   }
 
   /**

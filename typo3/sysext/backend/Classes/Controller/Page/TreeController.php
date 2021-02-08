@@ -351,7 +351,8 @@ class TreeController
         $item = [
             // Used to track if the tree item is collapsed or not
             'stateIdentifier' => $identifier,
-            'identifier' => $pageId,
+            // identifier is not only used for pages, therefore it's a string
+            'identifier' => (string)$pageId,
             'depth' => $depth,
             'tip' => htmlspecialchars($tooltip),
             'icon' => $icon->getIdentifier(),

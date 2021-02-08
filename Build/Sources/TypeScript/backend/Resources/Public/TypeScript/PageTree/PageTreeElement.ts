@@ -14,7 +14,7 @@
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon} from 'TYPO3/CMS/Core/lit-helper';
-import PageTree = require('TYPO3/CMS/Backend/PageTree/PageTree');
+import {PageTree} from './PageTree';
 import {PageTreeDragDrop} from './PageTreeDragDrop';
 import viewPort from '../Viewport';
 import {PageTreeToolbar} from './PageTreeToolbar';
@@ -50,7 +50,7 @@ export class PageTreeElement {
           filterUrl: filterUrl,
           showIcons: true
         });
-        tree.initialize(treeEl, dragDrop, configuration);
+        tree.initialize(treeEl, configuration, dragDrop);
         viewPort.NavigationContainer.setComponentInstance(tree);
         // the toolbar relies on settings retrieved in this step
         const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');

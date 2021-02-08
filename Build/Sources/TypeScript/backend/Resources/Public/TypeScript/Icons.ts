@@ -14,23 +14,7 @@
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ClientStorage = require('./Storage/Client');
-
-enum Sizes {
-  small = 'small',
-  default = 'default',
-  large = 'large',
-  overlay = 'overlay',
-}
-
-enum States {
-  default = 'default',
-  disabled = 'disabled',
-}
-
-enum MarkupIdentifiers {
-  default = 'default',
-  inline = 'inline',
-}
+import {Sizes, States, MarkupIdentifiers} from './Enum/IconTypes';
 
 interface PromiseCache {
   [key: string]: Promise<string>;

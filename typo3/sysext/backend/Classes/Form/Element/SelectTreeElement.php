@@ -186,12 +186,8 @@ class SelectTreeElement extends AbstractFormElement
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
         $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
-            function(SelectTreeElement) {
-                require([\'jquery\'], function($) {
-                    $(function() {
-                        new SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . $this->getTreeOnChangeJs() . ');
-                    });
-                });
+            function(tree) {
+                new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . $this->getTreeOnChangeJs() . ');
             }'
         ];
 

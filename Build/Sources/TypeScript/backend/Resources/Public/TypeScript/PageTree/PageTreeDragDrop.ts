@@ -56,13 +56,13 @@ export class PageTreeDragDrop {
    * Open node with children while holding the node/element over this node for 1 second
    */
   public openNodeTimeout(): void {
-    if (this.tree.settings.nodeOver.node && this.tree.settings.nodeOver.node.hasChildren && !this.tree.settings.nodeOver.node.expanded) {
-      if (this.timeout.node != this.tree.settings.nodeOver.node) {
-        this.timeout.node = this.tree.settings.nodeOver;
+    if (this.tree.hoveredNode !== null && this.tree.hoveredNode.hasChildren && !this.tree.hoveredNode.expanded) {
+      if (this.timeout.node != this.tree.hoveredNode) {
+        this.timeout.node = this.tree.hoveredNode;
         clearTimeout(this.timeout.time);
         this.timeout.time = setTimeout(() => {
-          if (this.tree.settings.nodeOver.node) {
-            this.tree.showChildren(this.tree.settings.nodeOver.node);
+          if (this.tree.hoveredNode) {
+            this.tree.showChildren(this.tree.hoveredNode);
             this.tree.prepareDataForVisibleNodes();
             this.tree.update();
           }
@@ -95,12 +95,12 @@ export class PageTreeDragDrop {
 
       if (y < 3) {
         nodeBgBorder
-          .attr('transform', 'translate(-8, ' + (this.tree.settings.nodeOver.node.y - 10) + ')')
+          .attr('transform', 'translate(-8, ' + (this.tree.hoveredNode.y - 10) + ')')
           .style('display', 'block');
 
-        if (this.tree.settings.nodeOver.node.depth === 0) {
+        if (this.tree.hoveredNode.depth === 0) {
           this.addNodeDdClass($nodesWrap, $nodeDd, 'nodrop');
-        } else if (this.tree.settings.nodeOver.node.firstChild) {
+        } else if (this.tree.hoveredNode.firstChild) {
           this.addNodeDdClass($nodesWrap, $nodeDd, 'ok-above');
         } else {
           this.addNodeDdClass($nodesWrap, $nodeDd, 'ok-between');
@@ -110,17 +110,16 @@ export class PageTreeDragDrop {
       } else if (y > 17) {
         nodeBgBorder.style('display', 'none');
 
-        if (this.tree.settings.nodeOver.node.expanded && this.tree.settings.nodeOver.node.hasChildren) {
+        if (this.tree.hoveredNode.expanded && this.tree.hoveredNode.hasChildren) {
           this.addNodeDdClass($nodesWrap, $nodeDd, 'ok-append');
           this.tree.settings.nodeDragPosition = 'in';
         } else {
           nodeBgBorder
-            .attr('transform', 'translate(-8, ' + (this.tree.settings.nodeOver.node.y + 10) + ')')
+            .attr('transform', 'translate(-8, ' + (this.tree.hoveredNode.y + 10) + ')')
             .style('display', 'block');
 
-          if (this.tree.settings.nodeOver.node.lastChild) {
+          if (this.tree.hoveredNode.lastChild) {
             this.addNodeDdClass($nodesWrap, $nodeDd, 'ok-below');
-
           } else {
             this.addNodeDdClass($nodesWrap, $nodeDd, 'ok-between');
           }

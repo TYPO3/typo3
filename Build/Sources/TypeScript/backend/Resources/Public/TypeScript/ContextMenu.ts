@@ -95,10 +95,6 @@ class ContextMenu {
   }
 
   constructor() {
-    this.initializeEvents();
-  }
-
-  private initializeEvents(): void {
     $(document).on('click contextmenu', '.t3js-contextmenutrigger', (e: JQueryEventObject): void => {
       const $me = $(e.currentTarget);
       // if there is an other "inline" onclick setting, context menu is not triggered
@@ -131,7 +127,7 @@ class ContextMenu {
    * @param {string} addParams Additional params
    * @param {Element} eventSource Source Element
    */
-  private show(table: string, uid: number, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
+  public show(table: string, uid: number, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
     this.record = {table: table, uid: uid};
     // fix: [tabindex=-1] is not focusable!!!
     const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');

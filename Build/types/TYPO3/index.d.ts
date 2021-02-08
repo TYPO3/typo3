@@ -101,11 +101,6 @@ declare module 'TYPO3/CMS/Backend/FormEngine' {
   export = _exported;
 }
 
-declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
-  const _exported: any;
-  export = _exported;
-}
-
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
@@ -134,8 +129,6 @@ declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'moment';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
-declare module 'TYPO3/CMS/Backend/PageTree/PageTree';
-declare module 'TYPO3/CMS/Backend/PageTree/PageTreeDragDrop';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
 

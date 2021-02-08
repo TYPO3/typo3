@@ -11,28 +11,20 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import SelectTree = require('TYPO3/CMS/Backend/FormEngine/Element/SelectTree');
+import {SelectTree} from './SelectTree';
 import {TreeToolbar} from './TreeToolbar';
 
-class SelectTreeElement {
+export class SelectTreeElement {
   private readonly treeWrapper: HTMLElement = null;
   private readonly recordField: HTMLInputElement = null;
-  private readonly callback: Function = null;
 
   constructor(treeWrapperId: string, treeRecordFieldId: string, callback: Function) {
     this.treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
-    this.callback = callback;
-
-    this.initialize();
-  }
-
-  private initialize(): void {
-    const dataUrl = this.generateRequestUrl();
     const tree = new SelectTree();
 
     const settings = {
-      dataUrl: dataUrl,
+      dataUrl: this.generateRequestUrl(),
       showIcons: true,
       showCheckboxes: true,
       readOnlyMode: parseInt(this.recordField.dataset.readOnly, 10) === 1,
@@ -41,16 +33,25 @@ class SelectTreeElement {
       validation: JSON.parse(this.recordField.dataset.formengineValidationRules)[0],
       expandUpToLevel: this.recordField.dataset.treeExpandUpToLevel,
     };
-    const initialized = tree.initialize(this.treeWrapper, settings);
-    if (!initialized) {
-      return;
-    }
+    tree.initialize(this.treeWrapper, settings);
+    tree.dispatch.on('nodeSelectedAfter.requestUpdate', () => { callback(); } );
+    this.listenForVisibleTree();
 
-    tree.dispatch.on('nodeSelectedAfter.requestUpdate', this.callback);
+    new TreeToolbar(this.treeWrapper);
+  }
 
-    if (this.recordField.dataset.treeShowToolbar) {
-      const selectTreeToolbar = new TreeToolbar();
-      selectTreeToolbar.initialize(this.treeWrapper);
+  /**
+   * If the Select item is in an invisible tab, it needs to be rendered once the tab
+   * becomes visible.
+   */
+  private listenForVisibleTree(): void {
+    if (!this.treeWrapper.offsetParent) {
+      // Search for the parents that are tab containers
+      let idOfTabContainer = this.treeWrapper.closest('.tab-pane').getAttribute('id');
+      if (idOfTabContainer) {
+        let btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
+        btn.addEventListener('shown.bs.tab', () => { this.treeWrapper.dispatchEvent(new Event('svg-tree:visible')); });
+      }
     }
   }
 
@@ -72,5 +73,3 @@ class SelectTreeElement {
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params);
   }
 }
-
-export = SelectTreeElement;
