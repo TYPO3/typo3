@@ -73,13 +73,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['move
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class)
-    ->registerIcon(
-        'wizard-backendlayout',
-        \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-        ['name' => 'table']
-    );
-
 // Include new content elements to modWizards
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     "@import 'EXT:frontend/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
