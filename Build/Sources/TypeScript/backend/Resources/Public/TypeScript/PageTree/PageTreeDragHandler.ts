@@ -14,7 +14,7 @@
 /** @ts-ignore */
 import $ from 'jquery';
 import {html, TemplateResult} from 'lit-element';
-import {renderHTML} from 'TYPO3/CMS/Core/lit-helper';
+import {renderNodes} from 'TYPO3/CMS/Core/lit-helper';
 import {D3DragEvent} from 'd3-drag';
 import Modal = require('../Modal');
 import Severity = require('../Severity');
@@ -97,7 +97,7 @@ export class ToolbarDragHandler implements DragDropHandler {
     if (this.isDragged === false) {
       this.isDragged = true;
       let $svg = $(this.tree.svg.node());
-      $svg.after(renderHTML(DraggableTemplate.get('#icon-' + this.icon, this.name)));
+      $svg.after($(renderNodes(DraggableTemplate.get('#icon-' + this.icon, this.name))));
       $svg.find('.nodes-wrapper').addClass('nodes-wrapper--dragging');
     }
 
@@ -245,7 +245,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
       this.tree.settings.dragging = true;
       this.isDragged = true;
 
-      $svg.after(renderHTML(DraggableTemplate.get(this.tree.getIconId(node), node.name)));
+      $svg.after($(renderNodes(DraggableTemplate.get(this.tree.getIconId(node), node.name))));
       $nodeBg.addClass('node-bg--dragging');
       $svg.find('.nodes-wrapper').addClass('nodes-wrapper--dragging');
     }

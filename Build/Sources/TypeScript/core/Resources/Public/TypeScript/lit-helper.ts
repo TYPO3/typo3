@@ -19,14 +19,27 @@ import Icons = require('TYPO3/CMS/Backend/Icons');
 
 import 'TYPO3/CMS/Backend/Element/SpinnerElement';
 
-export const renderElement = (result: TemplateResult): HTMLElement => {
+/**
+ * @internal
+ */
+export const renderNodes = (result: TemplateResult): NodeList => {
   const anvil = document.createElement('div');
   render(result, anvil);
-  return anvil;
-}
-export const renderHTML = (result: TemplateResult): string => {
-  return renderElement(result).innerHTML;
+  return anvil.childNodes;
 };
+
+/**
+ * @internal
+ */
+export const renderHTML = (result: TemplateResult): string => {
+  const anvil = document.createElement('div');
+  render(result, anvil);
+  return anvil.innerHTML;
+}
+
+/**
+ * @internal
+ */
 export const lll = (key: string): string => {
   if (!window.TYPO3 || !window.TYPO3.lang || typeof window.TYPO3.lang[key] !== 'string') {
     return '';
@@ -34,11 +47,11 @@ export const lll = (key: string): string => {
   return window.TYPO3.lang[key];
 };
 
+/**
+ * @internal
+ */
 export const icon = (identifier: string, size: any = 'small') => {
   // @todo Fetched and resolved icons should be stored in a session repository in `Icons`
   const icon = Icons.getIcon(identifier, size).then((markup: string) => html`${unsafeHTML(markup)}`);
   return html`${until(icon, html`<typo3-backend-spinner size="${size}"></typo3-backend-spinner>`)}`;
 };
-
-
-
