@@ -19,7 +19,8 @@
             <div class="col-sm-6">
                 <input
                     id="{feature.name}{preset.name}{configurationKey}"
-                    type="text"
+                    type="{f:if(condition: '{configurationKey} == "MAIL/transport_smtp_password"', then: 'password', else: 'text')}"
+                    autocomplete="{f:if(condition: '{configurationKey} == "MAIL/transport_smtp_password"', then: 'new-password', else: 'off')}"
                     name="install[values][{feature.name}][{preset.name}][{configurationKey}]"
                     value="{configurationValue}"
                     class="form-control t3js-custom-preset"
