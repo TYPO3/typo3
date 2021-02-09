@@ -15,9 +15,7 @@
 
 namespace TYPO3\CMS\Core\Imaging;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
@@ -406,23 +404,12 @@ class IconRegistry implements SingletonInterface
     /**
      * @var FrontendInterface
      */
-    protected static $cache = null;
+    protected $cache;
 
-    /**
-     * The constructor
-     */
-    public function __construct()
+    public function __construct(FrontendInterface $assetsCache)
     {
+        $this->cache = $assetsCache;
         $this->initialize();
-    }
-
-    /**
-     * @param FrontendInterface $cache
-     * @internal
-     */
-    public static function setCache(FrontendInterface $cache)
-    {
-        static::$cache = $cache;
     }
 
     /**
@@ -452,15 +439,18 @@ class IconRegistry implements SingletonInterface
         }
     }
 
+    protected function getBackendIconsCacheIdentifier(): string
+    {
+        return 'BackendIcons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendIcons');
+    }
+
     /**
      * Retrieve the icons from cache render them when not cached yet
      */
     protected function getCachedBackendIcons()
     {
-        $cacheIdentifier = 'BackendIcons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendIcons');
-        /** @var VariableFrontend $assetsCache */
-        $assetsCache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
-        $cacheEntry = $assetsCache->get($cacheIdentifier);
+        $cacheIdentifier = $this->getBackendIconsCacheIdentifier();
+        $cacheEntry = $this->cache->get($cacheIdentifier);
 
         if ($cacheEntry !== false) {
             $this->icons = $cacheEntry;
@@ -468,7 +458,7 @@ class IconRegistry implements SingletonInterface
             $this->registerBackendIcons();
             // all found icons should now be present, for historic reasons now merge w/ the statically declared icons
             $this->icons = array_merge($this->icons, $this->iconAliases, $this->staticIcons);
-            $assetsCache->set($cacheIdentifier, $this->icons);
+            $this->cache->set($cacheIdentifier, $this->icons);
         }
         // if there's now at least one icon registered, consider it successful
         if (is_array($this->icons) && (count($this->icons) >= count($this->staticIcons))) {

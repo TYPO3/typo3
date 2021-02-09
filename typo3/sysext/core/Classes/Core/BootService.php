@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Core;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -125,7 +124,6 @@ class BootService
 
         $container->get('boot.state')->done = false;
         $assetsCache = $container->get('cache.assets');
-        IconRegistry::setCache($assetsCache);
         PageRenderer::setCache($assetsCache);
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);

@@ -17,13 +17,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Type\Icon\IconState;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -52,22 +50,12 @@ class IconTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('assets')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $iconFactory = new IconFactory($eventDispatcherProphecy->reveal(), new IconRegistry());
+        $iconFactory = new IconFactory($eventDispatcherProphecy->reveal(), new IconRegistry($cacheFrontendProphecy->reveal()));
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::cast(IconState::STATE_DISABLED));
-    }
-
-    public function tearDown(): void
-    {
-        // Drop cache manager singleton again
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
     }
 
     /**

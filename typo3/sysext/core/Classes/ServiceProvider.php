@@ -224,7 +224,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
     {
-        return self::new($container, Imaging\IconRegistry::class);
+        return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets')]);
     }
 
     public static function getLanguageServiceFactory(ContainerInterface $container): Localization\LanguageServiceFactory

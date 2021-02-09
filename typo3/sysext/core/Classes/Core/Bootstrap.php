@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -149,7 +148,6 @@ class Bootstrap
             return $container;
         }
 
-        IconRegistry::setCache($assetsCache);
         PageRenderer::setCache($assetsCache);
         ExtensionManagementUtility::setEventDispatcher($container->get(EventDispatcherInterface::class));
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
