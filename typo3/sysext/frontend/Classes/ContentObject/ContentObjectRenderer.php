@@ -6262,7 +6262,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             );
             if ($conf[$property] === '') {
                 unset($conf[$property]);
-            } elseif (in_array($property, ['languageField', 'selectFields', 'join', 'leftJoin', 'rightJoin', 'where'], true)) {
+            } elseif (in_array($property, ['languageField', 'selectFields', 'join', 'leftjoin', 'rightjoin', 'where'], true)) {
                 $conf[$property] = QueryHelper::quoteDatabaseIdentifiers($connection, $conf[$property]);
             }
             if (isset($conf[$property . '.'])) {
