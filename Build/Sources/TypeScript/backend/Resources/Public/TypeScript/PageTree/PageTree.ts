@@ -15,13 +15,12 @@ import * as d3selection from 'd3-selection';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
-import {PageTreeDragDrop} from './PageTreeDragDrop';
+import {PageTreeDragDrop, PageTreeNodeDragHandler} from './PageTreeDragDrop';
 import Icons = require('../Icons');
 import Notification = require('../Notification');
 import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {PageTreeNodeDragHandler} from './PageTreeDragHandler';
 import {TreeInterface} from '../Viewport/TreeInterface';
 
 interface PageTreeSettings extends SvgTreeSettings {
@@ -30,7 +29,7 @@ interface PageTreeSettings extends SvgTreeSettings {
 
 export class PageTree extends SvgTree implements TreeInterface
 {
-  protected settings: PageTreeSettings;
+  public settings: PageTreeSettings;
   private originalNodes: string = '';
   private searchQuery: string = '';
   private dragDrop: PageTreeDragDrop;
@@ -400,102 +399,6 @@ export class PageTree extends SvgTree implements TreeInterface
   }
 
   /**
-   * Add new node to the tree (used in drag+drop)
-   *
-   * @type {Object} options
-   * @private
-   */
-  public addNewNode(options: any) {
-    const target = options.target;
-    let index = this.nodes.indexOf(target);
-    let newNode = {} as any;
-    newNode.command = 'new';
-    newNode.type = options.type;
-    newNode.identifier = -1;
-    newNode.target = target;
-    newNode.parents = target.parents;
-    newNode.parentsStateIdentifier = target.parentsStateIdentifier;
-    newNode.depth = target.depth;
-    newNode.position = options.position;
-    newNode.name = (typeof options.title !== 'undefined') ? options.title : TYPO3.lang['tree.defaultPageTitle'];
-    newNode.y = newNode.y || newNode.target.y;
-    newNode.x = newNode.x || newNode.target.x;
-
-    this.nodeIsEdit = true;
-
-    if (options.position === 'in') {
-      newNode.depth++;
-      newNode.parents.unshift(index);
-      newNode.parentsStateIdentifier.unshift(this.nodes[index].stateIdentifier);
-      this.nodes[index].hasChildren = true;
-      this.showChildren(this.nodes[index]);
-    }
-
-    if (options.position === 'in' || options.position === 'after') {
-      index++;
-    }
-
-    if (options.icon) {
-      newNode.icon = options.icon;
-    }
-
-    if (newNode.position === 'before') {
-      let positionAndTarget = this.dragDrop.setNodePositionAndTarget(index);
-      newNode.position = positionAndTarget[0];
-      newNode.target = positionAndTarget[1];
-    }
-
-    this.nodes.splice(index, 0, newNode);
-    this.setParametersNode();
-    this.prepareDataForVisibleNodes();
-    this.update();
-    this.removeEditedText();
-
-    d3selection.select(this.svg.node().parentNode as HTMLElement)
-      .append('input')
-      .attr('class', 'node-edit')
-      .style('top', newNode.y + this.settings.marginTop + 'px')
-      .style('left', newNode.x + this.textPosition + 5 + 'px')
-      .style('width', this.settings.width - (newNode.x + this.textPosition + 20) + 'px')
-      .style('height', this.settings.nodeHeight + 'px')
-      .attr('text', 'text')
-      .attr('value', newNode.name)
-      .on('keydown', (evt: KeyboardEvent) => {
-        const target = evt.target as HTMLInputElement;
-        const code = evt.keyCode;
-        if (code === 13 || code === 9) { // enter || tab
-          this.nodeIsEdit = false;
-          const newName = target.value.trim();
-          if (newName.length) {
-            newNode.name = newName;
-            this.removeEditedText();
-            this.sendChangeCommand(newNode);
-          } else {
-            this.removeNode(newNode);
-          }
-        } else if (code === 27) { // esc
-          this.nodeIsEdit = false;
-          this.removeNode(newNode);
-        }
-      })
-      .on('blur', (evt: FocusEvent) => {
-        if (this.nodeIsEdit && (this.nodes.indexOf(newNode) > -1)) {
-          const target = evt.target as HTMLInputElement;
-          const newName = target.value.trim();
-          if (newName.length) {
-            newNode.name = newName;
-            this.removeEditedText();
-            this.sendChangeCommand(newNode);
-          } else {
-            this.removeNode(newNode);
-          }
-        }
-      })
-      .node()
-      .select();
-  }
-
-  /**
    * Event handler for double click on a node's label
    * Changed text position if there is 'stop page tree' option
    */
@@ -728,6 +631,5 @@ export class PageTree extends SvgTree implements TreeInterface
 
     Notification.error(title, desc);
     this.loadData();
-  };
-
+  }
 }

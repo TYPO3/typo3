@@ -62,12 +62,33 @@ export class SvgTree {
   public isOverSvg: boolean = false;
 
   /**
-   * Is set when a node is hovered over a
+   * Root <svg> element
+   */
+  public svg: TreeWrapperSelection<SVGSVGElement> = null;
+
+  /**
+   * SVG <g> container wrapping all .nodes, .links, .nodes-bg  elements
+   */
+  public container: TreeWrapperSelection<SVGGElement> = null;
+
+  /**
+   * SVG <g> container wrapping all .node elements
+   */
+  public nodesContainer: TreeWrapperSelection<SVGGElement> = null;
+
+  /**
+   * SVG <g> container wrapping all .nodes-bg elements
+   */
+  public nodesBgContainer: TreeWrapperSelection<SVGGElement> = null;
+
+  /**
+   * Is set when the input device is hovered over a node
    */
   public hoveredNode: TreeNode|null = null;
 
-  protected icons: {[keys: string]: SvgTreeDataIcon};
-  protected settings: SvgTreeSettings = {
+  public nodes: TreeNode[] = [];
+
+  public settings: SvgTreeSettings = {
     showCheckboxes: false,
     showIcons: false,
     marginTop: 15,
@@ -85,32 +106,14 @@ export class SvgTree {
     readOnlyMode: false,
     exclusiveNodesIdentifiers: ''
   };
-  protected textPosition: number = 0;
 
-  /**
-   * Root <svg> element
-   */
-  protected svg: TreeWrapperSelection<SVGSVGElement> = null;
+  protected icons: {[keys: string]: SvgTreeDataIcon};
+  protected textPosition: number = 0;
 
   /**
    * Wrapper of svg element
    */
   protected d3wrapper: TreeWrapperSelection<SvgTreeWrapper> = null;
-
-  /**
-   * SVG <g> container wrapping all .nodes, .links, .nodes-bg  elements
-   */
-  protected container: TreeWrapperSelection<SVGGElement> = null;
-
-  /**
-   * SVG <g> container wrapping all .node elements
-   */
-  protected nodesContainer: TreeWrapperSelection<SVGGElement> = null;
-
-  /**
-   * SVG <g> container wrapping all .nodes-bg elements
-   */
-  protected nodesBgContainer: TreeWrapperSelection<SVGGElement> = null;
 
   /**
    * SVG <defs> container wrapping all icon definitions
@@ -128,8 +131,6 @@ export class SvgTree {
     links: SvgTreeDataLink[];
     nodes: TreeNode[];
   };
-
-  protected nodes: TreeNode[] = [];
 
   /**
    * HTMLElement (`<div>`) of the wrapper holding the `<svg>` element.
@@ -790,7 +791,7 @@ export class SvgTree {
 
     if ((prevNode && (node.depth > prevNode.depth)) || !prevNode) {
       node.firstChild = true;
-      bgClass += ' node-firth-child';
+      bgClass += ' node-first-child';
     }
 
     if ((nextNode && (node.depth > nextNode.depth)) || !nextNode) {

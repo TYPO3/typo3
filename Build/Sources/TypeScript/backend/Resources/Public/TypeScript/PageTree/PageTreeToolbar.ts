@@ -16,9 +16,8 @@ import {select as d3select} from 'd3-selection';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
-import {PageTreeDragDrop} from './PageTreeDragDrop';
+import {PageTreeDragDrop, ToolbarDragHandler} from './PageTreeDragDrop';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
-import {ToolbarDragHandler} from 'TYPO3/CMS/Backend/PageTree/PageTreeDragHandler';
 
 /**
  * @exports TYPO3/CMS/Backend/PageTree/PageTreeToolbar
@@ -136,8 +135,7 @@ export class PageTreeToolbar
   }
 
   /**
-   * Register Drag and drop for toolbar new elements
-   *
+   * Register Drag and drop for new elements of toolbar
    * Returns method from d3drag
    */
   private dragToolbar(itm: any) {

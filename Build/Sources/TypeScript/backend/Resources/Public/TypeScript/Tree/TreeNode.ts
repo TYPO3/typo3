@@ -12,6 +12,7 @@
  */
 
 import * as d3selection from 'd3-selection';
+import {DraggablePositionEnum} from './DragDrop';
 
 /**
  * Represents a single node in the SVG tree that is rendered.
@@ -26,6 +27,7 @@ export interface TreeNode extends d3selection.EnterElement {
 
   x: number;
   y: number;
+  type: string;
   depth: number;
   parents: Array<number>;
   loaded: boolean;
@@ -63,7 +65,10 @@ export interface TreeNode extends d3selection.EnterElement {
 
   owns?: string[];
   indeterminate?: boolean;
+  allowDelete?: boolean;
   allowEdit?: boolean;
   nameSourceField?: string;
   newName?: string;
+  target?: TreeNode;
+  position?: DraggablePositionEnum;
 }

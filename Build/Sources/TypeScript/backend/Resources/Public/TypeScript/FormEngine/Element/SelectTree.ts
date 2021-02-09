@@ -48,7 +48,7 @@ export class SelectTree extends SvgTree
    * @param {Selection} nodes
    */
   public updateNodes(nodes: TreeNodeSelection): void {
-    if (this.settings.showCheckboxes) {
+    if (!this.settings.showCheckboxes) {
       return;
     }
     nodes
