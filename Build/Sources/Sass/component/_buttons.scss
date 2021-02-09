@@ -145,3 +145,8 @@
         margin-top: $spacer / 2;
     }
 }
+
+.btn-borderless {
+    border-color: transparent;
+    box-shadow: none;
+}

@@ -70,27 +70,29 @@ export class PageTreeToolbar
     this.tree.update();
   }
 
-  private showSubmenu(name: string): void {
-    // @todo Replace those states with real data-binding in lit-element
-    this.targetEl.querySelectorAll('[data-tree-show-submenu]')
-      .forEach((element: HTMLElement) => {
-        if (element.dataset.treeShowSubmenu === name) {
-          element.classList.add('active');
-        } else {
-          element.classList.remove('active');
-        }
-      });
-    this.targetEl.querySelectorAll('[data-tree-submenu]')
-      .forEach((element: HTMLElement) => {
-        if (element.dataset.treeSubmenu === name) {
-          element.classList.add('active');
-        } else {
-          element.classList.remove('active');
-        }
-      });
-    const submenu = this.targetEl.querySelector('[data-tree-submenu="' + name + '"]');
-    const inputEl = submenu.querySelector('input');
+  private render(): void
+  {
+    this.tree = this.treeContainer.svgtree;
+    // @todo Better use initialize() settings, drop this assignment here
+    Object.assign(this.settings, this.tree.settings);
+    render(this.renderTemplate(), this.targetEl);
+
+    const d3Toolbar = d3select('.svg-toolbar');
+    this.tree.settings.doktypes.forEach((item: any) => {
+      if (item.icon) {
+        d3Toolbar
+          .selectAll('[data-tree-icon=' + item.icon + ']')
+          .call(this.dragToolbar(item));
+      } else {
+        console.warn('Missing icon definition for doktype: ' + item.nodeType);
+      }
+    });
+
+    const inputEl = this.targetEl.querySelector(this.settings.searchInput) as HTMLInputElement;
     if (inputEl) {
+      new DebounceEvent('input', (evt: InputEvent) => {
+        this.search(evt.target as HTMLInputElement);
+      }, this.settings.filterTimeout).bindTo(inputEl);
       inputEl.focus();
       inputEl.clearable({
         onClear: () => {
@@ -102,80 +104,32 @@ export class PageTreeToolbar
     }
   }
 
-  private render(): void
-  {
-    this.tree = this.treeContainer.svgtree;
-    // @todo Better use initialize() settings, drop this assignment here
-    Object.assign(this.settings, this.tree.settings);
-
-    render(this.renderTemplate(), this.targetEl);
-
-    const d3Toolbar = d3select('.svg-toolbar');
-    this.tree.settings.doktypes.forEach((item: any, id: number) => {
-      if (item.icon) {
-        d3Toolbar
-          .selectAll('[data-tree-icon=' + item.icon + ']')
-          .call(this.dragToolbar(item));
-      } else {
-        console.warn('Missing icon definition for doktype: ' + item.nodeType);
-      }
-    });
-
-    new DebounceEvent('input', (evt: InputEvent) => {
-      this.search(evt.target as HTMLInputElement);
-    }, this.settings.filterTimeout)
-      .bindTo(this.targetEl.querySelector(this.settings.searchInput));
-
-    // @todo That always was a hack, to be replace with proper internal state handling
-    const newPageSubmenu = this.targetEl.querySelector('[data-tree-show-submenu="page-new"]') as HTMLButtonElement;
-    const firstToolbarButton = this.targetEl.querySelector('.svg-toolbar__menu :first-child:not(.js-svg-refresh)') as HTMLButtonElement;
-    (newPageSubmenu ? newPageSubmenu : firstToolbarButton).click();
-  }
-
   private renderTemplate(): TemplateResult {
     /* eslint-disable @typescript-eslint/indent */
     return html`
       <div class="${this.settings.toolbarSelector}">
         <div class="svg-toolbar__menu">
-          <div class="btn-group">
-            ${this.tree.settings.doktypes && this.tree.settings.doktypes.length > 0 ? html`
-              <div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="page-new" @click="${() => this.showSubmenu('page-new')}">
-                <button class="svg-toolbar__btn" data-tree-icon="actions-page-new" title="${lll('tree.buttonNewNode')}">
-                  ${icon('actions-page-new', 'small')}
-                </button>
-              </div>
-            ` : ''}
-            <div class="x-btn btn btn-default btn-sm x-btn-noicon" data-tree-show-submenu="filter" @click="${() => this.showSubmenu('filter')}">
-              <button class="svg-toolbar__btn" data-tree-icon="actions-filter" title="${lll('tree.buttonFilter')}">
-                ${icon('actions-filter', 'small')}
-              </button>
-            </div>
+          <div class="svg-toolbar__search">
+              <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
-          <div class="x-btn btn btn-default btn-sm x-btn-noicon js-svg-refresh" @click="${() => this.refreshTree()}">
-            <button class="svg-toolbar__btn" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
+          <button class="btn btn-default btn-borderless btn-sm" @click="${() => this.refreshTree()}" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
               ${icon('actions-refresh', 'small')}
-            </button>
-          </div>
+          </button>
         </div>
         <div class="svg-toolbar__submenu">
-          <div class="svg-toolbar__submenu-item" data-tree-submenu="filter">
-            <input type="text" class="form-control search-input" placeholder="${lll('tree.searchTermInfo')}">
-          </div>
-          <div class="svg-toolbar__submenu-item" data-tree-submenu="page-new">
-            ${this.tree.settings.doktypes && this.tree.settings.doktypes.length
-              ? this.tree.settings.doktypes.map((item: any) => {
-                // @todo Unsure, why this has to be done for doktype icons
-                this.tree.fetchIcon(item.icon, false);
-                return html`
-                  <div class="svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
-                       title="${item.title}" tooltip="${item.tooltip}">
-                    ${icon(item.icon, 'small')}
-                  </div>
-                `;
-              })
-              : ''
-            }
-          </div>
+          ${this.tree.settings.doktypes && this.tree.settings.doktypes.length
+            ? this.tree.settings.doktypes.map((item: any) => {
+              // @todo Unsure, why this has to be done for doktype icons
+              this.tree.fetchIcon(item.icon, false);
+              return html`
+                <div class="svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
+                     title="${item.title}" tooltip="${item.tooltip}">
+                  ${icon(item.icon, 'small')}
+                </div>
+              `;
+            })
+            : ''
+          }
         </div>
       </div>
     `;

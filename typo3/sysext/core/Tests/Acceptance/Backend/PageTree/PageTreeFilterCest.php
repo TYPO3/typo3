@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\SiteConfiguration;
 class PageTreeFilterCest
 {
     protected $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
-    protected $filterButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-filter]';
     protected $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
     protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-refresh]';
     protected $inPageTree = '#typo3-pagetree-tree .nodes';
@@ -47,7 +46,6 @@ class PageTreeFilterCest
      */
     public function filterTreeForPage(BackendTester $I)
     {
-        $I->click($this->filterButton);
         $I->cantSeeElement($this->filterInputFieldClearButton);
 
         $I->fillField($this->filterInputField, 'Group');
@@ -81,7 +79,6 @@ class PageTreeFilterCest
      */
     public function clearFilterReloadsPageTreeWithoutFilterApplied(BackendTester $I)
     {
-        $I->click($this->filterButton);
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
 
@@ -105,7 +102,6 @@ class PageTreeFilterCest
      */
     public function deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload(BackendTester $I, ModalDialog $modalDialog)
     {
-        $I->click($this->filterButton);
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
 
