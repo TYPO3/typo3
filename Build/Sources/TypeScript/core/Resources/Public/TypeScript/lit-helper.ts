@@ -12,12 +12,7 @@
  */
 
 import type {TemplateResult} from 'lit-html';
-import {html, render, Part} from 'lit-html';
-import {unsafeHTML} from 'lit-html/directives/unsafe-html';
-import {until} from 'lit-html/directives/until';
-import Icons = require('TYPO3/CMS/Backend/Icons');
-
-import 'TYPO3/CMS/Backend/Element/SpinnerElement';
+import {render} from 'lit-html';
 
 /**
  * @internal
@@ -45,13 +40,4 @@ export const lll = (key: string): string => {
     return '';
   }
   return window.TYPO3.lang[key];
-};
-
-/**
- * @internal
- */
-export const icon = (identifier: string, size: any = 'small') => {
-  // @todo Fetched and resolved icons should be stored in a session repository in `Icons`
-  const icon = Icons.getIcon(identifier, size).then((markup: string) => html`${unsafeHTML(markup)}`);
-  return html`${until(icon, html`<typo3-backend-spinner size="${size}"></typo3-backend-spinner>`)}`;
 };

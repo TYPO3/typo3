@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -93,8 +95,15 @@ class IconFactoryTest extends UnitTestCase
         $this->iconRegistryMock = $this->prophesize(IconRegistry::class);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::any())->willReturnArgument(0);
+        $container = $this->prophesize(ContainerInterface::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheProphecy->get(Argument::any())->willReturn(false);
+        $cacheProphecy->set(Argument::any(), Argument::any())->willReturn();
 
-        $this->subject = new IconFactory($eventDispatcher->reveal(), $this->iconRegistryMock->reveal());
+        $container->has(FontawesomeIconProvider::class)->willReturn(true);
+        $container->get(FontawesomeIconProvider::class)->willReturn(new FontawesomeIconProvider($cacheProphecy->reveal()));
+
+        $this->subject = new IconFactory($eventDispatcher->reveal(), $this->iconRegistryMock->reveal(), $container->reveal());
 
         $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(true);

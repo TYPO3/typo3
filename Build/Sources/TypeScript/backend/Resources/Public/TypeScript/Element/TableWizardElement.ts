@@ -12,7 +12,8 @@
  */
 
 import {html, customElement, property, LitElement, TemplateResult} from 'lit-element';
-import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 
 /**
  * Module: TYPO3/CMS/Backend/Element/TableWizardElement
@@ -161,7 +162,7 @@ export class TableWizardElement extends LitElement {
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${lll('table_smallFields')}"
           @click="${(evt: Event) => this.toggleType(evt)}">
-          ${icon(this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract')}
+          <typo3-backend-icon identifier="${this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract'}" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;

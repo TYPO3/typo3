@@ -14,7 +14,8 @@
 import {Tooltip} from 'bootstrap';
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
-import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 
 /**
  * @exports TYPO3/CMS/Backend/FormEngine/Element/TreeToolbar
@@ -148,18 +149,20 @@ export class TreeToolbar
     return html`
       <div class="${this.settings.toolbarSelector}">
         <div class="input-group">
-          <span class="input-group-addon input-group-icon filter">${icon('actions-filter', 'small')}</span>
+          <span class="input-group-addon input-group-icon filter">
+            <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
+          </span>
           <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.search(evt)}">
         </div>
         <div class="btn-group">
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
-            ${icon('apps-pagetree-category-expand-all', 'small')}
+            <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${() => this.collapseAll()}">
-            ${icon('apps-pagetree-category-collapse-all', 'small')}
+            <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
-            ${icon('apps-pagetree-category-toggle-hide-checked', 'small')}
+            <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
           </button>
         </div>
       </div>

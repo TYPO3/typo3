@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Imaging;
 
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -64,14 +65,18 @@ class IconFactory
      */
     protected $eventDispatcher;
 
+    protected ContainerInterface $container;
+
     /**
      * @param EventDispatcherInterface $eventDispatcher
      * @param IconRegistry $iconRegistry
+     * @param ContainerInterface $container
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, IconRegistry $iconRegistry)
+    public function __construct(EventDispatcherInterface $eventDispatcher, IconRegistry $iconRegistry, ContainerInterface $container)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->iconRegistry = $iconRegistry;
+        $this->container = $container;
         $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
         $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
     }
@@ -103,7 +108,9 @@ class IconFactory
         $icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 
         /** @var IconProviderInterface $iconProvider */
-        $iconProvider = GeneralUtility::makeInstance($iconConfiguration['provider']);
+        $iconProvider = $this->container->has($iconConfiguration['provider']) ?
+            $this->container->get($iconConfiguration['provider']) :
+            GeneralUtility::makeInstance($iconConfiguration['provider']);
         $iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
 
         static::$iconCache[$cacheIdentifier] = $icon;

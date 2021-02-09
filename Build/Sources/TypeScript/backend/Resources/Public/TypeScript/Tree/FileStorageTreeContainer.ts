@@ -13,11 +13,12 @@
 
 import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
-import {icon, lll} from 'TYPO3/CMS/Core/lit-helper';
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {FileStorageTree} from './FileStorageTree';
 import viewPort from '../Viewport';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import {FileStorageTreeActions} from './FileStorageTreeActions';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 
 /**
  * Responsible for setting up the viewport for the Navigation Component for the File Tree
@@ -61,13 +62,13 @@ export class FileStorageTreeContainer {
           <div class="navigation-tree-container">
             <div id="typo3-filestoragetree-tree" class="svg-tree-wrapper">
               <div class="node-loader">
-                ${icon('spinner-circle-light', 'small')}
+                <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
               </div>
             </div>
           </div>
         </div>
         <div class="svg-tree-loader">
-          ${icon('spinner-circle-light', 'large')}
+          <typo3-backend-icon identifier="spinner-circle-light" size="large"></typo3-backend-icon>
         </div>
       </div>
     `;
@@ -146,7 +147,7 @@ class Toolbar
             <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
           <button class="btn btn-default btn-borderless btn-sm" @click="${() => this.refreshTree()}" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
-            ${icon('actions-refresh', 'small')}
+            <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
           </button>
         </div>
       </div>`;

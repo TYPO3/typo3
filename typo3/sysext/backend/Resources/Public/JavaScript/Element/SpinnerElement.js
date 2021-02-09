@@ -10,35 +10,36 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=this&&this.__decorate||function(e,t,r,i){var n,s=arguments.length,o=s<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,r):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(e,t,r,i);else for(var d=e.length-1;d>=0;d--)(n=e[d])&&(o=(s<3?n(o):s>3?n(t,r,o):n(t,r))||o);return s>3&&o&&Object.defineProperty(t,r,o),o};define(["require","exports","lit-element"],(function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.SpinnerElement=void 0;let i=class extends r.LitElement{constructor(){super(...arguments),this.size="small"}static get styles(){return r.css`
+var __decorate=this&&this.__decorate||function(e,t,r,n){var i,s=arguments.length,o=s<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(i=e[a])&&(o=(s<3?i(o):s>3?i(t,r,o):i(t,r))||o);return s>3&&o&&Object.defineProperty(t,r,o),o};define(["require","exports","lit-element","../Enum/IconTypes"],(function(e,t,r,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.SpinnerElement=void 0;let i=class extends r.LitElement{constructor(){super(...arguments),this.size=n.Sizes.default}static get styles(){return r.css`
       :host {
-        display: block;
+        font-size: 32px;
+        width: 1em;
+        height: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .spinner {
         display: block;
-        margin: 2px;
         border-style: solid;
         border-color: #212121 #bababa #bababa;
         border-radius: 50%;
+        width: 0.625em;
+        height: 0.625em;
+        border-width: 0.0625em;
         animation: spin 1s linear infinite;
       }
-      .spinner.small {
-        border-width: 2px;
-        width: 10px;
-        height: 10px;
+      :host([size=small]) .spinner {
+        font-size: 16px;
       }
-      .spinner.medium {
-        border-width: 3px;
-        width: 14px;
-        height: 14px;
+      :host([size=large]) .spinner {
+        font-size: 48px;
       }
-      .spinner.large {
-        border-width: 4px;
-        width: 20px;
-        height: 20px;
+      :host([size=mega]) .spinner {
+        font-size: 64px;
       }
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-    `}render(){return r.html`<div class="spinner ${this.size}"></div>`}};__decorate([r.property({type:String})],i.prototype,"size",void 0),i=__decorate([r.customElement("typo3-backend-spinner")],i),t.SpinnerElement=i}));
+    `}render(){return r.html`<div class="spinner"></div>`}};__decorate([r.property({type:String})],i.prototype,"size",void 0),i=__decorate([r.customElement("typo3-backend-spinner")],i),t.SpinnerElement=i}));

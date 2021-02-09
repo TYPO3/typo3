@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,7 +43,9 @@ class FontawesomeIconProviderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new FontawesomeIconProvider();
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheProphecy->get(Argument::any())->willReturn([]);
+        $this->subject = new FontawesomeIconProvider($cacheProphecy->reveal());
         $this->icon = GeneralUtility::makeInstance(Icon::class);
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);
