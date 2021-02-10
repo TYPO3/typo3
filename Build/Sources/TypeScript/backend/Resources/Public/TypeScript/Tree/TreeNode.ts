@@ -20,13 +20,11 @@ import {DraggablePositionEnum} from './DragDrop';
 export interface TreeNode extends d3selection.EnterElement {
   firstChild: Node | boolean | null;
   lastChild: Node | boolean | null;
-
-  // @todo those two `_x` and `_y` are never written
-  _x?: number;
-  _y?: number;
-
+  // e.g. "pages" or "sys_file", depending on the implementation
+  itemType: string | null;
   x: number;
   y: number;
+  // page-tree specific (doktype)
   type: string;
   depth: number;
   parents: Array<number>;
@@ -36,7 +34,6 @@ export interface TreeNode extends d3selection.EnterElement {
   hasChildren: boolean;
   hidden: boolean;
   isOver: boolean;
-  _isDragged: boolean;
   tip: string;
   selectable: boolean;
   checked: boolean;
@@ -48,7 +45,9 @@ export interface TreeNode extends d3selection.EnterElement {
   class: string;
   prefix: string;
   suffix: string;
+  // page-tree specific
   mountPoint: string;
+  // page-tree specific
   stopPageTree: boolean;
   stateIdentifier: string;
   parentsStateIdentifier: Array<string>;
@@ -67,7 +66,9 @@ export interface TreeNode extends d3selection.EnterElement {
   indeterminate?: boolean;
   allowDelete?: boolean;
   allowEdit?: boolean;
+  // page-tree specific: which DB field should be updated when editing the DB field
   nameSourceField?: string;
+  // page-tree specific: which DB field should be updated when editing the DB field
   newName?: string;
   target?: TreeNode;
   position?: DraggablePositionEnum;

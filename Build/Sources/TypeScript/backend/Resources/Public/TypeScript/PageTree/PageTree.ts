@@ -17,11 +17,11 @@ import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
 import {PageTreeDragDrop, PageTreeNodeDragHandler} from './PageTreeDragDrop';
 import Icons = require('../Icons');
-import Notification = require('../Notification');
 import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {TreeInterface} from '../Viewport/TreeInterface';
+import {KeyTypesEnum as KeyTypes} from '../Enum/KeyTypes';
 
 interface PageTreeSettings extends SvgTreeSettings {
   temporaryMountPoint?: string;
@@ -30,16 +30,18 @@ interface PageTreeSettings extends SvgTreeSettings {
 export class PageTree extends SvgTree implements TreeInterface
 {
   public settings: PageTreeSettings;
+  protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
+  protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
   private originalNodes: string = '';
   private searchQuery: string = '';
   private dragDrop: PageTreeDragDrop;
   private nodeIsEdit: boolean;
-
   public constructor() {
     super();
     this.settings.defaultProperties = {
       hasChildren: false,
       nameSourceField: 'title',
+      itemType: 'pages',
       prefix: '',
       suffix: '',
       locked: false,
@@ -61,10 +63,8 @@ export class PageTree extends SvgTree implements TreeInterface
       return false;
     }
 
-    this.settings.isDragAnDrop = settings.allowDragMove;
     this.dispatch.on('nodeSelectedAfter.pageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('nodeRightClick.pageTree', (node: TreeNode) => this.nodeRightClick(node));
-    this.dispatch.on('updateSvg.pageTree', (node: TreeNode) => this.updateSvg(node));
     this.dispatch.on('prepareLoadedNode.pageTree', (node: TreeNode) => this.prepareLoadedNode(node));
     this.dragDrop = dragDrop;
 
@@ -114,17 +114,7 @@ export class PageTree extends SvgTree implements TreeInterface
       })
       .then((response) => {
         if (response && response.hasErrors) {
-          if (response.messages) {
-            response.messages.forEach((message: any) => {
-              Notification.error(
-                message.title,
-                message.message
-              );
-            });
-          } else {
-            this.errorNotification();
-          }
-
+          this.errorNotification(response.messages, false);
           this.nodesContainer.selectAll('.node').remove();
           this.update();
           this.nodesRemovePlaceholder();
@@ -142,26 +132,15 @@ export class PageTree extends SvgTree implements TreeInterface
   }
 
   public nodeRightClick(node: TreeNode): void {
-    let svgElement = this.svg.node().querySelector('.nodes .node[data-state-id="' + node.stateIdentifier + '"]') as SVGElement;
-
-    if (svgElement) {
-      ContextMenu.show(
-        svgElement.dataset.table,
-        parseInt(node.identifier, 10),
-        svgElement.dataset.context,
-        svgElement.dataset.iteminfo,
-        svgElement.dataset.parameters,
-        svgElement
-      );
-    }
+    ContextMenu.show(
+      node.itemType,
+      parseInt(node.identifier, 10),
+      'tree',
+      '',
+      '',
+      this.getNodeElement(node)
+    );
   };
-
-  public updateSvg(nodeEnter: TreeNode) {
-    nodeEnter
-      .select('use')
-      .attr('data-table', 'pages')
-      .attr('data-context', 'tree');
-  }
 
   /**
    * Event listener called for each loaded node,
@@ -221,17 +200,7 @@ export class PageTree extends SvgTree implements TreeInterface
         }
       })
       .catch((error: any) => {
-        let title = TYPO3.lang.pagetree_networkErrorTitle;
-        let desc = TYPO3.lang.pagetree_networkErrorDesc;
-
-        if (error && error.target && (error.target.status || error.target.statusText)) {
-          title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
-        }
-
-        Notification.error(
-          title,
-          desc);
-
+        this.errorNotification(error, false)
         this.nodesRemovePlaceholder();
         throw error;
       });
@@ -242,14 +211,7 @@ export class PageTree extends SvgTree implements TreeInterface
   };
 
   public nodesUpdate(nodes: TreeNodeSelection) {
-    nodes = super.nodesUpdate.call(this, nodes)
-      .call(this.initializeDragForNode())
-      .attr('data-table', 'pages')
-      .attr('data-context', 'tree')
-      .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
-        evt.preventDefault();
-        this.dispatch.call('nodeRightClick', this, node);
-      });
+    nodes = super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
 
     nodes
       .append('text')
@@ -304,14 +266,7 @@ export class PageTree extends SvgTree implements TreeInterface
         this.nodesRemovePlaceholder();
       })
       .catch((error: any) => {
-        let title = TYPO3.lang.pagetree_networkErrorTitle;
-        const desc = TYPO3.lang.pagetree_networkErrorDesc;
-
-        if (error && error.target && (error.target.status || error.target.statusText)) {
-          title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
-        }
-
-        Notification.error(title, desc);
+        this.errorNotification(error, false)
         this.nodesRemovePlaceholder();
         throw error;
       });
@@ -359,17 +314,7 @@ export class PageTree extends SvgTree implements TreeInterface
       })
       .then((response) => {
         if (response && response.hasErrors) {
-          if (response.messages) {
-            response.messages.forEach((message: any) => {
-              Notification.error(
-                message.title,
-                message.message
-              );
-            });
-          } else {
-            this.errorNotification();
-          }
-
+          this.errorNotification(response.message, true);
           this.update();
         } else {
           this.addMountPoint(response.mountPointPath);
@@ -377,7 +322,7 @@ export class PageTree extends SvgTree implements TreeInterface
         }
       })
       .catch((error) => {
-        this.errorNotification(error);
+        this.errorNotification(error, true);
       });
   }
 
@@ -403,7 +348,6 @@ export class PageTree extends SvgTree implements TreeInterface
    * Changed text position if there is 'stop page tree' option
    */
   protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
-
     let clicks = 0;
     return super.appendTextElement(nodes)
       .attr('dx', (node) => {
@@ -434,20 +378,6 @@ export class PageTree extends SvgTree implements TreeInterface
       });
   };
 
-  private removeNode(newNode: any) {
-    let index = this.nodes.indexOf(newNode);
-    // if newNode is only one child
-    if (this.nodes[index - 1].depth != newNode.depth
-      && (!this.nodes[index + 1] || this.nodes[index + 1].depth != newNode.depth)) {
-      this.nodes[index - 1].hasChildren = false;
-    }
-    this.nodes.splice(index, 1);
-    this.setParametersNode();
-    this.prepareDataForVisibleNodes();
-    this.update();
-    this.removeEditedText();
-  };
-
   private sendEditNodeLabelCommand(node: TreeNode) {
     const params = '&data[pages][' + node.identifier + '][' + node.nameSourceField + ']=' + encodeURIComponent(node.newName);
 
@@ -463,28 +393,14 @@ export class PageTree extends SvgTree implements TreeInterface
       })
       .then((response) => {
         if (response && response.hasErrors) {
-          if (response.messages) {
-            response.messages.forEach((message: any) => {
-              Notification.error(
-                message.title,
-                message.message
-              );
-            });
-          } else {
-            this.errorNotification();
-          }
-
-          this.nodesAddPlaceholder();
-          this.refreshOrFilterTree();
+          this.errorNotification(response.messages, false);
         } else {
           node.name = node.newName;
-          this.svg.select('.node-placeholder[data-uid="' + node.stateIdentifier + '"]').remove();
-          this.refreshOrFilterTree();
-          this.nodesRemovePlaceholder();
         }
+        this.refreshOrFilterTree();
       })
       .catch((error) => {
-        this.errorNotification(error);
+        this.errorNotification(error, true);
       });
   }
 
@@ -492,8 +408,6 @@ export class PageTree extends SvgTree implements TreeInterface
     if (!node.allowEdit) {
       return;
     }
-
-    const _this = this;
     this.removeEditedText();
     this.nodeIsEdit = true;
 
@@ -509,24 +423,23 @@ export class PageTree extends SvgTree implements TreeInterface
       .style('height', this.settings.nodeHeight + 'px')
       .attr('type', 'text')
       .attr('value', node.name)
-      .on('keydown', function(this: HTMLInputElement, event: KeyboardEvent) {
+      .on('keydown', (event: KeyboardEvent) => {
         // @todo Migrate to `evt.code`, see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
         const code = event.keyCode;
-        if (code === 13 || code === 9) { //enter || tab
-          const newName = this.value.trim();
+
+        if (code === KeyTypes.ENTER || code === KeyTypes.TAB) {
+          const target = event.target as HTMLInputElement;
+          const newName = target.value.trim();
+          this.nodeIsEdit = false;
+          this.removeEditedText();
           if (newName.length && (newName !== node.name)) {
-            _this.nodeIsEdit = false;
-            _this.removeEditedText();
             node.nameSourceField = node.nameSourceField || 'title';
             node.newName = newName;
-            _this.sendEditNodeLabelCommand(node);
-          } else {
-            _this.nodeIsEdit = false;
-            _this.removeEditedText();
+            this.sendEditNodeLabelCommand(node);
           }
-        } else if (code === 27) { //esc
-          _this.nodeIsEdit = false;
-          _this.removeEditedText();
+        } else if (code === KeyTypes.ESCAPE) {
+          this.nodeIsEdit = false;
+          this.removeEditedText();
         }
       })
       .on('blur', (evt: FocusEvent) => {
@@ -616,20 +529,5 @@ export class PageTree extends SvgTree implements TreeInterface
         iconElement.insertAdjacentHTML('beforeend', icon);
       });
     });
-  };
-
-  /**
-   * Displays a notification message and refresh nodes
-   */
-  private errorNotification(error: any = null): void {
-    let title = TYPO3.lang.pagetree_networkErrorTitle;
-    const desc = TYPO3.lang.pagetree_networkErrorDesc;
-
-    if (error && error.target && (error.target.status || error.target.statusText)) {
-      title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
-    }
-
-    Notification.error(title, desc);
-    this.loadData();
   }
 }

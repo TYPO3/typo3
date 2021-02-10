@@ -147,6 +147,12 @@ export class SvgTree {
   protected exclusiveSelectedNode: TreeNode = null;
 
   /**
+   * @todo: use generic labels
+   */
+  protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
+  protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
+
+  /**
    * Initializes the tree component - created basic markup, loads and renders data
    *
    * @param {HTMLElement} selector
@@ -261,8 +267,14 @@ export class SvgTree {
    * Make the DOM element of the node given as parameter focusable and focus it
    */
   public switchFocusNode(node: TreeNode) {
-    const nodeElement = document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
-    this.switchFocus(nodeElement);
+    this.switchFocus(this.getNodeElement(node));
+  }
+
+  /**
+   * Return the DOM element of a tree node
+   */
+  public getNodeElement(node: TreeNode): HTMLElement|null {
+    return document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
   }
 
   /**
@@ -294,14 +306,7 @@ export class SvgTree {
         this.update();
       })
       .catch((error) => {
-        let title = TYPO3.lang.pagetree_networkErrorTitle;
-        const desc = TYPO3.lang.pagetree_networkErrorDesc;
-
-        if (error && error.target && (error.target.status || error.target.statusText)) {
-          title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
-        }
-
-        Notification.error(title, desc);
+        this.errorNotification(error, false);
         this.nodesRemovePlaceholder();
         throw error;
       });
@@ -334,7 +339,6 @@ export class SvgTree {
       node.expanded = (this.settings.expandUpToLevel !== null) ? node.depth < this.settings.expandUpToLevel : Boolean(node.expanded);
       node.parents = [];
       node.parentsStateIdentifier = [];
-      node._isDragged = false;
       if (node.depth > 0) {
         let currentDepth = node.depth;
         for (let i = index; i >= 0; i--) {
@@ -378,25 +382,27 @@ export class SvgTree {
   }
 
   public nodesRemovePlaceholder() {
-    const nodeLoader = document.querySelector('.node-loader') as HTMLElement;
+    const componentWrapper = this.svg.node().closest('.svg-tree');
+    const nodeLoader = componentWrapper?.querySelector('.node-loader') as HTMLElement;
     if (nodeLoader) {
       nodeLoader.style.display = 'none';
     }
-    const treeLoader = document.querySelector('.svg-tree-loader') as HTMLElement;
+    const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
     if (treeLoader) {
       treeLoader.style.display = 'none';
     }
   }
 
   public nodesAddPlaceholder(node: TreeNode = null) {
+    const componentWrapper = this.svg.node().closest('.svg-tree');
     if (node) {
-      const nodeLoader = document.querySelector('.node-loader') as HTMLElement;
+      const nodeLoader = componentWrapper?.querySelector('.node-loader') as HTMLElement;
       if (nodeLoader) {
         nodeLoader.style.top = '' + (node.y + this.settings.marginTop);
         nodeLoader.style.display = 'block';
       }
     } else {
-      const treeLoader = document.querySelector('.svg-tree-loader') as HTMLElement;
+      const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
       if (treeLoader) {
         treeLoader.style.display = 'block';
       }
@@ -431,7 +437,7 @@ export class SvgTree {
    * @param {Node} node
    */
   public setExpandedState(node: TreeNode): void {
-    const nodeElement = document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
+    const nodeElement = this.getNodeElement(node);
     if (nodeElement) {
       if (node.hasChildren) {
         nodeElement.setAttribute('aria-expanded', node.expanded ? 'true' : 'false');
@@ -683,6 +689,27 @@ export class SvgTree {
   }
 
   /**
+   * Displays a notification message and refresh nodes
+   */
+  public errorNotification(error: any = null, refresh: boolean = false): void {
+    if (Array.isArray(error)) {
+      error.forEach((message: any) => { Notification.error(
+        message.title,
+        message.message
+      )});
+    } else {
+      let title = this.networkErrorTitle;
+      if (error && error.target && (error.target.status || error.target.statusText)) {
+        title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
+      }
+      Notification.error(title, this.networkErrorMessage);
+    }
+    if (refresh) {
+      this.loadData();
+    }
+  }
+
+  /**
    * Check whether node can be selected.
    * In some cases (e.g. selecting a parent) it should not be possible to select
    * element (as it's own parent).
@@ -731,7 +758,11 @@ export class SvgTree {
       .attr('data-state-id', this.getNodeStateIdentifier)
       .attr('title', this.getNodeTitle)
       .on('mouseover', (evt: MouseEvent, node: TreeNode) => this.onMouseOverNode(node))
-      .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node));
+      .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
+      .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
+        evt.preventDefault();
+        this.dispatch.call('nodeRightClick', this, node);
+      });
     nodes
       .append('text')
       .text((node: TreeNode) => {
@@ -833,10 +864,9 @@ export class SvgTree {
    * @returns {String}
    */
   protected getLinkPath(link: SvgTreeDataLink): string {
-    // @todo check `_x` and `_y` properties (never defined)
     const target = {
-      x: link.target._isDragged ? link.target._x : link.target.x,
-      y: link.target._isDragged ? link.target._y : link.target.y
+      x: link.target.x,
+      y: link.target.y
     };
     const path = [];
     path.push('M' + link.source.x + ' ' + link.source.y);

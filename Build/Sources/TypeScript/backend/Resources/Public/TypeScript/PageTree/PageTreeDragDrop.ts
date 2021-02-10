@@ -169,7 +169,7 @@ export class ToolbarDragHandler implements DragDropHandler {
 
     this.isDragged = false;
     this.dragDrop.removeNodeDdClass();
-    if (this.tree.settings.isDragAnDrop !== true || !this.tree.hoveredNode || !this.tree.isOverSvg) {
+    if (this.tree.settings.allowDragMove !== true || !this.tree.hoveredNode || !this.tree.isOverSvg) {
       return false;
     }
     if (this.tree.settings.canNodeDrag) {
@@ -260,11 +260,11 @@ export class ToolbarDragHandler implements DragDropHandler {
             this.tree.removeEditedText();
             this.tree.sendChangeCommand(newNode);
           } else {
-            this.tree.removeNode(newNode);
+            this.removeNode(newNode);
           }
         } else if (code === 27) { // esc
           this.tree.nodeIsEdit = false;
-          this.tree.removeNode(newNode);
+          this.removeNode(newNode);
         }
       })
       .on('blur', (evt: FocusEvent) => {
@@ -276,7 +276,7 @@ export class ToolbarDragHandler implements DragDropHandler {
             this.tree.removeEditedText();
             this.tree.sendChangeCommand(newNode);
           } else {
-            this.tree.removeNode(newNode);
+            this.removeNode(newNode);
           }
         }
       })
@@ -284,6 +284,19 @@ export class ToolbarDragHandler implements DragDropHandler {
       .select();
   }
 
+  private removeNode(newNode: TreeNode) {
+    let index = this.tree.nodes.indexOf(newNode);
+    // if newNode is only one child
+    if (this.tree.nodes[index - 1].depth != newNode.depth
+      && (!this.tree.nodes[index + 1] || this.tree.nodes[index + 1].depth != newNode.depth)) {
+      this.tree.nodes[index - 1].hasChildren = false;
+    }
+    this.tree.nodes.splice(index, 1);
+    this.tree.setParametersNode();
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.update();
+    this.tree.removeEditedText();
+  };
 }
 
 /**
@@ -312,7 +325,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
 
   public dragStart(event: TreeNodeDragEvent): boolean {
     const node = event.subject;
-    if (this.tree.settings.isDragAnDrop !== true || node.depth === 0) {
+    if (this.tree.settings.allowDragMove !== true || node.depth === 0) {
       return false;
     }
     this.dropZoneDelete = null;
@@ -359,7 +372,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
       return false;
     }
 
-    if (this.tree.settings.isDragAnDrop !== true || node.depth === 0) {
+    if (this.tree.settings.allowDragMove !== true || node.depth === 0) {
       return false;
     }
 
@@ -414,7 +427,7 @@ export class PageTreeNodeDragHandler implements DragDropHandler {
       this.dropZoneDelete = null;
     }
 
-    if (!this.startDrag || this.tree.settings.isDragAnDrop !== true || node.depth === 0) {
+    if (!this.startDrag || this.tree.settings.allowDragMove !== true || node.depth === 0) {
       return false;
     }
 

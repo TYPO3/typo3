@@ -23,7 +23,7 @@ interface MousePosition {
 }
 
 interface ActiveRecord {
-  uid: number;
+  uid: number|string;
   table: string;
 }
 
@@ -127,7 +127,7 @@ class ContextMenu {
    * @param {string} addParams Additional params
    * @param {Element} eventSource Source Element
    */
-  public show(table: string, uid: number, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
+  public show(table: string, uid: number|string, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
     this.record = {table: table, uid: uid};
     // fix: [tabindex=-1] is not focusable!!!
     const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');
