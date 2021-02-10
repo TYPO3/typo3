@@ -16,10 +16,8 @@
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -98,15 +96,13 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function render(ServerRequestInterface $request)
     {
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FileLinkHandler');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FileLinkHandler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/FileStorageBrowser');
 
-        /** @var ElementBrowserFolderTreeView $folderTree */
-        $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-        $folderTree->setLinkParameterProvider($this);
-        $this->view->assign('tree', $folderTree->getBrowsableTree());
         $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
+        $this->view->assign('contentOnly', (bool)($request->getQueryParams()['contentOnly'] ?? false));
+        $this->view->assign('treeActions', ($this->mode === 'folder') ? ['link'] : []);
 
         $this->expandFolder = $request->getQueryParams()['expandFolder'] ?? null;
         if (!empty($this->linkParts) && !isset($this->expandFolder)) {
@@ -140,7 +136,8 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             }
         }
 
-        return $this->view->render(ucfirst($this->mode));
+        $this->view->setTemplate(ucfirst($this->mode));
+        return '';
     }
 
     /**

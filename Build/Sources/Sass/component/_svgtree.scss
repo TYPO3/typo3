@@ -34,6 +34,11 @@ $svgColors: (
     z-index: 3000;
     user-select: none;
 
+    .element-browser & {
+        height: calc(100% - 39px);
+        top: 39px;
+    }
+
     & > * {
         position: absolute;
         top: 0;
@@ -302,8 +307,11 @@ $svgColors: (
     left: 0;
 }
 
-.svg-toolbar {
+.scaffold-content .svg-toolbar {
     min-height: $module-docheader-height;
+}
+
+.svg-toolbar {
     padding: 4px 10px 0;
     border-bottom: 1px solid $module-docheader-border;
     background-color: $module-docheader-bg;
@@ -321,10 +329,6 @@ $svgColors: (
             flex: 1 0 auto;
             margin: 0 0.5rem 0 0.25rem;
         }
-    }
-
-    &__submenu {
-        margin: 0.125rem 0;
     }
 
     &__drag-node {
@@ -360,5 +364,22 @@ $svgColors: (
         flex: 1 0 0;
         padding: 0 0.5em;
         overflow: hidden;
+    }
+}
+
+.node-action {
+    opacity: 0;
+    cursor: pointer;
+
+    path {
+        opacity: 0;
+    }
+
+    &.node-action-over {
+        opacity: 1;
+
+        path {
+            opacity: 1;
+        }
     }
 }

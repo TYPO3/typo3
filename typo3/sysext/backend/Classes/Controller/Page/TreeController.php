@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -115,15 +116,35 @@ class TreeController
     protected $expandAllNodes = false;
 
     /**
+     * Used in the record link picker to limit the page tree only to a specific list
+     * of alternative entry points for selecting only from a list of pages
+     */
+    protected array $alternativeEntryPoints = [];
+
+    protected UriBuilder $uriBuilder;
+
+    /**
      * Constructor to set up common objects needed in various places.
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
     }
 
-    protected function initializeConfiguration()
+    protected function initializeConfiguration(ServerRequestInterface $request)
     {
+        if ($request->getQueryParams()['readOnly'] ?? false) {
+            $this->getBackendUser()->initializeWebmountsForElementBrowser();
+        }
+        if ($request->getQueryParams()['alternativeEntryPoints'] ?? false) {
+            $this->alternativeEntryPoints = $request->getQueryParams()['alternativeEntryPoints'];
+            $this->alternativeEntryPoints = array_filter($this->alternativeEntryPoints, function ($pageId) {
+                return $this->getBackendUser()->isInWebMount($pageId) !== null;
+            });
+            $this->alternativeEntryPoints = array_map('intval', $this->alternativeEntryPoints);
+            $this->alternativeEntryPoints = array_unique($this->alternativeEntryPoints);
+        }
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $this->hiddenRecords = GeneralUtility::intExplode(
             ',',
@@ -156,8 +177,33 @@ class TreeController
             'doktypes' => $this->getDokTypes(),
             'displayDeleteConfirmation' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE),
             'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
+            'showIcons' => true,
+            'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data'),
+            'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter'),
+            'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point')
         ];
 
+        return new JsonResponse($configuration);
+    }
+
+    public function fetchReadOnlyConfigurationAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $entryPoints = $request->getQueryParams()['alternativeEntryPoints'] ?? '';
+        $entryPoints = GeneralUtility::intExplode(',', $entryPoints, true);
+        $additionalArguments = [
+            'readOnly' => 1
+        ];
+        if (!empty($entryPoints)) {
+            $additionalArguments['alternativeEntryPoints'] = $entryPoints;
+        }
+        $configuration = [
+            'displayDeleteConfirmation' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE),
+            'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
+            'showIcons' => true,
+            'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data', $additionalArguments),
+            'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter', $additionalArguments),
+            'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
+        ];
         return new JsonResponse($configuration);
     }
 
@@ -211,7 +257,7 @@ class TreeController
      */
     public function fetchDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initializeConfiguration();
+        $this->initializeConfiguration($request);
 
         $items = [];
         if (!empty($request->getQueryParams()['pid'])) {
@@ -246,7 +292,7 @@ class TreeController
             return new JsonResponse([]);
         }
 
-        $this->initializeConfiguration();
+        $this->initializeConfiguration($request);
         $this->expandAllNodes = true;
 
         $items = [];
@@ -357,6 +403,7 @@ class TreeController
             'tip' => htmlspecialchars($tooltip),
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
+            'type' => (int)$page['doktype'],
             'nameSourceField' => $nameSourceField,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
@@ -453,6 +500,8 @@ class TreeController
         $entryPointId = $startPid > 0 ? $startPid : (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         if ($entryPointId > 0) {
             $entryPointIds = [$entryPointId];
+        } elseif (!empty($this->alternativeEntryPoints)) {
+            $entryPointIds = $this->alternativeEntryPoints;
         } else {
             //watch out for deleted pages returned as webmount
             $entryPointIds = array_map('intval', $backendUser->returnWebmounts());
@@ -626,6 +675,9 @@ class TreeController
     {
         $mountPoints = (int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0);
         if (!$mountPoints) {
+            if (!empty($this->alternativeEntryPoints)) {
+                return $this->alternativeEntryPoints;
+            }
             $mountPoints = array_map('intval', $this->getBackendUser()->returnWebmounts());
             return array_unique($mountPoints);
         }

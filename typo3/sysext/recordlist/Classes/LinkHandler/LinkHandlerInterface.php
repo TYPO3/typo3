@@ -62,7 +62,7 @@ interface LinkHandlerInterface
     public function formatCurrentUrl();
 
     /**
-     * Render the link handler
+     * Render the link handler. Ideally this modifies the view, but it can also render content directly.
      *
      * @param ServerRequestInterface $request
      *

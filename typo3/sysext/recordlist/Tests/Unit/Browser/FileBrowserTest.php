@@ -18,15 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\Tests\Unit\Browser;
 
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\Browser\FileBrowser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -44,6 +43,7 @@ class FileBrowserTest extends UnitTestCase
         $fileBrowser = $this->getAccessibleMock(FileBrowser::class, ['dummy'], [], '', false);
         $fileBrowser->_set('bparams', $bparams);
         $fileBrowser->_set('moduleTemplate', $moduleTemplate);
+        $fileBrowser->_set('request', $this->prophesize(ServerRequestInterface::class)->reveal());
         $fileBrowser->render();
 
         $beUser->getTSConfig()->shouldHaveBeenCalled();
@@ -55,9 +55,6 @@ class FileBrowserTest extends UnitTestCase
      */
     private function setupProphecies(): array
     {
-        $browserFolderTreeView = $this->prophesize(ElementBrowserFolderTreeView::class);
-        GeneralUtility::addInstance(ElementBrowserFolderTreeView::class, $browserFolderTreeView->reveal());
-
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         $flashMessageService->getMessageQueueByIdentifier()->willReturn($this->prophesize(FlashMessageQueue::class)->reveal());
         $moduleTemplate = $this->getAccessibleMock(ModuleTemplate::class, ['setupPage'], [], '', false);

@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -56,13 +55,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $selectedFolder;
 
     /**
-     * Holds information about files
-     *
-     * @var mixed[][]
-     */
-    protected $elements = [];
-
-    /**
      * @var string
      */
     protected $searchWord;
@@ -79,6 +71,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/FileStorageBrowser');
 
         $thumbnailConfig = $this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.'] ?? [];
         if (isset($thumbnailConfig['width']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['width'])) {
@@ -189,24 +182,27 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
         $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? false;
         $noThumbs = $noThumbs ?: !$displayThumbs;
-        $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-        $folderTree->setLinkParameterProvider($this);
-        $tree = $folderTree->getBrowsableTree();
         if ($this->selectedFolder) {
             $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, $noThumbs);
         } else {
             $files = '';
         }
+        $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
 
         $this->setBodyTagParameters();
         $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('fileSelector'));
         $view = $this->moduleTemplate->getView();
         $view->assignMultiple([
             'treeEnabled' => true,
-            'tree' => $tree,
+            'treeType' => 'folder',
+            'activeFolder' => $this->selectedFolder,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
-            'content' => $files . $uploadForm . $createFolder
+            'content' => $files . $uploadForm . $createFolder,
+            'contentOnly' => $contentOnly,
         ]);
+        if ($contentOnly) {
+            return $view->render();
+        }
         return $this->moduleTemplate->renderContent();
     }
 
@@ -275,18 +271,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Create file icon:
             $size = ' (' . GeneralUtility::formatSize($fileObject->getSize(), $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits')) . ($pDim ? ', ' . $pDim : '') . ')';
             $icon = '<span title="id=' . htmlspecialchars($fileObject->getUid()) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
-            // Create links for adding the file:
-            $filesIndex = count($this->elements);
-            $this->elements['file_' . $filesIndex] = [
-                'uid' => $fileObject->getUid(),
-                'fileName' => $fileObject->getName(),
-            ];
             if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {
-                $ATag = '<a href="#" class="btn btn-default" title="' . htmlspecialchars($fileObject->getName()) . '" data-file-index="' . $filesIndex . '" data-close="0">';
+                $ATag = '<a href="#" class="btn btn-default" title="' . htmlspecialchars($fileObject->getName()) . '" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" data-close="0">';
                 $ATag .= '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>';
-                $ATag_alt = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . $size . '" data-file-index="' . $filesIndex . '" data-close="1">';
+                $ATag_alt = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . $size . '" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" data-close="1">';
                 $ATag_e = '</a>';
-                $bulkCheckBox = '<label class="mb-0 btn btn-default btn-checkbox"><input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /><span class="t3-icon fa"></span></label>';
+                $bulkCheckBox = '<label class="mb-0 btn btn-default btn-checkbox"><input type="checkbox" class="typo3-bulk-item" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" name="file_' . $fileObject->getUid() . '" value="0" /><span class="t3-icon fa"></span></label>';
             } else {
                 $ATag = '';
                 $ATag_alt = '';
@@ -413,8 +403,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected function getBodyTagAttributes()
     {
         return [
-            'data-mode' => 'file',
-            'data-elements' => json_encode($this->elements)
+            'data-mode' => 'file'
         ];
     }
 

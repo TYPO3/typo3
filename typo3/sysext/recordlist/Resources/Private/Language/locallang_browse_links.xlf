@@ -93,6 +93,9 @@
 			<trans-unit id="setLink" resname="setLink">
 				<source>Set Link</source>
 			</trans-unit>
+			<trans-unit id="linkTo" resname="linkTo">
+				<source>Link to %s</source>
+			</trans-unit>
 			<trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no">
 				<source>https://...</source>
 			</trans-unit>

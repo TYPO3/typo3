@@ -16,8 +16,6 @@
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Link handler for email links
@@ -91,10 +89,10 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function render(ServerRequestInterface $request)
     {
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/MailLinkHandler');
-
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/MailLinkHandler');
         $this->view->assign('email', !empty($this->linkParts) ? $this->linkParts['url']['email'] : '');
-        return $this->view->render('Mail');
+        $this->view->setTemplate('Mail');
+        return '';
     }
 
     /**

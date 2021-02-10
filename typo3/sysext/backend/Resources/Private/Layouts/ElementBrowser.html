@@ -1,7 +1,16 @@
-<div class="element-browser-main">
-    <div class="element-browser-main-content">
-        <div class="element-browser-body">
-            <f:render section="Content" />
+<f:if condition="{contentOnly}">
+    <f:then>
+        <f:render section="Content" />
+    </f:then>
+    <f:else>
+        <div class="element-browser">
+            <div class="element-browser-main">
+                <div class="element-browser-main-content">
+                    <div class="element-browser-body">
+                        <f:render section="Content" />
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </f:else>
+</f:if>

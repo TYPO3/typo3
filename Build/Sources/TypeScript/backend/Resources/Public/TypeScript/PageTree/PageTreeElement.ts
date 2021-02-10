@@ -288,11 +288,6 @@ export class PageTreeNavigationComponent extends LitElement {
     return (new AjaxRequest(configurationUrl)).get()
       .then(async (response: AjaxResponse): Promise<Configuration> => {
         const configuration = await response.resolve('json');
-        Object.assign(configuration, {
-          dataUrl: top.TYPO3.settings.ajaxUrls.page_tree_data,
-          filterUrl: top.TYPO3.settings.ajaxUrls.page_tree_filter,
-          showIcons: true
-        });
         this.configuration = configuration;
         this.mountPointPath = configuration.temporaryMountPoint || null;
         return configuration;
@@ -368,7 +363,7 @@ export class PageTreeNavigationComponent extends LitElement {
   }
 
   private setTemporaryMountPoint(pid: number): void {
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point))
+    (new AjaxRequest(this.configuration.setTemporaryMountPointUrl))
       .post('pid=' + pid, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
       })

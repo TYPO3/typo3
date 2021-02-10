@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -46,10 +45,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
     {
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFolders');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
-            DragDrop.table = "folders";
-            Tree.registerDragDropHandlers();
-        }');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/FileStorageBrowser');
     }
 
     /**
@@ -89,11 +85,6 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $selectedFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($this->expandFolder);
         }
 
-        // Create folder tree:
-        $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-        $folderTree->setLinkParameterProvider($this);
-        $tree = $folderTree->getBrowsableTree();
-
         $folders = '';
         if ($selectedFolder) {
             $folders = $this->renderFolders($selectedFolder);
@@ -102,15 +93,21 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $folders .= GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->createFolder($selectedFolder);
         }
 
+        $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
         $this->setBodyTagParameters();
         $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('folderSelector'));
         $view = $this->moduleTemplate->getView();
         $view->assignMultiple([
             'treeEnabled' => true,
-            'tree' => $tree,
+            'treeType' => 'folder',
+            'activeFolder' => $selectedFolder,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
-            'content' => $folders
+            'content' => $folders,
+            'contentOnly' => $contentOnly,
         ]);
+        if ($contentOnly) {
+            return $view->render();
+        }
         return $this->moduleTemplate->renderContent();
     }
 

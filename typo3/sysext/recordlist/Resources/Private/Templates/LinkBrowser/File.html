@@ -1,31 +1,29 @@
-<f:layout name="ElementBrowserWithNavigation" />
+<f:layout name="LinkBrowser" />
 
 <f:section name="Navigation">
-    {tree -> f:format.raw()}
+    <typo3-backend-component-filestorage-browser
+        class="scaffold-content-navigation-component"
+        active-folder="{f:if(condition: selectedFolder, then: selectedFolder.combinedIdentifier, else: '') -> f:format.htmlentities()}"
+    >
+    </typo3-backend-component-filestorage-browser>
 </f:section>
 
 <f:section name="Content">
     <f:if condition="{selectedFolder}">
-        <div class="row pb-3">
-            <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
-            <span title="{selectedFolder.identifier}">
+        <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
+        <div class="list-group list-group-flush mb-3">
+            <div class="list-group-item" title="{selectedFolder.identifier}">
                 {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
-            </span>
+            </div>
             <f:if condition="{itemsInSelectedFolder}">
-                <ul class="list-tree">
+                <div class="list-group list-group-flush ms-3">
                     <f:for each="{itemsInSelectedFolder}" as="file">
-                        <li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
-                        <span class="list-tree-group">
-                            <a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
-                                <span class="list-tree-icon">
-                                    <span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
-                                </span>
-                                <span class="list-tree-title">{file.title}</span>
-                            </a>
-                        </span>
-                        </li>
+                        <a href="{file.url}" class="t3js-fileLink  list-group-item list-group-item-action{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' active')}" title="{file.name}">
+                            <span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
+                            {file.title}
+                        </a>
                     </f:for>
-                </ul>
+                </div>
             </f:if>
         </div>
     </f:if>

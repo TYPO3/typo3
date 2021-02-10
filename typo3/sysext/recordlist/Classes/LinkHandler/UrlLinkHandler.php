@@ -16,8 +16,6 @@
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Link handler for external URLs
@@ -88,10 +86,11 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
      */
     public function render(ServerRequestInterface $request)
     {
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
 
         $this->view->assign('url', !empty($this->linkParts) ? $this->linkParts['url'] : '');
-        return $this->view->render('Url');
+        $this->view->setTemplate('Url');
+        return '';
     }
 
     /**

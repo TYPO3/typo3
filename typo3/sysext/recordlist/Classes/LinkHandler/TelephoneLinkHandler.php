@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Link handler for telephone links
@@ -93,10 +91,10 @@ class TelephoneLinkHandler extends AbstractLinkHandler implements LinkHandlerInt
      */
     public function render(ServerRequestInterface $request): string
     {
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/TelephoneLinkHandler');
-
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/TelephoneLinkHandler');
         $this->view->assign('telephone', !empty($this->linkParts) ? $this->linkParts['url']['telephone'] : '');
-        return $this->view->render('Telephone');
+        $this->view->setTemplate('Telephone');
+        return '';
     }
 
     /**

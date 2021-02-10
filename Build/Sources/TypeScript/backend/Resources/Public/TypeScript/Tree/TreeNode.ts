@@ -63,6 +63,11 @@ export interface TreeNode extends d3selection.EnterElement {
 
   owns?: string[];
   indeterminate?: boolean;
+
+  // folder-tree specific
+  pathIdentifier: string;
+  storage: number;
+
   allowDelete?: boolean;
   allowEdit?: boolean;
   // page-tree specific: which DB field should be updated when editing the DB field

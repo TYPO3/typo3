@@ -18,9 +18,10 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Base class for link handlers
@@ -59,6 +60,11 @@ abstract class AbstractLinkHandler
     protected $view;
 
     /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -76,11 +82,7 @@ abstract class AbstractLinkHandler
     {
         $this->linkBrowser = $linkBrowser;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->getRequest()->setControllerExtensionName('recordlist');
-        $this->view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates/LinkBrowser/']);
-        $this->view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials/LinkBrowser/']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts/', 'EXT:recordlist/Resources/Private/Layouts/']);
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
@@ -113,22 +115,6 @@ abstract class AbstractLinkHandler
     }
 
     /**
-     * Sets a DB mount and stores it in the currently defined backend user in her/his uc
-     */
-    protected function setTemporaryDbMounts()
-    {
-        $backendUser = $this->getBackendUser();
-
-        // Clear temporary DB mounts
-        $tmpMount = GeneralUtility::_GET('setTempDBmount');
-        if (isset($tmpMount)) {
-            $backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-        }
-
-        $backendUser->initializeWebmountsForElementBrowser();
-    }
-
-    /**
      * @return BackendUserAuthentication
      */
     protected function getBackendUser()
@@ -142,5 +128,10 @@ abstract class AbstractLinkHandler
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    public function setView(ViewInterface $view): void
+    {
+        $this->view = $view;
     }
 }

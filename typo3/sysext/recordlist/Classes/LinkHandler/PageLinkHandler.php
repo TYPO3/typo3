@@ -16,15 +16,14 @@
 namespace TYPO3\CMS\Recordlist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
@@ -103,27 +102,18 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function render(ServerRequestInterface $request)
     {
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/PageLinkHandler');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/PageLinkHandler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/PageBrowser');
+        $this->getBackendUser()->initializeWebmountsForElementBrowser();
 
         $this->expandPage = isset($request->getQueryParams()['expandPage']) ? (int)$request->getQueryParams()['expandPage'] : 0;
-        $this->setTemporaryDbMounts();
 
-        $userTsConfig = $this->getBackendUser()->getTSConfig();
-
-        $pageTree = GeneralUtility::makeInstance(ElementBrowserPageTreeView::class);
-        $pageTree->setLinkParameterProvider($this);
-        $pageTree->ext_showNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
-        $pageTree->ext_showPageId = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
-        $pageTree->ext_showPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
-        $pageTree->addField('nav_title');
-
-        $this->view->assign('temporaryTreeMountCancelLink', $this->getTemporaryTreeMountCancelNotice());
-        $this->view->assign('tree', $pageTree->getBrowsableTree());
         $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
+        $this->view->assign('treeActions', ['link']);
         $this->getRecordsOnExpandedPage($this->expandPage);
-        return $this->view->render('Page');
+        $this->view->setTemplate('Page');
+        return '';
     }
 
     /**
@@ -138,6 +128,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             // Set to the current link page id.
             $pageId = $this->linkParts['url']['pageuid'];
         }
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+        $this->view->assign('expandedPage', $pageId ?: $this->linkParts['url']['pageuid'] ?? 0);
         // Draw the record list IF there is a page id to expand:
         if ($pageId && MathUtility::canBeInterpretedAsInteger($pageId) && $this->getBackendUser()->isInWebMount($pageId)) {
             $pageId = (int)$pageId;
@@ -149,6 +141,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $this->view->assign('activePage', $activePageRecord);
             $this->view->assign('activePageTitle', BackendUtility::getRecordTitle('pages', $activePageRecord, true));
             $this->view->assign('activePageIcon', $this->iconFactory->getIconForRecord('pages', $activePageRecord, Icon::SIZE_SMALL)->render());
+            if ($this->isPageLinkable($activePageRecord)) {
+                $this->view->assign('activePageLink', $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId]));
+            }
 
             // Look up tt_content elements from the expanded page
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -182,26 +177,13 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             // Enrich list of records
             foreach ($contentElements as &$contentElement) {
                 BackendUtility::workspaceOL('tt_content', $contentElement);
-                $contentElement['url'] = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$pageId, 'fragment' => $contentElement['uid']]);
+                $contentElement['url'] = $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId, 'fragment' => $contentElement['uid']]);
                 $contentElement['isSelected'] = !empty($this->linkParts) && (int)$this->linkParts['url']['fragment'] === (int)$contentElement['uid'];
                 $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, Icon::SIZE_SMALL)->render();
                 $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
             }
             $this->view->assign('contentElements', $contentElements);
         }
-    }
-
-    /**
-     * Check if a temporary tree mount is set and return a cancel button link
-     *
-     * @return string the link to cancel the temporary tree mount
-     */
-    protected function getTemporaryTreeMountCancelNotice()
-    {
-        if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') > 0) {
-            return GeneralUtility::linkThisScript(['setTempDBmount' => 0]);
-        }
-        return '';
     }
 
     /**
@@ -278,5 +260,10 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 				</div></form>';
         }
         return $fieldDefinitions;
+    }
+
+    protected function isPageLinkable(array $page): bool
+    {
+        return !in_array((int)$page['doktype'], [PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER]);
     }
 }

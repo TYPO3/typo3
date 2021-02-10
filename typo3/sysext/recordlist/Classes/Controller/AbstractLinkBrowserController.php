@@ -174,7 +174,15 @@ abstract class AbstractLinkBrowserController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->getDocHeaderComponent()->disable();
-        $this->moduleTemplate->getView()->setTemplate('LinkBrowser');
+        $view = $this->moduleTemplate->getView();
+        $view->setTemplate('LinkBrowser');
+        $view->getRequest()->setControllerExtensionName('recordlist');
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates/LinkBrowser/']);
+        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials/LinkBrowser/']);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts/', 'EXT:recordlist/Resources/Private/Layouts/']);
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
+
         $this->determineScriptUrl($request);
         $this->initVariables($request);
         $this->loadLinkHandlers();
@@ -182,10 +190,12 @@ abstract class AbstractLinkBrowserController
 
         $menuData = $this->buildMenuArray();
         $renderLinkAttributeFields = $this->renderLinkAttributeFields();
+        if (method_exists($this->displayedLinkHandler, 'setView')) {
+            $this->displayedLinkHandler->setView($view);
+        }
         $browserContent = $this->displayedLinkHandler->render($request);
 
         $this->initDocumentTemplate();
-        $view = $this->moduleTemplate->getView();
         $this->moduleTemplate->setTitle('Link Browser');
 
         if (!empty($this->currentLinkParts)) {
@@ -194,8 +204,14 @@ abstract class AbstractLinkBrowserController
 
         $view->assign('menuItems', $menuData);
         $view->assign('linkAttributes', $renderLinkAttributeFields);
-        $view->assign('content', $browserContent);
+        $view->assign('contentOnly', $request->getQueryParams()['contentOnly'] ?? false);
 
+        if ($request->getQueryParams()['contentOnly'] ?? false) {
+            return new HtmlResponse($view->render());
+        }
+        if ($browserContent) {
+            $view->assign('content', $browserContent);
+        }
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 

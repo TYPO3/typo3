@@ -66,6 +66,7 @@ export class SvgTree extends LitElement {
     filterUrl: '',
     defaultProperties: {},
     expandUpToLevel: null as any,
+    actions: []
   };
 
   /**
@@ -103,6 +104,7 @@ export class SvgTree extends LitElement {
   public textPosition: number = 10;
 
   protected icons: {[keys: string]: SvgTreeDataIcon} = {};
+  protected nodesActionsContainer: TreeWrapperSelection<SVGGElement> = null;
 
   /**
    * SVG <defs> container wrapping all icon definitions
@@ -142,6 +144,7 @@ export class SvgTree extends LitElement {
     this.svg = d3selection.select(this).select('svg');
     this.container = this.svg.select('.nodes-wrapper') as TreeWrapperSelection<SVGGElement>;
     this.nodesBgContainer = this.container.select('.nodes-bg') as TreeWrapperSelection<SVGGElement>;
+    this.nodesActionsContainer = this.container.select('.nodes-actions') as TreeWrapperSelection<SVGGElement>;
     this.linksContainer = this.container.select('.links') as TreeWrapperSelection<SVGGElement>;
     this.nodesContainer = this.container.select('.nodes') as TreeWrapperSelection<SVGGElement>;
     this.iconsContainer = this.svg.select('defs') as TreeWrapperSelection<SVGGElement>;
@@ -213,6 +216,7 @@ export class SvgTree extends LitElement {
     this.prepareDataForVisibleNodes();
     this.nodesContainer.selectAll('.node').remove();
     this.nodesBgContainer.selectAll('.node-bg').remove();
+    this.nodesActionsContainer.selectAll('.node-action').remove();
     this.linksContainer.selectAll('.link').remove();
     this.updateVisibleNodes();
   }
@@ -425,16 +429,22 @@ export class SvgTree extends LitElement {
     const visibleNodes = this.data.nodes.slice(position, position + visibleRows);
     const focusableElement = this.querySelector('[tabindex="0"]');
     const checkedNodeInViewport = visibleNodes.find((node: TreeNode) => node.checked);
+
     let nodes = this.nodesContainer.selectAll('.node')
       .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
     const nodesBg = this.nodesBgContainer.selectAll('.node-bg')
+      .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
+    const nodesActions = this.nodesActionsContainer.selectAll('.node-action')
       .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
 
     // delete nodes without corresponding data
     nodes.exit().remove();
     // delete
     nodesBg.exit().remove();
+    nodesActions.exit().remove();
 
+    // update nodes actions
+    this.updateNodeActions(nodesActions);
     // update nodes background
     const nodeBgClass = this.updateNodeBgClass(nodesBg);
 
@@ -660,6 +670,7 @@ export class SvgTree extends LitElement {
           <g class="nodes-bg"></g>
           <g class="links"></g>
           <g class="nodes" role="tree"></g>
+          <g class="nodes-actions"></g>
         </g>
         <defs></defs>
       </svg>
@@ -671,6 +682,7 @@ export class SvgTree extends LitElement {
     this.container = d3selection.select(this.querySelector('.nodes-wrapper'))
       .attr('transform', 'translate(' + (this.settings.indentWidth / 2) + ',' + (this.settings.nodeHeight / 2) + ')') as any;
     this.nodesBgContainer = d3selection.select(this.querySelector('.nodes-bg')) as any;
+    this.nodesActionsContainer = d3selection.select(this.querySelector('.nodes-actions')) as any;
     this.linksContainer = d3selection.select(this.querySelector('.links')) as any;
     this.nodesContainer = d3selection.select(this.querySelector('.nodes')) as any;
 
@@ -681,6 +693,9 @@ export class SvgTree extends LitElement {
   protected updateView(): void {
     this.updateScrollPosition();
     this.updateVisibleNodes();
+    if (this.settings.actions && this.settings.actions.length) {
+      this.nodesActionsContainer.attr('transform', 'translate(' + (this.querySelector('svg').clientWidth - 16 - ((16 * this.settings.actions.length))) + ',0)');
+    }
   }
 
   protected disableSelectedNodes(): void {
@@ -690,6 +705,23 @@ export class SvgTree extends LitElement {
         node.checked = false;
       }
     });
+  }
+
+  /**
+   * Ensure to update the actions column to stick to the very end
+   */
+  protected updateNodeActions(nodesActions: TreeNodeSelection): TreeNodeSelection {
+    if (this.settings.actions && this.settings.actions.length) {
+      return nodesActions.enter()
+        .append('g')
+        .merge(nodesActions as d3selection.Selection<SVGGElement, TreeNode, any, any>)
+        .attr('class', 'node-action')
+        .on('mouseover', (evt: MouseEvent, node: TreeNode) => this.onMouseOverNode(node))
+        .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
+        .attr('data-state-id', this.getNodeStateIdentifier)
+        .attr('transform', this.getNodeActionTransform)
+    }
+    return nodesActions.enter();
   }
 
   /**
@@ -830,7 +862,7 @@ export class SvgTree extends LitElement {
     return node.expanded ? 'translate(16,0) rotate(90)' : ' rotate(0)';
   }
 
-  protected  getChevronColor(node: TreeNode): string {
+  protected getChevronColor(node: TreeNode): string {
     return node.expanded ? '#000' : '#8e8e8e';
   }
 
@@ -880,6 +912,15 @@ export class SvgTree extends LitElement {
    */
   protected getNodeBgTransform(node: TreeNode): string {
     return 'translate(-8, ' + ((node.y || 0) - 10) + ')';
+  }
+
+  /**
+   * Returns a 'transform' attribute value for the node background element (absolute positioning)
+   *
+   * @param {Node} node
+   */
+  protected getNodeActionTransform(node: TreeNode): string {
+    return 'translate(0, ' + ((node.y || 0) - 9) + ')';
   }
 
   /**
@@ -1018,6 +1059,13 @@ export class SvgTree extends LitElement {
         .attr('rx', '3')
         .attr('ry', '3');
     }
+
+    let elementNodeAction = this.nodesActionsContainer.select('.node-action[data-state-id="' + node.stateIdentifier + '"]');
+    if (elementNodeAction.size()) {
+      elementNodeAction.classed('node-action-over', true);
+      // @todo: needs to be adapted for active nodes
+      elementNodeAction.attr('fill', elementNodeBg.style('fill'));
+    }
   }
   /**
    * node background events
@@ -1033,6 +1081,12 @@ export class SvgTree extends LitElement {
         .attr('rx', '0')
         .attr('ry', '0');
     }
+
+    let elementNodeAction = this.nodesActionsContainer.select('.node-action[data-state-id="' + node.stateIdentifier + '"]');
+    if (elementNodeAction.size()) {
+      elementNodeAction.classed('node-action-over', false);
+    }
+
   }
 
   /**

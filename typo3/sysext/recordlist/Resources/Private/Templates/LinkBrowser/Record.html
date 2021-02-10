@@ -1,8 +1,13 @@
-<f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
+<f:layout name="LinkBrowser" />
 
-<f:section name="Navigation">
-    {tree -> f:format.raw()}
-</f:section>
+<f:section name="Navigation"><f:if condition="{treeEnabled}">
+    <typo3-backend-component-page-browser
+        class="scaffold-content-navigation-component"
+        tree-actions="{treeActions -> f:format.json()}"
+        alternative-entry-points="{pageTreeMountPoints -> f:format.json()}"
+        active-page="{expandedPage}">
+    </typo3-backend-component-page-browser>
+</f:if></f:section>
 
 <f:section name="Content">
     {recordList -> f:format.raw()}

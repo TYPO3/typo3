@@ -71,6 +71,8 @@ class FileStorageTreeProvider
             'stateIdentifier' => $this->getStateIdentifier($folder),
             'identifier' => rawurlencode($folder->getCombinedIdentifier()),
             'name' => $name,
+            'storage' => $storage->getUid(),
+            'pathIdentifier' => rawurlencode($folder->getIdentifier()),
             'hasChildren' => $hasSubfolders,
             'parentIdentifier' => $parentFolder instanceof Folder && !$isStorage ? rawurlencode($parentFolder->getCombinedIdentifier()) : null,
             'itemType' => $tableName,

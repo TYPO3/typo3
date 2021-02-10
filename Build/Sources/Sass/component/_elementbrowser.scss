@@ -48,10 +48,6 @@ $elementbrowser-breakpoint: 600px;
     flex-flow: nowrap column;
     width: 100%;
 
-    @media (min-width: $elementbrowser-breakpoint) {
-        height: 100vh;
-    }
-
     h3 {
         font-size: 1.2em;
     }
@@ -59,7 +55,6 @@ $elementbrowser-breakpoint: 600px;
 
 .element-browser-body {
     overflow: auto;
-    height: 100%;
     padding: ($grid-gutter-width / 2);
 
     > *:first-child {
@@ -75,6 +70,9 @@ $elementbrowser-breakpoint: 600px;
     padding: ($grid-gutter-width / 2);
     color: #fff;
     background-color: #292929;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 
     a {
         color: inherit;
@@ -83,9 +81,17 @@ $elementbrowser-breakpoint: 600px;
 }
 
 .element-browser-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
     .nav-tabs {
         padding: ($grid-gutter-width / 2);
         padding-bottom: 0;
+    }
+
+    .link-browser-has-title & {
+        top: 42px;
     }
 }
 
@@ -109,6 +115,19 @@ $elementbrowser-breakpoint: 600px;
 
 .element-browser-main-sidebar {
     background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+
+    .link-browser & {
+        top: 44px;
+        height: calc(100vh - 44px);
+    }
+
+    .link-browser.link-browser-has-title & {
+        top: 86px;
+        height: calc(100vh - 86px);
+    }
 
     @media (min-width: $elementbrowser-breakpoint) {
         flex-shrink: 0;
@@ -144,6 +163,30 @@ $elementbrowser-breakpoint: 600px;
 
     .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
         display: flex;
+    }
+}
+
+.link-browser .scaffold-content-navigation-available {
+    .scaffold-content-navigation-drag,
+    .scaffold-content-navigation-switcher {
+        position: sticky;
+        top: 44px;
+    }
+
+    .scaffold-content-navigation-drag {
+        height: calc(100vh - 44px);
+    }
+}
+
+.link-browser.link-browser-has-title .scaffold-content-navigation-available {
+    .scaffold-content-navigation-drag,
+    .scaffold-content-navigation-switcher {
+        position: sticky;
+        top: 86px;
+    }
+
+    .scaffold-content-navigation-drag {
+        height: calc(100vh - 86px);
     }
 }
 

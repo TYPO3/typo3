@@ -107,6 +107,12 @@ return [
         'target' => Controller\Page\TreeController::class . '::fetchConfigurationAction'
     ],
 
+    // Get page tree configuration for element browser and link handler
+    'page_tree_browser_configuration' => [
+        'path' => '/browser/page/tree/fetchConfiguration',
+        'target' => Controller\Page\TreeController::class . '::fetchReadOnlyConfigurationAction'
+    ],
+
     // Set temporary mount point
     'page_tree_set_temporary_mount_point' => [
         'path' => '/page/tree/setTemporaryMountPoint',

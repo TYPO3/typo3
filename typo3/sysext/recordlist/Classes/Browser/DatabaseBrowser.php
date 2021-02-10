@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
@@ -45,6 +44,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     {
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseDatabase');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/PageBrowser');
     }
 
     protected function initVariables()
@@ -76,20 +76,8 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      */
     public function render()
     {
-        $userTsConfig = $this->getBackendUser()->getTSConfig();
         $this->modTSconfig = BackendUtility::getPagesTSconfig((int)$this->expandPage)['mod.']['web_list.'] ?? [];
-
-        $this->setTemporaryDbMounts();
         [, , , $allowedTables] = explode('|', $this->bparams);
-
-        $pageTree = GeneralUtility::makeInstance(ElementBrowserPageTreeView::class);
-        $pageTree->setLinkParameterProvider($this);
-        $pageTree->ext_pArrPages = $allowedTables === 'pages';
-        $pageTree->ext_showNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
-        $pageTree->ext_showPageId = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
-        $pageTree->ext_showPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
-        $pageTree->addField('nav_title');
-        $tree = $pageTree->getBrowsableTree();
 
         $withTree = true;
         if ($allowedTables !== '' && $allowedTables !== '*') {
@@ -109,49 +97,25 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             }
         }
 
+        $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
         $renderedRecordList = $this->renderTableRecords($allowedTables);
 
         $this->setBodyTagParameters();
-
         $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('recordSelector'));
         $view = $this->moduleTemplate->getView();
         $view->assignMultiple([
             'treeEnabled' => $withTree,
-            'temporaryTreeMountCancelUrl' => $this->getTemporaryTreeMountCancelNotice(),
-            'tree' => $tree,
+            'treeType' => 'page',
+            'treeActions' => $allowedTables === 'pages' ? ['select'] : [],
+            'activePage' => $this->expandPage,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
-            'content' => $renderedRecordList
+            'content' => $renderedRecordList,
+            'contentOnly' => $contentOnly,
         ]);
+        if ($contentOnly) {
+            return $view->render();
+        }
         return $this->moduleTemplate->renderContent();
-    }
-
-    /**
-     * Check if a temporary tree mount is set and return a cancel link
-     *
-     * @return string URL
-     */
-    protected function getTemporaryTreeMountCancelNotice()
-    {
-        if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') === 0) {
-            return '';
-        }
-        return GeneralUtility::linkThisScript(['setTempDBmount' => 0]);
-    }
-
-    /**
-     * If the current Backend User has set a temporary DB mount, it is stored to her/his UC.
-     */
-    protected function setTemporaryDbMounts()
-    {
-        $backendUser = $this->getBackendUser();
-
-        // Clear temporary DB mounts
-        $tmpMount = GeneralUtility::_GET('setTempDBmount');
-        if (isset($tmpMount)) {
-            $backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-        }
-
-        $backendUser->initializeWebmountsForElementBrowser();
     }
 
     /**
@@ -200,7 +164,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($this->expandPage, $permsClause);
 
-        /** @var ElementBrowserRecordList $dbList */
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]));
         $dbList->setIsEditable(false);

@@ -11,12 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import ElementBrowser = require('./ElementBrowser');
 import NProgress = require('nprogress');
-// Yes we really need this import, because Tree... is used in inline markup...
-import Tree = require('TYPO3/CMS/Backend/LegacyTree');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Icons = TYPO3.Icons;
 
@@ -25,115 +22,83 @@ interface LinkElement {
   uid: string;
 }
 
-interface LinkElementStorage {
-  [s: string]: LinkElement;
-}
-
 class BrowseFiles {
-  public static elements: LinkElementStorage;
-
-  public static File: File;
   public static Selector: Selector;
 
+  public static insertElement(fileName: string, fileUid: number, close?: boolean): boolean {
+    return ElementBrowser.insertElement(
+      'sys_file',
+      String(fileUid),
+      fileName,
+      String(fileUid),
+      close,
+    );
+  }
+
   constructor() {
-    // as long we use onclick attributes, we need the Tree component
-    Tree.noop();
-    BrowseFiles.File = new File();
     BrowseFiles.Selector = new Selector();
 
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      BrowseFiles.File.insertElement(
-        'file_' + targetEl.dataset.fileIndex,
+      BrowseFiles.insertElement(
+        targetEl.dataset.fileName,
+        Number(targetEl.dataset.fileUid),
         parseInt(targetEl.dataset.close || '0', 10) === 1,
       );
     }).delegateTo(document, '[data-close]');
 
-    new RegularEvent('change', (): void => {
-      BrowseFiles.Selector.toggleImportButton();
-    }).delegateTo(document, '.typo3-bulk-item');
-
-    $((): void => {
-      BrowseFiles.elements = $('body').data('elements');
-
-      $('#t3js-importSelection').on('click', BrowseFiles.Selector.handle);
-      $('#t3js-toggleSelection').on('click', BrowseFiles.Selector.toggle);
-    });
+    new RegularEvent('change', BrowseFiles.Selector.toggleImportButton).delegateTo(document, '.typo3-bulk-item');
+    new RegularEvent('click', BrowseFiles.Selector.handle).delegateTo(document, '#t3js-importSelection');
+    new RegularEvent('click', BrowseFiles.Selector.toggle).delegateTo(document, '#t3js-toggleSelection');
   }
-}
 
-class File {
-  /**
-   * @param {String} index
-   * @param  {Boolean} close
-   */
-  public insertElement(index: string, close?: boolean): boolean {
-    let result = false;
-    if (typeof BrowseFiles.elements[index] !== 'undefined') {
-      const element: LinkElement = BrowseFiles.elements[index];
-      result = ElementBrowser.insertElement(
-        'sys_file',
-        element.uid,
-        element.fileName,
-        element.uid,
-        close,
-      );
-    }
-    return result;
-  }
 }
 
 class Selector {
   /**
    * Toggle selection button is pressed
-   *
-   * @param {JQueryEventObject} e
    */
-  public toggle = (e: JQueryEventObject): void => {
+  public toggle = (e: MouseEvent): void => {
     e.preventDefault();
     const items = this.getItems();
-    if (items.length) {
-      items.each((position: number, item: any): void => {
-        item.checked = (item.checked ? null : 'checked');
-      });
-    }
+    items.forEach((item: HTMLInputElement) => {
+      item.checked = !item.checked;
+    });
     this.toggleImportButton();
   }
 
   /**
    * Import selection button is pressed
-   *
-   * @param {JQueryEventObject} e
    */
-  public handle = (e: JQueryEventObject): void => {
+  public handle = (e: MouseEvent, targetEl: HTMLElement): void => {
     e.preventDefault();
-    const items: JQuery = this.getItems();
-    const selectedItems: Array<string> = [];
+    const items = this.getItems();
+    const selectedItems: Array<LinkElement> = [];
     if (items.length) {
-      items.each((position: number, item: any): void => {
-        if (item.checked && item.name) {
-          selectedItems.unshift(item.name);
+      items.forEach((item: HTMLInputElement) => {
+        if (item.checked && item.name && item.dataset.fileName && item.dataset.fileUid) {
+          selectedItems.unshift({uid: item.dataset.fileUid, fileName: item.dataset.fileName});
         }
       });
       Icons.getIcon('spinner-circle', Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
-        e.currentTarget.classList.add('disabled');
-        e.currentTarget.innerHTML = icon;
+        targetEl.classList.add('disabled');
+        targetEl.innerHTML = icon;
       });
       this.handleSelection(selectedItems);
     }
   }
 
-  public getItems(): JQuery {
-    return $('#typo3-filelist').find('.typo3-bulk-item');
+  public getItems(): NodeList {
+    return document.getElementById('typo3-filelist').querySelectorAll('.typo3-bulk-item');
   }
 
   public toggleImportButton(): void {
-    const hasCheckedElements = document.querySelectorAll('#typo3-filelist .typo3-bulk-item:checked').length > 0;
+    const hasCheckedElements = document.getElementById('typo3-filelist')?.querySelectorAll('.typo3-bulk-item:checked').length > 0;
     document.getElementById('t3js-importSelection').classList.toggle('disabled', !hasCheckedElements);
   }
 
-  private handleSelection(items: string[]): void {
-    NProgress.configure({parent: '#typo3-filelist', showSpinner: false});
+  private handleSelection(items: LinkElement[]): void {
+    NProgress.configure({parent: '.element-browser-main-content', showSpinner: false});
     NProgress.start();
     const stepping = 1 / items.length;
     this.handleNext(items);
@@ -155,10 +120,10 @@ class Selector {
     }).bindTo(window);
   }
 
-  private handleNext(items: string[]): void {
+  private handleNext(items: LinkElement[]): void {
     if (items.length > 0) {
       const item = items.pop();
-      BrowseFiles.File.insertElement(item);
+      BrowseFiles.insertElement(item.fileName, Number(item.uid));
     }
   }
 }
