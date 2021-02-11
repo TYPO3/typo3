@@ -22,6 +22,7 @@ $module-docheader-bar-height: 26px !default;
 $module-docheader-bar-margin-vertical: 4px !default;
 $module-docheader-bar-margin-horizontal: 0 !default;
 $module-docheader-bar-margin: $module-docheader-bar-margin-vertical $module-docheader-bar-margin-horizontal !default;
+$module-docheader-scroll-offset: $module-docheader-bar-height + $module-docheader-bar-margin-vertical !default;
 $module-body-padding-vertical: 24px !default;
 $module-body-padding-horizontal: 24px !default;
 $module-body-padding: $module-body-padding-vertical $module-body-padding-horizontal !default;
@@ -34,6 +35,9 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
     width: 100%;
     background-color: $module-bg;
     color: $module-color;
+    // Use overflow-y: auto to ensure ckeditor dropdowns
+    // do not conflict with height: 100% on <body>
+    overflow-y: auto;
 }
 
 .module-dark {
@@ -62,24 +66,36 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 .module-docheader {
     @extend .clearfix;
 
-    position: fixed;
+    position: sticky;
     width: 100%;
     top: 0;
     left: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     min-height: $module-docheader-height;
     z-index: $module-docheader-zindex;
     background-color: $module-docheader-bg;
     border-bottom: 1px solid $module-docheader-border;
     padding: $module-docheader-padding;
 
-    @include transition(margin-top 0.3s ease-in-out);
+    @include transition(top 0.3s ease-in-out);
+
+    &-folded {
+        top: -$module-docheader-scroll-offset;
+    }
 
     .module-docheader-bar {
         @extend .clearfix;
 
+        flex: 1 0 100%;
         min-height: $module-docheader-bar-height;
-        margin: $module-docheader-bar-margin;
         line-height: $module-docheader-bar-height;
+        margin-bottom: $module-docheader-bar-margin-vertical;
+
+        &:first-child {
+            margin-top: $module-docheader-bar-margin-vertical;
+        }
 
         &.row {
             margin-left: -15px;
@@ -188,10 +204,6 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 //
 .module-body {
     padding: $module-body-padding;
-    height: 100%;
-    // Use overflow-y: auto to ensure ckeditor dropdowns
-    // do not conflict with height: 100% on <body>
-    overflow-y: auto;
 
     > .callout:first-child {
         margin-top: 0;
@@ -206,9 +218,4 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
         max-width: 768px;
         margin: 0 auto;
     }
-}
-
-.module-docheader + .module-body {
-    padding-top: $module-docheader-height + $module-body-padding-vertical;
-    scroll-padding-top: $module-docheader-height;
 }

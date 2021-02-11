@@ -11,20 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
-import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 /**
  * Module: TYPO3/CMS/Backend/DocumentHeader
- * Calculates the height of the docHeader and hides it upon scrolling
+ * Folds docHeader when scrolling down, and reveals when scrollup up
  */
 class DocumentHeader {
-  private $documentHeader: JQuery = null;
-  private $documentHeaderBars: JQuery = null;
-  private $documentHeaderNavigationBar: JQuery = null;
-  private $documentHeaderSearchBar: JQuery = null;
-  private $moduleBody: JQuery = null;
+  private documentHeader: HTMLElement = null;
+
   private direction: string = 'down';
   private reactionRange: number = 300;
   private lastPosition: number = 0;
@@ -35,54 +31,25 @@ class DocumentHeader {
     offset: 100,
     selectors: {
       moduleDocumentHeader: '.t3js-module-docheader',
-      moduleDocheaderBar: '.t3js-module-docheader-bar',
-      moduleNavigationBar: '.t3js-module-docheader-bar-navigation',
-      moduleButtonBar: '.t3js-module-docheader-bar-buttons',
       moduleSearchBar: '.t3js-module-docheader-bar-search',
-      moduleBody: '.t3js-module-body',
-
     },
   };
 
   constructor() {
-    $((): void => {
-      this.initialize();
-    });
-  }
-
-  /**
-   * Reposition
-   */
-  public reposition = (): void => {
-    this.$documentHeader.css('height', 'auto');
-    this.$documentHeaderBars.css('height', 'auto');
-    this.$moduleBody.css('padding-top', this.$documentHeader.outerHeight() + this.settings.margin);
-  }
-
-  /**
-   * Initialize
-   */
-  private initialize(): void {
-    this.$documentHeader = $(this.settings.selectors.moduleDocumentHeader);
-    if (this.$documentHeader.length > 0) {
-      this.$documentHeaderBars = $(this.settings.selectors.moduleDocheaderBar);
-      this.$documentHeaderNavigationBar = $(this.settings.selectors.moduleNavigationBar);
-      this.$documentHeaderSearchBar = $(this.settings.selectors.moduleSearchBar).remove();
-      if (this.$documentHeaderSearchBar.length > 0) {
-        this.$documentHeader.append(this.$documentHeaderSearchBar);
+    DocumentService.ready().then((): void => {
+      this.documentHeader = document.querySelector(this.settings.selectors.moduleDocumentHeader);
+      if (this.documentHeader === null) {
+        return;
       }
-      this.$moduleBody = $(this.settings.selectors.moduleBody);
-      this.start();
-    }
-  }
 
-  /**
-   * Start
-   */
-  private start(): void {
-    this.reposition();
-    new DebounceEvent('resize', this.reposition).bindTo(window);
-    new ThrottleEvent('scroll', this.scroll, 100).bindTo(document.querySelector('.t3js-module-docheader + .t3js-module-body'));
+      const documentHeaderSearchBar = document.querySelector(this.settings.selectors.moduleSearchBar);
+      if (documentHeaderSearchBar !== null) {
+        this.documentHeader.appendChild(documentHeaderSearchBar);
+      }
+
+      const moduleElement = this.documentHeader.parentElement;
+      new ThrottleEvent('scroll', this.scroll, 100).bindTo(moduleElement);
+    });
   }
 
   /**
@@ -91,7 +58,7 @@ class DocumentHeader {
    * @param {Event} e
    */
   private scroll = (e: Event): void => {
-    this.currentPosition = $(e.target).scrollTop();
+    this.currentPosition = (e.target as HTMLElement).scrollTop;
     if (this.currentPosition > this.lastPosition) {
       if (this.direction !== 'down') {
         this.direction = 'down';
@@ -104,10 +71,10 @@ class DocumentHeader {
       }
     }
     if (this.direction === 'up' && (this.changedPosition - this.reactionRange) < this.currentPosition) {
-      this.$documentHeader.css('margin-top', 0);
+      this.documentHeader.classList.remove('module-docheader-folded');
     }
     if (this.direction === 'down' && (this.changedPosition + this.reactionRange) < this.currentPosition) {
-      this.$documentHeader.css('margin-top', (this.$documentHeaderNavigationBar.outerHeight() + 4) * -1);
+      this.documentHeader.classList.add('module-docheader-folded');
     }
     this.lastPosition = this.currentPosition;
   }

@@ -12,7 +12,6 @@
  */
 
 import $ from 'jquery';
-import DocumentHeader = require('./DocumentHeader');
 import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
@@ -31,7 +30,6 @@ class ToggleSearchToolbox {
     const $toolbar = $('#db_list-searchbox-toolbar');
     $('.t3js-toggle-search-toolbox').on('click', (): void => {
       $toolbar.toggle();
-      DocumentHeader.reposition();
       if ($toolbar.is(':visible')) {
         $('#search_field').focus();
       }
