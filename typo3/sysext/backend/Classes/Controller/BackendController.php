@@ -326,7 +326,7 @@ class BackendController
                 $toolbar[] = '<li ' . GeneralUtility::implodeAttributes($liAttributes, true) . '>';
 
                 if ($hasDropDown) {
-                    $toolbar[] = '<a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown">';
+                    $toolbar[] = '<a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,-2">';
                     $toolbar[] = $toolbarItem->getItem();
                     $toolbar[] = '</a>';
                     $toolbar[] = '<div class="dropdown-menu" role="menu">';
