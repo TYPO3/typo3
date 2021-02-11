@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\PageTree;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\SiteConfiguration;
 
 class PageTreeFilterCest
 {
@@ -29,9 +28,8 @@ class PageTreeFilterCest
     protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-refresh]';
     protected $inPageTree = '#typo3-pagetree-tree .nodes';
 
-    public function _before(BackendTester $I, PageTree $pageTree, SiteConfiguration $siteConfiguration)
+    public function _before(BackendTester $I, PageTree $pageTree)
     {
-        $siteConfiguration->adjustSiteConfiguration();
         $I->useExistingSession('admin');
         $I->click('List');
 
