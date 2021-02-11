@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3c455b7e59a2667e0f281651ff1b7d7",
+    "content-hash": "fcff32a74b48602a7719845ed95c57e7",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7437,16 +7437,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.6.1",
+            "version": "6.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "38722603a79a6eb23c901fb7676d7c08c5d17e3c"
+                "reference": "a611f9df98b14261087bf400a8baa33aeb411daf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/38722603a79a6eb23c901fb7676d7c08c5d17e3c",
-                "reference": "38722603a79a6eb23c901fb7676d7c08c5d17e3c",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a611f9df98b14261087bf400a8baa33aeb411daf",
+                "reference": "a611f9df98b14261087bf400a8baa33aeb411daf",
                 "shasum": ""
             },
             "require": {
@@ -7497,9 +7497,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.6.1"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.6.2"
             },
-            "time": "2021-02-10T18:20:08+00:00"
+            "time": "2021-02-11T19:42:34+00:00"
         }
     ],
     "aliases": [],
