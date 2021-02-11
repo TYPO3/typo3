@@ -87,7 +87,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  *
  * LanguageAspect
  * -> doOverlays()
- *    whether the the overlay logic should be applied
+ *    whether the overlay logic should be applied
  * -> getLanguageId()
  *    the language that was originally requested
  * -> getContentId()
@@ -681,113 +681,110 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         self::assertEquals($statusCode, $response->getStatusCode());
     }
 
-    public function contentOnPartiallyTranslatedPageDataProvider(): array
+    public function contentOnPartiallyTranslatedPageDataProvider(): \Generator
     {
         //Expected behaviour:
         //Setting sys_language_mode to different values doesn't influence the result as the requested page is translated to Polish,
         //Page title is always [PL]Page, and both languageId/contentId are always 3
-        return [
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'free',
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+        yield 'free' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'free',
-                'fallbackChain' => 'pageNotFound',
-                'overlayMode' => 'off',
             ],
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'free',
-                    'fallbackChain' => ['EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'free',
+            'fallbackChain' => 'pageNotFound',
+            'overlayMode' => 'off',
+        ];
+        yield 'free with fallback' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'free',
-                'fallbackChain' => '0,pageNotFound',
-                'overlayMode' => 'off',
+                'fallbackChain' => ['EN'],
             ],
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'free',
-                    'fallbackChain' => ['DK', 'EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'free',
+            'fallbackChain' => '0,pageNotFound',
+            'overlayMode' => 'off',
+        ];
+        yield 'free with multiple fallbacks' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'free',
-                'fallbackChain' => '1,0,pageNotFound',
-                'overlayMode' => 'off',
+                'fallbackChain' => ['DK', 'EN'],
             ],
-            // Expected behaviour:
-            // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'fallback',
-                    'fallbackChain' => ['EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'free',
+            'fallbackChain' => '1,0,pageNotFound',
+            'overlayMode' => 'off',
+        ];
+        // Expected behaviour:
+        // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
+        yield 'fallback to EN' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => '0,pageNotFound',
-                'overlayMode' => 'mixed',
+                'fallbackChain' => ['EN'],
             ],
-            // Expected behaviour:
-            // Element #3 is not translated in PL and it is translated in DK. It's not shown as content_fallback is not related to single CE level
-            // but on page level - and this page is translated to Polish, so no fallback is happening
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'fallback',
-                    'fallbackChain' => ['DK', 'EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+            'fallbackType' => 'fallback',
+            'fallbackChain' => '0,pageNotFound',
+            'overlayMode' => 'mixed',
+        ];
+        // Expected behaviour:
+        // Element #3 is not translated in PL, but it is translated in DK. The DK version is shown as it has a fallback chain defined.
+        yield 'fallback with multiple languages' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => '1,0,pageNotFound',
-                'overlayMode' => 'mixed',
+                'fallbackChain' => ['DK', 'EN'],
             ],
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'fallback',
-                    'fallbackChain' => [],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
+            'fallbackType' => 'fallback',
+            'fallbackChain' => '1,0,pageNotFound',
+            'overlayMode' => 'mixed',
+        ];
+        yield 'fallback but without languages' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'fallback',
-                'fallbackChain' => 'pageNotFound',
-                'overlayMode' => 'mixed',
+                'fallbackChain' => [],
             ],
-            // Expected behaviour:
-            // Non translated default language elements are not shown, because of hideNonTranslated
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'strict',
-                    'fallbackChain' => ['EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+            'fallbackType' => 'fallback',
+            'fallbackChain' => 'pageNotFound',
+            'overlayMode' => 'mixed',
+        ];
+        // Expected behaviour:
+        // Non translated default language elements are not shown, because of hideNonTranslated
+        yield 'strict with fallback to default' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'strict',
-                'fallbackChain' => '0,pageNotFound',
-                'overlayMode' => 'includeFloating',
+                'fallbackChain' => ['EN'],
             ],
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'strict',
-                    'fallbackChain' => ['DK', 'EN'],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'strict',
+            'fallbackChain' => '0,pageNotFound',
+            'overlayMode' => 'includeFloating',
+        ];
+        yield 'strict with multiple fallbacks' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'strict',
-                'fallbackChain' => '1,0,pageNotFound',
-                'overlayMode' => 'includeFloating',
+                'fallbackChain' => ['DK', 'EN'],
             ],
-            [
-                'languageConfiguration' => [
-                    'fallbackType' => 'strict',
-                    'fallbackChain' => [],
-                ],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'strict',
+            'fallbackChain' => '1,0,pageNotFound',
+            'overlayMode' => 'includeFloating',
+        ];
+        yield 'strict without fallback' => [
+            'languageConfiguration' => [
                 'fallbackType' => 'strict',
-                'fallbackChain' => 'pageNotFound',
-                'overlayMode' => 'includeFloating',
+                'fallbackChain' => [],
             ],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'fallbackType' => 'strict',
+            'fallbackChain' => 'pageNotFound',
+            'overlayMode' => 'includeFloating',
         ];
     }
 
     /**
-     * Page uid 89 is translated to to Polish, but not all CE are translated
+     * Page uid 89 is translated to Polish, but not all CE are translated
      *
      * @test
      * @dataProvider contentOnPartiallyTranslatedPageDataProvider

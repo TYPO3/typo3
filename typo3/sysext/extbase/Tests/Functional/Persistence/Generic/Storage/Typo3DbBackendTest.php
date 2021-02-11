@@ -21,6 +21,7 @@ use ExtbaseTeam\BlogExample\Domain\Model\Tag;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -71,6 +72,7 @@ class Typo3DbBackendTest extends FunctionalTestCase
         $blogRepository = $this->get(BlogRepository::class);
         $context = new Context([
             'workspace' => new WorkspaceAspect(1),
+            'language' => new LanguageAspect(0, 0),
         ]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));

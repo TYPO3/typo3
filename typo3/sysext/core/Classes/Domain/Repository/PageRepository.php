@@ -365,8 +365,7 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Master helper method to overlay a record to a language.
      *
-     * Be aware that for pages the languageId is taken, and for all other records the contentId.
-     * This might change through a feature switch in the future.
+     * Be aware that for pages the languageId is taken, and for all other records the contentId of the Aspect is used.
      *
      * @param string $table the name of the table, should be a TCA table with localization enabled
      * @param array $originalRow the current (full-fletched) record.
@@ -398,10 +397,57 @@ class PageRepository implements LoggerAwareInterface
         $localizedRecord = null;
         if ($languageAspect->doOverlays()) {
             $attempted = true;
-            if ($table === 'pages') {
-                $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
+            // Mixed = if nothing is available in the selected language, try the fallbacks
+            // Fallbacks work as follows:
+            // 1. We have a default language record and then start doing overlays (= the basis for fallbacks)
+            // 2. Check if the actual requested language version is available in the DB (language=3 = canadian-french)
+            // 3. If not, we check the next language version in the chain (e.g. language=2 = french) and so forth until we find a record
+            if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_MIXED) {
+                $languageChain = $this->getLanguageFallbackChain($languageAspect);
+                $languageChain = array_reverse($languageChain);
+                if ($table === 'pages') {
+                    $result = $this->getPageOverlay(
+                        $originalRow,
+                        new LanguageAspect($languageAspect->getId(), $languageAspect->getId(), LanguageAspect::OVERLAYS_MIXED, $languageChain)
+                    );
+                    if (!empty($result)) {
+                        $localizedRecord = $result;
+                    }
+                } else {
+                    $languageChain = array_merge($languageChain, [$languageAspect->getContentId()]);
+                    // Loop through each (fallback) language and see if there is a record
+                    // However, we do not want to preserve the "originalRow", that's why we set the option to "OVERLAYS_ON"
+                    while (($languageId = array_pop($languageChain)) !== null) {
+                        $result = $this->getRecordOverlay(
+                            $table,
+                            $originalRow,
+                            new LanguageAspect($languageId, $languageId, LanguageAspect::OVERLAYS_ON)
+                        );
+                        // If an overlay is found, return it
+                        if (is_array($result)) {
+                            $localizedRecord = $result;
+                            break;
+                        }
+                    }
+                    if ($localizedRecord === null) {
+                        // If nothing was found, we set the localized record to the originalRow to simulate
+                        // that the default language is "kept" (we want fallback to default language).
+                        // Note: Most installations might have "type=fallback" set but do not set the default language
+                        // as fallback. In the future - once we want to get rid of the magic "default language",
+                        // this needs to behave different, and the "pageNotFound" special handling within fallbacks should be removed
+                        // and we need to check explicitly on in_array(0, $languageAspect->getFallbackChain())
+                        // However, getPageOverlay() a few lines above also returns the "default language page" as well.
+                        $localizedRecord = $originalRow;
+                    }
+                }
             } else {
-                $localizedRecord = $this->getRecordOverlay($table, $originalRow, $languageAspect);
+                // The option to hide records if they were not explicitly selected, was chosen (OVERLAYS_ON/WITH_FLOATING)
+                // in the language configuration. So, here no changes are done.
+                if ($table === 'pages') {
+                    $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
+                } else {
+                    $localizedRecord = $this->getRecordOverlay($table, $originalRow, $languageAspect);
+                }
             }
         }
 
@@ -740,7 +786,7 @@ class PageRepository implements LoggerAwareInterface
                 }
             }
         }
-        return $row;
+        return is_array($row) ? $row : null;
     }
 
     /************************************************
