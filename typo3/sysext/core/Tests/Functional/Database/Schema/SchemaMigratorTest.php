@@ -203,9 +203,7 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * @test
-     * @group not-postgres
      * @group not-mssql
-     * @group not-sqlite
      */
     public function renameUnusedField()
     {
