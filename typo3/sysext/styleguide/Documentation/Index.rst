@@ -12,7 +12,7 @@ Styleguide
 :Extension key: styleguide
 :Version: |release|
 :Language: en
-:Description: TYPO3 CMS Backend Styleguide for supported styles for TYPO3 Backend modules
+:Description: TYPO3 CMS Backend Styleguide for supported styles of TYPO3 Backend modules
 :Author: TYPO3 CMS Core Development Team
 :Rendered: |today|
 
