@@ -1042,6 +1042,23 @@ services:
         node_modules/grunt/bin/grunt tslint;
       "
 
+  list_exception_codes:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: ${HOST_UID}
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        Build/Scripts/duplicateExceptionCodeCheck.sh -p;
+      "
+
   unit:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}

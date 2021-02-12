@@ -85,6 +85,7 @@ Options:
             - lint: PHP linting
             - lintScss: SCSS linting
             - lintTypescript: TS linting
+            - listExceptionCodes: list core exception codes in JSON format
             - unit (default): PHP unit tests
             - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
@@ -629,6 +630,12 @@ case ${TEST_SUITE} in
     lintTypescript)
         setUpDockerComposeDotEnv
         docker-compose run lint_typescript
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    listExceptionCodes)
+        setUpDockerComposeDotEnv
+        docker-compose run list_exception_codes
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
