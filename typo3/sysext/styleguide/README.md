@@ -1,3 +1,5 @@
+![tests](https://github.com/TYPO3/styleguide/workflows/tests/badge.svg)
+
 TYPO3 CMS Backend Styleguide
 ============================
 
