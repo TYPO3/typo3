@@ -12,7 +12,7 @@ services:
     - /var/lib/mysql/:rw,noexec,nosuid
 
   mssql2019latest:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: typo3/core-testing-mssql2019:latest
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: "Test1234!"
@@ -21,7 +21,7 @@ services:
     # This makes mssql sloooow for functionals.
 
   postgres10:
-    image: postgres:10
+    image: postgres:10-alpine
     environment:
       POSTGRES_PASSWORD: funcp
       POSTGRES_USER: ${HOST_USER}
@@ -29,7 +29,7 @@ services:
     - /var/lib/postgresql/data:rw,noexec,nosuid
 
   web:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     stop_grace_period: 1s
     volumes:
@@ -42,7 +42,7 @@ services:
     command: php -n -c /etc/php/cli-no-xdebug/php.ini -S web:8000 -t ${ROOT_DIR}/.Build/Web
 
   acceptance_backend_mariadb10:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
     - mariadb10
@@ -74,7 +74,7 @@ services:
           && vendor/codeception/codeception/codecept run Backend -d -c Web/typo3conf/ext/styleguide/Tests/codeception.yml ${TEST_FILE}
       "
   cgl:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -97,7 +97,7 @@ services:
       "
 
   composer_install:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
@@ -115,7 +115,7 @@ services:
       "
 
   composer_validate:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
@@ -133,7 +133,7 @@ services:
       "
 
   functional_mariadb10:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
     - mariadb10
@@ -170,7 +170,7 @@ services:
       "
 
   functional_mssql2019latest:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
     - mssql2019latest
@@ -211,7 +211,7 @@ services:
       "
 
   functional_postgres10:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     links:
     - postgres10
@@ -249,7 +249,7 @@ services:
       "
 
   functional_sqlite:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
@@ -280,7 +280,7 @@ services:
       "
 
   lint:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
@@ -297,7 +297,7 @@ services:
       "
 
   phpstan:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
@@ -316,7 +316,7 @@ services:
       "
 
   unit:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${ROOT_DIR}:${ROOT_DIR}
