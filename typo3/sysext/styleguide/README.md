@@ -56,7 +56,7 @@ to be impressed by all the capabilities of just the 'simple' TCA types. If you w
 that in own extension, have a look at the Configuration/TCA folder for details.
 
 # Legal
-Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
-Therefore every imperfect style also is a todo. The solution could be included in the TYPO3 CMS core at any stage.
+This project is released under GPLv2 license. See LICENSE.txt for details.
 
-This guide is highly inspired by Bootstrap, Zurb Foundation and Pattern Lab.
+* The "tree" icon is from [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/)
+* Placeholder texts are from [Bacon Ipsum](http://baconipsum.com/)

@@ -3,79 +3,19 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. image:: http://typo3.org/typo3conf/ext/t3org_template/i/typo3-logo.png
-    :width: 118px
-    :align: left
-    :height: 34px
-    :alt: TYPO3
-****************************
-TYPO3 CMS Backend Styleguide
-****************************
+.. _start:
 
+==========
+Styleguide
+==========
 
-.. The following is 'field list' which is rendered as a horizontal table.
-   Think of it as key-value pairs.
-
-
-:Classification: styleguide
+:Extension key: styleguide
 :Version: |release|
 :Language: en
 :Description: TYPO3 CMS Backend Styleguide for supported styles for TYPO3 Backend modules
-:Rendered:        |today|
+:Author: TYPO3 CMS Core Development Team
+:Rendered: |today|
 
-Welcome to the living Styleguide for TYPO3 CMS backend. Presents supported styles for TYPO3 backend modules.
-
-.. image:: styleguide_index.png
-    :width: 1120px
-    :align: center
-    :height: 640px
-    :alt: Styleguide Screenshot
-
-Official repository for TYPO3 CMS extension "styleguide" with changelog. (`<https://github.com/TYPO3/styleguide/>`)
-
-Table of content
-################
-
-1. Typography
-2. TCA / Records
-3. Trees
-4. Tab
-5. Tables
-6. Avatar
-7. Buttons
-8. Infobox
-9. FlashMessages / Notification
-10. Icons
-11. Debug
-12. Helpers
-
-Installation
-############
-This Styleguide comes as a TYPO3 extension for the TYPO3 backend. It appears as backend module within the Help/Manuals navigation section.
-
-Composer
-########
-With composer based [TYPO3 installation](https://wiki.typo3.org/Composer) add this Styleguide by running the following command on shell within project root (where the root composer.json file resides):
-
-```
-composer require typo3/cms-styleguide
-```
-
-Composer will automatically find, download and extract the appropriate version into extension manager. Activate Styleguide extension from TYPO3 backend in Extension Manager.
-
-Hint: If [helhum/typo3-console](https://github.com/helhum/typo3_console/) has been installed locally. Activate Styleguide extension on shell:
-
-```
-./typo3cms extension:install styleguide
-```
-
-TYPO3 Extension Repository
-##########################
-Head to TYPO3 backend > Extension Manager > Get Extensions. Search for and install extension key „styleguide“. Activate Styleguide extension within TYPO3 backend in Extension Manager.
-
-Legal
-#####
-Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
-Therefore every imperfect style also is a todo. The solution could be included in the TYPO3 CMS core at any stage.
-
-This guide is highly inspired by Bootstrap, Zurb Foundation and Pattern Lab.
+Welcome to the living Styleguide for TYPO3 CMS backend. There is not that much to tell here,
+please find valuable information about this extension in the README.md file on
+:ref:`github <https://github.com/TYPO3/styleguide/>`_
