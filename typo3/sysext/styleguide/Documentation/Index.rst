@@ -18,4 +18,4 @@ Styleguide
 
 Welcome to the living Styleguide for TYPO3 CMS backend. There is not that much to tell here,
 please find valuable information about this extension in the README.md file on
-:ref:`github <https://github.com/TYPO3/styleguide/>`_
+`github <https://github.com/TYPO3/styleguide/>`_
