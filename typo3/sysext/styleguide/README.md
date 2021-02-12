@@ -41,7 +41,8 @@ bin/typo3 extension:activate styleguide
 ```
 
 ## TYPO3 Extension Repository
-The extension is currently not uploaded to the TER. Please consider switching to a composer based setup.
+The extension is available in TER with extension key `styleguide` and can be installed using the
+extension manager.
 
 # Usage
 Once loaded, the extension will hook into the '?' menu in the toolbar of your TYPO3 backend. See
