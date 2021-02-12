@@ -34,6 +34,7 @@
     "bin-dir": ".Build/bin"
   },
   "require-dev": {
+    "typo3/cms-core": "11.*.*@dev",
     "typo3/cms-frontend": "11.*.*@dev",
     "typo3/cms-install": "11.*.*@dev",
     "typo3/cms-about": "11.*.*@dev",
@@ -63,8 +64,5 @@
       "web-dir": ".Build/Web",
       "extension-key": "styleguide"
     }
-  },
-  "require": {
-    "typo3/cms-core": "11.*.*@dev"
   }
 }
