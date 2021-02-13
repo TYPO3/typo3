@@ -197,6 +197,24 @@ return [
                 'allowed' => 'be_users',
             ],
         ],
+        'group_db_10' => [
+            'exclude' => 1,
+            'label' => 'group_db_10 allowed=pages size=1',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'pages',
+                'maxitems' => 1,
+                'minitems' => 0,
+                'size' => 1,
+                'suggestOptions' => [
+                    'default' => [
+                        'additionalSearchFields' => 'nav_title, alias, url',
+                        'addWhere' => 'AND pages.doktype = 1'
+                    ]
+                ]
+            ]
+        ],
 
         'group_folder_1' => [
             'exclude' => 1,
@@ -331,7 +349,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_7,
+                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_7, group_db_10,
                 --div--;internal_type=folder,
                     group_folder_1,
                 --div--;in flex,

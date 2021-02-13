@@ -90,6 +90,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupDbAllowedBeUsersBeGroups::class,
         FieldGenerator\TypeGroupDbAllowedBeUsers::class,
         FieldGenerator\TypeGroupDbAllowedStaticdata::class,
+        FieldGenerator\TypeGroupDbAllowedPages::class,
         FieldGenerator\TypeGroupFolder::class,
 
         // type=select
