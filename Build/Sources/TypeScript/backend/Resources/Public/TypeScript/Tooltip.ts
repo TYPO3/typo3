@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'bootstrap';
-import $ from 'jquery';
+import {Tooltip as BootstrapTooltip} from 'bootstrap';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 /**
  * The main tooltip object
@@ -20,38 +20,84 @@ import $ from 'jquery';
  * Hint: Due to the current usage of tooltips, this class can't be static right now
  */
 class Tooltip {
+  private static applyAttributes(attributes: { [key: string]: string }, node: HTMLElement): void {
+    for (const [attribute, value] of Object.entries(attributes)) {
+      node.setAttribute(attribute, value);
+    }
+  }
+
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       this.initialize('[data-bs-toggle="tooltip"]');
     });
   }
 
-  public initialize(selector: string, options?: any): void {
-    options = options || {};
-    options.title = options.title || '';
-    $(selector).tooltip(options);
+  public initialize(selector: string, options: Partial<BootstrapTooltip.Options> = {}): void {
+    const elements = document.querySelectorAll(selector);
+    for (const element of elements) {
+      new BootstrapTooltip(element, options);
+    }
   }
 
   /**
    * Show tooltip on element(s)
    *
-   * @param {Object} elements
+   * @param {NodeListOf<HTMLElement>|HTMLElement|JQuery} elements
    * @param {String} title
    */
-  public show(elements: JQuery | NodeList | HTMLElement, title: string): void {
-    $(elements)
-      .attr('data-bs-placement', 'auto')
-      .attr('data-title', title)
-      .tooltip('show');
+  public show(elements: NodeListOf<HTMLElement> | HTMLElement | JQuery, title: string): void {
+    const attributes = {
+      'data-bs-placement': 'auto',
+      title: title
+    };
+
+    if (!(elements instanceof NodeList || elements instanceof HTMLElement)) {
+      console.warn('Passing an jQuery object to Tooltip.show() has been marked as deprecated. Either pass a NodeList or an HTMLElement.');
+      for (const [attribute, value] of Object.entries(attributes)) {
+        elements.attr(attribute, value)
+      }
+      elements.tooltip('show');
+      return;
+    }
+
+    if (elements instanceof NodeList) {
+      for (const node of elements) {
+        Tooltip.applyAttributes(attributes, node);
+        BootstrapTooltip.getInstance(node).show();
+      }
+      return;
+    }
+
+    if (elements instanceof HTMLElement) {
+      Tooltip.applyAttributes(attributes, elements);
+      BootstrapTooltip.getInstance(elements).show();
+      return;
+    }
   }
 
   /**
    * Hide tooltip on element(s)
    *
-   * @param {Object} elements
+   * @param {NodeListOf<HTMLElement>|HTMLElement|JQuery} elements
    */
-  public hide(elements: JQuery | NodeList | HTMLElement): void {
-    $(elements).tooltip('hide');
+  public hide(elements: NodeListOf<HTMLElement> | HTMLElement | JQuery): void {
+    if (!(elements instanceof NodeList || elements instanceof HTMLElement)) {
+      console.warn('Passing an jQuery object to Tooltip.hide() has been marked as deprecated. Either pass a NodeList or an HTMLElement.');
+      elements.tooltip('hide');
+      return;
+    }
+
+    if (elements instanceof NodeList) {
+      for (const node of elements) {
+        BootstrapTooltip.getInstance(node).hide();
+      }
+      return;
+    }
+
+    if (elements instanceof HTMLElement) {
+      BootstrapTooltip.getInstance(elements).hide();
+      return;
+    }
   }
 }
 

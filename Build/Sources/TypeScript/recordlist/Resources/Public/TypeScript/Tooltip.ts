@@ -11,17 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import BackendTooltip = require('TYPO3/CMS/Backend/Tooltip');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 /**
  * Module: TYPO3/CMS/Recordlist/Tooltip
- * API for tooltip windows powered by Twitter Bootstrap.
+ * API for tooltip windows powered by Bootstrap.
  * @exports TYPO3/CMS/Recordlist/Tooltip
  */
 class Tooltip {
   constructor() {
-    $((): void => {
+    DocumentService.ready().then((): void => {
       BackendTooltip.initialize('.table-fit a[title]', {
         delay: {
           show: 500,
