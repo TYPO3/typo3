@@ -1942,6 +1942,13 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'databaseRow' => [
                 'aField' => 'aValue'
             ],
@@ -2099,6 +2106,13 @@ class TcaSelectItemsTest extends UnitTestCase
                 'aField' => ''
             ],
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 42,
             'processedTca' => [
                 'columns' => [
@@ -2213,6 +2227,13 @@ class TcaSelectItemsTest extends UnitTestCase
                 'aField' => ''
             ],
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 42,
             'processedTca' => [
                 'columns' => [
@@ -2335,6 +2356,13 @@ class TcaSelectItemsTest extends UnitTestCase
                 'aField' => ''
             ],
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'effectivePid' => 42,
             'processedTca' => [
                 'columns' => [
@@ -2456,6 +2484,13 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => ['config' => 'someValue'],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
@@ -2490,6 +2525,13 @@ class TcaSelectItemsTest extends UnitTestCase
                                     || $parameters['table'] !== 'aTable'
                                     || $parameters['row'] !== [ 'aField' => 'aValue' ]
                                     || $parameters['field'] !== 'aField'
+                                    || $parameters['inlineParentUid'] !== 1
+                                    || $parameters['inlineParentTableName'] !== 'aTable'
+                                    || $parameters['inlineParentFieldName'] !== 'aField'
+                                    || $parameters['inlineParentConfig'] !== ['config' => 'someValue']
+                                    || $parameters['inlineTopMostParentUid'] !== 1
+                                    || $parameters['inlineTopMostParentTableName'] !== 'topMostTable'
+                                    || $parameters['inlineTopMostParentFieldName'] !== 'topMostField'
                                 ) {
                                     throw new \UnexpectedValueException('broken', 1476109436);
                                 }
@@ -2526,6 +2568,13 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
+            'inlineParentUid' => 1,
+            'inlineParentTableName' => 'aTable',
+            'inlineParentFieldName' => 'aField',
+            'inlineParentConfig' => [],
+            'inlineTopMostParentUid' => 1,
+            'inlineTopMostParentTableName' => 'topMostTable',
+            'inlineTopMostParentFieldName' => 'topMostField',
             'databaseRow' => [
                 'aField' => 'aValue',
             ],
