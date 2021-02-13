@@ -144,14 +144,14 @@ return [
         ],
         'group_db_3' => [
             'exclude' => 1,
-            'label' => 'group_db_3 allowed=tx_styleguide_staticdata, disable elementBrowser',
+            'label' => 'group_db_3 allowed=tx_styleguide_staticdata, disabled elementBrowser',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
                 'fieldControl' => [
                     'elementBrowser' => [
-                        'disable' => true,
+                        'disabled' => true,
                     ],
                 ],
             ],
