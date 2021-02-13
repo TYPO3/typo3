@@ -8,11 +8,11 @@ TYPO3 CMS Backend Styleguide
 
 # What is it?
 
-The styleguide extension is a TYPO3 extension. It provides a backend module that hooks
+Styleguide is a TYPO3 extension. It provides a backend module that hooks
 into the 'Help' menu of the top toolbar of the TYPO3 Backend. It can also create a
 page tree to show examples.
 
-This extension in maintained in the official [TYPO3 github organization.](https://github.com/TYPO3/styleguide).
+This extension in maintained in the official [TYPO3 github organization.](https://github.com/TYPO3/styleguide)
 
 Styleguide is developed "core-near": When TYPO3 core adds or deprecates features
 covered by this extension, core developers strive to keep it updated, reflecting
@@ -67,7 +67,7 @@ composer require --dev typo3/cms-styleguide
 ```
 
 Composer will automatically find, download and extract the appropriate version. After
-that, activate Styleguide using TYPO3 Extension Manager, or via cli:
+that, activate Styleguide using TYPO3 Extension Manager, or via CLI:
 
 ```
 bin/typo3 extension:activate styleguide
@@ -80,9 +80,10 @@ be installed using the extension manager.
 
 # Tagging and releasing
 
-packagist.org is enabled via the casual github packagist hook. TER releases are created
-by the publish.yml github workflow when tagging versions using [tailor](https://github.com/TYPO3/tailor).
-The commit message of the commit a tag points to is used as TER upload comment.
+[packagist.org](https://packagist.org/packages/typo3/cms-styleguide) is enabled via the casual github hook.
+TER releases are created by the publish.yml github workflow when tagging versions
+using [tailor](https://github.com/TYPO3/tailor). The commit message of the commit a tag points to is
+used as TER upload comment.
 
 Example:
 
