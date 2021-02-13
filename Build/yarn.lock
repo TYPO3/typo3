@@ -255,13 +255,13 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@types/bootstrap@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.0.0.tgz#33507845c17ae9fc2284e5344b9dd17344848319"
-  integrity sha512-Buic9y01REuPhC7f3fvGN9ONoEKwkDnT/SdGcD7gk+99jrQnTC8QpPOfCMC7wZPKpPrTiizP0S4AC5MIH5PdQw==
+"@types/bootstrap@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.0.5.tgz#9cd626041dd0c17b9d00ee8daba6f49f1405e14f"
+  integrity sha512-3MzaNlPzVmsPGax33zmLOWBV6Yp1ayW2AO1kAJy1KuRL8SIbQWJgIqVt5YXZxkQHiXCZFcLHn0oGp9iOzjnE7A==
   dependencies:
+    "@popperjs/core" "^2.6.0"
     "@types/jquery" "*"
-    popper.js "^1.14.1"
 
 "@types/chosen-js@^1.8.1":
   version "1.8.1"
@@ -6694,11 +6694,6 @@ plur@^3.0.1:
   integrity sha512-t1Ax8KUvV3FFII8ltczPn2tJdjqbd1sIzu6t4JL7nQ3EyeL/lTrj5PWKb06ic5/6XYDr65rQ4uzQEGN70/6X5w==
   dependencies:
     irregular-plurals "^2.0.0"
-
-popper.js@^1.14.1:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
-  integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

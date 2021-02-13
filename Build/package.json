@@ -12,7 +12,7 @@
     "yarn": "^1.22.0"
   },
   "devDependencies": {
-    "@types/bootstrap": "^5.0.0",
+    "@types/bootstrap": "^5.0.5",
     "@types/chosen-js": "^1.8.1",
     "@types/chrome": "^0.0.123",
     "@types/ckeditor": "^4.9.10",
