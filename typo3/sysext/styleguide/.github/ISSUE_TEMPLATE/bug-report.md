@@ -9,8 +9,9 @@ labels:
 
 ## Prerequisites
 
-* [ ] Can you reproduce the problem on TYPO3 v10.4 LTS?
-* [ ] Can you reproduce the problem on TYPO3 v9.5 LTS?
+* [ ] Did you reproduce the problem on TYPO3 core master?
+* [ ] Did you reproduce the problem on TYPO3 v10.4 LTS?
+* [ ] Did you reproduce the problem on TYPO3 v9.5 LTS?
 
 ## Description
 
@@ -28,4 +29,6 @@ labels:
 
 ## Versions
 
-You can get this information from executing `composer show` at the command line if your TYPO3 installation is composer based, otherwise the version number will be shown in the extension manager.
+You can get this information from executing `composer show` at the command line if
+your TYPO3 installation is composer based, otherwise the version number will be
+shown in the extension manager.
