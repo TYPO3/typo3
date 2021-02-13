@@ -93,6 +93,8 @@ And a class implementation that extends :php:`AbstractFormElement`::
     namespace Vendor\Extension\Form\Element;
 
     use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
     class CustomMapElement extends AbstractFormElement
     {
@@ -101,7 +103,8 @@ And a class implementation that extends :php:`AbstractFormElement`::
             // Custom TCA properties and other data can be found in $this->data, for example the above
             // parameters are available in $this->data['parameterArray']['fieldConf']['config']['parameters']
             $result = $this->initializeResultArray();
-            $result['html'] = 'my map content';
+            $mapView = GeneralUtility::makeInstance(\Vendor\Extension\Tca\UserFunc\MyMap::class);
+            $result['html'] = $mapView->render($this->data);
             return $result;
         }
     }
