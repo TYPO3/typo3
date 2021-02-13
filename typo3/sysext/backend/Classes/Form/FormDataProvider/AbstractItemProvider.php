@@ -71,6 +71,13 @@ abstract class AbstractItemProvider
             'table' => $table,
             'row' => $result['databaseRow'],
             'field' => $fieldName,
+            'inlineParentUid' => $result['inlineParentUid'],
+            'inlineParentTableName' => $result['inlineParentTableName'],
+            'inlineParentFieldName' => $result['inlineParentFieldName'],
+            'inlineParentConfig' => $result['inlineParentConfig'],
+            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'],
+            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'],
+            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'],
         ];
         if (!empty($result['flexParentDatabaseRow'])) {
             $processorParameters['flexParentDatabaseRow'] = $result['flexParentDatabaseRow'];
