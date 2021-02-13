@@ -49,6 +49,10 @@ for own extensions:
   and possible usages of core functionality. Especially the [TCA reference](https://docs.typo3.org/m/typo3/reference-tca/master/en-us/)
   heavily relies on it.
 
+* Styleguide comes with a simple set up of unit, functional and acceptance tests that
+  are executed by github action workflow "tests.yml" - or locally if desired. This setup
+  is documented as a working test set up example within the official [TYPO3 explained testing section](https://docs.typo3.org/m/typo3/reference-coreapi/10.4/en-us/Testing/Index.html)
+  and can be used as a copy+paste boilerplate in own extensions.
 
 # Installation
 
@@ -78,10 +82,25 @@ For non-composer projects, the extension is available in TER as extension key `s
 be installed using the extension manager.
 
 
+# Running tests
+
+Styleguide comes with a simple demo set of unit, functional and acceptance tests. It relies
+on the runTests.sh script which is a simplified version of a similar script from the TYPO3 core.
+Find detailed usage examples by executing `Build/Scripts/runTests.sh -h` and have a look at
+`.github/workflows/tests.yml` to see how this is used in CI.
+
+Example usage:
+
+```
+Build/Scripts/runTests.sh -s composerInstall
+Build/Scripts/runTests.sh -s unit
+```
+
+
 # Tagging and releasing
 
 [packagist.org](https://packagist.org/packages/typo3/cms-styleguide) is enabled via the casual github hook.
-TER releases are created by the publish.yml github workflow when tagging versions
+TER releases are created by the "publish.yml" github workflow when tagging versions
 using [tailor](https://github.com/TYPO3/tailor). The commit message of the commit a tag points to is
 used as TER upload comment.
 
