@@ -89,8 +89,8 @@ Example:
 
 ```
 composer install
-.Build/bin/tailor set-version 11.0.8
-git commit -am "[RELEASE] 11.0.8 Bug fixes and improved core v11 compatibility"
+.Build/bin/tailor set-version 11.0.3
+git commit -am "[RELEASE] 11.0.3 Bug fixes and improved core v11 compatibility"
 git tag 11.0.8
 git push
 git push --tags
