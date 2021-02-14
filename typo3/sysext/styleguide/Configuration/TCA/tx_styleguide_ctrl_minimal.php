@@ -3,11 +3,11 @@
 return [
    'ctrl' => [
        'title' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitle',
-       'label' => 'title_field',
+       'label' => 'title',
        'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg',
    ],
    'columns' => [
-       'title_field' => [
+       'title' => [
            'label' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitleField',
            'config' => [
                'type' => 'input'
@@ -16,7 +16,7 @@ return [
    ],
    'types' => [
       '0' => [
-         'showitem' => 'title_field',
+         'showitem' => 'title',
       ],
    ],
 ];

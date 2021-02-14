@@ -16,13 +16,13 @@ CREATE TABLE be_users (
 
 
 CREATE TABLE tx_styleguide_ctrl_common (
-    title_field text,
-    description_field text,
+    title text,
+    description text,
 );
 
 
 CREATE TABLE tx_styleguide_ctrl_minimal (
-    title_field text,
+    title text,
 );
 
 
