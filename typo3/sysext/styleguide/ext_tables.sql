@@ -684,10 +684,10 @@ CREATE TABLE tx_styleguide_type (
 
 
 CREATE TABLE tx_styleguide_typeforeign (
-   foreign_table int(11) DEFAULT '0' NOT NULL,
-   input_1 text,
-   input_2 text,
-   text_1 text
+    foreign_table int(11) DEFAULT '0' NOT NULL,
+    input_1 text,
+    input_2 text,
+    text_1 text
 );
 
 
