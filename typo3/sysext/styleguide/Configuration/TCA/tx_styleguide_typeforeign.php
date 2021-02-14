@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Form engine - type',
+        'title' => 'Form engine - type from foreign table',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -19,7 +19,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'type' => 'record_type',
+        'type' => 'foreign_table:record_type',
     ],
 
     'columns' => [
@@ -88,18 +88,18 @@ return [
             ]
         ],
 
-        'record_type' => [
-            'label' => 'type',
+        'foreign_table' => [
+            'label' => 'type from foreign table',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['type 0', '0'],
-                    ['Type with changed fields', 'withChangedFields'],
-                    ['Type with columnsOverrides', 'withColumnsOverrides'],
-                ],
+                'foreign_table' => 'tx_styleguide_type',
+                'minitems' => 1,
+                'maxitems' => 1,
+                'size' => 1,
             ],
         ],
+
         'input_1' => [
             'label' => 'input_1',
             'config' => [
@@ -107,7 +107,7 @@ return [
             ]
         ],
         'input_2' => [
-            'label' => 'input_2, renderType=colorpicker',
+            'label' => 'input_2 renderType=colorpicker',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'colorpicker'
@@ -126,13 +126,13 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'record_type, input_1, text_1',
+            'showitem' => 'foreign_table, input_1, text_1',
         ],
         'withChangedFields' => [
-            'showitem' => 'record_type, input_1, input_2, text_1',
+            'showitem' => 'foreign_table, input_1, input_2, text_1',
         ],
         'withColumnsOverrides' => [
-            'showitem' => 'record_type, input_1, input_2, text_1',
+            'showitem' => 'foreign_table, input_1, input_2, text_1',
             'columnsOverrides' => [
                 'input_2' => [
                     'label' => 'input_2, readOnly, size=10, empty renderType',
