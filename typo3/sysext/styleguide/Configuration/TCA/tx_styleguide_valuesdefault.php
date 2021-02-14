@@ -176,6 +176,32 @@ return [
                 'default' => 2,
             ],
         ],
+        'radio_2' => [
+            'exclude' => 1,
+            'label' => 'radio_2 default=y, three options, second pre-selected',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    ['foo1', 'x'],
+                    ['foo2', 'y'],
+                    ['foo3', 'z'],
+                ],
+                'default' => 'y',
+            ],
+        ],
+        'radio_3' => [
+            'exclude' => 1,
+            'label' => 'radio_3 empty default',
+            'config' => [
+                'type' => 'radio',
+                'items' => [
+                    ['foo1', 'x'],
+                    ['foo2', 'y'],
+                    ['foo3', 'z'],
+                ],
+                'default' => '',
+            ],
+        ],
 
          // @todo add default value examples for type=none
 
@@ -218,7 +244,7 @@ return [
                     input_1, input_2, input_3,
                     text_1,
                     checkbox_1, checkbox_2, checkbox_3,
-                    radio_1,
+                    radio_1, radio_2, radio_3,
                 --div--;select,
                     select_1,select_2,
             ',
