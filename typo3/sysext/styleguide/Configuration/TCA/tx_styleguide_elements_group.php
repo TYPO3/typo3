@@ -162,6 +162,18 @@ return [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
+                'hideSuggest' => false,
+                'allowed' => 'tx_styleguide_staticdata',
+                'multiple' => true,
+            ],
+        ],
+        'group_db_11' => [
+            'exclude' => 1,
+            'label' => 'group_db_11 hideSuggest=true allowed=tx_styleguide_staticdata, multiple',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'hideSuggest' => true,
                 'allowed' => 'tx_styleguide_staticdata',
                 'multiple' => true,
             ],
@@ -349,7 +361,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;internal_type=db,
-                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_4, group_db_5, group_db_7, group_db_10,
+                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10,
                 --div--;internal_type=folder,
                     group_folder_1,
                 --div--;in flex,
