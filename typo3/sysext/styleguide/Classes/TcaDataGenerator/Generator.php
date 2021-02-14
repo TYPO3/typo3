@@ -454,6 +454,7 @@ class Generator
     {
         $prefixes = [
             'tx_styleguide_',
+            'tx_styleguide_ctrl_',
             'tx_styleguide_elements_',
             'tx_styleguide_inline_',
         ];

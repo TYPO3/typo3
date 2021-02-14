@@ -14,6 +14,18 @@ CREATE TABLE be_users (
 	tx_styleguide_isdemorecord tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
+
+CREATE TABLE tx_styleguide_ctrl_common (
+    title_field text,
+    description_field text,
+);
+
+
+CREATE TABLE tx_styleguide_ctrl_minimal (
+    title_field text,
+);
+
+
 CREATE TABLE tx_styleguide_elements_basic (
 	input_1 text,
 	input_2 text,

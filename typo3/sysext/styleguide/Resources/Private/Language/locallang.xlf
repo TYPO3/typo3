@@ -87,6 +87,12 @@
 			<trans-unit id="translatedHelpTextForSelectCheckBox3" xml:space="preserve">
 				<source>A localized help text</source>
 			</trans-unit>
+			<trans-unit id="minimalTableTitle" xml:space="preserve">
+				<source>Form engine - Minimal table configuration</source>
+			</trans-unit>
+			<trans-unit id="minimalTableTitleField" xml:space="preserve">
+				<source>Title field</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
