@@ -125,6 +125,24 @@ return [
                 'enableRichtext' => true,
             ],
         ],
+        'rte_4' => [
+            'exclude' => 1,
+            'label' => 'rte_4 richtextConfiguration=minimal',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'richtextConfiguration' => 'minimal'
+            ],
+        ],
+        'rte_5' => [
+            'exclude' => 1,
+            'label' => 'rte_5 richtextConfiguration=full',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'richtextConfiguration' => 'full'
+            ],
+        ],
 
         'rte_inline_1' => [
             'exclude' => 1,
@@ -257,7 +275,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;rte,
-                    rte_1, rte_2, rte_3,
+                    rte_1, rte_2, rte_3, rte_4, rte_5,
                 --div--;in inline,
                     rte_inline_1,
                 --div--;in flex,

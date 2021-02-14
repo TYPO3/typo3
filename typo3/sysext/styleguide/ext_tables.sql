@@ -154,6 +154,8 @@ CREATE TABLE tx_styleguide_elements_rte (
 	rte_1 text,
 	rte_2 text,
 	rte_3 text,
+	rte_4 text,
+	rte_5 text,
 	rte_inline_1 text,
 	rte_flex_1 text,
 	input_palette_1 text,
