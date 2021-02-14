@@ -303,7 +303,7 @@ return [
         ],
         'select_singlebox_2' => [
             'exclude' => 1,
-            'label' => 'select_singlebox_1 readOnly description',
+            'label' => 'select_singlebox_2 readOnly description',
             'description' => 'field description',
             'config' => [
                 'type' => 'select',
