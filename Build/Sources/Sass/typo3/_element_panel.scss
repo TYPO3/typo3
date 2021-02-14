@@ -62,7 +62,8 @@ $panel-lg-padding: 35px;
 .panel-collapsed {
     .caret {
         @include transition(all 0.25s ease-in-out);
-        @include rotate(-90deg);
+
+        transform: rotate(-90deg);
     }
 }
 
@@ -75,7 +76,7 @@ $panel-lg-padding: 35px;
 
         .collapsed {
             .caret {
-                @include rotate(-90deg);
+                transform: rotate(-90deg);
             }
         }
     }

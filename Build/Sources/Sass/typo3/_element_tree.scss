@@ -116,8 +116,6 @@ $tree-control-icon-size: 12px;
 }
 
 .list-tree-control {
-    @include user-select(none);
-
     position: absolute;
     top: 0;
     left: 0;
@@ -127,6 +125,7 @@ $tree-control-icon-size: 12px;
     line-height: $tree-control-size;
     width: $tree-control-size;
     height: $tree-control-size;
+    user-select: none;
 
     &:before {
         content: '';
@@ -310,7 +309,6 @@ span.dragIcon {
     position: absolute;
     visibility: hidden;
     z-index: 20;
-    filter: alpha(opacity=50);
     opacity: 0.5;
     white-space: nowrap;
 }

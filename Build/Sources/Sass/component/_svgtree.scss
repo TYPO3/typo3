@@ -117,7 +117,7 @@ $svgColors: (
             cursor: pointer;
 
             &--dragging {
-                cursor: -webkit-grabbing;
+                cursor: grabbing;
 
                 .node-over {
                     //it must be important because there is inline style in code that we must overwrite
@@ -271,7 +271,7 @@ $svgColors: (
 
     rect {
         fill: map_get($svgColors, dragAlertBorder);
-        cursor: -webkit-grabbing;
+        cursor: grabbing;
     }
 
     text {

@@ -378,8 +378,7 @@ select {
     display: flex;
     align-items: center;
     margin: -5px;
-
-    @include user-select(none);
+    user-select: none;
 }
 
 .form-irre-header-cell {

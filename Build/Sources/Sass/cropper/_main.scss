@@ -4,9 +4,7 @@
 .cropper-container {
     position: relative;
     overflow: hidden;
-
-    @include user-select(none);
-
+    user-select: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
 
@@ -35,14 +33,12 @@
 
 .cropper-drag-box {
     background-color: #fff;
-
-    @include opacity(0);
+    opacity: 0;
 }
 
 .cropper-modal {
     background-color: #000;
-
-    @include opacity(0.5);
+    opacity: 0.5;
 }
 
 .cropper-view-box {
@@ -59,8 +55,7 @@
     position: absolute;
     display: block;
     border: 0 dashed #fff;
-
-    @include opacity(0.5);
+    opacity: 0.5;
 
     &.dashed-h {
         top: percentage(1 / 3);
@@ -88,9 +83,9 @@
 .cropper-point {
     position: absolute;
     display: block;
+    opacity: 0.1;
 
     @include square(100%);
-    @include opacity(0.1);
 }
 
 .cropper-face {
@@ -136,8 +131,7 @@
     @include square(5px);
 
     background-color: $color-brand;
-
-    @include opacity(0.75);
+    opacity: 0.75;
 
     &.point-e {
         top: 50%;
@@ -192,8 +186,7 @@
         @include square(20px);
 
         cursor: se-resize;
-
-        @include opacity(1);
+        opacity: 1;
     }
 
     &.point-se:before {
@@ -206,8 +199,7 @@
 
         content: " ";
         background-color: $color-brand;
-
-        @include opacity(0);
+        opacity: 0;
     }
 
     @media (min-width: $screen-sm) {
@@ -225,7 +217,8 @@
     @media (min-width: $screen-lg) {
         &.point-se {
             @include square(5px);
-            @include opacity(0.75);
+
+            opacity: 0.75;
         }
     }
 }

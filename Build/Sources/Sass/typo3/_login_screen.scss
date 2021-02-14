@@ -209,12 +209,12 @@ $login-input-padding-horizontal: $padding-large-horizontal;
     background-color: #fff;
     text-align: center;
     position: absolute;
+    opacity: 0.25;
 
-    @include opacity(0.25);
     @include transition(opacity 0.2s ease-in-out);
 
     &:hover {
-        @include opacity(1);
+        opacity: 1;
     }
 
     &.left {

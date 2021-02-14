@@ -61,13 +61,6 @@
     }
 }
 
-@mixin rotate($degrees) {
-    -webkit-transform: rotate($degrees);
-    -ms-transform: rotate($degrees); // IE9 only
-    -o-transform: rotate($degrees);
-    transform: rotate($degrees);
-}
-
 // Form control sizing
 //
 // Relative text size, padding, and border-radii changes for form controls. For
