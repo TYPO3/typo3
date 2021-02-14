@@ -19,7 +19,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'type' => 'type',
+        'type' => 'record_type',
     ],
 
     'columns' => [
@@ -88,17 +88,30 @@ return [
             ]
         ],
 
-        'type' => [
-            'exclude' => 1,
+        'record_type' => [
             'label' => 'type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
                     ['type 0', '0'],
-                    ['type test', 'test'],
+                    ['Type with changed fields', 'withChangedFields'],
+                    ['Type with columnsOverrides', 'withColumnsOverrides'],
                 ],
             ],
+        ],
+        'input_1' => [
+            'label' => 'input_1',
+            'config' => [
+                'type' => 'input',
+            ]
+        ],
+        'input_2' => [
+            'label' => 'input_2, renderType=colorpicker',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'colorpicker'
+            ]
         ],
 
         'text_1' => [
@@ -113,11 +126,21 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'type, text_1',
+            'showitem' => 'record_type, input_1, text_1',
         ],
-        'test' => [
-            'showitem' => 'type, text_1',
+        'withChangedFields' => [
+            'showitem' => 'record_type, input_1, input_2, text_1',
+        ],
+        'withColumnsOverrides' => [
+            'showitem' => 'record_type, input_1, input_2, text_1',
             'columnsOverrides' => [
+                'input_2' => [
+                    'config' => [
+                        'renderType' => '',
+                        'readOnly' => true,
+                        'size' => 10,
+                    ],
+                ],
                 'text_1' => [
                     'config' => [
                         'renderType' => 't3editor',
