@@ -723,7 +723,7 @@ class ShortcutRepository
      */
     protected function extractPageIdFromShortcutUrl(string $url): int
     {
-        return (int)preg_replace('/.*[\\?&]id=([^&]+).*/', '$1', $url);
+        return (int)preg_replace('/.*[\\?&]id=([^&]+).*/', '$1', urldecode($url));
     }
 
     /**
