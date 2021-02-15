@@ -870,7 +870,7 @@ class SearchController extends ActionController
         } catch (\Exception $e) {
         }
         $insertFields = [
-            'searchstring' => $searchWord,
+            'searchstring' => mb_substr($searchWord, 0, 255),
             'searchoptions' => serialize([$searchParams, $searchWords, $pt]),
             'feuser_id' => (int)$GLOBALS['TSFE']->fe_user->user['uid'],
             // cookie as set or retrieved. If people has cookies disabled this will vary all the time
