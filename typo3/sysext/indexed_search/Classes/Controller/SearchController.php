@@ -893,7 +893,7 @@ class SearchController extends ActionController
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_stat_word');
             foreach ($searchWords as $val) {
                 $insertFields = [
-                    'word' => $val['sword'],
+                    'word' => mb_substr($val['sword'], 0, 50),
                     'index_stat_search_id' => $newId,
                     // Time stamp
                     'tstamp' => $GLOBALS['EXEC_TIME'],
