@@ -33,7 +33,7 @@ Based on the FLUIDTEMPLATE content object (cObj)
          table = tt_content
          select {
             orderBy = sorting
-            where = colPos={register:colPos}
+            where = {#colPos}={register:colPos}
             where.insertData = 1
          }
       }
