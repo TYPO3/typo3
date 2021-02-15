@@ -24,7 +24,11 @@
                 </div>
             </f:then>
             <f:else>
-                <f:render section="Item"/>
+                <div class="carousel typo3-login-carousel">
+                    <div class="carousel-inner">
+                        <f:render section="Item" arguments="{item:'{loginNewsItems.0}'}"/>
+                    </div>
+                </div>
             </f:else>
         </f:if>
     </section>
