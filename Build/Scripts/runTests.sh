@@ -30,15 +30,51 @@ setUpDockerComposeDotEnv() {
     echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
     echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}" >> .env
     echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}" >> .env
+    echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
     echo "MARIADB_VERSION=${MARIADB_VERSION}" >> .env
     echo "MYSQL_VERSION=${MYSQL_VERSION}" >> .env
     echo "POSTGRES_VERSION=${POSTGRES_VERSION}" >> .env
     echo "PHP_VERSION=${PHP_VERSION}" >> .env
     echo "CHUNKS=${CHUNKS}" >> .env
     echo "THISCHUNK=${THISCHUNK}" >> .env
+}
 
-    # Set a custom database driver provided by option: -a
-    [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
+# Options -a and -d depend on each other. The function
+# validates input combinations and sets defaults.
+handleDbmsAndDriverOptions() {
+    case ${DBMS} in
+        mariadb)
+            ;&
+        mysql)
+            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="mysqli"
+            if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+            fi
+            ;;
+        mssql)
+            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="sqlsrv"
+            if [ "${DATABASE_DRIVER}" != "sqlsrv" ] && [ "${DATABASE_DRIVER}" != "pdo_sqlsrv" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+            fi
+            ;;
+        postgres)
+            ;&
+        sqlite)
+            if ! [ -z ${DATABASE_DRIVER} ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+            fi
+            DATABASE_DRIVER=""
+            ;;
+    esac
 }
 
 # Load help text into $HELP
@@ -367,19 +403,20 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
+        handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
         if [ ${CHUNKS} -gt 1 ]; then
             docker-compose run acceptance_split
         fi
         case ${DBMS} in
             mysql)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_backend_mysql
                 docker-compose run acceptance_backend_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mariadb)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_backend_mariadb
                 docker-compose run acceptance_backend_mariadb
                 SUITE_EXIT_CODE=$?
@@ -548,25 +585,26 @@ case ${TEST_SUITE} in
         docker-compose down
         ;;
     functional)
+        handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
         if [ ${CHUNKS} -gt 1 ]; then
             docker-compose run functional_split
         fi
         case ${DBMS} in
             mariadb)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mariadb
                 docker-compose run functional_mariadb
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mysql
                 docker-compose run functional_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mssql2019latest
                 docker-compose run functional_mssql2019latest
                 SUITE_EXIT_CODE=$?
@@ -590,16 +628,17 @@ case ${TEST_SUITE} in
         docker-compose down
         ;;
     install)
+        handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
         case ${DBMS} in
             mysql)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_install_mysql
                 docker-compose run acceptance_install_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mariadb)
-                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_acceptance_install_mariadb
                 docker-compose run acceptance_install_mariadb
                 SUITE_EXIT_CODE=$?
@@ -691,13 +730,13 @@ esac
 
 case ${DBMS} in
     mariadb)
-        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER:-mysqli}"
+        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MARIADB_VERSION}  driver ${DATABASE_DRIVER}"
         ;;
     mysql)
-        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER:-mysqli}"
+        DBMS_OUTPUT="DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER}"
         ;;
     mssql)
-        DBMS_OUTPUT="DBMS: ${DBMS}  driver ${DATABASE_DRIVER:-sqlsrv}"
+        DBMS_OUTPUT="DBMS: ${DBMS}  driver ${DATABASE_DRIVER}"
         ;;
     postgres)
         DBMS_OUTPUT="DBMS: ${DBMS}  version ${POSTGRES_VERSION}"
