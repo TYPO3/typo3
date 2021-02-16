@@ -24,7 +24,7 @@
 		"symfony/dependency-injection": "^4.4 || ^5.0",
 		"symfony/property-access": "^4.4 || ^5.0",
 		"symfony/property-info": "^4.4 || ^5.0",
-		"typo3/cms-core": "10.4.*@dev"
+		"typo3/cms-core": "10.4.13"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Additional scheduler tasks"
