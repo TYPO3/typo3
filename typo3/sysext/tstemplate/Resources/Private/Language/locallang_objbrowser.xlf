@@ -120,6 +120,9 @@
 			<trans-unit id="conditions" resname="conditions">
 				<source>Conditions</source>
 			</trans-unit>
+			<trans-unit id="activeConditions" resname="activeConditions">
+				<source>%s active condition(s)</source>
+			</trans-unit>
 			<trans-unit id="setConditions" resname="setConditions">
 				<source>Set conditions</source>
 			</trans-unit>

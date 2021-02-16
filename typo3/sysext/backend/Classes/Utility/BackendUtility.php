@@ -2496,7 +2496,7 @@ class BackendUtility
                 'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
             ], true);
             return '
-			<div class="form-group">
+			<div class="input-group">
 				<!-- Function Menu of module -->
 				<select class="form-select form-select-sm" ' . $attributes . '>
 					' . implode(LF, $options) . '

@@ -86,7 +86,7 @@ class TemplateCest
 
         $I->wantTo('change to Info/Modify and see the template overview table');
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
-        $I->waitForElement('.table-fit');
+        $I->waitForElement('.table-striped');
         $I->see('Title');
         $I->see('Description');
         $I->see('Constants');
@@ -114,13 +114,12 @@ class TemplateCest
         $I->click('a.t3js-editform-close');
 
         $I->wantTo('see the changed title');
-        $I->waitForElement('.table-fit');
+        $I->waitForElement('.table-striped');
         $I->see('Acceptance Test Site');
 
         $I->wantTo('change the template within the TypoScript Object Browser');
         $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
-        $I->waitForText('Current template');
-        $I->see('CONSTANTS ROOT');
+        $I->waitForText('CONSTANTS ROOT');
         $I->selectOption('//select[@name="SET[ts_browser_type]"]', 'Setup');
         $I->waitForText('SETUP ROOT');
         // find and open [page] in tree

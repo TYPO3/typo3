@@ -7,5 +7,8 @@ services:
   TYPO3\CMS\Tstemplate\:
     resource: '../Classes/*'
 
+  TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController:
+    public: true
+
   TYPO3\CMS\Tstemplate\Hooks\DataHandlerClearCachePostProcHook:
     public: true

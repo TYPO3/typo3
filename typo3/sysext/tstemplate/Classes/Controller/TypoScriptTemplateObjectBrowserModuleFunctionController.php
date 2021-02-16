@@ -36,12 +36,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class TypoScriptTemplateObjectBrowserModuleFunctionController
 {
-
-    /**
-     * @var string
-     */
-    protected $localLanguageFilePath;
-
     /**
      * @var TypoScriptTemplateModuleController
      */
@@ -83,7 +77,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->pObj->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
         $this->pObj->modMenu_setDefaultList .= ',ts_browser_showComments';
-        $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf';
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
@@ -180,7 +173,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
         // initialize
         $assigns = [];
-        $assigns['LLPrefix'] = 'LLL:' . $this->localLanguageFilePath . ':';
         $assigns['existTemplate'] = $existTemplate;
         $assigns['tsBrowserType'] = $this->pObj->MOD_SETTINGS['ts_browser_type'];
         if ($existTemplate) {
@@ -309,7 +301,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             }
         } else {
             $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
-            if (($this->request->getParsedBody()['search'] ?? false) && ($this->request->getParsedBody()['search_field'] ?? false)) {
+            if ($this->request->getParsedBody()['search_field'] ?? false) {
                 // If any POST-vars are send, update the condition array
                 $searchString = $this->request->getParsedBody()['search_field'];
                 try {
@@ -381,25 +373,30 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
 
             // Conditions:
             $assigns['hasConditions'] = is_array($this->templateService->sections) && !empty($this->templateService->sections);
+            $activeConditions = 0;
             if (is_array($this->templateService->sections) && !empty($this->templateService->sections)) {
                 $tsConditions = [];
                 foreach ($this->templateService->sections as $key => $val) {
+                    $isSet = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? true : false;
+                    if ($isSet) {
+                        $activeConditions++;
+                    }
+
                     $tsConditions[] = [
                         'key' => $key,
                         'value' => $val,
                         'label' => $this->templateService->substituteCMarkers(htmlspecialchars($val)),
-                        'isSet' => $this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? true : false
+                        'isSet' => $isSet
                     ];
                 }
                 $assigns['tsConditions'] = $tsConditions;
             }
+            $assigns['activeConditions'] = $activeConditions;
             // Ending section displayoptions
         }
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:tstemplate/Resources/Private/Templates/TemplateObjectBrowserModuleFunction.html'
-        ));
+        $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/TemplateObjectBrowserModuleFunction.html');
         $view->assignMultiple($assigns);
 
         return $view->render();
@@ -412,9 +409,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
      */
     protected function addFlashMessage(FlashMessage $flashMessage)
     {
-        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }

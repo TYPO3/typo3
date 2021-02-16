@@ -108,23 +108,6 @@ class ExtendedTemplateService extends TemplateService
     public $ext_lineNumberOffset_mode = '';
 
     /**
-     * Don't change
-     *
-     * @var int
-     */
-    public $ext_dontCheckIssetValues = 0;
-
-    /**
-     * @var int
-     */
-    public $ext_printAll = 0;
-
-    /**
-     * @var bool
-     */
-    public $doNotSortCategoriesBeforeMakingForm = false;
-
-    /**
      * Ts analyzer
      *
      * @var array
@@ -678,7 +661,6 @@ class ExtendedTemplateService extends TemplateService
      * @param bool $comments Enable including comments in output.
      * @param bool $crop Enable cropping of long lines.
      * @param bool $syntaxHL Enrich output with syntaxhighlighting.
-     * @param int $syntaxHLBlockmode
      * @return string
      */
     public function ext_outputTS(
@@ -686,8 +668,7 @@ class ExtendedTemplateService extends TemplateService
         $lineNumbers = false,
         $comments = false,
         $crop = false,
-        $syntaxHL = false,
-        $syntaxHLBlockmode = 0
+        $syntaxHL = false
     ) {
         $all = '';
         foreach ($config as $str) {
@@ -697,7 +678,7 @@ class ExtendedTemplateService extends TemplateService
             $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
             $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
             $tsparser->parentObject = $this;
-            return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '', $syntaxHLBlockmode);
+            return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '');
         }
         return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
     }
@@ -954,26 +935,29 @@ class ExtendedTemplateService extends TemplateService
      *
      * @param array $theConstants
      * @param string $category
-     * @return string
+     * @return array
      */
-    public function ext_printFields($theConstants, $category)
+    public function ext_printFields($theConstants, $category): array
     {
         reset($theConstants);
-        $output = '';
+        $groupedOutput = [];
         $subcat = '';
         if (is_array($this->categories[$category])) {
-            if (!$this->doNotSortCategoriesBeforeMakingForm) {
-                asort($this->categories[$category]);
-            }
+            asort($this->categories[$category]);
             /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $categoryLoop = 0;
             foreach ($this->categories[$category] as $name => $type) {
                 $params = $theConstants[$name];
                 if (is_array($params)) {
                     if ($subcat != $params['subcat_name']) {
+                        $categoryLoop++;
                         $subcat = $params['subcat_name'];
                         $subcat_name = $params['subcat_name'] ? $this->constantParser->getSubCategories()[$params['subcat_name']][0] : 'Others';
-                        $output .= '<h3>' . $subcat_name . '</h3>';
+                        $groupedOutput[$categoryLoop] = [
+                            'label' => $subcat_name,
+                            'fields' => []
+                        ];
                     }
                     $label = $this->getLanguageService()->sL($params['label']);
                     $label_parts = explode(':', $label, 2);
@@ -1108,79 +1092,62 @@ class ExtendedTemplateService extends TemplateService
                     // Define default names and IDs
                     $userTyposcriptID = 'userTS-' . $idName;
                     $defaultTyposcriptID = 'defaultTS-' . $idName;
-                    $checkboxName = 'check[' . $params['name'] . ']';
-                    $checkboxID = 'check-' . $idName;
                     $userTyposcriptStyle = '';
-                    $deleteIconHTML = '';
-                    $constantCheckbox = '';
-                    $constantDefaultRow = '';
-                    if (!$this->ext_dontCheckIssetValues) {
-                        // Set the default styling options
-                        if (isset($this->objReg[$params['name']])) {
-                            $checkboxValue = 'checked';
-                            $defaultTyposcriptStyle = 'style="display:none;"';
-                        } else {
-                            $checkboxValue = '';
-                            $userTyposcriptStyle = 'style="display:none;"';
-                            $defaultTyposcriptStyle = '';
-                        }
-                        $deleteTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle'));
-                        $deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
-                        $deleteIconHTML =
-                            '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
-                                . '<span title="' . $deleteTitle . '">'
-                                    . $deleteIcon
-                                . '</span>'
-                            . '</button>';
-                        $editTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle'));
-                        $editIcon = $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render();
-                        $editIconHTML =
-                            '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
-                                . '<span title="' . $editTitle . '">'
-                                    . $editIcon
-                                . '</span>'
-                            . '</button>';
-                        $constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
-                        // If there's no default value for the field, use a static label.
-                        if (!$params['default_value']) {
-                            $params['default_value'] = '[Empty]';
-                        }
-                        $constantDefaultRow =
-                            '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
-                                . '<span class="input-group-btn">' . $editIconHTML . '</span>'
-                                . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
-                            . '</div>';
+                    // Set the default styling options
+                    if (isset($this->objReg[$params['name']])) {
+                        $checkboxValue = 'checked';
+                        $defaultTyposcriptStyle = 'style="display:none;"';
+                    } else {
+                        $checkboxValue = '';
+                        $userTyposcriptStyle = 'style="display:none;"';
+                        $defaultTyposcriptStyle = '';
                     }
+                    $deleteIconHTML =
+                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
+                            . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
+                                . $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
+                            . '</span>'
+                        . '</button>';
+                    $editIconHTML =
+                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
+                            . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
+                                . $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
+                            . '</span>'
+                        . '</button>';
+                    $constantCheckbox = '<input type="hidden" name="check[' . $params['name'] . ']" id="check-' . $idName . '" value="' . $checkboxValue . '"/>';
+                    // If there's no default value for the field, use a static label.
+                    if (!$params['default_value']) {
+                        $params['default_value'] = '[Empty]';
+                    }
+                    $constantDefaultRow =
+                        '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
+                            . '<span class="input-group-btn">' . $editIconHTML . '</span>'
+                            . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
+                        . '</div>';
                     $constantEditRow =
                         '<div class="input-group userTS" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>'
                             . '<span class="input-group-btn">' . $deleteIconHTML . '</span>'
                             . $p_field
                         . '</div>';
-                    $constantLabel = '<label class="t3js-formengine-label"><span>' . htmlspecialchars($head) . '</span></label>';
-                    $constantName = '<span class="help-block">[' . $params['name'] . ']</span>';
-                    $constantDescription = $body ? '<p class="help-block">' . htmlspecialchars($body) . '</p>' : '';
-                    $constantData = '';
-                    if ($hint !== '') {
-                        $constantData .= '<span class="help-block">' . $hint . '</span>';
-                    }
-                    $constantData .=
+                    $constantData =
                         $constantCheckbox
                         . $constantEditRow
                         . $constantDefaultRow;
 
-                    $output .=
-                        '<fieldset class="form-section">'
-                            . '<a name="' . $raname . '"></a>'
-                            . '<div class="form-group">'
-                                . $constantLabel . $constantName . $constantDescription . $constantData
-                            . '</div>'
-                        . '</fieldset>';
+                    $groupedOutput[$categoryLoop]['items'][] = [
+                        'identifier' => $raname,
+                        'label' => $head,
+                        'name' => $params['name'],
+                        'description' => $body,
+                        'hint' => $hint,
+                        'data' => $constantData
+                    ];
                 } else {
                     debug('Error. Constant did not exist. Should not happen.');
                 }
             }
         }
-        return '<div class="tstemplate-constanteditor">' . $output . '</div>';
+        return $groupedOutput;
     }
 
     /***************************
@@ -1326,7 +1293,7 @@ class ExtendedTemplateService extends TemplateService
             foreach ($data as $key => $var) {
                 if (isset($theConstants[$key])) {
                     // If checkbox is set, update the value
-                    if ($this->ext_dontCheckIssetValues || isset($check[$key])) {
+                    if (isset($check[$key])) {
                         // Exploding with linebreak, just to make sure that no multiline input is given!
                         [$var] = explode(LF, $var);
                         $typeDat = $this->ext_getTypeData($theConstants[$key]['type']);
@@ -1396,7 +1363,7 @@ class ExtendedTemplateService extends TemplateService
                                 }
                                 break;
                         }
-                        if ($this->ext_printAll || (string)$theConstants[$key]['value'] !== (string)$var) {
+                        if ((string)$theConstants[$key]['value'] !== (string)$var) {
                             // Put value in, if changed.
                             $this->ext_putValueInConf($key, $var);
                         }
@@ -1410,12 +1377,10 @@ class ExtendedTemplateService extends TemplateService
         }
         // Remaining keys in $check indicates fields that are just clicked "on" to be edited.
         // Therefore we get the default value and puts that in the template as a start...
-        if (!$this->ext_dontCheckIssetValues && is_array($check)) {
-            foreach ($check as $key => $var) {
-                if (isset($theConstants[$key])) {
-                    $dValue = $theConstants[$key]['default_value'];
-                    $this->ext_putValueInConf($key, $dValue);
-                }
+        foreach ($check ?? [] as $key => $var) {
+            if (isset($theConstants[$key])) {
+                $dValue = $theConstants[$key]['default_value'];
+                $this->ext_putValueInConf($key, $dValue);
             }
         }
     }

@@ -233,15 +233,6 @@ class TypoScriptTemplateModuleController
                 }
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
             );
-            $this->moduleTemplate->getPageRenderer()->addCssInlineBlock(
-                'TSTemplateInlineStyle',
-                'TABLE#typo3-objectBrowser { width: 100%; margin-bottom: 24px; }
-                TABLE#typo3-objectBrowser A { text-decoration: none; }
-                TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
-                .ts-typoscript { width: 100%; }
-                .tsob-search-submit {margin-left: 3px; margin-right: 3px;}
-                .tst-analyzer-options { margin:5px 0; }'
-            );
             // Setting up the context sensitive menu:
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             // Build the module content
@@ -438,17 +429,9 @@ class TypoScriptTemplateModuleController
             $moduleContent['staticsText'] = $staticsText;
             $moduleContent['selector'] = $selector;
         }
-        // Go to previous Page with Template...
-        $previousPage = $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause);
-        if ($previousPage) {
-            $urlParameters = [
-                'id' => $previousPage['uid']
-            ];
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $previousPage['aHref'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-            $moduleContent['previousPage'] = $previousPage;
-        }
         $view = $this->getFluidTemplateObject('tstemplate', 'NoTemplate');
+        // Go to previous Page with a template
+        $view->assign('previousPage', $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause));
         $view->assign('content', $moduleContent);
         return $view->render();
     }

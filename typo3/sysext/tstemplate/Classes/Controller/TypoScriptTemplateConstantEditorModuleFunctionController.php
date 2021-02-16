@@ -118,7 +118,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
     public function main()
     {
         $assigns = [];
-        $assigns['LLPrefix'] = 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:';
         // Create extension template
         $this->pObj->createTemplate($this->id);
         // Checking for more than one template an if, set a menu...
@@ -132,9 +131,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
         if ($existTemplate) {
             $assigns['templateRecord'] = $this->templateRow;
-            if ($manyTemplatesMenu) {
-                $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
-            }
+            $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
             $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
             // Update template ?
@@ -165,19 +162,14 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             // Category and constant editor config:
             $category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
 
-            $printFields = trim($this->templateService->ext_printFields($this->constants, $category));
+            $assigns['editorFields'] = $this->templateService->ext_printFields($this->constants, $category);
             foreach ($this->templateService->getInlineJavaScript() as $name => $inlineJavaScript) {
                 $this->getPageRenderer()->addJsInlineCode($name, $inlineJavaScript);
             }
 
-            if ($printFields) {
-                $assigns['printFields'] = $printFields;
-            }
             // Rendering of the output via fluid
             $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:tstemplate/Resources/Private/Templates/ConstantEditor.html'
-            ));
+            $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/ConstantEditor.html');
             $view->assignMultiple($assigns);
             $theOutput = $view->render();
         } else {

@@ -1,66 +1,72 @@
 <f:if condition="{existTemplate}">
-    <h3><f:translate key="{LLPrefix}currentTemplate"/></h3>
-    <core:iconForRecord table="sys_template" row="{templateRecord}" />
-    <strong><f:format.raw>{linkWrappedTemplateTitle}</f:format.raw></strong>
-</f:if>
-<f:if condition="{existTemplate}">
-    <div>
-        <f:format.raw>
-            {manyTemplatesMenu}
-        </f:format.raw>
+    <div class="row row-cols-auto g-3 align-items-center">
+        <f:if condition="{manyTemplatesMenu}">
+            <div class="col">
+                <f:format.raw>
+                    {manyTemplatesMenu}
+                </f:format.raw>
+            </div>
+        </f:if>
+        <div class="col mb-3">
+            <core:iconForRecord table="sys_template" row="{templateRecord}"/>
+            <strong>
+                <f:format.raw>{linkWrappedTemplateTitle}</f:format.raw>
+            </strong>
+        </div>
     </div>
 </f:if>
-<div style="padding-top: 5px;"></div>
-<h2><f:translate key="{LLPrefix}templateHierarchy"/></h2>
-<div>
-    <div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">
+
+<div class="row">
+    <div class="col-auto">
+        <f:be.link route="web_ts" parameters="{id: pageId, template: 'all'}" class="btn btn-default">
+            <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:viewCompleteTS"/>
+        </f:be.link>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-auto">
+        <f:for each="{checkboxes}" as="checkbox">
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="{checkbox.id}">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:{checkbox.ll}"/>
+                </label>
+                <f:format.raw>{checkbox.label}</f:format.raw>
+            </div>
+        </f:for>
+    </div>
+</div>
+
+
+<h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:templateHierarchy"/></h2>
+<div class="table-fit">
+    <table class="table table-striped table-hover" id="ts-analyzer">
         <thead>
-            <tr>
-                <th><f:translate key="{LLPrefix}title"/></th>
-                <th><f:translate key="{LLPrefix}rootlevel"/></th>
-                <th><f:translate key="{LLPrefix}clearSetup"/></th>
-                <th><f:translate key="{LLPrefix}clearConstants"/></th>
-                <th><f:translate key="{LLPrefix}pid"/></th>
-                <th><f:translate key="{LLPrefix}rootline"/></th>
-            </tr>
+        <tr>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:title"/></th>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:rootlevel"/></th>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:clearSetup"/></th>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:clearConstants"/></th>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:pid"/></th>
+            <th><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:rootline"/></th>
+        </tr>
         </thead>
         <f:format.raw>{hierarchy}</f:format.raw>
     </table>
-    </div>
 </div>
-<div style="padding-top: 5px;"></div>
-<h2><f:translate key="{LLPrefix}completeTS"/></h2>
-<div>
-    <p><a href="{moduleLink}" class="btn btn-default">
-        <f:translate key="{LLPrefix}viewCompleteTS"/>
-    </a></p>
-</div>
-<div style="padding-top: 15px;"></div>
-<h2><f:translate key="{LLPrefix}displayOptions"/></h2>
-<div class="tst-analyzer-options">
-    <f:for each="{checkboxes}" as="checkbox">
-        <div class="form-check">
-            <f:format.raw>{checkbox.label}</f:format.raw>
-            <label class="form-check-label" for="{checkbox.id}">
-                <f:translate key="{LLPrefix}{checkbox.ll}"/>
-            </label>
-        </div>
-    </f:for>
-</div>
-<div style="padding-top: 25px;"></div>
+
 <f:if condition="{template}">
-    <h2><f:translate key="{LLPrefix}constants"/></h2>
+    <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:constants"/></h2>
     <f:for each="{constants}" as="constant">
-        <h3>{constant.title}</h3>
-        <div class="nowrap">
+        <h4>{constant.title}</h4>
+        <div class="text-nowrap">
             <f:format.raw>{constant.content}</f:format.raw>
         </div>
     </f:for>
-    <div style="padding-top: 15px;"></div>
-    <h2><f:translate key="{LLPrefix}setups"/></h2>
+    <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:setup"/></h2>
     <f:for each="{setups}" as="setup">
-        <h3>{setup.title}</h3>
-        <div class="nowrap">
+        <h4>{setup.title}</h4>
+        <div class="text-nowrap">
             <f:format.raw>{setup.content}</f:format.raw>
         </div>
     </f:for>

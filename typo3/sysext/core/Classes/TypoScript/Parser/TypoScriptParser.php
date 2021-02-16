@@ -1491,7 +1491,7 @@ class TypoScriptParser
             }
             $lines[] = $lineC;
         }
-        return '<pre class="ts-hl">' . implode(LF, $lines) . '</pre>';
+        return '<pre class="ts-hl bg-light border p-1 ps-2">' . implode(LF, $lines) . '</pre>';
     }
 
     /**

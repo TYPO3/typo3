@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
@@ -35,11 +34,6 @@ class TemplateAnalyzerModuleFunctionController
      * @var TypoScriptTemplateModuleController
      */
     protected $pObj;
-
-    /**
-     * @var string
-     */
-    protected $localLanguageFilePath;
 
     /**
      * The currently selected sys_template record
@@ -75,7 +69,6 @@ class TemplateAnalyzerModuleFunctionController
 
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-        $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf';
         $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
@@ -134,7 +127,6 @@ class TemplateAnalyzerModuleFunctionController
         $assigns = [];
         $template_uid = 0;
         $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu($this->request);
-        $assigns['LLPrefix'] = 'LLL:' . $this->localLanguageFilePath . ':';
         if ($assigns['manyTemplatesMenu']) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
         }
@@ -156,14 +148,7 @@ class TemplateAnalyzerModuleFunctionController
             1
         )));
 
-        $urlParameters = [
-            'id' => $this->id,
-            'template' => 'all'
-        ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $assigns['moduleLink'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-
+        $assigns['pageId'] = $this->id;
         $assigns['template'] = $template = ($this->request->getQueryParams()['template'] ?? null);
         $addParams = $template ? '&template=' . $template : '';
         $assigns['checkboxes'] = [
@@ -213,8 +198,7 @@ class TemplateAnalyzerModuleFunctionController
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'],
-                            0
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']
                         )
                     ];
                     if ($template !== 'all') {
@@ -238,8 +222,7 @@ class TemplateAnalyzerModuleFunctionController
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
                             $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'],
-                            0
+                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']
                         )
                     ];
                     if ($template !== 'all') {
@@ -251,11 +234,8 @@ class TemplateAnalyzerModuleFunctionController
         }
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:tstemplate/Resources/Private/Templates/TemplateAnalyzerModuleFunction.html'
-        ));
+        $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/TemplateAnalyzerModuleFunction.html');
         $view->assignMultiple($assigns);
-
         return $view->render();
     }
 

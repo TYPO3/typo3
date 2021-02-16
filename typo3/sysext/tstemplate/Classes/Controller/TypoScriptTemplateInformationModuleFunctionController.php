@@ -57,6 +57,12 @@ class TypoScriptTemplateInformationModuleFunctionController
      */
     protected $request;
 
+    protected UriBuilder $uriBuilder;
+
+    public function __construct(UriBuilder $uriBuilder)
+    {
+        $this->uriBuilder = $uriBuilder;
+    }
     /**
      * Init, called from parent object
      *
@@ -92,9 +98,7 @@ class TypoScriptTemplateInformationModuleFunctionController
             'createExtension' => 0,
             'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+        $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         return [
             'url' => $url,
@@ -145,8 +149,6 @@ class TypoScriptTemplateInformationModuleFunctionController
         if ($existTemplate) {
             $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Create extension template
         $newId = $this->pObj->createTemplate($this->id, (int)$saveId);
         if ($newId) {
@@ -155,20 +157,15 @@ class TypoScriptTemplateInformationModuleFunctionController
                 'id' => $this->id,
                 'SET[templatesOnPage]' => $newId
             ];
-            $url = $uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $url = $this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             throw new PropagateResponseException(new RedirectResponse($url, 303), 1607271781);
         }
         if ($existTemplate) {
             $lang = $this->getLanguageService();
             $lang->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_info.xlf');
             $assigns = [];
-            $assigns['LLPrefix'] = 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:';
-
-            $assigns['title'] = trim($this->templateRow['title']);
             $assigns['templateRecord'] = $this->templateRow;
-            if ($manyTemplatesMenu) {
-                $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
-            }
+            $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
             // Processing:
             $tableRows = [];
@@ -188,13 +185,11 @@ class TypoScriptTemplateInformationModuleFunctionController
                 'createExtension' => 0,
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ];
-            $assigns['editAllUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            $assigns['editAllUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
             // Rendering of the output via fluid
             $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:tstemplate/Resources/Private/Templates/InformationModule.html'
-            ));
+            $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/InformationModule.html');
             $view->assignMultiple($assigns);
             $theOutput = $view->render();
         } else {

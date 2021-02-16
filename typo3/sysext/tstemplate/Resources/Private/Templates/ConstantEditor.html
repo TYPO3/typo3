@@ -1,35 +1,54 @@
 <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/ConstantEditor'}" />
-<h3><f:translate key="{LLPrefix}editConstants"/></h3>
-<div>
-    <core:iconForRecord table="sys_template" row="{templateRecord}" />
-    <strong>&nbsp;<f:format.raw>{title}</f:format.raw></strong>
+<h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:editConstants"/></h3>
+<div class="row row-cols-auto g-3 align-items-center">
     <f:if condition="{manyTemplatesMenu}">
-        <div>
+        <div class="col">
             <f:format.raw>
                 {manyTemplatesMenu}
             </f:format.raw>
         </div>
     </f:if>
-    <div style="padding-top: 10px;"></div>
-    <f:if condition="{constantsMenu}">
-        <f:then>
-            <h3><f:translate key="{LLPrefix}category"/></h3>
-            <div><span class="text-nowrap">
-                <div class="form-inline form-inline-spaced"><f:format.raw>{constantsMenu}</f:format.raw></div>
-            </span></div>
-        </f:then>
-        <f:else>
-            <f:be.infobox title="{f:translate(key:'{LLPrefix}noConstants')}">
-                {f:translate(key:'{LLPrefix}noConstantsDescription')}
-            </f:be.infobox>
-        </f:else>
-    </f:if>
-    <div style="padding-top: 15px;"></div>
-    <f:if condition="{printFields}">
-        <div>
-            <f:format.raw>
-                {printFields}
-            </f:format.raw>
-        </div>
-    </f:if>
+    <div class="col mb-3">
+        <core:iconForRecord table="sys_template" row="{templateRecord}"/>
+        <strong>
+            <f:format.raw>{title}</f:format.raw>
+        </strong>
+    </div>
 </div>
+
+<f:if condition="{constantsMenu}">
+    <f:then>
+        <div class="row row-cols-auto g-3 align-items-center">
+            <div class="col-auto">
+                <label class="form-label">
+                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:category"/>
+                </label>
+                <f:format.raw>{constantsMenu}</f:format.raw>
+            </div>
+        </div>
+    </f:then>
+    <f:else>
+        <f:be.infobox title="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:noConstants')}">
+            {f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:noConstantsDescription')}
+        </f:be.infobox>
+    </f:else>
+</f:if>
+
+<f:if condition="f:count(subject: editorFields)">
+    <div class="tstemplate-constanteditor">
+        <f:for each="{editorFields}" as="group">
+            <h3>{group.label}</h3>
+            <f:for each="{group.items}" as="fieldInfo">
+                <fieldset class="form-section">
+                    <a name="{fieldInfo.identifier}"></a>
+                    <div class="form-group">
+                        <label class="t3js-formengine-label"><span>{fieldInfo.label}</span><code>[{fieldInfo.name}]</code></label>
+                        <f:if condition="{fieldInfo.description}"><p>{fieldInfo.description}</p></f:if>
+                        <f:if condition="{fieldInfo.hint}"><span class="text-muted">{fieldInfo.hint}</span></f:if>
+                        {fieldInfo.data -> f:format.raw()}
+                    </div>
+                </fieldset>
+            </f:for>
+        </f:for>
+    </div>
+</f:if>
