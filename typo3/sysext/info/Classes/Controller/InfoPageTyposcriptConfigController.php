@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -37,10 +38,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class InfoPageTyposcriptConfigController
 {
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
 
     /**
      * @var StandaloneView
@@ -57,18 +56,23 @@ class InfoPageTyposcriptConfigController
      */
     protected $id;
 
+    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
+    {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+    }
+
     /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
-    public function init($pObj)
+    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
         $this->view = $this->getFluidTemplateObject();
         $this->pObj = $pObj;
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
@@ -78,13 +82,10 @@ class InfoPageTyposcriptConfigController
      *
      * @return string HTML output
      */
-    public function main()
+    public function main(ServerRequestInterface $request)
     {
-        $pageId = (int)GeneralUtility::_GP('id');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
-        if ($pageId === 0) {
-            $this->view->assign('pageZero', 1);
+        if ($this->id === 0) {
+            $this->view->assign('pageZero', true);
             $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();
             if (count($pagesUsingTSConfig) > 0) {
                 $this->view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
@@ -116,9 +117,9 @@ class InfoPageTyposcriptConfigController
                                 ]
                             ],
                             'columnsOnly' => 'TSconfig,tsconfig_includes',
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                         ];
-                        $line['editIcon'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                        $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $line['editTitle'] = 'editTSconfig';
                         $line['title'] = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid'])
                             . ' ' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $row));
@@ -137,9 +138,9 @@ class InfoPageTyposcriptConfigController
                             ]
                         ],
                         'columnsOnly' => 'TSconfig,tsconfig_includes',
-                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     ];
-                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editIcon = htmlspecialchars($url);
                     $editTitle = 'editTSconfig_all';
                 } else {
@@ -147,13 +148,13 @@ class InfoPageTyposcriptConfigController
                     $editTitle = '';
                 }
 
-                $this->view->assign('tsconfParts99', 1);
+                $this->view->assign('tsconfParts99', true);
                 $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
                 $this->view->assign('lines', $lines);
                 $this->view->assign('editIcon', $editIcon);
                 $this->view->assign('editTitle', $editTitle);
             } else {
-                $this->view->assign('tsconfParts99', 0);
+                $this->view->assign('tsconfParts99', false);
                 // Defined global here!
                 $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
                 $tmpl->ext_expandAllNotes = 1;

@@ -36,23 +36,23 @@ class BackendLogModuleBootstrap
      *
      * @return string
      */
-    public function main()
+    public function main(ServerRequestInterface $request)
     {
         $options = [];
-        $_GET['tx_belog_system_beloglog']['pageId'] = GeneralUtility::_GP('id');
-        $_GET['tx_belog_system_beloglog']['layout'] = 'Plain';
-        $serverRequest = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        if ($serverRequest instanceof ServerRequestInterface) {
-            $GLOBALS['TYPO3_REQUEST'] = $serverRequest->withQueryParams($_GET);
-        }
+        $queryParams = $request->getQueryParams();
+        $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
+        $queryParams['tx_belog_system_beloglog']['layout'] = 'Plain';
+        $request = $request->withQueryParams($queryParams);
         $options['moduleConfiguration'] = [
             'extensionName' => 'Belog',
         ];
         $options['moduleName'] = 'system_BelogLog';
 
         $route = GeneralUtility::makeInstance(Route::class, '/system/BelogLog/', $options);
-        $serverRequest = $serverRequest->withAttribute('route', $route);
+        $request = $request->withAttribute('route', $route);
+        // This can be removed, once https://review.typo3.org/c/Packages/TYPO3.CMS/+/67519 is merged
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         $extbaseBootstrap = GeneralUtility::makeInstance(Bootstrap::class);
-        return $extbaseBootstrap->handleBackendRequest($serverRequest);
+        return $extbaseBootstrap->handleBackendRequest($request);
     }
 }

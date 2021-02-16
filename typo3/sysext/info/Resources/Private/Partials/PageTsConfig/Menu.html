@@ -1,9 +1,13 @@
-<div class="form-inline form-inline-spaced">
-    <f:format.raw>{dropdownMenu}</f:format.raw>
-    <div class="form-check">
-        <f:format.raw>{alphaSort}</f:format.raw>
-        <label class="form-check-label" for="checkTsconf_alphaSort">
-            {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
-        </label>
+<div class="row mb-2 row-cols-auto align-items-baseline">
+    <div class="col-auto">
+        <f:format.raw>{dropdownMenu}</f:format.raw>
+    </div>
+    <div class="col-auto">
+        <div class="form-check form-switch">
+            <label class="form-check-label" for="checkTsconf_alphaSort">
+                {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
+            </label>
+            <f:format.raw>{alphaSort}</f:format.raw>
+        </div>
     </div>
 </div>

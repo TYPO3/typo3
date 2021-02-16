@@ -173,18 +173,17 @@ class InfoModuleController
         $this->flashMessageService = $flashMessageService;
         $this->container = $container;
 
-        $languageService = $this->getLanguageService();
-        $languageService->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
     }
 
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request)
     {
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->menuConfig();
+        $this->menuConfig($request);
         $this->handleExternalFunctionValue();
     }
 
@@ -195,7 +194,6 @@ class InfoModuleController
      */
     protected function main(ServerRequestInterface $request)
     {
-        $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
 
         // The page will show only if there is a valid page and if this page
@@ -220,14 +218,14 @@ class InfoModuleController
 
             $this->view = $this->getFluidTemplateObject();
             $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
-            $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
+            $this->view->assign('functionMenuModuleContent', $this->extObjContent($request));
             // Setting up the buttons and markers for doc header
             $this->getButtons($request);
             $this->generateMenu();
-            $this->content .= $this->view->render();
+            $this->content = $this->view->render();
         } else {
             // If no access or if ID == zero
-            $this->content = $this->moduleTemplate->header($languageService->getLL('title'));
+            $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'));
         }
     }
 
@@ -240,10 +238,10 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->init();
+        $this->init($request);
 
         // Checking for first level external objects
-        $this->checkExtObj();
+        $this->checkExtObj($request);
 
         $this->main($request);
 
@@ -349,7 +347,7 @@ class InfoModuleController
      * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
      * Also loads the modTSconfig internal variable.
      */
-    protected function menuConfig()
+    protected function menuConfig(ServerRequestInterface $request)
     {
         // Page / user TSconfig settings and blinding of menu-items
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_info.'] ?? [];
@@ -360,7 +358,8 @@ class InfoModuleController
                 unset($this->MOD_MENU['function'][$key]);
             }
         }
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        $moduleSet = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
     /**
@@ -428,7 +427,7 @@ class InfoModuleController
      * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      */
-    protected function checkExtObj()
+    protected function checkExtObj(ServerRequestInterface $request)
     {
         if (is_array($this->extClassConf) && $this->extClassConf['name']) {
             if ($this->container->has($this->extClassConf['name'])) {
@@ -437,17 +436,18 @@ class InfoModuleController
                 $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
             }
             if (is_callable([$this->extObj, 'init'])) {
-                $this->extObj->init($this);
+                $this->extObj->init($this, $request);
             }
             // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+            $moduleSet = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
         }
     }
 
     /**
      * Calls the 'main' function inside the "Function menu module" if present
      */
-    protected function extObjContent()
+    protected function extObjContent(ServerRequestInterface $request)
     {
         if ($this->extObj === null) {
             $languageService = $this->getLanguageService();
@@ -462,30 +462,15 @@ class InfoModuleController
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             if (is_callable([$this->extObj, 'main'])) {
-                $main = $this->extObj->main();
+                $main = $this->extObj->main($request);
                 if ($main instanceof ResponseInterface) {
                     $stream = $main->getBody();
                     $stream->rewind();
                     $main = $stream->getContents();
                 }
-                $this->content .= $main;
+                return $main;
             }
         }
-    }
-
-    /**
-     * Return the content of the 'main' function inside the "Function menu module" if present
-     *
-     * @return string
-     */
-    protected function getExtObjContent()
-    {
-        $savedContent = $this->content;
-        $this->content = '';
-        $this->extObjContent();
-        $newContent = $this->content;
-        $this->content = $savedContent;
-        return $newContent;
     }
 
     /**

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -39,11 +40,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TranslationStatusController
 {
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
 
     /**
      * @var SiteLanguage[]
@@ -60,16 +58,21 @@ class TranslationStatusController
      */
     protected $id;
 
+    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
+    {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+    }
+
     /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
-    public function init($pObj)
+    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->id = (int)GeneralUtility::_GP('id');
-        $this->initializeSiteLanguages();
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->initializeSiteLanguages($request);
         $this->pObj = $pObj;
 
         // Setting MOD_MENU items as we need them for logging:
@@ -81,43 +84,46 @@ class TranslationStatusController
      *
      * @return string Output HTML for the module.
      */
-    public function main()
+    public function main(ServerRequestInterface $request)
     {
         $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
         if ($this->id) {
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
 
-            // Depth selector:
-            $theOutput .= '<div class="form-inline form-inline-spaced">';
-            $h_func = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
-            $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
-            $theOutput .= $h_func;
-            // Add CSH:
-            $theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="form-group"><span class="btn btn-default btn-sm">|</span></div><br />');
-            $theOutput .= '</div>';
-            // Showing the tree:
-            // Initialize starting point of page tree:
-            $treeStartingPoint = (int)$this->id;
-            $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
-            $depth = $this->pObj->MOD_SETTINGS['depth'];
-            // Initialize tree object:
-            $tree = GeneralUtility::makeInstance(PageTreeView::class);
-            $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-            $tree->addField('l18n_cfg');
-            // Creating top icon; the current page
-            $HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
-            $tree->tree[] = [
-                'row' => $treeStartingRecord,
-                'HTML' => $HTML
-            ];
-            // Create the tree from starting point:
-            if ($depth) {
-                $tree->getTree($treeStartingPoint, $depth, '');
-            }
-            // Render information table:
-            $theOutput .= $this->renderL10nTable($tree);
+            // Settings: Depth and language selectors
+            $theOutput .= '
+            <div class="row row-cols-auto mb-3 g-3 align-items-center">
+                <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) . '</div>
+                <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']) . '</div>
+                ' . BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col-auto"><span class="btn btn-default btn-sm">|</span></div>') . '
+            </div>';
+            // Showing the tree
+            $tree = $this->getTree();
+            // Render information table
+            $theOutput .= $this->renderL10nTable($tree, $request);
         }
         return $theOutput;
+    }
+
+    protected function getTree(): PageTreeView
+    {
+        // Initialize starting point of page tree
+        $treeStartingPoint = $this->id;
+        $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
+        $depth = (int)$this->pObj->MOD_SETTINGS['depth'];
+        $tree = GeneralUtility::makeInstance(PageTreeView::class);
+        $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+        $tree->addField('l18n_cfg');
+        $tree->tree[] = [
+            'row' => $treeStartingRecord,
+            // Creating top icon; the current page
+            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render()
+        ];
+        // Create the tree from starting point
+        if ($depth) {
+            $tree->getTree($treeStartingPoint, $depth);
+        }
+        return $tree;
     }
 
     /**
@@ -154,9 +160,10 @@ class TranslationStatusController
      * Rendering the localization information table.
      *
      * @param PageTreeView $tree The Page tree data
+     * @param ServerRequestInterface $request
      * @return string HTML for the localization information table.
      */
-    protected function renderL10nTable(&$tree)
+    protected function renderL10nTable(PageTreeView $tree, ServerRequestInterface $request)
     {
         $lang = $this->getLanguageService();
         // Title length:
@@ -165,7 +172,6 @@ class TranslationStatusController
         $output = '';
         $newOL_js = [];
         $langRecUids = [];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
@@ -196,13 +202,13 @@ class TranslationStatusController
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
             $status = $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? 'danger' : 'success';
             // Create links:
-            $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
                         $data['row']['uid'] => 'edit'
                     ]
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
             ]);
             $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
@@ -253,13 +259,13 @@ class TranslationStatusController
                             ) . '">' . $info . '</a></td>';
                         // Edit whole record:
                         // Create links:
-                        $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                        $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [
                                 'pages' => [
                                     $row['uid'] => 'edit'
                                 ]
                             ],
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                         ]);
                         $info = str_replace('###LANG_UID###', (string)$languageId, $viewPageLink);
                         $info .= '<a href="' . htmlspecialchars($editUrl)
@@ -297,14 +303,14 @@ class TranslationStatusController
         $headerCells = [];
         $headerCells[] = '<th>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</th>';
         if (is_array($langRecUids[0])) {
-            $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
                         implode(',', $langRecUids[0]) => 'edit'
                     ]
                 ],
                 'columnsOnly' => 'title,nav_title,l18n_cfg,hidden',
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
@@ -326,14 +332,14 @@ class TranslationStatusController
                 $headerCells[] = '<th class="col-border-left">' . htmlspecialchars($siteLanguage->getTitle()) . '</th>';
                 // Edit language overlay records:
                 if (is_array($langRecUids[$languageId])) {
-                    $editUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+                    $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                         'edit' => [
                             'pages' => [
                                 implode(',', $langRecUids[$languageId]) => 'edit'
                             ]
                         ],
                         'columnsOnly' => 'title,nav_title,hidden',
-                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     ]);
                     $editButton = '<a href="' . htmlspecialchars($editUrl)
                         . '" class="btn btn-default" title="' . $lang->sL(
@@ -343,8 +349,8 @@ class TranslationStatusController
                     $editButton = '';
                 }
                 // Create new overlay records:
-                $createLink = (string)$uriBuilder->buildUriFromRoute('tce_db', [
-                    'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                $createLink = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
+                    'redirect' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ]);
                 $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new-' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
@@ -453,10 +459,10 @@ class TranslationStatusController
      * Since the controller does not access the current request yet, we'll do it "old school"
      * to fetch the Site based on the current ID.
      */
-    protected function initializeSiteLanguages()
+    protected function initializeSiteLanguages(ServerRequestInterface $request)
     {
         /** @var SiteInterface $currentSite */
-        $currentSite = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
+        $currentSite = $request->getAttribute('site');
         $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->id);
     }
 

@@ -9,3 +9,12 @@ services:
 
   TYPO3\CMS\Info\Controller\InfoModuleController:
     tags: ['backend.controller']
+
+  TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController:
+    public: true
+
+  TYPO3\CMS\Info\Controller\PageInformationController:
+    public: true
+
+  TYPO3\CMS\Info\Controller\TranslationStatusController:
+    public: true

@@ -51,10 +51,8 @@ class PageInformationController
      */
     protected $pObj;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
 
     /**
      * @var array
@@ -68,51 +66,53 @@ class PageInformationController
      */
     protected $addElement_tdCssClass = [];
 
+    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
+    {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+    }
+
     /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
+     * @param ServerRequestInterface $request
      */
-    public function init($pObj)
+    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
      * Main, called from parent object
      *
+     * @param ServerRequestInterface $request
      * @return string Output HTML for the module.
      */
-    public function main()
+    public function main(ServerRequestInterface $request)
     {
-        $languageService = $this->getLanguageService();
-        $theOutput = '<h1>' . htmlspecialchars($languageService->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
+        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
 
         if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
             $this->fieldArray = $this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']]['fields'];
         }
 
-        $h_func = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
-        $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
-
-        $theOutput .= '<div class="form-inline form-inline-spaced">'
-            . $h_func
-            . '<div class="form-group">'
-            . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<span class="btn btn-default btn-sm">|</span>')
-            . '</div>'
-            . '</div>'
-            // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
-            // @todo: Refactor mess and have $request available
-            . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $GLOBALS['TYPO3_REQUEST']);
+        $theOutput .= '
+        <div class="row row-cols-auto mb-3 g-3 align-items-center">
+            <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) . '</div>
+            <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']) . '</div>
+            <div class="col-auto">' . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<span class="btn btn-default btn-sm">|</span>') . '</div>
+        </div>'
+            . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $request);
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
-            // @todo: request object should be submitted here as soon as it is available in TYPO3 v10.0.
-            $params = [];
+            $params = [
+                'request' => $request
+            ];
             $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         return $theOutput;
@@ -137,9 +137,7 @@ class PageInformationController
             ]
         ];
 
-        // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
-        // @todo: Refactor mess and have $request available
-        $this->fillFieldConfiguration($this->id, $GLOBALS['TYPO3_REQUEST']);
+        $this->fillFieldConfiguration($this->id);
         foreach ($this->fieldConfiguration as $key => $item) {
             $menu['pages'][$key] = $item['label'];
         }
@@ -180,9 +178,8 @@ class PageInformationController
      * Generate configuration for field selection
      *
      * @param int $pageId current page id
-     * @param ServerRequestInterface $request
      */
-    protected function fillFieldConfiguration(int $pageId, ServerRequestInterface $request)
+    protected function fillFieldConfiguration(int $pageId)
     {
         $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
         foreach ($modTSconfig as $key => $item) {
@@ -205,7 +202,7 @@ class PageInformationController
      * @return string HTML for the listing
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function getTable_pages($id, int $depth = 0, ServerRequestInterface $request)
+    protected function getTable_pages($id, int $depth, ServerRequestInterface $request)
     {
         $out = '';
         $lang = $this->getLanguageService();
@@ -261,8 +258,7 @@ class PageInformationController
                         'columnsOnly' => $field,
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     ];
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
                         . '" title="' . htmlspecialchars($iTitle) . '">'
                         . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -294,8 +290,8 @@ class PageInformationController
                         }
                 }
             }
-            $out = '<div class="table-fit">'
-                . '<table class="table table-striped table-hover typo3-page-pages">'
+            $out = '<div class="table-responsive">'
+                . '<table class="table table-striped table-hover mb-0">'
                 . '<thead>'
                 . $this->addElement($headerCells)
                 . '</thead>'
@@ -409,8 +405,7 @@ class PageInformationController
                             ],
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                         ];
-                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                        $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $attributes = PreviewUriBuilder::create((int)$row['uid'])
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();

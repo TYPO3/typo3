@@ -28,8 +28,6 @@
         <f:render partial="PageTsConfig/EditIcon" arguments="{editIcon: editIcon, editTitle: editTitle, editAll: 1}" />
     </f:then>
     <f:else>
-        <div class="nowrap">
-            <f:format.raw>{tree}</f:format.raw>
-        </div>
+        <f:format.raw>{tree}</f:format.raw>
     </f:else>
 </f:if>

@@ -14,148 +14,151 @@
     <input type="hidden" name="id" value="{constraint.pageId}" />
 </f:if>
 
-<f:form object="{constraint}" action="list" name="constraint" class="form-inline form-inline-spaced">
-    <div class="form-group">
-        <label for="belog-users"><f:translate key="users" /></label>
-        <f:form.select
-            property="userOrGroup"
-            options="{userGroups}"
-            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-select form-select-sm"
-            id="belog-users"
-        />
-    </div>
+<f:form object="{constraint}" action="list" name="constraint">
+    <div class="row row-cols-auto align-items-center">
 
-    <div class="form-group">
-        <label for="belog-max"><f:translate key="max" /></label>
-        <belog:form.translateLabelSelect
-            property="number"
-            options="{settings.selectableNumberOfLogEntries}"
-            optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-select form-select-sm"
-            id="belog-max"
-        />
-    </div>
-
-    <f:if condition="{workspacesExtensionLoaded}">
-        <f:if condition="{showWorkspaceSelector}">
-                <div class="form-group">
-                    <label for="belog-workspaces"><f:translate key="workspace" /></label>
-                    <f:form.select
-                        property="workspaceUid"
-                        options="{workspaces}"
-                        additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                        class="form-select form-select-sm"
-                        id="belog-workspaces"
-                    />
-                </div>
-        </f:if>
-    </f:if>
-
-    <f:if condition="{isSubmoduleLayout}">
-        <div class="form-group">
-            <label for="belog-depth"><f:translate key="chLog_menuDepth" /></label>
+        <div class="col-auto">
+            <label for="belog-users" class="form-label"><f:translate key="users" /></label>
             <f:form.select
-                property="depth"
-                options="{pageDepths}"
+                property="userOrGroup"
+                options="{userGroups}"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
                 class="form-select form-select-sm"
-                id="belog-depth"
+                id="belog-users"
             />
         </div>
-    </f:if>
 
-    <div class="form-group">
-        <label for="belog-time"><f:translate key="time" /></label>
-        <belog:form.translateLabelSelect
-            property="timeFrame"
-            options="{settings.selectableTimeFrames}"
-            optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-select form-select-sm"
-            id="belog-time"
-        />
-    </div>
-
-    <div class="form-group">
-        <label for="belog-action"><f:translate key="action" /></label>
-        <belog:form.translateLabelSelect
-            property="action"
-            options="{settings.selectableActions}"
-            optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-            class="form-select form-select-sm"
-            id="belog-action"
-        />
-    </div>
-
-    <f:if condition="{constraint.depth} > 0">
-        <div class="form-group">
-            <label for="belog-group"><f:translate key="groupByPage" /></label>
-            <f:form.checkbox
-                property="groupByPage"
-                value="1"
+        <div class="col-auto">
+            <label for="belog-max" class="form-label"><f:translate key="max" /></label>
+            <belog:form.translateLabelSelect
+                property="number"
+                options="{settings.selectableNumberOfLogEntries}"
+                optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                id="belog-group"
+                class="form-select form-select-sm"
+                id="belog-max"
             />
         </div>
-    </f:if>
 
-    <f:comment>
-        Date time fields for manual date selection
-    </f:comment>
-
-
-    <f:if condition="{constraint.timeFrame} == 30">
-        <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
-        <div class="form-group">
-            <label for="manualDateStart"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
-            <div class="input-group input-group-sm">
-                <f:form.textfield
-                        name="manualDateStart"
-                        value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStart}')}\")}"
-                        id="manualDateStart"
-                        class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
-                        data="{date-type: 'datetime'}"
+        <f:if condition="{workspacesExtensionLoaded}">
+            <f:if condition="{showWorkspaceSelector}">
+                    <div class="col-auto">
+                        <label for="belog-workspaces" class="form-label"><f:translate key="workspace" /></label>
+                        <f:form.select
+                            property="workspaceUid"
+                            options="{workspaces}"
+                            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                            class="form-select form-select-sm"
+                            id="belog-workspaces"
                         />
-                <f:form.hidden
-                        property="manualDateStart"
-                        value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
+                    </div>
+            </f:if>
+        </f:if>
+
+        <f:if condition="{isSubmoduleLayout}">
+            <div class="col-auto">
+                <label for="belog-depth" class="form-label"><f:translate key="chLog_menuDepth" /></label>
+                <f:form.select
+                    property="depth"
+                    options="{pageDepths}"
+                    additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                    class="form-select form-select-sm"
+                    id="belog-depth"
                 />
-                <span class="input-group-btn">
-                    <label class="btn btn-default" for="manualDateStart">
-                        <span class="fa fa-calendar"></span>
-                    </label>
-                </span>
             </div>
+        </f:if>
+
+        <div class="col-auto">
+            <label for="belog-time" class="form-label"><f:translate key="time" /></label>
+            <belog:form.translateLabelSelect
+                property="timeFrame"
+                options="{settings.selectableTimeFrames}"
+                optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                class="form-select form-select-sm"
+                id="belog-time"
+            />
         </div>
 
-        <div class="form-group">
-            <label for="manualDateStop"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
-            <div class="input-group input-group-sm">
-                <f:form.textfield
-                        name="manualDateStop"
-                        value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStop}')}"
-                        id="manualDateStop"
-                        class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
-                        data="{date-type: 'datetime'}"
-                        />
-                <f:form.hidden property="manualDateStop"
-                        value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
-                />
-                <span class="input-group-btn">
-                    <label class="btn btn-default" for="manualDateStop">
-                        <span class="fa fa-calendar"></span>
-                    </label>
-                </span>
-            </div>
+        <div class="col-auto">
+            <label for="belog-action" class="form-label"><f:translate key="action" /></label>
+            <belog:form.translateLabelSelect
+                property="action"
+                options="{settings.selectableActions}"
+                optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                class="form-select form-select-sm"
+                id="belog-action"
+            />
         </div>
 
-        <div class="form-group">
-            <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default btn-sm" />
-        </div>
-    </f:if>
+        <f:if condition="{constraint.depth} > 0">
+            <div class="col-auto">
+                <label for="belog-group" class="form-label"><f:translate key="groupByPage" /></label>
+                <f:form.checkbox
+                    property="groupByPage"
+                    value="1"
+                    additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                    id="belog-group"
+                />
+            </div>
+        </f:if>
+
+        <f:comment>
+            Date time fields for manual date selection
+        </f:comment>
+
+
+        <f:if condition="{constraint.timeFrame} == 30">
+            <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
+            <div class="col-auto">
+                <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
+                <div class="input-group input-group-sm">
+                    <f:form.textfield
+                            name="manualDateStart"
+                            value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStart}')}\")}"
+                            id="manualDateStart"
+                            class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
+                            data="{date-type: 'datetime'}"
+                            />
+                    <f:form.hidden
+                            property="manualDateStart"
+                            value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
+                    />
+                    <span class="input-group-btn">
+                        <label class="btn btn-default" for="manualDateStart">
+                            <span class="fa fa-calendar"></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
+                <div class="input-group input-group-sm">
+                    <f:form.textfield
+                            name="manualDateStop"
+                            value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStop}')}"
+                            id="manualDateStop"
+                            class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
+                            data="{date-type: 'datetime'}"
+                            />
+                    <f:form.hidden property="manualDateStop"
+                            value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
+                    />
+                    <span class="input-group-btn">
+                        <label class="btn btn-default" for="manualDateStop">
+                            <span class="fa fa-calendar"></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default btn-sm" />
+            </div>
+        </f:if>
+    </div>
 </f:form>
 
 </html>
