@@ -87,7 +87,7 @@ label {
 }
 
 .form-control-wrap {
-    margin: 9px 0;
+    margin: 0 0 0.5rem;
 }
 
 .form-control-holder {
@@ -111,6 +111,12 @@ label {
             position: absolute;
             top: 100%;
         }
+    }
+
+    > label,
+    > .form-label {
+        font-weight: 600;
+        margin: 0.25rem 0 0.5rem;
     }
 }
 
