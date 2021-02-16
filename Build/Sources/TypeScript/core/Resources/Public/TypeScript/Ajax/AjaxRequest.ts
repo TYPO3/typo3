@@ -15,6 +15,21 @@ import JQueryNativePromises from '../BackwardCompat/JQueryNativePromises';
 import {AjaxResponse} from './AjaxResponse';
 import {GenericKeyValue, InputTransformer} from './InputTransformer';
 
+/**
+ * @example send data as `Content-Type: multipart/form-data` (default)
+ * const request = new AjaxRequest('/endpoint');
+ * const response = request.post({item: { first: 'value'}});
+ * // sends `item[first]=value` in request body (analogous)
+ * // can be used like this server-side
+ * // `$value = ServerRequest::getParsedBody()['item']['first']`
+ *
+ * @example send data as `Content-Type: application/json` (must be set explicit)
+ * const request = new AjaxRequest('/endpoint');
+ * const response = request.post({item: { first: 'value'}});
+ * // sends `{"item":{"first":"value"}}` in request body
+ * // can be used like this server-side
+ * // `$value = json_decode((string)ServerRequest::getBody(), true)['item']['first']`
+ */
 class AjaxRequest {
   private static defaultOptions: RequestInit = {
     credentials: 'same-origin'
