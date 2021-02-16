@@ -206,10 +206,22 @@ class HrefLangGeneratorTest extends FunctionalTestCase
                 ],
                 [
                     '<link rel="alternate" hreflang="fr-FR"',
-
                 ]
             ],
-
+            'Pages with disabled hreflang generation should not render any hreflang tag' => [
+                'https://acme.com/no-hreflang',
+                [],
+                [
+                    '<link rel="alternate" hreflang="',
+                ]
+            ],
+            'Translated pages with disabled hreflang generation in original language should not render any hreflang tag' => [
+                'https://acme.com/de/kein-hreflang',
+                [],
+                [
+                    '<link rel="alternate" hreflang="',
+                ]
+            ],
         ];
     }
 

@@ -1011,6 +1011,10 @@ class RequestHandler implements RequestHandlerInterface
 
     protected function generateHrefLangTags(TypoScriptFrontendController $controller, ServerRequestInterface $request): void
     {
+        if ($controller->config['config']['disableHrefLang'] ?? false) {
+            return;
+        }
+
         $hrefLangs = $this->eventDispatcher->dispatch(
             new ModifyHrefLangTagsEvent($request)
         )->getHrefLangs();

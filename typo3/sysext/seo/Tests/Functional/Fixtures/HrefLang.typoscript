@@ -10,3 +10,7 @@ page {
     10 = TEXT
     10.value = Test
 }
+
+[page["uid"] == 1500]
+  config.disableHrefLang = 1
+[end]
