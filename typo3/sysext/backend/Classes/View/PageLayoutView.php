@@ -420,7 +420,7 @@ class PageLayoutView implements LoggerAwareInterface
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                             $singleElementHTML = '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
                             if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
-                                $defaultLanguageElementsByColumn[$columnId][] = ($row['_ORIG_uid'] ?? $row['uid']);
+                                $defaultLanguageElementsByColumn[$columnId][] = $row['uid'];
                             }
                             $editUidList .= $row['uid'] . ',';
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0 && $this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP);
