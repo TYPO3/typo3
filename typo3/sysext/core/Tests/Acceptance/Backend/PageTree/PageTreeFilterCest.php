@@ -106,8 +106,8 @@ class PageTreeFilterCest
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
 
-        $inlineMnGroupIcon = '#identifier-0_92 > g.node-icon-container';
-        $I->click($inlineMnGroupIcon);
+        $I->clickWithRightButton('//*[text()=\'inline mngroup\']');
+
         $I->canSeeElement('#contentMenu0');
         $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
 
