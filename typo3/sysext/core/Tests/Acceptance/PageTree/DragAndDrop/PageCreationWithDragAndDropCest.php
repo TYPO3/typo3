@@ -101,7 +101,15 @@ class PageCreationWithDragAndDropCest
         $mouse->dragAndDrop(static::$dragNode, $this->getPageIdentifier(22));
 
         $I->seeElement(static::$nodeEditInput);
-        $I->fillField(static::$nodeEditInput, '');
+
+        // We can't use $I->fillField() here since this sends a clear() to the element
+        // which drops the node creation in the tree. So we do it manually with selenium.
+        $nodeEditInput = static::$nodeEditInput;
+        $element = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($nodeEditInput));
+        });
+        $element->sendKeys('');
+
         $I->pressKey(static::$nodeEditInput, WebDriverKeys::ENTER);
         $I->waitForElementNotVisible(static::$nodeEditInput, 5);
     }
@@ -122,7 +130,16 @@ class PageCreationWithDragAndDropCest
         $mouse->dragAndDrop(static::$dragNode, $target);
 
         $I->seeElement(static::$nodeEditInput);
-        $I->fillField(static::$nodeEditInput, $pageTitle);
+
+        // Change the new page title.
+        // We can't use $I->fillField() here since this sends a clear() to the element
+        // which drops the node creation in the tree. So we do it manually with selenium.
+        $nodeEditInput = static::$nodeEditInput;
+        $element = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($nodeEditInput));
+        });
+        $element->sendKeys($pageTitle);
+
         $I->pressKey(static::$nodeEditInput, WebDriverKeys::ENTER);
         $I->waitForElementNotVisible(static::$nodeEditInput);
         $I->see($pageTitle);

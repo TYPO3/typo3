@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 use Codeception\Example;
+use Facebook\WebDriver\Exception\ElementClickInterceptedException;
 use Facebook\WebDriver\Exception\UnknownErrorException;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
@@ -137,7 +138,7 @@ abstract class AbstractElementsBasicCest
     {
         try {
             $I->click($tabTitle);
-        } catch (UnknownErrorException $exception) {
+        } catch (UnknownErrorException | ElementClickInterceptedException $exception) {
             // this is fired if the element can't be clicked, because for example another element overlays it.
             $this->scrollToTopOfFrame($I, $tabTitle, $referenceField);
         }
@@ -154,7 +155,7 @@ abstract class AbstractElementsBasicCest
             try {
                 $field->sendKeys(WebDriverKeys::PAGE_UP);
                 $I->click($tabTitle);
-            } catch (UnknownErrorException $exception) {
+            } catch (UnknownErrorException | ElementClickInterceptedException $exception) {
                 $doItAgain = true;
             }
         } while ($doItAgain === true && $maxPageUp > 0);

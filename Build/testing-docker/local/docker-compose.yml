@@ -1,7 +1,9 @@
 version: '2.3'
 services:
   chrome:
-    image: selenium/standalone-chrome:3.12
+    image: selenium/standalone-chrome:3.141
+    tmpfs:
+      - /dev/shm:rw,nosuid,nodev,noexec,relatime
 
   mysql:
     image: mysql:${MYSQL_VERSION}

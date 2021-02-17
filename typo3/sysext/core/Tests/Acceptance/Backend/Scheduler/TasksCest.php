@@ -95,6 +95,10 @@ class TasksCest
         $I->dontSeeElement('.tx_scheduler_mod1 .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
+        // Give tooltips some time to fully init
+        $I->wait(1);
+        $I->moveMouseOver('//a[contains(@data-bs-original-title, "Disable")]');
+        $I->wait(1);
         $I->click('//a[contains(@data-bs-original-title, "Disable")]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
