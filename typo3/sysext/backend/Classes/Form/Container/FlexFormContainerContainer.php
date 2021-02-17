@@ -87,7 +87,7 @@ class FlexFormContainerContainer extends AbstractContainer
         ];
 
         $panelHeaderAttributes = [
-            'class' => 'panel-heading' . ($flexFormContainerElementCollapsed ? ' collapsed' : ''),
+            'class' => 'panel-heading',
             'data-bs-toggle' => 'flexform-inline',
             'data-bs-target' => '#' . $flexFormDomContainerId,
         ];
@@ -103,7 +103,7 @@ class FlexFormContainerContainer extends AbstractContainer
         $html[] = '<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>';
         $html[] =    '<input class="t3js-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value="" />';
         $html[] =    '<div ' . GeneralUtility::implodeAttributes($panelHeaderAttributes, true) . '>';
-        $html[] =        '<div class="form-irre-header">';
+        $html[] =        '<div class="form-irre-header ' . ($flexFormContainerElementCollapsed ? ' collapsed' : '') . '">';
         $html[] =            '<div class="form-irre-header-cell form-irre-header-icon">';
         $html[] =                '<span class="caret"></span>';
         $html[] =            '</div>';

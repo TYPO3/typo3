@@ -134,7 +134,7 @@ class FlexFormContainerContainer {
 
         this.toggleField.value = collapseTriggered ? '1' : '0';
         this.panelButton.setAttribute('aria-expanded', collapseTriggered ? 'false' : 'true');
-        this.panelHeading.classList.toggle('collapsed', collapseTriggered);
+        this.panelButton.parentElement.classList.toggle('collapsed', collapseTriggered);
       }).bindTo(this.containerContent);
     });
   }
