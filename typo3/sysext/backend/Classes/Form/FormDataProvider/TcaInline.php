@@ -240,8 +240,12 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
 
         if ($result['inlineCompileExistingChildren']) {
             foreach ($connectedUidsOfDefaultLanguageRecord as $uid) {
-                $compiledChild = $this->compileChild($result, $fieldName, $uid);
-                $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+                try {
+                    $compiledChild = $this->compileChild($result, $fieldName, $uid);
+                    $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+                } catch (DatabaseRecordException $e) {
+                    // Nothing to do here, missing child is just not being rendered.
+                }
             }
         }
         return $result;
