@@ -73,8 +73,8 @@ Next, define the additional fluid template search paths via YAML.
    templates, register the new paths for the backend module as well.
 
 
-EXT:my_site_package/ext_localconf.php
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+EXT:my_site_package/ext_typoscript_setup.typoscript
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Register your EXT:form configuration for the backend via TypoScript. Read
 the :ref:`chapter about configuration concepts <concepts-configuration-yamlregistration-backend>`
