@@ -22,7 +22,7 @@ will generate :html:`<a href="some/site"><span>My page title</span></a>`.
 .. note::
 
    When adding additional classes to the `textWrap`, ensure quotes are correctly
-   escaped: :`html`:`<f:link.typolink parameter="123" textWrap="<span class=\"my-class\">|</span>"/>`.
+   escaped: :html:`<f:link.typolink parameter="123" textWrap="<span class=\"my-class\">|</span>"/>`.
 
 If `textWrap` is set, the typolink option `ATagBeforeWrap` is automatically
 enabled, because the `wrap` should only be applied to the link text. Every
