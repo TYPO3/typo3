@@ -319,9 +319,12 @@ class TranslationStatusController
         } else {
             $editIco = '';
         }
-        $headerCells[] = '<th class="col-border-left" colspan="2">' . $lang->sL(
-            'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default'
-        ) . '&nbsp;' . $editIco . '</th>';
+        if (isset($this->siteLanguages[0])) {
+            $defaultLanguageLabel = $this->siteLanguages[0]->getTitle();
+        } else {
+            $defaultLanguageLabel = $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default');
+        }
+        $headerCells[] = '<th class="col-border-left" colspan="2">' . htmlspecialchars($defaultLanguageLabel) . '&nbsp;' . $editIco . '</th>';
         foreach ($this->siteLanguages as $siteLanguage) {
             $languageId = $siteLanguage->getLanguageId();
             if ($languageId === 0) {
@@ -356,8 +359,8 @@ class TranslationStatusController
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
                 ) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
 
-                $headerCells[] = '<th class="btn-group">' . $editButton . $newButton . '</th>';
-                $headerCells[] = '<th>&nbsp;</th>';
+                $headerCells[] = '<th>' . $editButton . '</th>';
+                $headerCells[] = '<th>' . $newButton . '</th>';
             }
         }
 
