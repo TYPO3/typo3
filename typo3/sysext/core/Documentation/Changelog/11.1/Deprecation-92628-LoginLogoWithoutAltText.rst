@@ -12,7 +12,7 @@ Description
 The configuration of the extension "backend" has now the possibility to
 provide an alt-text for a custom login logo.
 
-As an alt-text is needed for accessibility reasons, not setting an alt-text is
+As an alt-text is needed for accessibility reasons, not setting an alt-text has been marked as
 deprecated.
 
 

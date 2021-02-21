@@ -11,10 +11,10 @@ Description
 
 The new Content Element wizard within the page module now allows
 to define an icon overlay for each wizard element using the new
-TSconfig option `iconOverlay` next to a defined `iconIdentifier`.
+TSconfig option :typoscript:`iconOverlay` next to a defined :typoscript:`iconIdentifier`.
 
 This is especially useful for custom content elements that use the
-same `iconIdentifier` several times, but still have to be differentiated.
+same :typoscript:`iconIdentifier` several times, but still have to be differentiated.
 
 The full configuration path is
 :typoscript:`mod.wizards.newContentElement.wizardItems.*.elements.*.iconOverlay`.
@@ -41,7 +41,7 @@ An example configuration could look like this:
 Impact
 ======
 
-It's now possible to define an `iconOverlay` next to an `iconIdentifier`
+It's now possible to define an :html:`iconOverlay` next to an :html:`iconIdentifier`
 for newContentElementWizard elements.
 
 .. index:: Backend, TSConfig, ext:backend

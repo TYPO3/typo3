@@ -9,7 +9,7 @@ See :issue:`89509`
 Description
 ===========
 
-TYPO3 offeres "FlexForms", which can be used to store data within an XML
+TYPO3 offers "FlexForms", which can be used to store data within an XML
 structure inside a single DB column. Since this information could also be
 relevant in the view, a new data processor
 :php:`TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor` is added. It
@@ -18,8 +18,8 @@ converts the FlexForm data of a given field into a Fluid readable array.
 Options
 -------
 
-:`fieldName`:  Field name of the column the FlexForm data is stored in (default: `pi_flexform`).
-:`as`:         The variable to be used within the result (default: `flexFormData`).
+:`fieldName`:  Field name of the column the FlexForm data is stored in (default: :sql:`pi_flexform`).
+:`as`:         The variable to be used within the result (default: :php:`flexFormData`).
 
 Example of a minimal TypoScript configuration
 ---------------------------------------------

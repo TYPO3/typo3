@@ -10,13 +10,13 @@ Description
 ===========
 
 Passing jQuery objects to the methods :js:`show()` and :js:`hide()` of the
-module `TYPO3/CMS/Backend/Tooltip` has been marked as deprecated.
+module :file:`TYPO3/CMS/Backend/Tooltip` has been marked as deprecated.
 
 
 Impact
 ======
 
-Passing jQuery objects to the aforementioned methods will log a deprecation in
+Passing jQuery objects to the aforementioned methods will log a deprecation message in
 the browser's console.
 
 

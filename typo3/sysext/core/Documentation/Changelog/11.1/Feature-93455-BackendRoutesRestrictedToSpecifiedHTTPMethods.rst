@@ -24,10 +24,10 @@ Impact
 ======
 
 Any Backend route, configured in extensions via
-:php:`EXT:my_extension/Configuration/Backend/Routes.php`
-and :php:`EXT:my_extension/Configuration/Backend/AjaxRoutes.php` now
-has a new, optional property `methods` which expects an array
-to set one or more HTTP verbs, such as `GET`, `POST`, `PUT` or `DELETE`.
+:file:`EXT:my_extension/Configuration/Backend/Routes.php`
+and :file:`EXT:my_extension/Configuration/Backend/AjaxRoutes.php`
+has a new, optional property :php:`methods`, which expects an array
+to set one or more HTTP verbs, such as :html:`GET`, :html:`POST`, :html:`PUT` or :html:`DELETE`.
 
 If no property is given, no restriction to a HTTP method is set.
 

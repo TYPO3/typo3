@@ -10,7 +10,7 @@ Description
 ===========
 
 The "File" module area (with the "File List" module) has a completely
-rewritten Navigation Component called `FileStorageTree`.
+rewritten Navigation Component called :html:`FileStorageTree`.
 
 This Navigation Component is based on the same functionality
 as the Page Tree - a SVG-based tree - and also offers lazy loading
@@ -19,7 +19,7 @@ of multiple nesting levels.
 The previous implementation was based on an iframe with much
 effort to load pure HTML instead of using SVGs. Since the file list component
 was the last occurrence of using the iframe technology for Navigation
-Components, this functionality will be deprecated in later TYPO3 v11 releases.
+Components, this functionality will be marked as deprecated in later TYPO3 v11 releases.
 
 The main benefit of the Folder Navigation based on the SVG tree is the enhanced
 loading functionality. This way, the Folder Navigation has the exact same
@@ -30,16 +30,16 @@ on top of the Component, just as the Page Tree Navigation Component.
 Impact
 ======
 
-The navigation state of the component is now stored similarly
-as the Page Tree as both components benefit of sharing code.
+The navigation state of the component is stored similarly
+to the Page Tree as both components benefit from sharing code.
 
 The filter inside the Folder Navigation allows to search
 for a folder or storage name, and even file names (no search through meta-data).
-Users can now filter for e.g. ".pdf" to show all available folders where
+Users can filter for e.g. ".pdf" to show all available folders where
 PDF files are stored.
 
 Extension Authors who want to use a file-related navigation component in
-their own extension can do this by specifying the navigationComponentId
+their own extension can do this by specifying the :php:`navigationComponentId`
 
 .. code-block:: php
 

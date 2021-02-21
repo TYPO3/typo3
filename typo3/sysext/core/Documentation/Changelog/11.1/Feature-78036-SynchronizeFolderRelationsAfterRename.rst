@@ -39,7 +39,7 @@ All :sql:`sys_filemounts` and :sql:`sys_file_collection` records which
 reference a renamed folder are now automatically synchronized.
 
 The :php:`AfterFolderRenamedEvent` event now features a new property
-:php:`$sourceFolder`. Extension authors can now use this event to add
+:php:`$sourceFolder`. Extension authors can use this event to add
 further synchronization for their custom records.
 
 .. index:: Backend, FAL, ext:core

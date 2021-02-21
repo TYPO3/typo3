@@ -12,14 +12,14 @@ Description
 
 TYPO3 is now capable of authentication via multiple factors, in short
 "multi-factor authentication" or "MFA". This is sometimes also referred to
-"2FA" as a 2-Factor Authentication process, where - in order to log in - the user
-needs
+"2FA" as a 2-Factor Authentication process, where - in order to log in - the
+user needs
 
 1) "something you know" (= the password) and
 2) "something you own" (= an authenticator device, or an authenticator app
    on mobile phones or desktop devices).
 
-Read more about the concepts of MFA here https://en.wikipedia.org/wiki/Multi-factor_authentication
+Read more about the concepts of `MFA on Wikipedia <https://en.wikipedia.org/wiki/Multi-factor_authentication>`_.
 
 TYPO3 ships with some built-in MFA providers by default. But more importantly,
 TYPO3 now provides an API to allow extension authors to integrate their own
@@ -37,16 +37,14 @@ Impact
 Managing MFA providers is currently accessible via the User Settings module in
 the new tab called "Account security", which was previously called just
 "Password". The Account security tab displays the current state, if MFA can
-be configured, is activated or additional providers can be configured.
+be configured or is already activated.
 
-By default, MFA can be configured for every backend user. It is possible to
-disable this field for editors via userTSconfig:
+By default, the new field is displayed for every backend user. It is possible to
+disable it for specific users via userTSconfig:
 
 .. code-block:: typoscript
 
    setup.fields.mfaProviders.disabled = 1
-
-The MFA configuration module displays all registered providers in an overview.
 
 Included MFA providers
 ----------------------
@@ -60,8 +58,8 @@ a shared secret can be entered) to connect an Authenticator app such as Google
 Authenticator, Microsoft Authenticator, 1Password, Authly or others to the
 system and then synchronize a token, which changes every 30 seconds.
 
-On each log-in, after successfully entering the password, the 6-digit code
-shown of the Authenticator App must be entered.
+On each log-in, after successfully entering the password, the six-digit code
+shown by the Authenticator App must be entered.
 
 2. Recovery codes
 
@@ -73,19 +71,19 @@ to activate this provider, and keep the codes at a safe place.
 Setting up MFA for a backend user
 ---------------------------------
 
-Each provider is displayed with its icon, the name and a short description.
-In case a provider is active this is indicated by a corresponding label, next to
-the providers' title. The same goes for a locked provider - an active provider,
-which can currently not be used since the provider specific implementation
-detected some unusual behaviour, e.g. to many false authentication attempts.
-Furthermore does the configured default provider indicate this state with a
-"star" icon, next to the providers title.
+Each provider is displayed with its icon, the name and a short description in
+the MFA configuration module. In case a provider is active this is indicated by
+a corresponding label, next to the providers' title. The same goes for a locked
+provider - an active provider, which can currently not be used since the
+provider specific implementation detected some unusual behaviour, e.g. to many
+false authentication attempts. Furthermore does the configured default provider
+indicate this state with a "star" icon, next to the providers title.
 
 Each inactive provider contains a "Setup" button which opens the corresponding
 configuration view. This view can be different depending on the MFA provider.
 
-Each provider contains an "Edit / Change" button, which allows to adjust the
-providers' setting. This view allows for example to set a provider as the
+Each active provider contains an "Edit / Change" button, which allows to adjust
+the providers' settings. This view allows for example to set a provider as the
 default (primary) provider, to be used on authentication. Note that the
 default provider setting will be automatically applied on activation of the
 first provider or in case it is the recommended provider for this user.
@@ -94,6 +92,10 @@ In case the provider is locked, the "Edit / Change" button changes its button
 title to "Unlock". This button can therefore be used to unlock the provider.
 This, depending on the provider to unlock, may require further actions by the
 user.
+
+The "Deactivate" button can be used to deactivate the provider. This will,
+depending on the provider, usually also completely remove all provider specific
+settings.
 
 Another view is the "Authentication view", which is displayed as soon as a user
 with at least one active provider has successfully passed the username and
@@ -128,9 +130,9 @@ only a specific MFA provider.
 Note that all of these deactivate buttons are executed immediately, after
 confirming the appearing dialog, and can't be undone.
 
-The backend users listing in the backend user module also displays the current
-MFA status ("enabled", "disabled" or "locked") for each user. This allows an
-administrator a quick glance of the MFA usage of their users.
+The backend users listing in the backend user module also displays whether MFA
+is enabled or currently locked, for each user. This allows an administrator a
+quick glance of the MFA usage of their users.
 
 Via the System => Configuration admin module, it's possible to get an overview
 of all currently registered providers in the installation. This is especially
@@ -152,8 +154,8 @@ allows 4 options:
 * `3`: Require multi-factor authentication only for admin users
 
 To set this requirement only for a specific user or user group, a new
-userTSconfig option `auth.mfa.required` is introduced. The userTSconfig option
-overrules the global configuration.
+userTSconfig option :typoscript:`auth.mfa.required` is introduced. The
+userTSconfig option overrules the global configuration.
 
 .. code-block:: typoscript
 
@@ -172,22 +174,16 @@ It is possible to only allow a subset of the available providers for some users
 or user groups.
 
 A new configuration option "Allowed multi-factor authentication providers" is
-available in the users and user groups record in the "Access Rights/List" tab.
-
-Note: Defining allowed MFA providers in a user record extends the settings
-already done in user groups records the user is attached to.
+available in the user groups record in the "Access List" tab.
 
 There may surely be use cases in which just a single provider should be
 disallowed for a specific user, which is however configured to be allowed in
-one of the assigned user groups. Another use case is to disallow providers
-for admin users, which simply do not have the "Access Rights/List" tab.
-Therefore, the new userTSconfig option `auth.mfa.disableProviders` can be used.
-It overrules the configuration from the "Access Rights/List", which means if
-a provider is allowed in "Access Rights/List" but disallowed via userTSconfig,
-it will be disallowed for the user or user group the TSconfig applies to.
-
-This does not affect the remaining allowed providers from the
-"Access Rights/List".
+one of the assigned user groups. Therefore, the new userTSconfig option
+:typoscript:`auth.mfa.disableProviders` can be used. It overrules the
+configuration from the "Access List", which means if a provider is allowed in
+"Access List" but disallowed via userTSconfig, it will be disallowed for the
+user or user group the TSconfig applies to. This does not affect the remaining
+allowed providers from the "Access List".
 
 .. code-block:: typoscript
 
@@ -196,11 +192,11 @@ This does not affect the remaining allowed providers from the
 **Recommended provider**
 
 To recommend a specific provider, :php:`$GLOBALS['TYPO3_CONF_VARS]['BE]['recommendedMfaProvider']`
-can be used and is set to `totp` (Time-based one-time password) by default.
+can be used and is set to :php:`totp` (Time-based one-time password) by default.
 
 To set a recommended provider on a per user or user group basis, the new
-userTSconfig option `auth.mfa.recommendedProvider` can be used, which overrules
-the global configuration.
+userTSconfig option :typosrcipt:`auth.mfa.recommendedProvider` can be used,
+which overrules the global configuration.
 
 .. code-block:: typoscript
 
@@ -238,7 +234,7 @@ show up prior to any other provider in the MFA configuration module. The
 ordering is also taken into account in the authentication step while logging
 in. Note that the user defined default provider will always take precedence.
 
-If you dont want your provider to be selectable as a default provider, set the
+If you don't want your provider to be selectable as a default provider, set the
 :yaml:`defaultProviderAllowed` argument to `false`.
 
 You can also completely deactivate existing providers with:
@@ -255,22 +251,23 @@ e.g. :php:`activate` or :php:`update`.
 Their exact task is explained in the corresponding PHPDoc of the Interface files
 and the Core MFA provider implementations.
 
-All of these methods are recieving either the current PSR-7 Request object, the
+All of these methods are receiving either the current PSR-7 Request object, the
 :php:`MfaProviderPropertyManager` or both. The :php:`MfaProviderPropertyManager`
-can be used to retreive and update the provider specific properties and
+can be used to retrieve and update the provider specific properties and
 also contains the :php:`getUser` method, providing the current user object.
 
-To store provider specific data, the MFA API uses a new database field `mfa`,
-which can be freely used by the providers. The field contains of a JSON encoded
-Array with each provider as array key. Common properties of such provider array
-could be `active` or `lastUsed`. Since the information is stored in either the
-`be_users` or the `fe_users` table, the context is implicit. Same goes for the
-user, the providers deal with. It's important to have such generic field so
-providers are able to store arbitrary data, TYPO3 does not need to know about.
+To store provider specific data, the MFA API uses a new database field
+:sql:`mfa`, which can be freely used by the providers. The field contains a
+JSON encoded Array with each provider as array key. Common properties of such
+provider array could be `active` or `lastUsed`. Since the information is stored
+in either the :sql:`be_users` or the :sql:`fe_users` table, the context is
+implicit. Same goes for the user the providers deal with. It is important to
+have such a generic field so providers are able to store arbitrary data TYPO3
+does not need to know about.
 
 To retrieve and update the providers data, the already mentioned
 :php:`MfaProviderPropertyManager`, which is automatically passed to all
 necessary provider methods, should be used. It is highly discouraged
-to directly access the `mfa` database field.
+to directly access the :sql:`mfa` database field.
 
 .. index:: Backend, Frontend, PHP-API, ext:core

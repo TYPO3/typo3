@@ -11,7 +11,7 @@ Description
 
 The backend user module provides a filter functionality with a
 couple of options to filter for. The filter state (selected options)
-is therefore also saved in the backend user settings, which means,
+is also saved in the backend user settings, which means,
 the filter state will remain after switching to another module.
 
 Since there are a lot of filter options which previously had to be
