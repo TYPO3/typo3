@@ -96,6 +96,11 @@ class TotpProvider implements MfaProviderInterface
      */
     public function verify(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
+        if (!$this->isActive($propertyManager) || $this->isLocked($propertyManager)) {
+            // Can not verify an inactive or locked provider
+            return false;
+        }
+
         $totp = $this->getTotp($request);
         $secret = $propertyManager->getProperty('secret', '');
         $verified = GeneralUtility::makeInstance(Totp::class, $secret)->verifyTotp($totp, 2);
@@ -122,8 +127,8 @@ class TotpProvider implements MfaProviderInterface
     public function activate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
         if ($this->isActive($propertyManager)) {
-            // Return since the user already activated this provider
-            return true;
+            // Can not activate an active provider
+            return false;
         }
 
         if (!$this->canProcess($request)) {
@@ -166,6 +171,11 @@ class TotpProvider implements MfaProviderInterface
      */
     public function update(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
+        if (!$this->isActive($propertyManager) || $this->isLocked($propertyManager)) {
+            // Can not update an inactive or locked provider
+            return false;
+        }
+
         $name = (string)($request->getParsedBody()['name'] ?? '');
         if ($name !== '') {
             return $propertyManager->updateProperties(['name' => $name]);
@@ -184,8 +194,8 @@ class TotpProvider implements MfaProviderInterface
      */
     public function unlock(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
-        if (!$this->isLocked($propertyManager)) {
-            // Return since this provider is not locked
+        if (!$this->isActive($propertyManager) || !$this->isLocked($propertyManager)) {
+            // Can not unlock an inactive or not locked provider
             return false;
         }
 
@@ -205,7 +215,7 @@ class TotpProvider implements MfaProviderInterface
     public function deactivate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
         if (!$this->isActive($propertyManager)) {
-            // Return since this provider is not activated
+            // Can not deactivate an inactive provider
             return false;
         }
 

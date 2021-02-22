@@ -40,6 +40,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class MfaConfigurationController extends AbstractMfaController
 {
     protected array $allowedActions = ['overview', 'setup', 'activate', 'deactivate', 'unlock', 'edit', 'save'];
+    private array $providerActionsWhenInactive = ['setup', 'activate'];
+    private array $providerActionsWhenActive = ['deactivate', 'unlock', 'edit', 'save'];
 
     /**
      * Main entry point, checking prerequisite, initializing and setting
@@ -62,6 +64,22 @@ class MfaConfigurationController extends AbstractMfaController
         if ($this->mfaProvider === null && $action !== 'overview') {
             $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotFound'), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('overview'));
+        }
+        // If a valid provider is given, check if the requested action can be performed on this provider
+        if ($this->mfaProvider !== null) {
+            $isProviderActive = $this->mfaProvider->isActive(
+                MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser())
+            );
+            // Some actions require the provider to be inactive
+            if ($isProviderActive && in_array($action, $this->providerActionsWhenInactive, true)) {
+                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerActive'), '', FlashMessage::ERROR);
+                return new RedirectResponse($this->getActionUri('overview'));
+            }
+            // Some actions require the provider to be active
+            if (!$isProviderActive && in_array($action, $this->providerActionsWhenActive, true)) {
+                $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotActive'), '', FlashMessage::ERROR);
+                return new RedirectResponse($this->getActionUri('overview'));
+            }
         }
         $this->initializeView($action);
 
@@ -195,8 +213,13 @@ class MfaConfigurationController extends AbstractMfaController
      */
     public function editAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->addFormButtons();
         $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
+        if ($this->mfaProvider->isLocked($propertyManager)) {
+            // Do not show edit view for locked providers
+            $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerIsLocked'), '', FlashMessage::ERROR);
+            return new RedirectResponse($this->getActionUri('overview'));
+        }
+        $this->addFormButtons();
         $providerResponse = $this->mfaProvider->handleRequest($request, $propertyManager, MfaViewType::EDIT);
         $this->view->assignMultiple([
             'provider' => $this->mfaProvider,
@@ -226,6 +249,9 @@ class MfaConfigurationController extends AbstractMfaController
                 $this->removeDefaultProvider();
             }
             $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.success'), $this->getLocalizedProviderTitle()), '', FlashMessage::OK);
+        }
+        if (!$this->mfaProvider->isActive($propertyManager)) {
+            return new RedirectResponse($this->getActionUri('overview'));
         }
         return new RedirectResponse($this->getActionUri('edit', ['identifier' => $this->mfaProvider->getIdentifier()]));
     }

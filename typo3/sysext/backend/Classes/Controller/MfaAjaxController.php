@@ -113,7 +113,7 @@ class MfaAjaxController
         $provider = $this->mfaProviderRegistry->getProvider($providerToDeactivate);
         $propertyManager = MfaProviderPropertyManager::create($provider, $this->user);
 
-        if (!$provider->deactivate($request, $propertyManager)) {
+        if (!$provider->isActive($propertyManager) || !$provider->deactivate($request, $propertyManager)) {
             return $this->getResponseData(false, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotDeactivated'), $lang->sL($provider->getTitle())));
         }
 
@@ -175,13 +175,12 @@ class MfaAjaxController
             if (!$currentBackendUser->isAdmin()) {
                 return false;
             }
-            // System maintainer checks are only required for backend users
+            // Providers from system maintainers can only be deactivated by system maintainers.
+            // This check is however only be necessary if the target is a backend user.
             if ($this->user instanceof BackendUserAuthentication) {
-                $systemMaintainer = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-                $isCurrentBackendUserSystemMaintainer = in_array((int)$currentBackendUser->user[$currentBackendUser->userid_column], $systemMaintainer, true);
-                $isTargetUserSystemMaintainer = in_array((int)$this->user->user[$this->user->userid_column], $systemMaintainer, true);
-                // Providers from system maintainers can only be deactivated by system maintainers
-                if ($isTargetUserSystemMaintainer && !$isCurrentBackendUserSystemMaintainer) {
+                $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
+                $isTargetUserSystemMaintainer = $this->user->isAdmin() && in_array((int)$this->user->user[$this->user->userid_column], $systemMaintainers, true);
+                if ($isTargetUserSystemMaintainer && !$this->getBackendUser()->isSystemMaintainer()) {
                     return false;
                 }
             }

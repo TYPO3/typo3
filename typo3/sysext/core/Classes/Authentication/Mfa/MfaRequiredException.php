@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Exception;
 
 /**
  * This exception is thrown during the authentication process
- * when a user has successfully passed its first authentication
+ * when a user has successfully passed his first authentication
  * method (e.g. via username+password), but is required to also
  * pass multi-factor authentication (e.g. one-time password).
  */

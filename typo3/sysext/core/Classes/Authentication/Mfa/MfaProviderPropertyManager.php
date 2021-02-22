@@ -94,13 +94,23 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
     }
 
     /**
-     * Update the provider properties or create the provider entry if not yet present
+     * Update the provider properties
+     * Note: If no entry exists yet, use createProviderEntry() instead.
+     *       This can be checked with hasProviderEntry().
      *
      * @param array $properties
      * @return bool
      */
     public function updateProperties(array $properties): bool
     {
+        // This is to prevent provider data inconsistency
+        if (!$this->hasProviderEntry()) {
+            throw new \InvalidArgumentException(
+                'No entry for provider ' . $this->providerIdentifier . ' exists yet. Use createProviderEntry() instead.',
+                1613993188
+            );
+        }
+
         if (!isset($properties['updated'])) {
             $properties['updated'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         }

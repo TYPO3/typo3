@@ -119,7 +119,7 @@ class RecoveryCodes
         }
 
         // Get the hash instance which was initially used to generate these codes.
-        // This could differ from the current default has instance. We however only need
+        // This could differ from the current default hash instance. We however only need
         // to check the first code since recovery codes can not be generated individually.
         $hasInstance = $this->passwordHashFactory->get(reset($codes), $this->mode);
 

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Authentication\Mfa;
 
 /**
- * Provides annotated information about the MFA provider – used in various views
+ * Annotated information about the MFA provider – used in various views
  *
  * @internal
  */

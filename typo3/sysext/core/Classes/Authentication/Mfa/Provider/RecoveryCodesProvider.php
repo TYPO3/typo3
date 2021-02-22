@@ -115,6 +115,11 @@ class RecoveryCodesProvider implements MfaProviderInterface
      */
     public function verify(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
+        if (!$this->isActive($propertyManager) || $this->isLocked($propertyManager)) {
+            // Can not verify an inactive or locked provider
+            return false;
+        }
+
         $recoveryCode = $this->getRecoveryCode($request);
         $codes = $propertyManager->getProperty('codes', []);
         $recoveryCodes = GeneralUtility::makeInstance(RecoveryCodes::class, $this->getMode($propertyManager));
@@ -203,8 +208,13 @@ class RecoveryCodesProvider implements MfaProviderInterface
     public function activate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
         if ($this->isActive($propertyManager)) {
-            // Return since the user already activated this provider
-            return true;
+            // Can not activate an active provider
+            return false;
+        }
+
+        if (!$this->activeProvidersExist($propertyManager)) {
+            // Can not activate since no other provider is activated yet
+            return false;
         }
 
         $recoveryCodes = GeneralUtility::trimExplode(PHP_EOL, (string)($request->getParsedBody()['recoveryCodes'] ?? ''));
@@ -243,7 +253,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
         // e.g. in FormEngine. Otherwise it would not be possible to deactivate
         // this provider if the last "fully" provider was deactivated before.
         if (!(bool)$propertyManager->getProperty('active')) {
-            // Return since this provider is not activated
+            // Can not deactivate an inactive provider
             return false;
         }
 
@@ -261,8 +271,8 @@ class RecoveryCodesProvider implements MfaProviderInterface
      */
     public function unlock(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
-        if (!$this->isLocked($propertyManager)) {
-            // Return since this provider is not locked
+        if (!$this->isActive($propertyManager) || !$this->isLocked($propertyManager)) {
+            // Can not unlock an inactive or not locked provider
             return false;
         }
 
@@ -299,6 +309,11 @@ class RecoveryCodesProvider implements MfaProviderInterface
 
     public function update(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
+        if (!$this->isActive($propertyManager) || $this->isLocked($propertyManager)) {
+            // Can not update an inactive or locked provider
+            return false;
+        }
+
         $name = (string)($request->getParsedBody()['name'] ?? '');
         if ($name !== '' && !$propertyManager->updateProperties(['name' => $name])) {
             return false;

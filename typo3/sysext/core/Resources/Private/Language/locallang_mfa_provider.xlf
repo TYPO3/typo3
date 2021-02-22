@@ -46,8 +46,8 @@
 			</trans-unit>
 			<trans-unit id="locked" resname="locked">
 				<source>
-					The maximum attempts for this provider are exceeded. Please use another provider, reset your
-					password or contact your administrator.
+					The maximum attempts for this provider are exceeded. Please use another provider or contact your
+					administrator.
 				</source>
 			</trans-unit>
 			<trans-unit id="edit.table.head" resname="edit.table.head">
@@ -102,7 +102,7 @@
 				<source>Scan the displayed QR code</source>
 			</trans-unit>
 			<trans-unit id="setup.qrCode.help" resname="setup.qrCode.help">
-				<source>Scan this code with your OTP application (e.g. GoogleAuthenticator).</source>
+				<source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
 			</trans-unit>
 			<trans-unit id="setup.secret.label" resname="setup.secret.label">
 				<source>Copy the shared secret</source>

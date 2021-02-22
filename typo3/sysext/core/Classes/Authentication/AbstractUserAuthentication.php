@@ -668,13 +668,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // passed - get the first provider for authentication, which is either the default provider
         // or the first active provider (based on the providers configured ordering).
         $provider = GeneralUtility::makeInstance(MfaProviderRegistry::class)->getFirstAuthenticationAwareProvider($this);
-        // Throw an exception (hopefully called in a middleware) when an active provider for the user exists
+        // Throw an exception (hopefully caught in a middleware) when an active provider for the user exists
         if ($provider !== null) {
             throw new MfaRequiredException($provider, 1613687097);
         }
-        // @todo If user has no active providers, check if the user is required to
-        //       setup MFA and redirect to a standalone registration controller.
-        //       Currently we just let the user proceed to its original target.
+        // @todo If the user has no active providers, check if the user is required
+        //       to setup MFA and redirect to a standalone registration controller.
+        //       Currently we just let the user proceed to his original target.
     }
 
     /**
