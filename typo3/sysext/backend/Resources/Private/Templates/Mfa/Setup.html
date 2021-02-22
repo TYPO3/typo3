@@ -8,7 +8,7 @@
             action="{f:be.uri(route:'mfa', parameters:'{action: \'activate\'}')}"
             method="post"
             enctype="multipart/form-data"
-            name="activate"
+            name="setup"
             id="mfaConfigurationController">
             <input type="hidden" name="identifier" value="{provider.identifier}" />
             {providerContent -> f:format.raw()}

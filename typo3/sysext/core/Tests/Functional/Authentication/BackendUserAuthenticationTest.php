@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -138,5 +139,16 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals('web_info,web_layout,web_list,file_filelist', $subject->groupData['modules']);
         self::assertEquals([1, 4, 5, 3, 2, 6], $subject->userGroupsUID);
         self::assertEquals(['groupValue' => 'from_group_6', 'userValue' => 'from_user_3'], $subject->getTSConfig()['test.']['default.']);
+    }
+
+    /**
+     * @test
+     */
+    public function mfaRequiredExceptionIsThrown(): void
+    {
+        $this->expectException(MfaRequiredException::class);
+        // This will setup a user and therefore implicit call the ->checkAuthentication() method
+        // which should fail since the user in the fixture has MFA activated but not yet passed.
+        $this->setUpBackendUser(4);
     }
 }

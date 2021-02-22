@@ -28,6 +28,7 @@ class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
         'description',
         'subgroup',
         'groupMods',
+        'mfa_providers',
         'tables_select',
         'tables_modify',
         'pagetypes_select',

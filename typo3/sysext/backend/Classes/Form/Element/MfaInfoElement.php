@@ -168,11 +168,14 @@ class MfaInfoElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement' => '
-            function(MfaInfoElement) {
-                new MfaInfoElement(' . GeneralUtility::quoteJSvalue('#' . $fieldId) . ', ' . json_encode(['userId' => $userId, 'tableName' => $tableName]) . ');
-            }'
-        ];
+        // JavaScript is not needed in case deactivation is not allowed or no active providers exist
+        if ($isDeactivationAllowed && $activeProviders !== []) {
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement' => '
+                function(MfaInfoElement) {
+                    new MfaInfoElement(' . GeneralUtility::quoteJSvalue('#' . $fieldId) . ', ' . json_encode(['userId' => $userId, 'tableName' => $tableName]) . ');
+                }'
+            ];
+        }
 
         $resultArray['html'] = $status . implode(PHP_EOL, $html);
         return $resultArray;

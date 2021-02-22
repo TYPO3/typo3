@@ -49,7 +49,7 @@ class MfaProviderRegistry
     public function getProvider(string $identifier): MfaProviderManifestInterface
     {
         if (!$this->hasProvider($identifier)) {
-            throw new \InvalidArgumentException('No MFA provider for identifier ' . $identifier . 'found.', 1610994735);
+            throw new \InvalidArgumentException('No MFA provider for identifier ' . $identifier . ' found.', 1610994735);
         }
 
         return $this->providers[$identifier];

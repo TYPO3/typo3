@@ -81,6 +81,7 @@ class TotpProvider implements MfaProviderInterface
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool
     {
         $attempts = (int)$propertyManager->getProperty('attempts', 0);
+        // @todo Also check for the secret here - No secret => Locked!
 
         // Assume the provider is locked in case the maximum attempts are exceeded.
         // A provider however can only be locked if set up - an entry exists in database.

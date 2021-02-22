@@ -1,0 +1,16 @@
+<be:mfa.ifHasState state="active" provider="{provider}">
+    <f:then>
+        isActive
+        <be:mfa.ifHasState state="locked" provider="{provider}">
+            <f:then>
+                isLocked
+            </f:then>
+            <f:else>
+                isUnlocked
+            </f:else>
+        </be:mfa.ifHasState>
+    </f:then>
+    <f:else>
+        isInactive
+    </f:else>
+</be:mfa.ifHasState>

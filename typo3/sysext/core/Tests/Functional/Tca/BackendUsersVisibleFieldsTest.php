@@ -53,6 +53,11 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
         'category_perms',
     ];
 
+    protected static $specialFields = [
+        'mfa' => 'Multi-factor authentication',
+        'lastlogin' => 'Last login'
+    ];
+
     /**
      * @test
      */
@@ -66,15 +71,17 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
 
         foreach (static::$backendUserFields as $expectedField) {
             self::assertNotFalse(
-                strpos($formResult['html'], '[' . $expectedField . ']'),
+                $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the HTML'
             );
         }
 
-        self::assertNotFalse(
-            strpos($formResult['html'], 'Last login'),
-            'The field lastlogin is not in the HTML'
-        );
+        foreach (static::$specialFields as $fieldName => $searchString) {
+            self::assertNotFalse(
+                strpos($formResult['html'], $searchString),
+                'The field ' . $fieldName . ' is not in the HTML'
+            );
+        }
     }
 
     /**
@@ -104,9 +111,11 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
             );
         }
 
-        self::assertNotFalse(
-            strpos($formResult['html'], 'Last login'),
-            'The field lastlogin is not in the HTML'
-        );
+        foreach (static::$specialFields as $fieldName => $searchString) {
+            self::assertNotFalse(
+                strpos($formResult['html'], $searchString),
+                'The field ' . $fieldName . ' is not in the HTML'
+            );
+        }
     }
 }
