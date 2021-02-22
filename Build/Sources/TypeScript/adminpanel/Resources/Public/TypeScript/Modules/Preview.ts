@@ -14,7 +14,7 @@ namespace TYPO3 {
     constructor() {
       this.dateField = <HTMLInputElement>document.getElementById('preview_simulateDate-date-hr');
       this.timeField = <HTMLInputElement>document.getElementById('preview_simulateDate-time-hr');
-      this.targetField = <HTMLInputElement>document.getElementById(this.dateField.dataset.target);
+      this.targetField = <HTMLInputElement>document.getElementById(this.dateField.dataset.bsTarget);
 
       if (this.targetField.value) {
         const initialDate = new Date(parseInt(this.targetField.value, 10) * 1000);
