@@ -195,7 +195,7 @@ To recommend a specific provider, :php:`$GLOBALS['TYPO3_CONF_VARS]['BE]['recomme
 can be used and is set to :php:`totp` (Time-based one-time password) by default.
 
 To set a recommended provider on a per user or user group basis, the new
-userTSconfig option :typosrcipt:`auth.mfa.recommendedProvider` can be used,
+userTSconfig option :typoscript:`auth.mfa.recommendedProvider` can be used,
 which overrules the global configuration.
 
 .. code-block:: typoscript
