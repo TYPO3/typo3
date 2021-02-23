@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 use GuzzleHttp\Exception\GuzzleException as GuzzleExceptionInterface;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
@@ -30,18 +29,17 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Client\RequestExceptionInterface;
-use TYPO3\CMS\Core\Http\Client;
 use TYPO3\CMS\Core\Http\Request;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Http\Client
+ * Testcase for \GuzzleHTTP\Client compatibility with TYPO3 PSR-7 Stack
  */
 class ClientTest extends UnitTestCase
 {
     public function testImplementsPsr18ClientInterface(): void
     {
-        $client = new Client($this->prophesize(GuzzleClientInterface::class)->reveal());
+        $client = new Client();
         self::assertInstanceOf(ClientInterface::class, $client);
     }
 
@@ -55,9 +53,7 @@ class ClientTest extends UnitTestCase
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $handler->push(GuzzleMiddleware::history($transactions));
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $request1 = new Request('https://example.com', 'GET', 'php://temp');
         $response1 = $client->sendRequest($request1);
@@ -86,9 +82,7 @@ class ClientTest extends UnitTestCase
             $exception->reveal()
         ]);
         $handler = GuzzleHandlerStack::create($mock);
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $this->expectException(RequestExceptionInterface::class);
         $client->sendRequest($request);
@@ -103,9 +97,7 @@ class ClientTest extends UnitTestCase
             $exception->reveal()
         ]);
         $handler = GuzzleHandlerStack::create($mock);
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $this->expectException(NetworkExceptionInterface::class);
         $client->sendRequest($request);
@@ -119,9 +111,7 @@ class ClientTest extends UnitTestCase
             }
         ]);
         $handler = GuzzleHandlerStack::create($mock);
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $this->expectException(ClientExceptionInterface::class);
         $client->sendRequest($request);
@@ -135,9 +125,7 @@ class ClientTest extends UnitTestCase
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $handler->push(GuzzleMiddleware::history($transactions));
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $response = $client->sendRequest($request);
@@ -154,9 +142,7 @@ class ClientTest extends UnitTestCase
             new GuzzleResponse(500),
         ]);
         $handler = GuzzleHandlerStack::create($mock);
-        $guzzleClient = new GuzzleClient(['handler' => $handler]);
-
-        $client = new Client($guzzleClient);
+        $client = new Client(['handler' => $handler]);
 
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $response1 = $client->sendRequest($request);

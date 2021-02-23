@@ -227,7 +227,7 @@ services:
     alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
     public: true
   Psr\Http\Client\ClientInterface:
-    alias: TYPO3\CMS\Core\Http\Client
+    alias: GuzzleHttp\Client
     public: true
   Psr\Http\Message\RequestFactoryInterface:
     alias: TYPO3\CMS\Core\Http\RequestFactory
