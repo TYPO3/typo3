@@ -19,10 +19,10 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-backend": "11.1.*@dev",
-		"typo3/cms-core": "11.1.*@dev",
-		"typo3/cms-fluid": "11.1.*@dev",
-		"typo3/cms-frontend": "11.1.*@dev",
+		"typo3/cms-backend": "11.1.0",
+		"typo3/cms-core": "11.1.0",
+		"typo3/cms-fluid": "11.1.0",
+		"typo3/cms-frontend": "11.1.0",
 		"typo3fluid/fluid": "^2.6.10 || ^3",
 		"psr/http-message": "^1.0",
 		"psr/http-server-handler": "^1.0",
