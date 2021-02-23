@@ -21,7 +21,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
@@ -717,7 +716,7 @@ class ConnectionMigrator
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatform($index);
+            $isSqlite = $this->tableRunsOnSqlite($index);
 
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
@@ -727,7 +726,7 @@ class ConnectionMigrator
                     continue;
                 }
 
-                $renameColumnTableDiff = GeneralUtility::makeInstance(
+                $changedTables[$index . ':' . $changedColumn->column->getName()] = GeneralUtility::makeInstance(
                     TableDiff::class,
                     $changedTable->name,
                     [],
@@ -738,12 +737,7 @@ class ConnectionMigrator
                     [],
                     $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
                 );
-                if ($databasePlatform === 'postgresql') {
-                    $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->column;
-                }
-                $changedTables[$index . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
-
-                if ($databasePlatform === 'sqlite') {
+                if ($isSqlite) {
                     break;
                 }
             }
@@ -781,7 +775,7 @@ class ConnectionMigrator
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
             $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
 
-            $isSqlite = $this->getDatabasePlatform($index) === 'sqlite';
+            $isSqlite = $this->tableRunsOnSqlite($index);
             $addMoreOperations = true;
 
             if (count($changedTable->removedColumns) !== 0) {
@@ -1336,19 +1330,9 @@ class ConnectionMigrator
         );
     }
 
-    protected function getDatabasePlatform(string $tableName): string
+    protected function tableRunsOnSqlite(string $tableName): bool
     {
-        $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
-        if ($databasePlatform instanceof PostgreSqlPlatform) {
-            return 'postgresql';
-        }
-        if ($databasePlatform instanceof SQLServerPlatform) {
-            return 'mssql';
-        }
-        if ($databasePlatform instanceof SqlitePlatform) {
-            return 'sqlite';
-        }
-
-        return 'mysql';
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        return $connection->getDatabasePlatform() instanceof SqlitePlatform;
     }
 }
