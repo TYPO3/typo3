@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -175,6 +176,9 @@ class BackendModuleController
     protected function getBackendUserConfirmationRedirect(string $targetController): ?ResponseInterface
     {
         if ($this->getSessionService()->isAuthorizedBackendUserSession()) {
+            return null;
+        }
+        if (Environment::getContext()->isDevelopment()) {
             return null;
         }
         $redirectUri = $this->getBackendUserConfirmationUri([
