@@ -54,6 +54,10 @@ class Typo3tempFileService
 
     public function getStatsFromStorageByUid(int $storageUid): array
     {
+        if ($storageUid === 0) {
+            return $this->statsFromTypo3tempProcessed();
+        }
+
         $storage = $this->storageRepository->findByUid($storageUid);
         return $this->getStatsFromStorage($storage);
     }
@@ -89,6 +93,31 @@ class Typo3tempFileService
                 $stats[] = $stat;
             }
         }
+        return $stats;
+    }
+
+    /**
+     * Directory statistics for typo3temp/assets/_processed_ folder
+     *
+     * @return array
+     */
+    protected function statsFromTypo3tempProcessed(): array
+    {
+        $typo3TempProcessedAssetsPath = '/typo3temp/assets/_processed_/';
+
+        $stats = [
+            'storageUid' => 0,
+            'directory' => $typo3TempProcessedAssetsPath,
+        ];
+
+        $basePath = Environment::getPublicPath() . $typo3TempProcessedAssetsPath;
+        if (is_dir($basePath)) {
+            $fileFinder = new Finder();
+            $stats['numberOfFiles'] = $fileFinder->files()->in($basePath)->count();
+        } else {
+            $stats['numberOfFiles'] = 0;
+        }
+
         return $stats;
     }
 
