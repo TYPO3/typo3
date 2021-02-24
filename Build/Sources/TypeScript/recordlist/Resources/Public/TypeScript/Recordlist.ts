@@ -16,6 +16,8 @@ import Icons = require('TYPO3/CMS/Backend/Icons');
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
+import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
 declare global {
   const T3_THIS_LOCATION: string;
@@ -60,6 +62,9 @@ class Recordlist {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
+    DocumentService.ready().then((): void => {
+      Tooltip.initialize('.table-fit a[title]');
+    });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
   }
 

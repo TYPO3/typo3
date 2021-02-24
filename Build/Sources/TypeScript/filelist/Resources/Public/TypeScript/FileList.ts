@@ -16,6 +16,7 @@ import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
+import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 /**
@@ -76,6 +77,7 @@ class Filelist {
   constructor() {
     Filelist.processTriggers();
     DocumentService.ready().then((): void => {
+      Tooltip.initialize('.table-fit a[title]');
       Filelist.registerTreeUpdateEvents();
       // file index events
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {

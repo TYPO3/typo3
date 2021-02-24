@@ -133,14 +133,7 @@ class ExtensionManager {
       this.Update.initializeEvents();
       this.UploadForm.initializeEvents();
 
-      Tooltip.initialize('#typo3-extension-list [title]', {
-        delay: {
-          show: 500,
-          hide: 100,
-        },
-        trigger: 'hover',
-        container: 'body',
-      });
+      Tooltip.initialize('#typo3-extension-list [title]');
     });
   }
 

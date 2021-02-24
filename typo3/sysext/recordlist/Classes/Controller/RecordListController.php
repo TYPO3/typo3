@@ -86,7 +86,6 @@ class RecordListController
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
 
         $this->iconFactory = $iconFactory;
         $this->eventDispatcher = $eventDispatcher;

@@ -33,6 +33,16 @@ class Tooltip {
   }
 
   public initialize(selector: string, options: Partial<BootstrapTooltip.Options> = {}): void {
+    if (Object.entries(options).length === 0) {
+      options = {
+        container: 'body',
+        trigger: 'hover',
+        delay: {
+          show: 500,
+          hide: 100
+        }
+      }
+    }
     const elements = document.querySelectorAll(selector);
     for (const element of elements) {
       new BootstrapTooltip(element, options);
