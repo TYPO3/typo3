@@ -33,6 +33,8 @@ nbproject
 #
 # Ignore build stuff
 /.ddev/*
+/Build/.phpunit.result.cache
+/Build/FunctionalTests-Job-*
 /Build/bower_components/*
 /Build/node_modules/*
 /Build/JavaScript

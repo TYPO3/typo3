@@ -52,7 +52,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
-    command: php vendor/typo3/testing-framework/Resources/Core/Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+    command: php Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
 
   prepare_acceptance_backend_mariadb:
     image: alpine:3.8
@@ -817,7 +817,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
-    command: php vendor/typo3/testing-framework/Resources/Core/Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
+    command: php Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
 
   prepare_functional_mariadb:
     image: alpine:3.8
@@ -861,7 +861,7 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         fi
@@ -915,7 +915,7 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         fi
@@ -972,7 +972,7 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE}\"
         fi
@@ -1026,7 +1026,7 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-postgres ${TEST_FILE}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-postgres ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-postgres ${TEST_FILE}\"
         fi
@@ -1068,7 +1068,7 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
+          COMMAND=\"vendor/phpunit/phpunit/phpunit -c Build/FunctionalTests-Job-${THISCHUNK}.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         else
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         fi
