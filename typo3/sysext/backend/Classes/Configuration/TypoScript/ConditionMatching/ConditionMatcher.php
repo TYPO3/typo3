@@ -65,6 +65,7 @@ class ConditionMatcher extends AbstractConditionMatcher
         $backend->user->isLoggedIn = $backendUserAspect->get('isLoggedIn');
         $backend->user->userId = $backendUserAspect->get('id');
         $backend->user->userGroupList = implode(',', $backendUserAspect->get('groupIds'));
+        $backend->user->userGroupIds = $backendUserAspect->get('groupIds');
 
         $workspaceAspect = $this->context->getAspect('workspace');
         $workspace = new \stdClass();

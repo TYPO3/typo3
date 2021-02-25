@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Configuration\TypoScript\Condition
 
 use Prophecy\Argument;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -83,7 +84,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     }
 
     /**
-     * Tests whether usergroup comparison matches.
+     * Tests whether usergroup comparison does not match.
      *
      * @test
      */
@@ -93,6 +94,33 @@ class ConditionMatcherTest extends FunctionalTestCase
         $subject = $this->getConditionMatcher();
         self::assertFalse($subject->match('[usergroup("0,-1")]'));
         self::assertFalse($subject->match('[usergroup(\'0,-1\')]'));
+    }
+
+    /**
+     * Tests whether checking for a user group user matches
+     *
+     * @test
+     */
+    public function frontendUserGroupInOperatorConditionMatchesGroupId(): void
+    {
+        $this->setupFrontendUserContext([13, 14, 15]);
+        $subject = $this->getConditionMatcher();
+        self::assertTrue($subject->match('[14 in frontend.user.userGroupIds]'));
+    }
+
+    /**
+     * Tests whether checking for a user group user matches
+     *
+     * @test
+     */
+    public function backendUserGroupInOperatorConditionMatchesGroupId(): void
+    {
+        $backendUser = new BackendUserAuthentication();
+        $backendUser->userGroupsUID = [13, 14, 15];
+        GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+
+        $subject = $this->getConditionMatcher();
+        self::assertTrue($subject->match('[14 in backend.user.userGroupIds]'));
     }
 
     /**

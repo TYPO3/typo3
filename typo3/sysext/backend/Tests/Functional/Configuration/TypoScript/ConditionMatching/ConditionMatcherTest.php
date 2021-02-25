@@ -74,6 +74,17 @@ class ConditionMatcherTest extends FunctionalTestCase
     }
 
     /**
+     * Tests whether checking for a user group matches.
+     *
+     * @test
+     */
+    public function userGroupInOperatorConditionMatchesGroupId(): void
+    {
+        $subject = $this->getConditionMatcher();
+        self::assertTrue($subject->match('[14 in backend.user.userGroupIds]'));
+    }
+
+    /**
      * Tests whether user comparison matches.
      *
      * @test
