@@ -36,13 +36,14 @@ stages:
   # Stages for pre-merge
   - early
   - main
-  - notify
   # Stages for nightly
   - integrity
   - unit
   - acceptance
   - functional
   - functional2
+  # Notify gerrit-adapter as last pipeline stage
+  - notify
 
 include:
   # Pre-merge tests are triggered by pushing to changes to gerrit.
@@ -65,3 +66,4 @@ include:
   - local: 'Build/gitlab-ci/nightly/acceptance-backend.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-pagetree.yml'
   - local: 'Build/gitlab-ci/nightly/functional.yml'
+  - local: 'Build/gitlab-ci/nightly/notify.yml'
