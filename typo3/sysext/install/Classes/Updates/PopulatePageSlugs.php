@@ -141,8 +141,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
             $suggestedSlugs = $this->getSuggestedSlugs('tx_realurl_pathcache', 'cache_id');
         }
 
-        $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
-        $fieldConfig['generatorOptions']['fields'] = ['tx_realurl_pathsegment,title'];
+        $fieldConfig = $this->getSlugFieldConfig();
         $evalInfo = !empty($fieldConfig['eval']) ? GeneralUtility::trimExplode(',', $fieldConfig['eval'], true) : [];
         $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
@@ -269,5 +268,21 @@ class PopulatePageSlugs implements UpgradeWizardInterface
             ->tablesExist([$table]);
 
         return $tableExists;
+    }
+
+    /**
+     * Load the TCA field configuration for the slug field
+     * and add further static fields to generatorOptions.
+     *
+     * @return array
+     */
+    protected function getSlugFieldConfig(): array
+    {
+        $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
+
+        // Add the EXT:realurl specific field to generatorOptions
+        $fieldConfig['generatorOptions']['fields'] = ['tx_realurl_pathsegment,title'];
+
+        return $fieldConfig;
     }
 }
