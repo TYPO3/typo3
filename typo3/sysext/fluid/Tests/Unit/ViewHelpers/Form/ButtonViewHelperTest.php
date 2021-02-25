@@ -57,4 +57,28 @@ class ButtonViewHelperTest extends ViewHelperBaseTestcase
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         self::assertEquals($expectedResult, $actualResult);
     }
+
+    /**
+     * @test
+     */
+    public function closingTagIsEnforcedOnEmptyContent(): void
+    {
+        $this->viewHelper->setRenderChildrenClosure(
+            function () {
+                // Empty content
+                return '';
+            }
+        );
+
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'type' => 'reset',
+            ]
+        );
+
+        $expectedResult = '<button type="reset" name="" value=""></button>';
+        $actualResult = $this->viewHelper->initializeArgumentsAndRender();
+        self::assertEquals($expectedResult, $actualResult);
+    }
 }
