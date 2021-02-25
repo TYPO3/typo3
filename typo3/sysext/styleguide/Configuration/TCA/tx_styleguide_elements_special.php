@@ -97,7 +97,6 @@ return [
             'label' => 'special_custom_1, identical to be_groups custom_options description',
             'description' => 'field description',
             'config' => [
-                // @todo: register a "custom" option so something is shown here
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'custom',
