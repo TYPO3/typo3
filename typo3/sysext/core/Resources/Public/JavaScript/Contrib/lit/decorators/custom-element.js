@@ -1,0 +1,1 @@
+define(["exports","@lit/reactive-element/decorators/custom-element"],(function(exports,customElement){"use strict";Object.keys(customElement).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return customElement[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

@@ -18,9 +18,19 @@ var require = {
       main: 'lit-html'
     },
     {
+      name: '@lit/reactive-element',
+      location: 'sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element',
+      main: 'reactive-element'
+    },
+    {
       name: 'lit-element',
       location: 'sysext/core/Resources/Public/JavaScript/Contrib/lit-element',
-      main: 'lit-element'
+      main: 'index'
+    },
+    {
+      name: 'lit',
+      location: 'sysext/core/Resources/Public/JavaScript/Contrib/lit',
+      main: 'index'
     },
   ],
   shim: {

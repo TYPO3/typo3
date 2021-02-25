@@ -1,0 +1,1 @@
+define(["exports","lit-html/directives/guard"],(function(exports,guard){"use strict";Object.keys(guard).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return guard[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

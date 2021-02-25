@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, property, LitElement} from 'lit-element';
+import {LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 enum UpdateMode {

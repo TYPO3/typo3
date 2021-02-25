@@ -11,14 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, html, LitElement, query, property, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, property, query} from 'lit/decorators';
+import {until} from 'lit/directives/until';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {PageTree} from '../PageTree/PageTree';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {TreeNode} from './TreeNode';
 import {TreeNodeSelection, Toolbar} from '../SvgTree';
-import {until} from 'lit-html/directives/until';
 import ElementBrowser = require('TYPO3/CMS/Recordlist/ElementBrowser');
 import LinkBrowser = require('TYPO3/CMS/Recordlist/LinkBrowser');
 import 'TYPO3/CMS/Backend/Element/IconElement';

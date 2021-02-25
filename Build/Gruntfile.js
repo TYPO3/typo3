@@ -451,37 +451,43 @@ module.exports = function (grunt) {
     },
     rollup: {
       options: {
-        format: 'amd',
-        onwarn: function(warning) {
-          if (warning.code === 'THIS_IS_UNDEFINED' && grunt.file.match('*/lit-html/directives/async-*.js')) {
-            // lit-html's Symbol.asyncIterator polyfill in async-{append/replace}.js contains
-            // a global check for `this`: `(this && this.__asyncValues) || function (o) {`.
-            // rollup will rewrite that to `function (o) {` and warn about rewriting `this`.
-            // The rewrite is perfectly ok, the AMD module will act as a singleton, so no
-            // global window object is needed here. The warning is therefore silenced.
-            return;
-          }
-          console.warn( warning.message );
-        }
+        format: 'amd'
       },
       'lit-html': {
         options: {
           preserveModules: true,
           plugins: () => [
+            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
             {
               name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
             }
           ]
         },
         files: {
           '<%= paths.core %>Public/JavaScript/Contrib/lit-html': [
-            'node_modules/lit-html/lit-html.js',
+            'node_modules/lit-html/*.js',
             'node_modules/lit-html/directives/*.js',
-            'node_modules/lit-html/lib/*.js',
+          ]
+        }
+      },
+      '@lit/reactive-element': {
+        options: {
+          preserveModules: true,
+          plugins: () => [
+            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
+            },
+          ]
+        },
+        files: {
+          '<%= paths.core %>Public/JavaScript/Contrib/@lit/reactive-element': [
+            'node_modules/@lit/reactive-element/*.js',
+            'node_modules/@lit/reactive-element/decorators/*.js',
             // omitted, empty
-            '!node_modules/lit-html/lib/render-options.js',
-            '!node_modules/lit-html/lib/template-processor.js',
+            '!node_modules/@lit/reactive-element/reactive-controller.js'
           ]
         }
       },
@@ -489,18 +495,16 @@ module.exports = function (grunt) {
         options: {
           preserveModules: true,
           plugins: () => [
+            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
             {
               name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
             },
             {
               name: 'externals',
               resolveId: (source) => {
-                if (source === 'lit-html/lit-html.js') {
-                  return {id: 'lit-html', external: true}
-                }
-                if (source === 'lit-html/lib/shady-render.js') {
-                  return {id: 'lit-html/lib/shady-render', external: true}
+                if (source.startsWith('lit-html') || source.startsWith('@lit/reactive-element')) {
+                  return {id: source.replace(/\.js$/, ''), external: true}
                 }
                 return null
               }
@@ -509,8 +513,36 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= paths.core %>Public/JavaScript/Contrib/lit-element': [
-            'node_modules/lit-element/lit-element.js',
-            'node_modules/lit-element/lib/*.js',
+            'node_modules/lit-element/*.js',
+            'node_modules/lit-element/decorators/*.js',
+          ]
+        }
+      },
+      'lit': {
+        options: {
+          preserveModules: true,
+          plugins: () => [
+            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
+            {
+              name: 'terser',
+              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
+            },
+            {
+              name: 'externals',
+              resolveId: (source) => {
+                if (source.startsWith('lit-html') || source.startsWith('lit-element') || source.startsWith('@lit/reactive-element')) {
+                  return {id: source.replace(/\.js$/, ''), external: true}
+                }
+                return null
+              }
+            }
+          ]
+        },
+        files: {
+          '<%= paths.core %>Public/JavaScript/Contrib/lit': [
+            'node_modules/lit/*.js',
+            'node_modules/lit/decorators/*.js',
+            'node_modules/lit/directives/*.js',
           ]
         }
       },

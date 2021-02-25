@@ -11,8 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import type {TemplateResult} from 'lit-html';
-import {render} from 'lit-html';
+import {render, TemplateResult} from 'lit/html';
 
 /**
  * @internal

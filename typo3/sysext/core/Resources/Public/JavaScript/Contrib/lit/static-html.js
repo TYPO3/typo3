@@ -1,0 +1,1 @@
+define(["exports","lit-html/static"],(function(exports,_static){"use strict";Object.keys(_static).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return _static[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

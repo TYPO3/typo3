@@ -1,0 +1,1 @@
+define(["exports","@lit/reactive-element/decorators/query-async"],(function(exports,queryAsync){"use strict";Object.keys(queryAsync).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return queryAsync[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

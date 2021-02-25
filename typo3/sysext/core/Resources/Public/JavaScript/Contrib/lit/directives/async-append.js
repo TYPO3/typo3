@@ -1,0 +1,1 @@
+define(["exports","lit-html/directives/async-append"],(function(exports,asyncAppend){"use strict";Object.keys(asyncAppend).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return asyncAppend[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

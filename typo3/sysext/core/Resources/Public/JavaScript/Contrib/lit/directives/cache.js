@@ -1,0 +1,1 @@
+define(["exports","lit-html/directives/cache"],(function(exports,cache){"use strict";Object.keys(cache).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return cache[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

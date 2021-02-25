@@ -1,0 +1,1 @@
+define(["exports","lit-html/directive"],(function(exports,directive){"use strict";Object.keys(directive).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return directive[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

@@ -1,0 +1,1 @@
+define(["exports","lit-html","@lit/reactive-element","lit-element/lit-element"],(function(exports,litHtml,reactiveElement,litElement){"use strict";Object.keys(litElement).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return litElement[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

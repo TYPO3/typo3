@@ -1408,9 +1408,19 @@ class PageRenderer implements SingletonInterface
                 'main' => 'lit-html',
             ],
             [
+                'name' => '@lit/reactive-element',
+                'location' => $corePath . '@lit/reactive-element',
+                'main' => 'reactive-element',
+            ],
+            [
                 'name' => 'lit-element',
                 'location' => $corePath . 'lit-element',
-                'main' => 'lit-element',
+                'main' => 'index',
+            ],
+            [
+                'name' => 'lit',
+                'location' => $corePath . 'lit',
+                'main' => 'index',
             ]
         ];
         $requireJsConfig['public']['waitSeconds'] = 30;

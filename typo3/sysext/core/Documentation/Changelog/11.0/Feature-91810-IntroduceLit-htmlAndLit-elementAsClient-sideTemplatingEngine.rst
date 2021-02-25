@@ -10,7 +10,8 @@ Description
 ===========
 
 To avoid custom jQuery template building a new slim client-side templating
-engine lit-html_ together with lit-element_ is introduced.
+engine lit-html_ together with lit-element_ is introduced. The modules
+are avilable via the umbrella javascript module `lit`.
 
 This templating engine supports conditions, iterations, events, virtual DOM,
 data-binding and mutation/change detections in templates.
@@ -43,7 +44,7 @@ Variable assignment
 
 .. code-block:: ts
 
-   import {html, render} from 'lit-html';
+   import {html, render} from 'lit';
 
    const value = 'World';
    const target = document.getElementById('target');
@@ -62,8 +63,8 @@ Condition and iteration
 
 .. code-block:: ts
 
-   import {html, render} from 'lit-html';
-   import {classMap} from 'lit-html/directives/class-map.js';
+   import {html, render} from 'lit';
+   import {classMap} from 'lit/directives/class-map.js';
 
    const items = ['a', 'b', 'c']
    const classes = { list: true };
@@ -87,7 +88,7 @@ Condition and iteration
 
 The :js:`${...}` literal used in template tags can basically contain any
 JavaScript instruction - as long as their result can be casted to `string`
-again or is of type `lit-html.TemplateResult`. This allows to
+again or is of type `lit.TemplateResult`. This allows to
 make use of custom conditions as well as iterations:
 
 * condition: :js:`${condition ? thenReturn : elseReturn}`
@@ -101,7 +102,7 @@ Events can be bound using the `@` attribute prefix.
 
 .. code-block:: ts
 
-   import {html, render} from 'lit-html';
+   import {html, render} from 'lit';
 
    const value = 'World';
    const target = document.getElementById('target');
@@ -120,11 +121,12 @@ Custom HTML elements
 --------------------
 
 A web component based on the W3C custom elements (web-components_) specification
-can be implemented using `lit-element`.
+can be implemented using the `LitElement` base class.
 
 .. code-block:: ts
 
-   import {LitElement, html, customElement, property} from 'lit-element';
+   import {LitElement, html} from 'lit';
+   import {customElement, property} from 'lit/decorators';
 
    @customElement('my-element')
    class MyElement extends LitElement {

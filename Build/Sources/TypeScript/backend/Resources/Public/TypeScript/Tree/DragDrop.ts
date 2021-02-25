@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult} from 'lit-element';
+import {html, TemplateResult} from 'lit';
 import {renderNodes} from 'TYPO3/CMS/Core/lit-helper';
 import * as d3drag from 'd3-drag';
 import * as d3selection from 'd3-selection';

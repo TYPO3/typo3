@@ -14,7 +14,7 @@
 import * as d3selection from 'd3-selection';
 import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../../SvgTree';
 import {TreeNode} from '../../Tree/TreeNode';
-import {customElement} from 'lit-element';
+import {customElement} from 'lit/decorators';
 
 interface SelectTreeSettings extends SvgTreeSettings {
   exclusiveNodesIdentifiers: '';

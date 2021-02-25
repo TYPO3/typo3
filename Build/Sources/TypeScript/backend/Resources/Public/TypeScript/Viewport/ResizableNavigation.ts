@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, customElement, property, internalProperty, eventOptions, LitElement, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, /*eventOptions,*/ property, state} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import Persistent = require('../Storage/Persistent');
 import 'TYPO3/CMS/Backend/Element/IconElement';
@@ -31,7 +32,7 @@ class ResizableNavigation extends LitElement {
   @property({attribute: 'parent', converter: selectorConverter}) parentContainer: HTMLElement;
   @property({attribute: 'navigation', converter: selectorConverter}) navigationContainer: HTMLElement;
 
-  @internalProperty() resizing: boolean = false;
+  @state() resizing: boolean = false;
 
   public connectedCallback(): void {
     super.connectedCallback();

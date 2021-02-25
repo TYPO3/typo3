@@ -1,0 +1,1 @@
+define(["exports","@lit/reactive-element/decorators/event-options"],(function(exports,eventOptions){"use strict";Object.keys(eventOptions).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return eventOptions[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

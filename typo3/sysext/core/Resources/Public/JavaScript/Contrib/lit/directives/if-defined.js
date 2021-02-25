@@ -1,0 +1,1 @@
+define(["exports","lit-html/directives/if-defined"],(function(exports,ifDefined){"use strict";Object.keys(ifDefined).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return ifDefined[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

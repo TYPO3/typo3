@@ -1,0 +1,1 @@
+define(["exports","lit-html/experimental-hydrate"],(function(exports,experimentalHydrate){"use strict";Object.keys(experimentalHydrate).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return experimentalHydrate[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

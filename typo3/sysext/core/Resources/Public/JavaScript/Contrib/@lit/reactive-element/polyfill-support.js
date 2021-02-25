@@ -1,0 +1,7 @@
+define((function(){"use strict";var i;i=function(){
+/**
+          * @license
+          * Copyright 2017 Google LLC
+          * SPDX-License-Identifier: BSD-3-Clause
+          */
+var i,n,t="__scoped";null!==(i=(n=window).reactiveElementPlatformSupport)&&void 0!==i||(n.reactiveElementPlatformSupport=function(i){var n=i.ReactiveElement;if(void 0!==window.ShadyCSS&&(!window.ShadyCSS.nativeShadow||window.ShadyCSS.ApplyShim)){var o=n.prototype;window.ShadyDOM&&window.ShadyDOM.inUse&&!0===window.ShadyDOM.noPatch&&window.ShadyDOM.patchElementProto(o);var d=o.createRenderRoot;o.createRenderRoot=function(){var i,n,o,w=this.localName;if(window.ShadyCSS.nativeShadow)return d.call(this);if(!this.constructor.hasOwnProperty(t)){this.constructor[t]=!0;var e=this.constructor.elementStyles.map((function(i){return i instanceof CSSStyleSheet?Array.from(i.cssRules).reduce((function(i,n){return i+n.cssText}),""):i.cssText}));null===(n=null===(i=window.ShadyCSS)||void 0===i?void 0:i.ScopingShim)||void 0===n||n.prepareAdoptedCssText(e,w),void 0===this.constructor.J&&window.ShadyCSS.prepareTemplateStyles(document.createElement("template"),w)}return null!==(o=this.shadowRoot)&&void 0!==o?o:this.attachShadow(this.constructor.shadowRootOptions)};var w=o.connectedCallback;o.connectedCallback=function(){w.call(this),this.hasUpdated&&window.ShadyCSS.styleElement(this)};var e=o.E;o.E=function(i){var n=!this.hasUpdated;e.call(this,i),n&&window.ShadyCSS.styleElement(this)}}})},"function"==typeof define&&define.amd?define(i):i()}));

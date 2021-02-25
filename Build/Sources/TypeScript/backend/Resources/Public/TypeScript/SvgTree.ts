@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, property, internalProperty, LitElement, TemplateResult, customElement} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, property, state} from 'lit/decorators';
 import {TreeNode} from './Tree/TreeNode';
 import * as d3selection from 'd3-selection';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
@@ -56,7 +57,7 @@ export interface SvgTreeWrapper extends HTMLElement {
 
 export class SvgTree extends LitElement {
   @property({type: Object}) setup?: {[keys: string]: any} = null;
-  @internalProperty() settings: SvgTreeSettings = {
+  @state() settings: SvgTreeSettings = {
     showIcons: false,
     marginTop: 15,
     nodeHeight: 20,

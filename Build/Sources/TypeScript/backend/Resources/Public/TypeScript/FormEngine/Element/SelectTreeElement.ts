@@ -13,7 +13,8 @@
 
 import type {SelectTree} from './SelectTree';
 import {Tooltip} from 'bootstrap';
-import {html, customElement, LitElement, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import './SelectTree';

@@ -14,7 +14,7 @@
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import ImmediateAction = require('TYPO3/CMS/Backend/ActionButton/ImmediateAction');
 import Notification = require('TYPO3/CMS/Backend/Notification');
-import type {LitElement} from 'lit-element';
+import type {LitElement} from 'lit';
 
 describe('TYPO3/CMS/Backend/Notification:', () => {
   beforeEach((): void => {

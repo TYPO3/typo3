@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, customElement, property, LitElement, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 

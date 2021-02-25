@@ -12,7 +12,8 @@
  */
 
 import CodeMirror from 'codemirror';
-import {LitElement, html, css, customElement, property, internalProperty, CSSResult} from 'lit-element';
+import {LitElement, html, css, CSSResult} from 'lit';
+import {customElement, property, state} from 'lit/decorators';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 import 'TYPO3/CMS/Backend/Element/SpinnerElement'
@@ -27,23 +28,20 @@ export class CodeMirrorElement extends LitElement {
   @property() label: string;
   @property({type: Array}) addons: string[] = [];
   @property({type: Object}) options: { [key: string]: any[] } = {};
-  @internalProperty() loaded: boolean = false;
+  @state() loaded: boolean = false;
 
-  public static get styles(): CSSResult
-  {
-    return css`
-      :host {
-        display: block;
-        position: relative;
-      }
-      typo3-backend-spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    `;
-  }
+  static styles = css`
+   :host {
+     display: block;
+     position: relative;
+   }
+   typo3-backend-spinner {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+   }
+  `;
 
   render() {
     return html`

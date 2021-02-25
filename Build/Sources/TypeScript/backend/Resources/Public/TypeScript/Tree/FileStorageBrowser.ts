@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {customElement, html, LitElement, query, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, query} from 'lit/decorators';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {TreeNode} from './TreeNode';

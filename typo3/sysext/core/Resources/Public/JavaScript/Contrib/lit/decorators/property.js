@@ -1,0 +1,1 @@
+define(["exports","@lit/reactive-element/decorators/property"],(function(exports,property){"use strict";Object.keys(property).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return property[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

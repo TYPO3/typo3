@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render, html, TemplateResult} from 'lit-html';
-import {customElement, property, LitElement} from 'lit-element';
+import {render, html, TemplateResult, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 enum Selectors {
@@ -56,7 +56,7 @@ class MfaTotpUrlButton extends LitElement {
             <p>${this.description}</p>
             <pre>${this.url}</pre>
           `,
-          currentModal[0].querySelector(Selectors.modalBody)
+          currentModal[0].querySelector(Selectors.modalBody) as HTMLElement
         );
       }
     });

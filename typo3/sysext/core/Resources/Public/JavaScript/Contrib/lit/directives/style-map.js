@@ -1,0 +1,1 @@
+define(["exports","lit-html/directives/style-map"],(function(exports,styleMap){"use strict";Object.keys(styleMap).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return styleMap[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

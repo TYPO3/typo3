@@ -1,14 +1,6 @@
-define(["exports","../lib/directive","../lib/parts","../lit-html"],(function(e,t,r,i){"use strict";
+define(["exports","../lit-html","../directive"],(function(exports,litHtml,directive){"use strict";
 /**
-     * @license
-     * Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
-     * This code may only be used under the BSD style license found at
-     * http://polymer.github.io/LICENSE.txt
-     * The complete set of authors may be found at
-     * http://polymer.github.io/AUTHORS.txt
-     * The complete set of contributors may be found at
-     * http://polymer.github.io/CONTRIBUTORS.txt
-     * Code distributed by Google as part of the polymer project is also
-     * subject to an additional IP rights grant found at
-     * http://polymer.github.io/PATENTS.txt
-     */const n=new WeakMap,s=t.directive(e=>t=>{if(!(t instanceof r.AttributePart)||t instanceof r.PropertyPart||"style"!==t.committer.name||t.committer.parts.length>1)throw new Error("The `styleMap` directive must be used in the style attribute and must be the only part in the attribute.");const{committer:i}=t,{style:s}=i.element;let o=n.get(t);void 0===o&&(s.cssText=i.strings.join(" "),n.set(t,o=new Set)),o.forEach(t=>{t in e||(o.delete(t),-1===t.indexOf("-")?s[t]=null:s.removeProperty(t))});for(const t in e)o.add(t),-1===t.indexOf("-")?s[t]=e[t]:s.setProperty(t,e[t])});e.styleMap=s,Object.defineProperty(e,"__esModule",{value:!0})}));
+	 * @license
+	 * Copyright 2018 Google LLC
+	 * SPDX-License-Identifier: BSD-3-Clause
+	 */const i=directive.directive(class extends directive.Directive{constructor(t){var e;if(super(t),t.type!==directive.PartType.ATTRIBUTE||"style"!==t.name||(null===(e=t.strings)||void 0===e?void 0:e.length)>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(t){return Object.keys(t).reduce((e,r)=>{const s=t[r];return null==s?e:e+`${r=r.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${s};`},"")}update(e,[r]){const{style:s}=e.element;if(void 0===this.St){this.St=new Set;for(const t in r)this.St.add(t);return this.render(r)}this.St.forEach(t=>{null==r[t]&&(this.St.delete(t),t.includes("-")?s.removeProperty(t):s[t]="")});for(const t in r){const e=r[t];null!=e&&(this.St.add(t),t.includes("-")?s.setProperty(t,e):s[t]=e)}return litHtml.noChange}});exports.styleMap=i,Object.defineProperty(exports,"__esModule",{value:!0})}));
