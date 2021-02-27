@@ -76,11 +76,11 @@ Options:
     -x
         Only with -s functional|unit
         Send information to host instance for test or system under test break points. This is especially
-        useful if a local PhpStorm instance is listening on default xdebug port 9000. A different port
+        useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
 
     -y <port>
-        Send xdebug information to a different port than default 9000 if an IDE like PhpStorm
+        Send xdebug information to a different port than default 9003 if an IDE like PhpStorm
         is not listening on default port.
 
     -n
@@ -124,7 +124,7 @@ TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="7.4"
 PHP_XDEBUG_ON=0
-PHP_XDEBUG_PORT=9000
+PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 CGLCHECK_DRY_RUN=""
