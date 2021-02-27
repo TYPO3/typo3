@@ -1,7 +1,7 @@
 version: '2.3'
 services:
   chrome:
-    image: selenium/standalone-chrome:3.12
+    image: selenium/standalone-chrome:3.141
 
   mariadb10:
     # not using mariadb:10 for the time being, because 10.5.7 (currently latest) is broken
