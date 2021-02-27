@@ -4,7 +4,6 @@ acceptance backend mariadb php 7.3 pre-merge:
     refs:
       - schedules
       - "9.5"
-  retry: 2
   artifacts:
     when: on_failure
     paths:

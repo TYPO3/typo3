@@ -35,7 +35,6 @@ functional mssql php 7.4 locked:
   stage: functional2
   only:
     - schedules
-  retry: 2
   parallel: 12
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
@@ -48,7 +47,6 @@ functional mssql php 7.3 max:
     key: 9.5-composer-max
     paths:
     - .cache
-  retry: 2
   parallel: 12
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
@@ -61,7 +59,6 @@ functional min mssql php 7.2 min pdo_sqlsrv:
     key: 9.5-composer-min
     paths:
     - .cache
-  retry: 2
   parallel: 12
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
