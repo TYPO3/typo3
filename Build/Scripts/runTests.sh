@@ -194,11 +194,11 @@ Options:
     -x
         Only with -s functional|unit|unitDeprecated|unitRandom
         Send information to host instance for test or system under test break points. This is especially
-        useful if a local PhpStorm instance is listening on default xdebug port 9000. A different port
+        useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
 
     -y <port>
-        Send xdebug information to a different port than default 9000 if an IDE like PhpStorm
+        Send xdebug information to a different port than default 9003 if an IDE like PhpStorm
         is not listening on default port.
 
     -o <number>
@@ -228,7 +228,7 @@ Examples:
     ./Build/Scripts/runTests.sh
     ./Build/Scripts/runTests.sh -s unit
 
-    # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9000!)
+    # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9003!)
     ./Build/Scripts/runTests.sh -x
 
     # Run unit tests in phpunit verbose mode with xdebug on PHP 8.0 and filter for test canRetrieveValueWithGP
@@ -280,7 +280,7 @@ TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="7.4"
 PHP_XDEBUG_ON=0
-PHP_XDEBUG_PORT=9000
+PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 PHPUNIT_RANDOM=""
