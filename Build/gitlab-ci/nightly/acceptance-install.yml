@@ -6,7 +6,6 @@ acceptance install mariadb php 7.4 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
@@ -22,7 +21,6 @@ acceptance install mariadb php 7.4 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
@@ -38,7 +36,6 @@ acceptance install mariadb php 7.4 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
@@ -51,7 +48,6 @@ acceptance install mysql php 7.4:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
@@ -67,7 +63,6 @@ acceptance install mysql php 7.4 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
@@ -83,7 +78,6 @@ acceptance install mysql php 7.4 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
@@ -96,7 +90,6 @@ acceptance install postgres php 7.4 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
@@ -112,7 +105,6 @@ acceptance install postgres php 7.4 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
@@ -128,7 +120,6 @@ acceptance install postgres php 7.4 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
@@ -141,7 +132,6 @@ acceptance install sqlite php 7.4 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
@@ -157,7 +147,6 @@ acceptance install sqlite php 7.4 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
@@ -173,7 +162,6 @@ acceptance install sqlite php 7.4 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4

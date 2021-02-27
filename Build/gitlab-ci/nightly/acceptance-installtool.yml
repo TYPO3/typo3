@@ -2,7 +2,6 @@ acceptance installtool mariadb php 7.4:
   stage: acceptance
   only:
     - schedules
-  retry: 1
   artifacts:
     when: on_failure
     paths:

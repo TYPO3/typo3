@@ -4,7 +4,6 @@ acceptance installtool mariadb php 7.4 pre-merge:
     refs:
       - schedules
       - master
-  retry: 1
   artifacts:
     when: on_failure
     paths:
