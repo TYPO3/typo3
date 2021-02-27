@@ -38,7 +38,7 @@ services:
     stop_grace_period: 1s
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-    command: php -n -c /etc/php/cli-no-xdebug/php.ini -S web:8000 -t ${CORE_ROOT}
+    command: php -dxdebug.mode=off -S web:8000 -t ${CORE_ROOT}
 
   redis4:
     image: redis:4-alpine
@@ -52,7 +52,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
-    command: php Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
+    command: php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
 
   prepare_acceptance_backend_mariadb:
     image: alpine:3.8
@@ -98,7 +98,7 @@ services:
           COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
-        $${COMMAND}
+        php -dxdebug.mode=off $${COMMAND}
       "
 
   prepare_acceptance_backend_mysql:
@@ -145,7 +145,7 @@ services:
           COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
-        $${COMMAND}
+        php -dxdebug.mode=off $${COMMAND}
       "
 
   prepare_acceptance_backend_postgres:
@@ -195,7 +195,7 @@ services:
           COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
-        $${COMMAND}
+        php -dxdebug.mode=off $${COMMAND}
       "
 
   prepare_acceptance_pagetree_mariadb:
@@ -235,7 +235,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run PageTree -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run PageTree -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_installtool_mariadb:
@@ -275,7 +275,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run InstallTool -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run InstallTool -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_mysql:
@@ -315,7 +315,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_mariadb:
@@ -355,7 +355,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_postgres:
@@ -395,7 +395,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_sqlite:
@@ -422,7 +422,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && ./bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --xml reports.xml --html reports.html
       "
 
   build_css:
@@ -492,7 +492,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        php -n -c /etc/php/cli-no-xdebug/php.ini bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection \
+        php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection \
           --config=Build/.php_cs typo3/
       "
 
@@ -510,7 +510,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/annotationChecker.php;
+        php -dxdebug.mode=off Build/Scripts/annotationChecker.php;
       "
 
   check_bom:
@@ -544,7 +544,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/checkIntegrityComposer.php;
+        php -dxdebug.mode=off Build/Scripts/checkIntegrityComposer.php;
       "
 
   check_csv_fixtures:
@@ -561,7 +561,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/checkIntegrityCsvFixtures.php;
+        php -dxdebug.mode=off Build/Scripts/checkIntegrityCsvFixtures.php;
       "
 
   fix_csv_fixtures:
@@ -578,7 +578,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/checkIntegrityCsvFixtures.php --fix;
+        php -dxdebug.mode=off Build/Scripts/checkIntegrityCsvFixtures.php --fix;
       "
 
   check_exception_codes:
@@ -612,7 +612,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/extensionScannerRstFileReferences.php;
+        php -dxdebug.mode=off Build/Scripts/extensionScannerRstFileReferences.php;
       "
 
   check_file_path_length:
@@ -705,7 +705,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/validateRstFiles.php;
+        php -dxdebug.mode=off Build/Scripts/validateRstFiles.php;
       "
 
   check_xlf:
@@ -808,7 +808,7 @@ services:
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        Build/Scripts/docBlockChecker.php;
+        php -dxdebug.mode=off Build/Scripts/docBlockChecker.php;
       "
 
   functional_split:
@@ -817,7 +817,7 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
-    command: php Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
+    command: php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
 
   prepare_functional_mariadb:
     image: alpine:3.8
@@ -866,10 +866,13 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini $${COMMAND};
+          XDEBUG_MODE=\"off\" $${COMMAND};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" $${COMMAND};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
         fi
       "
 
@@ -920,10 +923,13 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini $${COMMAND};
+          XDEBUG_MODE=\"off\" $${COMMAND};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" $${COMMAND};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
         fi
       "
 
@@ -977,10 +983,13 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini $${COMMAND};
+          XDEBUG_MODE=\"off\" $${COMMAND};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" $${COMMAND};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
         fi
       "
 
@@ -1031,10 +1040,13 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-postgres ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini $${COMMAND};
+          XDEBUG_MODE=\"off\" $${COMMAND};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" $${COMMAND};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
         fi
       "
 
@@ -1073,10 +1085,13 @@ services:
           COMMAND=\"vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE}\"
         fi
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini $${COMMAND};
+          XDEBUG_MODE=\"off\" $${COMMAND};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" $${COMMAND};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
         fi
       "
 
@@ -1094,7 +1109,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP'
-        find typo3/ -name \\*.php -print0 | xargs -0 -n1 -P4 php -n -c /etc/php/cli-no-xdebug/php.ini -l >/dev/null
+        find typo3/ -name \\*.php -print0 | xargs -0 -n1 -P4 php -dxdebug.mode=off -l >/dev/null
       "
 
   lint_scss:
@@ -1199,12 +1214,14 @@ services:
         fi
         php -v | grep '^PHP'
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+          XDEBUG_MODE=\"off\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         fi
       "
 
@@ -1224,12 +1241,14 @@ services:
         fi
         php -v | grep '^PHP'
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+          XDEBUG_MODE=\"off\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         fi
       "
 
@@ -1268,11 +1287,13 @@ services:
         fi
         php -v | grep '^PHP'
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          php -n -c /etc/php/cli-no-xdebug/php.ini \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
+          XDEBUG_MODE=\"off\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
-          XDEBUG_CONFIG=\"remote_port=${PHP_XDEBUG_PORT} remote_enable=1 remote_host=$${DOCKER_HOST}\" \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
         fi
       "
