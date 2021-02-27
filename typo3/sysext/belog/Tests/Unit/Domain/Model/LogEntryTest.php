@@ -75,7 +75,7 @@ class LogEntryTest extends UnitTestCase
      */
     public function getLogDataForSerializedObjectReturnsEmptyArray()
     {
-        $this->subject->setLogData(new \stdClass());
+        $this->subject->setLogData(serialize(new \stdClass()));
         self::assertSame([], $this->subject->getLogData());
     }
 }

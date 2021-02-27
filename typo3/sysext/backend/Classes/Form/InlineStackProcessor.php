@@ -55,7 +55,7 @@ class InlineStackProcessor
      *
      * @param string $domObjectId The DOM object-id
      */
-    public function initializeByParsingDomObjectIdString($domObjectId)
+    public function initializeByParsingDomObjectIdString(string $domObjectId)
     {
         $unstable = [];
         $vector = ['table', 'uid', 'field'];

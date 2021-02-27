@@ -40,7 +40,7 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
-        $this->expectExceptionMessage('Class Foo\Bar\Not\Existing does not exist. Reflection failed.');
+        $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
         $reflectionService = new ReflectionService();
         $reflectionService->getClassSchema('Foo\Bar\Not\Existing');
     }
@@ -52,7 +52,7 @@ class ReflectionServiceTest extends UnitTestCase
     {
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
-        $this->expectExceptionMessage('Class Foo\Bar\Not\Found does not exist. Reflection failed.');
+        $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
         $reflectionService = new ReflectionService();
         $reflectionService->getClassSchema(DummyClassWithInvalidTypeHint::class);
     }

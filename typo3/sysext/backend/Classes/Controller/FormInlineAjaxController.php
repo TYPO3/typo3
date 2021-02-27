@@ -48,7 +48,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
-        $domObjectId = $ajaxArguments[0];
+        $domObjectId = $ajaxArguments[0] ?? '';
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
         if (!MathUtility::canBeInterpretedAsInteger($inlineFirstPid) && strpos((string)$inlineFirstPid, 'NEW') !== 0) {
             throw new \RuntimeException(
@@ -167,7 +167,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     {
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
 
-        $domObjectId = $ajaxArguments[0] ?? null;
+        $domObjectId = $ajaxArguments[0] ?? '';
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
@@ -234,7 +234,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     public function synchronizeLocalizeAction(ServerRequestInterface $request): ResponseInterface
     {
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
-        $domObjectId = $ajaxArguments[0] ?? null;
+        $domObjectId = $ajaxArguments[0] ?? '';
         $type = $ajaxArguments[1] ?? null;
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
@@ -677,7 +677,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      * @param string $domObjectId The id attribute of an element
      * @return int|string|null Pid or null
      */
-    protected function getInlineFirstPidFromDomObjectId($domObjectId)
+    protected function getInlineFirstPidFromDomObjectId(string $domObjectId)
     {
         // Substitute FlexForm addition and make parsing a bit easier
         $domObjectId = str_replace('---', ':', $domObjectId);

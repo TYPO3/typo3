@@ -257,8 +257,8 @@ abstract class AbstractFormElement extends AbstractNode
                 $itemValue = sprintf('%.' . $precision . 'f', $itemValue);
                 break;
             case 'number':
-                $format = isset($formatOptions['option']) ? trim($formatOptions['option']) : '';
-                $itemValue = sprintf('%' . $format, $itemValue);
+                $format = isset($formatOptions['option']) ? '%' . trim($formatOptions['option']) : '';
+                $itemValue = sprintf($format, $itemValue);
                 break;
             case 'md5':
                 $itemValue = md5($itemValue);
