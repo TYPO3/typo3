@@ -10,7 +10,6 @@ acceptance backend mariadb php 7.2 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.2
@@ -28,7 +27,6 @@ acceptance backend mariadb php 7.3 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
@@ -42,7 +40,6 @@ acceptance backend mariadb php 7.4 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
-  retry: 1
   parallel: 8
   script:
       - Build/Scripts/runTests.sh -s composerInstall -p 7.4
