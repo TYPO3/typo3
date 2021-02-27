@@ -275,8 +275,7 @@ services:
         php -v | grep '^PHP';
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
-          php -n -c /etc/php/cli-no-xdebug/php.ini \
-            vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE};
+          vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-sqlite ${TEST_FILE};
         else
           DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
@@ -318,8 +317,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        php -n -c /etc/php/cli-no-xdebug/php.ini \
-          .Build/bin/phpstan analyze -c Build/phpstan.neon
+        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon
       "
 
   unit:
