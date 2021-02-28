@@ -66,6 +66,12 @@ lint php 7.4:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lint -p 7.4
+lint php 8.0:
+  stage: integrity
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s lint -p 8.0
 
 lint scss ts html:
   stage: integrity
@@ -85,9 +91,20 @@ phpstan php 7.4:
   only:
     - schedules
   cache:
-    key: master-composer-phpstan
+    key: master-composer-phpstan-74
     paths:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s phpstan -p 7.4
+phpstan php 8.0:
+  stage: integrity
+  only:
+    - schedules
+  cache:
+    key: master-composer-phpstan-80
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
+    - Build/Scripts/runTests.sh -s phpstan -p 8.0
