@@ -63,6 +63,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/be_groups.xml',
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/sys_category.xml',
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
+            'typo3/sysext/core/Tests/Acceptance/Fixtures/pages.xml',
         ],
         'configurationToUseInTestInstance' => [
             'MAIL' => [

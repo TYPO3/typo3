@@ -89,7 +89,6 @@ Options:
     -s <...>
         Specifies which test suite to run
             - acceptance: main backend acceptance tests
-            - acceptancePagetree: backend acceptance tests for page tree
             - acceptanceInstallTool: acceptance tests for stand alone install tool
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
@@ -445,13 +444,6 @@ case ${TEST_SUITE} in
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1
         esac
-        docker-compose down
-        ;;
-    acceptancePagetree)
-        setUpDockerComposeDotEnv
-        docker-compose run prepare_acceptance_pagetree_mariadb
-        docker-compose run acceptance_pagetree_mariadb
-        SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
     acceptanceInstallTool)

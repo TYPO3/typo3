@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\PageTree\KeyboardAccess;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\PageTree\KeyboardAccess;
 
 use Exception;
 use Facebook\WebDriver\WebDriverKeys;
@@ -53,8 +53,8 @@ class SelectPagetreeWithKeyboardCest
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
         $I->assertEquals(
-            'identifier-0_2',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-2',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::ENTER);
         $I->switchToContentFrame();
@@ -72,13 +72,13 @@ class SelectPagetreeWithKeyboardCest
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
         $I->assertEquals(
-            'identifier-0_3',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-3',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
         $I->assertEquals(
-            'identifier-0_2',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-2',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }
 
@@ -96,33 +96,33 @@ class SelectPagetreeWithKeyboardCest
         }
         $I->amGoingTo('check if the parent key is selected and child is not visible');
         $I->assertEquals(
-            'identifier-0_4',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-4',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
         $I->amGoingTo('check if parent is still selected and child is visible');
-        $I->assertEquals(
-            'identifier-0_4',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
-        );
-        $I->seeElement('#identifier-0_5');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
-        $I->amGoingTo('check if first childnode is selected');
         $I->assertEquals(
-            'identifier-0_5',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-4',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+        );
+        $I->see('Dummy 1-4-5');
+        $I->amGoingTo('check if first child node is selected');
+        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
+        $I->assertEquals(
+            'Dummy 1-4-5',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::RIGHT);
-        $I->amGoingTo('check if first childnode is still selected');
+        $I->amGoingTo('check if first child node is still selected');
         $I->assertEquals(
-            'identifier-0_5',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-4-5',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
+        $I->amGoingTo('check if second child node is selected');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
-        $I->amGoingTo('check if second childnode is still selected');
         $I->assertEquals(
-            'identifier-0_6',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 6',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }
 
@@ -135,25 +135,26 @@ class SelectPagetreeWithKeyboardCest
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->assertEquals(
-            'identifier-0_1',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Root',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
-        $I->seeElement('#identifier-0_2');
+        $I->see('Dummy 1-2');
         $I->amGoingTo('collapse the current tree using left key');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::LEFT);
         $I->assertEquals(
-            'identifier-0_1',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Root',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
-        $I->cantSeeElement('#identifier-0_2');
+        $I->cantSee('Dummy 1-2');
         $I->amGoingTo('go to parent of the current collapsed node using left key');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::LEFT);
         $I->amGoingTo('check if parent (root) is selected and child is visible');
         $I->assertEquals(
-            'identifier-0_0',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'New TYPO3 site',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
-        $I->canSeeElement('#identifier-0_1');
+        $I->canSee('Root');
+        $I->canSee('styleguide TCA demo');
     }
 
     /**
@@ -166,8 +167,13 @@ class SelectPagetreeWithKeyboardCest
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
         $I->assertEquals(
-            'identifier-0_50',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'styleguide TCA demo',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+        );
+        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
+        $I->assertEquals(
+            'Dummy 1-50',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }
 
@@ -183,14 +189,14 @@ class SelectPagetreeWithKeyboardCest
             $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
         }
         $I->assertEquals(
-            'identifier-0_21',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'Dummy 1-21',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
 
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::HOME);
         $I->assertEquals(
-            'identifier-0_0',
-            $I->grabAttributeFrom('#typo3-pagetree-tree [tabindex="0"]', 'id')
+            'New TYPO3 site',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }
 }
