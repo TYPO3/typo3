@@ -281,19 +281,16 @@ public class NightlySpec extends AbstractCoreSpec {
         phpVersion = "PHP72";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MIN);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_MIN, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_MIN, phpVersion, composerTask, false));
 
         // PHP 7.3, composer max
         phpVersion = "PHP73";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MAX);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_MAX, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_MAX, phpVersion, composerTask, false));
 
         // PHP 7.4, composer default
         phpVersion = "PHP74";
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_DEFAULT);
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(COMPOSER_DEFAULT, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(COMPOSER_DEFAULT, phpVersion, composerTask, false));
 
         stages.add(new Stage("Acceptance mysql").jobs(jobs.toArray(new Job[0])));
         return stages;

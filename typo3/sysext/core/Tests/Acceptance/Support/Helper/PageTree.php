@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
+use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
@@ -26,12 +27,54 @@ use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 class PageTree extends AbstractPageTree
 {
     /**
+     * @var Mouse
+     */
+    private $mouse;
+
+    /**
      * Inject our core AcceptanceTester actor into PageTree
      *
      * @param BackendTester $I
      */
-    public function __construct(BackendTester $I)
+    public function __construct(BackendTester $I, Mouse $mouse)
     {
         $this->tester = $I;
+        $this->mouse = $mouse;
+    }
+
+    /**
+     * Perform drag and drop for a new page into the given target page.
+     */
+    public function dragAndDropNewPage(string $pageName, string $dragNode, string $nodeEditInput): void
+    {
+        $target = $this->getPageXPathByPageName($pageName);
+        $pageTitle = sprintf('Dummy 1-%s-new', $pageName);
+
+        $this->mouse->dragAndDrop($dragNode, $target);
+
+        $this->tester->seeElement($nodeEditInput);
+
+        // Change the new page title.
+        // We can't use $I->fillField() here since this sends a clear() to the element
+        // which drops the node creation in the tree. So we do it manually with selenium.
+        $element = $this->tester->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
+            return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($nodeEditInput));
+        });
+        $element->sendKeys($pageTitle);
+
+        $this->tester->pressKey($nodeEditInput, WebDriverKeys::ENTER);
+        $this->tester->waitForElementNotVisible($nodeEditInput);
+        $this->tester->see($pageTitle);
+    }
+
+    /**
+     * Get node identifier of given page.
+     *
+     * @param string $pageName
+     * @return string
+     */
+    public function getPageXPathByPageName(string $pageName): string
+    {
+        return '//*[text()=\'' . $pageName . '\']';
     }
 }

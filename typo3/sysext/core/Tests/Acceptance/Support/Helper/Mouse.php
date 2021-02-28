@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
+use Facebook\WebDriver\Exception\InvalidSelectorException;
 use Facebook\WebDriver\Interactions\Internal\WebDriverButtonReleaseAction;
 use Facebook\WebDriver\Interactions\Internal\WebDriverClickAndHoldAction;
 use Facebook\WebDriver\Interactions\Internal\WebDriverMouseMoveAction;
@@ -49,10 +50,10 @@ class Mouse
      * given target destination. Additionally, checks whether the current drag & drop
      * node is displayed on the page.
      *
-     * [!] Note that only CSS selectors are valid for both $source and $target.
+     * [!] Note that only CSS selectors or xpath are valid for both $source and $target.
      *
-     * @param string $source Drag source, must be a valid CSS selector
-     * @param string $target Drop target, must be a valid CSS selector
+     * @param string $source Drag source, must be a valid CSS selector or xpath
+     * @param string $target Drop target, must be a valid CSS selector or xpath
      */
     public function dragAndDrop(string $source, string $target): void
     {
@@ -69,10 +70,10 @@ class Mouse
      * If $release is set to `true`, the mouse is released afterwards. In this case, a
      * normal "drag and drop" action is performed.
      *
-     * [!] Note that only CSS selectors are valid for both $source and $target.
+     * [!] Note that only CSS selectors or xpath are valid for both $source and $target.
      *
-     * @param string $source Drag source, must be a valid CSS selector
-     * @param string $target Drag target, must be a valid CSS selector
+     * @param string $source Drag source, must be a valid CSS selector or xpath
+     * @param string $target Drag target, must be a valid CSS selector or xpath
      * @param bool $release `true` if mouse should be released (default), `false` otherwise
      */
     public function dragTo(string $source, string $target, bool $release = true): void
@@ -99,12 +100,18 @@ class Mouse
         $action->perform();
     }
 
-    protected function findElement(string $cssSelector): RemoteWebElement
+    protected function findElement(string $selector): RemoteWebElement
     {
         $I = $this->tester;
-        return $I->executeInSelenium(function (RemoteWebDriver $webDriver) use ($cssSelector) {
-            return $webDriver->findElement(WebDriverBy::cssSelector($cssSelector));
-        });
+        try {
+            return $I->executeInSelenium(function (RemoteWebDriver $webDriver) use ($selector) {
+                return $webDriver->findElement(WebDriverBy::cssSelector($selector));
+            });
+        } catch (InvalidSelectorException $exception) {
+            return $I->executeInSelenium(function (RemoteWebDriver $webDriver) use ($selector) {
+                return $webDriver->findElement(WebDriverBy::xpath($selector));
+            });
+        }
     }
 
     protected function getMouse(): WebDriverMouse

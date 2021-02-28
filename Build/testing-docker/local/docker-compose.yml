@@ -198,46 +198,6 @@ services:
         php -dxdebug.mode=off $${COMMAND}
       "
 
-  prepare_acceptance_pagetree_mariadb:
-    image: alpine:3.8
-    links:
-      - mariadb
-      - chrome
-      - web
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        echo Waiting for database start...;
-        while ! nc -z mariadb 3306; do
-          sleep 1;
-        done;
-        echo Database is up;
-      "
-  acceptance_pagetree_mariadb:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
-    environment:
-      typo3DatabaseName: func_test
-      typo3DatabaseUsername: root
-      typo3DatabasePassword: funcp
-      typo3DatabaseHost: mariadb
-    volumes:
-      - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    working_dir: ${CORE_ROOT}
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        mkdir -p typo3temp/var/tests/ \
-          && php -dxdebug.mode=off bin/codecept run PageTree -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html
-      "
-
   prepare_acceptance_installtool_mariadb:
     image: alpine:3.8
     links:

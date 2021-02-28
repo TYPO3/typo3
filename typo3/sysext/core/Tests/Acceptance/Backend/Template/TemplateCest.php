@@ -45,17 +45,13 @@ class TemplateCest
     public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(BackendTester $I)
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
-        $I->switchToMainFrame();
-        // click on root page
-        $I->click('.node.identifier-0_0');
-        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
 
         $I->wantTo('show templates overview on website root page (uid = 1 and pid = 0)');
         $I->switchToMainFrame();
         // click on website root page
-        $I->click('.node.identifier-0_1');
+        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForText('No template');
         $I->see('There was no template on this page!');
@@ -78,7 +74,7 @@ class TemplateCest
     {
         $I->wantTo('create a new site template');
         $I->switchToMainFrame();
-        $I->click('.node.identifier-0_1');
+        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
         $I->waitForText('Create new website');
         $I->click("//input[@name='newWebsite']");

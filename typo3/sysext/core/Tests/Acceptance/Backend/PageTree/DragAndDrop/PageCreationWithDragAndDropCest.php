@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\PageTree\DragAndDrop;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,8 +16,6 @@ declare(strict_types=1);
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-namespace TYPO3\CMS\Core\Tests\Acceptance\PageTree\DragAndDrop;
 
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
@@ -43,6 +43,11 @@ class PageCreationWithDragAndDropCest
     protected static $nodeEditInput = '.node-edit';
 
     /**
+     * @var PageTree
+     */
+    protected $pageTree;
+
+    /**
      * Open list module of styleguide elements basic page
      *
      * @param BackendTester $I
@@ -51,9 +56,10 @@ class PageCreationWithDragAndDropCest
      */
     public function _before(BackendTester $I, PageTree $pageTree): void
     {
+        $this->pageTree = $pageTree;
         $I->useExistingSession('admin');
         $I->click('List');
-        $pageTree->openPath(['Root']);
+        $this->pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement(static::$treeNode, 5);
         $I->waitForElement(static::$dragNode, 5);
     }
@@ -62,26 +68,23 @@ class PageCreationWithDragAndDropCest
      * Check drag and drop for new pages into nodes without children.
      *
      * @param BackendTester $I
-     * @param Mouse $mouse
-     * @throws \Exception
      */
-    public function dragAndDropNewPageInNodeWithoutChildren(BackendTester $I, Mouse $mouse): void
+    public function dragAndDropNewPageInNodeWithoutChildren(BackendTester $I): void
     {
-        $I->amGoingTo('create a new page below pid=21 (no child pages) using drag and drop');
-        $this->dragAndDropNewPage($I, $mouse, 21);
+        $I->amGoingTo('create a new page below page without child pages using drag and drop');
+        $this->pageTree->dragAndDropNewPage('staticdata', static::$dragNode, static::$nodeEditInput);
     }
 
     /**
      * Check drag and drop for new pages into nodes with children.
      *
      * @param BackendTester $I
-     * @param Mouse $mouse
-     * @throws \Exception
+     * @param PageTree $pageTree
      */
-    public function dragAndDropNewPageInNodeWithChildren(BackendTester $I, Mouse $mouse): void
+    public function dragAndDropNewPageInNodeWithChildren(BackendTester $I): void
     {
-        $I->amGoingTo('create a new page below pid=10 (has child pages) using drag and drop');
-        $this->dragAndDropNewPage($I, $mouse, 10);
+        $I->amGoingTo('create a new page below page with child pages using drag and drop');
+        $this->pageTree->dragAndDropNewPage('styleguide TCA demo', static::$dragNode, static::$nodeEditInput);
     }
 
     /**
@@ -93,7 +96,7 @@ class PageCreationWithDragAndDropCest
      */
     public function dragAndDropNewPageAndQuitPageCreation(BackendTester $I, Mouse $mouse): void
     {
-        $mouse->dragAndDrop(static::$dragNode, $this->getPageIdentifier(22));
+        $mouse->dragAndDrop(static::$dragNode, $this->pageTree->getPageXPathByPageName('elements basic'));
 
         $I->seeElement(static::$nodeEditInput);
         $I->pressKey(static::$nodeEditInput, WebDriverKeys::ESCAPE);
@@ -109,7 +112,7 @@ class PageCreationWithDragAndDropCest
      */
     public function dragAndDropNewPageAndLeavePageTitleEmpty(BackendTester $I, Mouse $mouse): void
     {
-        $mouse->dragAndDrop(static::$dragNode, $this->getPageIdentifier(22));
+        $mouse->dragAndDrop(static::$dragNode, $this->pageTree->getPageXPathByPageName('staticdata'));
 
         $I->seeElement(static::$nodeEditInput);
         $I->fillField(static::$nodeEditInput, '');
