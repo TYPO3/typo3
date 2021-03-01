@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
 use TYPO3\CMS\Workspaces\Service\HistoryService;
@@ -138,11 +141,14 @@ class RemoteServer
         $diffUtility = $this->getDifferenceHandler();
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
+        $versionState = VersionState::cast((int)($versionRecord['t3ver_state'] ?? 0));
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, Icon::SIZE_SMALL)->render();
         $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->render();
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
+        $isNewOrDeletePlaceholder = $versionState->equals(VersionState::NEW_PLACEHOLDER) || $versionState->equals(VersionState::DELETE_PLACEHOLDER);
+        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $parameter->t3ver_oid)) : [];
         foreach ($fieldsOfRecords as $fieldName) {
             if (
                 empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])
@@ -206,6 +212,45 @@ class RemoteServer
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $fileReferenceDifferences['live']
+                    ];
+                } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
+                    // If this is a new or delete placeholder, add diff view for all appropriate fields
+                    $versionRecord[$fieldName] = BackendUtility::getProcessedValue(
+                        $parameter->table,
+                        $fieldName,
+                        $versionRecord[$fieldName],
+                        0,
+                        true,
+                        false,
+                        $versionRecord['uid']
+                    ) ?? '';
+
+                    // Don't add empty fields
+                    if ($versionRecord[$fieldName] === '') {
+                        continue;
+                    }
+
+                    $diffReturnArray[] = [
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => $versionState->equals(VersionState::NEW_PLACEHOLDER)
+                            ? $diffUtility->makeDiffDisplay('', $versionRecord[$fieldName])
+                            : $diffUtility->makeDiffDisplay($versionRecord[$fieldName], '')
+                    ];
+
+                    // Generally not needed by Core, but let's make it available for further processing in hooks
+                    $liveReturnArray[] = [
+                        'field' => $fieldName,
+                        'label' => $fieldTitle,
+                        'content' => BackendUtility::getProcessedValue(
+                            $parameter->table,
+                            $fieldName,
+                            $liveReturnArray[$fieldName],
+                            0,
+                            true,
+                            false,
+                            $liveReturnArray['uid']
+                        )
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
@@ -552,5 +597,34 @@ class RemoteServer
     protected function getCurrentWorkspace()
     {
         return $this->workspaceService->getCurrentWorkspace();
+    }
+
+    /**
+     * Gets the fields suitable for being displayed in new and delete diff views
+     *
+     * @param string $table
+     * @param int $uid
+     * @return array
+     */
+    protected function getSuitableFields(string $table, int $uid): array
+    {
+        $formDataCompiler = GeneralUtility::makeInstance(
+            FormDataCompiler::class,
+            GeneralUtility::makeInstance(TcaDatabaseRecord::class)
+        );
+
+        try {
+            $result = $formDataCompiler->compile(['command' => 'edit', 'tableName' => $table, 'vanillaUid' => $uid]);
+            $fieldList = array_unique(array_values($result['columnsToProcess']));
+        } catch (\Exception $exception) {
+            $fieldList = [];
+        }
+
+        // Skip sys_file_reference since it contains fields like "tablenames" in searchFields
+        $searchFields = $table !== 'sys_file_reference'
+            ? GeneralUtility::trimExplode(',', (string)($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''))
+            : [];
+
+        return array_unique(array_merge($fieldList, $searchFields));
     }
 }
