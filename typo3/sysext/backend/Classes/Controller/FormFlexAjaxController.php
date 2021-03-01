@@ -85,6 +85,24 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         // @see issue #80100 for a series of changes in this area
         if ($command === 'new') {
             $formDataCompilerInput['databaseRow']['uid'] = $databaseRowUid;
+            // This is a hack to handle creation of flex form section containers on new / not-yet-persisted
+            // records that use "sub types" - for example tt_content ctype plugin with plugin list_type (eg. news_pi1):
+            // The container needs to know the list_type to create the proper flex form section container.
+            // We *can* fetch the given sub type from the dataStructureIdentifier when it's type is 'tca'.
+            // This is hacky since we're using 'internal' knowledge of the dataStructureIdentifier here, which
+            // *should* be avoided. But sub types should vanish from TCA at some point anyway (this usage shows
+            // the complexity they introduce quite well), so we live with the solution for now instead of handing
+            // the selected sub type through the system differently.
+            $subtypeValueField = $processedTca['types'][$recordTypeValue]['subtype_value_field'] ?? null;
+            $subtypeValue = explode(',', $queryParameters['dataStructureIdentifier']['dataStructureKey'] ?? '')[0];
+            if ($subtypeValueField
+                && $subtypeValue
+                && ($queryParameters['dataStructureIdentifier']['type'] ?? '') === 'tca'
+                && !in_array($subtypeValue, ['*', 'list', 'default'], true)
+            ) {
+                // Set selected sub type to init flex form container creation for this type & sub type combination
+                $formDataCompilerInput['databaseRow'][$subtypeValueField] = $subtypeValue;
+            }
         }
         $formData = $formDataCompiler->compile($formDataCompilerInput);
 
