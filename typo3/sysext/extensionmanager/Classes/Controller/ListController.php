@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -338,7 +339,7 @@ class ListController extends AbstractModuleController
             if (is_array($uc)) {
                 $uc['BackendComponents']['States']['ExtensionManager']['filter'] = $this->backendUserFilter;
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
-                $connection->update('be_users', ['uc' => serialize($uc)], ['uid' => $backendUserId]);
+                $connection->update('be_users', ['uc' => serialize($uc)], ['uid' => $backendUserId], ['uc' => Connection::PARAM_LOB]);
             }
         }
     }

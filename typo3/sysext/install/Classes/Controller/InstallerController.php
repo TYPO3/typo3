@@ -986,7 +986,8 @@ class InstallerController
                 $connectionPool->getConnectionForTable('be_users')->update(
                     'be_users',
                     ['uc' => serialize($adminUserFirstLogin)],
-                    ['admin' => 1]
+                    ['admin' => 1],
+                    ['uc' => Connection::PARAM_LOB]
                 );
                 break;
 
