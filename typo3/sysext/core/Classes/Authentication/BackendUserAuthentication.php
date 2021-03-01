@@ -949,12 +949,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         // Workspace setting allows to "live edit" records of tables without versioning
-        if ($this->workspaceRec['live_edit'] && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if (($this->workspaceRec['live_edit'] ?? false)
+            && !BackendUtility::isTableWorkspaceEnabled($table)
+        ) {
             return true;
         }
         // Always for Live workspace AND if live-edit is enabled
         // and tables are completely without versioning it is ok as well.
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit'] ?? false) {
             return true;
         }
         // If the answer is FALSE it means the only valid way to create or edit records by creating records in the workspace

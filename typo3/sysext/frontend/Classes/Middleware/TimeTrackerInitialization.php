@@ -75,7 +75,7 @@ class TimeTrackerInitialization implements MiddlewareInterface
 
     protected function isDebugModeEnabled(): bool
     {
-        $controller = $GLOBALS['TSFE'];
+        $controller = $GLOBALS['TSFE'] ?? null;
         if ($controller instanceof TypoScriptFrontendController && !empty($controller->config['config']['debug'] ?? false)) {
             return true;
         }

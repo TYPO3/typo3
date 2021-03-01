@@ -292,6 +292,9 @@ class RelationHandler
             $deleteField = $GLOBALS['TCA'][$tName]['ctrl']['delete'] ?? false;
             if ($this->checkIfDeleted && $deleteField) {
                 $fieldN = $tName . '.' . $deleteField;
+                if (!isset($this->additionalWhere[$tName])) {
+                    $this->additionalWhere[$tName] = '';
+                }
                 $this->additionalWhere[$tName] .= ' AND ' . $fieldN . '=0';
             }
         }
@@ -678,7 +681,7 @@ class RelationHandler
                 } else {
                     $oldMMs[] = $row[$uidForeign_field];
                 }
-                $oldMMs_inclUid[] = [$row['tablenames'], $row[$uidForeign_field], $row['uid']];
+                $oldMMs_inclUid[] = [$row['tablenames'], $row[$uidForeign_field], $row['uid'] ?? 0];
             }
             // For each item, insert it:
             foreach ($this->itemArray as $val) {
@@ -912,7 +915,7 @@ class RelationHandler
         $foreign_table = $conf['foreign_table'];
         $foreign_table_field = $conf['foreign_table_field'];
         $useDeleteClause = !$this->undeleteRecord;
-        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : [];
+        $foreign_match_fields = is_array($conf['foreign_match_fields'] ?? false) ? $conf['foreign_match_fields'] : [];
         $queryBuilder = $this->getConnectionForTableName($foreign_table)
             ->createQueryBuilder();
         $queryBuilder->getRestrictions()
@@ -926,7 +929,7 @@ class RelationHandler
             ->from($foreign_table);
 
         // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
-        if ($conf['symmetric_field']) {
+        if (!empty($conf['symmetric_field'])) {
             $queryBuilder->where(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq(
@@ -970,8 +973,8 @@ class RelationHandler
         // Get the correct sorting field
         // Specific manual sortby for data handled by this field
         $sortby = '';
-        if ($conf['foreign_sortby']) {
-            if ($conf['symmetric_sortby'] && $conf['symmetric_field']) {
+        if (!empty($conf['foreign_sortby'])) {
+            if (!empty($conf['symmetric_sortby']) && !empty($conf['symmetric_field'])) {
                 // Sorting depends on, from which side of the relation we're looking at it
                 // This requires bypassing automatic quoting and setting of the default sort direction
                 // @TODO: Doctrine: generalize to standard SQL to guarantee database independency
@@ -987,13 +990,13 @@ class RelationHandler
                 // Regular single-side behaviour
                 $sortby = $conf['foreign_sortby'];
             }
-        } elseif ($conf['foreign_default_sortby']) {
+        } elseif (!empty($conf['foreign_default_sortby'])) {
             // Specific default sortby for data handled by this field
             $sortby = $conf['foreign_default_sortby'];
-        } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) {
+        } elseif (!empty($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'])) {
             // Manual sortby for all table records
             $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
-        } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby']) {
+        } elseif (!empty($GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'])) {
             // Default sortby for all table records
             $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'];
         }
@@ -1044,9 +1047,9 @@ class RelationHandler
         $c = 0;
         $foreign_table = $conf['foreign_table'];
         $foreign_field = $conf['foreign_field'];
-        $symmetric_field = $conf['symmetric_field'];
+        $symmetric_field = $conf['symmetric_field'] ?? '';
         $foreign_table_field = $conf['foreign_table_field'];
-        $foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : [];
+        $foreign_match_fields = is_array($conf['foreign_match_fields'] ?? false) ? $conf['foreign_match_fields'] : [];
         // If there are table items and we have a proper $parentUid
         if (MathUtility::canBeInterpretedAsInteger($parentUid) && !empty($this->tableArray)) {
             // If updateToUid is not a positive integer, set it to '0', so it will be ignored
@@ -1098,9 +1101,9 @@ class RelationHandler
                         // Get the correct sorting field
                         // Specific manual sortby for data handled by this field
                         $sortby = '';
-                        if ($conf['foreign_sortby']) {
+                        if ($conf['foreign_sortby'] ?? false) {
                             $sortby = $conf['foreign_sortby'];
-                        } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby']) {
+                        } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'] ?? false) {
                             // manual sortby for all table records
                             $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
                         }

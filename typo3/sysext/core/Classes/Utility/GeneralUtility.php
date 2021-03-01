@@ -2836,7 +2836,7 @@ class GeneralUtility
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
         }
-        $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
+        $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? '';
         return static::isAbsPath($path) && static::validPathStr($path)
             && (
                 static::isFirstPartOfStr($path, Environment::getProjectPath())

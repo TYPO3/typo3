@@ -287,7 +287,7 @@ class RootlineUtility
             // Ensure that only fields defined in $rootlineFields (and "addRootLineFields") are actually evaluated
             if (array_key_exists($column, $pageRecord) && $this->columnHasRelationToResolve($configuration)) {
                 $configuration = $configuration['config'];
-                if ($configuration['MM']) {
+                if ($configuration['MM'] ?? false) {
                     /** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDBGroup */
                     $loadDBGroup = GeneralUtility::makeInstance(RelationHandler::class);
                     $loadDBGroup->start(

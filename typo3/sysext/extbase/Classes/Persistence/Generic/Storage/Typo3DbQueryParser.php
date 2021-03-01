@@ -894,7 +894,7 @@ class Typo3DbQueryParser
             return '';
         }
 
-        $rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
+        $rootLevel = (int)($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] ?? 0);
         switch ($rootLevel) {
             // Only in pid 0
             case 1:

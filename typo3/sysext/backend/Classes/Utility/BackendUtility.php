@@ -206,7 +206,9 @@ class BackendUtility
      */
     public static function splitTable_Uid($str)
     {
-        [$uid, $table] = explode('_', strrev($str), 2);
+        $split = explode('_', strrev($str), 2);
+        $uid = $split[0];
+        $table = $split[1] ?? '';
         return [strrev($table), strrev($uid)];
     }
 
@@ -621,8 +623,8 @@ class BackendUtility
     public static function getTCAtypeValue($table, $row)
     {
         $typeNum = 0;
-        if ($GLOBALS['TCA'][$table]) {
-            $field = $GLOBALS['TCA'][$table]['ctrl']['type'];
+        if ($GLOBALS['TCA'][$table] ?? false) {
+            $field = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
             if (strpos($field, ':') !== false) {
                 [$pointerField, $foreignTableTypeField] = explode(':', $field);
                 // Get field value from database if field is not in the $row array
@@ -652,7 +654,7 @@ class BackendUtility
                     }
                 }
             } else {
-                $typeNum = $row[$field];
+                $typeNum = $row[$field] ?? 0;
             }
             // If that value is an empty string, set it to "0" (zero)
             if (empty($typeNum)) {

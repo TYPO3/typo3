@@ -168,8 +168,12 @@ class PathUtility
      */
     public static function basename($path)
     {
+        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
+        if (empty($targetLocale)) {
+            return basename($path);
+        }
         $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+        setlocale(LC_CTYPE, $targetLocale);
         $basename = basename($path);
         setlocale(LC_CTYPE, $currentLocale);
         return $basename;
@@ -189,8 +193,12 @@ class PathUtility
      */
     public static function dirname($path)
     {
+        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
+        if (empty($targetLocale)) {
+            return dirname($path);
+        }
         $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+        setlocale(LC_CTYPE, $targetLocale);
         $dirname = dirname($path);
         setlocale(LC_CTYPE, $currentLocale);
         return $dirname;
@@ -211,8 +219,12 @@ class PathUtility
      */
     public static function pathinfo($path, $options = null)
     {
+        $targetLocale = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale'] ?? '';
+        if (empty($targetLocale)) {
+            return $options === null ? pathinfo($path) : pathinfo($path, $options);
+        }
         $currentLocale = (string)setlocale(LC_CTYPE, '0');
-        setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+        setlocale(LC_CTYPE, $targetLocale);
         $pathinfo = $options == null ? pathinfo($path) : pathinfo($path, $options);
         setlocale(LC_CTYPE, $currentLocale);
         return $pathinfo;

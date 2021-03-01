@@ -1018,6 +1018,10 @@ class BackendUtilityTest extends UnitTestCase
             'multiple underscores' => [
                 'tx_runaway_domain_model_crime_scene_1234',
                 ['tx_runaway_domain_model_crime_scene', '1234']
+            ],
+            'no underscore' => [
+                'foo',
+                ['', 'foo']
             ]
         ];
     }

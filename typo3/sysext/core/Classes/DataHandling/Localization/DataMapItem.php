@@ -101,7 +101,7 @@ class DataMapItem
      * @param array $suggestedValues
      * @param array $persistedValues
      * @param array $configurationFieldNames
-     * @return object|DataMapItem
+     * @return DataMapItem
      */
     public static function build(
         string $tableName,
@@ -110,6 +110,7 @@ class DataMapItem
         array $persistedValues,
         array $configurationFieldNames
     ) {
+        /** @var DataMapItem $item */
         $item = GeneralUtility::makeInstance(
             static::class,
             $tableName,
@@ -119,10 +120,10 @@ class DataMapItem
             $configurationFieldNames
         );
 
-        $item->language = (int)($suggestedValues[$item->getLanguageFieldName()] ?? $persistedValues[$item->getLanguageFieldName()]);
-        $item->setParent($suggestedValues[$item->getParentFieldName()] ?? $persistedValues[$item->getParentFieldName()]);
+        $item->language = (int)($suggestedValues[$item->getLanguageFieldName()] ?? $persistedValues[$item->getLanguageFieldName()] ?? 0);
+        $item->setParent($suggestedValues[$item->getParentFieldName()] ?? $persistedValues[$item->getParentFieldName()] ?? '');
         if ($item->getSourceFieldName() !== null) {
-            $item->setSource($suggestedValues[$item->getSourceFieldName()] ?? $persistedValues[$item->getSourceFieldName()]);
+            $item->setSource($suggestedValues[$item->getSourceFieldName()] ?? $persistedValues[$item->getSourceFieldName()] ?? '');
         }
 
         return $item;
@@ -224,7 +225,7 @@ class DataMapItem
      */
     public function getSourceFieldName()
     {
-        return $this->configurationFieldNames['source'];
+        return $this->configurationFieldNames['source'] ?? null;
     }
 
     /**

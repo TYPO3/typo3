@@ -438,7 +438,7 @@ class ResourceFactory implements SingletonInterface
                 1300086584
             );
         }
-        if (!$this->fileReferenceInstances[$uid]) {
+        if (!($this->fileReferenceInstances[$uid] ?? false)) {
             // Fetches data in case $fileData is empty
             if (empty($fileReferenceData)) {
                 $fileReferenceData = $this->getFileReferenceData($uid, $raw);
@@ -483,7 +483,7 @@ class ResourceFactory implements SingletonInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
         ) {
             $fileReferenceData = BackendUtility::getRecordWSOL('sys_file_reference', $uid);
-        } elseif (!$raw && is_object($GLOBALS['TSFE'])) {
+        } elseif (!$raw && is_object($GLOBALS['TSFE'] ?? false)) {
             $fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
         } else {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');

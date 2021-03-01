@@ -95,7 +95,7 @@ class DataHandlerHook
         }
         $commandIsProcessed = true;
         $action = (string)$value['action'];
-        $comment = $value['comment'] ?: '';
+        $comment = $value['comment'] ?? '';
         $notificationAlternativeRecipients = $value['notificationAlternativeRecipients'] ?? [];
         switch ($action) {
             case 'new':

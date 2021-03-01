@@ -80,7 +80,7 @@ class FileReference implements FileInterface
             throw new \InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
         }
         $this->originalFile = $this->getFileObject((int)$fileReferenceData['uid_local'], $factory);
-        $this->name = $fileReferenceData['name'] !== '' ? $fileReferenceData['name'] : $this->originalFile->getName();
+        $this->name = ($fileReferenceData['name'] ?? '') !== '' ? $fileReferenceData['name'] : $this->originalFile->getName();
     }
 
     /**

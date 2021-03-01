@@ -137,7 +137,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      */
     protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
-        $pages = $this->contentObject->data['pages'];
+        $pages = $this->contentObject->data['pages'] ?? '';
         if (is_string($pages) && $pages !== '') {
             $list = [];
             if ($this->contentObject->data['recursive'] > 0) {
@@ -171,7 +171,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
     {
         $setup = $this->getTypoScriptSetup();
         $pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
-        $pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'];
+        $pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'] ?? null;
         if (is_array($pluginConfiguration)) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($pluginConfiguration);
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');
@@ -191,7 +191,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      */
     protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration): array
     {
-        $flexFormConfiguration = $this->contentObject->data['pi_flexform'];
+        $flexFormConfiguration = $this->contentObject->data['pi_flexform'] ?? [];
         if (is_string($flexFormConfiguration)) {
             if ($flexFormConfiguration !== '') {
                 $flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($flexFormConfiguration);

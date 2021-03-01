@@ -388,7 +388,7 @@ class DataMapFactory implements SingletonInterface
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
         $columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field'] ?? null);
-        if (is_array($columnConfiguration['foreign_match_fields'])) {
+        if (isset($columnConfiguration['foreign_match_fields']) && is_array($columnConfiguration['foreign_match_fields'])) {
             $columnMap->setRelationTableMatchFields($columnConfiguration['foreign_match_fields']);
         }
         return $columnMap;

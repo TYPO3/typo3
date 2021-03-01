@@ -330,7 +330,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     break;
             }
             // Soft references in the field
-            if (is_array($fieldRelations['softrefs'])) {
+            if (is_array($fieldRelations['softrefs']['keys'] ?? false)) {
                 $this->createEntryDataForSoftReferencesUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['softrefs']['keys']);
             }
         }
@@ -450,7 +450,7 @@ class ReferenceIndex implements LoggerAwareInterface
             if ($this->shouldExcludeTableColumnFromReferenceIndex($table, $field, $onlyField) === false) {
                 $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 // Add a softref definition for link fields if the TCA does not specify one already
-                if ($conf['type'] === 'input' && $conf['renderType'] === 'inputLink' && empty($conf['softref'])) {
+                if ($conf['type'] === 'input' && isset($conf['renderType']) && $conf['renderType'] === 'inputLink' && empty($conf['softref'])) {
                     $conf['softref'] = 'typolink';
                 }
                 // Add DB:
@@ -591,11 +591,11 @@ class ReferenceIndex implements LoggerAwareInterface
         }
         if ($this->isDbReferenceField($conf)) {
             $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-            if ($conf['MM_opposite_field']) {
+            if ($conf['MM_opposite_field'] ?? false) {
                 return [];
             }
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-            $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
+            $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
             return $dbAnalysis->itemArray;
         }
         return false;
@@ -847,12 +847,9 @@ class ReferenceIndex implements LoggerAwareInterface
     {
         return
             $this->isDbReferenceField($configuration)
-            ||
-            ($configuration['type'] === 'input' && $configuration['renderType'] === 'inputLink') // getRelations_procDB
-            ||
-            $configuration['type'] === 'flex'
-            ||
-            isset($configuration['softref'])
+            || ($configuration['type'] === 'input' && isset($configuration['renderType']) && $configuration['renderType'] === 'inputLink')
+            || $configuration['type'] === 'flex'
+            || isset($configuration['softref'])
             ;
     }
 
@@ -1165,7 +1162,9 @@ class ReferenceIndex implements LoggerAwareInterface
         if (isset($this->excludedColumns[$column])) {
             return true;
         }
-        if (is_array($GLOBALS['TCA'][$tableName]['columns'][$column]) && (!$onlyColumn || $onlyColumn === $column)) {
+        if (is_array($GLOBALS['TCA'][$tableName]['columns'][$column] ?? false)
+            && (!$onlyColumn || $onlyColumn === $column)
+        ) {
             return false;
         }
         return true;

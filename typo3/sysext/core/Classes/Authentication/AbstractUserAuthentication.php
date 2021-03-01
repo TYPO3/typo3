@@ -204,7 +204,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public $uc;
 
-    protected ?UserSession $userSession;
+    protected ?UserSession $userSession = null;
 
     protected UserSessionManager $userSessionManager;
 
@@ -1050,7 +1050,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getSessionData($key)
     {
-        return $this->userSession->get($key);
+        return $this->userSession ? $this->userSession->get($key) : '';
     }
 
     /**
