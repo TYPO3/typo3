@@ -765,6 +765,7 @@ class Backend extends Workspaces {
         t3ver_oid: $tr.data('t3ver_oid'),
         table: $tr.data('table'),
         uid: $tr.data('uid'),
+        filterFields: true
       }),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const item = (await response.resolve())[0].result.data[0];
