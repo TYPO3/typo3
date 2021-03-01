@@ -339,7 +339,7 @@ class ListController extends AbstractModuleController
         $backendUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
 
         if (is_array($backendUserRecord) && isset($backendUserRecord['uc'])) {
-            $uc = unserialize($backendUserRecord['uc'], ['allowed_classes' => [\stdClass::class]]);
+            $uc = unserialize($backendUserRecord['uc'], ['allowed_classes' => false]);
             if (is_array($uc)) {
                 $uc['BackendComponents']['States']['ExtensionManager']['filter'] = $this->backendUserFilter;
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
