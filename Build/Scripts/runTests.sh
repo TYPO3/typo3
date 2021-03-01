@@ -89,7 +89,6 @@ Options:
     -s <...>
         Specifies which test suite to run
             - acceptance: main backend acceptance tests
-            - acceptanceInstallTool: acceptance tests for stand alone install tool
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
             - cglGit: test and fix latest committed patch for CGL compliance
@@ -444,13 +443,6 @@ case ${TEST_SUITE} in
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1
         esac
-        docker-compose down
-        ;;
-    acceptanceInstallTool)
-        setUpDockerComposeDotEnv
-        docker-compose run prepare_acceptance_installtool_mariadb
-        docker-compose run acceptance_installtool_mariadb
-        SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
     buildCss)

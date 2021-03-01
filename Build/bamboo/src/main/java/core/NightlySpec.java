@@ -245,15 +245,12 @@ public class NightlySpec extends AbstractCoreSpec {
         String phpVersion = "PHP74";
         Task composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MIN);
         jobs.add(this.getJobAcceptanceTestInstallPgsql(COMPOSER_MIN, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsInstallToolMysql(COMPOSER_MIN, phpVersion, composerTask, false));
 
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_DEFAULT);
         jobs.add(this.getJobAcceptanceTestInstallPgsql(COMPOSER_DEFAULT, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsInstallToolMysql(COMPOSER_DEFAULT, phpVersion, composerTask, false));
 
         composerTask = getComposerTaskByStageNumber(phpVersion, COMPOSER_MAX);
         jobs.add(this.getJobAcceptanceTestInstallPgsql(COMPOSER_MAX, phpVersion, composerTask, false));
-        jobs.addAll(this.getJobsAcceptanceTestsInstallToolMysql(COMPOSER_MAX, phpVersion, composerTask, false));
 
         stages.add(new Stage("Acceptance pgsql").jobs(jobs.toArray(new Job[0])));
         return stages;

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\InstallTool;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\InstallTool;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
