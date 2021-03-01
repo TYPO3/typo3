@@ -2400,4 +2400,20 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $originalUserId = $this->getSessionData('backuserid');
         return $originalUserId ? (int)$originalUserId : null;
     }
+
+    /**
+     * @internal
+     */
+    protected function evaluateMfaRequirements(): void
+    {
+        // In case the current session is a "switch-user" session, MFA is not required
+        if ($this->getOriginalUserIdWhenInSwitchUserMode() !== null) {
+            $this->logger->debug('MFA is skipped in switch user mode', [
+                $this->userid_column => $this->user[$this->userid_column],
+                $this->username_column => $this->user[$this->username_column],
+            ]);
+            return;
+        }
+        parent::evaluateMfaRequirements();
+    }
 }
