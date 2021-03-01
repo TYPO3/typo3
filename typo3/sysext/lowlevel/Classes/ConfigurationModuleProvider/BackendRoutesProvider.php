@@ -35,7 +35,8 @@ class BackendRoutesProvider extends AbstractProvider
         foreach ($this->router->getRoutes() as $identifier => $route) {
             $configurationArray[$identifier] = [
                 'path' => $route->getPath(),
-                'options' => $route->getOptions()
+                'options' => $route->getOptions(),
+                'methods' => implode(',', $route->getMethods()) ?: '*'
             ];
         }
         ArrayUtility::naturalKeySortRecursive($configurationArray);
