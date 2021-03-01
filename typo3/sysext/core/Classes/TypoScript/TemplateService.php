@@ -569,6 +569,7 @@ class TemplateService
             'absoluteRootLine' => &$this->absoluteRootLine,
             'rootLine'         => &$this->rootLine,
             'startTemplateUid' => $start_template_uid,
+            'rowSum'           => &$this->rowSum,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Core/TypoScript/TemplateService']['runThroughTemplatesPostProcessing'] ?? [] as $listener) {
             GeneralUtility::callUserFunction($listener, $hookParameters, $this);
