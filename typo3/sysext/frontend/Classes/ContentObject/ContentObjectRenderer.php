@@ -1517,7 +1517,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_preUserFunc($content = '', $conf = [])
     {
-        return $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);
+        return $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'] ?? [], $content);
     }
 
     /**
@@ -2452,7 +2452,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_postUserFunc($content = '', $conf = [])
     {
-        return $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);
+        return $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'] ?? [], $content);
     }
 
     /**
@@ -3493,7 +3493,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         // userFunc
                         if ($conf['userFunc'] ?? false) {
-                            $data = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $data);
+                            $data = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'] ?? [], $data);
                         }
                         // Makelinks: (Before search-words as we need the links to be generated when searchwords go on...!)
                         if ($conf['makelinks'] ?? false) {
@@ -3655,7 +3655,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 // userFunc
                 if (!empty($conf['nonTypoTagUserFunc'])) {
-                    $contentAccum[$a] = $this->callUserFunction($conf['nonTypoTagUserFunc'], $conf['nonTypoTagUserFunc.'], (string)($contentAccum[$a] ?? ''));
+                    $contentAccum[$a] = $this->callUserFunction($conf['nonTypoTagUserFunc'], $conf['nonTypoTagUserFunc.'] ?? [], (string)($contentAccum[$a] ?? ''));
                 }
             }
         }
@@ -4763,7 +4763,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Call user function:
         if ($conf['userFunc'] ?? false) {
             $finalTagParts['TAG'] = $finalAnchorTag;
-            $finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $finalTagParts);
+            $finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'] ?? [], $finalTagParts);
         }
 
         // Hook: Call post processing function for link rendering:
