@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -39,10 +38,8 @@ use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class LanguagePackService implements LoggerAwareInterface
+class LanguagePackService
 {
-    use LoggerAwareTrait;
-
     /**
      * @var Locales
      */
@@ -68,14 +65,24 @@ class LanguagePackService implements LoggerAwareInterface
         'https://beta-translation.typo3.org/fileadmin/ter/',
         'https://localize.typo3.org/fileadmin/ter/'
     ];
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
     private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, RequestFactory $requestFactory)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RequestFactory $requestFactory,
+        LoggerInterface $logger
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
         $this->requestFactory = $requestFactory;
+        $this->logger = $logger;
     }
 
     /**

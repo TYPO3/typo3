@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
@@ -141,7 +142,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Service\LanguagePackService(
             $container->get(EventDispatcherInterface::class),
-            $container->get(RequestFactory::class)
+            $container->get(RequestFactory::class),
+            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class)
         );
     }
 
