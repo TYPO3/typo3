@@ -705,23 +705,6 @@ services:
         php -dxdebug.mode=off Build/Scripts/validateRstFiles.php;
       "
 
-  check_xlf:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
-    volumes:
-    - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
-    working_dir: ${CORE_ROOT}
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        Build/Scripts/xlfcheck.sh;
-      "
-
   composer_install:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}

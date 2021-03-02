@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-    <file t3:id="1521453075" source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf" date="2017-01-30T03:38:32Z" product-name="tests">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf" date="2017-01-30T03:38:32Z" product-name="tests">
         <header/>
         <body>
             <trans-unit id="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" resname="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" xml:space="preserve">

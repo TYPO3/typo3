@@ -52,7 +52,6 @@ integration various php 7.4:
     # @todo: try to set up gitlab with FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR and have a non-root user setup for containers
     # @todo: or relax the test script a bit
     # - Build/Scripts/runTests.sh -s checkPermissions -p 7.4
-    - Build/Scripts/runTests.sh -s checkXlf -p 7.4
     - Build/Scripts/runTests.sh -s checkRst -p 7.4
     - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.4
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.4

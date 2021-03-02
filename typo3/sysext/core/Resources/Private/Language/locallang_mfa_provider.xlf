@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file t3:id="1611879242" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms">
 		<header/>
 		<body>
 			<trans-unit id="totp.title" resname="totp.title">

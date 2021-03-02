@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file t3:id="1427832976" source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend">
 		<header/>
 		<body>
 			<trans-unit id="tt_content.asset_references" resname="tt_content.asset_references">
