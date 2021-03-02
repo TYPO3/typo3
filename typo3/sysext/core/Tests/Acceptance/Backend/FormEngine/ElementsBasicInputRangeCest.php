@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\FormEngine;
 
 use Codeception\Example;
+use Facebook\WebDriver\Exception\ElementClickInterceptedException;
+use Facebook\WebDriver\Exception\UnknownServerException;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -45,6 +47,14 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
         $I->click($editRecordLinkCssPath);
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');
+
+        try {
+            // make sure the test operates on the input tab
+            $I->click('input');
+            $I->waitForText('input', 3);
+        } catch (ElementClickInterceptedException|UnknownServerException $exception) {
+            // nothing to do, the tab is already active
+        }
     }
 
     /**
