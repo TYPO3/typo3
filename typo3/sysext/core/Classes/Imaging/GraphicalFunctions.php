@@ -110,7 +110,7 @@ class GraphicalFunctions
      *
      * @var array
      */
-    protected $imageFileExt = ['gif', 'jpg', 'jpeg', 'png', 'tif', 'bmp', 'tga', 'pcx', 'ai', 'pdf'];
+    protected $imageFileExt = ['gif', 'jpg', 'jpeg', 'png', 'tif', 'bmp', 'tga', 'pcx', 'ai', 'pdf', 'webp'];
 
     /**
      * Web image extensions (can be shown by a webbrowser)

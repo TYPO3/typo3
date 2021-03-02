@@ -51,7 +51,7 @@ use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
  */
 class EnvironmentController extends AbstractController
 {
-    private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf'];
+    private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp'];
 
     /**
      * @var LateBootService
@@ -522,6 +522,38 @@ class EnvironmentController extends AbstractController
         }
         return $this->getImageTestResponse($result);
     }
+    /**
+     * Writing webp test
+     *
+     * @return ResponseInterface
+     */
+    public function imageProcessingWriteWebpAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $inputFile = $imageBasePath . 'TestInput/Test.webp';
+        $imageProcessor = $this->initializeImageProcessor();
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-webp');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'webp', '300', '', '', '', [], true);
+        if ($imResult !== null && is_file($imResult[3])) {
+            $result = [
+                'fileExists' => true,
+                'outputFile' => $imResult[3],
+                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Write-webp.webp',
+                'command' => $imageProcessor->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
 
     /**
      * Scaling transparent files - gif to gif
@@ -612,6 +644,39 @@ class EnvironmentController extends AbstractController
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
                 'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Scale-jpg.jpg',
+                'command' => $imageProcessor->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageProcessor->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
+     * Converting jpg to webp
+     *
+     * @return ResponseInterface
+     */
+    public function imageProcessingJpgToWebpAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $imageProcessor = $this->initializeImageProcessor();
+        $inputFile = $imageBasePath . 'TestInput/Test.jpg';
+        $imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read-webp');
+        $imResult = $imageProcessor->imageMagickConvert($inputFile, 'webp', '300', '', '', '', [], true);
+        if ($imResult !== null) {
+            $result = [
+                'fileExists' => file_exists($imResult[3]),
+                'outputFile' => $imResult[3],
+                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Convert-webp.webp',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
