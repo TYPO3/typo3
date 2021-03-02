@@ -325,15 +325,19 @@ class Backend extends Workspaces {
         this.getWorkspaceInfos();
       }
     });
-    (<HTMLInputElement>this.elements.$searchTextField.get(0)).clearable(
-      {
-        onClear: (): void => {
-          this.elements.$searchSubmitBtn.addClass('disabled');
-          this.settings.filterTxt = '';
-          this.getWorkspaceInfos();
+
+    const searchTextField = <HTMLInputElement>this.elements.$searchTextField.get(0);
+    if (searchTextField !== undefined) {
+      searchTextField.clearable(
+        {
+          onClear: (): void => {
+            this.elements.$searchSubmitBtn.addClass('disabled');
+            this.settings.filterTxt = '';
+            this.getWorkspaceInfos();
+          },
         },
-      },
-    );
+      );
+    }
 
     // checkboxes in the table
     this.elements.$toggleAll.on('click', (): void => {
