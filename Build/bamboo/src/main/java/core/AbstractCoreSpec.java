@@ -1059,13 +1059,6 @@ abstract class AbstractCoreSpec {
                             "./Build/Scripts/checkFilePermissions.sh\n"
                     ),
                 new ScriptTask()
-                    .description("Run xlf check")
-                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
-                    .inlineBody(
-                        this.getScriptTaskBashInlineBody() +
-                            "./Build/Scripts/xlfcheck.sh"
-                    ),
-                new ScriptTask()
                     .description("Run rst check")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(

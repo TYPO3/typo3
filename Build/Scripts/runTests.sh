@@ -104,7 +104,6 @@ Options:
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
-            - checkXlf: test .xlf files for integrity
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
@@ -538,12 +537,6 @@ case ${TEST_SUITE} in
     checkRst)
         setUpDockerComposeDotEnv
         docker-compose run check_rst
-        SUITE_EXIT_CODE=$?
-        docker-compose down
-        ;;
-    checkXlf)
-        setUpDockerComposeDotEnv
-        docker-compose run check_xlf
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

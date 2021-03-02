@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file t3:id="1428074821" source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/debugger.xlf" date="2015-04-04T17:30:25Z" product-name="core">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/debugger.xlf" date="2015-04-04T17:30:25Z" product-name="core">
 		<header/>
 		<body>
 			<trans-unit id="debuggerconsole.autoscroll" resname="debuggerconsole.autoscroll" xml:space="preserve">
