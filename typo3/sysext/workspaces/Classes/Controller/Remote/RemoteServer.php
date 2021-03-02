@@ -620,11 +620,9 @@ class RemoteServer
             $fieldList = [];
         }
 
-        // Skip sys_file_reference since it contains fields like "tablenames" in searchFields
-        $searchFields = $table !== 'sys_file_reference'
-            ? GeneralUtility::trimExplode(',', (string)($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''))
-            : [];
-
-        return array_unique(array_merge($fieldList, $searchFields));
+        return array_unique(array_merge(
+            $fieldList,
+            GeneralUtility::trimExplode(',', (string)($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''))
+        ));
     }
 }

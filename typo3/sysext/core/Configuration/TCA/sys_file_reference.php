@@ -32,7 +32,7 @@ return [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'uid_local,uid_foreign,tablenames,fieldname,title,description'
+        'searchFields' => 'title,description,alternative'
     ],
     'columns' => [
         'sys_language_uid' => [
