@@ -40,14 +40,6 @@ class FileReference implements FileInterface
     protected $propertiesOfFileReference;
 
     /**
-     * The file name of this file. It's either the fileName of the original underlying file,
-     * or the overlay file name supplied by the user for this particular usage (FileReference) of the file.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Reference to the original File object underlying this FileReference.
      *
      * @var File
@@ -80,7 +72,6 @@ class FileReference implements FileInterface
             throw new \InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
         }
         $this->originalFile = $this->getFileObject((int)$fileReferenceData['uid_local'], $factory);
-        $this->name = ($fileReferenceData['name'] ?? '') !== '' ? $fileReferenceData['name'] : $this->originalFile->getName();
     }
 
     /**
