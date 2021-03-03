@@ -8063,6 +8063,96 @@ class ContentObjectRendererTest extends UnitTestCase
         );
     }
 
+    public function getGlobalDataProvider(): array
+    {
+        return [
+            'simple' => [
+                'foo',
+                'HTTP_SERVER_VARS | something',
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something' => 'foo',
+                    ]
+                ],
+                null
+            ],
+            'simple source fallback' => [
+                'foo',
+                'HTTP_SERVER_VARS | something',
+                null,
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something' => 'foo',
+                    ]
+                ],
+            ],
+            'globals ignored if source given' => [
+                '',
+                'HTTP_SERVER_VARS | something',
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something' => 'foo',
+                    ]
+                ],
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something-else' => 'foo',
+                    ]
+                ],
+            ],
+            'sub array is returned as empty string' => [
+                '',
+                'HTTP_SERVER_VARS | something',
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something' => [ 'foo' ],
+                    ]
+                ],
+                null
+            ],
+            'does not exist' => [
+                '',
+                'HTTP_SERVER_VARS | something',
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something-else' => 'foo',
+                    ]
+                ],
+                null
+            ],
+            'does not exist in source' => [
+                '',
+                'HTTP_SERVER_VARS | something',
+                null,
+                [
+                    'HTTP_SERVER_VARS' => [
+                        'something-else' => 'foo',
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getGlobalDataProvider
+     * @param mixed $expected
+     * @param string $key
+     * @param array $globals
+     * @param null $source
+     */
+    public function getGlobalReturnsExpectedResult($expected, string $key, ?array $globals, ?array $source): void
+    {
+        if (isset($globals['HTTP_SERVER_VARS'])) {
+            // Note we can't simply $GLOBALS = $globals, since phpunit backupGlobals works on existing array keys.
+            $GLOBALS['HTTP_SERVER_VARS'] = $globals['HTTP_SERVER_VARS'];
+        }
+        self::assertSame(
+            $expected,
+            (new ContentObjectRenderer())->getGlobal($key, $source)
+        );
+    }
+
     /***************************************************************************
      * End: Mixed tests
      ***************************************************************************/

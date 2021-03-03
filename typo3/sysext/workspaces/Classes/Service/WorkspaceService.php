@@ -839,7 +839,7 @@ class WorkspaceService implements SingletonInterface
     protected function isLanguageAccessibleForCurrentUser($table, array $record)
     {
         if (BackendUtility::isTableLocalizable($table)) {
-            $languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+            $languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']] ?? 0;
         } else {
             return true;
         }

@@ -1330,7 +1330,7 @@ class DataHandler implements LoggerAwareInterface
                             $originalLanguage_diffStorage[$field] = (string)($originalLanguageRecord[$field] ?? '');
                             $diffStorageFlag = true;
                         }
-                    } elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
+                    } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['origUid']) && $GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
                         // Allow value for original UID to pass by...
                         $fieldArray[$field] = $fieldValue;
                     }
@@ -1627,7 +1627,7 @@ class DataHandler implements LoggerAwareInterface
                 $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
-            $valueArray = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
+            $valueArray = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '');
         } else {
             $valueArray = ['value' => $value];
         }
@@ -1806,7 +1806,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
-        $items = $tcaFieldConf['items'];
+        $items = $tcaFieldConf['items'] ?? null;
         if (!empty($tcaFieldConf['itemsProcFunc'])) {
             /** @var ItemProcessingService $processingService */
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
@@ -1888,7 +1888,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // if no value was found and an itemsProcFunc is defined, check that for the value
-        if ($tcaFieldConf['itemsProcFunc'] && empty($res['value'])) {
+        if (!empty($tcaFieldConf['itemsProcFunc']) && empty($res['value'])) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $processedItems = $processingService->getProcessingItems(
                 $table,
@@ -3133,7 +3133,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($row as $field => $value) {
             if (!in_array($field, $nonFields, true)) {
                 // Get TCA configuration for the field:
-                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? [];
                 // Preparation/Processing of the value:
                 // "pid" is hardcoded of course:
                 // isset() won't work here, since values can be NULL in each of the arrays
@@ -3148,11 +3148,18 @@ class DataHandler implements LoggerAwareInterface
                     $value = $copyAfterFields[$field];
                 } else {
                     // Hide at copy may override:
-                    if ($first && $field == $enableField && $GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] && !$this->neverHideAtCopy && !$tE['disableHideAtCopy']) {
+                    if ($first && $field == $enableField
+                        && ($GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] ?? false)
+                        && !$this->neverHideAtCopy
+                        && !($tE['disableHideAtCopy'] ?? false)
+                    ) {
                         $value = 1;
                     }
                     // Prepend label on copy:
-                    if ($first && $field == $headerField && $GLOBALS['TCA'][$table]['ctrl']['prependAtCopy'] && !$tE['disablePrependAtCopy']) {
+                    if ($first && $field == $headerField
+                        && ($GLOBALS['TCA'][$table]['ctrl']['prependAtCopy'] ?? false)
+                        && !($tE['disablePrependAtCopy'] ?? false)
+                    ) {
                         $value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
                     }
                     // Processing based on the TCA config field type (files, references, flexforms...)
@@ -3163,11 +3170,11 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         // Overriding values:
-        if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false) {
             $data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
         }
         // Setting original UID:
-        if ($GLOBALS['TCA'][$table]['ctrl']['origUid']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['origUid'] ?? false) {
             $data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
         }
         // Do the copy by simply submitting the array through DataHandler:
@@ -3452,7 +3459,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($row as $field => $value) {
             if (!in_array($field, $nonFields, true)) {
                 // Get TCA configuration for the field:
-                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false;
                 if (is_array($conf)) {
                     // Processing based on the TCA config field type (files, references, flexforms...)
                     $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $pid, 0, $workspaceOptions);
@@ -3463,7 +3470,7 @@ class DataHandler implements LoggerAwareInterface
         }
         $row['pid'] = $pid;
         // Setting original UID:
-        if ($GLOBALS['TCA'][$table]['ctrl']['origUid']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['origUid'] ?? '') {
             $row[$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
         }
         // Do the copy by internal function
@@ -3559,7 +3566,7 @@ class DataHandler implements LoggerAwareInterface
             $value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions);
         }
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
-        if ($conf['type'] === 'flex') {
+        if (isset($conf['type']) && $conf['type'] === 'flex') {
             // Get current value array:
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
@@ -3594,7 +3601,7 @@ class DataHandler implements LoggerAwareInterface
     protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language)
     {
         $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-        $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
+        $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
         $mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
         $localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
         // Localize referenced records of select fields:
@@ -4143,7 +4150,7 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($row) && (int)$destPid !== (int)$row['pid']) {
             $conf = $GLOBALS['TCA'][$table]['columns'];
             foreach ($row as $field => $value) {
-                $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf[$field]['config']);
+                $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf[$field]['config'] ?? []);
             }
         }
     }
@@ -4162,7 +4169,7 @@ class DataHandler implements LoggerAwareInterface
     public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
     {
         $dbAnalysis = null;
-        if ($conf['type'] === 'inline') {
+        if (!empty($conf['type']) && $conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
             $moveChildrenWithParent = !isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent'];
             if ($foreign_table && $moveChildrenWithParent) {
@@ -4340,18 +4347,19 @@ class DataHandler implements LoggerAwareInterface
         }
         // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
         if (isset($GLOBALS['TCA'][$table]['ctrl']['type'])) {
-            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
+            // @todo: Possible bug here? type can be something like 'table:field', which is then null in $row, writing null to $overrideValues
+            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']] ?? null;
         }
         // Set exclude Fields:
         foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fCfg) {
             $translateToMsg = '';
             // Check if we are just prefixing:
-            if ($fCfg['l10n_mode'] === 'prefixLangTitle') {
+            if (isset($fCfg['l10n_mode']) && $fCfg['l10n_mode'] === 'prefixLangTitle') {
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     [$tscPID] = BackendUtility::getTSCpid($table, $uid, '');
                     $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     $tE = $this->getTableEntries($table, $TSConfig);
-                    if (!empty($TSConfig['translateToMessage']) && !$tE['disablePrependAtCopy']) {
+                    if (!empty($TSConfig['translateToMessage']) && !($tE['disablePrependAtCopy'] ?? false)) {
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
                     }
@@ -5002,7 +5010,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         foreach ($row as $field => $value) {
-            $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config']);
+            $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'] ?? []);
         }
     }
 
@@ -5018,8 +5026,11 @@ class DataHandler implements LoggerAwareInterface
      * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf)
+    public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf): void
     {
+        if (!isset($conf['type'])) {
+            return;
+        }
         if ($conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
             if ($foreign_table) {
@@ -5047,7 +5058,7 @@ class DataHandler implements LoggerAwareInterface
         } elseif ($this->isReferenceField($conf)) {
             $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             $dbAnalysis = $this->createRelationHandlerInstance();
-            $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
+            $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
             foreach ($dbAnalysis->itemArray as $v) {
                 $this->updateRefIndex($v['table'], $v['id']);
             }
@@ -5594,7 +5605,7 @@ class DataHandler implements LoggerAwareInterface
             't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
             't3ver_stage' => 0,
         ];
-        if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false) {
             $overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
         }
         // Checking if the record already has a version in the current workspace of the backend user
@@ -5641,16 +5652,14 @@ class DataHandler implements LoggerAwareInterface
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
             $conf = $fConf['config'];
             if ($this->isReferenceField($conf)) {
-                $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-                $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
-                if ($conf['MM']) {
-                    /** @var RelationHandler $dbAnalysis */
+                $allowedTables = $conf['type'] === 'group' ? ($conf['allowed'] ?? '') : $conf['foreign_table'];
+                $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
+                if ($conf['MM'] ?? false) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
                     if (!empty($dbAnalysis->getValueArray($prependName))) {
                         $this->version_remapMMForVersionSwap_reg[$id][$field] = [$dbAnalysis, $conf['MM'], $prependName];
                     }
-                    /** @var RelationHandler $dbAnalysis */
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
                     if (!empty($dbAnalysis->getValueArray($prependName))) {
@@ -5882,16 +5891,16 @@ class DataHandler implements LoggerAwareInterface
         // Allowed tables for references.
         $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
         // Table name to prepend the UID
-        $prependName = $conf['type'] === 'group' ? $conf['prepend_tname'] : '';
+        $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
         // Which tables that should possibly not be remapped
-        $dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], true);
+        $dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'] ?? '', true);
         // Convert value to list of references:
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->registerNonTableValues = $conf['type'] === 'select' && $conf['allowNonIdValues'];
-        $dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid, $table, $conf);
+        $dbAnalysis->registerNonTableValues = $conf['type'] === 'select' && ($conf['allowNonIdValues'] ?? false);
+        $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $MM_localUid, $table, $conf);
         // Traverse those references and map IDs:
         foreach ($dbAnalysis->itemArray as $k => $v) {
-            $mapID = $this->copyMappingArray_merged[$v['table']][$v['id']];
+            $mapID = $this->copyMappingArray_merged[$v['table']][$v['id']] ?? 0;
             if ($mapID && !in_array($v['table'], $dontRemapTables, true)) {
                 $dbAnalysis->itemArray[$k]['id'] = $mapID;
                 $set = true;
@@ -5923,7 +5932,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // If a change has been done, set the new value(s)
         if ($set) {
-            if ($conf['MM']) {
+            if ($conf['MM'] ?? false) {
                 $dbAnalysis->writeMM($conf['MM'], $MM_localUid, $prependName);
             } else {
                 return $dbAnalysis->getValueArray($prependName);
@@ -6225,27 +6234,31 @@ class DataHandler implements LoggerAwareInterface
      * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to DataHandler in process_datamap.
      * @internal should only be used from within DataHandler
      */
-    public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList)
+    public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList): void
     {
-        if (is_array($registerDBList[$table][$id])) {
-            foreach ($incomingFieldArray as $field => $value) {
-                $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                if ($registerDBList[$table][$id][$field] && ($foreignTable = $fieldConf['foreign_table'])) {
-                    $newValueArray = [];
-                    $origValueArray = is_array($value) ? $value : explode(',', $value);
-                    // Update the uids of the copied records, but also take care about new records:
-                    foreach ($origValueArray as $childId) {
-                        $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ?: $childId;
-                    }
-                    // Set the changed value to the $incomingFieldArray
-                    $incomingFieldArray[$field] = implode(',', $newValueArray);
+        if (!isset($registerDBList[$table][$id]) || !is_array($registerDBList[$table][$id])) {
+            return;
+        }
+        foreach ($incomingFieldArray as $field => $value) {
+            $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+            $foreignTable = $fieldConf['foreign_table'] ?? '';
+            if (($registerDBList[$table][$id][$field] ?? false)
+                && !empty($foreignTable)
+            ) {
+                $newValueArray = [];
+                $origValueArray = is_array($value) ? $value : explode(',', $value);
+                // Update the uids of the copied records, but also take care about new records:
+                foreach ($origValueArray as $childId) {
+                    $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ?? $childId;
                 }
+                // Set the changed value to the $incomingFieldArray
+                $incomingFieldArray[$field] = implode(',', $newValueArray);
             }
-            // Clean up the $registerDBList array:
-            unset($registerDBList[$table][$id]);
-            if (empty($registerDBList[$table])) {
-                unset($registerDBList[$table]);
-            }
+        }
+        // Clean up the $registerDBList array:
+        unset($registerDBList[$table][$id]);
+        if (empty($registerDBList[$table])) {
+            unset($registerDBList[$table]);
         }
     }
 
@@ -6853,12 +6866,12 @@ class DataHandler implements LoggerAwareInterface
     public function getRecordPropertiesFromRow($table, $row)
     {
         if ($GLOBALS['TCA'][$table]) {
-            $liveUid = ($row['t3ver_oid'] ?? null) ? $row['t3ver_oid'] : $row['uid'];
+            $liveUid = ($row['t3ver_oid'] ?? null) ? ($row['t3ver_oid'] ?? null) : ($row['uid'] ?? null);
             return [
                 'header' => BackendUtility::getRecordTitle($table, $row),
-                'pid' => $row['pid'],
-                'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid']),
-                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : ''
+                'pid' => $row['pid'] ?? null,
+                'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid'] ?? null),
+                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? ($row['t3ver_state'] ?? '') : ''
             ];
         }
         return null;
@@ -7477,7 +7490,7 @@ class DataHandler implements LoggerAwareInterface
                 // If there is an element, find its localized record in specified localization language
                 if ($previousRow = $queryBuilder->execute()->fetch()) {
                     $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $language);
-                    if (is_array($previousLocalizedRecord[0])) {
+                    if (isset($previousLocalizedRecord[0]) && is_array($previousLocalizedRecord[0])) {
                         $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
                     }
                 }
@@ -7591,7 +7604,7 @@ class DataHandler implements LoggerAwareInterface
             }
             // Unset the fields which are similar:
             foreach ($fieldArray as $col => $val) {
-                $fieldConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
+                $fieldConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'] ?? [];
                 $isNullField = (!empty($fieldConfiguration['eval']) && GeneralUtility::inList($fieldConfiguration['eval'], 'null'));
 
                 // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
@@ -7740,8 +7753,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function getTableEntries($table, $TSconfig)
     {
-        $tA = is_array($TSconfig['table.'][$table . '.']) ? $TSconfig['table.'][$table . '.'] : [];
-        $dA = is_array($TSconfig['default.']) ? $TSconfig['default.'] : [];
+        $tA = is_array($TSconfig['table.'][$table . '.'] ?? false) ? $TSconfig['table.'][$table . '.'] : [];
+        $dA = is_array($TSconfig['default.'] ?? false) ? $TSconfig['default.'] : [];
         ArrayUtility::mergeRecursiveWithOverrule($dA, $tA);
         return $dA;
     }
@@ -7879,7 +7892,7 @@ class DataHandler implements LoggerAwareInterface
         $newData = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
             if ($conf['config']['type'] === 'input' && (string)$curData[$field] !== '') {
-                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], true);
+                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
                     $newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
                     if ((string)$newV !== (string)$curData[$field]) {
@@ -7958,7 +7971,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = [])
     {
-        if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] ?? false) {
             $prevData = $this->recordInfo($table, $prevUid, '*');
             $theFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], true);
             foreach ($theFields as $field) {
@@ -8011,8 +8024,8 @@ class DataHandler implements LoggerAwareInterface
      */
     public function isReferenceField($conf)
     {
-        return $conf['type'] === 'group' && $conf['internal_type'] === 'db'
-            || $conf['type'] === 'select' && ($conf['foreign_table'] ?? false);
+        return isset($conf['type'], $conf['internal_type']) && $conf['type'] === 'group' && $conf['internal_type'] === 'db'
+            || isset($conf['type'], $conf['foreign_table']) && $conf['type'] === 'select' && $conf['foreign_table'];
     }
 
     /**
@@ -8025,7 +8038,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function getInlineFieldType($conf)
     {
-        if ($conf['type'] !== 'inline' || !$conf['foreign_table']) {
+        if (empty($conf['type']) || $conf['type'] !== 'inline' || empty($conf['foreign_table'])) {
             return false;
         }
         if ($conf['foreign_field'] ?? false) {
@@ -8213,7 +8226,7 @@ class DataHandler implements LoggerAwareInterface
         }
         static::$recordsToClearCacheFor[$table][] = (int)$uid;
         if ($pid !== null) {
-            if (!is_array(static::$recordPidsForDeletedRecords[$table])) {
+            if (!isset(static::$recordPidsForDeletedRecords[$table]) || !is_array(static::$recordPidsForDeletedRecords[$table])) {
                 static::$recordPidsForDeletedRecords[$table] = [];
             }
             static::$recordPidsForDeletedRecords[$table][$uid][] = (int)$pid;
@@ -8614,7 +8627,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $localizationParentFieldName = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
         $row = $this->recordInfo('pages', $pageId, $localizationParentFieldName);
-        $localizationParent = (int)$row[$localizationParentFieldName];
+        $localizationParent = (int)($row[$localizationParentFieldName] ?? 0);
         if ($localizationParent > 0) {
             return $localizationParent;
         }
@@ -8636,6 +8649,7 @@ class DataHandler implements LoggerAwareInterface
         $result = $fieldArray;
         foreach ($fieldArray as $field => $value) {
             if (!MathUtility::canBeInterpretedAsInteger($value)
+                && isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'])
                 && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'inline'
                 && ($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_field'] ?? false)
             ) {

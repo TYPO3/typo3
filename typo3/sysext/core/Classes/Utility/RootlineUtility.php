@@ -492,7 +492,7 @@ class RootlineUtility
         }
 
         $page = $this->resolvePageRecord($pageId);
-        if (!VersionState::cast($page['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
+        if (!isset($page['t3ver_state']) || !VersionState::cast($page['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
             return $pageId;
         }
 

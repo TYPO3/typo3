@@ -42,7 +42,11 @@ class ContentContentObject extends AbstractContentObject
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It should not be allowed to do this again then!!
         if ($originalRec) {
-            ++$frontendController->recordRegister[$originalRec];
+            if (isset($frontendController->recordRegister[$originalRec])) {
+                ++$frontendController->recordRegister[$originalRec];
+            } else {
+                $frontendController->recordRegister[$originalRec] = 1;
+            }
         }
         $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf ?? []));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
@@ -83,10 +87,11 @@ class ContentContentObject extends AbstractContentObject
                         $_procObj = GeneralUtility::makeInstance($className);
                         $_procObj->modifyDBRow($row, $conf['table']);
                     }
-                    if (!$frontendController->recordRegister[$conf['table'] . ':' . $row['uid']]) {
+                    $registerField = $conf['table'] . ':' . $row['uid'];
+                    if (!($frontendController->recordRegister[$registerField] ?? false)) {
                         $this->cObj->currentRecordNumber++;
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-                        $frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];
+                        $frontendController->currentRecord = $registerField;
                         $this->cObj->lastChanged($row['tstamp']);
                         $cObj->start($row, $conf['table'], $this->request);
                         $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);

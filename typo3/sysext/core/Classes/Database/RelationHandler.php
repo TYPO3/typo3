@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Database;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -201,8 +202,9 @@ class RelationHandler
      */
     protected function getWorkspaceId(): int
     {
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
         if (!isset($this->workspaceId)) {
-            $this->workspaceId = (int)$GLOBALS['BE_USER']->workspace;
+            $this->workspaceId = $backendUser instanceof BackendUserAuthentication ? (int)($backendUser->workspace) : 0;
         }
         return $this->workspaceId;
     }

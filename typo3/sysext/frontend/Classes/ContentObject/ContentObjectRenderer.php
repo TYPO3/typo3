@@ -455,7 +455,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
-        $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
+        $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] ?? [];
         $this->container = $container;
     }
 
@@ -4504,13 +4504,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $keys = explode('|', $keyString);
         $numberOfLevels = count($keys);
         $rootKey = trim($keys[0]);
-        $value = isset($source) ? $source[$rootKey] : $GLOBALS[$rootKey];
+        $value = isset($source) ? ($source[$rootKey] ?? '') : ($GLOBALS[$rootKey] ?? '');
         for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
             $currentKey = trim($keys[$i]);
             if (is_object($value)) {
                 $value = $value->{$currentKey};
             } elseif (is_array($value)) {
-                $value = $value[$currentKey];
+                $value = $value[$currentKey] ?? '';
             } else {
                 $value = '';
                 break;
@@ -5742,8 +5742,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         foreach ($properties as $property) {
             $conf[$property] = trim(
                 isset($conf[$property . '.'])
-                    ? $this->stdWrap($conf[$property], $conf[$property . '.'])
-                    : $conf[$property]
+                    ? $this->stdWrap($conf[$property] ?? '', $conf[$property . '.'] ?? [])
+                    : ($conf[$property] ?? null)
             );
             if ($conf[$property] === '') {
                 unset($conf[$property]);
@@ -5804,7 +5804,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $conf['pidInList'] = implode(',', $expandedPidList);
             }
         }
-        if ((string)$conf['pidInList'] === '') {
+        if ((string)($conf['pidInList'] ?? '') === '') {
             $conf['pidInList'] = 'this';
         }
 
@@ -5816,28 +5816,28 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('*')->from($table);
 
-        if ($queryParts['where']) {
+        if ($queryParts['where'] ?? false) {
             $queryBuilder->where($queryParts['where']);
         }
 
-        if ($queryParts['groupBy']) {
+        if ($queryParts['groupBy'] ?? false) {
             $queryBuilder->groupBy(...$queryParts['groupBy']);
         }
 
-        if (is_array($queryParts['orderBy'])) {
+        if (is_array($queryParts['orderBy'] ?? false)) {
             foreach ($queryParts['orderBy'] as $orderBy) {
                 $queryBuilder->addOrderBy(...$orderBy);
             }
         }
 
         // Fields:
-        if ($conf['selectFields']) {
+        if ($conf['selectFields'] ?? false) {
             $queryBuilder->selectLiteral($this->sanitizeSelectPart($conf['selectFields'], $table));
         }
 
         // Setting LIMIT:
         $error = false;
-        if ($conf['max'] || $conf['begin']) {
+        if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
             if (strpos(strtolower($conf['begin'] . $conf['max']), 'total') !== false) {
                 $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -5872,7 +5872,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         if (!$error) {
             // Setting up tablejoins:
-            if ($conf['join']) {
+            if ($conf['join'] ?? false) {
                 $joinParts = QueryHelper::parseJoin($conf['join']);
                 $queryBuilder->join(
                     $table,
@@ -5880,7 +5880,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $joinParts['tableAlias'],
                     $joinParts['joinCondition']
                 );
-            } elseif ($conf['leftjoin']) {
+            } elseif ($conf['leftjoin'] ?? false) {
                 $joinParts = QueryHelper::parseJoin($conf['leftjoin']);
                 $queryBuilder->leftJoin(
                     $table,
@@ -5888,7 +5888,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $joinParts['tableAlias'],
                     $joinParts['joinCondition']
                 );
-            } elseif ($conf['rightjoin']) {
+            } elseif ($conf['rightjoin'] ?? false) {
                 $joinParts = QueryHelper::parseJoin($conf['rightjoin']);
                 $queryBuilder->rightJoin(
                     $table,
@@ -6029,7 +6029,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
         );
 
-        if (trim($conf['uidInList'])) {
+        if (trim($conf['uidInList'] ?? '')) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$tsfe->contentPid, $conf['uidInList']));
 
             // If moved records shall be considered, select via t3ver_oid
@@ -6172,9 +6172,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $languageQuery = $expressionBuilder->in($languageField, [0, -1]);
             // Use this option to include records that don't have a default language counterpart ("free mode")
             // (originalpointerfield is 0 and the language field contains the requested language)
-            if (isset($conf['includeRecordsWithoutDefaultTranslation']) || $conf['includeRecordsWithoutDefaultTranslation.']) {
-                $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?
-                    $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.']) : $conf['includeRecordsWithoutDefaultTranslation'];
+            if (isset($conf['includeRecordsWithoutDefaultTranslation']) || !empty($conf['includeRecordsWithoutDefaultTranslation.'])) {
+                $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.'])
+                    ? $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.'])
+                    : $conf['includeRecordsWithoutDefaultTranslation'];
                 $includeRecordsWithoutDefaultTranslation = trim($includeRecordsWithoutDefaultTranslation) !== '';
             } else {
                 // Option was not explicitly set, check what's in for the language overlay type.
@@ -6267,7 +6268,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getQueryMarkers($table, $conf)
     {
-        if (!is_array($conf['markers.'])) {
+        if (!isset($conf['markers.']) || !is_array($conf['markers.'])) {
             return [];
         }
         // Parse markers and prepare their values

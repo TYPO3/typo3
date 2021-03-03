@@ -41,12 +41,12 @@ class ItemProcessingService
     {
         $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
         $TSconfig = BackendUtility::getPagesTSconfig($pageId);
-        $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'];
+        $fieldTSconfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.'] ?? [];
 
         $params = [];
         $params['items'] = &$selectedItems;
         $params['config'] = $tcaConfig;
-        $params['TSconfig'] = $fieldTSconfig['itemsProcFunc.'];
+        $params['TSconfig'] = $fieldTSconfig['itemsProcFunc.'] ?? null;
         $params['table'] = $table;
         $params['row'] = $row;
         $params['field'] = $field;

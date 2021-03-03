@@ -1415,14 +1415,15 @@ class BackendUtility
                 $recordTitle = $params['title'];
             } else {
                 // No userFunc: Build label
+                $ctrlLabel = $GLOBALS['TCA'][$table]['ctrl']['label'] ?? '';
                 $recordTitle = self::getProcessedValue(
                     $table,
-                    $GLOBALS['TCA'][$table]['ctrl']['label'],
-                    $row[$GLOBALS['TCA'][$table]['ctrl']['label']],
+                    $ctrlLabel,
+                    $row[$ctrlLabel] ?? '',
                     0,
                     false,
                     false,
-                    $row['uid'],
+                    $row['uid'] ?? null,
                     $forceResult
                 ) ?? '';
                 if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])
@@ -1434,7 +1435,7 @@ class BackendUtility
                         $tA[] = $recordTitle;
                     }
                     foreach ($altFields as $fN) {
-                        $recordTitle = trim(strip_tags($row[$fN]));
+                        $recordTitle = trim(strip_tags($row[$fN] ?? ''));
                         if ((string)$recordTitle !== '') {
                             $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid']);
                             if (!$GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
@@ -1443,7 +1444,7 @@ class BackendUtility
                             $tA[] = $recordTitle;
                         }
                     }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
+                    if ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] ?? false) {
                         $recordTitle = implode(', ', $tA);
                     }
                 }
