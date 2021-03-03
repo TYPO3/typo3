@@ -116,10 +116,13 @@ class FlashMessagesViewHelper extends AbstractViewHelper
 
     /**
      * Renders FlashMessages and flushes the FlashMessage queue
-     * Note: This disables the current page cache in order to prevent FlashMessage output
-     * from being cached.
      *
-     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
+     * Note: This does not disable the current page cache in order to prevent FlashMessage output
+     *       from being cached.
+     *       In case of conditional flash message rendering, caching must be disabled
+     *       (e.g. for a controller action).
+     *       Custom caching using the Caching Framework can be used in this case.
+     *
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
