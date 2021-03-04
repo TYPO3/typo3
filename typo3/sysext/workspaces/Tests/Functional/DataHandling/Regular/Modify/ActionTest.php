@@ -1096,4 +1096,30 @@ class ActionTest extends AbstractActionTestCase
         parent::createPlaceholdersAndDeleteLiveParentPage();
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
     }
+
+    /**
+     * @test
+     * Test does not make sense in Publish, PublishAll and Discard scenarios and is skipped there
+     */
+    public function createLocalizedNotHiddenWorkspaceContentHiddenInLive()
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Have a hidden live content element
+        $this->setWorkspaceId(0);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 1]);
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+        // Create a non-hidden workspace overlay
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 0]);
+        // Confirm db state is as expected for this scenario
+        $this->assertAssertionDataSet('createLocalizedNotHiddenWorkspaceContentHiddenInLive');
+        // Get the FE preview and verify content element is shown
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
+    }
 }
