@@ -15,10 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -539,12 +536,7 @@ class MenuProcessor implements DataProcessorInterface
      */
     protected function getCurrentSite(): SiteInterface
     {
-        try {
-            return GeneralUtility::makeInstance(SiteFinder::class)
-                ->getSiteByPageId((int)$this->getTypoScriptFrontendController()->id);
-        } catch (SiteNotFoundException $e) {
-            return new NullSite();
-        }
+        return $this->getTypoScriptFrontendController()->getSite();
     }
 
     /**

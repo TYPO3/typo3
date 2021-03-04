@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Fetch the site object containing all information about the current site
@@ -38,6 +36,12 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  */
 class SiteProcessor implements DataProcessorInterface
 {
+    protected ?TypoScriptFrontendController $tsfe;
+
+    public function __construct(TypoScriptFrontendController $tsfe = null)
+    {
+        $this->tsfe = $tsfe ?? $GLOBALS['TSFE'] ?? null;
+    }
 
     /**
      * @param ContentObjectRenderer $cObj The data of the content element or page
@@ -56,32 +60,13 @@ class SiteProcessor implements DataProcessorInterface
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
      *
-     * @return SiteInterface|null
+     * @return Site|null
      */
-    protected function getCurrentSite(): ?SiteInterface
+    protected function getCurrentSite(): ?Site
     {
-        try {
-            return $this->getSiteFinder()->getSiteByPageId($this->getCurrentPageId());
-        } catch (SiteNotFoundException $e) {
-            // Do nothing
+        if ($this->tsfe instanceof TypoScriptFrontendController) {
+            return $this->tsfe->getSite();
         }
-
         return null;
-    }
-
-    /**
-     * @return SiteFinder
-     */
-    protected function getSiteFinder(): SiteFinder
-    {
-        return GeneralUtility::makeInstance(SiteFinder::class);
-    }
-
-    /**
-     * @return int
-     */
-    protected function getCurrentPageId(): int
-    {
-        return (int)$GLOBALS['TSFE']->id;
     }
 }

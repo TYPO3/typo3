@@ -17,10 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -282,16 +279,11 @@ class LanguageMenuProcessor implements DataProcessorInterface
     /**
      * Returns the currently configured "site" if a site is configured (= resolved) in the current request.
      *
-     * @return SiteInterface
+     * @return Site
      */
-    protected function getCurrentSite(): SiteInterface
+    protected function getCurrentSite(): Site
     {
-        try {
-            return GeneralUtility::makeInstance(SiteFinder::class)
-                ->getSiteByPageId((int)$this->getTypoScriptFrontendController()->id);
-        } catch (SiteNotFoundException $e) {
-            return new NullSite();
-        }
+        return $this->getTypoScriptFrontendController()->getSite();
     }
 
     /**

@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\DataProcessing\SiteProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -40,12 +39,11 @@ class SiteProcessorTest extends UnitTestCase
         $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
         $site = new Site('site123', 123, []);
+        $tsfeProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfeProphecy->getSite()->willReturn($site);
 
-        $subject = $this->getAccessibleMock(SiteProcessor::class, ['getCurrentSite'], []);
-        $subject->expects(self::any())->method('getCurrentSite')->willReturn($site);
-
+        $subject = new SiteProcessor($tsfeProphecy->reveal());
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
-
         self::assertEquals($site, $processedData['variable']);
     }
 
@@ -58,13 +56,7 @@ class SiteProcessorTest extends UnitTestCase
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
         $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
-        $finderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
-        $finderMock->expects(self::any())->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
-
-        $subject = $this->getAccessibleMock(SiteProcessor::class, ['getSiteFinder', 'getCurrentPageId'], []);
-        $subject->expects(self::any())->method('getSiteFinder')->willReturn($finderMock);
-        $subject->expects(self::any())->method('getCurrentPageId')->willReturn(1);
-
+        $subject = new SiteProcessor();
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
 
         self::assertNull($processedData['variable']);
