@@ -68,8 +68,12 @@ return [
             'config' => [
                 'type' => 'input',
                 'eval' => 'required, trim',
-                'size' => 10,
+                'size' => 20,
                 'placeholder' => 'en_US.UTF-8',
+                'valuePicker' => [
+                    'mode' => '',
+                    'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales()
+                ],
             ],
         ],
         'iso-639-1' => [

@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Configuration\TCA;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides user functions for the usage in TCA definition
@@ -88,9 +90,25 @@ class UserFunctions
         $parameters['title'] = sprintf($format, ...$arguments);
     }
 
-    /**
-     * @return LanguageService
-     */
+    public static function getAllSystemLocales(): array
+    {
+        $disabledFunctions = GeneralUtility::trimExplode(',', (string)ini_get('disable_functions'), true);
+        if (in_array('exec', $disabledFunctions, true)) {
+            return [];
+        }
+
+        $rawOutput = [];
+        CommandUtility::exec('locale -a', $rawOutput);
+
+        ksort($rawOutput, SORT_NATURAL);
+        $locales = [];
+        foreach ($rawOutput as $item) {
+            $locales[] = [$item, $item];
+        }
+
+        return $locales;
+    }
+
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
