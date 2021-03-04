@@ -114,6 +114,11 @@ label {
             top: 100%;
         }
     }
+
+    > label,
+    > .form-label {
+        word-break: break-all;
+    }
 }
 
 .form-control[disabled],
