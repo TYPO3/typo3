@@ -84,7 +84,8 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $staticArguments = ArrayUtility::arrayDiffAssocRecursive($routeArguments, $dynamicArguments);
 
         $page = $route->getOption('_page');
-        $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
+        $pageId = (int)(isset($page['t3ver_oid']) && $page['t3ver_oid'] > 0 ? $page['t3ver_oid'] : $page['uid']);
+        $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $pageId);
         // See PageSlugCandidateProvider where this is added.
         if ($page['MPvar'] ?? '') {
             $routeArguments['MP'] = $page['MPvar'];
