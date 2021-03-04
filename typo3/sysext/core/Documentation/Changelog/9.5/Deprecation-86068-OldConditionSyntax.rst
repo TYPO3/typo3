@@ -12,7 +12,7 @@ Description
 The Symfony expression language is available for TypoScript since :issue:`85829` has been merged.
 Accordingly the classic TypoScript condition syntax has been marked as deprecated.
 
-For detailed information about the new expression language see `#85829 <Feature-85829-ImplementSymfonyExpressionLanguageForTypoScriptConditions.rst>`_.
+For detailed information about the new expression language see :doc:`#85829 <../9.4/Feature-85829-ImplementSymfonyExpressionLanguageForTypoScriptConditions>`.
 
 
 Impact
