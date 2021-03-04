@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "11.1.0"
+		"typo3/cms-core": "11.1.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -33,6 +33,9 @@
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "viewpage"
+		},
+		"branch-alias": {
+			"dev-master": "11.1.x-dev"
 		}
 	},
 	"autoload": {
