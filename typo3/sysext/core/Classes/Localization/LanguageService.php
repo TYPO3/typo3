@@ -112,7 +112,7 @@ class LanguageService
     /**
      * Initializes the language to fetch XLF labels for.
      * $languageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-     * $languageService->init($GLOBALS['BE_USER']->uc['lang']);
+     * $languageService->init($GLOBALS['BE_USER']->user['lang']);
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)
@@ -370,8 +370,8 @@ class LanguageService
 
     public static function createFromUserPreferences(?AbstractUserAuthentication $user): self
     {
-        if ($user && ($user->uc['lang'] ?? false)) {
-            return static::create($user->uc['lang']);
+        if ($user && ($user->user['lang'] ?: false)) {
+            return static::create($user->user['lang']);
         }
         return static::create('default');
     }

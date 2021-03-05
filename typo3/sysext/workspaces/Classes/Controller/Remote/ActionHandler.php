@@ -345,10 +345,9 @@ class ActionHandler
             }
             $beUserRecord = BackendUtility::getRecord('be_users', (int)$userUid);
             if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
-                $uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc'], ['allowed_classes' => false]) : [];
                 $recipients[$beUserRecord['email']] = [
                     'email' => $beUserRecord['email'],
-                    'lang' => $uc['lang'] ?? $beUserRecord['lang']
+                    'lang' => $beUserRecord['lang']
                 ];
             }
         }

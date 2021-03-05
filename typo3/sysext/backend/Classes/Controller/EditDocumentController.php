@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -560,6 +561,22 @@ class EditDocumentController
         if ($this->doSave === true) {
             $tce->process_datamap();
             $tce->process_cmdmap();
+
+            // Update the module menu for the current backend user, as they updated their UI language
+            $currentUserId = (int)($beUser->user[$beUser->userid_column] ?? 0);
+            if ($currentUserId
+                && (string)($this->data['be_users'][$currentUserId]['lang'] ?? '') !== ''
+                && $this->data['be_users'][$currentUserId]['lang'] !== $beUser->user['lang']
+            ) {
+                $newLanguageKey = $this->data['be_users'][$currentUserId]['lang'];
+                // Update the current backend user language as well
+                $beUser->user['lang'] = $newLanguageKey;
+                // Re-create LANG to have the current request updated the translated page as well
+                $this->getLanguageService()->init($newLanguageKey);
+                $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+                BackendUtility::setUpdateSignal('updateModuleMenu');
+                BackendUtility::setUpdateSignal('updateTopbar');
+            }
         }
         // If pages are being edited, we set an instruction about updating the page tree after this operation.
         if ($tce->pagetreeNeedsRefresh

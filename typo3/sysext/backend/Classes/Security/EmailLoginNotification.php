@@ -114,7 +114,7 @@ class EmailLoginNotification implements LoggerAwareInterface
             ->assignMultiple([
                 'user' => $user->user,
                 'prefix' => $subjectPrefix,
-                'language' => $user->uc['lang'] ?? 'default',
+                'language' => ($user->user['lang'] ?? '') ?: 'default',
                 'headline' => $headline
             ]);
         try {

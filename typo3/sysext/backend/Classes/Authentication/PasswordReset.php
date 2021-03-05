@@ -127,7 +127,7 @@ class PasswordReset implements LoggerAwareInterface
         }
         $queryBuilder = $this->getPreparedQueryBuilder();
         $users = $queryBuilder
-            ->select('uid', 'email', 'username', 'realName', 'uc', 'lang')
+            ->select('uid', 'email', 'username', 'realName', 'lang')
             ->from('be_users')
             ->andWhere(
                 $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($emailAddress))
@@ -188,7 +188,6 @@ class PasswordReset implements LoggerAwareInterface
      */
     protected function sendResetEmail(ServerRequestInterface $request, Context $context, array $user, string $emailAddress): void
     {
-        $uc = unserialize($user['uc'] ?? '', ['allowed_classes' => false]);
         $resetLink = $this->generateResetLinkForUser($context, (int)$user['uid'], (string)$user['email']);
         $emailObject = GeneralUtility::makeInstance(FluidEmail::class);
         $emailObject
@@ -196,7 +195,7 @@ class PasswordReset implements LoggerAwareInterface
             ->setRequest($request)
             ->assign('name', $user['realName'])
             ->assign('email', $user['email'])
-            ->assign('language', $uc['lang'] ?? $user['lang'] ?: 'default')
+            ->assign('language', $user['lang'] ?: 'default')
             ->assign('resetLink', $resetLink)
             ->setTemplate('PasswordReset/ResetRequested');
 

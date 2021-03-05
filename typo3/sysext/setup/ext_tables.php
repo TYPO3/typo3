@@ -66,8 +66,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
         ],
         'lang' => [
-            'type' => 'select',
-            'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderLanguageSelect',
+            'type' => 'language',
+            'table' => 'be_users',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:language',
             'csh' => 'language'
         ],

@@ -396,7 +396,8 @@ class RichTextElement extends AbstractFormElement
 
         // Set the UI language of the editor if not hard-coded by the existing configuration
         if (empty($configuration['language'])) {
-            $configuration['language'] = $this->getBackendUser()->uc['lang'] ?: ($this->getBackendUser()->user['lang'] ?: 'en');
+            $userLang = (string)($this->getBackendUser()->user['lang'] ?: 'en');
+            $configuration['language'] = $userLang === 'default' ? 'en' : $userLang;
         }
         $configuration['contentsLanguage'] = $this->getLanguageIsoCodeOfContent();
 

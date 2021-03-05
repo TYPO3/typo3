@@ -319,7 +319,7 @@ class LocalizationUtilityTest extends UnitTestCase
 
         $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
-        $backendUserAuthenticationProphecy->uc = [
+        $backendUserAuthenticationProphecy->user = [
             'lang' => $languageKey,
         ];
         $GLOBALS['LANG'] = $this->LOCAL_LANG;

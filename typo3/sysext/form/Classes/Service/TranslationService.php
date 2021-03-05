@@ -601,8 +601,8 @@ class TranslationService implements SingletonInterface
                     }
                 }
             }
-        } elseif (!empty($GLOBALS['BE_USER']->uc['lang'])) {
-            $this->languageKey = $GLOBALS['BE_USER']->uc['lang'];
+        } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
+            $this->languageKey = $GLOBALS['BE_USER']->user['lang'];
         } elseif (!empty($this->getLanguageService()->lang)) {
             $this->languageKey = $this->getLanguageService()->lang;
         }

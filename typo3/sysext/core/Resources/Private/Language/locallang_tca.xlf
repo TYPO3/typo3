@@ -133,7 +133,16 @@
 				<source>Directory: Delete recursively (rm -Rf)</source>
 			</trans-unit>
 			<trans-unit id="be_users.lang" resname="be_users.lang">
-				<source>Default Language</source>
+				<source>User Interface Language</source>
+			</trans-unit>
+			<trans-unit id="be_users.languageItemGroups.default" resname="be_users.languageItemGroups.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="be_users.languageItemGroups.installed" resname="be_users.languageItemGroups.installed">
+				<source>Installed Languages</source>
+			</trans-unit>
+			<trans-unit id="be_users.languageItemGroups.unavailable" resname="be_users.languageItemGroups.unavailable">
+				<source>Unavailable Languages</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights">
 				<source>Access Rights</source>

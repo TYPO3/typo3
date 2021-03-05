@@ -210,8 +210,8 @@ class LocalizationUtility
                     $languageKeys['alternativeLanguageKeys'][] = $language;
                 }
             }
-        } elseif (!empty($GLOBALS['BE_USER']->uc['lang'])) {
-            $languageKeys['languageKey'] = $GLOBALS['BE_USER']->uc['lang'];
+        } elseif (!empty($GLOBALS['BE_USER']->user['lang'])) {
+            $languageKeys['languageKey'] = $GLOBALS['BE_USER']->user['lang'];
         } elseif (!empty(static::getLanguageService()->lang)) {
             $languageKeys['languageKey'] = static::getLanguageService()->lang;
         }

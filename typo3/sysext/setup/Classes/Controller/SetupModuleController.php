@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -225,7 +224,7 @@ class SetupModuleController
             $save_before = md5(serialize($backendUser->uc));
             // PUT SETTINGS into the ->uc array:
             // Reload left frame when switching BE language
-            if (isset($d['lang']) && $d['lang'] !== $backendUser->uc['lang']) {
+            if (isset($d['lang']) && $d['lang'] !== $backendUser->user['lang']) {
                 $this->languageUpdate = true;
             }
             // Reload pagetree if the title length is changed
@@ -548,6 +547,9 @@ class SetupModuleController
                         ' /></div>';
                     $label = '';
                     break;
+                case 'language':
+                    $html = $this->renderLanguageSelect();
+                    break;
                 case 'select':
                     if ($config['itemsProcFunc']) {
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
@@ -704,46 +706,44 @@ class SetupModuleController
      *
      * @return string Complete select as HTML string or warning box if something went wrong.
      */
-    public function renderLanguageSelect()
+    protected function renderLanguageSelect()
     {
+        $tcaConfig = $GLOBALS['TCA']['be_users']['columns']['lang']['config'];
+        $items = $tcaConfig['items'];
+        $itemsProcFunc = [
+            'items' => &$items
+        ];
+        GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $itemsProcFunc);
         $backendUser = $this->getBackendUser();
-        $language = $this->getLanguageService();
-        $languageOptions = [];
-        // Compile the languages dropdown
-        $langDefault = htmlspecialchars($language->getLL('lang_default'));
-        $languageOptions[$langDefault] = '<option value=""' . ($backendUser->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'])) {
-            // get all labels in default language as well
-            $defaultLanguageLabelService = LanguageService::create('default');
-            $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
-            // Traverse the number of languages
-            $locales = GeneralUtility::makeInstance(Locales::class);
-            $languages = $locales->getLanguages();
-
-            foreach ($languages as $locale => $name) {
-                if ($locale !== 'default') {
-                    $defaultName = $defaultLanguageLabelService->getLL('lang_') ?: $name;
-                    $localizedName = htmlspecialchars($language->getLL('lang_' . $locale));
-                    if ($localizedName === '') {
-                        $localizedName = htmlspecialchars($name);
-                    }
-                    $localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
-                    $available = in_array($locale, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) || is_dir(Environment::getLabelsPath() . '/' . $locale);
-                    if ($available) {
-                        $languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($backendUser->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
-                    }
+        $currentSelectedLanguage = (string)($backendUser->user['lang'] ?? 'default');
+        $languageService = $this->getLanguageService();
+        $content = '';
+        // get all labels in default language as well
+        $defaultLanguageLabelService = LanguageService::create('default');
+        $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
+        foreach ($items as $item) {
+            $languageCode = $item[1];
+            $name = $item[0];
+            $available = in_array($languageCode, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) || is_dir(Environment::getLabelsPath() . '/' . $languageCode);
+            if ($available || $languageCode === 'default') {
+                $localizedName = htmlspecialchars($languageService->getLL('lang_' . $languageCode) ?: $name);
+                $defaultName = $defaultLanguageLabelService->getLL('lang_' . $languageCode);
+                if ($defaultName === $localizedName || $defaultName === '') {
+                    $defaultName = $languageCode;
                 }
+                if ($defaultName !== $languageCode) {
+                    $defaultName .= ' - ' . $languageCode;
+                }
+                $localLabel = ' [' . htmlspecialchars($defaultName) . ']';
+                $content .= '<option value="' . $languageCode . '"' . ($currentSelectedLanguage === $languageCode ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
             }
         }
-        ksort($languageOptions);
-        $languageCode = '
-            <select aria-labelledby="label_lang" id="field_lang" name="data[lang]" class="form-select">' . implode('', $languageOptions) . '
-            </select>';
-        if ($backendUser->uc['lang'] && !@is_dir(Environment::getLabelsPath() . '/' . $backendUser->uc['lang'])) {
-            $languageUnavailableWarning = htmlspecialchars(sprintf($language->getLL('languageUnavailable'), $language->getLL('lang_' . $backendUser->uc['lang']))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($language->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
-            $languageCode = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $languageCode;
+        $content = '<select aria-labelledby="label_lang" id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
+        if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
+            $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->getLL('languageUnavailable'), $languageService->getLL('lang_' . $currentSelectedLanguage))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
+            $content = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
         }
-        return $languageCode;
+        return $content;
     }
 
     /**

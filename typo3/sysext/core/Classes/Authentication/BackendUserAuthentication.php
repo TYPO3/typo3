@@ -2277,8 +2277,9 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $this->overrideUC();
             $updated = true;
         }
-        // Setting default lang from be_user record.
-        if (!isset($this->uc['lang'])) {
+        // Setting default lang from be_user record, also update for backwards-compatibility
+        // @deprecated This will be removed in TYPO3 v12
+        if (!isset($this->uc['lang']) || $this->uc['lang'] !== $this->user['lang']) {
             $this->uc['lang'] = $this->user['lang'];
             $updated = true;
         }
