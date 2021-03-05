@@ -40,7 +40,6 @@ class MfaAjaxController
     private const ALLOWED_ACTIONS = ['deactivate'];
 
     protected MfaProviderRegistry $mfaProviderRegistry;
-    protected ?AbstractUserAuthentication $user = null;
 
     public function __construct(MfaProviderRegistry $mfaProviderRegistry)
     {
@@ -49,9 +48,6 @@ class MfaAjaxController
 
     /**
      * Main entry point, checking prerequisite and dispatching to the requested action
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -68,64 +64,81 @@ class MfaAjaxController
             return new JsonResponse($this->getResponseData(false, $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.invalidRequest')));
         }
 
-        $this->user = $this->initializeUser($userId, $tableName);
+        $user = $this->initializeUser($userId, $tableName);
 
-        if (!$this->isAllowedToPerformAction($action)) {
+        if (!$this->isAllowedToPerformAction($action, $user)) {
             return new JsonResponse($this->getResponseData(false, $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.insufficientPermissions')));
         }
 
-        return new JsonResponse($this->{$action . 'Action'}($request));
+        return new JsonResponse($this->{$action . 'Action'}($request, $user));
     }
 
     /**
      * Deactivate MFA providers
      * If the request contains a provider, it will be deactivated.
      * Otherwise all active providers are deactivated.
-     *
-     * @param ServerRequestInterface $request
-     * @return array
      */
-    protected function deactivateAction(ServerRequestInterface $request): array
+    protected function deactivateAction(ServerRequestInterface $request, AbstractUserAuthentication $user): array
     {
         $lang = $this->getLanguageService();
-        $userName = (string)($this->user->user[$this->user->username_column] ?? '');
+        $userName = (string)($user->user[$user->username_column] ?? '');
         $providerToDeactivate = (string)($request->getParsedBody()['provider'] ?? '');
 
         if ($providerToDeactivate === '') {
             // In case no provider is given, try to deactivate all active providers
-            $providersToDeactivate = $this->mfaProviderRegistry->getActiveProviders($this->user);
+            $providersToDeactivate = $this->mfaProviderRegistry->getActiveProviders($user);
             if ($providersToDeactivate === []) {
-                return $this->getResponseData(false, $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providersNotDeactivated'));
+                return $this->getResponseData(
+                    false,
+                    $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providersNotDeactivated'),
+                    $user
+                );
             }
             foreach ($providersToDeactivate as $identifier => $provider) {
-                $propertyManager = MfaProviderPropertyManager::create($provider, $this->user);
+                $propertyManager = MfaProviderPropertyManager::create($provider, $user);
                 if (!$provider->deactivate($request, $propertyManager)) {
-                    return $this->getResponseData(false, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotDeactivated'), $lang->sL($provider->getTitle())));
+                    return $this->getResponseData(
+                        false,
+                        sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotDeactivated'), $lang->sL($provider->getTitle())),
+                        $user
+                    );
                 }
             }
-            return $this->getResponseData(true, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providersDeactivated'), $userName));
+            return $this->getResponseData(
+                true,
+                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providersDeactivated'), $userName),
+                $user
+            );
         }
 
         if (!$this->mfaProviderRegistry->hasProvider($providerToDeactivate)) {
-            return $this->getResponseData(false, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotFound'), $providerToDeactivate));
+            return $this->getResponseData(
+                false,
+                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotFound'), $providerToDeactivate),
+                $user
+            );
         }
 
         $provider = $this->mfaProviderRegistry->getProvider($providerToDeactivate);
-        $propertyManager = MfaProviderPropertyManager::create($provider, $this->user);
+        $propertyManager = MfaProviderPropertyManager::create($provider, $user);
 
         if (!$provider->isActive($propertyManager) || !$provider->deactivate($request, $propertyManager)) {
-            return $this->getResponseData(false, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotDeactivated'), $lang->sL($provider->getTitle())));
+            return $this->getResponseData(
+                false,
+                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerNotDeactivated'), $lang->sL($provider->getTitle())),
+                $user
+            );
         }
 
-        return $this->getResponseData(true, sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerDeactivated'), $lang->sL($provider->getTitle()), $userName));
+        return $this->getResponseData(
+            true,
+            sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.deactivate.providerDeactivated'), $lang->sL($provider->getTitle()), $userName),
+            $user
+        );
     }
 
     /**
      * Initialize a user based on the table name
-     *
-     * @param int $userId
-     * @param string $tableName
-     * @return AbstractUserAuthentication
      */
     protected function initializeUser(int $userId, string $tableName): AbstractUserAuthentication
     {
@@ -141,33 +154,31 @@ class MfaAjaxController
 
     /**
      * Prepare response data for a JSON response
-     *
-     * @param bool $success
-     * @param string $message
-     * @return array
      */
-    protected function getResponseData(bool $success, string $message): array
+    protected function getResponseData(bool $success, string $message, ?AbstractUserAuthentication $user = null): array
     {
-        return [
+        $payload = [
             'success' => $success,
             'status' => (new FlashMessageQueue('backend'))->enqueue(
                 new FlashMessage(
                     $message,
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.' . ($success ? 'success' : 'error'))
                 )
-            ),
-            'remaining' => count($this->mfaProviderRegistry->getActiveProviders($this->user))
+            )
         ];
+
+        if ($user !== null) {
+            $payload['remaining'] = count($this->mfaProviderRegistry->getActiveProviders($user));
+        }
+
+        return $payload;
     }
 
     /**
      * Check if the current logged in user is allowed to perform
      * the requested action on the selected user.
-     *
-     * @param string $action
-     * @return bool
      */
-    protected function isAllowedToPerformAction(string $action): bool
+    protected function isAllowedToPerformAction(string $action, AbstractUserAuthentication $user): bool
     {
         if ($action === 'deactivate') {
             $currentBackendUser = $this->getBackendUser();
@@ -177,9 +188,9 @@ class MfaAjaxController
             }
             // Providers from system maintainers can only be deactivated by system maintainers.
             // This check is however only be necessary if the target is a backend user.
-            if ($this->user instanceof BackendUserAuthentication) {
+            if ($user instanceof BackendUserAuthentication) {
                 $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-                $isTargetUserSystemMaintainer = $this->user->isAdmin() && in_array((int)$this->user->user[$this->user->userid_column], $systemMaintainers, true);
+                $isTargetUserSystemMaintainer = $user->isAdmin() && in_array((int)$user->user[$user->userid_column], $systemMaintainers, true);
                 if ($isTargetUserSystemMaintainer && !$this->getBackendUser()->isSystemMaintainer()) {
                     return false;
                 }

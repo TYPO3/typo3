@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -37,85 +37,73 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
 {
     use LoggerAwareTrait;
 
-    protected array $allowedActions = ['auth', 'verify', 'cancel'];
-
     /**
      * Main entry point, checking prerequisite, initializing and setting
      * up the view and finally dispatching to the requested action.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'auth');
 
-        if (!$this->isActionAllowed($action)) {
-            throw new \InvalidArgumentException('Action not allowed', 1611879243);
+        switch ($action) {
+            case 'auth':
+            case 'verify':
+                $mfaProvider = $this->getMfaProviderFromRequest($request);
+                // All actions except "cancel" require a provider to deal with.
+                // If non is found at this point, throw an exception since this should never happen.
+                if ($mfaProvider === null) {
+                    throw new \InvalidArgumentException('No active MFA provider was found!', 1611879242);
+                }
+                return $this->{$action . 'Action'}($request, $mfaProvider);
+            case 'cancel':
+                return $this->cancelAction();
+            default:
+                throw new \InvalidArgumentException('Action not allowed', 1611879244);
         }
+    }
 
-        $this->initializeAction($request);
-        // All actions expect "cancel" require a provider to deal with.
-        // If non is found at this point, throw an exception since this should never happen.
-        if ($this->mfaProvider === null && $action !== 'cancel') {
-            throw new \InvalidArgumentException('No active MFA provider was found!', 1611879242);
-        }
-
-        $this->view = $this->moduleTemplate->getView();
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
-        $this->view->setTemplate('Auth');
-        $this->view->assign('hasAuthError', (bool)($request->getQueryParams()['failure'] ?? false));
-
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
+    /**
+     * Setup the authentication view for the provider by using provider specific content
+     */
+    public function authAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
+    {
+        $view = $this->moduleTemplate->getView();
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
+        $view->setTemplate('Auth');
+        $view->assign('hasAuthError', (bool)($request->getQueryParams()['failure'] ?? false));
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
+        $view->assignMultiple([
+            'provider' => $mfaProvider,
+            'alternativeProviders' => $this->getAlternativeProviders($mfaProvider),
+            'isLocked' => $mfaProvider->isLocked($propertyManager),
+            'providerContent' => $providerResponse->getBody()
+        ]);
         $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
-     * Setup the authentication view for the provider by using provider specific content
-     *
-     * @param ServerRequestInterface $request
-     */
-    public function authAction(ServerRequestInterface $request): void
-    {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        $providerResponse = $this->mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
-        $this->view->assignMultiple([
-            'provider' => $this->mfaProvider,
-            'alternativeProviders' => $this->getAlternativeProviders(),
-            'isLocked' => $this->mfaProvider->isLocked($propertyManager),
-            'providerContent' => $providerResponse->getBody()
-        ]);
-    }
-
-    /**
      * Handle verification request, receiving from the auth view
      * by forwarding the request to the appropriate provider.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundException
      */
-    public function verifyAction(ServerRequestInterface $request): ResponseInterface
+    public function verifyAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
 
         // Check if the provider can process the request and is not temporarily blocked
-        if (!$this->mfaProvider->canProcess($request) || $this->mfaProvider->isLocked($propertyManager)) {
+        if (!$mfaProvider->canProcess($request) || $mfaProvider->isLocked($propertyManager)) {
             // If this fails, cancel the authentication
-            return $this->cancelAction($request);
+            return $this->cancelAction();
         }
         // Call the provider to verify the request
-        if (!$this->mfaProvider->verify($request, $propertyManager)) {
+        if (!$mfaProvider->verify($request, $propertyManager)) {
             $this->log('Multi-factor authentication failed');
             // If failed, initiate a redirect back to the auth view
             return new RedirectResponse($this->uriBuilder->buildUriFromRoute(
                 'auth_mfa',
                 [
-                    'identifier' => $this->mfaProvider->getIdentifier(),
+                    'identifier' => $mfaProvider->getIdentifier(),
                     'failure' => true
                 ]
             ));
@@ -132,12 +120,8 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
      * calling logoff on the user object, to destroy the session and
      * other already gathered information and finally initiate a
      * redirect back to the login.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundException
      */
-    public function cancelAction(ServerRequestInterface $request): ResponseInterface
+    public function cancelAction(): ResponseInterface
     {
         $this->log('Multi-factor authentication canceled');
         $this->getBackendUser()->logoff();
@@ -145,43 +129,22 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
     }
 
     /**
-     * Initialize the action by fetching the requested provider by its identifier
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function initializeAction(ServerRequestInterface $request): void
-    {
-        $identifier = (string)($request->getQueryParams()['identifier'] ?? $request->getParsedBody()['identifier'] ?? '');
-        // Check if given identifier is valid
-        if ($this->isValidIdentifier($identifier)) {
-            $provider = $this->mfaProviderRegistry->getProvider($identifier);
-            // Only add provider if it was activated by the current user
-            if ($provider->isActive(MfaProviderPropertyManager::create($provider, $this->getBackendUser()))) {
-                $this->mfaProvider = $provider;
-            }
-        }
-    }
-
-    /**
      * Fetch alternative (activated and allowed) providers for the user to chose from
      *
      * @return ProviderInterface[]
      */
-    protected function getAlternativeProviders(): array
+    protected function getAlternativeProviders(MfaProviderManifestInterface $mfaProvider): array
     {
-        return array_filter($this->allowedProviders, function ($provider) {
-            return $provider !== $this->mfaProvider
+        return array_filter($this->allowedProviders, function ($provider) use ($mfaProvider) {
+            return $provider !== $mfaProvider
                 && $provider->isActive(MfaProviderPropertyManager::create($provider, $this->getBackendUser()));
         });
     }
 
     /**
      * Log debug information for MFA events
-     *
-     * @param string $message
-     * @param array $additionalData
      */
-    protected function log(string $message, array $additionalData = []): void
+    protected function log(string $message, array $additionalData = [], ?MfaProviderManifestInterface $mfaProvider = null): void
     {
         $user = $this->getBackendUser();
         $context = [
@@ -190,12 +153,26 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
                 'username' => $user->user[$user->username_column]
             ]
         ];
-        if ($this->mfaProvider !== null) {
-            $context['provider'] = $this->mfaProvider->getIdentifier();
-            $context['isProviderLocked'] = $this->mfaProvider->isLocked(
-                MfaProviderPropertyManager::create($this->mfaProvider, $user)
+        if ($mfaProvider !== null) {
+            $context['provider'] = $mfaProvider->getIdentifier();
+            $context['isProviderLocked'] = $mfaProvider->isLocked(
+                MfaProviderPropertyManager::create($mfaProvider, $user)
             );
         }
         $this->logger->debug($message, array_replace_recursive($context, $additionalData));
+    }
+
+    protected function getMfaProviderFromRequest(ServerRequestInterface $request): ?MfaProviderManifestInterface
+    {
+        $identifier = (string)($request->getQueryParams()['identifier'] ?? $request->getParsedBody()['identifier'] ?? '');
+        // Check if given identifier is valid
+        if ($this->isValidIdentifier($identifier)) {
+            $provider = $this->mfaProviderRegistry->getProvider($identifier);
+            // Only add provider if it was activated by the current user
+            if ($provider->isActive(MfaProviderPropertyManager::create($provider, $this->getBackendUser()))) {
+                return $provider;
+            }
+        }
+        return null;
     }
 }

@@ -113,7 +113,7 @@ class MfaInfoElement extends AbstractFormElement
                 // Add providers list
                 $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';
                 foreach ($activeProviders as $identifier => $activeProvider) {
-                    $childHtml[] = '<li class="list-group-item" id="provider-' . htmlspecialchars($identifier) . '" style="line-height: 2.1em;">';
+                    $childHtml[] = '<li class="list-group-item" id="provider-' . htmlspecialchars((string)$identifier) . '" style="line-height: 2.1em;">';
                     $childHtml[] =  $this->iconFactory->getIcon($activeProvider->getIconIdentifier(), Icon::SIZE_SMALL);
                     $childHtml[] =  htmlspecialchars($lang->sL($activeProvider->getTitle()));
                     if (in_array($identifier, $lockedProviders, true)) {
@@ -128,7 +128,7 @@ class MfaInfoElement extends AbstractFormElement
                         $childHtml[] =  ' data-confirmation-content="' . htmlspecialchars(sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfaProvider.confirmation.text'), $lang->sL($activeProvider->getTitle()))) . '"';
                         $childHtml[] =  ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
                         $childHtml[] =  ' data-confirmation-deactivate-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deactivate')) . '"';
-                        $childHtml[] =  ' data-provider="' . htmlspecialchars($identifier) . '"';
+                        $childHtml[] =  ' data-provider="' . htmlspecialchars((string)$identifier) . '"';
                         $childHtml[] =  ' title="' . htmlspecialchars(sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfaProvider'), $lang->sL($activeProvider->getTitle()))) . '"';
                         $childHtml[] =  '>';
                         $childHtml[] =      $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render('inline');

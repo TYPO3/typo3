@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -46,9 +48,6 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Main entry point, checking prerequisite, initializing and setting
      * up the view and finally dispatching to the requested action.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -58,17 +57,22 @@ class MfaConfigurationController extends AbstractMfaController
             return new HtmlResponse('Action not allowed', 400);
         }
 
-        $this->initializeAction($request);
+        $mfaProvider = null;
+        $identifier = (string)($request->getQueryParams()['identifier'] ?? $request->getParsedBody()['identifier'] ?? '');
+        // Check if given identifier is valid
+        if ($this->isValidIdentifier($identifier)) {
+            $mfaProvider = $this->mfaProviderRegistry->getProvider($identifier);
+        }
         // All actions expect "overview" require a provider to deal with.
         // If non is found at this point, initiate a redirect to the overview.
-        if ($this->mfaProvider === null && $action !== 'overview') {
+        if ($mfaProvider === null && $action !== 'overview') {
             $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerNotFound'), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('overview'));
         }
         // If a valid provider is given, check if the requested action can be performed on this provider
-        if ($this->mfaProvider !== null) {
-            $isProviderActive = $this->mfaProvider->isActive(
-                MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser())
+        if ($mfaProvider !== null) {
+            $isProviderActive = $mfaProvider->isActive(
+                MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser())
             );
             // Some actions require the provider to be inactive
             if ($isProviderActive && in_array($action, $this->providerActionsWhenInactive, true)) {
@@ -81,48 +85,52 @@ class MfaConfigurationController extends AbstractMfaController
                 return new RedirectResponse($this->getActionUri('overview'));
             }
         }
-        $this->initializeView($action);
 
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
+        switch ($action) {
+            case 'overview':
+                return $this->overviewAction($request, $this->initializeView($action));
+            case 'setup':
+            case 'edit':
+                return $this->{$action . 'Action'}($request, $mfaProvider, $this->initializeView($action));
+            case 'activate':
+            case 'deactivate':
+            case 'unlock':
+            case 'save':
+                return $this->{$action . 'Action'}($request, $mfaProvider);
+            default:
+                return new HtmlResponse('Action not allowed', 400);
         }
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Setup the overview with all available MFA providers
-     *
-     * @param ServerRequestInterface $request
      */
-    public function overviewAction(ServerRequestInterface $request): void
+    public function overviewAction(ServerRequestInterface $request, ViewInterface $view): ResponseInterface
     {
         $this->addOverviewButtons($request);
-        $this->view->assignMultiple([
+        $view->assignMultiple([
             'providers' => $this->allowedProviders,
             'defaultProvider' => $this->getDefaultProviderIdentifier(),
             'recommendedProvider' => $this->getRecommendedProviderIdentifier(),
             'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser())
         ]);
+        $this->moduleTemplate->setContent($view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Render form to setup a provider by using provider specific content
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function setupAction(ServerRequestInterface $request): ResponseInterface
+    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
     {
         $this->addFormButtons();
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        $providerResponse = $this->mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
-        $this->view->assignMultiple([
-            'provider' => $this->mfaProvider,
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
+        $view->assignMultiple([
+            'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody()
         ]);
-        $this->moduleTemplate->setContent($this->view->render());
+        $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -134,27 +142,25 @@ class MfaConfigurationController extends AbstractMfaController
      * provider is yet defined the newly activated provider is allowed
      * to be a default provider and there are no other providers which
      * would suite as default provider.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function activateAction(ServerRequestInterface $request): ResponseInterface
+    public function activateAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
-        $isRecommendedProvider = $this->getRecommendedProviderIdentifier() === $this->mfaProvider->getIdentifier();
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $backendUser);
-        if (!$this->mfaProvider->activate($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $this->getLocalizedProviderTitle()), '', FlashMessage::ERROR);
-            return new RedirectResponse($this->getActionUri('setup', ['identifier' => $this->mfaProvider->getIdentifier()]));
+        $isRecommendedProvider = $this->getRecommendedProviderIdentifier() === $mfaProvider->getIdentifier();
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
+        $languageService = $this->getLanguageService();
+        if (!$mfaProvider->activate($request, $propertyManager)) {
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
+            return new RedirectResponse($this->getActionUri('setup', ['identifier' => $mfaProvider->getIdentifier()]));
         }
         if ($isRecommendedProvider
             || (
                 $this->getDefaultProviderIdentifier() === ''
-                && $this->mfaProvider->isDefaultProviderAllowed()
-                && !$this->hasSuitableDefaultProviders([$this->mfaProvider->getIdentifier()])
+                && $mfaProvider->isDefaultProviderAllowed()
+                && !$this->hasSuitableDefaultProviders([$mfaProvider->getIdentifier()])
             )
         ) {
-            $this->setDefaultProvider();
+            $this->setDefaultProvider($mfaProvider);
         }
         // If this is the first activated provider, the user has logged in without being required
         // to pass the MFA challenge. Therefore no session entry exists. To prevent the challenge
@@ -162,7 +168,7 @@ class MfaConfigurationController extends AbstractMfaController
         if (!(bool)($backendUser->getSessionData('mfa') ?? false)) {
             $backendUser->setSessionData('mfa', true);
         }
-        $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.success'), $this->getLocalizedProviderTitle()), '', FlashMessage::OK);
+        $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.success'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::OK);
         return new RedirectResponse($this->getActionUri('overview'));
     }
 
@@ -170,128 +176,99 @@ class MfaConfigurationController extends AbstractMfaController
      * Handle deactivate request by forwarding the request to the
      * appropriate provider. Also remove the provider as default
      * provider from user UC, if set.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function deactivateAction(ServerRequestInterface $request): ResponseInterface
+    public function deactivateAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        if (!$this->mfaProvider->deactivate($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.failure'), $this->getLocalizedProviderTitle()), '', FlashMessage::ERROR);
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $languageService = $this->getLanguageService();
+        if (!$mfaProvider->deactivate($request, $propertyManager)) {
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
         } else {
-            if ($this->isDefaultProvider()) {
+            if ($this->isDefaultProvider($mfaProvider)) {
                 $this->removeDefaultProvider();
             }
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.success'), $this->getLocalizedProviderTitle()), '', FlashMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:deactivate.success'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::OK);
         }
         return new RedirectResponse($this->getActionUri('overview'));
     }
 
     /**
      * Handle unlock request by forwarding the request to the appropriate provider
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function unlockAction(ServerRequestInterface $request): ResponseInterface
+    public function unlockAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        if (!$this->mfaProvider->unlock($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.failure'), $this->getLocalizedProviderTitle()), '', FlashMessage::ERROR);
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $languageService = $this->getLanguageService();
+        if (!$mfaProvider->unlock($request, $propertyManager)) {
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
         } else {
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.success'), $this->getLocalizedProviderTitle()), '', FlashMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:unlock.success'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::OK);
         }
         return new RedirectResponse($this->getActionUri('overview'));
     }
 
     /**
      * Render form to edit a provider by using provider specific content
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function editAction(ServerRequestInterface $request): ResponseInterface
+    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        if ($this->mfaProvider->isLocked($propertyManager)) {
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        if ($mfaProvider->isLocked($propertyManager)) {
             // Do not show edit view for locked providers
             $this->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:providerIsLocked'), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('overview'));
         }
         $this->addFormButtons();
-        $providerResponse = $this->mfaProvider->handleRequest($request, $propertyManager, MfaViewType::EDIT);
-        $this->view->assignMultiple([
-            'provider' => $this->mfaProvider,
+        $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::EDIT);
+        $view->assignMultiple([
+            'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
-            'isDefaultProvider' => $this->isDefaultProvider()
+            'isDefaultProvider' => $this->isDefaultProvider($mfaProvider)
         ]);
-        $this->moduleTemplate->setContent($this->view->render());
+        $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Handle save request, receiving from the edit view by
      * forwarding the request to the appropriate provider.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
-    public function saveAction(ServerRequestInterface $request): ResponseInterface
+    public function saveAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $propertyManager = MfaProviderPropertyManager::create($this->mfaProvider, $this->getBackendUser());
-        if (!$this->mfaProvider->update($request, $propertyManager)) {
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.failure'), $this->getLocalizedProviderTitle()), '', FlashMessage::ERROR);
+        $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
+        $languageService = $this->getLanguageService();
+        if (!$mfaProvider->update($request, $propertyManager)) {
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
         } else {
             if ((bool)($request->getParsedBody()['defaultProvider'] ?? false)) {
-                $this->setDefaultProvider();
-            } elseif ($this->isDefaultProvider()) {
+                $this->setDefaultProvider($mfaProvider);
+            } elseif ($this->isDefaultProvider($mfaProvider)) {
                 $this->removeDefaultProvider();
             }
-            $this->addFlashMessage(sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.success'), $this->getLocalizedProviderTitle()), '', FlashMessage::OK);
+            $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:save.success'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::OK);
         }
-        if (!$this->mfaProvider->isActive($propertyManager)) {
+        if (!$mfaProvider->isActive($propertyManager)) {
             return new RedirectResponse($this->getActionUri('overview'));
         }
-        return new RedirectResponse($this->getActionUri('edit', ['identifier' => $this->mfaProvider->getIdentifier()]));
-    }
-
-    /**
-     * Initialize the action by fetching the requested provider by its identifier
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function initializeAction(ServerRequestInterface $request): void
-    {
-        $identifier = (string)($request->getQueryParams()['identifier'] ?? $request->getParsedBody()['identifier'] ?? '');
-        // Check if given identifier is valid
-        if ($this->isValidIdentifier($identifier)) {
-            $this->mfaProvider = $this->mfaProviderRegistry->getProvider($identifier);
-        }
+        return new RedirectResponse($this->getActionUri('edit', ['identifier' => $mfaProvider->getIdentifier()]));
     }
 
     /**
      * Initialize the standalone view and set the template name
-     *
-     * @param string $templateName
      */
-    protected function initializeView(string $templateName): void
+    protected function initializeView(string $templateName): ViewInterface
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $this->view->setTemplate($templateName);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setTemplate($templateName);
+        return $view;
     }
 
     /**
      * Build a uri for the current controller based on the
      * given action, respecting additional parameters.
-     *
-     * @param string $action
-     * @param array  $additionalParameters
-     *
-     * @return UriInterface
      */
     protected function getActionUri(string $action, array $additionalParameters = []): UriInterface
     {
@@ -303,9 +280,6 @@ class MfaConfigurationController extends AbstractMfaController
 
     /**
      * Check if there are more suitable default providers for the current user
-     *
-     * @param array $excludedProviders
-     * @return bool
      */
     protected function hasSuitableDefaultProviders(array $excludedProviders = []): bool
     {
@@ -322,8 +296,6 @@ class MfaConfigurationController extends AbstractMfaController
 
     /**
      * Get the default provider
-     *
-     * @return string The identifier of the default provider
      */
     protected function getDefaultProviderIdentifier(): string
     {
@@ -345,8 +317,6 @@ class MfaConfigurationController extends AbstractMfaController
 
     /**
      * Get the recommended provider
-     *
-     * @return string The identifier of the recommended provider
      */
     protected function getRecommendedProviderIdentifier(): string
     {
@@ -371,14 +341,14 @@ class MfaConfigurationController extends AbstractMfaController
         return !$provider->isActive($propertyManager) ? $recommendedProviderIdentifier : '';
     }
 
-    protected function isDefaultProvider(): bool
+    protected function isDefaultProvider(MfaProviderManifestInterface $mfaProvider): bool
     {
-        return $this->getDefaultProviderIdentifier() === $this->mfaProvider->getIdentifier();
+        return $this->getDefaultProviderIdentifier() === $mfaProvider->getIdentifier();
     }
 
-    protected function setDefaultProvider(): void
+    protected function setDefaultProvider(MfaProviderManifestInterface $mfaProvider): void
     {
-        $this->getBackendUser()->uc['mfa']['defaultProvider'] = $this->mfaProvider->getIdentifier();
+        $this->getBackendUser()->uc['mfa']['defaultProvider'] = $mfaProvider->getIdentifier();
         $this->getBackendUser()->writeUC();
     }
 

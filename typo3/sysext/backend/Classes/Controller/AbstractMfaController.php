@@ -22,11 +22,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Abstract class for mfa controllers (configuration and authentication)
@@ -42,8 +40,6 @@ abstract class AbstractMfaController
     protected bool $mfaRequired;
     protected array $allowedProviders;
     protected array $allowedActions = [];
-    protected ?MfaProviderManifestInterface $mfaProvider = null;
-    protected ?ViewInterface $view = null;
 
     public function __construct(
         ModuleTemplate $moduleTemplate,
@@ -79,11 +75,6 @@ abstract class AbstractMfaController
         return $identifier !== ''
             && $this->isProviderAllowed($identifier)
             && $this->mfaProviderRegistry->hasProvider($identifier);
-    }
-
-    public function getLocalizedProviderTitle(): string
-    {
-        return $this->mfaProvider !== null ? $this->getLanguageService()->sL($this->mfaProvider->getTitle()) : '';
     }
 
     /**
