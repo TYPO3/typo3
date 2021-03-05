@@ -1525,7 +1525,7 @@ class QueryGenerator
                 $nextButton = '';
 
                 if ($limitBegin) {
-                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars($limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $limitLength) . '">';
+                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $limitLength) . '">';
                 }
                 if (!$limitLength) {
                     $limitLength = 100;
@@ -1536,7 +1536,7 @@ class QueryGenerator
                     $nextLimit = 0;
                 }
                 if ($nextLimit) {
-                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
+                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
                 }
 
                 $out[] = '<div class="form-group">';

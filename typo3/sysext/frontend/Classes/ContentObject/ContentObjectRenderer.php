@@ -1086,7 +1086,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($conf['JSwindow']) {
                 $altUrl = $this->stdWrapValue('altUrl', $conf['JSwindow.'] ?? []);
                 if ($altUrl) {
-                    $url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
+                    $url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode((string)$imageFile) . $params);
                 }
 
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $conf);
@@ -1117,9 +1117,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
                 $onClick = 'openPic('
                     . GeneralUtility::quoteJSvalue($this->getTypoScriptFrontendController()->baseUrlWrap($url)) . ','
-                    . '\'' . ($newWindow ? md5($url) : 'thePicture') . '\','
+                    . '\'' . ($newWindow ? md5((string)$url) : 'thePicture') . '\','
                     . GeneralUtility::quoteJSvalue(rtrim($paramString, ',')) . '); return false;';
-                $a1 = '<a href="' . htmlspecialchars($url) . '"'
+                $a1 = '<a href="' . htmlspecialchars((string)$url) . '"'
                     . ' onclick="' . htmlspecialchars($onClick) . '"'
                     . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
                     . $this->getTypoScriptFrontendController()->ATagParams . '>';
@@ -1970,7 +1970,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ? gmstrftime($conf['strftime'] ?? null, $content)
             : strftime($conf['strftime'] ?? null, $content);
         if (!empty($conf['strftime.']['charset'])) {
-            $output = mb_convert_encoding($content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
+            $output = mb_convert_encoding((string)$content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
             return $output ?: $content;
         }
         return $content;

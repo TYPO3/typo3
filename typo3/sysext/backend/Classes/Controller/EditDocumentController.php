@@ -2511,7 +2511,7 @@ class EditDocumentController
         }
 
         if ($action === 'edit') {
-            $record = BackendUtility::getRecord($table, $recordId);
+            $record = BackendUtility::getRecord($table, $recordId) ?? [];
             $recordTitle = BackendUtility::getRecordTitle($table, $record) ?? '';
             if ($table === 'pages') {
                 return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editPage'), $tableTitle, $recordTitle);
@@ -2523,7 +2523,7 @@ class EditDocumentController
             if ($pageId === 0) {
                 return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordRootLevel'), $tableTitle, $recordTitle);
             }
-            $pageRow = BackendUtility::getRecord('pages', $pageId);
+            $pageRow = BackendUtility::getRecord('pages', $pageId) ?? [];
             $pageTitle = BackendUtility::getRecordTitle('pages', $pageRow);
             if ($recordTitle !== '') {
                 return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecord'), $tableTitle, $recordTitle, $pageTitle);

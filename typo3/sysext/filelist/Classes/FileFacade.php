@@ -134,7 +134,7 @@ class FileFacade
      */
     public function getPublicUrl()
     {
-        return PathUtility::getAbsoluteWebPath($this->resource->getPublicUrl());
+        return PathUtility::getAbsoluteWebPath($this->resource->getPublicUrl() ?? '');
     }
 
     /**

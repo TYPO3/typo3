@@ -823,7 +823,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             return null;
         }
         // Fetch the user from the DB
-        $userRecord = $this->getRawUserByUid($this->userSession->getUserId());
+        $userRecord = $this->getRawUserByUid($this->userSession->getUserId() ?? 0);
         if ($userRecord) {
             // A user was found
             $userRecord['is_online'] = $this->userSession->getLastUpdated();

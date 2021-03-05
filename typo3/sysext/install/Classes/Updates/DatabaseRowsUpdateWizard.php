@@ -164,7 +164,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
         // and throw away all tables before that start point.
         sort($listOfAllTables);
         reset($listOfAllTables);
-        $firstTable = current($listOfAllTables);
+        $firstTable = current($listOfAllTables) ?: '';
         $startPosition = $this->getStartPosition($firstTable);
         foreach ($listOfAllTables as $key => $table) {
             if ($table === $startPosition['table']) {

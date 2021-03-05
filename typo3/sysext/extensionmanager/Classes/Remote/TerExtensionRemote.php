@@ -101,7 +101,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
         try {
             $response = $this->downloadFile('extensions.md5');
             $md5SumOfRemoteExtensionListFile = $response->getBody()->getContents();
-            return hash_equals($md5SumOfRemoteExtensionListFile, md5_file($this->localExtensionListCacheFile));
+            return hash_equals($md5SumOfRemoteExtensionListFile, md5_file($this->localExtensionListCacheFile) ?: '');
         } catch (DownloadFailedException $exception) {
             return false;
         }
@@ -203,7 +203,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
         [$expectedHash, $compressionType, $contents] = explode(':', $stream, 3);
         if ($compressionType === 'gzcompress') {
             if (function_exists('gzuncompress')) {
-                $contents = gzuncompress($contents);
+                $contents = gzuncompress($contents) ?: '';
             } else {
                 throw new VerificationFailedException('No decompressor available for compressed content. gzcompress()/gzuncompress() functions are not available', 1601370681);
             }

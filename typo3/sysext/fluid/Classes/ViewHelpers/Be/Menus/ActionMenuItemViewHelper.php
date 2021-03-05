@@ -95,7 +95,7 @@ class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
 
         $this->tag->setContent(
             // Double encode can be set to true, once the typo3fluid/fluid fix is released and required
-            htmlspecialchars($label, ENT_QUOTES, null, false)
+            htmlspecialchars($label, ENT_QUOTES, '', false)
         );
         return $this->tag->render();
     }

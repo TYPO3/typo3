@@ -59,7 +59,7 @@ class FileCollectionRegistry implements SingletonInterface
             throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1391295613);
         }
 
-        if (!in_array(AbstractFileCollection::class, class_parents($className), true)) {
+        if (!in_array(AbstractFileCollection::class, class_parents($className) ?: [], true)) {
             throw new \InvalidArgumentException('FileCollection ' . $className . ' needs to extend the AbstractFileCollection.', 1391295633);
         }
 

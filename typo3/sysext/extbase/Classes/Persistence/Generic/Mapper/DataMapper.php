@@ -197,7 +197,7 @@ class DataMapper
     {
         // Note: The class_implements() function also invokes autoload to assure that the interfaces
         // and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
-        if (!in_array(DomainObjectInterface::class, class_implements($className))) {
+        if (!in_array(DomainObjectInterface::class, class_implements($className) ?: [])) {
             throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
                 . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
         }

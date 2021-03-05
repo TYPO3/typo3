@@ -273,6 +273,9 @@ class ActionHandler
                 if (!$stageRecord->isEditStage()) {
                     $this->stageService->getRecordService()->add($table, $uid);
                     $previousStageRecord = $stageRecord->getPrevious();
+                    if ($previousStageRecord === null) {
+                        return $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264747);
+                    }
                     $result = $this->getSentToStageWindow($previousStageRecord);
                     $result['affects'] = [
                         'table' => $table,
@@ -643,6 +646,7 @@ class ActionHandler
         }
 
         $result = [];
+        // TODO: $nextStage might be null, error ignored in phpstan.neon
         if ($nextStage->isDialogEnabled()) {
             $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage);
             $result['additional'] = [

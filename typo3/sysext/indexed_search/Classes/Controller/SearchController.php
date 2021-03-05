@@ -1107,7 +1107,7 @@ class SearchController extends ActionController
             }
 
             // disable single entries by TypoScript
-            $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['languageUid']);
+            $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)$blindSettings['languageUid']);
         } else {
             $allOptions = [];
         }
@@ -1202,7 +1202,7 @@ class SearchController extends ActionController
                 }
             }
             // disable single entries by TypoScript
-            $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['indexingConfigurations']);
+            $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)$blindSettings['indexingConfigurations']);
         } else {
             $allOptions = [];
         }

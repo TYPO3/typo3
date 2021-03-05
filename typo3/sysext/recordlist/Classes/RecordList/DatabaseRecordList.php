@@ -1221,7 +1221,7 @@ class DatabaseRecordList
             $tagAttributes
         );
 
-        $rowOutput .= $this->addElement(1, $theIcon, $theData, GeneralUtility::implodeAttributes($tagAttributes, true));
+        $rowOutput .= $this->addElement(1, (string)$theIcon, $theData, GeneralUtility::implodeAttributes($tagAttributes, true));
         // Finally, return table row element:
         return $rowOutput;
     }

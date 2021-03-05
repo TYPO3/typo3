@@ -378,7 +378,7 @@ class ViewModuleController
     protected function getShortcutTitle(int $pageId): string
     {
         $pageTitle = '';
-        $pageRow = BackendUtility::getRecord('pages', $pageId);
+        $pageRow = BackendUtility::getRecord('pages', $pageId) ?? [];
         if ($pageRow !== []) {
             $pageTitle = BackendUtility::getRecordTitle('pages', $pageRow);
         }

@@ -82,7 +82,7 @@ class SynchronizeFolderRelations
         }
 
         if ($synchronized) {
-            $this->addFlashMessage($synchronized, 'sys_file_collection', 'afterFolderRenamed');
+            $this->addFlashMessage((int)$synchronized, 'sys_file_collection', 'afterFolderRenamed');
         }
     }
 
@@ -123,7 +123,7 @@ class SynchronizeFolderRelations
         }
 
         if ($synchronized) {
-            $this->addFlashMessage($synchronized, 'sys_filemounts', 'afterFolderRenamed');
+            $this->addFlashMessage((int)$synchronized, 'sys_filemounts', 'afterFolderRenamed');
         }
     }
 

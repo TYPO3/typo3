@@ -47,7 +47,7 @@ class ContentDataProcessor
                     throw new \UnexpectedValueException('Processor class name "' . $className . '" does not exist!', 1427455378);
                 }
 
-                if (!in_array(DataProcessorInterface::class, class_implements($className), true)) {
+                if (!in_array(DataProcessorInterface::class, class_implements($className) ?: [], true)) {
                     throw new \UnexpectedValueException(
                         'Processor with class name "' . $className . '" ' .
                         'must implement interface "' . DataProcessorInterface::class . '"',

@@ -473,7 +473,7 @@ class IconRegistry implements SingletonInterface
     {
         $dir = dirname($this->backendIconDeclaration);
         $absoluteIconDeclarationPath = GeneralUtility::getFileAbsFileName($this->backendIconDeclaration);
-        $json = json_decode(file_get_contents($absoluteIconDeclarationPath), true);
+        $json = json_decode(file_get_contents($absoluteIconDeclarationPath) ?: '', true);
         foreach ($json['icons'] ?? [] as $declaration) {
             $iconOptions = [
                 'sprite' => $dir . '/' . $declaration['sprite'],
@@ -536,7 +536,7 @@ class IconRegistry implements SingletonInterface
      */
     public function registerIcon($identifier, $iconProviderClassName, array $options = [])
     {
-        if (!in_array(IconProviderInterface::class, class_implements($iconProviderClassName), true)) {
+        if (!in_array(IconProviderInterface::class, class_implements($iconProviderClassName) ?: [], true)) {
             throw new \InvalidArgumentException('An IconProvider must implement '
                 . IconProviderInterface::class, 1437425803);
         }

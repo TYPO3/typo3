@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -63,6 +64,7 @@ class Resolver
         $generalVariables = array_replace_recursive(...$generalVariables);
         $this->expressionLanguageVariables = array_replace_recursive($generalVariables, $variables);
         foreach ($functionProviders as $functionProvider) {
+            /** @var ExpressionFunctionProviderInterface[] $functionProviderInstances */
             $functionProviderInstances[] = GeneralUtility::makeInstance($functionProvider);
         }
         $this->expressionLanguage = new ExpressionLanguage(null, $functionProviderInstances);

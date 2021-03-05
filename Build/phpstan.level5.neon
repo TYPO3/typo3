@@ -5,8 +5,8 @@ conditionalTags:
 	PHPStan\Rules\Functions\RandomIntParametersRule:
 		phpstan.rules.rule: %featureToggles.randomIntParameters%
 
-#parameters:
-#	checkFunctionArgumentTypes: true
+parameters:
+	checkFunctionArgumentTypes: true
 #	checkArgumentsPassedByReference: true
 
 services:

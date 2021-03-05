@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -207,6 +208,7 @@ class ListController extends AbstractModuleController
             $paginator = new ArrayPaginator($extensions, $currentPage);
             $tableId = 'terSearchTable';
         } else {
+            /** @var QueryResultInterface $extensions */
             $extensions = $this->extensionRepository->findAll();
             $paginator = new QueryResultPaginator($extensions, $currentPage);
             $tableId = 'terTable';

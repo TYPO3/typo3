@@ -64,7 +64,7 @@ class DriverRegistry implements SingletonInterface
             throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1314979197);
         }
 
-        if (!in_array(DriverInterface::class, class_implements($className), true)) {
+        if (!in_array(DriverInterface::class, class_implements($className) ?: [], true)) {
             throw new \InvalidArgumentException('Driver ' . $className . ' needs to implement the DriverInterface.', 1387619575);
         }
         if ($shortName === '') {

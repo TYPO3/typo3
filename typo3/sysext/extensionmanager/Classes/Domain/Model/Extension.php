@@ -676,7 +676,7 @@ class Extension extends AbstractEntity
             }
             foreach ($dependencyValues as $dependency => $versionConstraint) {
                 if ($dependency) {
-                    $dependencyObject = Dependency::createFromEmConf($dependency, $versionConstraint, $dependencyType);
+                    $dependencyObject = Dependency::createFromEmConf((string)$dependency, $versionConstraint, (string)$dependencyType);
                     $dependenciesObject->attach($dependencyObject);
                 }
             }

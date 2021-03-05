@@ -245,7 +245,7 @@ class RemoteServer
                         'content' => BackendUtility::getProcessedValue(
                             $parameter->table,
                             $fieldName,
-                            $liveReturnArray[$fieldName],
+                            (string)$liveReturnArray[$fieldName],
                             0,
                             true,
                             false,
@@ -394,7 +394,7 @@ class RemoteServer
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
                     ['width' => 40, 'height' => 40]
                 );
-                $thumbnailMarkup = '<img src="' . PathUtility::getAbsoluteWebPath($thumbnailFile->getPublicUrl()) . '" />';
+                $thumbnailMarkup = '<img src="' . PathUtility::getAbsoluteWebPath($thumbnailFile->getPublicUrl() ?? '') . '" />';
                 $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
             } else {
                 $substitutes[$identifierWithRandomValue] = $fileReference->getPublicUrl();

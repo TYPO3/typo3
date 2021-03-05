@@ -89,7 +89,7 @@ class FileInfoElement extends AbstractFormElement
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize((int)$file->getSize())) . 'bytes)<br />';
             $content .= BackendUtility::getProcessedValue('sys_file', 'type', (string)$file->getType()) . ' (' . $file->getMimeType() . ')<br />';
             $content .= htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
-            $content .= '<a href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($file->getPublicUrl())) . '" target="_blank" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '</a><br />';
+            $content .= '<a href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($file->getPublicUrl() ?? '')) . '" target="_blank" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '</a><br />';
             $content .= '<br />';
         } else {
             $content = '<h2>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaErrorInvalidRecord')) . '</h2>';

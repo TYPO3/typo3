@@ -1090,7 +1090,7 @@ For each website you need a TypoScript template on the main page of your website
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
-                if (!in_array(RepeatableInterface::class, class_implements($updateClassName), true)) {
+                if (!in_array(RepeatableInterface::class, class_implements($updateClassName) ?: [], true)) {
                     $this->registry->set('installUpdate', $updateClassName, 1);
                 }
             }

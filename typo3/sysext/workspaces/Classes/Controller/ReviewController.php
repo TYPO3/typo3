@@ -225,7 +225,7 @@ class ReviewController
                 'title' => $workspaceTitle,
                 'itemId' => 'workspace-' . $workspaceId,
                 'workspaceId' => $workspaceId,
-                'triggerUrl' => $this->getModuleUri($workspaceId),
+                'triggerUrl' => $this->getModuleUri((int)$workspaceId),
             ];
         }
 

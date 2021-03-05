@@ -59,7 +59,7 @@ class RendererRegistry implements SingletonInterface
         if (!class_exists($className)) {
             throw new \InvalidArgumentException('The class "' . $className . '" you are trying to register is not available', 1411840171);
         }
-        if (!in_array(FileRendererInterface::class, class_implements($className), true)) {
+        if (!in_array(FileRendererInterface::class, class_implements($className) ?: [], true)) {
             throw new \InvalidArgumentException('The renderer needs to implement the FileRendererInterface', 1411840172);
         }
         $this->classNames[] = $className;

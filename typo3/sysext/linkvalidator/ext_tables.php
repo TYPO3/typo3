@@ -6,7 +6,7 @@ defined('TYPO3') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     \TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport::class,
-    null,
+    '',
     'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:mod_linkvalidator'
 );
 

@@ -1891,7 +1891,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
 
             $workspaceWebMounts = GeneralUtility::intExplode(',', $dbMountpoints);
             $webMountsOfUser = GeneralUtility::intExplode(',', $this->groupData['webmounts']);
-            $webMountsOfUser = array_combine($webMountsOfUser, $webMountsOfUser);
+            $webMountsOfUser = array_combine($webMountsOfUser, $webMountsOfUser) ?: [];
 
             $entryPointRootLineUids = [];
             foreach ($webMountsOfUser as $webMountPageId) {

@@ -112,7 +112,7 @@ class CshViewHelper extends AbstractBackendViewHelper
             $label = self::getLanguageService()->sL($label);
         }
         // Double encode can be set to true, once the typo3fluid/fluid fix is released and required
-        $label = '<label>' . htmlspecialchars($label, ENT_QUOTES, null, false) . '</label>';
+        $label = '<label>' . htmlspecialchars($label, ENT_QUOTES, '', false) . '</label>';
         return BackendUtility::wrapInHelp($table, $field, $label);
     }
 }

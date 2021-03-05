@@ -399,7 +399,7 @@ class CharsetConverter implements SingletonInterface
         } else {
             $int = $ord;
         }
-        return $hex ? 'x' . dechex($int) : $int;
+        return $hex ? 'x' . dechex((int)$int) : $int;
     }
 
     /********************************************

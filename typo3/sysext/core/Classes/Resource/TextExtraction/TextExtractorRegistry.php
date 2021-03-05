@@ -60,7 +60,7 @@ class TextExtractorRegistry implements SingletonInterface
             throw new \InvalidArgumentException('The class "' . $className . '" you are trying to register is not available', 1422906893);
         }
 
-        if (!in_array(TextExtractorInterface::class, class_implements($className), true)) {
+        if (!in_array(TextExtractorInterface::class, class_implements($className) ?: [], true)) {
             throw new \InvalidArgumentException($className . ' must implement interface' . TextExtractorInterface::class, 1422771427);
         }
 

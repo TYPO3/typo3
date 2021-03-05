@@ -115,7 +115,7 @@ class AspectFactory
     protected function enrich(AspectInterface $aspect, SiteLanguage $language, Site $site): AspectInterface
     {
         // the check for the trait is @deprecated and can be removed at any time after TYPO3 v11
-        if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect), true)) {
+        if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect) ?: [], true)) {
             /** @var AspectInterface|SiteLanguageAwareInterface $aspect */
             $aspect->setSiteLanguage($language);
         }

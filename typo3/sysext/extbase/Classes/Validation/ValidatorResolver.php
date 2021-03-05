@@ -158,7 +158,7 @@ class ValidatorResolver implements SingletonInterface
                             ]
                         );
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
-                    } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && !in_array(SingletonInterface::class, class_implements($propertyTargetClassName, true), true)) {
+                    } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && !in_array(SingletonInterface::class, class_implements($propertyTargetClassName, true) ?: [], true)) {
                         /*
                          * class_exists($propertyTargetClassName) checks, if the type of the property is an object
                          * instead of a simple type. Like DateTime or another model.

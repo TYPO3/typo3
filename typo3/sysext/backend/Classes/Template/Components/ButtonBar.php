@@ -88,7 +88,7 @@ class ButtonBar
      */
     public function makeButton($button)
     {
-        if (!in_array(ButtonInterface::class, class_implements($button), true)) {
+        if (!in_array(ButtonInterface::class, class_implements($button) ?: [], true)) {
             throw new \InvalidArgumentException('A Button must implement ButtonInterface', 1441706378);
         }
         return GeneralUtility::makeInstance($button);

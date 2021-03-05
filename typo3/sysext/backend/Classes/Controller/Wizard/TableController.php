@@ -336,7 +336,7 @@ class TableController extends AbstractWizardController
             GeneralUtility::implodeAttributes([
                 'id' => 'typo3-tablewizard',
                 'type' => $this->inputStyle ? 'input' : 'textarea',
-                'append-rows' => $this->numNewRows,
+                'append-rows' => (string)$this->numNewRows,
                 'table' => GeneralUtility::jsonEncodeForHtmlAttribute($configuration, false),
             ], true)
         );

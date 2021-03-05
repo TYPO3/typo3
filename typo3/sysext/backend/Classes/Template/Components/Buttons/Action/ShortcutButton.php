@@ -326,7 +326,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         unset($arguments['returnUrl']);
 
         // Encode arguments to be stored in the database
-        $arguments = json_encode($arguments);
+        $arguments = json_encode($arguments) ?: '';
 
         if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $arguments)) {
             return '<a class="active btn btn-default btn-sm" title="">'

@@ -306,7 +306,7 @@ class PropertyMapper implements SingletonInterface
             }
         }
 
-        $converters = $this->getConvertersForInterfaces($convertersForSource, class_implements($targetClass));
+        $converters = $this->getConvertersForInterfaces($convertersForSource, class_implements($targetClass) ?: []);
         $converter = $this->findEligibleConverterWithHighestPriority($converters, $source, $targetClass);
 
         if ($converter !== null) {

@@ -50,6 +50,9 @@ class FileStorageExtractionTask extends AbstractTask
         $success = false;
         if ((int)$this->storageUid > 0) {
             $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid($this->storageUid);
+            if ($storage === null) {
+                throw new \RuntimeException(self::class . ' misconfiguration: "Storage to index" must be an existing storage.', 1615020909);
+            }
             $currentEvaluatePermissionsValue = $storage->getEvaluatePermissions();
             $storage->setEvaluatePermissions(false);
             $indexer = $this->getIndexer($storage);

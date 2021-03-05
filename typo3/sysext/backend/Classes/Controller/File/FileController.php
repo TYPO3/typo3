@@ -192,7 +192,12 @@ class FileController
 
         $result = [];
         if ($fileTargetObject->hasFile($processedFileName)) {
-            $result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
+            $fileInFolder = $fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject);
+            if ($fileInFolder === null) {
+                $result = [];
+            } else {
+                $result = $this->flattenResultDataValue($fileInFolder);
+            }
         }
         return (new JsonResponse())->setPayload($result);
     }
@@ -306,7 +311,7 @@ class FileController
             if ($result->isImage()) {
                 $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                 if ($processedFile) {
-                    $thumbUrl = PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl());
+                    $thumbUrl = PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '');
                 }
             }
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

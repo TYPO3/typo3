@@ -115,7 +115,7 @@ final class ClassesConfigurationFactory implements SingletonInterface
              * parents of $className until one of these parents.
              */
             $relevantParentClasses = [];
-            $parentClasses = class_parents($className);
+            $parentClasses = class_parents($className) ?: [];
             while (null !== $parentClass = array_shift($parentClasses)) {
                 if (in_array($parentClass, [AbstractEntity::class, AbstractValueObject::class], true)) {
                     break;

@@ -558,7 +558,7 @@ class DataHandlerHook
         $curVersion = BackendUtility::getRecord($table, $id, '*');
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = ((int)($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER);
-        if ($isNewRecord) {
+        if ($isNewRecord && is_array($curVersion)) {
             $this->publishNewRecord($table, $curVersion, $dataHandler, $comment, (array)$notificationAlternativeRecipients);
             return;
         }

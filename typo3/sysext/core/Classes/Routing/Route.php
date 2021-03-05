@@ -180,7 +180,7 @@ class Route extends SymfonyRoute
         return array_filter(
             $aspects,
             function (AspectInterface $aspect) use ($classNames) {
-                $uses = class_uses($aspect);
+                $uses = class_uses($aspect) ?: [];
                 foreach ($classNames as $className) {
                     if (!is_a($aspect, $className)
                         && !in_array($className, $uses, true)

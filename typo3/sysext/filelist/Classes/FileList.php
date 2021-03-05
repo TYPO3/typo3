@@ -567,7 +567,7 @@ class FileList
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
             if (!$isLocked) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
+                $theIcon = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
             }
 
             // Preparing and getting the data-array
@@ -716,7 +716,7 @@ class FileList
             // The icon with link
             $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
                 . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
-            $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
+            $theIcon = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
             // Preparing and getting the data-array
             $theData = [];
             foreach ($this->fieldArray as $field) {
@@ -806,7 +806,7 @@ class FileList
                                     'height' => $this->thumbnailConfiguration->getHeight(),
                                 ]
                             );
-                            $theData[$field] .= '<br /><img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl())) . '" ' .
+                            $theData[$field] .= '<br /><img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '')) . '" ' .
                                 'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
                                 'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
                                 'title="' . htmlspecialchars($fileName) . '" alt="" />';

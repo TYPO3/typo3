@@ -205,7 +205,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
     {
         if (!strncmp('$', $salt, 1)) {
             if (!strncmp(self::PREFIX, $salt, strlen(self::PREFIX))) {
-                $saltParts = GeneralUtility::trimExplode('$', $salt, 4);
+                $saltParts = GeneralUtility::trimExplode('$', $salt, true);
                 $salt = $saltParts[2];
             }
         }

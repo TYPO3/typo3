@@ -274,7 +274,7 @@ class HtmlParser
                         }
                     } else {
                         if ($namekey = preg_replace('/[^[:alnum:]_\\:\\-]/', '', $val) ?? '') {
-                            $name = strtolower($namekey);
+                            $name = strtolower((string)$namekey);
                             $attributesMeta[$name] = [];
                             $attributesMeta[$name]['origTag'] = $namekey;
                             $attributes[$name] = '';
@@ -525,7 +525,7 @@ class HtmlParser
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 } else {
-                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']), $this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
+                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 }

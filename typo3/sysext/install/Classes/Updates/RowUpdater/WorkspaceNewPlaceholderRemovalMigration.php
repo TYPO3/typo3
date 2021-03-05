@@ -69,8 +69,8 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
                 if (in_array($fieldName, ['uid', 'pid', 'deleted', 't3ver_state', 't3ver_oid'], true)) {
                     continue;
                 }
-                if ($this->isMMField($tableName, $fieldName)) {
-                    $this->transferMMValues($tableName, $fieldName, (int)$versionedRecord['uid'], (int)$row['uid']);
+                if ($this->isMMField($tableName, (string)$fieldName)) {
+                    $this->transferMMValues($tableName, (string)$fieldName, (int)$versionedRecord['uid'], (int)$row['uid']);
                     continue;
                 }
                 $row[$fieldName] = $value;

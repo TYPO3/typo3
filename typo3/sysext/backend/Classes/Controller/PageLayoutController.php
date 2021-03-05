@@ -1114,7 +1114,7 @@ class PageLayoutController
         return sprintf(
             '%s: %s [%d]',
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'),
-            BackendUtility::getRecordTitle('pages', $this->pageinfo),
+            BackendUtility::getRecordTitle('pages', (array)$this->pageinfo),
             $this->id
         );
     }

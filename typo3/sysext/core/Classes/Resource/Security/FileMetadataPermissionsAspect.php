@@ -92,7 +92,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
                     $recordAccessAllowed = false;
 
                     if (strpos((string)$id, 'NEW') === false) {
-                        $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', $id);
+                        $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', (int)$id);
                         if ($fileMetadataRecord !== null) {
                             if ($parent->isImporting && empty($fileMetadataRecord['file'])) {
                                 // When importing the record was added with an empty file relation as first step

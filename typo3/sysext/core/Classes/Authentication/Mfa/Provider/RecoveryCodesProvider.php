@@ -178,7 +178,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                 $view->assignMultiple([
                     'recoveryCodes' => implode(PHP_EOL, $codes),
                     // Generate hmac of the recovery codes to prevent them from being changed in the setup from
-                    'checksum' => GeneralUtility::hmac(json_encode($codes), 'recovery-codes-setup')
+                    'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup')
                 ]);
                 break;
             case MfaViewType::EDIT:
@@ -220,7 +220,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
         $recoveryCodes = GeneralUtility::trimExplode(PHP_EOL, (string)($request->getParsedBody()['recoveryCodes'] ?? ''));
         $checksum = (string)($request->getParsedBody()['checksum'] ?? '');
         if ($recoveryCodes === []
-            || !hash_equals(GeneralUtility::hmac(json_encode($recoveryCodes), 'recovery-codes-setup'), $checksum)
+            || !hash_equals(GeneralUtility::hmac(json_encode($recoveryCodes) ?: '', 'recovery-codes-setup'), $checksum)
         ) {
             // Return since the request does not contain the initially created recovery codes
             return false;

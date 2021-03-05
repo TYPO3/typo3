@@ -311,7 +311,7 @@ class ElementInformationController
         } else {
             $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
-            $preview['url'] = PathUtility::getAbsoluteWebPath($this->fileObject->getPublicUrl());
+            $preview['url'] = PathUtility::getAbsoluteWebPath($this->fileObject->getPublicUrl() ?? '');
 
             $width = '590m';
             $height = '400m';

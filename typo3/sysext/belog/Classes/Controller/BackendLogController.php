@@ -227,7 +227,7 @@ class BackendLogController extends ActionController
                 $targetStructure[$pid] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
-            $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()));
+            $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()) ?: '');
             if (!is_array($targetStructure[$pid][$timestampDay])) {
                 $targetStructure[$pid][$timestampDay] = [];
             }
