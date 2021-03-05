@@ -322,10 +322,10 @@
 				<source>Account security</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders" resname="mfaProviders">
-				<source>Multi-factor authentication providers</source>
+				<source>Multi-factor authentication</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders.notAvailable" resname="mfaProviders.notAvailable">
-				<source>Currently no multi-factor authentication providers are available.</source>
+				<source>Multi-factor authentication is currently not available.</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders.description" resname="mfaProviders.description">
 				<source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
@@ -340,7 +340,7 @@
 				<source>Setup multi-factor authentication</source>
 			</trans-unit>
 			<trans-unit id="mfaProviders.manageLinkTitle" resname="mfaProviders.manageLinkTitle">
-				<source>Manage your MFA providers</source>
+				<source>Manage multi-factor authentication</source>
 			</trans-unit>
 			<trans-unit id="setupWasUpdated" resname="setupWasUpdated">
 				<source>User settings were updated.</source>

@@ -130,7 +130,7 @@
 				<source>Successfully updated MFA provider %s.</source>
 			</trans-unit>
 			<trans-unit id="auth.authError" resname="auth.authError">
-				<source>Authentication was not succesful</source>
+				<source>Authentication was not successful.</source>
 			</trans-unit>
 			<trans-unit id="auth.submit" resname="auth.submit">
 				<source>Verify</source>
@@ -160,7 +160,7 @@
 				<source>Your are not allowed to perfom this action</source>
 			</trans-unit>
 			<trans-unit id="ajax.deactivate.providersNotDeactivated">
-				<source>No provider was deactivated</source>
+				<source>No provider has been deactivated</source>
 			</trans-unit>
 			<trans-unit id="ajax.deactivate.providersDeactivated">
 				<source>Successfully deactivated all active providers for user %s</source>
