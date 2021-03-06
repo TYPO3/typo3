@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
-use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
 /**
  * Generate data for type=select fields.
