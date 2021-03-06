@@ -42,7 +42,7 @@
     "codeception/codeception": "^4.1",
     "codeception/module-webdriver": "^1.1",
     "codeception/module-asserts": "^1.2",
-    "typo3/coding-standards": "^0.2.0",
+    "typo3/coding-standards": "^0.3.0",
     "phpstan/phpstan": "^0.12.37",
     "typo3/tailor": "^1.2"
   },
