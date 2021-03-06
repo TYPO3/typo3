@@ -16,55 +16,19 @@ import {html, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {PageTree} from './PageTree';
 import {PageTreeDragDrop, ToolbarDragHandler} from './PageTreeDragDrop';
-import viewPort from '../Viewport';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import {SvgTreeWrapper} from '../SvgTree';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
 
 /**
  * @exports TYPO3/CMS/Backend/PageTree/PageTreeElement
  */
-export class PageTreeElement {
-  public static initialize(selector: string): void {
-    const targetEl = document.querySelector(selector);
-
-    // let SvgTree know it shall be visible
-    if (targetEl && targetEl.childNodes.length > 0) {
-      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
-      return;
-    }
-
-    render(PageTreeElement.renderTemplate(), targetEl);
-    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
-
-    const tree = new PageTree();
-    const dragDrop = new PageTreeDragDrop(tree);
-    const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
-    (new AjaxRequest(configurationUrl)).get()
-      .then(async (response: AjaxResponse): Promise<void> => {
-        const configuration = await response.resolve('json');
-        const dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
-        const filterUrl = top.TYPO3.settings.ajaxUrls.page_tree_filter;
-        Object.assign(configuration, {
-          dataUrl: dataUrl,
-          filterUrl: filterUrl,
-          showIcons: true
-        });
-        tree.initialize(treeEl, configuration, dragDrop);
-        viewPort.NavigationContainer.setComponentInstance(tree);
-        // the toolbar relies on settings retrieved in this step
-        const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
-        if (!toolbar.dataset.treeShowToolbar) {
-          const pageTreeToolbar = new Toolbar(dragDrop);
-          pageTreeToolbar.initialize(treeEl, toolbar);
-          toolbar.dataset.treeShowToolbar = 'true';
-        }
-      });
-  }
-
+export class PageTreeElement implements NavigationComponent {
+  private readonly tree: PageTree;
   private static renderTemplate(): TemplateResult {
     return html`
       <div id="typo3-pagetree" class="svg-tree">
@@ -83,6 +47,53 @@ export class PageTreeElement {
         </div>
       </div>
     `;
+  }
+  public constructor(selector: string) {
+    const targetEl = document.querySelector(selector);
+
+    // let SvgTree know it shall be visible
+    if (targetEl && targetEl.childNodes.length > 0) {
+      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
+      return;
+    }
+
+    render(PageTreeElement.renderTemplate(), targetEl);
+    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
+
+    this.tree = new PageTree();
+    const dragDrop = new PageTreeDragDrop(this.tree);
+    const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
+    (new AjaxRequest(configurationUrl)).get()
+      .then(async (response: AjaxResponse): Promise<void> => {
+        const configuration = await response.resolve('json');
+        const dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
+        const filterUrl = top.TYPO3.settings.ajaxUrls.page_tree_filter;
+        Object.assign(configuration, {
+          dataUrl: dataUrl,
+          filterUrl: filterUrl,
+          showIcons: true
+        });
+        this.tree.initialize(treeEl, configuration, dragDrop);
+        // the toolbar relies on settings retrieved in this step
+        const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
+        if (!toolbar.dataset.treeShowToolbar) {
+          const pageTreeToolbar = new Toolbar(dragDrop);
+          pageTreeToolbar.initialize(treeEl, toolbar);
+          toolbar.dataset.treeShowToolbar = 'true';
+        }
+      });
+  }
+  public getName(): string {
+    return 'PageTree';
+  }
+  public refresh?(): void {
+    this.tree.refreshOrFilterTree();
+  }
+  public select(item: any): void {
+    this.tree.selectNode(item);
+  }
+  public apply(fn: Function): void {
+    fn(this.tree);
   }
 }
 
@@ -203,3 +214,4 @@ class Toolbar {
     return this.dragDrop.connectDragHandler(new ToolbarDragHandler(item, this.tree, this.dragDrop));
   }
 }
+

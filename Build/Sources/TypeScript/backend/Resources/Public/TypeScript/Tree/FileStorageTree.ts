@@ -18,9 +18,8 @@ import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {FileStorageTreeNodeDragHandler, FileStorageTreeActions} from './FileStorageTreeActions';
-import {TreeInterface} from '../Viewport/TreeInterface';
 
-export class FileStorageTree extends SvgTree implements TreeInterface {
+export class FileStorageTree extends SvgTree {
   public settings: SvgTreeSettings;
   public searchQuery: string = '';
   protected networkErrorTitle: string = TYPO3.lang.tree_networkError;
@@ -167,13 +166,6 @@ export class FileStorageTree extends SvgTree implements TreeInterface {
     } else {
       this.refreshTree();
     }
-  }
-  public setTemporaryMountPoint(pid: number): void {
-    // stub
-  }
-
-  public unsetTemporaryMountPoint() {
-    // stub
   }
 
   /**

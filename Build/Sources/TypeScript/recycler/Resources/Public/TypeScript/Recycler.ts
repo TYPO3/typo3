@@ -52,8 +52,8 @@ class Recycler {
    * Reloads the page tree
    */
   public static refreshPageTree(): void {
-    if (top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer && top.TYPO3.Backend.NavigationContainer.PageTree) {
-      top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+    if (top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer) {
+      top.TYPO3.Backend.NavigationContainer.getComponentByName('PageTree')?.refresh();
     }
   }
 

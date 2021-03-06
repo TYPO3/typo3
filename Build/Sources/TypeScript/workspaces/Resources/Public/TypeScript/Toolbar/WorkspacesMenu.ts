@@ -42,8 +42,8 @@ class WorkspacesMenu {
    * Refresh the page tree
    */
   private static refreshPageTree(): void {
-    if (Viewport.NavigationContainer && Viewport.NavigationContainer.PageTree) {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+    if (Viewport.NavigationContainer) {
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     }
   }
 

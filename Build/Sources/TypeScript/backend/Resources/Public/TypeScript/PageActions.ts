@@ -210,7 +210,7 @@ class PageActions {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
         this.$pageTitle.text($field.val());
         this.initializePageTitleRenaming();
-        top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+        top.TYPO3.Backend.NavigationContainer.getComponentByName('PageTree')?.refresh();
       }).catch((): void => {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
       });

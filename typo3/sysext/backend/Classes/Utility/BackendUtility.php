@@ -2663,10 +2663,15 @@ class BackendUtility
             } else {
                 switch ($set) {
                     case 'updatePageTree':
+                        $signals[] = '
+								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer) {
+									top.TYPO3.Backend.NavigationContainer.getComponentByName("PageTree")?.refresh();
+								}';
+                        break;
                     case 'updateFolderTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer.PageTree) {
-									top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer) {
+									top.TYPO3.Backend.NavigationContainer.getComponentByName("FileStorageTree")?.refresh();
 								}';
                         break;
                     case 'updateModuleMenu':

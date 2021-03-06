@@ -21,6 +21,7 @@ import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Viewport = require('./Viewport');
+import { PageTree } from './PageTree/PageTree';
 
 /**
  * @exports TYPO3/CMS/Backend/ContextMenuActions
@@ -76,7 +77,7 @@ class ContextMenuActions {
    */
   public static mountAsTreeRoot(table: string, uid: number): void {
     if (table === 'pages') {
-      Viewport.NavigationContainer.PageTree.setTemporaryMountPoint(uid);
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.apply((component: PageTree) => { component.setTemporaryMountPoint(uid); });
     }
   }
 
@@ -159,7 +160,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     });
   }
 
@@ -174,7 +175,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     });
   }
 
@@ -188,7 +189,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][nav_hide]=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     });
   }
 
@@ -202,7 +203,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][nav_hide]=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     });
   }
 
@@ -233,13 +234,14 @@ class ContextMenuActions {
       if (e.target.getAttribute('name') === 'delete') {
         const eventData = {component: 'contextmenu', action: 'delete', table, uid};
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
-          if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
+          if (table === 'pages' && Viewport.NavigationContainer) {
             if (uid === top.fsMod.recentIds.web) {
-              let node = Viewport.NavigationContainer.PageTree.getFirstNode();
-              Viewport.NavigationContainer.PageTree.selectNode(node);
+              Viewport.NavigationContainer.getComponentByName('PageTree')?.apply((pageTree: PageTree) => {
+                let node = pageTree.getFirstNode();
+                pageTree.selectNode(node);
+              });
             }
-
-            Viewport.NavigationContainer.PageTree.refreshTree();
+            Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
           }
         });
       }
@@ -347,8 +349,8 @@ class ContextMenuActions {
       Viewport.ContentContainer.setUrl(
         top.TYPO3.settings.RecordCommit.moduleUrl + url,
       ).done((): void => {
-        if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
-          Viewport.NavigationContainer.PageTree.refreshTree();
+        if (table === 'pages') {
+          Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
         }
       });
     };

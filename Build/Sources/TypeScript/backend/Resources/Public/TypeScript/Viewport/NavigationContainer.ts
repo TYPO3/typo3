@@ -13,18 +13,16 @@
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
-import $ from 'jquery';
-import PageTree = require('./PageTree');
 import TriggerRequest = require('../Event/TriggerRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
-import {TreeInterface} from 'TYPO3/CMS/Backend/Viewport/TreeInterface';
+import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
 
 class NavigationContainer extends AbstractContainer {
-  public PageTree: PageTree = null;
-  private instance: TreeInterface = null;
+  private components: Array<NavigationComponent> = [];
   private readonly parent: HTMLElement;
   private readonly container: HTMLElement;
   private readonly switcher: HTMLElement = null;
+  private activeComponentId: string = '';
 
   public constructor(consumerScope: any, navigationSwitcher?: HTMLElement)
   {
@@ -33,15 +31,52 @@ class NavigationContainer extends AbstractContainer {
     this.container = document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
     this.switcher = navigationSwitcher;
   }
+
   /**
-   * Public method used by Navigation components to register themselves.
-   * See TYPO3/CMS/Backend/PageTree/PageTreeElement->initialize
+   * Renders registered (non-iframe) navigation component e.g. a page tree
    *
-   * @param {TreeInterface} component
+   * @param {string} navigationComponentId
    */
-  public setComponentInstance(component: TreeInterface): void {
-    this.instance = component;
-    this.PageTree = new PageTree(component);
+  public showComponent(navigationComponentId: string): void {
+    this.show(navigationComponentId);
+    // Component is already loaded and active, nothing to do
+    if (navigationComponentId === this.activeComponentId) {
+      return;
+    }
+    if (this.activeComponentId !== '') {
+      let activeComponentElement = this.container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/]/g, '_')) as HTMLElement;
+      if (activeComponentElement) {
+        activeComponentElement.style.display = 'none';
+      }
+    }
+
+    const componentCssName = navigationComponentId.replace(/[/]/g, '_');
+    const navigationComponentElement = 'navigationComponent-' + componentCssName;
+    // Component does not exist, create the div as wrapper
+    if (this.container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 0) {
+      this.container.insertAdjacentHTML(
+        'beforeend',
+        '<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
+      );
+    }
+
+    require([navigationComponentId], (__esModule: any): void => {
+      // @ts-ignore
+      const navigationComponent = (new (Object.values(__esModule)[0])('#' + navigationComponentElement)) as NavigationComponent;
+      this.addComponent(navigationComponent);
+      this.show(navigationComponentId);
+      this.activeComponentId = navigationComponentId;
+    });
+  }
+
+  public getComponentByName(name: string): NavigationComponent|null {
+    let foundComponent = null;
+    this.components.forEach((component: NavigationComponent) => {
+      if (component.getName() == name) {
+        foundComponent = component;
+      }
+    });
+    return foundComponent;
   }
 
   public toggle(): void {
@@ -52,7 +87,7 @@ class NavigationContainer extends AbstractContainer {
     this.parent.classList.remove('scaffold-content-navigation-expanded');
     this.parent.classList.remove('scaffold-content-navigation-available');
     if (hideSwitcher && this.switcher) {
-      $(this.switcher).hide();
+      this.switcher.style.display = 'none';
     }
   }
 
@@ -81,14 +116,19 @@ class NavigationContainer extends AbstractContainer {
   }
 
   public show(component: string): void {
-    $(ScaffoldIdentifierEnum.contentNavigationDataComponent).hide();
+    this.container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
     if (typeof component !== undefined) {
       this.parent.classList.add('scaffold-content-navigation-expanded');
       this.parent.classList.add('scaffold-content-navigation-available');
-      $(ScaffoldIdentifierEnum.contentNavigation + ' [data-component="' + component + '"]').show();
+      const selectedElement = this.container.querySelector('[data-component="' + component + '"]') as HTMLElement;
+      if (selectedElement) {
+        // Re-set to the display setting from CSS
+        selectedElement.style.display = null;
+      }
     }
     if (this.switcher) {
-      $(this.switcher).show();
+      // Re-set to the display setting from CSS
+      this.switcher.style.display = null;
     }
   }
 
@@ -103,20 +143,36 @@ class NavigationContainer extends AbstractContainer {
     );
     deferred.then((): void => {
       this.parent.classList.add('scaffold-content-navigation-expanded');
-      $(ScaffoldIdentifierEnum.contentNavigationIframe).attr('src', urlToLoad);
+      const iFrameElement = this.getIFrameElement();
+      if (iFrameElement) {
+        iFrameElement.setAttribute('src', urlToLoad);
+      }
     });
     return deferred;
   }
 
-  /**
-   * @returns {string}
-   */
   public getUrl(): string {
-    return $(ScaffoldIdentifierEnum.contentNavigationIframe).attr('src');
+    const iFrameElement = this.getIFrameElement();
+    if (iFrameElement) {
+      return iFrameElement.getAttribute('src');
+    }
+    return '';
   }
 
   public refresh(): any {
-    return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentNavigationIframe)[0]).contentWindow.location.reload();
+    const iFrameElement = this.getIFrameElement();
+    if (iFrameElement) {
+      return iFrameElement.contentWindow.location.reload();
+    }
+    return undefined;
+  }
+
+  private getIFrameElement(): HTMLIFrameElement|null {
+    return this.container.querySelector(ScaffoldIdentifierEnum.contentNavigationIframe) as HTMLIFrameElement;
+  }
+
+  private addComponent(component: NavigationComponent): void {
+    this.components.push(component);
   }
 }
 

@@ -219,7 +219,7 @@ class Recordlist {
     }
 
     if (payload.table === 'pages') {
-      Viewport.NavigationContainer.PageTree.refreshTree();
+      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
     }
   }
 

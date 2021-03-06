@@ -15,45 +15,16 @@ import {render} from 'lit-html';
 import {html, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {FileStorageTree} from './FileStorageTree';
-import viewPort from '../Viewport';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import {FileStorageTreeActions} from './FileStorageTreeActions';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
 
 /**
  * Responsible for setting up the viewport for the Navigation Component for the File Tree
  */
-export class FileStorageTreeContainer {
-  public static initialize(selector: string): void {
-    const targetEl = document.querySelector(selector);
-
-    // let SvgTree know it shall be visible
-    if (targetEl && targetEl.childNodes.length > 0) {
-      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
-      return;
-    }
-
-    render(FileStorageTreeContainer.renderTemplate(), targetEl);
-    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
-
-    const tree = new FileStorageTree();
-    const actions = new FileStorageTreeActions(tree);
-    tree.initialize(treeEl, {
-      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
-      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
-      showIcons: true
-    }, actions);
-    viewPort.NavigationContainer.setComponentInstance(tree);
-    // Activate the toolbar
-    const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
-    new Toolbar(treeEl, toolbar);
-
-    // event listener updating current tree state
-    document.addEventListener('typo3:filelist:treeUpdateRequested', (evt: CustomEvent) => {
-      tree.selectNodeByIdentifier(evt.detail.payload.identifier);
-    });
-  }
-
+export class FileStorageTreeContainer implements NavigationComponent {
+  private readonly tree: FileStorageTree;
   private static renderTemplate(): TemplateResult {
     return html`
       <div id="typo3-filestoragetree" class="svg-tree">
@@ -72,6 +43,46 @@ export class FileStorageTreeContainer {
         </div>
       </div>
     `;
+  }
+  public constructor(selector: string) {
+    const targetEl = document.querySelector(selector);
+
+    // let SvgTree know it shall be visible
+    if (targetEl && targetEl.childNodes.length > 0) {
+      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
+      return;
+    }
+
+    render(FileStorageTreeContainer.renderTemplate(), targetEl);
+    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
+
+    this.tree = new FileStorageTree();
+    const actions = new FileStorageTreeActions(this.tree);
+    this.tree.initialize(treeEl, {
+      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
+      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
+      showIcons: true
+    }, actions);
+    // Activate the toolbar
+    const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
+    new Toolbar(treeEl, toolbar);
+
+    // event listener updating current tree state
+    document.addEventListener('typo3:filelist:treeUpdateRequested', (evt: CustomEvent) => {
+      this.tree.selectNodeByIdentifier(evt.detail.payload.identifier);
+    });
+  }
+  public getName(): string {
+    return 'FileStorageTree';
+  }
+  public refresh?(): void {
+    this.tree.refreshOrFilterTree();
+  }
+  public select(item: any): void {
+    this.tree.selectNode(item);
+  }
+  public apply(fn: Function): void {
+    fn(this.tree);
   }
 }
 

@@ -20,14 +20,13 @@ import Icons = require('../Icons');
 import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {TreeInterface} from '../Viewport/TreeInterface';
 import {KeyTypesEnum as KeyTypes} from '../Enum/KeyTypes';
 
 interface PageTreeSettings extends SvgTreeSettings {
   temporaryMountPoint?: string;
 }
 
-export class PageTree extends SvgTree implements TreeInterface
+export class PageTree extends SvgTree
 {
   public settings: PageTreeSettings;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;

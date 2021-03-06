@@ -21,7 +21,6 @@ import TriggerRequest = require('./Event/TriggerRequest');
 import InteractionRequest = require('./Event/InteractionRequest');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import {PageTreeElement} from './PageTree/PageTreeElement';
 
 interface Module {
   name: string;
@@ -36,7 +35,6 @@ interface Module {
  */
 class ModuleMenu {
   private loadedModule: string = null;
-  private loadedNavigationComponentId: string = '';
   private spaceKeyPressedOnCollapsible: boolean = false;
 
   /**
@@ -464,7 +462,7 @@ class ModuleMenu {
       $.proxy(
         (): void => {
           if (moduleData.navigationComponentId) {
-            this.loadNavigationComponent(moduleData.navigationComponentId);
+            Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
           } else if (moduleData.navigationFrameScript) {
             Viewport.NavigationContainer.show('typo3-navigationIframe');
             this.openInNavFrame(
@@ -500,39 +498,6 @@ class ModuleMenu {
     );
 
     return deferred;
-  }
-
-  /**
-   * Renders registered (non-iframe) navigation component e.g. a page tree
-   *
-   * @param {string} navigationComponentId
-   */
-  private loadNavigationComponent(navigationComponentId: string): void {
-    const me = this;
-
-    Viewport.NavigationContainer.show(navigationComponentId);
-    if (navigationComponentId === this.loadedNavigationComponentId) {
-      return;
-    }
-    const componentCssName = navigationComponentId.replace(/[/]/g, '_');
-    if (this.loadedNavigationComponentId !== '') {
-      $('#navigationComponent-' + this.loadedNavigationComponentId.replace(/[/]/g, '_')).hide();
-    }
-    if ($('.t3js-scaffold-content-navigation [data-component="' + navigationComponentId + '"]').length < 1) {
-      $('.t3js-scaffold-content-navigation')
-        .append($('<div />', {
-          'class': 'scaffold-content-navigation-component',
-          'data-component': navigationComponentId,
-          id: 'navigationComponent-' + componentCssName,
-        }));
-    }
-
-    require([navigationComponentId], (__esModule: any): void => {
-      const NavigationComponent = Object.values(__esModule)[0] as typeof PageTreeElement;
-      NavigationComponent.initialize('#navigationComponent-' + componentCssName);
-      Viewport.NavigationContainer.show(navigationComponentId);
-      me.loadedNavigationComponentId = navigationComponentId;
-    });
   }
 
   /**
