@@ -159,6 +159,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 break;
             // Used by Symfony's Transport Factory
             case !empty($mailSettings['dsn']):
+            case 'dsn':
+                if (empty($mailSettings['dsn'])) {
+                    throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'dsn\'] needs to be set when transport is set to "dsn".', 1615021869);
+                }
                 $transport = Transport::fromDsn(
                     $mailSettings['dsn'],
                     $this->dispatcher,

@@ -563,7 +563,7 @@ MAIL:
             description: 'List of validators used to validate an email address. <br>Available validators are <code>\Egulias\EmailValidator\Validation\DNSCheckValidation</code>, <code>\Egulias\EmailValidator\Validation\SpoofCheckValidation</code>, <code>\Egulias\EmailValidator\Validation\NoRFCWarningsValidation</code> or by implementing a custom validator.'
         transport:
             type: text
-            description: '<dl><dt>smtp</dt><dd>Sends messages over the (standardized) Simple Message Transfer Protocol. It can deal with encryption and authentication. Most flexible option, requires a mail server and configurations in transport_smtp_* settings below. Works the same on Windows, Unix and MacOS.</dd><dt>sendmail</dt><dd>Sends messages by communicating with a locally installed MTA - such as sendmail. See setting transport_sendmail_command bellow.<dd><dt>mbox</dt><dd>This doesn''t send any mail out, but instead will write every outgoing mail to a file adhering to the RFC 4155 mbox format, which is a simple text file where the mails are concatenated. Useful for debugging the mail sending process and on development machines which cannot send mails to the outside. Configure the file to write to in the ''transport_mbox_file'' setting below</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements Swift_Transport. The constructor receives all settings from the MAIL section to make it possible to add custom settings.</dd></dl>'
+            description: '<dl><dt>smtp</dt><dd>Sends messages over the (standardized) Simple Message Transfer Protocol. It can deal with encryption and authentication. Most flexible option, requires a mail server and configurations in transport_smtp_* settings below. Works the same on Windows, Unix and MacOS.</dd><dt>sendmail</dt><dd>Sends messages by communicating with a locally installed MTA - such as sendmail. See setting transport_sendmail_command bellow.<dd><dt>dsn</dt><dd>Sends messages with the Symfony Mailer. Configure [MAIL][dsn] setting below.</dd><dt>mbox</dt><dd>This doesn''t send any mail out, but instead will write every outgoing mail to a file adhering to the RFC 4155 mbox format, which is a simple text file where the mails are concatenated. Useful for debugging the mail sending process and on development machines which cannot send mails to the outside. Configure the file to write to in the ''transport_mbox_file'' setting below</dd><dt>&lt;classname&gt;</dt><dd>Custom class which implements Swift_Transport. The constructor receives all settings from the MAIL section to make it possible to add custom settings.</dd></dl>'
         transport_smtp_server:
             type: text
             description: '<em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".'
@@ -588,6 +588,9 @@ MAIL:
         transport_spool_filepath:
             type: text
             description: '<em>only with transport_spool_type=file</em>: Path where messages get temporarily stored. Ensure that this is stored outside of your webroot.'
+        dsn:
+          type: text
+          description: '<em>only with transport=dsn</em>: The DSN configuration of the Symfony mailer (eg. smtp://user:pass@smtp.example.com:25). For 3rd party transports you have to add additional dependencies. See https://symfony.com/doc/current/mailer.html for more details.'
         defaultMailFromAddress:
             type: text
             description: 'This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (eg. info@example.org).'

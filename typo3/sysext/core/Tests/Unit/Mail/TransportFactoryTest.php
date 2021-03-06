@@ -173,6 +173,46 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
+    public function getThrowsExceptionForMissingDsnConfig(): void
+    {
+        $this->expectExceptionCode(1615021869);
+
+        $mailSettings = [
+            'transport' => 'dsn',
+            'dsn' => '',
+        ];
+
+        $this->getSubject($eventDispatcher)->get($mailSettings);
+    }
+
+    /**
+     * @test
+     */
+    public function dsnTransportCallsDispatchOfDispatcher(): void
+    {
+        $mailSettings = [
+            'transport' => 'dsn',
+            'dsn' => 'smtp://user:pass@smtp.example.com:25',
+        ];
+
+        $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
+        $message = new MailMessage();
+        $message->setTo(['foo@bar.com'])
+            ->text('foo')
+            ->from('bar@foo.com')
+        ;
+        try {
+            $transport->send($message);
+        } catch (TransportExceptionInterface $exception) {
+            // connection is not valid in tests, so we just catch the exception here.
+        }
+
+        $eventDispatcher->dispatch(Argument::any())->shouldHaveBeenCalledOnce();
+    }
+
+    /**
+     * @test
+     */
     public function getReturnsMailerTransportInterface(): void
     {
         $mailSettings = [

@@ -1413,6 +1413,7 @@ return [
         'transport_mbox_file' => '',
         'transport_spool_type' => '',
         'transport_spool_filepath' => '',
+        'dsn' => '',
         'validators' => [
             \Egulias\EmailValidator\Validation\RFCValidation::class
         ],
