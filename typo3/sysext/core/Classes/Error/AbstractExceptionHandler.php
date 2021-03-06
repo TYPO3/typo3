@@ -33,6 +33,12 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     const CONTEXT_WEB = 'WEB';
     const CONTEXT_CLI = 'CLI';
 
+    private const IGNORED_EXCEPTION_CODES = [
+        1396795884, // Current host header value does not match the configured trusted hosts pattern
+        1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
+        1581862823  // Failed HMAC validation due to modified form state in ext:forms
+    ];
+
     /**
      * Displays the given exception
      *
@@ -59,8 +65,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      */
     protected function writeLogEntries(\Throwable $exception, $context)
     {
-        // Do not write any logs for this message to avoid filling up tables or files with illegal requests
-        if ($exception->getCode() === 1396795884) {
+        // Do not write any logs for some messages to avoid filling up tables or files with illegal requests
+        if (in_array($exception->getCode(), self::IGNORED_EXCEPTION_CODES, true)) {
             return;
         }
         $filePathAndName = $exception->getFile();
