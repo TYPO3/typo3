@@ -93,9 +93,14 @@ class RequestHandler implements RequestHandlerInterface
             // Check if the router has the available route and dispatch.
             return $this->dispatcher->dispatch($request);
         } catch (InvalidRequestTokenException $e) {
-            // When token was invalid redirect to login
-            $loginPage = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
-            return new RedirectResponse((string)$loginPage);
+            // When token was invalid redirect to login, but keep the current route as redirect after login
+            $loginForm = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(
+                'login',
+                [],
+                $request->getAttribute('route')->getOption('_identifier'),
+                $request->getQueryParams()
+            );
+            return new RedirectResponse($loginForm);
         }
     }
 }

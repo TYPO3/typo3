@@ -340,7 +340,7 @@ class LoginController implements LoggerAwareInterface
             $this->redirectToURL = $this->redirectUrl;
         } else {
             // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-            $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
+            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirectFromRequest('main', [], $request);
         }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
@@ -454,12 +454,26 @@ class LoginController implements LoggerAwareInterface
         // Might set JavaScript in the header to close window.
         $this->checkRedirect($request);
 
-        // Start form
-        $formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'LoginForm' : 'LogoutForm';
+        // Show login form
+        if (empty($this->getBackendUserAuthentication()->user['uid'])) {
+            $action = 'login';
+            $formActionUrl = $this->uriBuilder->buildUriWithRedirectFromRequest(
+                'login',
+                [
+                    'loginProvider' => $this->loginProviderIdentifier
+                ],
+                $request
+            );
+        } else {
+            // Show logout form
+            $action = 'logout';
+            $formActionUrl = $this->uriBuilder->buildUriFromRoute('logout');
+        }
         $this->view->assignMultiple([
             'backendUser' => $this->getBackendUserAuthentication()->user,
             'hasLoginError' => $this->isLoginInProgress($request),
-            'formType' => $formType,
+            'action' => $action,
+            'formActionUrl' => $formActionUrl,
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
             'loginProviders' => $this->loginProviders,
@@ -531,7 +545,7 @@ class LoginController implements LoggerAwareInterface
                     break;
                 case 'backend':
                     // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-                    $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
+                    $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirectFromRequest('main', [], $request);
                     break;
             }
         } else {

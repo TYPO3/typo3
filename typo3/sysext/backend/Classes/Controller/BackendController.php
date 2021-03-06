@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -452,32 +453,40 @@ class BackendController
      */
     protected function setStartupModule(ServerRequestInterface $request)
     {
-        $startModule = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['module'] ?? '');
-        $startModuleParameters = '';
-        if (!$startModule) {
-            $beUser = $this->getBackendUser();
-            // start module on first login, will be removed once used the first time
-            if (isset($beUser->uc['startModuleOnFirstLogin'])) {
-                $startModule = $beUser->uc['startModuleOnFirstLogin'];
-                unset($beUser->uc['startModuleOnFirstLogin']);
-                $beUser->writeUC();
-            } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule']) !== 'notFound') {
-                $startModule = $beUser->uc['startModule'];
-            } else {
-                $startModule = $this->determineFirstAvailableBackendModule();
+        $redirectRoute = $request->getQueryParams()['redirect'] ?? '';
+        // Check if the route has been registered
+        if ($redirectRoute !== '' && isset(GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute])) {
+            $startModule = $redirectRoute;
+            $moduleParameters = $request->getQueryParams()['redirectParams'] ?? '';
+            $moduleParameters = rawurldecode($moduleParameters);
+        } else {
+            $startModule = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['module'] ?? '');
+            $startModuleParameters = '';
+            if (!$startModule) {
+                $beUser = $this->getBackendUser();
+                // start module on first login, will be removed once used the first time
+                if (isset($beUser->uc['startModuleOnFirstLogin'])) {
+                    $startModule = $beUser->uc['startModuleOnFirstLogin'];
+                    unset($beUser->uc['startModuleOnFirstLogin']);
+                    $beUser->writeUC();
+                } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule']) !== 'notFound') {
+                    $startModule = $beUser->uc['startModule'];
+                } else {
+                    $startModule = $this->determineFirstAvailableBackendModule();
+                }
+
+                // check if the start module has additional parameters, so a redirect to a specific
+                // action is possible
+                if (strpos($startModule, '->') !== false) {
+                    [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
+                }
             }
 
-            // check if the start module has additional parameters, so a redirect to a specific
-            // action is possible
-            if (strpos($startModule, '->') !== false) {
-                [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
+            $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
+            // if no GET parameters are set, check if there are parameters given from the UC
+            if (!$moduleParameters && $startModuleParameters) {
+                $moduleParameters = $startModuleParameters;
             }
-        }
-
-        $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
-        // if no GET parameters are set, check if there are parameters given from the UC
-        if (!$moduleParameters && $startModuleParameters) {
-            $moduleParameters = $startModuleParameters;
         }
 
         if ($startModule) {

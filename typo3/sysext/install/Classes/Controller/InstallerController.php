@@ -22,6 +22,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -1002,19 +1003,21 @@ class InstallerController
         $configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
         switch ($request->getParsedBody()['install']['values']['sitesetup']) {
-            // Update the admin backend user to show the distribution management on login
+            // Update the URL to redirect after login to the extension manager distributions list
             case 'loaddistribution':
-                $adminUserFirstLogin = [
-                    'startModuleOnFirstLogin' => 'tools_ExtensionmanagerExtensionmanager->tx_extensionmanager_tools_extensionmanagerextensionmanager%5Baction%5D=distributions&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bcontroller%5D=List',
-                    'ucSetByInstallTool' => '1',
-                ];
-                $connectionPool->getConnectionForTable('be_users')->update(
-                    'be_users',
-                    ['uc' => serialize($adminUserFirstLogin)],
-                    ['admin' => 1],
-                    ['uc' => Connection::PARAM_LOB]
+                $nextStepUrl = $uriBuilder->buildUriWithRedirect(
+                    'login',
+                    [],
+                    'tools_ExtensionmanagerExtensionmanager',
+                    [
+                        'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
+                            'action' => 'distributions'
+                        ]
+                    ]
                 );
                 break;
 
@@ -1103,7 +1106,7 @@ For each website you need a TypoScript template on the main page of your website
 
         return new JsonResponse([
             'success' => true,
-            'redirect' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'index.php',
+            'redirect' => (string)$nextStepUrl,
         ]);
     }
 

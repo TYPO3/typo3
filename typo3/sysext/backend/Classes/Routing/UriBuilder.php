@@ -84,6 +84,62 @@ class UriBuilder implements SingletonInterface
     }
 
     /**
+     * Creates a link to a page with a route targetted as a redirect.
+     * Currently works just fine for URLs built for "main" and "login" pages.
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param ServerRequestInterface|null $currentRequest
+     * @param string $referenceType
+     * @return Uri
+     * @throws RouteNotFoundException
+     * @internal this is experimental API used for creating logins to redirect to a different route
+     */
+    public function buildUriWithRedirectFromRequest(string $name, array $parameters = [], ServerRequestInterface $currentRequest = null, string $referenceType = self::ABSOLUTE_PATH): Uri
+    {
+        if ($currentRequest === null) {
+            return $this->buildUriFromRoute($name, $parameters, $referenceType);
+        }
+        return $this->buildUriWithRedirect($name, $parameters, $currentRequest->getQueryParams()['redirect'] ?? '', $currentRequest->getQueryParams()['redirectParams'] ?? '');
+    }
+
+    /**
+     * Creates a link to a page with a route targetted as a redirect.
+     * Currently works just fine for URLs built for "main" and "login" pages.
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param string $redirectRouteName
+     * @param array $redirectParameters
+     * @param string $referenceType
+     * @return Uri
+     * @throws RouteNotFoundException
+     * @internal this is experimental API used for creating logins to redirect to a different route
+     */
+    public function buildUriWithRedirect(string $name, array $parameters = [], string $redirectRouteName = '', $redirectParameters = [], string $referenceType = self::ABSOLUTE_PATH): Uri
+    {
+        if (empty($redirectRouteName)) {
+            return $this->buildUriFromRoute($name, $parameters, $referenceType);
+        }
+
+        $parameters['redirect'] = $redirectRouteName;
+        if (!empty($redirectParameters)) {
+            if (is_array($redirectParameters)) {
+                unset($redirectParameters['token']);
+                unset($redirectParameters['route']);
+                unset($redirectParameters['redirect']);
+                unset($redirectParameters['redirectParams']);
+                $redirectParameters = http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986);
+            }
+            $redirectParameters = ltrim($redirectParameters, '&?');
+            if (!empty($redirectParameters)) {
+                $parameters['redirectParams'] = $redirectParameters;
+            }
+        }
+        return $this->buildUriFromRoute($name, $parameters, $referenceType);
+    }
+
+    /**
      * Generates a URL or path for a specific route based on the given parameters.
      * When the route is configured with "access=public" then the token generation is left out.
      *

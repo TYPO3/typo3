@@ -56,7 +56,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
                 }
                 return $this->{$action . 'Action'}($request, $mfaProvider);
             case 'cancel':
-                return $this->cancelAction();
+                return $this->cancelAction($request);
             default:
                 throw new \InvalidArgumentException('Action not allowed', 1611879244);
         }
@@ -70,6 +70,15 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         $view = $this->moduleTemplate->getView();
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
         $view->setTemplate('Auth');
+        $view->assign('formUrl', $this->uriBuilder->buildUriWithRedirectFromRequest(
+            'auth_mfa',
+            [
+                'action' => 'verify'
+            ],
+            $request
+        ));
+        $view->assign('redirectRoute', $request->getQueryParams()['redirect'] ?? '');
+        $view->assign('redirectParams', $request->getQueryParams()['redirectParams'] ?? '');
         $view->assign('hasAuthError', (bool)($request->getQueryParams()['failure'] ?? false));
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
@@ -94,25 +103,28 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         // Check if the provider can process the request and is not temporarily blocked
         if (!$mfaProvider->canProcess($request) || $mfaProvider->isLocked($propertyManager)) {
             // If this fails, cancel the authentication
-            return $this->cancelAction();
+            return $this->cancelAction($request);
         }
         // Call the provider to verify the request
         if (!$mfaProvider->verify($request, $propertyManager)) {
             $this->log('Multi-factor authentication failed');
             // If failed, initiate a redirect back to the auth view
-            return new RedirectResponse($this->uriBuilder->buildUriFromRoute(
+            return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest(
                 'auth_mfa',
                 [
                     'identifier' => $mfaProvider->getIdentifier(),
                     'failure' => true
-                ]
+                ],
+                $request
             ));
         }
-        $this->log('Multi-factor authentication successfull');
+        $this->log('Multi-factor authentication successful');
         // If verified, store this information in the session
         // and initiate a redirect back to the login view.
         $this->getBackendUser()->setAndSaveSessionData('mfa', true);
-        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('login'));
+        return new RedirectResponse(
+            $this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request)
+        );
     }
 
     /**
@@ -121,11 +133,11 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
      * other already gathered information and finally initiate a
      * redirect back to the login.
      */
-    public function cancelAction(): ResponseInterface
+    public function cancelAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->log('Multi-factor authentication canceled');
         $this->getBackendUser()->logoff();
-        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('login'));
+        return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request));
     }
 
     /**

@@ -11,7 +11,7 @@
                         </div>
                     </header>
                     <main class="card-body">
-                        <f:if condition="{formType} == 'LoginForm'">
+                        <f:if condition="{action} == 'login'">
                             <f:then>
                                 <f:if condition="{hasLoginError}">
                                     <div class="t3js-login-error" id="t3-login-error">
@@ -31,7 +31,7 @@
                                     <f:be.infobox message="{f:translate(key: 'login.error.referrer')}" state="2" />
                                 </div>
                                 <div class="typo3-login-form t3js-login-formfields">
-                                    <form action="?loginProvider={loginProviderIdentifier}" method="post" name="loginform" id="typo3-login-form">
+                                    <form action="{formActionUrl}" method="post" name="loginform" id="typo3-login-form">
                                         <f:form.hidden name="login_status" value="login" />
                                         <f:form.hidden name="userident" id="t3-field-userident" class="t3js-login-userident-field" value="" />
                                         <f:form.hidden name="redirect_url" value="{redirectUrl}" />
@@ -70,7 +70,7 @@
                                 <f:render section="ResetPassword" arguments="{_all}" />
                             </f:else>
                             <f:else>
-                                <form action="index.php" method="post" name="loginform">
+                                <form action="{formActionUrl}" method="post" name="loginform">
                                     <input type="hidden" name="login_status" value="logout" />
                                     <div class="t3-login-box-body">
                                         <div class="t3-login-logout-form">

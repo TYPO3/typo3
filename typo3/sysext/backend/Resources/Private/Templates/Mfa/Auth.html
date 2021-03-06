@@ -19,7 +19,7 @@
                         <f:if condition="!{isLocked}">
                             <f:then>
                                 <form
-                                    action="{f:be.uri(route:'auth_mfa', parameters:'{action: \'verify\'}')}"
+                                    action="{formUrl}"
                                     method="post"
                                     enctype="multipart/form-data"
                                     name="verify"
@@ -40,7 +40,7 @@
                         </f:if>
                         <div class="cancel-authentication">
                             <div class="text-right">
-                                <f:be.link route="auth_mfa" parameters="{action: 'cancel'}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel')}">
+                                <f:be.link route="auth_mfa" parameters="{action: 'cancel', redirect: redirectRoute, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel')}">
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel"/>
                                 </f:be.link>
                             </div>
@@ -52,7 +52,7 @@
                             <ul class="list-group px-lg-4">
                                 <f:for each="{alternativeProviders}" as="alternativeProvider">
                                     <li>
-                                        <f:be.link route="auth_mfa" parameters="{identifier: alternativeProvider.identifier}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use', arguments: {0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'})}">
+                                        <f:be.link route="auth_mfa" parameters="{identifier: alternativeProvider.identifier, redirect: redirectRoute, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use', arguments: {0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'})}">
                                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use" arguments="{0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'}"/>
                                         </f:be.link>
                                     </li>

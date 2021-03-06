@@ -2257,17 +2257,11 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $this->unpack_uc();
         // Setting defaults if uc is empty
         $updated = false;
-        $originalUc = [];
-        if (is_array($this->uc) && isset($this->uc['ucSetByInstallTool'])) {
-            $originalUc = $this->uc;
-            unset($originalUc['ucSetByInstallTool'], $this->uc);
-        }
         if (!is_array($this->uc)) {
             $this->uc = array_merge(
                 $this->uc_default,
                 (array)$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC'],
-                GeneralUtility::removeDotsFromTS((array)($this->getTSConfig()['setup.']['default.'] ?? [])),
-                $originalUc
+                GeneralUtility::removeDotsFromTS((array)($this->getTSConfig()['setup.']['default.'] ?? []))
             );
             $this->overrideUC();
             $updated = true;
