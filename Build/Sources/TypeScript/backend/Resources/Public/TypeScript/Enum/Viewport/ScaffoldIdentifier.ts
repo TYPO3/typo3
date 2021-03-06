@@ -17,6 +17,7 @@ export enum ScaffoldIdentifierEnum {
   moduleMenu = '.t3js-scaffold-modulemenu',
   content = '.t3js-scaffold-content',
   contentModule = '.t3js-scaffold-content-module',
+  contentModuleRouter = 'typo3-backend-module-router',
   contentModuleIframe = '.t3js-scaffold-content-module-iframe',
   contentNavigation = '.t3js-scaffold-content-navigation',
   contentNavigationDataComponent = '.t3js-scaffold-content-navigation [data-component]',

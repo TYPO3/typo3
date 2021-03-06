@@ -107,6 +107,7 @@ class BackendController
 		}');
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Module/Router');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
@@ -200,6 +201,8 @@ class BackendController
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
         $view->assign('hasModules', $hasModules);
+        $view->assign('startupModule', $this->getStartupModule($request));
+        $view->assign('stateTracker', (string)$this->uriBuilder->buildUriFromRoute('state-tracker'));
 
         if (!empty($this->css)) {
             $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
@@ -376,8 +379,7 @@ class BackendController
         top.goToModule = function(modName, addGetVars) {
             TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
         }
-        ' . $this->setStartupModule($request)
-          . $this->handlePageEditing($request),
+        ' . $this->handlePageEditing($request),
             false
         );
     }
@@ -433,13 +435,14 @@ class BackendController
      * Sets the startup module from either GETvars module and modParams or user configuration.
      *
      * @param ServerRequestInterface $request
-     * @return string the JavaScript code for the startup module
+     * @return array
      */
-    protected function setStartupModule(ServerRequestInterface $request)
+    protected function getStartupModule(ServerRequestInterface $request): array
     {
+        $startModule = null;
         $redirectRoute = $request->getQueryParams()['redirect'] ?? '';
         // Check if the route has been registered
-        if ($redirectRoute !== '' && isset(GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute])) {
+        if ($redirectRoute !== '' && $redirectRoute !== 'main' && isset(GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute])) {
             $startModule = $redirectRoute;
             $moduleParameters = $request->getQueryParams()['redirectParams'] ?? '';
             $moduleParameters = rawurldecode($moduleParameters);
@@ -474,12 +477,12 @@ class BackendController
         }
 
         if ($startModule) {
-            return '
-					// start in module:
-				top.startInModule = [' . GeneralUtility::quoteJSvalue($startModule) . ', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
-			';
+            $parameters = [];
+            parse_str($moduleParameters, $parameters);
+            $deepLink = $this->uriBuilder->buildUriFromRoute($startModule, $parameters);
+            return [$startModule, (string)$deepLink];
         }
-        return '';
+        return [null, null];
     }
 
     protected function determineFirstAvailableBackendModule(): string

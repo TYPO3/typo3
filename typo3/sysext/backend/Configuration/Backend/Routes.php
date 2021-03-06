@@ -27,6 +27,13 @@ return [
         'target' => Controller\BackendController::class . '::mainAction'
     ],
 
+    // IFrame dummy-url for browser-history state tracking of web component backend modules
+    'state-tracker' => [
+        'path' => '/state-tracker',
+        'access' => 'public',
+        'target' => Controller\StateTrackerController::class . '::mainAction'
+    ],
+
     // Logout script for the TYPO3 Backend
     'logout' => [
         'path' => '/logout',

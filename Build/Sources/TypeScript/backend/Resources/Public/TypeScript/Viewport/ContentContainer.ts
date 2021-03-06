@@ -36,15 +36,16 @@ class ContentContainer extends AbstractContainer {
   }
 
   /**
-   * @param {String} urlToLoad
+   * @param {string} urlToLoad
    * @param {InteractionRequest} [interactionRequest]
+   * @param {string|null} module
    * @returns {JQueryDeferred<TriggerRequest>}
    */
-  public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest): JQueryDeferred<TriggerRequest> {
+  public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest, module?: string): JQueryDeferred<TriggerRequest> {
     let deferred: JQueryDeferred<TriggerRequest>;
-    const iFrame = this.resolveIFrameElement();
-    // abort, if no IFRAME can be found
-    if (iFrame === null) {
+    const router = this.resolveRouterElement();
+    // abort, if router can not be found
+    if (router === null) {
       deferred = $.Deferred();
       deferred.reject();
       return deferred;
@@ -57,11 +58,9 @@ class ContentContainer extends AbstractContainer {
     );
     deferred.then((): void => {
       Loader.start();
-      $(ScaffoldIdentifierEnum.contentModuleIframe)
-        .attr('src', urlToLoad)
-        .one('load', (): void => {
-          Loader.finish();
-        });
+      router.setAttribute('endpoint', urlToLoad);
+      router.setAttribute('module', module ? module : null);
+      router.parentElement.addEventListener('typo3-module-loaded', (): void => Loader.finish(), { once: true });
     });
     return deferred;
   }
@@ -70,7 +69,7 @@ class ContentContainer extends AbstractContainer {
    * @returns {string}
    */
   public getUrl(): string {
-    return $(ScaffoldIdentifierEnum.contentModuleIframe).attr('src');
+    return this.resolveRouterElement().getAttribute('endpoint');
   }
 
   /**
@@ -108,6 +107,10 @@ class ContentContainer extends AbstractContainer {
       return null;
     }
     return $iFrame.get(0);
+  }
+
+  private resolveRouterElement(): HTMLElement {
+    return document.querySelector(ScaffoldIdentifierEnum.contentModuleRouter);
   }
 }
 

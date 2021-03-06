@@ -164,6 +164,12 @@ class ModuleLoader
             $finalModuleConfiguration['script'] = (string)$uriBuilder->buildUriFromRoute('dummy');
         }
 
+        if (isset($setupInformation['configuration']['component'])) {
+            $finalModuleConfiguration['component'] = $setupInformation['configuration']['component'];
+        } else {
+            $finalModuleConfiguration['component'] = 'TYPO3/CMS/Backend/Module/Iframe';
+        }
+
         if (!empty($setupInformation['configuration']['navigationFrameModule'])) {
             $finalModuleConfiguration['navFrameScript'] = (string)$uriBuilder->buildUriFromRoute(
                 $setupInformation['configuration']['navigationFrameModule'],

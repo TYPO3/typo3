@@ -55,6 +55,7 @@
         id="{module.name}"
         data-modulename="{module.name}"
         {f:if(condition: module.link, then: 'data-link="{module.link}"')}
+        {f:if(condition: module.component, then: 'data-component="{module.component}"')}
         {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
         {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
         {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}

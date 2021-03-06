@@ -43,6 +43,11 @@ class BackendModule
     /**
      * @var string
      */
+    protected $component = '';
+
+    /**
+     * @var string
+     */
     protected $onClick = '';
 
     /**
@@ -198,6 +203,26 @@ class BackendModule
     public function getLink()
     {
         return $this->link;
+    }
+
+    /**
+     * Set Component
+     *
+     * @param string $component
+     */
+    public function setComponent($component)
+    {
+        $this->component = $component;
+    }
+
+    /**
+     * Get Component
+     *
+     * @return string
+     */
+    public function getComponent()
+    {
+        return $this->component;
     }
 
     /**

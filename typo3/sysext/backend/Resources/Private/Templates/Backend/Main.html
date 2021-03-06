@@ -19,7 +19,7 @@
         persistence-identifier="navigation.width"
     ></typo3-backend-navigation-switcher>
     <div class="scaffold-content-module t3js-scaffold-content-module">
-        <iframe name="list_frame" id="typo3-contentIframe" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:iframe.listFrame')}" scrolling="no" class="scaffold-content-module-iframe t3js-scaffold-content-module-iframe"></iframe>
+        <typo3-backend-module-router module="{startupModule.0}" endpoint="{startupModule.1}" state-tracker="{stateTracker}"></typo3-backend-module-router>
     </div>
     <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
 </div>
