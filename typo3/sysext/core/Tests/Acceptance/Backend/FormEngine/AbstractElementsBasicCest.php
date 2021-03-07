@@ -40,7 +40,7 @@ abstract class AbstractElementsBasicCest
     protected function runInputFieldTest(BackendTester $I, Example $testData)
     {
         $fieldLabel = $testData['label'];
-        $initializedInputFieldXpath = '(//label[contains(text(),"' . $fieldLabel . '")])'
+        $initializedInputFieldXpath = '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)'
             . '[1]/parent::*//*/input[@data-formengine-input-name][@data-formengine-input-initialized]';
 
         // Wait until JS initialized everything
@@ -122,7 +122,7 @@ abstract class AbstractElementsBasicCest
             function (RemoteWebDriver $webDriver) use ($fieldLabel) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
-                        '(//label[contains(text(),"' . $fieldLabel . '")])[1]/ancestor::fieldset[@class="form-section"][1]'
+                        '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)[1]/ancestor::fieldset[@class="form-section"][1]'
                     )
                 );
             }

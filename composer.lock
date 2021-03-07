@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08adaa4ad79e6abee93486ffe7ae1f37",
+    "content-hash": "7a46414102d656d03ff52982e9bfa89d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7474,16 +7474,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.0.2",
+            "version": "11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "04bfc2fac4e85a143b13526e56fc21091a7dcc8c"
+                "reference": "6f20217458bc06753a74e40b11c1f5ec22fb53c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/04bfc2fac4e85a143b13526e56fc21091a7dcc8c",
-                "reference": "04bfc2fac4e85a143b13526e56fc21091a7dcc8c",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/6f20217458bc06753a74e40b11c1f5ec22fb53c9",
+                "reference": "6f20217458bc06753a74e40b11c1f5ec22fb53c9",
                 "shasum": ""
             },
             "require-dev": {
@@ -7491,11 +7491,12 @@
                 "codeception/module-asserts": "^1.2",
                 "codeception/module-webdriver": "^1.1",
                 "phpstan/phpstan": "^0.12.37",
-                "typo3/cms-about": "11.*.*@dev",
-                "typo3/cms-core": "11.*.*@dev",
-                "typo3/cms-frontend": "11.*.*@dev",
-                "typo3/cms-install": "11.*.*@dev",
-                "typo3/coding-standards": "^0.2.0",
+                "typo3/cms-about": "dev-master",
+                "typo3/cms-core": "dev-master",
+                "typo3/cms-frontend": "dev-master",
+                "typo3/cms-install": "dev-master",
+                "typo3/coding-standards": "^0.3.0",
+                "typo3/tailor": "^1.2",
                 "typo3/testing-framework": "^6.5.0"
             },
             "type": "typo3-cms-extension",
@@ -7536,9 +7537,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.0.2"
+                "source": "https://github.com/TYPO3/styleguide/tree/11.1.0"
             },
-            "time": "2020-12-21T20:25:13+00:00"
+            "time": "2021-03-07T16:10:47+00:00"
         },
         {
             "name": "typo3/testing-framework",

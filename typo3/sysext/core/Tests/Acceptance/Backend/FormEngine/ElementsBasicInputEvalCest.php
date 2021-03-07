@@ -54,7 +54,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
     {
         return [
             [
-                'label' => 'input_8 eval=double2',
+                'label' => 'input_8',
                 'inputValue' => '12.335',
                 'expectedValue' => '12.34',
                 'expectedInternalValue' => '12.34',
@@ -62,7 +62,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_8 eval=double2',
+                'label' => 'input_8',
                 'inputValue' => '12,335', // comma as delimiter
                 'expectedValue' => '12.34',
                 'expectedInternalValue' => '12.34',
@@ -70,7 +70,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_8 eval=double2',
+                'label' => 'input_8',
                 'inputValue' => '1.1', // dot as delimiter
                 'expectedValue' => '1.10',
                 'expectedInternalValue' => '1.10',
@@ -78,7 +78,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_8 eval=double2',
+                'label' => 'input_8',
                 'inputValue' => 'TYPO3', // word having a number at end
                 'expectedValue' => '3.00',
                 'expectedInternalValue' => '3.00',
@@ -86,7 +86,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_8 eval=double2',
+                'label' => 'input_8',
                 'inputValue' => '3TYPO', // word having a number in front
                 'expectedValue' => '3.00',
                 'expectedInternalValue' => '3.00',
@@ -94,7 +94,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_9 eval=int',
+                'label' => 'input_9',
                 'inputValue' => '12.335',
                 'expectedValue' => '12',
                 'expectedInternalValue' => '12',
@@ -102,7 +102,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_9 eval=int',
+                'label' => 'input_9',
                 'inputValue' => '12,9',
                 'expectedValue' => '129',
                 'expectedInternalValue' => '129',
@@ -112,7 +112,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
             /**
             [
                 // @todo this one probably broke with the html type="number" patch
-                'label' => 'input_9 eval=int',
+                'label' => 'input_9',
                 'inputValue' => 'TYPO3',
                 'expectedValue' => '0',
                 'expectedInternalValue' => '0',
@@ -121,7 +121,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
             ],
             */
             [
-                'label' => 'input_9 eval=int',
+                'label' => 'input_9',
                 'inputValue' => '3TYPO',
                 'expectedValue' => '3',
                 'expectedInternalValue' => '3',
@@ -129,7 +129,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_15 eval=num',
+                'label' => 'input_15',
                 'inputValue' => '12.335',
                 'expectedValue' => '12335',
                 'expectedInternalValue' => '12335',
@@ -137,7 +137,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_15 eval=num',
+                'label' => 'input_15',
                 'inputValue' => '12,9',
                 'expectedValue' => '129',
                 'expectedInternalValue' => '129',
@@ -145,7 +145,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_15 eval=num',
+                'label' => 'input_15',
                 'inputValue' => 'TYPO3',
                 'expectedValue' => '3',
                 'expectedInternalValue' => '3',
@@ -153,7 +153,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_15 eval=num',
+                'label' => 'input_15',
                 'inputValue' => '3TYPO',
                 'expectedValue' => '3',
                 'expectedInternalValue' => '3',

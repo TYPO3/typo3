@@ -66,7 +66,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
             /**
             [
                 // @todo this one probably broke with the type="number" patch
-                'label' => 'input_25 eval=int, default=0, range lower=-2, range upper=2',
+                'label' => 'input_25',
                 'inputValue' => 'Kasper TYPO3',
                 'expectedValue' => '0',
                 'expectedInternalValue' => '0',
@@ -75,7 +75,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
             ],
              */
             [
-                'label' => 'input_25 eval=int default=0 range lower=-2 range upper=2',
+                'label' => 'input_25',
                 'inputValue' => '2',
                 'expectedValue' => '2',
                 'expectedInternalValue' => '2',
@@ -83,7 +83,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_25 eval=int default=0 range lower=-2 range upper=2',
+                'label' => 'input_25',
                 'inputValue' => '-1',
                 'expectedValue' => '-1',
                 'expectedInternalValue' => '-1',
@@ -91,7 +91,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_12 eval=md5',
+                'label' => 'input_12',
                 'inputValue' => 'Kasper TYPO3!',
                 'expectedValue' => '748469dd64911af8df8f9a3dcb2c9378',
                 'expectedInternalValue' => '748469dd64911af8df8f9a3dcb2c9378',
@@ -99,7 +99,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_12 eval=md5',
+                'label' => 'input_12',
                 'inputValue' => ' Kasper TYPO3! ',
                 'expectedValue' => '792a085606250c47d6ebb8c98804d5b0',
                 'expectedInternalValue' => '792a085606250c47d6ebb8c98804d5b0',

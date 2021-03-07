@@ -62,7 +62,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_2, size=10',
+                'label' => 'input_2',
                 'inputValue' => 'This is a demo text with numbers and other characters 42 #!',
                 'expectedValue' => 'This is a demo text with numbers and other characters 42 #!',
                 'expectedInternalValue' => 'This is a demo text with numbers and other characters 42 #!',
@@ -70,7 +70,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_3 max=4',
+                'label' => 'input_3',
                 'inputValue' => 'Kasper',
                 'expectedValue' => 'Kasp',
                 'expectedInternalValue' => 'Kasp',
@@ -78,7 +78,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_4 eval=alpha',
+                'label' => 'input_4',
                 'inputValue' => 'Kasper = TYPO3',
                 'expectedValue' => 'KasperTYPO',
                 'expectedInternalValue' => 'KasperTYPO',
@@ -86,7 +86,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_4 eval=alpha',
+                'label' => 'input_4',
                 'inputValue' => 'Non-latin characters: ŠĐŽĆČ',
                 'expectedValue' => 'Nonlatincharacters',
                 'expectedInternalValue' => 'Nonlatincharacters',
@@ -94,7 +94,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_5 eval=alphanum',
+                'label' => 'input_5',
                 'inputValue' => 'Kasper = TYPO3',
                 'expectedValue' => 'KasperTYPO3',
                 'expectedInternalValue' => 'KasperTYPO3',
@@ -102,7 +102,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_10 eval=is_in is_in=abc123',
+                'label' => 'input_10',
                 'inputValue' => 'abcd1234',
                 'expectedValue' => 'abc123',
                 'expectedInternalValue' => 'abc123',
@@ -110,7 +110,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_10 eval=is_in is_in=abc123',
+                'label' => 'input_10',
                 'inputValue' => 'Kasper TYPO3',
                 'expectedValue' => 'a3',
                 'expectedInternalValue' => 'a3',
@@ -118,7 +118,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_11 eval=lower',
+                'label' => 'input_11',
                 'inputValue' => 'Kasper TYPO3!',
                 'expectedValue' => 'kasper typo3!',
                 'expectedInternalValue' => 'kasper typo3!',
@@ -126,7 +126,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_13 eval=nospace',
+                'label' => 'input_13',
                 'inputValue' => ' Kasper TYPO3! ',
                 'expectedValue' => 'KasperTYPO3!',
                 'expectedInternalValue' => 'KasperTYPO3!',
@@ -134,7 +134,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_16 eval=password',
+                'label' => 'input_16',
                 'inputValue' => 'Kasper',
                 'expectedValue' => '********',
                 'expectedInternalValue' => 'Kasper',
@@ -142,7 +142,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_19 eval=trim',
+                'label' => 'input_19',
                 'inputValue' => ' Kasper ',
                 'expectedValue' => 'Kasper',
                 'expectedInternalValue' => 'Kasper',
@@ -150,7 +150,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_19 eval=trim',
+                'label' => 'input_19',
                 'inputValue' => ' Kasper TYPO3 ',
                 'expectedValue' => 'Kasper TYPO3',
                 'expectedInternalValue' => 'Kasper TYPO3',
@@ -158,7 +158,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_23 eval=upper',
+                'label' => 'input_23',
                 'inputValue' => 'Kasper TYPO3!',
                 'expectedValue' => 'KASPER TYPO3!',
                 'expectedInternalValue' => 'KASPER TYPO3!',
@@ -166,7 +166,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_24 eval=year',
+                'label' => 'input_24',
                 'inputValue' => '2016',
                 'expectedValue' => '2016',
                 'expectedInternalValue' => '2016',
@@ -174,7 +174,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_24 eval=year',
+                'label' => 'input_24',
                 'inputValue' => '12',
                 'expectedValue' => '12',
                 'expectedInternalValue' => '12',
@@ -182,7 +182,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_24 eval=year',
+                'label' => 'input_24',
                 'inputValue' => 'Kasper',
                 'expectedValue' => date('Y'),
                 'expectedInternalValue' => date('Y'),
