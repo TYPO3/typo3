@@ -26,6 +26,41 @@ CREATE TABLE tx_styleguide_ctrl_minimal (
 );
 
 
+CREATE TABLE tx_styleguide_displaycond (
+    input_1 text,
+    input_2 text,
+    input_3 text,
+    input_4 text,
+    input_5 text,
+    input_6 text,
+    input_7 text,
+    input_8 text,
+    input_9 text,
+    input_10 text,
+    input_11 text,
+    input_12 text,
+    input_13 text,
+    input_14 text,
+    input_15 text,
+    input_16 text,
+    input_17 text,
+    input_18 text,
+    input_19 text,
+    input_20 text,
+
+    checkbox_1 int(11) DEFAULT '0' NOT NULL,
+
+    select_1 text,
+    select_2 text,
+    select_3 text,
+    select_4 text,
+
+    flex_1 text,
+    flex_2 text,
+    flex_3 text,
+);
+
+
 CREATE TABLE tx_styleguide_elements_basic (
     input_1 text,
     input_2 text,

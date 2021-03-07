@@ -712,7 +712,6 @@ return [
                     'default' => '
                         <T3DataStructure>
                             <sheets>
-
                                 <sSingle>
                                     <ROOT>
                                         <type>array</type>
@@ -802,34 +801,6 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </select_tree_1>
-                                            <select_tree_2_condition>
-                                                <TCEforms>
-                                                    <label>select_tree_2_condition, display select_tree_2?</label>
-                                                    <config>
-                                                        <type>check</type>
-                                                    </config>
-                                                </TCEforms>
-                                            </select_tree_2_condition>
-                                            <select_tree_2>
-                                                <TCEforms>
-                                                    <label>select_tree_2 displayCond</label>
-                                                    <displayCond>FIELD:select_tree_2_condition:REQ:TRUE</displayCond>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectTree</renderType>
-                                                        <foreign_table>pages</foreign_table>
-                                                        <size>20</size>
-                                                        <maxitems>4</maxitems>
-                                                        <treeConfig>
-                                                            <expandAll>1</expandAll>
-                                                            <parentField>pid</parentField>
-                                                            <appearance>
-                                                                <showHeader>1</showHeader>
-                                                            </appearance>
-                                                        </treeConfig>
-                                                    </config>
-                                                </TCEforms>
-                                            </select_tree_2>
                                         </el>
                                     </ROOT>
                                 </sTree>
