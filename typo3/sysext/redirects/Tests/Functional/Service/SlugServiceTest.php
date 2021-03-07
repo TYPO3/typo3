@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -118,10 +119,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/dummy-1-2', 'target' => '/test-new'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => '/test-new/dummy-1-2-5'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => '/test-new/dummy-1-2-6'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => '/test-new/dummy-1-2-7'],
+            ['source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -157,16 +158,16 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/', 'target' => '/new-home'],
-            ['source_path' => '/dummy-1-2', 'target' => '/new-home/dummy-1-2'],
-            ['source_path' => '/dummy-1-3', 'target' => '/new-home/dummy-1-3'],
-            ['source_path' => '/dummy-1-4', 'target' => '/new-home/dummy-1-4'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => '/new-home/dummy-1-2/dummy-1-2-5'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => '/new-home/dummy-1-2/dummy-1-2-6'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => '/new-home/dummy-1-2/dummy-1-2-7'],
-            ['source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => '/new-home/dummy-1-3/dummy-1-3-8'],
-            ['source_path' => '/dummy-1-3/dummy-1-3-9', 'target' => '/new-home/dummy-1-3/dummy-1-3-9'],
-            ['source_path' => '/dummy-1-4/dummy-1-4-10', 'target' => '/new-home/dummy-1-4/dummy-1-4-10'],
+            ['source_path' => '/', 'target' => 't3://page?uid=1&_language=0'],
+            ['source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=0'],
+            ['source_path' => '/dummy-1-4', 'target' => 't3://page?uid=4&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
+            ['source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=0'],
+            ['source_path' => '/dummy-1-3/dummy-1-3-9', 'target' => 't3://page?uid=9&_language=0'],
+            ['source_path' => '/dummy-1-4/dummy-1-4-10', 'target' => 't3://page?uid=10&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -202,10 +203,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/sub-folder/dummy-1-2', 'target' => '/sub-folder/test-new'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-5', 'target' => '/sub-folder/test-new/dummy-1-2-5'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-6', 'target' => '/sub-folder/test-new/dummy-1-2-6'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-7', 'target' => '/sub-folder/test-new/dummy-1-2-7'],
+            ['source_path' => '/sub-folder/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -243,8 +244,8 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/de/dummy-1-3', 'target' => '/de/test-new'],
-            ['source_path' => '/de/dummy-1-3/dummy-1-3-8', 'target' => '/de/test-new/dummy-1-3-8'],
+            ['source_path' => '/de/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
+            ['source_path' => '/de/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -282,8 +283,8 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/sub-folder/de/dummy-1-3', 'target' => '/sub-folder/de/test-new'],
-            ['source_path' => '/sub-folder/de/dummy-1-3/dummy-1-3-8', 'target' => '/sub-folder/de/test-new/dummy-1-3-8'],
+            ['source_path' => '/sub-folder/de/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
+            ['source_path' => '/sub-folder/de/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -317,10 +318,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/de/', 'target' => '/de/test-new'],
-            ['source_path' => '/de/dummy-1-2', 'target' => '/de/test-new/dummy-1-2'],
-            ['source_path' => '/de/dummy-1-3', 'target' => '/de/test-new/dummy-1-3'],
-            ['source_path' => '/de/dummy-1-2/dummy-1-2-3', 'target' => '/de/test-new/dummy-1-2/dummy-1-2-3'],
+            ['source_path' => '/de/', 'target' => 't3://page?uid=5&_language=1'],
+            ['source_path' => '/de/dummy-1-2', 'target' => 't3://page?uid=6&_language=1'],
+            ['source_path' => '/de/dummy-1-3', 'target' => 't3://page?uid=7&_language=1'],
+            ['source_path' => '/de/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=8&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -374,7 +375,8 @@ class SlugServiceTest extends FunctionalTestCase
         $this->subject = new SlugService(
             GeneralUtility::makeInstance(Context::class),
             GeneralUtility::makeInstance(SiteFinder::class),
-            GeneralUtility::makeInstance(PageRepository::class)
+            GeneralUtility::makeInstance(PageRepository::class),
+            GeneralUtility::makeInstance(LinkService::class)
         );
         $this->subject->setLogger(new NullLogger());
     }
