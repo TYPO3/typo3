@@ -1410,19 +1410,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($failureReasonCode) {
             $output['code'] = $failureReasonCode;
         }
-        $combinedRecords = array_merge(is_array($this->pageAccessFailureHistory['direct_access']) ? $this->pageAccessFailureHistory['direct_access'] : [['fe_group' => 0]], is_array($this->pageAccessFailureHistory['sub_section']) ? $this->pageAccessFailureHistory['sub_section'] : []);
+        $combinedRecords = array_merge(
+            is_array($this->pageAccessFailureHistory['direct_access'] ?? false) ? $this->pageAccessFailureHistory['direct_access'] : [['fe_group' => 0]],
+            is_array($this->pageAccessFailureHistory['sub_section'] ?? false) ? $this->pageAccessFailureHistory['sub_section'] : []
+        );
         if (!empty($combinedRecords)) {
             foreach ($combinedRecords as $k => $pagerec) {
                 // If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
                 // If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
                 if (!$k || $pagerec['extendToSubpages']) {
-                    if ($pagerec['hidden']) {
+                    if ($pagerec['hidden'] ?? false) {
                         $output['hidden'][$pagerec['uid']] = true;
                     }
-                    if ($pagerec['starttime'] > $GLOBALS['SIM_ACCESS_TIME']) {
+                    if (isset($pagerec['starttime']) && $pagerec['starttime'] > $GLOBALS['SIM_ACCESS_TIME']) {
                         $output['starttime'][$pagerec['uid']] = $pagerec['starttime'];
                     }
-                    if ($pagerec['endtime'] != 0 && $pagerec['endtime'] <= $GLOBALS['SIM_ACCESS_TIME']) {
+                    if (isset($pagerec['endtime']) && $pagerec['endtime'] != 0 && $pagerec['endtime'] <= $GLOBALS['SIM_ACCESS_TIME']) {
                         $output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
                     }
                     if (!$this->checkPageGroupAccess($pagerec)) {

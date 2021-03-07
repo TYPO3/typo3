@@ -126,13 +126,14 @@ class WorkspacePreview implements MiddlewareInterface
 
         $response = $handler->handle($request);
 
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $addInformationAboutDisabledCache) {
-            $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_prev=LIVE was given', true);
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe instanceof TypoScriptFrontendController && $addInformationAboutDisabledCache) {
+            $tsfe->set_no_cache('GET Parameter ADMCMD_prev=LIVE was given', true);
         }
 
         // Add an info box to the frontend content
-        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
-            $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getUri());
+        if ($tsfe instanceof TypoScriptFrontendController && $context->getPropertyFromAspect('workspace', 'isOffline', false)) {
+            $previewInfo = $this->renderPreviewInfo($tsfe, $request->getUri());
             $body = $response->getBody();
             $body->rewind();
             $content = $body->getContents();
@@ -322,7 +323,7 @@ class WorkspacePreview implements MiddlewareInterface
             $currentWorkspaceId = $tsfe->whichWorkspace();
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
-            if ($tsfe->config['config']['message_preview_workspace']) {
+            if ($tsfe->config['config']['message_preview_workspace'] ?? false) {
                 $content = sprintf(
                     $tsfe->config['config']['message_preview_workspace'],
                     $currentWorkspaceTitle,
@@ -425,5 +426,10 @@ class WorkspacePreview implements MiddlewareInterface
     {
         $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
         $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
+    }
+
+    protected function getTypoScriptFrontendController(): ?TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'] ?? null;
     }
 }

@@ -941,8 +941,13 @@ class DataHandler implements LoggerAwareInterface
                     $theRealPid = $fieldArray['pid'];
                     // Checks if records can be inserted on this $pid.
                     // If this is a page translation, the check needs to be done for the l10n_parent record
-                    if ($table === 'pages' && $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
-                        $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+                    $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
+                    $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+                    if ($table === 'pages'
+                        && $languageField && isset($incomingFieldArray[$languageField]) && $incomingFieldArray[$languageField] > 0
+                        && $transOrigPointerField && isset($incomingFieldArray[$transOrigPointerField]) && $incomingFieldArray[$transOrigPointerField] > 0
+                    ) {
+                        $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray[$transOrigPointerField]);
                     } else {
                         $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
                     }
@@ -1255,7 +1260,7 @@ class DataHandler implements LoggerAwareInterface
         // Get original language record if available:
         if (is_array($currentRecord)
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']
-            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
+            && !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
             && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
             && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0
@@ -1282,8 +1287,10 @@ class DataHandler implements LoggerAwareInterface
 
             // The field must be editable.
             // Checking if a value for language can be changed:
-            $languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
-            if ($languageDeny) {
+            if (($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false)
+                && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field
+                && !$this->BE_USER->checkLanguageAccess($fieldValue)
+            ) {
                 continue;
             }
 
@@ -1492,6 +1499,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Branches out evaluation of a field value based on its type as configured in $GLOBALS['TCA']
      * Can be called for FlexForm pseudo fields as well, BUT must not have $field set if so.
+     * And hey, there's a good thing about the method arguments: 13 is prime :-P
      *
      * @param array $res The result array. The processed value (if any!) is set in the "value" key.
      * @param string $value The value to set.
@@ -1505,7 +1513,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
      * @param array $uploadedFiles
      * @param int $tscPID TSconfig PID
-     * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @return array Returns the evaluated $value as key "value" in this array.
      * @internal should only be used from within DataHandler
      */
@@ -2742,9 +2750,9 @@ class DataHandler implements LoggerAwareInterface
                     foreach ($sheetDef as $lKey => $lData) {
                         $this->checkValue_flex_procInData_travDS(
                             $dataPart[$sKey][$lKey],
-                            $dataPart_current[$sKey][$lKey],
-                            $uploadedFiles[$sKey][$lKey],
-                            $dataStructure['sheets'][$sKey]['ROOT']['el'],
+                            $dataPart_current[$sKey][$lKey] ?? null,
+                            $uploadedFiles[$sKey][$lKey] ?? null,
+                            $dataStructure['sheets'][$sKey]['ROOT']['el'] ?? null,
                             $pParams,
                             $callBackFunc,
                             $sKey . '/' . $lKey . '/',
@@ -2781,7 +2789,7 @@ class DataHandler implements LoggerAwareInterface
         // For each DS element:
         foreach ($DSelements as $key => $dsConf) {
             // Array/Section:
-            if ($DSelements[$key]['type'] === 'array') {
+            if (isset($DSelements[$key]['type']) && $DSelements[$key]['type'] === 'array') {
                 if (!is_array($dataValues[$key]['el'])) {
                     continue;
                 }
@@ -2845,7 +2853,21 @@ class DataHandler implements LoggerAwareInterface
                             'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
                         ];
 
-                        $res = $this->checkValue_SW([], $dataValues[$key][$vKey], $fieldConfiguration, $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
+                        $res = $this->checkValue_SW(
+                            [],
+                            $dataValues[$key][$vKey] ?? null,
+                            $fieldConfiguration,
+                            $CVtable,
+                            $CVid,
+                            $dataValues_current[$key][$vKey] ?? null,
+                            $CVstatus,
+                            $CVrealPid,
+                            $CVrecFID,
+                            '',
+                            $uploadedFiles[$key][$vKey] ?? null,
+                            $CVtscPID,
+                            $additionalData
+                        );
                     }
                     // Adding the value:
                     if (isset($res['value'])) {
@@ -2854,7 +2876,10 @@ class DataHandler implements LoggerAwareInterface
                     // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
                     // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
                     if (mb_substr($vKey, -9) !== '.vDEFbase') {
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']))) {
+                        if (($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] ?? false)
+                            && $vKey !== 'vDEF'
+                            && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']))
+                        ) {
                             // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
                             if (isset($dataValues[$key]['vDEF'])) {
                                 $diffValue = $dataValues[$key]['vDEF'];
@@ -2892,7 +2917,7 @@ class DataHandler implements LoggerAwareInterface
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
         // IRRE with a pointer field (database normalization):
-        if ($tcaFieldConf['foreign_field']) {
+        if ($tcaFieldConf['foreign_field'] ?? false) {
             // if the record was imported, sorting was also imported, so skip this
             $skipSorting = (bool)$this->callFromImpExp;
             // update record in intermediate table (sorting & pointer uid to parent record)
@@ -3377,8 +3402,12 @@ class DataHandler implements LoggerAwareInterface
                             foreach ($rows as $row) {
                                 // Skip localized records that will be processed in
                                 // copyL10nOverlayRecords() on copying the default language record
-                                $transOrigPointer = $row[$transOrigPointerField];
-                                if ($row[$languageField] > 0 && $transOrigPointer > 0 && (isset($rows[$transOrigPointer]) || isset($movedLiveIds[$transOrigPointer]))) {
+                                $transOrigPointer = $row[$transOrigPointerField] ?? 0;
+                                if (!empty($languageField)
+                                    && $row[$languageField] > 0
+                                    && $transOrigPointer > 0
+                                    && (isset($rows[$transOrigPointer]) || isset($movedLiveIds[$transOrigPointer]))
+                                ) {
                                     continue;
                                 }
                                 // Copying each of the underlying records...
@@ -3776,6 +3805,9 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
 
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -3786,7 +3818,7 @@ class DataHandler implements LoggerAwareInterface
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $transOrigPointerField,
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
                 )
             );
@@ -3816,16 +3848,16 @@ class DataHandler implements LoggerAwareInterface
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
-                        $localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
+                        $localizedDestPids[$record[$languageField]] = -$record['uid'];
                     }
                 }
             }
             $languageSourceMap = [
-                $uid => $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
+                $uid => $overrideValues[$transOrigPointerField]
             ];
             // Copy the localized records after the corresponding localizations of the destination record
             foreach ($l10nRecords as $record) {
-                $localizedDestPid = (int)$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]];
+                $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
                 if ($localizedDestPid < 0) {
                     $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
                 } else {
@@ -4220,11 +4252,13 @@ class DataHandler implements LoggerAwareInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
 
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
         $l10nRecords = $queryBuilder->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                    $transOrigPointerField,
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
                 )
             )
@@ -4241,13 +4275,13 @@ class DataHandler implements LoggerAwareInterface
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
-                        $localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]] = -$record['uid'];
+                        $localizedDestPids[$record[$languageField]] = -$record['uid'];
                     }
                 }
             }
             // Move the localized records after the corresponding localizations of the destination record
             foreach ($l10nRecords as $record) {
-                $localizedDestPid = (int)$localizedDestPids[$record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]];
+                $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
                 if ($localizedDestPid < 0) {
                     $this->moveRecord($table, $record['uid'], $localizedDestPid);
                 } else {
@@ -5741,17 +5775,17 @@ class DataHandler implements LoggerAwareInterface
      */
     public function version_remapMMForVersionSwap_execSwap($table, $id, $swapWith)
     {
-        if (is_array($this->version_remapMMForVersionSwap_reg[$id])) {
+        if (is_array($this->version_remapMMForVersionSwap_reg[$id] ?? false)) {
             foreach ($this->version_remapMMForVersionSwap_reg[$id] as $field => $str) {
                 $str[0]->remapMM($str[1], $id, -$id, $str[2]);
             }
         }
-        if (is_array($this->version_remapMMForVersionSwap_reg[$swapWith])) {
+        if (is_array($this->version_remapMMForVersionSwap_reg[$swapWith] ?? false)) {
             foreach ($this->version_remapMMForVersionSwap_reg[$swapWith] as $field => $str) {
                 $str[0]->remapMM($str[1], $swapWith, $id, $str[2]);
             }
         }
-        if (is_array($this->version_remapMMForVersionSwap_reg[$id])) {
+        if (is_array($this->version_remapMMForVersionSwap_reg[$id] ?? false)) {
             foreach ($this->version_remapMMForVersionSwap_reg[$id] as $field => $str) {
                 $str[0]->remapMM($str[1], -$id, $swapWith, $str[2]);
             }
@@ -6243,8 +6277,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         foreach ($incomingFieldArray as $field => $value) {
-            $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-            $foreignTable = $fieldConf['foreign_table'] ?? '';
+            $foreignTable = $GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table'] ?? '';
             if (($registerDBList[$table][$id][$field] ?? false)
                 && !empty($foreignTable)
             ) {
@@ -7535,7 +7568,7 @@ class DataHandler implements LoggerAwareInterface
     public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray)
     {
         // Checking languages:
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
             if (!isset($incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                 // Language field must be found in input row - otherwise it does not make sense.
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

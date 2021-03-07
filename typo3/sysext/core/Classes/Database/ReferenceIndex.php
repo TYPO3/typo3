@@ -545,7 +545,7 @@ class ReferenceIndex implements LoggerAwareInterface
         // Soft References:
         if (is_array($dataValue) || (string)$dataValue !== '') {
             $softRefValue = $dataValue;
-            $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref']);
+            $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'] ?? '');
             if ($softRefs !== false) {
                 foreach ($softRefs as $spKey => $spParams) {
                     $softRefObj = BackendUtility::softRefParserObj($spKey);

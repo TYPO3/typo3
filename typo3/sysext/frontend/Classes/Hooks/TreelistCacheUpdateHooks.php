@@ -108,6 +108,9 @@ class TreelistCacheUpdateHooks
         $action = (is_array($commandValue) && isset($commandValue['action'])) ? (string)$commandValue['action'] : '';
         if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'publish'))) {
             $affectedRecord = BackendUtility::getRecord($table, $recordId, '*', '', false);
+            if (!is_array($affectedRecord)) {
+                return;
+            }
             $affectedPageUid = $affectedRecord['uid'];
             $affectedPagePid = $affectedRecord['pid'];
 

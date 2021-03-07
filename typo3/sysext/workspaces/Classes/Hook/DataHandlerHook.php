@@ -599,7 +599,7 @@ class DataHandlerHook
         // Find fields to keep
         $keepFields = $this->getUniqueFields($table);
         // Sorting needs to be exchanged for moved records
-        if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$versionState->equals(VersionState::MOVE_POINTER)) {
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) && !$versionState->equals(VersionState::MOVE_POINTER)) {
             $keepFields[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
         }
         // l10n-fields must be kept otherwise the localization

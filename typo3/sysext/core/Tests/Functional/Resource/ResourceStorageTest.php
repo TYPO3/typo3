@@ -419,7 +419,7 @@ class ResourceStorageTest extends FunctionalTestCase
             $objectReflection = new \ReflectionObject($subject);
             $property = $objectReflection->getProperty('capabilities');
             $property->setAccessible(true);
-            $property->setValue('capabilities', $subject->getCapabilities() & 7);
+            $property->setValue($subject, $subject->getCapabilities() & 7);
             $result = $subject->searchFiles($search, $folder);
             $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
             self::assertSame($expectedFiles, iterator_to_array($result));

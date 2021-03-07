@@ -432,9 +432,11 @@ class RelationHandler
             }
 
             // Skip if not dealing with IRRE in a CSV list on a workspace
-            if ($configuration['type'] !== 'inline' || empty($configuration['foreign_table']) || !empty($configuration['foreign_field'])
+            if (!isset($configuration['type']) || $configuration['type'] !== 'inline'
+                || empty($configuration['foreign_table']) || !empty($configuration['foreign_field'])
                 || !empty($configuration['MM']) || count($this->tableArray) !== 1 || empty($this->tableArray[$configuration['foreign_table']])
-                || $this->getWorkspaceId() === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])) {
+                || $this->getWorkspaceId() === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])
+            ) {
                 return;
             }
 
@@ -915,7 +917,7 @@ class RelationHandler
         }
 
         $foreign_table = $conf['foreign_table'];
-        $foreign_table_field = $conf['foreign_table_field'];
+        $foreign_table_field = $conf['foreign_table_field'] ?? '';
         $useDeleteClause = !$this->undeleteRecord;
         $foreign_match_fields = is_array($conf['foreign_match_fields'] ?? false) ? $conf['foreign_match_fields'] : [];
         $queryBuilder = $this->getConnectionForTableName($foreign_table)

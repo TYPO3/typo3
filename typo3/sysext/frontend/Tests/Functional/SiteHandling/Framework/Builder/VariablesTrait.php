@@ -29,7 +29,7 @@ trait VariablesTrait
     private function hasAllRequiredDefinedVariableNames(Variables $variables): bool
     {
         foreach ($this->requiredDefinedVariableNames ?? [] as $variableName) {
-            if (!array_key_exists($variableName, $variables)
+            if (!array_key_exists($variableName, (array)$variables)
                 || $variables[$variableName] === null
             ) {
                 return false;

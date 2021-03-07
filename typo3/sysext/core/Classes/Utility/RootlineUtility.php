@@ -264,7 +264,7 @@ class RootlineUtility
                 self::$pageRecordCache[$currentCacheIdentifier] = $row;
             }
         }
-        if (!is_array(self::$pageRecordCache[$currentCacheIdentifier])) {
+        if (!is_array(self::$pageRecordCache[$currentCacheIdentifier] ?? false)) {
             throw new PageNotFoundException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
         }
         return self::$pageRecordCache[$currentCacheIdentifier];

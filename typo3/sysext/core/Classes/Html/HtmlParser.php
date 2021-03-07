@@ -851,9 +851,9 @@ class HtmlParser
     {
         $accu = [];
         foreach ($tagAttrib as $k => $v) {
-            $attr = $meta[$k]['origTag'] ?: $k;
+            $attr = $meta[$k]['origTag'] ?? $k;
             if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-                $dash = $meta[$k]['dashType'] ?: (MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
+                $dash = $meta[$k]['dashType'] ?? (MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
                 $attr .= '=' . $dash . $v . $dash;
             }
             $accu[] = $attr;
