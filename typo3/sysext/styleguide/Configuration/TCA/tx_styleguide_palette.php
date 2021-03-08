@@ -134,7 +134,7 @@ return [
         ],
         'palette_4_2' => [
             'exclude' => 1,
-            'label' => 'palette_4_2',
+            'label' => 'palette_4_2 This is a really long label text. AndOneWordIsReallyEvenMuchLongerWhoWritesThoseLongWordsAnyways?',
             'config' => [
                 'type' => 'input',
             ],
