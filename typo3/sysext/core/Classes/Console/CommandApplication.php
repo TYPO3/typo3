@@ -85,20 +85,16 @@ class CommandApplication implements ApplicationInterface
 
         $commandName = $this->getCommandName($input);
         if ($this->wantsFullBoot($commandName)) {
-            // Do a full boot if command is not a low-level command
+            // Do a full container boot if command is not a 1:1 matching low-level command
             $container = $this->bootService->getContainer();
-            $this->application->setCommandLoader($container->get(CommandRegistry::class));
+            $commandRegistry = $container->get(CommandRegistry::class);
+            $this->application->setCommandLoader($commandRegistry);
             $this->context = $container->get(Context::class);
 
-            $isLowLevelCommandShortcut = false;
-            try {
-                $realName = $this->application->find($commandName)->getName();
-                // Do not load ext_localconf if a low level command was found
-                // due to using a shortcut
-                $isLowLevelCommandShortcut = !$this->wantsFullBoot($realName);
-            } catch (ExceptionInterface $e) {
-                // Errors must be ignored, full binding/validation happens later when the console application runs.
-            }
+            $realName = $this->resolveShortcut($commandName, $commandRegistry);
+            $isLowLevelCommandShortcut = $realName !== null && !$this->wantsFullBoot($realName);
+            // Load ext_localconf, except if a low level command shortcut was found
+            // or if essential configuration is missing
             if (!$isLowLevelCommandShortcut && $this->essentialConfigurationExists()) {
                 $this->bootService->loadExtLocalconfDatabaseAndExtTables();
             }
@@ -118,6 +114,27 @@ class CommandApplication implements ApplicationInterface
         }
 
         exit($exitCode);
+    }
+
+    private function resolveShortcut(string $commandName, CommandRegistry $commandRegistry): ?string
+    {
+        if ($commandRegistry->has($commandName)) {
+            return $commandName;
+        }
+
+        $allCommands = $commandRegistry->getNames();
+        $expr = implode('[^:]*:', array_map('preg_quote', explode(':', $commandName))) . '[^:]*';
+        $commands = preg_grep('{^' . $expr . '}', $allCommands);
+
+        if ($commands === false || count($commands) === 0) {
+            $commands = preg_grep('{^' . $expr . '}i', $allCommands);
+        }
+
+        if ($commands === false || count($commands) !== 1) {
+            return null;
+        }
+
+        return reset($commands);
     }
 
     protected function wantsFullBoot(string $commandName): bool
