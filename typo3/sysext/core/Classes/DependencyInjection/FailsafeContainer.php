@@ -75,7 +75,7 @@ class FailsafeContainer implements ContainerInterface
      * @param string $id
      * @return bool
      */
-    public function has($id)
+    public function has(string $id): bool
     {
         return array_key_exists($id, $this->entries) || array_key_exists($id, $this->factories);
     }
@@ -112,7 +112,7 @@ class FailsafeContainer implements ContainerInterface
      * @param string $id
      * @return mixed
      */
-    public function get($id)
+    public function get(string $id)
     {
         return $this->entries[$id] ?? $this->create($id);
     }
