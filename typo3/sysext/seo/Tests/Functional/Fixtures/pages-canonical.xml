@@ -96,4 +96,14 @@
         <hidden>0</hidden>
         <no_index>1</no_index>
     </pages>
+    <pages>
+        <uid>100</uid>
+        <pid>2</pid>
+        <title>No canonical</title>
+        <canonical_link></canonical_link>
+        <slug>/no-canonical</slug>
+        <content_from_pid>0</content_from_pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+    </pages>
 </dataset>

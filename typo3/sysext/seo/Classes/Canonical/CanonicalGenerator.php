@@ -55,6 +55,10 @@ class CanonicalGenerator
 
     public function generate(): string
     {
+        if ($this->typoScriptFrontendController->config['config']['disableCanonical'] ?? false) {
+            return '';
+        }
+
         $event = $this->eventDispatcher->dispatch(new ModifyUrlForCanonicalTagEvent(''));
         $href = $event->getUrl();
 

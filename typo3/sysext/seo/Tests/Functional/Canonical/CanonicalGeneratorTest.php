@@ -84,7 +84,10 @@ class CanonicalGeneratorTest extends FunctionalTestCase
         );
 
         $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-canonical.xml');
-        $this->setUpFrontendRootPage(1);
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/seo/Tests/Functional/Fixtures/Canonical.typoscript']
+        );
     }
 
     protected function tearDown(): void
@@ -124,6 +127,10 @@ class CanonicalGeneratorTest extends FunctionalTestCase
                 'http://localhost/dummy-1-2-10',
                 ''
             ],
+            'uid: 100 typoscript setting config.disableCanonical' => [
+                'http://localhost/no-canonical',
+                ''
+            ],
         ];
     }
 
@@ -143,7 +150,11 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             true
         );
 
-        self::assertStringContainsString($expectedCanonicalUrl, (string)$response->getBody());
+        if ($expectedCanonicalUrl) {
+            self::assertStringContainsString($expectedCanonicalUrl, (string)$response->getBody());
+        } else {
+            self::assertStringNotContainsString('<link rel="canonical"', (string)$response->getBody());
+        }
     }
 
     private function buildPageTypoScript(): TypoScriptInstruction
