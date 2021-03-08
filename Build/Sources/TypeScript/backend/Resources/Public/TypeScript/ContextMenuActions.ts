@@ -77,7 +77,12 @@ class ContextMenuActions {
    */
   public static mountAsTreeRoot(table: string, uid: number): void {
     if (table === 'pages') {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.apply((component: PageTree) => { component.setTemporaryMountPoint(uid); });
+      const event = new CustomEvent('typo3:pagetree:mountPoint', {
+        detail: {
+          pageId: uid
+        },
+      });
+      top.document.dispatchEvent(event);
     }
   }
 
@@ -160,7 +165,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+      ContextMenuActions.refreshPageTree();
     });
   }
 
@@ -175,7 +180,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+      ContextMenuActions.refreshPageTree();
     });
   }
 
@@ -189,7 +194,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][nav_hide]=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+      ContextMenuActions.refreshPageTree();
     });
   }
 
@@ -203,7 +208,7 @@ class ContextMenuActions {
       + '&data[' + table + '][' + uid + '][nav_hide]=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+      ContextMenuActions.refreshPageTree();
     });
   }
 
@@ -234,14 +239,11 @@ class ContextMenuActions {
       if (e.target.getAttribute('name') === 'delete') {
         const eventData = {component: 'contextmenu', action: 'delete', table, uid};
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
-          if (table === 'pages' && Viewport.NavigationContainer) {
+          if (table === 'pages') {
             if (uid === top.fsMod.recentIds.web) {
-              Viewport.NavigationContainer.getComponentByName('PageTree')?.apply((pageTree: PageTree) => {
-                let node = pageTree.getFirstNode();
-                pageTree.selectNode(node);
-              });
+              top.document.dispatchEvent(new CustomEvent('typo3:pagetree:selectFirstNode'));
             }
-            Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+            ContextMenuActions.refreshPageTree();
           }
         });
       }
@@ -350,7 +352,7 @@ class ContextMenuActions {
         top.TYPO3.settings.RecordCommit.moduleUrl + url,
       ).done((): void => {
         if (table === 'pages') {
-          Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+          ContextMenuActions.refreshPageTree();
         }
       });
     };
@@ -381,6 +383,10 @@ class ContextMenuActions {
       }
       Modal.dismiss();
     });
+  }
+
+  private static refreshPageTree(): void {
+    top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 }
 

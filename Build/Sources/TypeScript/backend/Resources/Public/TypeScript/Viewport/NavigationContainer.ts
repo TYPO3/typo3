@@ -15,10 +15,8 @@ import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
 import TriggerRequest = require('../Event/TriggerRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
-import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
 
 class NavigationContainer extends AbstractContainer {
-  private components: Array<NavigationComponent> = [];
   private readonly parent: HTMLElement;
   private readonly container: HTMLElement;
   private readonly switcher: HTMLElement = null;
@@ -52,31 +50,38 @@ class NavigationContainer extends AbstractContainer {
 
     const componentCssName = navigationComponentId.replace(/[/]/g, '_');
     const navigationComponentElement = 'navigationComponent-' + componentCssName;
-    // Component does not exist, create the div as wrapper
-    if (this.container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 0) {
-      this.container.insertAdjacentHTML(
-        'beforeend',
-        '<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
-      );
+
+    // The component was already set up, so requiring the module again can be excluded.
+    if (this.container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 1) {
+      this.show(navigationComponentId);
+      this.activeComponentId = navigationComponentId;
+      return;
     }
 
     require([navigationComponentId], (__esModule: any): void => {
-      // @ts-ignore
-      const navigationComponent = (new (Object.values(__esModule)[0])('#' + navigationComponentElement)) as NavigationComponent;
-      this.addComponent(navigationComponent);
+      if (typeof __esModule.navigationComponentName === 'string') {
+        const tagName: string = __esModule.navigationComponentName;
+        const element = document.createElement(tagName);
+        element.setAttribute('id', navigationComponentElement);
+        element.classList.add('scaffold-content-navigation-component');
+        element.dataset.component = navigationComponentId;
+        this.container.append(element);
+      } else {
+        // Because the component does not exist, let's create the div as wrapper
+        this.container.insertAdjacentHTML(
+          'beforeend',
+          '<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
+        );
+
+        // manual static initialize method, unused but kept for backwards-compatibility until TYPO3 v12
+        // @ts-ignore
+        const navigationComponent = Object.values(__esModule)[0] as any;
+        // @ts-ignore
+        navigationComponent.initialize('#' + navigationComponentElement);
+      }
       this.show(navigationComponentId);
       this.activeComponentId = navigationComponentId;
     });
-  }
-
-  public getComponentByName(name: string): NavigationComponent|null {
-    let foundComponent = null;
-    this.components.forEach((component: NavigationComponent) => {
-      if (component.getName() == name) {
-        foundComponent = component;
-      }
-    });
-    return foundComponent;
   }
 
   public toggle(): void {
@@ -169,10 +174,6 @@ class NavigationContainer extends AbstractContainer {
 
   private getIFrameElement(): HTMLIFrameElement|null {
     return this.container.querySelector(ScaffoldIdentifierEnum.contentNavigationIframe) as HTMLIFrameElement;
-  }
-
-  private addComponent(component: NavigationComponent): void {
-    this.components.push(component);
   }
 }
 

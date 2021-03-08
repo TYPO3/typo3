@@ -2664,14 +2664,14 @@ class BackendUtility
                 switch ($set) {
                     case 'updatePageTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer) {
-									top.TYPO3.Backend.NavigationContainer.getComponentByName("PageTree")?.refresh();
+								if (top) {
+									top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh"));
 								}';
                         break;
                     case 'updateFolderTree':
                         $signals[] = '
-								if (top && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer) {
-									top.TYPO3.Backend.NavigationContainer.getComponentByName("FileStorageTree")?.refresh();
+								if (top) {
+									top.document.dispatchEvent(new CustomEvent("typo3:filestoragetree:refresh"));
 								}';
                         break;
                     case 'updateModuleMenu':

@@ -11,8 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render} from 'lit-html';
-import {html, TemplateResult} from 'lit-element';
+import {html, customElement, property, query, LitElement, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {PageTree} from './PageTree';
 import {PageTreeDragDrop, ToolbarDragHandler} from './PageTreeDragDrop';
@@ -20,20 +19,59 @@ import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
-import {SvgTreeWrapper} from '../SvgTree';
 import 'TYPO3/CMS/Backend/Element/IconElement';
-import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
 
 /**
- * @exports TYPO3/CMS/Backend/PageTree/PageTreeElement
+ * This module defines the Custom Element for rendering the navigation component for an editable page tree
+ * including drag+drop, deletion, in-place editing and a custom toolbar for this component.
+ *
+ * It is used as custom element via "<typo3-backend-navigation-component-pagetree>".
+ *
+ * The navigationComponentName export is used by the NavigationContainer in order to
+ * create an instance of PageTreeNavigationComponent via document.createElement().
  */
-export class PageTreeElement implements NavigationComponent {
-  private readonly tree: PageTree;
-  private static renderTemplate(): TemplateResult {
+
+export const navigationComponentName: string = 'typo3-backend-navigation-component-pagetree';
+const toolbarComponentName: string = 'typo3-backend-navigation-component-pagetree-toolbar';
+
+@customElement(navigationComponentName)
+export class PageTreeNavigationComponent extends LitElement {
+  // @todo: Migrate svg-tree-wrapper into a custom element
+  @query('.svg-tree-wrapper') treeWrapper: HTMLElement;
+
+  private readonly tree: PageTree = null;
+
+  public constructor() {
+    super();
+    this.tree = new PageTree();
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    document.addEventListener('typo3:pagetree:refresh', this.refresh);
+    document.addEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
+    document.addEventListener('typo3:pagetree:selectFirstNode', this.selectFirstNode);
+  }
+
+  disconnectedCallback(): void {
+    document.removeEventListener('typo3:pagetree:refresh', this.refresh);
+    document.removeEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
+    document.removeEventListener('typo3:pagetree:selectFirstNode', this.selectFirstNode);
+    super.disconnectedCallback();
+  }
+
+  // disable shadow dom for now
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected render(): TemplateResult {
     return html`
       <div id="typo3-pagetree" class="svg-tree">
         <div>
-          <div id="typo3-pagetree-toolbar" class="svg-toolbar"></div>
+          <div id="typo3-pagetree-toolbar" class="svg-toolbar">
+              <typo3-backend-navigation-component-pagetree-toolbar .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
+          </div>
           <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
             <div id="typo3-pagetree-tree" class="svg-tree-wrapper">
               <div class="node-loader">
@@ -48,120 +86,78 @@ export class PageTreeElement implements NavigationComponent {
       </div>
     `;
   }
-  public constructor(selector: string) {
-    const targetEl = document.querySelector(selector);
 
-    // let SvgTree know it shall be visible
-    if (targetEl && targetEl.childNodes.length > 0) {
-      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
-      return;
-    }
-
-    render(PageTreeElement.renderTemplate(), targetEl);
-    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
-
-    this.tree = new PageTree();
-    const dragDrop = new PageTreeDragDrop(this.tree);
+  protected firstUpdated() {
+    this.treeWrapper.dispatchEvent(new Event('svg-tree:visible'));
     const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
     (new AjaxRequest(configurationUrl)).get()
       .then(async (response: AjaxResponse): Promise<void> => {
         const configuration = await response.resolve('json');
-        const dataUrl = top.TYPO3.settings.ajaxUrls.page_tree_data;
-        const filterUrl = top.TYPO3.settings.ajaxUrls.page_tree_filter;
         Object.assign(configuration, {
-          dataUrl: dataUrl,
-          filterUrl: filterUrl,
+          dataUrl: top.TYPO3.settings.ajaxUrls.page_tree_data,
+          filterUrl: top.TYPO3.settings.ajaxUrls.page_tree_filter,
           showIcons: true
         });
-        this.tree.initialize(treeEl, configuration, dragDrop);
-        // the toolbar relies on settings retrieved in this step
-        const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
-        if (!toolbar.dataset.treeShowToolbar) {
-          const pageTreeToolbar = new Toolbar(dragDrop);
-          pageTreeToolbar.initialize(treeEl, toolbar);
-          toolbar.dataset.treeShowToolbar = 'true';
-        }
+        const dragDrop = new PageTreeDragDrop(this.tree);
+        // both toolbar and tree are loaded independently through require js,
+        // so we don't know which is loaded first
+        // in case of toolbar being loaded first, we wait for an event from svgTree
+        this.treeWrapper.addEventListener('svg-tree:initialized', () => {
+          // set up toolbar now with updated settings
+          const toolbar = this.querySelector(toolbarComponentName) as Toolbar;
+          toolbar.requestUpdate('tree').then(() => toolbar.initializeDragDrop(dragDrop));
+        });
+        this.tree.initialize(this.treeWrapper, configuration, dragDrop);
       });
   }
-  public getName(): string {
-    return 'PageTree';
-  }
-  public refresh?(): void {
+
+  private refresh = (): void => {
     this.tree.refreshOrFilterTree();
   }
-  public select(item: any): void {
-    this.tree.selectNode(item);
+
+  private setMountPoint = (e: CustomEvent): void => {
+    this.tree.setTemporaryMountPoint(e.detail.pageId as number);
   }
-  public apply(fn: Function): void {
-    fn(this.tree);
+
+  private selectFirstNode = (): void => {
+    const node = this.tree.nodes[0];
+    if (node) {
+      this.tree.selectNode(node);
+    }
   }
 }
 
-class Toolbar {
+@customElement(toolbarComponentName)
+class Toolbar extends LitElement {
+  @property({type: PageTree}) tree: PageTree = null;
+
   private settings = {
-    toolbarSelector: 'tree-toolbar',
     searchInput: '.search-input',
     filterTimeout: 450
   };
 
-  private treeContainer: SvgTreeWrapper;
-  private targetEl: HTMLElement;
-
-  private tree: any;
-  private readonly dragDrop: any;
-
-  public constructor(dragDrop: PageTreeDragDrop) {
-    this.dragDrop = dragDrop;
-  }
-
-  public initialize(treeContainer: HTMLElement, toolbar: HTMLElement, settings: any = {}): void {
-    this.treeContainer = treeContainer;
-    this.targetEl = toolbar;
-
-    if (!this.treeContainer.dataset.svgTreeInitialized
-      || typeof this.treeContainer.svgtree !== 'object'
-    ) {
-      //both toolbar and tree are loaded independently through require js,
-      //so we don't know which is loaded first
-      //in case of toolbar being loaded first, we wait for an event from svgTree
-      this.treeContainer.addEventListener('svg-tree:initialized', () => this.render());
-      return;
-    }
-
-    Object.assign(this.settings, settings);
-    this.render();
-  }
-
-  private refreshTree(): void {
-    this.tree.refreshOrFilterTree();
-  }
-
-  private search(inputEl: HTMLInputElement): void {
-    this.tree.searchQuery = inputEl.value.trim()
-    this.tree.refreshOrFilterTree();
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
-  }
-
-  private render(): void
+  public initializeDragDrop(dragDrop: PageTreeDragDrop): void
   {
-    this.tree = this.treeContainer.svgtree;
-    // @todo Better use initialize() settings, drop this assignment here
-    Object.assign(this.settings, this.tree.settings);
-    render(this.renderTemplate(), this.targetEl);
+    if (this.tree.settings?.doktypes?.length) {
+      this.tree.settings.doktypes.forEach((item: any) => {
+        if (item.icon) {
+          const htmlElement = this.querySelector('[data-tree-icon="' + item.icon + '"]');
+          d3select(htmlElement).call(this.dragToolbar(item, dragDrop));
+        } else {
+          console.warn('Missing icon definition for doktype: ' + item.nodeType);
+        }
+      });
+    }
+  }
 
-    const d3Toolbar = d3select('.svg-toolbar');
-    this.tree.settings.doktypes.forEach((item: any) => {
-      if (item.icon) {
-        d3Toolbar
-          .selectAll('[data-tree-icon=' + item.icon + ']')
-          .call(this.dragToolbar(item));
-      } else {
-        console.warn('Missing icon definition for doktype: ' + item.nodeType);
-      }
-    });
+  // disable shadow dom for now
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
 
-    const inputEl = this.targetEl.querySelector(this.settings.searchInput) as HTMLInputElement;
+  protected firstUpdated(): void
+  {
+    const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
     if (inputEl) {
       new DebounceEvent('input', (evt: InputEvent) => {
         this.search(evt.target as HTMLInputElement);
@@ -177,10 +173,10 @@ class Toolbar {
     }
   }
 
-  private renderTemplate(): TemplateResult {
+  protected render(): TemplateResult {
     /* eslint-disable @typescript-eslint/indent */
     return html`
-      <div class="${this.settings.toolbarSelector}">
+      <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
               <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
@@ -190,7 +186,7 @@ class Toolbar {
           </button>
         </div>
         <div class="svg-toolbar__submenu">
-          ${this.tree.settings.doktypes && this.tree.settings.doktypes.length
+          ${this.tree.settings?.doktypes?.length
             ? this.tree.settings.doktypes.map((item: any) => {
               return html`
                 <div class="svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
@@ -206,12 +202,22 @@ class Toolbar {
     `;
   }
 
+  private refreshTree(): void {
+    this.tree.refreshOrFilterTree();
+  }
+
+  private search(inputEl: HTMLInputElement): void {
+    this.tree.searchQuery = inputEl.value.trim()
+    this.tree.refreshOrFilterTree();
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.update();
+  }
+
   /**
    * Register Drag and drop for new elements of toolbar
    * Returns method from d3drag
    */
-  private dragToolbar(item: any) {
-    return this.dragDrop.connectDragHandler(new ToolbarDragHandler(item, this.tree, this.dragDrop));
+  private dragToolbar(item: any, dragDrop: PageTreeDragDrop) {
+    return dragDrop.connectDragHandler(new ToolbarDragHandler(item, this.tree, dragDrop));
   }
 }
-

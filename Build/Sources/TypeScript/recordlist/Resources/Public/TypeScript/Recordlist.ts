@@ -219,7 +219,7 @@ class Recordlist {
     }
 
     if (payload.table === 'pages') {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
+      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
     }
   }
 

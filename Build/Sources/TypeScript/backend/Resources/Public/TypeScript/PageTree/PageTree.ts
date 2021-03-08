@@ -28,11 +28,11 @@ interface PageTreeSettings extends SvgTreeSettings {
 
 export class PageTree extends SvgTree
 {
+  public searchQuery: string = '';
   public settings: PageTreeSettings;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
   private originalNodes: string = '';
-  private searchQuery: string = '';
   private dragDrop: PageTreeDragDrop;
   private nodeIsEdit: boolean;
   public constructor() {

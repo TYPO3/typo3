@@ -72,9 +72,7 @@ class Backend extends Workspaces {
    * Reloads the page tree
    */
   private static refreshPageTree(): void {
-    if (Viewport.NavigationContainer) {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
-    }
+    top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 
   /**

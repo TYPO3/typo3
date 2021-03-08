@@ -42,9 +42,7 @@ class WorkspacesMenu {
    * Refresh the page tree
    */
   private static refreshPageTree(): void {
-    if (Viewport.NavigationContainer) {
-      Viewport.NavigationContainer.getComponentByName('PageTree')?.refresh();
-    }
+    document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 
   private static updateWorkspaceState() {

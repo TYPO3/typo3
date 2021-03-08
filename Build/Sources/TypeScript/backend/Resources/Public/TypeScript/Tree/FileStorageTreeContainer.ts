@@ -11,25 +11,56 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render} from 'lit-html';
-import {html, TemplateResult} from 'lit-element';
+import {html, customElement, property, query, LitElement, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {FileStorageTree} from './FileStorageTree';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import {FileStorageTreeActions} from './FileStorageTreeActions';
 import 'TYPO3/CMS/Backend/Element/IconElement';
-import {NavigationComponent} from 'TYPO3/CMS/Backend/Viewport/NavigationComponent';
+
+export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
+const toolbarComponentName: string = 'typo3-backend-navigation-component-filestoragetree-toolbar';
 
 /**
  * Responsible for setting up the viewport for the Navigation Component for the File Tree
  */
-export class FileStorageTreeContainer implements NavigationComponent {
-  private readonly tree: FileStorageTree;
-  private static renderTemplate(): TemplateResult {
+@customElement(navigationComponentName)
+export class FileStorageTreeNavigationComponent extends LitElement {
+  // @todo: Migrate svg-tree-wrapper into a custom element
+  @query('.svg-tree-wrapper') treeWrapper: HTMLElement;
+
+  private readonly tree: FileStorageTree = null;
+
+  public constructor() {
+    super();
+    this.tree = new FileStorageTree();
+  }
+
+  public connectedCallback(): void {
+    super.connectedCallback();
+    document.addEventListener('typo3:filestoragetree:refresh', this.refresh);
+    document.addEventListener('typo3:filestoragetree:selectFirstNode', this.selectFirstNode);
+    // event listener updating current tree state, this can be removed in TYPO3 v12
+    document.addEventListener('typo3:filelist:treeUpdateRequested', this.treeUpdateRequested);
+  }
+
+  public disconnectedCallback(): void {
+    document.removeEventListener('typo3:filestoragetree:refresh', this.refresh);
+    document.removeEventListener('typo3:filestoragetree:selectFirstNode', this.selectFirstNode);
+    document.removeEventListener('typo3:filelist:treeUpdateRequested', this.treeUpdateRequested);
+    super.disconnectedCallback();
+  }
+
+  // disable shadow dom for now
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected render(): TemplateResult {
     return html`
       <div id="typo3-filestoragetree" class="svg-tree">
         <div>
-          <div id="filestoragetree-toolbar" class="svg-toolbar"></div>
+          <typo3-backend-navigation-component-filestoragetree-toolbar .tree="${this.tree}" id="filestoragetree-toolbar" class="svg-toolbar"></typo3-backend-navigation-component-filestoragetree-toolbar>
           <div class="navigation-tree-container">
             <div id="typo3-filestoragetree-tree" class="svg-tree-wrapper">
               <div class="node-loader">
@@ -44,97 +75,53 @@ export class FileStorageTreeContainer implements NavigationComponent {
       </div>
     `;
   }
-  public constructor(selector: string) {
-    const targetEl = document.querySelector(selector);
 
-    // let SvgTree know it shall be visible
-    if (targetEl && targetEl.childNodes.length > 0) {
-      targetEl.querySelector('.svg-tree').dispatchEvent(new Event('svg-tree:visible'));
-      return;
-    }
-
-    render(FileStorageTreeContainer.renderTemplate(), targetEl);
-    const treeEl = <HTMLElement>targetEl.querySelector('.svg-tree-wrapper');
-
-    this.tree = new FileStorageTree();
-    const actions = new FileStorageTreeActions(this.tree);
-    this.tree.initialize(treeEl, {
+  protected firstUpdated() {
+    this.treeWrapper.dispatchEvent(new Event('svg-tree:visible'));
+    this.tree.initialize(this.treeWrapper, {
       dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
       filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
       showIcons: true
-    }, actions);
-    // Activate the toolbar
-    const toolbar = <HTMLElement>targetEl.querySelector('.svg-toolbar');
-    new Toolbar(treeEl, toolbar);
+    }, new FileStorageTreeActions(this.tree));
+  }
 
-    // event listener updating current tree state
-    document.addEventListener('typo3:filelist:treeUpdateRequested', (evt: CustomEvent) => {
-      this.tree.selectNodeByIdentifier(evt.detail.payload.identifier);
-    });
-  }
-  public getName(): string {
-    return 'FileStorageTree';
-  }
-  public refresh?(): void {
+  private refresh = (): void => {
     this.tree.refreshOrFilterTree();
   }
-  public select(item: any): void {
-    this.tree.selectNode(item);
+
+  private selectFirstNode = (): void => {
+    const node = this.tree.nodes[0];
+    if (node) {
+      this.tree.selectNode(node);
+    }
   }
-  public apply(fn: Function): void {
-    fn(this.tree);
+
+  // event listener updating current tree state, this can be removed in TYPO3 v12
+  private treeUpdateRequested = (evt: CustomEvent): void => {
+    this.tree.selectNodeByIdentifier(evt.detail.payload.identifier);
   }
 }
 
 /**
- * Contains the toolbar above the tree
+ * Creates the toolbar above the tree
  */
-class Toolbar
-{
+@customElement(toolbarComponentName)
+class Toolbar extends LitElement {
+  @property({type: FileStorageTree}) tree: FileStorageTree = null;
+
   private settings = {
-    toolbarSelector: 'tree-toolbar',
     searchInput: '.search-input',
     filterTimeout: 450
   };
-  private readonly treeContainer: any;
-  private readonly targetEl: HTMLElement;
-  private tree: FileStorageTree;
 
-  public constructor(treeContainer: HTMLElement, toolbar: HTMLElement) {
-    this.treeContainer = treeContainer;
-    this.targetEl = toolbar;
-
-    if (!this.treeContainer.dataset.svgTreeInitialized
-      || typeof (this.treeContainer as any).svgtree !== 'object'
-    ) {
-      //both toolbar and tree are loaded independently through require js,
-      //so we don't know which is loaded first
-      //in case of toolbar being loaded first, we wait for an event from svgTree
-      this.treeContainer.addEventListener('svg-tree:initialized', this.render.bind(this));
-    } else {
-      this.render();
-    }
+  // disable shadow dom for now
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
   }
 
-  private refreshTree(): void {
-    this.tree.refreshOrFilterTree();
-  }
-
-  private search(inputEl: HTMLInputElement): void {
-    this.tree.searchQuery = inputEl.value.trim()
-    this.tree.refreshOrFilterTree();
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
-  }
-
-  private render(): void
+  protected firstUpdated(): void
   {
-    this.tree = this.treeContainer.svgtree;
-    // @todo Better use initialize() settings, drop this assignment here
-    Object.assign(this.settings, this.tree.settings);
-    render(this.renderTemplate(), this.targetEl);
-
-    const inputEl = this.targetEl.querySelector(this.settings.searchInput) as HTMLInputElement;
+    const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
     if (inputEl) {
       new DebounceEvent('input', (evt: InputEvent) => {
         this.search(evt.target as HTMLInputElement);
@@ -150,9 +137,9 @@ class Toolbar
     }
   }
 
-  private renderTemplate(): TemplateResult {
-    /* eslint-disable @typescript-eslint/indent */
-    return html`<div class="${this.settings.toolbarSelector}">
+  protected render(): TemplateResult {
+    return html`
+      <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
             <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
@@ -161,6 +148,18 @@ class Toolbar
             <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
           </button>
         </div>
-      </div>`;
+      </div>
+    `;
+  }
+
+  private refreshTree(): void {
+    this.tree.refreshOrFilterTree();
+  }
+
+  private search(inputEl: HTMLInputElement): void {
+    this.tree.searchQuery = inputEl.value.trim()
+    this.tree.refreshOrFilterTree();
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.update();
   }
 }
