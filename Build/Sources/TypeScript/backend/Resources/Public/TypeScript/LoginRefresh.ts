@@ -193,7 +193,7 @@ class LoginRefresh {
       $('<p />').text(TYPO3.lang['mess.login_about_to_expire']),
       $('<div />', {class: 'progress'}).append(
         $('<div />', {
-          class: 'progress-bar progress-bar-warning progress-bar-striped active',
+          class: 'progress-bar progress-bar-warning progress-bar-striped progress-bar-animated',
           role: 'progressbar',
           'aria-valuemin': '0',
           'aria-valuemax': '100',
