@@ -196,15 +196,15 @@ class LanguageService
         if (isset($this->LL_labels_cache[$this->lang][$identifier])) {
             return $this->LL_labels_cache[$this->lang][$identifier];
         }
-        if (strpos($input, 'LLL:') === 0) {
-            $restStr = trim(substr($input, 4));
+        if (strpos(trim($input), 'LLL:') === 0) {
+            $restStr = substr(trim($input), 4);
             $extPrfx = '';
             // ll-file referred to is found in an extension.
-            if (strpos($restStr, 'EXT:') === 0) {
-                $restStr = trim(substr($restStr, 4));
+            if (strpos(trim($restStr), 'EXT:') === 0) {
+                $restStr = substr(trim($restStr), 4);
                 $extPrfx = 'EXT:';
             }
-            $parts = explode(':', $restStr);
+            $parts = explode(':', trim($restStr));
             $parts[0] = $extPrfx . $parts[0];
             // Getting data if not cached
             if (!isset($this->LL_files_cache[$parts[0]])) {
