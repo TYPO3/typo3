@@ -132,7 +132,7 @@ class SystemEnvironmentBuilder
         define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
         define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
         define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
-        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
+        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Troubleshooting/Index.html#opcode-cache-messages');
 
         // @deprecated since TYPO3 v9.4 and will be removed in TYPO3 v10.0
         define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');

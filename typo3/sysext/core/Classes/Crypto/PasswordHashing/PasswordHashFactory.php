@@ -78,7 +78,7 @@ class PasswordHashFactory
         // Do not add the hash to the exception to prevent information disclosure
         throw new InvalidPasswordHashException(
             'No implementation found to handle given hash. This happens if the stored hash uses a'
-            . ' mechanism not supported by current server. Follow the wiki link to fix this issue.',
+            . ' mechanism not supported by current server. Follow the documentation link to fix this issue.',
             1533818591
         );
     }
@@ -129,7 +129,7 @@ class PasswordHashFactory
             throw new InvalidPasswordHashException(
                 'Configured default hash method ' . $defaultHashClassName . ' is not available. If'
                 . ' the instance has just been upgraded, please log in to the standalone install tool'
-                . ' at typo3/install.php to fix this. Follow the wiki link for more details.',
+                . ' at typo3/install.php to fix this. Follow the documentation link for more details.',
                 1533822084
             );
         }

@@ -191,8 +191,8 @@ class SetupCheck implements CheckInterface
      */
     protected function checkSomePhpOpcodeCacheIsLoaded()
     {
-        // Link to our wiki page, so we can update opcode cache issue information independent of TYPO3 CMS releases.
-        $wikiLink = 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.';
+        // Link to our documentation page, so we can update opcode cache issue information independent of TYPO3 CMS releases.
+        $documentationLink = 'For more information take a look in our documentation ' . TYPO3_URL_WIKI_OPCODECACHE . '.';
         $opcodeCaches = GeneralUtility::makeInstance(OpcodeCacheService::class)->getAllActive();
         if (empty($opcodeCaches)) {
             // Set status to notice. It needs to be notice so email won't be triggered.
@@ -202,7 +202,7 @@ class SetupCheck implements CheckInterface
                     . ' This can be a massive performance improvement and can reduce the load on a'
                     . ' server in general. A parse time reduction by factor three for fully cached'
                     . ' pages can be achieved easily if using an opcode cache.'
-                    . LF . $wikiLink,
+                    . LF . $documentationLink,
                 'No PHP opcode cache loaded',
                 FlashMessage::NOTICE
             ));
@@ -226,7 +226,7 @@ class SetupCheck implements CheckInterface
                 }
                 $message .= LF;
             }
-            $message .= $wikiLink;
+            $message .= $documentationLink;
             // Set title of status depending on serverity
             switch ($status) {
                 case FlashMessage::ERROR:

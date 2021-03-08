@@ -73,7 +73,7 @@ class AuthenticationService
                     // Still no valid hash instance could be found. Probably the stored hash used a mechanism
                     // that is not available on current system. We throw the previous exception again to be
                     // handled on a higher level. The install tool will render an according exception message
-                    // that links to the wiki.
+                    // that links to the documentation.
                     throw $invalidPasswordHashException;
                 }
             }

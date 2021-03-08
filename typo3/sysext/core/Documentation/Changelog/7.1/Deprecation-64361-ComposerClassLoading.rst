@@ -23,7 +23,7 @@ It is possible however to do a `composer install` in the TYPO3 sources directory
 to gain full control over class loading of your TYPO3 installation. This step is optional and currently requires
 thorough knowledge of composer and as such currently is only recommended for people familiar with this process.
 
-Further technical details can be found in the `wiki`_.
+Further technical details can be found in the `documentation`_.
 
 Impact
 ======
@@ -48,7 +48,7 @@ If you previously installed TYPO3 via composer, make sure you perform a `compose
 the current changes in your Packages folder.
 
 
-.. _`wiki`: http://wiki.typo3.org/ComposerClassLoader
+.. _`documentation`: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Autoloading/Background.html
 
 
 .. index:: PHP-API

@@ -46,7 +46,7 @@ Usage:
 	$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 	$uri = $uriBuilder->buildUriFromRoute('myRouteIdentifier', array('foo' => 'bar'));
 
-See http://wiki.typo3.org/Blueprints/BackendRouting for more details.
+See https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/BackendRouting/Index.html for more details.
 
 Impact
 ======

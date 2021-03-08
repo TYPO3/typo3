@@ -11,7 +11,7 @@ Description
 ===========
 
 Formerly `initializeObject()` was called before the dependencies were injected when retrieving an Extbase Domain
-Model. This behavior didn't match either the documentation nor the behavior when using the `ObjectManager`.
+Model. This behavior didn't match either the documentation_ nor the behavior when using the `ObjectManager`.
 
 With TYPO3 CMS 7.3 this has been changed, dependency injection using `@inject` annotations and `inject*()` methods
 is now performed **before** calling `initializeObject()` when retrieving Domain Models.
@@ -19,7 +19,7 @@ is now performed **before** calling `initializeObject()` when retrieving Domain 
 This may have impact on extensions that are relying on the reversed call order. In these cases adjustments are
 required to take into account that the injected objects are available.
 
-.. _documentation: http://wiki.typo3.org/Dependency_Injection#initializeObject.28.29_as_object_lifecycle_method
+.. _documentation: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/DependencyInjection/Index.html
 
 
 .. index:: PHP-API, ext:extbase

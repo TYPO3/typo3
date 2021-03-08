@@ -581,7 +581,7 @@ class Check implements CheckInterface
                     . '* The PHP extension eaccelerator is known to break this if'
                     . ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
                     . ' This compile flag must be specified, otherwise TYPO3 CMS will not work.' . LF
-                    . 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.',
+                    . 'For more information take a look in our documentation ' . TYPO3_URL_WIKI_OPCODECACHE . '.',
                 'PHP Doc comment reflection broken',
                 FlashMessage::ERROR
             ));
