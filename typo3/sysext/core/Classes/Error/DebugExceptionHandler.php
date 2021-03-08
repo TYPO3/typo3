@@ -99,19 +99,20 @@ HTML;
 
         $exceptionInfo = '';
         if ($throwable->getCode() > 0) {
-            $wikiLink = Typo3Information::URL_EXCEPTION . 'debug/' . $throwable->getCode();
+            $documentationLink = Typo3Information::URL_EXCEPTION . 'debug/' . $throwable->getCode();
             $exceptionInfo = <<<INFO
             <div class="container">
                 <div class="callout">
-                    <h4 class="callout-title">Get help in the TYPO3 Wiki</h4>
+                    <h4 class="callout-title">Get help in the TYPO3 Documentation</h4>
                     <div class="callout-body">
                         <p>
-                            If you need help solving this exception, you can have a look at the TYPO3 Wiki.
+                            If you need help solving this exception, you can have a look at the TYPO3 Documentation.
                             There you can find solutions provided by the TYPO3 community.
-                            Once you have found a solution to the problem, help others by contributing to the wiki page.
+                            Once you have found a solution to the problem, help others by contributing to the
+                            documentation page.
                         </p>
                         <p>
-                            <a href="$wikiLink" target="_blank" rel="noreferrer">Find a solution for this exception in the TYPO3 wiki.</a>
+                            <a href="$documentationLink" target="_blank" rel="noreferrer">Find a solution for this exception in the TYPO3 Documentation.</a>
                         </p>
                     </div>
                 </div>

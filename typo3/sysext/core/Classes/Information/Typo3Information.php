@@ -28,7 +28,7 @@ class Typo3Information
     public const URL_LICENSE = 'https://typo3.org/typo3-cms/overview/licenses/';
     public const URL_EXCEPTION = 'https://typo3.org/go/exception/CMS/';
     public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
-    public const URL_OPCACHE = 'https://wiki.typo3.org/Opcode_Cache';
+    public const URL_OPCACHE = 'https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Troubleshooting/Index.html#opcode-cache-messages';
 
     /**
      * @var LanguageService
