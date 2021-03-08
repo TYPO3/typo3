@@ -1527,7 +1527,7 @@ class DataHandler implements LoggerAwareInterface
 
         switch ($tcaFieldConf['type']) {
             case 'text':
-                $res = $this->checkValueForText($value, $tcaFieldConf, $table, $id, $realPid, $field);
+                $res = $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field);
                 break;
             case 'passthrough':
             case 'imageManipulation':
@@ -1548,7 +1548,7 @@ class DataHandler implements LoggerAwareInterface
                 break;
             case 'group':
             case 'select':
-                $res = $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field);
+                $res = $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field);
                 break;
             case 'inline':
                 $res = $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [];
@@ -1623,12 +1623,11 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
-     * @param int $id UID of record
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $field Field name
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForText($value, $tcaFieldConf, $table, $id, $realPid, $field)
+    protected function checkValueForText($value, $tcaFieldConf, $table, $realPid, $field)
     {
         if (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
             $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
@@ -1928,14 +1927,11 @@ class DataHandler implements LoggerAwareInterface
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $id UID of record
-     * @param mixed $curValue Current value of the field
      * @param string $status 'update' or 'new' flag
-     * @param string $recFID Field identifier [table:uid:field] for flexforms
-     * @param array $uploadedFiles
      * @param string $field Field name
      * @return array Modified $res array
      */
-    protected function checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field)
+    protected function checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field)
     {
         // Detecting if value sent is an array and if so, implode it around a comma:
         if (is_array($value)) {
@@ -2235,7 +2231,7 @@ class DataHandler implements LoggerAwareInterface
             ];
             unset($res['value']);
         } elseif ($value || MathUtility::canBeInterpretedAsInteger($id)) {
-            $res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, $additionalData);
+            $res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field);
         }
         return $res;
     }
@@ -2913,10 +2909,9 @@ class DataHandler implements LoggerAwareInterface
      * @param string $status Status string ('update' or 'new')
      * @param string $table Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
      * @param string $field The current field the values are modified for
-     * @param array $additionalData Additional data to be forwarded to sub-processors
      * @return string Modified values
      */
-    protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, array $additionalData = null)
+    protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field)
     {
         $foreignTable = $tcaFieldConf['foreign_table'];
         $valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
@@ -4193,7 +4188,7 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($row) && (int)$destPid !== (int)$row['pid']) {
             $conf = $GLOBALS['TCA'][$table]['columns'];
             foreach ($row as $field => $value) {
-                $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf[$field]['config'] ?? []);
+                $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf[$field]['config'] ?? []);
             }
         }
     }
@@ -4204,12 +4199,11 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Record Table
      * @param int $uid Record UID
      * @param int $destPid Position to move to
-     * @param string $field Record field
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
      * @internal should only be used from within DataHandler
      */
-    public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
+    public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf)
     {
         $dbAnalysis = null;
         if (!empty($conf['type']) && $conf['type'] === 'inline') {
@@ -5055,7 +5049,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         foreach ($row as $field => $value) {
-            $this->deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf[$field]['config'] ?? []);
+            $this->deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf[$field]['config'] ?? []);
         }
     }
 
@@ -5065,13 +5059,12 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record Table
      * @param int $uid Record UID
-     * @param string $field Record field
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
      * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf): void
+    public function deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf): void
     {
         if (!isset($conf['type'])) {
             return;

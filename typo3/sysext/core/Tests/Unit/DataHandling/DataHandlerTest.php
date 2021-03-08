@@ -816,7 +816,7 @@ class DataHandlerTest extends UnitTestCase
         $mockDataHandler->expects(self::once())->method('getInlineFieldType')->willReturn('field');
         $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);
         $mockDataHandler->expects(self::never())->method('deleteAction');
-        $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
+        $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'bar', $conf);
     }
 
     /**
