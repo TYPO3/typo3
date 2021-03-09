@@ -37,7 +37,7 @@ class XmlSitemapXslTest extends AbstractTestCase
 
     /**
      * @test
-     * @dataProvider getXslFilePaths
+     * @dataProvider getXslFilePathsDataProvider
      */
     public function checkIfDefaultSitemapReturnsDefaultXsl($typoscriptSetupFiles, $sitemap, $xslFilePath): void
     {
@@ -73,7 +73,7 @@ class XmlSitemapXslTest extends AbstractTestCase
         self::assertRegExp('/<\?xml-stylesheet type="text\/xsl" href="' . $xslFilePath . '"\?>/', (string)$response->getBody());
     }
 
-    public function getXslFilePaths()
+    public function getXslFilePathsDataProvider(): array
     {
         return [
             [

@@ -320,8 +320,11 @@ class QueryGeneratorTest extends FunctionalTestCase
      */
     public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64)
     {
-        $GLOBALS['TCA'] = [];
-        $GLOBALS['TCA']['aTable'] = [];
+        $GLOBALS['TCA'] = [
+            'aTable' => [
+                'columns' => [],
+            ]
+        ];
         $queryGenerator = new QueryGenerator();
 
         $inputConf = [

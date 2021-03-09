@@ -213,10 +213,12 @@ class IconFactory
                     }
                 }
                 $recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
-                if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])) {
+                if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])
+                    && isset($row[$column]) && is_string($row[$column])
+                ) {
                     $recordType[5] = str_replace(
                         '###TYPE###',
-                        $row[$column],
+                        $row[$column] ?? '',
                         $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']
                     );
                 }

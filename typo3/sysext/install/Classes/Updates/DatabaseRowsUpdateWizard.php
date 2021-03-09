@@ -178,7 +178,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
         foreach ($listOfAllTables as $table) {
             foreach ($rowUpdaterInstances as $updater) {
                 if ($updater->hasPotentialUpdateForTable($table)) {
-                    if (!is_array($tableToUpdaterList[$table])) {
+                    if (!isset($tableToUpdaterList[$table]) || !is_array($tableToUpdaterList[$table])) {
                         $tableToUpdaterList[$table] = [];
                     }
                     $tableToUpdaterList[$table][] = $updater;

@@ -81,8 +81,10 @@ class XmlSitemapRenderer
     {
         $sitemaps = [];
         foreach ($this->configuration['config'][$sitemapType]['sitemaps'] ?? [] as $sitemap => $config) {
-            if (class_exists($config['provider']) &&
-                is_subclass_of($config['provider'], XmlSitemapDataProviderInterface::class)) {
+            if (!empty($config['provider']) && is_string($config['provider'])
+                && class_exists($config['provider'])
+                && is_subclass_of($config['provider'], XmlSitemapDataProviderInterface::class)
+            ) {
                 /** @var XmlSitemapDataProviderInterface $provider */
                 $provider = GeneralUtility::makeInstance(
                     $config['provider'],

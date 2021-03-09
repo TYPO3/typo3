@@ -211,6 +211,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function moveContentOfRelationToDifferentPage()
     {
         $newTableIds = $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-        $this->recordIds['movedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        // In workspaces new records are created and discard drops this one again, live creates no new record
+        if (isset($newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast])) {
+            $this->recordIds['movedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        }
     }
 }

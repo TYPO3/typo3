@@ -230,16 +230,6 @@ class QueryGenerator
     protected $formName = '';
 
     /**
-     * @var int
-     */
-    protected $limitBegin;
-
-    /**
-     * @var int
-     */
-    protected $limitLength;
-
-    /**
      * @var string
      */
     protected $fieldName;
@@ -263,20 +253,20 @@ class QueryGenerator
     {
         $fieldListArr = [];
         if (is_array($GLOBALS['TCA'][$this->table])) {
-            $fieldListArr = array_keys($GLOBALS['TCA'][$this->table]['columns']);
+            $fieldListArr = array_keys($GLOBALS['TCA'][$this->table]['columns'] ?? []);
             $fieldListArr[] = 'uid';
             $fieldListArr[] = 'pid';
             $fieldListArr[] = 'deleted';
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['tstamp']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['tstamp'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['tstamp'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['crdate']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['crdate'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['crdate'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['sortby'];
             }
         }
@@ -1455,11 +1445,11 @@ class QueryGenerator
                 $this->extFieldLists['queryLimit'] = 100;
             }
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
+            $limitBegin = 0;
+            $limitLength = (int)($this->extFieldLists['queryLimit'] ?? 0);
             if ($parts[1]) {
-                $this->limitBegin = $parts[0];
-                $this->limitLength = $parts[1];
-            } else {
-                $this->limitLength = $this->extFieldLists['queryLimit'];
+                $limitBegin = (int)$parts[0];
+                $limitLength = (int)$parts[1];
             }
             $this->extFieldLists['queryLimit'] = implode(',', array_slice($parts, 0, 2));
             // Insert Descending parts
@@ -1530,23 +1520,23 @@ class QueryGenerator
                 $limit[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
                 $limit[] = '</div>';
 
-                $prevLimit = $this->limitBegin - $this->limitLength < 0 ? 0 : $this->limitBegin - $this->limitLength;
+                $prevLimit = $limitBegin - $limitLength < 0 ? 0 : $limitBegin - $limitLength;
                 $prevButton = '';
                 $nextButton = '';
 
-                if ($this->limitBegin) {
-                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $this->limitLength) . '">';
+                if ($limitBegin) {
+                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars($limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $limitLength) . '">';
                 }
-                if (!$this->limitLength) {
-                    $this->limitLength = 100;
+                if (!$limitLength) {
+                    $limitLength = 100;
                 }
 
-                $nextLimit = $this->limitBegin + $this->limitLength;
+                $nextLimit = $limitBegin + $limitLength;
                 if ($nextLimit < 0) {
                     $nextLimit = 0;
                 }
                 if ($nextLimit) {
-                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $this->limitLength) . '">';
+                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
                 }
 
                 $out[] = '<div class="form-group">';

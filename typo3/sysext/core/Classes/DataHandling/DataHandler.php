@@ -728,7 +728,7 @@ class DataHandler implements LoggerAwareInterface
                 continue;
             }
 
-            if (is_array($this->defaultValues[$k])) {
+            if (is_array($this->defaultValues[$k] ?? false)) {
                 $this->defaultValues[$k] = array_merge($this->defaultValues[$k], $v);
             } else {
                 $this->defaultValues[$k] = $v;
@@ -1259,7 +1259,7 @@ class DataHandler implements LoggerAwareInterface
 
         // Get original language record if available:
         if (is_array($currentRecord)
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']
+            && ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] ?? false)
             && !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
             && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
@@ -2833,7 +2833,7 @@ class DataHandler implements LoggerAwareInterface
                         $dataValues[$key]['vDEF'] = $fieldConfiguration['default'];
                     }
                 }
-                if (!is_array($fieldConfiguration) || !is_array($dataValues[$key])) {
+                if (!is_array($fieldConfiguration) || !isset($dataValues[$key]) || !is_array($dataValues[$key])) {
                     continue;
                 }
 
@@ -2842,7 +2842,15 @@ class DataHandler implements LoggerAwareInterface
                         if (is_object($this->callBackObj)) {
                             $res = $this->callBackObj->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
                         } else {
-                            $res = $this->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->{$callBackFunc}(
+                                $pParams,
+                                $fieldConfiguration,
+                                $dataValues[$key][$vKey] ?? null,
+                                $dataValues_current[$key][$vKey] ?? null,
+                                $uploadedFiles[$key][$vKey] ?? null,
+                                $structurePath . $key . '/' . $vKey . '/',
+                                $workspaceOptions
+                            );
                         }
                     } else {
                         // Default
@@ -6090,7 +6098,7 @@ class DataHandler implements LoggerAwareInterface
                     foreach ($valueArray as $key => $value) {
                         if (strpos($value, 'NEW') !== false) {
                             if (strpos($value, '_') === false) {
-                                $affectedTable = $tcaFieldConf['foreign_table'];
+                                $affectedTable = $tcaFieldConf['foreign_table'] ?? '';
                                 $prependTable = false;
                             } else {
                                 $parts = explode('_', $value);

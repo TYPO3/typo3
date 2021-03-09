@@ -540,9 +540,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPlaceholdersAndDeleteDraftParentPage()
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
-        $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']]
-        ]);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['deletedPageId']);
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
     }
 }

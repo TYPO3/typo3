@@ -1438,7 +1438,7 @@ class BackendUtility
                         $recordTitle = trim(strip_tags($row[$fN] ?? ''));
                         if ((string)$recordTitle !== '') {
                             $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid']);
-                            if (!$GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
+                            if (!($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] ?? false)) {
                                 break;
                             }
                             $tA[] = $recordTitle;
