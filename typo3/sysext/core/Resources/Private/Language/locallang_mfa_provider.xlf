@@ -18,7 +18,9 @@
 					1. Scan the QR-code or directly enter the shared secret in your application or device
 					2. Add a specific name for this provider (optional)
 					3. Enter the generated six-digit code in the corresponding field
-					4. Submit the form to activate the provider</source>
+					4. Submit the form to activate the provider
+
+					Note: In case your application supports otpauth:// urls, you can retrieve the url by clicking on the info button next to the shared secret.</source>
 			</trans-unit>
 			<trans-unit id="recoveryCodes.title" resname="recoveryCodes.title">
 				<source>Recovery codes</source>
@@ -136,6 +138,23 @@
 					Recovery codes are only meant as a fallback if you lose access to your main multi-factor
 					authentication credentials. Therefore, please activate a comprehensive MFA provider first.
 				</source>
+			</trans-unit>
+			<trans-unit id="setup.totpAuthUrlButton.title" resname="setup.totpAuthUrlButton.title">
+				<source>Show authentication URL</source>
+			</trans-unit>
+			<trans-unit id="setup.totpAuthUrlModal.title" resname="setup.totpAuthUrlModal.title">
+				<source>Authentication URL</source>
+			</trans-unit>
+			<trans-unit id="setup.totpAuthUrlModal.description" resname="setup.totpAuthUrlModal.description">
+				<source>In case you are not able to scan the QR code, but your OTP application supports
+					authentication URLs next to, or instead of plain shared secrets, you can copy and
+					paste the URL shown below. The URL contains some information like the issuer (this site)
+					and your email address or username. Most OTP applications will display this information
+					next to the generated codes.
+				</source>
+			</trans-unit>
+			<trans-unit id="setup.totpAuthUrlModal.ok" resname="setup.totpAuthUrlModal.ok">
+				<source>OK</source>
 			</trans-unit>
 			<trans-unit id="auth.totp.inputLabel" resname="auth.totp.inputLabel">
 				<source>Enter the six-digit code</source>

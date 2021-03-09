@@ -266,10 +266,15 @@ class TotpProvider implements MfaProviderInterface
         $userData = $propertyManager->getUser()->user ?? [];
         $secret = Totp::generateEncodedSecret([(string)($userData['uid'] ?? ''), (string)($userData['username'] ?? '')]);
         $totpInstance = GeneralUtility::makeInstance(Totp::class, $secret);
+        $totpAuthUrl = $totpInstance->getTotpAuthUrl(
+            (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'TYPO3'),
+            (string)($userData['email'] ?? '') ?: (string)($userData['username'] ?? '')
+        );
         $view->setTemplate('Setup');
         $view->assignMultiple([
             'secret' => $secret,
-            'qrCode' => $this->getSvgQrCode($totpInstance, $userData),
+            'totpAuthUrl' => $totpAuthUrl,
+            'qrCode' => $this->getSvgQrCode($totpAuthUrl),
             // Generate hmac of the secret to prevent it from being changed in the setup from
             'checksum' => GeneralUtility::hmac($secret, 'totp-setup')
         ]);
@@ -317,21 +322,16 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Internal helper method for generating a svg QR-code for TOTP applications
      *
-     * @param Totp $totp
-     * @param array $userData
+     * @param string $content
      * @return string
      */
-    protected function getSvgQrCode(Totp $totp, array $userData): string
+    protected function getSvgQrCode(string $content): string
     {
         $qrCodeRenderer = new ImageRenderer(
             new RendererStyle(225, 4),
             new SvgImageBackEnd()
         );
 
-        $content = $totp->getTotpAuthUrl(
-            (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'TYPO3'),
-            (string)($userData['email'] ?? '') ?: (string)($userData['username'] ?? '')
-        );
         return (new Writer($qrCodeRenderer))->writeString($content);
     }
 

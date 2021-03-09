@@ -1,3 +1,10 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Core/Authentication/MfaProvider/Totp'}" />
+
 <fieldset class="row">
     <div class="col-lg-4">
         <div class="mt-3">
@@ -24,7 +31,21 @@
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.secret.help"/>
                 </span>
                 <div class="form-control-wrap mt-1">
-                    <input type="text" id="secret" name="secret" value="{secret}" readonly="readonly" class="form-control"/>
+                    <div class="input-group">
+                        <input type="text" id="secret" name="secret" value="{secret}" readonly="readonly" class="form-control"/>
+                        <span class="input-group-btn">
+                            <typo3-mfa-totp-url-info-button url="{totpAuthUrl}"
+                                                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.title')}"
+                                                            description="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.description')}"
+                                                            ok="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlModal.ok')}">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.totpAuthUrlButton.title')}">
+                                    <core:icon identifier="actions-info"/>
+                                </button>
+                            </typo3-mfa-totp-url-info-button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,3 +78,5 @@
         <input type="hidden" name="checksum" value="{checksum}"/>
     </div>
 </fieldset>
+
+</html>
