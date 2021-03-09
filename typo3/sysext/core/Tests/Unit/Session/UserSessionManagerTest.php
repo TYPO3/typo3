@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
@@ -114,5 +115,53 @@ class UserSessionManagerTest extends UnitTestCase
         self::assertEquals(42, $persistedSession->get('propertyA'));
         self::assertEquals('great', $persistedSession->get('propertyB'));
         self::assertNull($persistedSession->get('propertyC'));
+    }
+
+    /**
+     * @test
+     */
+    public function updateSessionWillSetLastUpdated()
+    {
+        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
+        $sessionBackendProphecy->update(Argument::any(), Argument::any())->willReturn([
+            'ses_id' => 'valid-session',
+            'ses_userid' => 13,
+            'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
+            'ses_tstamp' => 7654321,
+            'ses_iplock' => '[DISABLED]'
+        ]);
+        $subject = new UserSessionManager(
+            $sessionBackendProphecy->reveal(),
+            60,
+            new IpLocker(0, 0)
+        );
+        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()-500]);
+        $session = $subject->updateSession($session);
+        self::assertSame(7654321, $session->getLastUpdated());
+    }
+
+    /**
+     * @test
+     */
+    public function fixateAnonymousSessionWillUpdateSessionObject()
+    {
+        $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
+        $sessionBackendProphecy->set(Argument::any(), Argument::any())->willReturn([
+            'ses_id' => 'valid-session',
+            'ses_userid' => 0,
+            'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
+            'ses_tstamp' => 7654321,
+            'ses_iplock' => IpLocker::DISABLED_LOCK_VALUE
+        ]);
+        $subject = new UserSessionManager(
+            $sessionBackendProphecy->reveal(),
+            60,
+            new IpLocker(0, 0)
+        );
+        $session = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()-500]);
+        $session = $subject->fixateAnonymousSession($session);
+        self::assertSame(IpLocker::DISABLED_LOCK_VALUE, $session->getIpLock());
+        self::assertNull($session->getUserId());
+        self::assertSame(7654321, $session->getLastUpdated());
     }
 }

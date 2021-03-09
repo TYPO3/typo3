@@ -829,7 +829,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $userRecord['is_online'] = $this->userSession->getLastUpdated();
             if (!$this->userSessionManager->hasExpired($this->userSession)) {
                 if (!$skipSessionUpdate) {
-                    $this->userSessionManager->updateSessionTimestamp($this->userSession);
+                    $this->userSession = $this->userSessionManager->updateSessionTimestamp($this->userSession);
                 }
             } else {
                 // Delete any user set...
@@ -1090,7 +1090,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     {
         $this->userSession->set($key, $data);
         $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->userSession->getIdentifier());
-        $this->userSessionManager->updateSession($this->userSession);
+        $this->userSession = $this->userSessionManager->updateSession($this->userSession);
     }
 
     /*************************

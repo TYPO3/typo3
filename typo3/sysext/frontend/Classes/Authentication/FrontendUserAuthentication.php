@@ -396,12 +396,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 }
             } elseif (!$this->userSessionManager->isSessionPersisted($this->userSession)) {
                 // Create a new session entry in the backend
-                $this->userSessionManager->fixateAnonymousSession($this->userSession, (bool)$this->is_permanent);
+                $this->userSession = $this->userSessionManager->fixateAnonymousSession($this->userSession, (bool)$this->is_permanent);
                 // Now set the cookie (= fix the session)
                 $this->setSessionCookie();
             } else {
                 // Update session data of an already fixated session
-                $this->userSessionManager->updateSession($this->userSession);
+                $this->userSession = $this->userSessionManager->updateSession($this->userSession);
             }
         }
     }
@@ -417,7 +417,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             if ((empty($this->user) && !$this->loginHidden) || $this->userSession->isAnonymous()) {
                 $this->userSessionManager->removeSession($this->userSession);
             } else {
-                $this->userSessionManager->updateSession($this->userSession);
+                $this->userSession = $this->userSessionManager->updateSession($this->userSession);
             }
         }
     }

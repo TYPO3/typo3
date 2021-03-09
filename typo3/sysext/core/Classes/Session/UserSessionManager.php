@@ -157,20 +157,23 @@ class UserSessionManager implements LoggerAwareInterface
      *
      * @param UserSession $session The user session to fixate
      * @param bool $isPermanent If TRUE, the session will get the is_permanent flag
+     * @return UserSession a new session object with an updated ses_tstamp (allowing to keep the session alive)
      *
      * @throws Backend\Exception\SessionNotCreatedException
      */
-    public function fixateAnonymousSession(UserSession $session, bool $isPermanent = false): void
+    public function fixateAnonymousSession(UserSession $session, bool $isPermanent = false): UserSession
     {
         $sessionIpLock = $this->ipLocker->getSessionIpLock((string)GeneralUtility::getIndpEnv('REMOTE_ADDR'));
-
         $sessionRecord = $session->toArray();
         $sessionRecord['ses_iplock'] = $sessionIpLock;
+        // Ensure the user is not set, as this is always an anonymous session (see elevateToFixatedUserSession)
         $sessionRecord['ses_userid'] = 0;
         if ($isPermanent) {
             $sessionRecord['ses_permanent'] = 1;
         }
-        $this->sessionBackend->set($session->getIdentifier(), $sessionRecord);
+        // The updated session record now also contains an updated timestamp (ses_tstamp)
+        $updatedSessionRecord = $this->sessionBackend->set($session->getIdentifier(), $sessionRecord);
+        return $this->recreateUserSession($session, $updatedSessionRecord);
     }
 
     /**
@@ -241,15 +244,17 @@ class UserSessionManager implements LoggerAwareInterface
      * timestamp is greater than "last updated + a specified gracetime-value".
      *
      * @param UserSession $session
-     *
+     * @return UserSession a modified user session with a last updated value if needed
      * @throws Backend\Exception\SessionNotUpdatedException
      */
-    public function updateSessionTimestamp(UserSession $session): void
+    public function updateSessionTimestamp(UserSession $session): UserSession
     {
         if ($session->needsUpdate()) {
             // Update the session timestamp by writing a dummy update. (Backend will update the timestamp)
             $this->sessionBackend->update($session->getIdentifier(), []);
+            $session = $this->recreateUserSession($session);
         }
+        return $session;
     }
 
     public function isSessionPersisted(UserSession $session): bool
@@ -262,9 +267,10 @@ class UserSessionManager implements LoggerAwareInterface
         $this->sessionBackend->remove($session->getIdentifier());
     }
 
-    public function updateSession(UserSession $session): void
+    public function updateSession(UserSession $session): UserSession
     {
-        $this->sessionBackend->update($session->getIdentifier(), $session->toArray());
+        $sessionRecord = $this->sessionBackend->update($session->getIdentifier(), $session->toArray());
+        return $this->recreateUserSession($session, $sessionRecord);
     }
 
     public function collectGarbage(int $garbageCollectionProbability = 1): void
@@ -357,5 +363,23 @@ class UserSessionManager implements LoggerAwareInterface
             $object->setGarbageCollectionTimeoutForAnonymousSessions((int)($GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'] ?? 0));
         }
         return $object;
+    }
+
+    /**
+     * Recreates `UserSession` object from existing session data - keeping `new` state.
+     * This method shall be used to reflect updated low-level session data in corresponding `UserSession` object.
+     *
+     * @param UserSession $session
+     * @param array|null $sessionRecord
+     * @return UserSession
+     * @throws SessionNotFoundException
+     */
+    protected function recreateUserSession(UserSession $session, array $sessionRecord = null): UserSession
+    {
+        return UserSession::createFromRecord(
+            $session->getIdentifier(),
+            $sessionRecord ?? $this->sessionBackend->get($session->getIdentifier()),
+            $session->isNew() // keep state (required to emit e.g. cookies)
+        );
     }
 }

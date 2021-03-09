@@ -284,7 +284,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
         $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
         $userSessionManager->hasExpired($userSession)->willReturn(false);
-        $userSessionManager->updateSessionTimestamp($userSession)->shouldBeCalled();
+        $userSessionManager->updateSessionTimestamp($userSession)->shouldBeCalled()->willReturn($userSession);
 
         // Mock call to fe_users table and let it return a valid user row
         $connectionPoolFeUserProphecy = $this->prophesize(ConnectionPool::class);
