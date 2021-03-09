@@ -40,6 +40,7 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionSiteFilesHaveBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Import;
@@ -218,7 +219,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
         $this->importStaticSqlFile($extensionKey, $extension['siteRelPath']);
         $import = $this->importT3DFile($extensionKey, $extension['siteRelPath']);
-        $this->importSiteConfiguration($extension['siteRelPath'], $import);
+        $this->importSiteConfiguration($extensionKey, $extension['siteRelPath'], $import);
     }
 
     /**
@@ -580,10 +581,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
+     * @param string $extensionKey
      * @param string $extensionSiteRelPath
      * @param Import|null $import
      */
-    protected function importSiteConfiguration(string $extensionSiteRelPath, Import $import = null): void
+    protected function importSiteConfiguration(string $extensionKey, string $extensionSiteRelPath, Import $import = null): void
     {
         $importRelFolder = $extensionSiteRelPath . 'Initialisation/Site';
         $importAbsFolder = Environment::getPublicPath() . '/' . $importRelFolder;
@@ -623,23 +625,30 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
 
         /** @var Site[] $newSites */
         $newSites = array_diff_key($siteConfiguration->resolveAllExistingSites(false), $existingSites);
-        $importedPages = $import->import_mapId['pages'] ?? null;
+        $importedPages = [];
+        if ($import instanceof Import && !empty($import->import_mapId['pages'])) {
+            $importedPages = $import->import_mapId['pages'];
+        }
 
+        $newSiteIdentifierList = [];
         foreach ($newSites as $newSite) {
             $exportedPageId = $newSite->getRootPageId();
+            $siteIdentifier = $newSite->getIdentifier();
+            $newSiteIdentifierList[] = $siteIdentifier;
             $importedPageId = $importedPages[$exportedPageId] ?? null;
             if ($importedPageId === null) {
                 $this->logger->warning(
                     sprintf(
                         'Imported site configuration with identifier %s could not be mapped to imported page id',
-                        $newSite->getIdentifier()
+                        $siteIdentifier
                     )
                 );
                 continue;
             }
-            $configuration = $siteConfiguration->load($newSite->getIdentifier());
+            $configuration = $siteConfiguration->load($siteIdentifier);
             $configuration['rootPageId'] = $importedPageId;
-            $siteConfiguration->write($newSite->getIdentifier(), $configuration);
+            $siteConfiguration->write($siteIdentifier, $configuration);
         }
+        $this->eventDispatcher->dispatch(new AfterExtensionSiteFilesHaveBeenImportedEvent($extensionKey, $newSiteIdentifierList));
     }
 }
