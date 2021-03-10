@@ -10,7 +10,7 @@
             margin-left: 2px;
         }
 
-        > a {
+        > a.nav-link {
             margin-right: 0;
 
             @include transition(all 0.25s ease-in-out);
@@ -20,9 +20,15 @@
                 border-color: $nav-tabs-link-hover-border-color $nav-tabs-link-hover-border-color $nav-tabs-border-color;
                 background: $nav-tabs-link-hover-bg;
             }
+
+            &.active {
+                border: 1px solid $nav-tabs-active-link-hover-border-color;
+                border-bottom-color: $nav-tabs-active-link-bg;
+                background-color: $nav-tabs-active-link-bg;
+            }
         }
 
-        &[class*="has-"] > a {
+        &[class*="has-"] > a.nav-link {
             &:before {
                 font-family: FontAwesome;
                 margin-right: 2px;
@@ -41,7 +47,7 @@
         }
         // Has error state
         &.has-validation-error {
-            > a {
+            > a.nav-link {
                 background-color: $danger;
                 border-color: darken($danger, 10%);
                 color: #fff;
@@ -56,27 +62,18 @@
                 &:before {
                     content: $fa-var-exclamation;
                 }
-            }
 
-            &.active > a {
-                color: inherit;
-                background-color: $nav-tabs-active-link-bg;
+                &.active {
+                    color: inherit;
+                    border: 1px solid $nav-tabs-active-link-hover-border-color;
+                    border-bottom-color: $nav-tabs-active-link-bg;
+                    background-color: $nav-tabs-active-link-bg;
 
-                &:before {
-                    background-color: $danger;
-                    color: #fff;
+                    &:before {
+                        background-color: $danger;
+                        color: #fff;
+                    }
                 }
-            }
-        }
-        // Active state
-        &.active {
-            > a,
-            > a:focus,
-            > a:active,
-            > a:hover {
-                border: 1px solid $nav-tabs-active-link-hover-border-color;
-                border-bottom-color: $nav-tabs-active-link-bg;
-                background-color: $nav-tabs-active-link-bg;
             }
         }
     }
