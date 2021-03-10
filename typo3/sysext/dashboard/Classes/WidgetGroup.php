@@ -53,7 +53,7 @@ class WidgetGroup
      */
     public function getTitle(): string
     {
-        return $this->getLanguageService()->sl($this->title) ?: $this->title;
+        return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
 
     /**

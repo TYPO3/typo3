@@ -91,14 +91,14 @@ class DashboardPreset
      */
     public function getTitle(): string
     {
-        return $this->getLanguageService()->sl($this->title) ?: $this->title;
+        return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
     /**
      * @return string
      */
     public function getDescription(): string
     {
-        return $this->getLanguageService()->sl($this->description) ?: $this->description;
+        return $this->getLanguageService()->sL($this->description) ?: $this->description;
     }
 
     /**
