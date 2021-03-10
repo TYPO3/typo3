@@ -133,7 +133,6 @@ class AuthenticationService extends AbstractAuthenticationService
             $message = 'Login-attempt from ###IP###, username \'%s\', no suitable hash method found!';
             $this->writeLogMessage($message, $submittedUsername);
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $message, [$submittedUsername]);
-            $this->logger->info(sprintf($message, $submittedUsername));
             // Not responsible, check other services
             return 100;
         }
@@ -163,10 +162,9 @@ class AuthenticationService extends AbstractAuthenticationService
 
         if (!$isValidPassword) {
             // Failed login attempt - wrong password
-            $this->writeLogMessage($this->pObj->loginType . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
             $message = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
+            $this->writeLogMessage($message, $submittedUsername);
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $message, [$submittedUsername]);
-            $this->logger->info(sprintf($message, $submittedUsername));
             // Responsible, authentication failed, do NOT check other services
             return 0;
         }
@@ -352,6 +350,7 @@ class AuthenticationService extends AbstractAuthenticationService
      *
      * This function accepts variable number of arguments and can format
      * parameters. The syntax is the same as for sprintf()
+     * If a marker ###IP### is present in the message, it is automatically replaced with the REMOTE_ADDR
      *
      * @param string $message Message to output
      * @param array<int,mixed> $params
@@ -361,6 +360,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!empty($params)) {
             $message = vsprintf($message, $params);
         }
+        $message = str_replace('###IP###', (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), $message);
         if ($this->pObj->loginType === 'FE') {
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message);
