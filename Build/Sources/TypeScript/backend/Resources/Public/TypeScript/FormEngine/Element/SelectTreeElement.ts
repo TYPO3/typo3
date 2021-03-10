@@ -28,10 +28,10 @@ export class SelectTreeElement {
     this.treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     this.tree = new SelectTree();
+    this.tree.dispatch.on('nodeSelectedAfter.requestUpdate', () => { callback(); } );
 
     const settings = {
       dataUrl: this.generateRequestUrl(),
-      showIcons: true,
       readOnlyMode: parseInt(this.recordField.dataset.readOnly, 10) === 1,
       input: this.recordField,
       exclusiveNodesIdentifiers: this.recordField.dataset.treeExclusiveKeys,
@@ -45,7 +45,6 @@ export class SelectTreeElement {
       this.treeWrapper.prepend(toolbarElement);
     });
     this.tree.initialize(this.treeWrapper, settings);
-    this.tree.dispatch.on('nodeSelectedAfter.requestUpdate', () => { callback(); } );
     this.listenForVisibleTree();
   }
 
@@ -116,7 +115,7 @@ class TreeToolbar extends LitElement {
           <span class="input-group-addon input-group-icon filter">
             <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
           </span>
-          <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.search(evt)}">
+          <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
         </div>
         <div class="btn-group">
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
@@ -132,41 +131,24 @@ class TreeToolbar extends LitElement {
       </div>
     `;
   }
+
   /**
    * Collapse children of root node
    */
   private collapseAll() {
     this.tree.collapseAll();
-  };
+  }
 
   /**
    * Expand all nodes
    */
   private expandAll() {
     this.tree.expandAll();
-  };
+  }
 
-  private search(event: InputEvent): void {
+  private filter(event: InputEvent): void {
     const inputEl = <HTMLInputElement>event.target;
-    if (this.tree.nodes.length) {
-      this.tree.nodes[0].expanded = false;
-    }
-    const name = inputEl.value.trim()
-    const regex = new RegExp(name, 'i');
-
-    this.tree.nodes.forEach((node: any) => {
-      if (regex.test(node.name)) {
-        this.showParents(node);
-        node.expanded = true;
-        node.hidden = false;
-      } else {
-        node.hidden = true;
-        node.expanded = false;
-      }
-    });
-
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
+    this.tree.filter(inputEl.value.trim());
   }
 
   /**
@@ -177,7 +159,7 @@ class TreeToolbar extends LitElement {
     if (this.hideUncheckedState) {
       this.tree.nodes.forEach((node: any) => {
         if (node.checked) {
-          this.showParents(node);
+          this.tree.showParents(node);
           node.expanded = true;
           node.hidden = false;
         } else {
@@ -190,19 +172,5 @@ class TreeToolbar extends LitElement {
     }
     this.tree.prepareDataForVisibleNodes();
     this.tree.update();
-  }
-
-  /**
-   * Finds and show all parents of node
-   */
-  private showParents(node: any): void {
-    if (node.parents.length === 0) {
-      return;
-    }
-    const parent = this.tree.nodes[node.parents[0]];
-    parent.hidden = false;
-    // expand parent node
-    parent.expanded = true;
-    this.showParents(parent);
   }
 }

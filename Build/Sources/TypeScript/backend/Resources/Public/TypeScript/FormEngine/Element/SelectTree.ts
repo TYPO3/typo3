@@ -30,7 +30,7 @@ export class SelectTree extends SvgTree
     exclusiveNodesIdentifiers: '',
     validation: {},
     readOnlyMode: false,
-    showIcons: false,
+    showIcons: true,
     marginTop: 15,
     nodeHeight: 20,
     indentWidth: 16,
@@ -40,23 +40,20 @@ export class SelectTree extends SvgTree
     defaultProperties: {},
     expandUpToLevel: null as any,
   };
+
   /**
    * Exclusive node which is currently selected
    */
   private exclusiveSelectedNode: TreeNode = null;
 
-  public initialize(selector: HTMLElement, settings: any): boolean {
-    if (!super.initialize(selector, settings)) {
-      return false;
-    }
-
+  constructor() {
+    super();
     this.addIcons();
     this.dispatch.on('updateNodes.selectTree', (nodes: TreeNodeSelection) => this.updateNodes(nodes));
     this.dispatch.on('loadDataAfter.selectTree', () => this.loadDataAfter());
     this.dispatch.on('updateSvg.selectTree', (nodes: TreeNodeSelection) => this.renderCheckbox(nodes));
     this.dispatch.on('nodeSelectedAfter.selectTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('prepareLoadedNode.selectTree', (node: TreeNode) => this.prepareLoadedNode(node));
-    return true;
   }
 
   /**
@@ -103,6 +100,42 @@ export class SelectTree extends SvgTree
           return 'hidden';
         }
       });
+  }
+
+  public filter(searchTerm?: string|null): void {
+    this.searchTerm = searchTerm;
+    if (this.nodes.length) {
+      this.nodes[0].expanded = false;
+    }
+    const regex = new RegExp(searchTerm, 'i');
+
+    this.nodes.forEach((node: any) => {
+      if (regex.test(node.name)) {
+        this.showParents(node);
+        node.expanded = true;
+        node.hidden = false;
+      } else {
+        node.hidden = true;
+        node.expanded = false;
+      }
+    });
+
+    this.prepareDataForVisibleNodes();
+    this.update();
+  }
+
+  /**
+   * Finds and show all parents of node
+   */
+  public showParents(node: any): void {
+    if (node.parents.length === 0) {
+      return;
+    }
+    const parent = this.nodes[node.parents[0]];
+    parent.hidden = false;
+    // expand parent node
+    parent.expanded = true;
+    this.showParents(parent);
   }
 
   /**

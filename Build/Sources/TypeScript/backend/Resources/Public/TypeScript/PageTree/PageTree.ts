@@ -30,8 +30,6 @@ export class PageTree extends SvgTree
   public nodeIsEdit: boolean;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
-  protected searchQuery: string = '';
-  private originalNodes: string = '';
   private dragDrop: PageTreeDragDrop;
 
   public constructor() {
@@ -54,19 +52,14 @@ export class PageTree extends SvgTree
       readableRootline: '',
       isMountPoint: false,
     };
-  }
-
-  public initialize(selector: HTMLElement, settings: any, dragDrop?: PageTreeDragDrop): boolean {
-    if (!super.initialize(selector, settings)) {
-      return false;
-    }
-
     this.dispatch.on('nodeSelectedAfter.pageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('nodeRightClick.pageTree', (node: TreeNode) => this.nodeRightClick(node));
     this.dispatch.on('prepareLoadedNode.pageTree', (node: TreeNode) => this.prepareLoadedNode(node));
-    this.dragDrop = dragDrop;
+  }
 
-    return true;
+  public initialize(selector: HTMLElement, settings: any, dragDrop?: PageTreeDragDrop) {
+    super.initialize(selector, settings);
+    this.dragDrop = dragDrop;
   }
 
   public sendChangeCommand(data: any): void {
@@ -189,43 +182,6 @@ export class PageTree extends SvgTree
     this.update();
   }
 
-  public refreshOrFilterTree(searchQuery?: string|null): void {
-    if (typeof searchQuery === 'string') {
-      this.searchQuery = searchQuery;
-    }
-    if (this.searchQuery !== '') {
-      this.filterTree();
-    } else {
-      this.refreshTree();
-    }
-  }
-
-  public resetFilter(): void {
-    this.searchQuery = '';
-    if (this.originalNodes.length > 0) {
-      let currentlySelected = this.getSelectedNodes()[0];
-      if (typeof currentlySelected === 'undefined') {
-        this.refreshTree();
-        return;
-      }
-      this.nodes = JSON.parse(this.originalNodes);
-      this.originalNodes = '';
-      // re-select the node from the identifier because the nodes have been updated
-      const currentlySelectedNode = this.nodes.find((node: TreeNode) => {
-        return node.stateIdentifier === currentlySelected.stateIdentifier;
-      });
-      if (currentlySelectedNode) {
-        this.selectNode(currentlySelectedNode);
-      } else {
-        this.refreshTree();
-      }
-    } else {
-      this.refreshTree();
-    }
-    this.prepareDataForVisibleNodes();
-    this.update();
-  }
-
   /**
    * Make the DOM element of the node given as parameter focusable and focus it
    */
@@ -253,28 +209,6 @@ export class PageTree extends SvgTree
         // ...
       }
     }
-  }
-
-  protected filterTree() {
-    this.nodesAddPlaceholder();
-    (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchQuery))
-      .get({cache: 'no-cache'})
-      .then((response: AjaxResponse) => response.resolve())
-      .then((json) => {
-        let nodes = Array.isArray(json) ? json : [];
-        if (nodes.length > 0) {
-          if (this.originalNodes === '') {
-            this.originalNodes = JSON.stringify(this.nodes);
-          }
-          this.replaceData(nodes);
-        }
-        this.nodesRemovePlaceholder();
-      })
-      .catch((error: any) => {
-        this.errorNotification(error, false)
-        this.nodesRemovePlaceholder();
-        throw error;
-      });
   }
 
   /**
@@ -455,5 +389,4 @@ export class PageTree extends SvgTree
       .node()
       .select();
   }
-
 }

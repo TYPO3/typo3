@@ -124,14 +124,13 @@ class Toolbar extends LitElement {
     const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
     if (inputEl) {
       new DebounceEvent('input', (evt: InputEvent) => {
-        this.search(evt.target as HTMLInputElement);
+        const el = evt.target as HTMLInputElement;
+        this.tree.filter(el.value.trim());
       }, this.settings.filterTimeout).bindTo(inputEl);
       inputEl.focus();
       inputEl.clearable({
         onClear: () => {
           this.tree.resetFilter();
-          this.tree.prepareDataForVisibleNodes();
-          this.tree.update();
         }
       });
     }
@@ -154,12 +153,5 @@ class Toolbar extends LitElement {
 
   private refreshTree(): void {
     this.tree.refreshOrFilterTree();
-  }
-
-  private search(inputEl: HTMLInputElement): void {
-    this.tree.searchQuery = inputEl.value.trim()
-    this.tree.refreshOrFilterTree();
-    this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
   }
 }

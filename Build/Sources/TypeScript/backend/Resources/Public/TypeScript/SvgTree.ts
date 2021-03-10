@@ -105,11 +105,6 @@ export class SvgTree {
   protected icons: {[keys: string]: SvgTreeDataIcon};
 
   /**
-   * Wrapper of svg element
-   */
-  protected d3wrapper: TreeWrapperSelection<SvgTreeWrapper> = null;
-
-  /**
    * SVG <defs> container wrapping all icon definitions
    */
   protected iconsContainer: TreeWrapperSelection<SVGDefsElement> = null;
@@ -134,6 +129,8 @@ export class SvgTree {
   protected viewportHeight: number = 0;
   protected scrollTop: number = 0;
   protected scrollBottom: number = 0;
+  protected searchTerm: string|null = null;
+  protected unfilteredNodes: string = '';
 
   /**
    * @todo: use generic labels
@@ -141,20 +138,7 @@ export class SvgTree {
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
 
-  /**
-   * Initializes the tree component - created basic markup, loads and renders data
-   *
-   * @param {HTMLElement} selector
-   * @param {Object} settings
-   */
-  public initialize(selector: HTMLElement, settings: any): boolean {
-    // Do nothing if already initialized
-    if (selector.dataset.svgTreeInitialized) {
-      return false;
-    }
-    Object.assign(this.settings, settings);
-
-    this.wrapper = selector;
+  constructor() {
     this.dispatch = d3dispatch.dispatch(
       'updateNodes',
       'updateSvg',
@@ -163,7 +147,17 @@ export class SvgTree {
       'nodeSelectedAfter',
       'nodeRightClick'
     );
+  }
 
+  /**
+   * Initializes the tree component - created basic markup, loads and renders data
+   *
+   * @param {HTMLElement} selector
+   * @param {Object} settings
+   */
+  public initialize(selector: HTMLElement, settings: any): void {
+    Object.assign(this.settings, settings);
+    this.wrapper = selector;
     /**
      * Create element:
      *
@@ -175,8 +169,7 @@ export class SvgTree {
      *   </g>
      * </svg>
      */
-    this.d3wrapper = d3selection.select(this.wrapper);
-    this.svg = this.d3wrapper.append('svg')
+    this.svg = d3selection.select(this.wrapper).append('svg')
       .attr('version', '1.1')
       .attr('width', '100%')
       .on('mouseover', () => this.isOverSvg = true)
@@ -216,11 +209,8 @@ export class SvgTree {
       this.update();
     });
 
-    this.wrapper.svgtree = this;
-    this.wrapper.dataset.svgTreeInitialized = 'true';
     this.wrapper.dispatchEvent(new Event('svg-tree:initialized'));
     this.resize();
-    return true;
   }
 
   /**
@@ -315,7 +305,8 @@ export class SvgTree {
   }
 
   /**
-   * Set parameters like node parents, parentsStateIdentifier, checked
+   * Set parameters like node parents, parentsStateIdentifier, checked.
+   * Usually called when data is loaded initially or replaced completely.
    *
    * @param {Node[]} nodes
    */
@@ -429,6 +420,14 @@ export class SvgTree {
    */
   public refreshTree(): void {
     this.loadData();
+  }
+
+  public refreshOrFilterTree(): void {
+    if (this.searchTerm !== '') {
+      this.filter(this.searchTerm);
+    } else {
+      this.refreshTree();
+    }
   }
 
   /**
@@ -605,7 +604,6 @@ export class SvgTree {
         });
 
     }
-
     this.dispatch.call('updateNodes', this, nodes);
   }
 
@@ -651,6 +649,61 @@ export class SvgTree {
       return;
     }
     this.dispatch.call('nodeSelectedAfter', this, node);
+  }
+
+  public filter(searchTerm?: string|null): void {
+    if (typeof searchTerm === 'string') {
+      this.searchTerm = searchTerm;
+    }
+    this.nodesAddPlaceholder();
+    if (this.searchTerm) {
+      (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchTerm))
+        .get({cache: 'no-cache'})
+        .then((response: AjaxResponse) => response.resolve())
+        .then((json) => {
+          let nodes = Array.isArray(json) ? json : [];
+          if (nodes.length > 0) {
+            if (this.unfilteredNodes === '') {
+              this.unfilteredNodes = JSON.stringify(this.nodes);
+            }
+            this.replaceData(nodes);
+          }
+          this.nodesRemovePlaceholder();
+        })
+        .catch((error: any) => {
+          this.errorNotification(error, false)
+          this.nodesRemovePlaceholder();
+          throw error;
+        });
+    } else {
+      // restore original state without filters
+      this.resetFilter();
+    }
+  }
+
+  public resetFilter(): void
+  {
+    this.searchTerm = '';
+    if (this.unfilteredNodes.length > 0) {
+      let currentlySelected = this.getSelectedNodes()[0];
+      if (typeof currentlySelected === 'undefined') {
+        this.refreshTree();
+        return;
+      }
+      this.nodes = JSON.parse(this.unfilteredNodes);
+      this.unfilteredNodes = '';
+      // re-select the node from the identifier because the nodes have been updated
+      const currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
+      if (currentlySelectedNode) {
+        this.selectNode(currentlySelectedNode);
+      } else {
+        this.refreshTree();
+      }
+    } else {
+      this.refreshTree();
+    }
+    this.prepareDataForVisibleNodes();
+    this.update();
   }
 
   /**
@@ -776,6 +829,15 @@ export class SvgTree {
 
   protected getNodeClass(node: TreeNode): string {
     return 'node identifier-' + node.stateIdentifier;
+  }
+
+  /**
+   * Finds node by its stateIdentifier (e.g. "0_360")
+   */
+  protected getNodeByIdentifier(identifier: string): TreeNode|null {
+    return this.nodes.find((node: TreeNode) => {
+      return node.stateIdentifier === identifier;
+    });
   }
 
   /**

@@ -12,7 +12,7 @@
  */
 
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
-import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../SvgTree';
+import {SvgTree, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
 import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
@@ -20,12 +20,8 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {FileStorageTreeNodeDragHandler, FileStorageTreeActions} from './FileStorageTreeActions';
 
 export class FileStorageTree extends SvgTree {
-  public settings: SvgTreeSettings;
-  public searchQuery: string = '';
   protected networkErrorTitle: string = TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = TYPO3.lang.tree_networkErrorDescription;
-
-  private originalNodes: string = '';
   private actionHandler: FileStorageTreeActions;
 
   public constructor() {
@@ -46,18 +42,14 @@ export class FileStorageTree extends SvgTree {
       class: '',
       readableRootline: ''
     };
-  }
-
-  public initialize(selector: HTMLElement, settings: any, actionHandler?: FileStorageTreeActions): boolean {
-    if (!super.initialize(selector, settings)) {
-      return false;
-    }
-
     this.dispatch.on('nodeSelectedAfter.fileStorageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('nodeRightClick.fileStorageTree', (node: TreeNode) => this.nodeRightClick(node));
     this.dispatch.on('prepareLoadedNode.fileStorageTree', (node: TreeNode) => this.prepareLoadedNode(node));
+  }
+
+  public initialize(selector: HTMLElement, settings: any, actionHandler?: FileStorageTreeActions): void {
+    super.initialize(selector, settings);
     this.actionHandler = actionHandler;
-    return true;
   }
 
   public hideChildren(node: TreeNode): void {
@@ -110,60 +102,6 @@ export class FileStorageTree extends SvgTree {
     }
   }
 
-  public filterTree() {
-    this.nodesAddPlaceholder();
-    (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchQuery))
-      .get({cache: 'no-cache'})
-      .then((response) => {
-        return response.resolve();
-      })
-      .then((json) => {
-        let nodes = Array.isArray(json) ? json : [];
-        if (nodes.length) {
-          if (this.originalNodes === '') {
-            this.originalNodes = JSON.stringify(this.nodes);
-          }
-        }
-        this.replaceData(nodes);
-        this.nodesRemovePlaceholder();
-      })
-      .catch((error: any) => {
-        this.errorNotification(error);
-        this.nodesRemovePlaceholder();
-        throw error;
-      });
-  }
-
-  public refreshOrFilterTree(): void {
-    if (this.searchQuery !== '') {
-      this.filterTree();
-    } else {
-      this.refreshTree();
-    }
-  }
-
-  public resetFilter(): void {
-    this.searchQuery = '';
-    if (this.originalNodes.length > 0) {
-      let currentlySelected = this.getSelectedNodes()[0];
-      if (typeof currentlySelected === 'undefined') {
-        this.refreshTree();
-        return;
-      }
-
-      this.nodes = JSON.parse(this.originalNodes);
-      this.originalNodes = '';
-      let currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
-      if (currentlySelectedNode) {
-        this.selectNode(currentlySelectedNode);
-      } else {
-        this.refreshTree();
-      }
-    } else {
-      this.refreshTree();
-    }
-  }
-
   /**
    * Initializes a drag&drop when called on the tree. Should be moved somewhere else at some point
    */
@@ -196,7 +134,6 @@ export class FileStorageTree extends SvgTree {
         nodes.forEach((node: TreeNode, offset: number) => {
           this.nodes.splice(index + offset, 0, node);
         });
-
         parentNode.loaded = true;
         this.setParametersNode();
         this.prepareDataForVisibleNodes();
@@ -209,15 +146,6 @@ export class FileStorageTree extends SvgTree {
         this.nodesRemovePlaceholder();
         throw error;
       });
-  }
-
-  /**
-   * Finds node by its stateIdentifier (e.g. "0_360")
-   */
-  private getNodeByIdentifier(identifier: string): TreeNode|null {
-    return this.nodes.find((node: TreeNode) => {
-      return node.stateIdentifier === identifier;
-    });
   }
 
   /**
