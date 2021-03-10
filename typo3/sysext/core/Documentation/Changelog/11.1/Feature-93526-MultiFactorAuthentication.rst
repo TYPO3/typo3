@@ -145,13 +145,14 @@ Configuration
 **Enforcing MFA for users**
 
 It seems reasonable to require MFA for specific users or user groups. This can
-be achieved with :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['requireMFA']` which
-allows 4 options:
+be achieved with :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa']` which
+allows 5 options:
 
 * `0`: Do not require multi-factor authentication (default)
 * `1`: Require multi-factor authentication for all users
 * `2`: Require multi-factor authentication only for non-admin users
 * `3`: Require multi-factor authentication only for admin users
+* `4`: Require multi-factor authentication only for system maintainers
 
 To set this requirement only for a specific user or user group, a new
 userTSconfig option :typoscript:`auth.mfa.required` is introduced. The

@@ -82,27 +82,30 @@ abstract class AbstractMfaController
      */
     protected function initializeMfaConfiguration(): void
     {
-        $this->mfaTsConfig = $this->getBackendUser()->getTSConfig()['auth.']['mfa.'] ?? [];
+        $backendUser = $this->getBackendUser();
+        $this->mfaTsConfig = $backendUser->getTSConfig()['auth.']['mfa.'] ?? [];
 
         // Set up required state based on user TSconfig and global configuration
         if (isset($this->mfaTsConfig['required'])) {
             // user TSconfig overrules global configuration
-            $this->mfaRequired = (bool)($this->mfaTsConfig['required'] ?? false);
+            $this->mfaRequired = (bool)$this->mfaTsConfig['required'];
         } else {
             $globalConfig = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa'] ?? 0);
             if ($globalConfig <= 1) {
                 // 0 and 1 can directly be used by type-casting to boolean
                 $this->mfaRequired = (bool)$globalConfig;
             } else {
-                // check the admin / non-admin options
-                $isAdmin = $this->getBackendUser()->isAdmin();
-                $this->mfaRequired = ($globalConfig === 2 && !$isAdmin) || ($globalConfig === 3 && $isAdmin);
+                // check the system maintainer / admin / non-admin options
+                $isAdmin = $backendUser->isAdmin();
+                $this->mfaRequired = ($globalConfig === 2 && !$isAdmin)
+                    || ($globalConfig === 3 && $isAdmin)
+                    || ($globalConfig === 4 && $backendUser->isSystemMaintainer());
             }
         }
 
         // Set up allowed providers based on user TSconfig and user groupData
-        $this->allowedProviders = array_filter($this->mfaProviderRegistry->getProviders(), function ($identifier) {
-            return $this->getBackendUser()->check('mfa_providers', $identifier)
+        $this->allowedProviders = array_filter($this->mfaProviderRegistry->getProviders(), function ($identifier) use ($backendUser) {
+            return $backendUser->check('mfa_providers', $identifier)
                 && !GeneralUtility::inList(($this->mfaTsConfig['disableProviders'] ?? ''), $identifier);
         }, ARRAY_FILTER_USE_KEY);
     }

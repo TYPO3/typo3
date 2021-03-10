@@ -273,6 +273,7 @@ BE:
             '1': 'Require multi-factor authentication for all users'
             '2': 'Require multi-factor authentication only for non-admin users'
             '3': 'Require multi-factor authentication only for admin users'
+            '4': 'Require multi-factor authentication only for system maintainers'
           description: 'Define users which should be required to set up multi-factor authentication.'
         recommendedMfaProvider:
           type: text
