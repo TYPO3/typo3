@@ -56,13 +56,6 @@ class LanguageService
     public $debugKey = false;
 
     /**
-     * Internal cache for read LL-files
-     *
-     * @var array
-     */
-    protected $LL_files_cache = [];
-
-    /**
      * Internal cache for ll-labels (filled as labels are requested)
      *
      * @var array
@@ -206,11 +199,7 @@ class LanguageService
             }
             $parts = explode(':', trim($restStr));
             $parts[0] = $extPrfx . $parts[0];
-            // Getting data if not cached
-            if (!isset($this->LL_files_cache[$parts[0]])) {
-                $this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
-            }
-            $output = $this->getLLL($parts[1], $this->LL_files_cache[$parts[0]]);
+            $output = $this->getLLL($parts[1], $this->readLLfile($parts[0]));
         } else {
             // Use a constant non-localizable label
             $output = $input;
