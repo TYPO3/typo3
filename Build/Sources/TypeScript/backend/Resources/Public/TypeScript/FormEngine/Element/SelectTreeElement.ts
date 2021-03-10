@@ -93,6 +93,7 @@ export class SelectTreeElement {
     // check all nodes again, to ensure correct display of indeterminate state
     this.calculateIndeterminate(this.tree.nodes);
     this.saveCheckboxes();
+    this.tree.setup.input.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
   }
 
   /**

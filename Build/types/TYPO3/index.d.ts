@@ -66,6 +66,7 @@ declare namespace TYPO3 {
         public openPopupWindow(mode: string, params: string): JQuery;
         public initializeNullNoPlaceholderCheckboxes(): void;
         public initializeNullWithPlaceholderCheckboxes(): void;
+        public requestFormEngineUpdate(askForUpdate: boolean): void
       }
 
       export class MultiStepWizard {

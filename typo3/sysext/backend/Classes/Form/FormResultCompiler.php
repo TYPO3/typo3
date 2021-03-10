@@ -220,6 +220,8 @@ class FormResultCompiler
             }
         }
 
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine/RequestUpdate');
+
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.noRecordTitle'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'),

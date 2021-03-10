@@ -698,25 +698,30 @@ define(['jquery',
   };
 
   FormEngine.requestConfirmationOnFieldChange = function(fieldName, showConfirmation) {
+    console.warn('FormEngine.requestConfirmationOnFieldChange() has been marked as deprecated without substitution. Configure the TCA of field "' + fieldName + '" properly to request an FormEngine update on it\'s own.');
     const $field = FormEngine.getFieldElement(fieldName);
     $field.on('change', function() {
-      if (showConfirmation) {
-        const $modal = Modal.confirm(
-          TYPO3.lang['FormEngine.refreshRequiredTitle'],
-          TYPO3.lang['FormEngine.refreshRequiredContent']
-        );
-
-        $modal.on('button.clicked', function(e) {
-          if (e.target.name === 'ok') {
-            FormEngine.saveDocument();
-          }
-
-          Modal.dismiss();
-        });
-      } else {
-        FormEngine.saveDocument();
-      }
+      FormEngine.requestFormEngineUpdate(showConfirmation);
     });
+  }
+
+  FormEngine.requestFormEngineUpdate = function(showConfirmation) {
+    if (showConfirmation) {
+      const $modal = Modal.confirm(
+        TYPO3.lang['FormEngine.refreshRequiredTitle'],
+        TYPO3.lang['FormEngine.refreshRequiredContent']
+      );
+
+      $modal.on('button.clicked', function(e) {
+        if (e.target.name === 'ok') {
+          FormEngine.saveDocument();
+        }
+
+        Modal.dismiss();
+      });
+    } else {
+      FormEngine.saveDocument();
+    }
   };
 
   /**

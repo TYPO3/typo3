@@ -339,7 +339,9 @@ abstract class AbstractFormElement extends AbstractNode
             $checked = !$checked;
         }
         $onClick = $elementName . '.value=' . ($invert ? '!' : '') . 'this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
-            . $elementName . '.value&' . ((2 ** $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;
+            . $elementName . '.value&' . ((2 ** $checkboxesCount) - 1 - $checkboxPow) . ');';
+        $onClick .= $elementName . '.dispatchEvent(new Event(\'change\', {bubbles: true, cancelable: true}));';
+        $onClick .= $additionalJavaScript;
         return ' onclick="' . htmlspecialchars($onClick) . '"' . ($checked ? ' checked="checked"' : '');
     }
 

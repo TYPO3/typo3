@@ -116,26 +116,6 @@ class SingleFieldContainer extends AbstractContainer
         } else {
             $typeField = substr($this->data['processedTca']['ctrl']['type'], 0, strpos($this->data['processedTca']['ctrl']['type'], ':'));
         }
-        // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-        // This is used for eg. "type" fields and others configured with "onChange"
-        if (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField
-            || isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload'
-        ) {
-            if ($backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                $alertMsgOnChange = 'Modal.confirm('
-                    . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                    . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                    . ')'
-                    . '.on('
-                    . '"button.clicked",'
-                    . ' function(e) { if (e.target.name == "ok") { FormEngine.saveDocument(); } Modal.dismiss(); }'
-                    . ');';
-            } else {
-                $alertMsgOnChange = 'FormEngine.saveDocument();';
-            }
-        } else {
-            $alertMsgOnChange = '';
-        }
 
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];
@@ -145,9 +125,6 @@ class SingleFieldContainer extends AbstractContainer
             . GeneralUtility::quoteJSvalue($fieldName) . ','
             . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
             . ');';
-        if ($alertMsgOnChange) {
-            $parameterArray['fieldChangeFunc']['alert'] = 'require([\'TYPO3/CMS/Backend/FormEngine\', \'TYPO3/CMS/Backend/Modal\'], function (FormEngine, Modal) {' . $alertMsgOnChange . '});';
-        }
 
         // Based on the type of the item, call a render function on a child element
         $options = $this->data;
@@ -160,6 +137,18 @@ class SingleFieldContainer extends AbstractContainer
             $options['renderType'] = $parameterArray['fieldConf']['config']['type'];
         }
         $resultArray = $this->nodeFactory->create($options)->render();
+
+        // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
+        // This is used for eg. "type" fields and others configured with "onChange"
+        $requestFormEngineUpdate =
+            (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
+            || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
+        if ($requestFormEngineUpdate) {
+            $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);
+            $requestMode = $askForUpdate ? 'ask' : 'enforce';
+            $fieldSelector = sprintf('[name="%s"]', $parameterArray['itemFormElName']);
+            $resultArray['html'] .= '<typo3-formengine-updater mode="' . htmlspecialchars($requestMode) . '" field="' . htmlspecialchars($fieldSelector) . '"></typo3-formengine-updater>';
+        }
         return $resultArray;
     }
 
