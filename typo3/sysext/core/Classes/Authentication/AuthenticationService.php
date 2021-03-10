@@ -192,17 +192,15 @@ class AuthenticationService extends AbstractAuthenticationService
             $message = 'Login-attempt from ###IP###, username \'%s\', no suitable hash method found!';
             $this->writeLogMessage($message, $submittedUsername);
             $this->writelog(255, 3, 3, 1, $message, [$submittedUsername]);
-            $this->logger->info(sprintf($message, $submittedUsername));
             // Not responsible, check other services
             return 100;
         }
 
         if (!$isValidPassword) {
             // Failed login attempt - wrong password
-            $this->writeLogMessage(TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'', $submittedUsername);
             $message = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
+            $this->writeLogMessage($message, $submittedUsername);
             $this->writelog(255, 3, 3, 1, $message, [$submittedUsername]);
-            $this->logger->info(sprintf($message, $submittedUsername));
             // Responsible, authentication failed, do NOT check other services
             return 0;
         }
@@ -212,7 +210,6 @@ class AuthenticationService extends AbstractAuthenticationService
             $errorMessage = 'Login-attempt from ###IP###, username \'%s\', locked domain \'%s\' did not match \'%s\'!';
             $this->writeLogMessage($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain);
             $this->writelog(255, 3, 3, 1, $errorMessage, [$user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain]);
-            $this->logger->info(sprintf($errorMessage, $user[$this->db_user['username_column']], $configuredDomainLock, $queriedDomain));
             // Responsible, authentication ok, but domain lock not ok, do NOT check other services
             return 0;
         }
@@ -388,6 +385,7 @@ class AuthenticationService extends AbstractAuthenticationService
      *
      * This function accepts variable number of arguments and can format
      * parameters. The syntax is the same as for sprintf()
+     * If a marker ###IP### is present in the message, it is automatically replaced with the REMOTE_ADDR
      *
      * @param string $message Message to output
      * @param array<int, mixed> $params
@@ -397,6 +395,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!empty($params)) {
             $message = vsprintf($message, $params);
         }
+        $message = str_replace('###IP###', (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), $message);
         if (TYPO3_MODE === 'FE') {
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             $timeTracker->setTSlogMessage($message);
