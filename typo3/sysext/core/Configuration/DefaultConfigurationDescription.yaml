@@ -146,7 +146,7 @@ SYS:
             description: 'Defines which values of a proxy header (eg HTTP_X_FORWARDED_FOR) to use, if more than one is found.'
         reverseProxyPrefix:
             type: text
-            description: 'Optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).'
+            description: 'Optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI). Example: When proxying ext-domain.com to int-server.com/prefix this has to be set to <em>prefix</em>'
         reverseProxySSL:
             type: text
             description: '''*'' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If ''*'' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.'
