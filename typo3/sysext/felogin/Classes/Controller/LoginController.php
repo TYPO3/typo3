@@ -121,7 +121,7 @@ class LoginController extends AbstractLoginFormController
         $this->configuration = RedirectConfiguration::fromSettings($this->settings);
 
         if ($this->isLoginOrLogoutInProgress() && !$this->isRedirectDisabled()) {
-            if (!$this->userAspect->isLoggedIn() && $this->userService->cookieWarningRequired()) {
+            if ($this->userAspect->isLoggedIn() && $this->userService->cookieWarningRequired()) {
                 $this->showCookieWarning = true;
                 return;
             }
