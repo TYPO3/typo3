@@ -89,7 +89,6 @@ export class SvgTree {
   public nodes: TreeNode[] = [];
 
   public settings: SvgTreeSettings = {
-    showCheckboxes: false,
     showIcons: false,
     marginTop: 15,
     nodeHeight: 20,
@@ -97,18 +96,13 @@ export class SvgTree {
     width: 300,
     duration: 400,
     dataUrl: '',
-    validation: {
-      maxItems: Number.MAX_VALUE
-    },
     defaultProperties: {},
-    unselectableElements: [] as any,
     expandUpToLevel: null as any,
-    readOnlyMode: false,
-    exclusiveNodesIdentifiers: ''
   };
 
+  public textPosition: number = 0;
+
   protected icons: {[keys: string]: SvgTreeDataIcon};
-  protected textPosition: number = 0;
 
   /**
    * Wrapper of svg element
@@ -140,11 +134,6 @@ export class SvgTree {
   protected viewportHeight: number = 0;
   protected scrollTop: number = 0;
   protected scrollBottom: number = 0;
-
-  /**
-   * Exclusive node which is currently selected
-   */
-  protected exclusiveSelectedNode: TreeNode = null;
 
   /**
    * @todo: use generic labels
@@ -351,19 +340,8 @@ export class SvgTree {
         }
       }
 
-      node.canToggle = node.hasChildren;
-
-      // create stateIdentifier if doesn't exist (for category tree)
-      if (!node.stateIdentifier) {
-        const parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
-        node.stateIdentifier = parentId + '_' + node.identifier;
-      }
-
       if (typeof node.checked === 'undefined') {
         node.checked = false;
-      }
-      if (node.selectable === false) {
-        this.settings.unselectableElements.push(node.identifier);
       }
 
       // dispatch event
@@ -372,10 +350,9 @@ export class SvgTree {
     });
 
     // get nodes with depth 0, if there is only 1 then open it and disable toggle
-    const nodeDepths = nodes.filter((node) => node.depth === 0);
-    if (nodeDepths.length === 1) {
+    const nodesOnRootLevel = nodes.filter((node) => node.depth === 0);
+    if (nodesOnRootLevel.length === 1) {
       nodes[0].expanded = true;
-      nodes[0].canToggle = false;
     }
 
     this.nodes = nodes;
@@ -667,25 +644,13 @@ export class SvgTree {
 
   /**
    * Node selection logic (triggered by different events)
+   * This represents a dummy method and is usually overridden
    */
   public selectNode(node: TreeNode): void {
     if (!this.isNodeSelectable(node)) {
       return;
     }
-
-    const checked = node.checked;
-    this.handleExclusiveNodeSelection(node);
-
-    if (this.settings.validation && this.settings.validation.maxItems) {
-      if (!checked && this.getSelectedNodes().length >= this.settings.validation.maxItems) {
-        return;
-      }
-    }
-
-    node.checked = !checked;
-
     this.dispatch.call('nodeSelectedAfter', this, node);
-    this.update();
   }
 
   /**
@@ -709,13 +674,23 @@ export class SvgTree {
     }
   }
 
+  protected disableSelectedNodes(): void {
+    // Disable already selected nodes
+    this.getSelectedNodes().forEach((node: TreeNode) => {
+      if (node.checked === true) {
+        node.checked = false;
+        this.dispatch.call('nodeSelectedAfter', this, node);
+      }
+    });
+  }
+
   /**
    * Check whether node can be selected.
    * In some cases (e.g. selecting a parent) it should not be possible to select
    * element (as it's own parent).
    */
   protected isNodeSelectable(node: TreeNode): boolean {
-    return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
+    return true;
   }
 
   /**
@@ -850,7 +825,7 @@ export class SvgTree {
   }
 
   protected getToggleVisibility(node: TreeNode): string {
-    return node.canToggle ? 'visible' : 'hidden';
+    return node.hasChildren ? 'visible' : 'hidden';
   }
 
   protected getChevronClass(node: TreeNode): string {
@@ -905,13 +880,6 @@ export class SvgTree {
   }
 
   /**
-   * Event handler for click on a node's label/text
-   */
-  protected clickOnLabel(node: TreeNode): void {
-    this.selectNode(node);
-  }
-
-  /**
    * Event handler for click on a chevron
    */
   protected chevronClick(node: TreeNode): void {
@@ -923,37 +891,6 @@ export class SvgTree {
 
     this.prepareDataForVisibleNodes();
     this.update();
-  }
-
-  /**
-   * Handle exclusive nodes functionality
-   * If a node is one of the exclusiveNodesIdentifiers list,
-   * all other nodes has to be unselected before selecting this node.
-   *
-   * @param {Node} node
-   */
-  private handleExclusiveNodeSelection(node: TreeNode): void {
-    const exclusiveKeys = this.settings.exclusiveNodesIdentifiers.split(',');
-    if (this.settings.exclusiveNodesIdentifiers.length && node.checked === false) {
-      if (exclusiveKeys.indexOf('' + node.identifier) > -1) {
-
-        // this key is exclusive, so uncheck all others
-        this.nodes.forEach((node: TreeNode) => {
-          if (node.checked === true) {
-            node.checked = false;
-            this.dispatch.call('nodeSelectedAfter', this, node);
-          }
-        });
-
-        this.exclusiveSelectedNode = node;
-      } else if (exclusiveKeys.indexOf('' + node.identifier) === -1 && this.exclusiveSelectedNode) {
-
-        // current node is not exclusive, but other exclusive node is already selected
-        this.exclusiveSelectedNode.checked = false;
-        this.dispatch.call('nodeSelectedAfter', this, this.exclusiveSelectedNode);
-        this.exclusiveSelectedNode = null;
-      }
-    }
   }
 
   /**
@@ -1027,7 +964,7 @@ export class SvgTree {
       case KeyTypes.LEFT:
         if (currentNode.expanded) {
           // collapse node if collapsible
-          if (currentNode.canToggle) {
+          if (currentNode.hasChildren) {
             this.hideChildren(currentNode);
             this.prepareDataForVisibleNodes();
             this.update();

@@ -60,10 +60,6 @@ export class FileStorageTree extends SvgTree {
     return true;
   }
 
-  public getFirstNode(): TreeNode {
-    return this.nodes[0];
-  }
-
   public hideChildren(node: TreeNode): void {
     super.hideChildren(node);
     Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, '0');

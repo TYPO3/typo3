@@ -30,7 +30,6 @@ export interface TreeNode extends d3selection.EnterElement {
   parents: Array<number>;
   loaded: boolean;
   expanded: boolean;
-  canToggle: boolean;
   hasChildren: boolean;
   hidden: boolean;
   isOver: boolean;

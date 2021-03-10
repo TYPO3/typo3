@@ -12,23 +12,39 @@
  */
 
 import * as d3selection from 'd3-selection';
-import {SvgTree, TreeNodeSelection} from '../../SvgTree';
+import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../../SvgTree';
 import {TreeNode} from '../../Tree/TreeNode';
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 
+interface SelectTreeSettings extends SvgTreeSettings {
+  exclusiveNodesIdentifiers: '';
+  validation: {[keys: string]: any};
+  unselectableElements: Array<any>,
+  readOnlyMode: false
+}
+
 export class SelectTree extends SvgTree
 {
-  public constructor() {
-    super();
-    this.settings.showCheckboxes = true;
-  }
-
+  public settings: SelectTreeSettings = {
+    unselectableElements: [],
+    exclusiveNodesIdentifiers: '',
+    validation: {},
+    readOnlyMode: false,
+    showIcons: false,
+    marginTop: 15,
+    nodeHeight: 20,
+    indentWidth: 16,
+    width: 300,
+    duration: 400,
+    dataUrl: '',
+    defaultProperties: {},
+    expandUpToLevel: null as any,
+  };
   /**
-   * SelectTree initialization
-   *
-   * @param {HTMLElement} selector
-   * @param {Object} settings
+   * Exclusive node which is currently selected
    */
+  private exclusiveSelectedNode: TreeNode = null;
+
   public initialize(selector: HTMLElement, settings: any): boolean {
     if (!super.initialize(selector, settings)) {
       return false;
@@ -39,8 +55,32 @@ export class SelectTree extends SvgTree
     this.dispatch.on('loadDataAfter.selectTree', () => this.loadDataAfter());
     this.dispatch.on('updateSvg.selectTree', (nodes: TreeNodeSelection) => this.renderCheckbox(nodes));
     this.dispatch.on('nodeSelectedAfter.selectTree', (node: TreeNode) => this.nodeSelectedAfter(node));
+    this.dispatch.on('prepareLoadedNode.selectTree', (node: TreeNode) => this.prepareLoadedNode(node));
     return true;
-  };
+  }
+
+  /**
+   * Node selection logic (triggered by different events)
+   */
+  public selectNode(node: TreeNode): void {
+    if (!this.isNodeSelectable(node)) {
+      return;
+    }
+
+    const checked = node.checked;
+    this.handleExclusiveNodeSelection(node);
+
+    if (this.settings.validation && this.settings.validation.maxItems) {
+      if (!checked && this.getSelectedNodes().length >= this.settings.validation.maxItems) {
+        return;
+      }
+    }
+
+    node.checked = !checked;
+
+    this.dispatch.call('nodeSelectedAfter', this, node);
+    this.update();
+  }
 
   /**
    * Function relays on node.indeterminate state being up to date
@@ -48,9 +88,6 @@ export class SelectTree extends SvgTree
    * @param {Selection} nodes
    */
   public updateNodes(nodes: TreeNodeSelection): void {
-    if (!this.settings.showCheckboxes) {
-      return;
-    }
     nodes
       .selectAll('.tree-check use')
       .attr('visibility', function(this: SVGUseElement, node: TreeNode): string {
@@ -69,44 +106,65 @@ export class SelectTree extends SvgTree
   }
 
   /**
+   * Check whether node can be selected.
+   * In some cases (e.g. selecting a parent) it should not be possible to select
+   * element (as it's own parent).
+   */
+  protected isNodeSelectable(node: TreeNode): boolean {
+    return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
+  }
+
+  /**
+   * Check if a node has all information to be used.
+   */
+  private prepareLoadedNode(node: TreeNode): void {
+    // create stateIdentifier if doesn't exist (for category tree)
+    if (!node.stateIdentifier) {
+      const parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
+      node.stateIdentifier = parentId + '_' + node.identifier;
+    }
+    if (node.selectable === false) {
+      this.settings.unselectableElements.push(node.identifier);
+    }
+  }
+
+  /**
    * Adds svg elements for checkbox rendering.
    *
    * @param {Selection} nodeSelection ENTER selection (only new DOM objects)
    */
   private renderCheckbox(nodeSelection: TreeNodeSelection): void {
-    if (this.settings.showCheckboxes) {
-      this.textPosition = 50;
+    this.textPosition = 50;
 
-      // this can be simplified to single "use" element with changing href on click
-      // when we drop IE11 on WIN7 support
-      const g = nodeSelection.filter((node: TreeNode) => {
-        // do not render checkbox if node is not selectable
-        return this.isNodeSelectable(node) || Boolean(node.checked);
-      })
-        .append('g')
-        .attr('class', 'tree-check')
-        .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node));
+    // this can be simplified to single "use" element with changing href on click
+    // when we drop IE11 on WIN7 support
+    const g = nodeSelection.filter((node: TreeNode) => {
+      // do not render checkbox if node is not selectable
+      return this.isNodeSelectable(node) || Boolean(node.checked);
+    })
+      .append('g')
+      .attr('class', 'tree-check')
+      .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node));
 
-      g.append('use')
-        .attr('x', 28)
-        .attr('y', -8)
-        .attr('visibility', 'hidden')
-        .attr('class', 'icon-check')
-        .attr('xlink:href', '#icon-check');
-      g.append('use')
-        .attr('x', 28)
-        .attr('y', -8)
-        .attr('visibility', 'hidden')
-        .attr('class', 'icon-checked')
-        .attr('xlink:href', '#icon-checked');
-      g.append('use')
-        .attr('x', 28)
-        .attr('y', -8)
-        .attr('visibility', 'hidden')
-        .attr('class', 'icon-indeterminate')
-        .attr('xlink:href', '#icon-indeterminate');
-    }
-  };
+    g.append('use')
+      .attr('x', 28)
+      .attr('y', -8)
+      .attr('visibility', 'hidden')
+      .attr('class', 'icon-check')
+      .attr('xlink:href', '#icon-check');
+    g.append('use')
+      .attr('x', 28)
+      .attr('y', -8)
+      .attr('visibility', 'hidden')
+      .attr('class', 'icon-checked')
+      .attr('xlink:href', '#icon-checked');
+    g.append('use')
+      .attr('x', 28)
+      .attr('y', -8)
+      .attr('visibility', 'hidden')
+      .attr('class', 'icon-indeterminate')
+      .attr('xlink:href', '#icon-indeterminate');
+  }
 
   /**
    * Updates the indeterminate state for ancestors of the current node
@@ -173,6 +231,30 @@ export class SelectTree extends SvgTree
     }
     this.settings.input.value = this.getSelectedNodes()
       .map((node: TreeNode): string => node.identifier);
+  }
+
+  /**
+   * Handle exclusive nodes functionality
+   * If a node is one of the exclusiveNodesIdentifiers list,
+   * all other nodes has to be unselected before selecting this node.
+   *
+   * @param {Node} node
+   */
+  private handleExclusiveNodeSelection(node: TreeNode): void {
+    const exclusiveKeys = this.settings.exclusiveNodesIdentifiers.split(',');
+    if (this.settings.exclusiveNodesIdentifiers.length && node.checked === false) {
+      if (exclusiveKeys.indexOf('' + node.identifier) > -1) {
+        // this key is exclusive, so uncheck all others
+        this.disableSelectedNodes();
+        this.exclusiveSelectedNode = node;
+      } else if (exclusiveKeys.indexOf('' + node.identifier) === -1 && this.exclusiveSelectedNode) {
+
+        // current node is not exclusive, but other exclusive node is already selected
+        this.exclusiveSelectedNode.checked = false;
+        this.dispatch.call('nodeSelectedAfter', this, this.exclusiveSelectedNode);
+        this.exclusiveSelectedNode = null;
+      }
+    }
   }
 
   /**

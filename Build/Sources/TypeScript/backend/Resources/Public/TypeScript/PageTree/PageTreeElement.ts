@@ -207,8 +207,7 @@ class Toolbar extends LitElement {
   }
 
   private search(inputEl: HTMLInputElement): void {
-    this.tree.searchQuery = inputEl.value.trim()
-    this.tree.refreshOrFilterTree();
+    this.tree.refreshOrFilterTree(inputEl.value.trim());
     this.tree.prepareDataForVisibleNodes();
     this.tree.update();
   }

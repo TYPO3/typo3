@@ -47,4 +47,4 @@ var __decorate=this&&this.__decorate||function(e,t,r,i){var o,n=arguments.length
               `):""}
         </div>
       </div>
-    `}refreshTree(){this.tree.refreshOrFilterTree()}search(e){this.tree.searchQuery=e.value.trim(),this.tree.refreshOrFilterTree(),this.tree.prepareDataForVisibleNodes(),this.tree.update()}dragToolbar(e,t){return t.connectDragHandler(new n.ToolbarDragHandler(e,this.tree,t))}};__decorate([r.property({type:o.PageTree})],d.prototype,"tree",void 0),d=__decorate([r.customElement("typo3-backend-navigation-component-pagetree-toolbar")],d)}));
+    `}refreshTree(){this.tree.refreshOrFilterTree()}search(e){this.tree.refreshOrFilterTree(e.value.trim()),this.tree.prepareDataForVisibleNodes(),this.tree.update()}dragToolbar(e,t){return t.connectDragHandler(new n.ToolbarDragHandler(e,this.tree,t))}};__decorate([r.property({type:o.PageTree})],d.prototype,"tree",void 0),d=__decorate([r.customElement("typo3-backend-navigation-component-pagetree-toolbar")],d)}));

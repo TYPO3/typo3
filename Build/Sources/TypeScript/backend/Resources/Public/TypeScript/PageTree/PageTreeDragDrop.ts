@@ -18,6 +18,7 @@ import * as d3selection from 'd3-selection';
 import Modal = require('../Modal');
 import Severity = require('../Severity');
 import {TreeWrapperSelection} from '../SvgTree';
+import {PageTree} from './PageTree';
 
 type TreeNodeDragEvent = D3DragEvent<SVGElement, any, TreeNode>;
 
@@ -125,7 +126,7 @@ export class ToolbarDragHandler implements DragDropHandler {
   private readonly icon: string = '';
   private isDragged: boolean = false;
   private dragDrop: PageTreeDragDrop;
-  private tree: any;
+  private tree: PageTree;
 
   constructor(item: any, tree: any, dragDrop: PageTreeDragDrop) {
     this.id = item.nodeType;

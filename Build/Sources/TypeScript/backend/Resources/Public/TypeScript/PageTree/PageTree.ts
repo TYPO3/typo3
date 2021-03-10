@@ -26,15 +26,20 @@ interface PageTreeSettings extends SvgTreeSettings {
   temporaryMountPoint?: string;
 }
 
+/**
+ * A Tree based on SVG for pages, which has a AJAX-based loading of the tree
+ * and also handles search + filter via AJAX.
+ */
 export class PageTree extends SvgTree
 {
-  public searchQuery: string = '';
+  public nodeIsEdit: boolean;
   public settings: PageTreeSettings;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
+  protected searchQuery: string = '';
   private originalNodes: string = '';
   private dragDrop: PageTreeDragDrop;
-  private nodeIsEdit: boolean;
+
   public constructor() {
     super();
     this.settings.defaultProperties = {
@@ -71,7 +76,7 @@ export class PageTree extends SvgTree
       this.addMountPoint(this.settings.temporaryMountPoint);
     }
     return true;
-  };
+  }
 
   public sendChangeCommand(data: any): void {
     let params = '';
@@ -94,7 +99,7 @@ export class PageTree extends SvgTree
     } else {
       if (data.command === 'delete') {
         if (data.uid === window.fsMod.recentIds.web) {
-          this.selectNode(this.getFirstNode());
+          this.selectNode(this.nodes[0]);
         }
         params = '&cmd[pages][' + data.uid + '][delete]=1';
       } else {
@@ -126,10 +131,6 @@ export class PageTree extends SvgTree
       });
   }
 
-  public getFirstNode(): TreeNode {
-    return this.nodes[0];
-  }
-
   public nodeRightClick(node: TreeNode): void {
     ContextMenu.show(
       node.itemType,
@@ -139,14 +140,14 @@ export class PageTree extends SvgTree
       '',
       this.getNodeElement(node)
     );
-  };
+  }
 
   /**
    * Event listener called for each loaded node,
    * here used to mark node remembered in fsMode as selected
    */
   public prepareLoadedNode(node: TreeNode) {
-    if (node.stateIdentifier === window.fsMod.navFrameHighlightedID.web) {
+    if (node.stateIdentifier === top.window.fsMod.navFrameHighlightedID.web) {
       node.checked = true;
     }
   }
@@ -161,57 +162,12 @@ export class PageTree extends SvgTree
     super.showChildren(node);
     Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, '1');
   }
-
-  /**
-   * Loads child nodes via Ajax (used when expanding a collapesed node)
-   *
-   * @param parentNode
-   * @return {boolean}
-   */
-  public loadChildrenOfNode(parentNode: TreeNode) {
-    if (parentNode.loaded) {
-      return;
-    }
-
-    this.nodesAddPlaceholder();
-    (new AjaxRequest(this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth))
-      .get({cache: 'no-cache'})
-      .then((response: AjaxResponse) => response.resolve())
-      .then((json: any) => {
-        let nodes = Array.isArray(json) ? json : [];
-        //first element is a parent
-        nodes.shift();
-        const index = this.nodes.indexOf(parentNode) + 1;
-        //adding fetched node after parent
-        nodes.forEach((node: TreeNode, offset: number) => {
-          this.nodes.splice(index + offset, 0, node);
-        });
-
-        parentNode.loaded = true;
-        this.setParametersNode();
-        this.prepareDataForVisibleNodes();
-        this.update();
-        this.nodesRemovePlaceholder();
-
-        // Focus node only if it's not currently in edit mode
-        if (!this.nodeIsEdit) {
-          this.switchFocusNode(parentNode);
-        }
-      })
-      .catch((error: any) => {
-        this.errorNotification(error, false)
-        this.nodesRemovePlaceholder();
-        throw error;
-      });
-  };
-
   public updateNodeBgClass(nodeBg: TreeNodeSelection) {
     return super.updateNodeBgClass.call(this, nodeBg).call(this.initializeDragForNode());
-  };
+  }
 
   public nodesUpdate(nodes: TreeNodeSelection) {
     nodes = super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
-
     nodes
       .append('text')
       .text('+')
@@ -222,7 +178,7 @@ export class PageTree extends SvgTree
       .on('click', (evt: MouseEvent, node: TreeNode) => this.setTemporaryMountPoint(parseInt(node.identifier, 10)));
 
     return nodes;
-  };
+  }
 
   /**
    * Node selection logic (triggered by different events)
@@ -233,45 +189,17 @@ export class PageTree extends SvgTree
     if (!this.isNodeSelectable(node)) {
       return;
     }
-
     // Disable already selected nodes
-    this.getSelectedNodes().forEach((node: TreeNode) => {
-      if (node.checked === true) {
-        node.checked = false;
-        this.dispatch.call('nodeSelectedAfter', this, node);
-      }
-    });
-
+    this.disableSelectedNodes();
     node.checked = true;
     this.dispatch.call('nodeSelectedAfter', this, node);
     this.update();
-  };
+  }
 
-  public filterTree() {
-    this.nodesAddPlaceholder();
-    (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchQuery))
-      .get({cache: 'no-cache'})
-      .then((response) => {
-        return response.resolve();
-      })
-      .then((json) => {
-        let nodes = Array.isArray(json) ? json : [];
-        if (nodes.length > 0) {
-          if (this.originalNodes === '') {
-            this.originalNodes = JSON.stringify(this.nodes);
-          }
-          this.replaceData(nodes);
-        }
-        this.nodesRemovePlaceholder();
-      })
-      .catch((error: any) => {
-        this.errorNotification(error, false)
-        this.nodesRemovePlaceholder();
-        throw error;
-      });
-  };
-
-  public refreshOrFilterTree() {
+  public refreshOrFilterTree(searchQuery?: string|null): void {
+    if (typeof searchQuery === 'string') {
+      this.searchQuery = searchQuery;
+    }
     if (this.searchQuery !== '') {
       this.filterTree();
     } else {
@@ -287,10 +215,12 @@ export class PageTree extends SvgTree
         this.refreshTree();
         return;
       }
-
       this.nodes = JSON.parse(this.originalNodes);
       this.originalNodes = '';
-      let currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
+      // re-select the node from the identifier because the nodes have been updated
+      const currentlySelectedNode = this.nodes.find((node: TreeNode) => {
+        return node.stateIdentifier === currentlySelected.stateIdentifier;
+      });
       if (currentlySelectedNode) {
         this.selectNode(currentlySelectedNode);
       } else {
@@ -298,6 +228,18 @@ export class PageTree extends SvgTree
       }
     } else {
       this.refreshTree();
+    }
+    this.prepareDataForVisibleNodes();
+    this.update();
+  }
+
+  /**
+   * Make the DOM element of the node given as parameter focusable and focus it
+   */
+  public switchFocusNode(node: TreeNode) {
+    // Focus node only if it's not currently in edit mode
+    if (!this.nodeIsEdit) {
+      this.switchFocus(this.getNodeElement(node));
     }
   }
 
@@ -329,17 +271,110 @@ export class PageTree extends SvgTree
     Persistent.unset('pageTree_temporaryMountPoint').then(() => {
       this.refreshTree();
     });
-  };
-
-  /**
-   * Drag & Drop + Node Title Editing (In-Place Editing) related code
-   */
+  }
 
   /**
    * Initializes a drag&drop when called on the page tree. Should be moved somewhere else at some point
    */
   public initializeDragForNode() {
     return this.dragDrop.connectDragHandler(new PageTreeNodeDragHandler(this, this.dragDrop))
+  }
+
+  public removeEditedText() {
+    const inputWrapper = d3selection.selectAll('.node-edit');
+    if (inputWrapper.size()) {
+      try {
+        inputWrapper.remove();
+        this.nodeIsEdit = false;
+      } catch (e) {
+        // ...
+      }
+    }
+  }
+
+  protected filterTree() {
+    this.nodesAddPlaceholder();
+    (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchQuery))
+      .get({cache: 'no-cache'})
+      .then((response: AjaxResponse) => response.resolve())
+      .then((json) => {
+        let nodes = Array.isArray(json) ? json : [];
+        if (nodes.length > 0) {
+          if (this.originalNodes === '') {
+            this.originalNodes = JSON.stringify(this.nodes);
+          }
+          this.replaceData(nodes);
+        }
+        this.nodesRemovePlaceholder();
+      })
+      .catch((error: any) => {
+        this.errorNotification(error, false)
+        this.nodesRemovePlaceholder();
+        throw error;
+      });
+  }
+
+  /**
+   * Loads child nodes via Ajax (used when expanding a collapsed node)
+   *
+   * @param parentNode
+   * @return {boolean}
+   */
+  protected loadChildrenOfNode(parentNode: TreeNode) {
+    if (parentNode.loaded) {
+      return;
+    }
+
+    this.nodesAddPlaceholder();
+    (new AjaxRequest(this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth))
+      .get({cache: 'no-cache'})
+      .then((response: AjaxResponse) => response.resolve())
+      .then((json: any) => {
+        let nodes = Array.isArray(json) ? json : [];
+        // first element is a parent
+        nodes.shift();
+        const index = this.nodes.indexOf(parentNode) + 1;
+        // adding fetched node after parent
+        nodes.forEach((node: TreeNode, offset: number) => {
+          this.nodes.splice(index + offset, 0, node);
+        });
+
+        parentNode.loaded = true;
+        this.setParametersNode();
+        this.prepareDataForVisibleNodes();
+        this.update();
+        this.nodesRemovePlaceholder();
+
+        this.switchFocusNode(parentNode);
+      })
+      .catch((error: any) => {
+        this.errorNotification(error, false)
+        this.nodesRemovePlaceholder();
+        throw error;
+      });
+  }
+
+
+  /**
+   * Observer for the selectedNode event
+   */
+  protected nodeSelectedAfter(node: TreeNode) {
+    if (!node.checked) {
+      return;
+    }
+    //remember the selected page in the global state
+    top.window.fsMod.recentIds.web = node.identifier;
+    top.window.fsMod.currentBank = node.stateIdentifier.split('_')[0];
+    top.window.fsMod.navFrameHighlightedID.web = node.stateIdentifier;
+
+    let separator = '?';
+    if (top.window.currentSubScript.indexOf('?') !== -1) {
+      separator = '&';
+    }
+
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.window.currentSubScript + separator + 'id=' + node.identifier
+    );
   }
 
   /**
@@ -361,13 +396,13 @@ export class PageTree extends SvgTree
       })
       .on('click', (event, node: TreeNode) => {
         if (node.identifier === '0') {
-          this.clickOnLabel(node);
+          this.selectNode(node);
           return;
         }
         if (++clicks === 1) {
           setTimeout(() => {
             if (clicks === 1) {
-              this.clickOnLabel(node);
+              this.selectNode(node);
             } else {
               this.editNodeLabel(node);
             }
@@ -456,49 +491,6 @@ export class PageTree extends SvgTree
       })
       .node()
       .select();
-  }
-
-  private removeEditedText() {
-    const inputWrapper = d3selection.selectAll('.node-edit');
-    if (inputWrapper.size()) {
-      try {
-        inputWrapper.remove();
-        this.nodeIsEdit = false;
-      } catch (e) {
-        // ...
-      }
-    }
-  }
-
-  /**
-   * Finds node by its stateIdentifier (e.g. "0_360")
-   */
-  private getNodeByIdentifier(identifier: string): TreeNode|null {
-    return this.nodes.find((node: TreeNode) => {
-      return node.stateIdentifier === identifier;
-    });
-  }
-
-  /**
-   * Observer for the selectedNode event
-   */
-  private nodeSelectedAfter(node: TreeNode) {
-    if (!node.checked) {
-      return;
-    }
-    //remember the selected page in the global state
-    window.fsMod.recentIds.web = node.identifier;
-    window.fsMod.currentBank = node.stateIdentifier.split('_')[0];
-    window.fsMod.navFrameHighlightedID.web = node.stateIdentifier;
-
-    let separator = '?';
-    if (window.currentSubScript.indexOf('?') !== -1) {
-      separator = '&';
-    }
-
-    TYPO3.Backend.ContentContainer.setUrl(
-      window.currentSubScript + separator + 'id=' + node.identifier
-    );
   }
 
   private addMountPoint(breadcrumb: string) {
