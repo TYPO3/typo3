@@ -20,6 +20,7 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -36,6 +37,8 @@ const toolbarComponentName: string = 'typo3-backend-navigation-component-pagetre
 
 @customElement(navigationComponentName)
 export class PageTreeNavigationComponent extends LitElement {
+  @property({type: String}) mountPointPath: string = null;
+
   // @todo: Migrate svg-tree-wrapper into a custom element
   @query('.svg-tree-wrapper') treeWrapper: HTMLElement;
 
@@ -73,6 +76,7 @@ export class PageTreeNavigationComponent extends LitElement {
               <typo3-backend-navigation-component-pagetree-toolbar .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
           </div>
           <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
+            ${this.renderMountPoint()}
             <div id="typo3-pagetree-tree" class="svg-tree-wrapper">
               <div class="node-loader">
                 <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
@@ -99,13 +103,14 @@ export class PageTreeNavigationComponent extends LitElement {
           showIcons: true
         });
         const dragDrop = new PageTreeDragDrop(this.tree);
-        // both toolbar and tree are loaded independently through require js,
-        // so we don't know which is loaded first
-        // in case of toolbar being loaded first, we wait for an event from svgTree
+        // Initialize the toolbar once the tree was rendered
         this.treeWrapper.addEventListener('svg-tree:initialized', () => {
           // set up toolbar now with updated settings
           const toolbar = this.querySelector(toolbarComponentName) as Toolbar;
           toolbar.requestUpdate('tree').then(() => toolbar.initializeDragDrop(dragDrop));
+          if (configuration.temporaryMountPoint) {
+            this.mountPointPath = configuration.temporaryMountPoint;
+          }
         });
         this.tree.initialize(this.treeWrapper, configuration, dragDrop);
       });
@@ -116,7 +121,7 @@ export class PageTreeNavigationComponent extends LitElement {
   }
 
   private setMountPoint = (e: CustomEvent): void => {
-    this.tree.setTemporaryMountPoint(e.detail.pageId as number);
+    this.setTemporaryMountPoint(e.detail.pageId as number);
   }
 
   private selectFirstNode = (): void => {
@@ -124,6 +129,48 @@ export class PageTreeNavigationComponent extends LitElement {
     if (node) {
       this.tree.selectNode(node);
     }
+  }
+
+  private unsetTemporaryMountPoint() {
+    this.mountPointPath = null;
+    Persistent.unset('pageTree_temporaryMountPoint').then(() => {
+      this.tree.refreshTree();
+    });
+  }
+
+  private renderMountPoint(): TemplateResult {
+    if (this.mountPointPath === null) {
+      return html``;
+    }
+    return html`
+      <div class="node-mount-point">
+        <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon></div>
+        <div class="node-mount-point__text">${this.mountPointPath}</div>
+        <div class="node-mount-point__icon mountpoint-close" @click="${() => this.unsetTemporaryMountPoint()}" title="${lll('labels.temporaryDBmount')}">
+          <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+        </div>
+      </div>
+    `;
+  }
+
+  private setTemporaryMountPoint(pid: number): void {
+    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point))
+      .post('pid=' + pid, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+      })
+      .then((response) => response.resolve())
+      .then((response) => {
+        if (response && response.hasErrors) {
+          this.tree.errorNotification(response.message, true);
+          this.tree.update();
+        } else {
+          this.mountPointPath = response.mountPointPath;
+          this.tree.refreshOrFilterTree();
+        }
+      })
+      .catch((error) => {
+        this.tree.errorNotification(error, true);
+      });
   }
 }
 

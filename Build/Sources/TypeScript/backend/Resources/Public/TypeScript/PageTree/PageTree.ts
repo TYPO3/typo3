@@ -13,18 +13,13 @@
 
 import * as d3selection from 'd3-selection';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
-import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../SvgTree';
+import {SvgTree, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
 import {PageTreeDragDrop, PageTreeNodeDragHandler} from './PageTreeDragDrop';
-import Icons = require('../Icons');
 import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {KeyTypesEnum as KeyTypes} from '../Enum/KeyTypes';
-
-interface PageTreeSettings extends SvgTreeSettings {
-  temporaryMountPoint?: string;
-}
 
 /**
  * A Tree based on SVG for pages, which has a AJAX-based loading of the tree
@@ -33,7 +28,6 @@ interface PageTreeSettings extends SvgTreeSettings {
 export class PageTree extends SvgTree
 {
   public nodeIsEdit: boolean;
-  public settings: PageTreeSettings;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
   protected searchQuery: string = '';
@@ -72,9 +66,6 @@ export class PageTree extends SvgTree
     this.dispatch.on('prepareLoadedNode.pageTree', (node: TreeNode) => this.prepareLoadedNode(node));
     this.dragDrop = dragDrop;
 
-    if (this.settings.temporaryMountPoint) {
-      this.addMountPoint(this.settings.temporaryMountPoint);
-    }
     return true;
   }
 
@@ -175,7 +166,9 @@ export class PageTree extends SvgTree
       .attr('dx', 30)
       .attr('dy', 5)
       .attr('visibility', (node: TreeNode) => node.stopPageTree && node.depth !== 0 ? 'visible' : 'hidden')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.setTemporaryMountPoint(parseInt(node.identifier, 10)));
+      .on('click', (evt: MouseEvent, node: TreeNode) => {
+        document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', {detail: {pageId: parseInt(node.identifier, 10)}}));
+      });
 
     return nodes;
   }
@@ -241,36 +234,6 @@ export class PageTree extends SvgTree
     if (!this.nodeIsEdit) {
       this.switchFocus(this.getNodeElement(node));
     }
-  }
-
-  public setTemporaryMountPoint(pid: number): void {
-    const params = 'pid=' + pid;
-
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point))
-      .post(params, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
-      })
-      .then((response) => {
-        return response.resolve();
-      })
-      .then((response) => {
-        if (response && response.hasErrors) {
-          this.errorNotification(response.message, true);
-          this.update();
-        } else {
-          this.addMountPoint(response.mountPointPath);
-          this.refreshOrFilterTree();
-        }
-      })
-      .catch((error) => {
-        this.errorNotification(error, true);
-      });
-  }
-
-  public unsetTemporaryMountPoint() {
-    Persistent.unset('pageTree_temporaryMountPoint').then(() => {
-      this.refreshTree();
-    });
   }
 
   /**
@@ -493,32 +456,4 @@ export class PageTree extends SvgTree
       .select();
   }
 
-  private addMountPoint(breadcrumb: string) {
-    let existingMountPointInfo = this.wrapper.parentNode.querySelector('.node-mount-point');
-    if (existingMountPointInfo) {
-      existingMountPointInfo.parentNode.removeChild(existingMountPointInfo);
-    }
-
-    this.wrapper.insertAdjacentHTML('beforebegin',
-      '<div class="node-mount-point">' +
-      '<div class="node-mount-point__icon" data-tree-icon="actions-document-info"></div>' +
-      '<div class="node-mount-point__text"><div>' + breadcrumb + '</div></div>' +
-      '<div class="node-mount-point__icon" data-tree-icon="actions-close" title="' + TYPO3.lang['labels.temporaryDBmount'] + '"></div>' +
-      '</div>'
-    );
-
-    this.wrapper.parentNode
-      .querySelector('[data-tree-icon=actions-close]')
-      .addEventListener('click', () => {
-        this.unsetTemporaryMountPoint();
-        this.wrapper.parentNode.querySelector('.node-mount-point').remove();
-      });
-
-    // get icons
-    this.wrapper.parentNode.querySelectorAll('.node-mount-point [data-tree-icon]').forEach((iconElement: HTMLElement) => {
-      Icons.getIcon(iconElement.dataset.treeIcon, Icons.sizes.small, null, null, 'inline' as any).then((icon: string) => {
-        iconElement.insertAdjacentHTML('beforeend', icon);
-      });
-    });
-  }
 }
