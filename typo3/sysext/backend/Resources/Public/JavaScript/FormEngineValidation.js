@@ -324,7 +324,7 @@ define([
             } else if (field instanceof HTMLSelectElement) {
               selected = field.querySelectorAll('option:checked').length;
             } else {
-              selected = field.querySelectorAll('input:checked').length;
+              selected = field.querySelectorAll('input[value]:checked').length;
             }
 
             if (typeof rule.minItems !== 'undefined') {
