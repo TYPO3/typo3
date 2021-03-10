@@ -56,8 +56,8 @@ class WidgetGroupInitializationService
             foreach ($widgetsForGroup as $widgetConfiguration) {
                 $widgets[$widgetConfiguration->getIdentifier()] = [
                     'iconIdentifier' => $widgetConfiguration->getIconIdentifier(),
-                    'title' => $this->getLanguageService()->sl($widgetConfiguration->getTitle()),
-                    'description' => $this->getLanguageService()->sl($widgetConfiguration->getDescription()),
+                    'title' => $this->getLanguageService()->sL($widgetConfiguration->getTitle()),
+                    'description' => $this->getLanguageService()->sL($widgetConfiguration->getDescription()),
                 ];
             }
 
