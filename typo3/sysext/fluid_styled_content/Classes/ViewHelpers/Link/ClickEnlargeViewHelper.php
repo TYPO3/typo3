@@ -73,11 +73,21 @@ class ClickEnlargeViewHelper extends AbstractViewHelper
         if ($image instanceof FileInterface) {
             self::getContentObjectRenderer()->setCurrentFile($image);
         }
+
+        $objDataBackup = null;
+        if ($renderingContext->getVariableProvider()->exists('data')) {
+            $objDataBackup = self::getContentObjectRenderer()->data;
+            self::getContentObjectRenderer()->data = $renderingContext->getVariableProvider()->get('data');
+        }
         $configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($arguments['configuration']);
         $content = $renderChildrenClosure();
         $configuration['enable'] = true;
 
-        return self::getContentObjectRenderer()->imageLinkWrap($content, $image, $configuration);
+        $result = self::getContentObjectRenderer()->imageLinkWrap($content, $image, $configuration);
+        if ($objDataBackup) {
+            self::getContentObjectRenderer()->data = $objDataBackup;
+        }
+        return $result;
     }
 
     /**
