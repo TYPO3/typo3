@@ -659,7 +659,7 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             // Determine related page ID for regular live context
-            if ((int)$nRec['t3ver_oid'] === 0) {
+            if ((int)($nRec['t3ver_oid'] ?? 0) === 0) {
                 if ($insertRecordOnTop) {
                     $relatedPageId = $nRec['pid'];
                 } else {
@@ -696,7 +696,7 @@ class EditDocumentController
             }
 
             $recordFields = 'pid,uid';
-            if (!BackendUtility::isTableWorkspaceEnabled($nTable)) {
+            if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
@@ -704,7 +704,7 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
 
-            if ((int)$nRec['t3ver_oid'] === 0) {
+            if ((int)($nRec['t3ver_oid'] ?? 0) === 0) {
                 $relatedPageId = -$nRec['uid'];
             } else {
                 $relatedPageId = -$nRec['t3ver_oid'];
@@ -851,7 +851,7 @@ class EditDocumentController
         }
 
         // Always use live workspace record uid for the preview
-        if (BackendUtility::isTableWorkspaceEnabled($table) && $recordArray['t3ver_oid'] > 0) {
+        if (BackendUtility::isTableWorkspaceEnabled($table) && ($recordArray['t3ver_oid'] ?? 0) > 0) {
             $recordId = $recordArray['t3ver_oid'];
         }
 
