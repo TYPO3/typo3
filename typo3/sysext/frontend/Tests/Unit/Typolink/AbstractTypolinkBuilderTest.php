@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -34,6 +35,11 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
+
+    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $frontendControllerMock;
@@ -43,8 +49,8 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
         $this->createMockedLoggerAndLogManager();
-
         $this->frontendControllerMock = $this->getAccessibleMock(
             TypoScriptFrontendController::class,
             ['dummy'],
@@ -166,6 +172,17 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration)
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->frontendControllerMock->absRefPrefix = '';
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $subject = $this->getAccessibleMock(
@@ -184,6 +201,17 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder()
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $subject = $this->getAccessibleMock(
             AbstractTypolinkBuilder::class,

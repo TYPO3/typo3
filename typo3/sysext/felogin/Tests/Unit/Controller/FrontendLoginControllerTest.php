@@ -58,10 +58,16 @@ class FrontendLoginControllerTest extends UnitTestCase
     protected $testTableName;
 
     /**
+     * @var bool Restore Environment after tests
+     */
+    protected $backupEnvironment = true;
+
+    /**
      * Set up
      */
     protected function setUp()
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $this->testTableName = 'sys_domain';
         $this->testHostName = 'hostname.tld';

@@ -25,8 +25,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ResourceCompressorTest extends BaseTestCase
 {
     /**
-     * Restore Environment after the test
-     * @var bool
+     * @var bool Restore Environment after tests
      */
     protected $backupEnvironment = true;
 
@@ -538,7 +537,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @return array
      */
-    public function getVariousFilenamesFromMainDirInBackendContextDataProvider(): array
+    public function getFilenamesFromMainDirInBackendContextDataProvider(): array
     {
         return [
             // Get filename using EXT:
@@ -574,24 +573,37 @@ class ResourceCompressorTest extends BaseTestCase
 
     /**
      * @test
-     * @dataProvider getVariousFilenamesFromMainDirInBackendContextDataProvider
+     * @dataProvider getFilenamesFromMainDirInBackendContextDataProvider
      * @param string $filename input that will be fired on the extension
      * @param string $expected
      */
-    public function getVariousFilenamesFromMainDirInBackendContext(string $filename, string $expected)
+    public function getFilenamesFromMainDirInBackendContext(string $filename, string $expected)
     {
-        $rootPath = \dirname($_SERVER['SCRIPT_NAME']);
-        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
-        $this->subject->setRootPath($rootPath . '/');
-
-        $relativeToRootPath = $this->subject->_call('getFilenameFromMainDir', $filename);
-        $this->assertSame($expected, $relativeToRootPath, 'Path to the file relative to the path converted correctly.');
+        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
+        // like '.../bin/phpunit' in testing context, but we want .../typo3/index.php as entry
+        // script point here to fake the backend call.
+        $bePath = Environment::getBackendPath();
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            $bePath . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->setRootPath($bePath . '/');
+        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
+        $this->assertSame($expected, $relativeToRootPath);
     }
 
     /**
      * @return array
      */
-    public function getVariousFilenamesFromMainDirInFrontendContextDataProvider(): array
+    public function getFilenamesFromMainDirInFrontendContextDataProvider(): array
     {
         return [
             // Get filename using EXT:
@@ -613,12 +625,16 @@ class ResourceCompressorTest extends BaseTestCase
 
     /**
      * @test
-     * @dataProvider getVariousFilenamesFromMainDirInFrontendContextDataProvider
+     * @dataProvider getFilenamesFromMainDirInFrontendContextDataProvider
      * @param string $filename input that will be fired on the extension
      * @param string $expected
      */
-    public function getVariousFilenamesFromMainDirInFrontendContext(string $filename, string $expected)
+    public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected)
     {
+        // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
+        // like '.../bin/phpunit' in testing context, but we want .../index.php as entry
+        // script point here to fake the frontend call.
+        $fePath = Environment::getPublicPath();
         Environment::initialize(
             Environment::getContext(),
             true,
@@ -627,15 +643,13 @@ class ResourceCompressorTest extends BaseTestCase
             Environment::getPublicPath(),
             Environment::getVarPath(),
             Environment::getConfigPath(),
-            PATH_site . 'index.php',
+            $fePath . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['ORIG_SCRIPT_NAME'] = '/index.php';
-        $this->subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
-        $this->subject->setRootPath(PATH_site);
-
-        $relativeToRootPath = $this->subject->_call('getFilenameFromMainDir', $filename);
-        $this->assertSame($expected, $relativeToRootPath, 'Path to the file relative to the path converted correctly.');
+        $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->setRootPath($fePath . '/');
+        $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
+        $this->assertSame($expected, $relativeToRootPath);
     }
 
     public function getFilenamesFromMainDirInBackendContextInSubfolderDataProvider(): array
