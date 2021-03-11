@@ -1294,7 +1294,7 @@ class QueryGenerator
             return false;
         }
         $format = 'Y-m-d\\TH:i:s\\Z';
-        $formattedDate = \DateTime::createFromFormat($format, $date);
+        $formattedDate = \DateTime::createFromFormat($format, (string)$date);
         return $formattedDate && $formattedDate->format($format) === $date;
     }
 
@@ -1345,7 +1345,7 @@ class QueryGenerator
             $inputVal = $this->cleanInputVal($conf, '1');
             $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
         }
-        $qs .= trim($qsTmp);
+        $qs .= trim((string)$qsTmp);
         return $qs;
     }
 
@@ -1698,7 +1698,7 @@ class QueryGenerator
      */
     protected function getDateTimePickerField($name, $timestamp, $type)
     {
-        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], strtotime($timestamp)) : '';
+        $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '';
         $id = StringUtility::getUniqueId('dt_');
         $html = [];
         $html[] = '<div class="input-group" id="' . $id . '-wrapper">';

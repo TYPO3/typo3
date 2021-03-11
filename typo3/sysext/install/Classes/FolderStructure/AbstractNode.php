@@ -149,7 +149,7 @@ abstract class AbstractNode
                 1366744035
             );
         }
-        $result = @chmod($this->getAbsolutePath(), octdec($this->getTargetPermission()));
+        $result = @chmod($this->getAbsolutePath(), (int)octdec($this->getTargetPermission()));
         if ($result === true) {
             return new FlashMessage(
                 '',

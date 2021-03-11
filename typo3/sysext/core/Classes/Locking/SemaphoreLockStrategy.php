@@ -37,7 +37,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
     protected $id;
 
     /**
-     * @var resource Semaphore Resource used for this lock
+     * @var resource|\SysvSemaphore Semaphore Resource used for this lock
      */
     protected $resource;
 

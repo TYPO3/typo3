@@ -93,6 +93,9 @@ class Stream implements StreamInterface
             return;
         }
         $resource = $this->detach();
+        if ($resource === null) {
+            return;
+        }
         fclose($resource);
     }
 

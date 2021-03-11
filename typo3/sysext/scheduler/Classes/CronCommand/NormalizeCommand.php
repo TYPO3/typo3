@@ -354,7 +354,7 @@ class NormalizeCommand
         }
         if (!$normalizedWeekday) {
             // Convert string representation like 'sun' to integer
-            $timestamp = strtotime('next ' . $weekday, mktime(0, 0, 0, 1, 1, 2010));
+            $timestamp = strtotime('next ' . $weekday, (int)mktime(0, 0, 0, 1, 1, 2010));
             if (!$timestamp || $timestamp < strtotime('2010-01-01') || $timestamp > strtotime('2010-01-08')) {
                 throw new \InvalidArgumentException('Unable to convert given weekday name.', 1291163589);
             }

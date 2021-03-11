@@ -6166,7 +6166,10 @@ class DataHandler implements LoggerAwareInterface
                 }
                 // Process the arguments with the defined function:
                 if (!empty($remapAction['func'])) {
-                    $newValue = call_user_func_array([$this, $remapAction['func']], $remapAction['args']);
+                    $callable = [$this, $remapAction['func']];
+                    if (is_callable($callable)) {
+                        $newValue = call_user_func_array($callable, $remapAction['args']);
+                    }
                 }
                 // If array is returned, check for maxitems condition, if string is returned this was already done:
                 if (is_array($newValue)) {

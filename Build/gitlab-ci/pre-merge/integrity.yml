@@ -98,3 +98,17 @@ phpstan php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s phpstan -p 7.4
 
+phpstan php 8.0 pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - master
+  cache:
+    key: master-composer-phpstan-80
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
+    - Build/Scripts/runTests.sh -s phpstan -p 8.0
+

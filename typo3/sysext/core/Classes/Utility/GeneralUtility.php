@@ -1746,7 +1746,7 @@ class GeneralUtility
                 $targetPermissions = str_pad($targetPermissions, 4, '0', STR_PAD_LEFT);
                 $targetPermissions = octdec($targetPermissions);
                 // "@" is there because file is not necessarily OWNED by the user
-                $result = @chmod($path, $targetPermissions);
+                $result = @chmod($path, (int)$targetPermissions);
             }
             // Set createGroup if not empty
             if (
@@ -1870,7 +1870,7 @@ class GeneralUtility
      */
     public static function mkdir($newFolder)
     {
-        $result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
+        $result = @mkdir($newFolder, (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
         if ($result) {
             static::fixPermissions($newFolder);
         }
@@ -1915,7 +1915,7 @@ class GeneralUtility
     {
         $currentPath = $fullDirectoryPath;
         $firstCreatedPath = '';
-        $permissionMask = octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
+        $permissionMask = (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
         if (!@is_dir($currentPath)) {
             do {
                 $firstCreatedPath = $currentPath;

@@ -63,7 +63,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
     public function parseXml($file)
     {
         $this->createParser();
-        if (!is_resource($this->objXml)) {
+        if (!is_resource($this->objXml) && !$this->objXml instanceof \XmlParser) {
             throw new ExtensionManagerException('Unable to create XML parser.', 1342640663);
         }
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
@@ -72,8 +72,8 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
             $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         }
         // keep original character case of XML document
-        xml_parser_set_option($this->objXml, XML_OPTION_CASE_FOLDING, false);
-        xml_parser_set_option($this->objXml, XML_OPTION_SKIP_WHITE, false);
+        xml_parser_set_option($this->objXml, XML_OPTION_CASE_FOLDING, 0);
+        xml_parser_set_option($this->objXml, XML_OPTION_SKIP_WHITE, 0);
         xml_parser_set_option($this->objXml, XML_OPTION_TARGET_ENCODING, 'utf-8');
         xml_set_element_handler($this->objXml, [$this, 'startElement'], [$this, 'endElement']);
         xml_set_character_data_handler($this->objXml, [$this, 'characterData']);

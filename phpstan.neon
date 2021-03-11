@@ -1,6 +1,8 @@
 includes:
     - vendor/friendsoftypo3/phpstan-typo3/extension.neon
     - Build/phpstan.level8.neon
+    - Build/phpstan.php7config.php
+    - Build/phpstan.php8config.php
 # Include bleeding edge rules if necessary but do not commit
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
@@ -33,10 +35,9 @@ parameters:
     - %currentWorkingDirectory%/typo3/sysext/*/Documentation/*
     - %currentWorkingDirectory%/typo3/sysext/*/Resources/*
     - %currentWorkingDirectory%/typo3/sysext/*/Configuration/*
+    - %currentWorkingDirectory%/typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
   ignoreErrors:
-    # PHP8 compatibility, as phpstan cannot detect this yet.
-    - "#Class GdImage not found.#"
     - "#^Parameter \\#1 \\$disable of function libxml_disable_entity_loader expects bool, bool\\|null given\\.$#"
 
     # ignored errors for level 0
@@ -180,86 +181,6 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Database/QueryView.php
     -
-      message: "#^Parameter \\#1 \\$im of function imagesavealpha expects resource, resource\\|false given\\.$#"
-      count: 3
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagecolorallocatealpha expects resource, resource\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagefill expects resource, resource\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#4 \\$col of function imagefill expects int, int\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagecolorallocate expects resource, resource\\|false given\\.$#"
-      count: 11
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagefilledrectangle expects resource, resource\\|false given\\.$#"
-      count: 11
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$col of function imagefilledrectangle expects int, int\\|false given\\.$#"
-      count: 12
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$dst_im of function imagecopyresized expects resource, resource\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$Fcolor of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:SpacedImageTTFText\\(\\) expects int, int\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$color of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:renderTTFText\\(\\) expects int, int\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$destImg of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:ImageWrite\\(\\) expects resource, resource\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagedestroy expects resource, resource\\|false given\\.$#"
-      count: 3
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$col of function imagettftext expects int, int\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$color of function imagefilledellipse expects int, int\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#4 \\$green of function imagecolorset expects int, float given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#5 \\$blue of function imagecolorset expects int, float given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagegif expects resource, resource\\|false given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagestring expects resource, resource\\|false given\\.$#"
-      count: 3
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#6 \\$col of function imagestring expects int, int\\|false given\\.$#"
-      count: 3
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagepng expects resource, resource\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-    -
       message: "#^Parameter \\#2 \\$id of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:getRecordProperties\\(\\) expects int, int\\|string given\\.$#"
       count: 2
       path: typo3/sysext/core/Classes/DataHandling/DataHandler.php
@@ -336,15 +257,15 @@ parameters:
       count: 1
       path: typo3/sysext/frontend/Classes/ContentObject/ScalableVectorGraphicsContentObject.php
     -
-      message: "#^Parameter \\#1 \\$array_arg of function current expects array, object given\\.$#"
+      message: "#^Parameter \\#1 \\$(array_arg|array) of function current expects array, object given\\.$#"
       count: 1
       path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
     -
-      message: "#^Parameter \\#1 \\$array_arg of function key expects array, object given\\.$#"
+      message: "#^Parameter \\#1 \\$(array_arg|array) of function key expects array, object given\\.$#"
       count: 1
       path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
     -
-      message: "#^Parameter \\#1 \\$array_arg of function next expects array, object given\\.$#"
+      message: "#^Parameter \\#1 \\$(array_arg|array) of function next expects array, object given\\.$#"
       count: 1
       path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
     -
