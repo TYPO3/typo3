@@ -724,7 +724,7 @@ class SetupModuleController
         foreach ($items as $item) {
             $languageCode = $item[1];
             $name = $item[0];
-            $available = in_array($languageCode, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'], true) || is_dir(Environment::getLabelsPath() . '/' . $languageCode);
+            $available = in_array($languageCode, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] ?? [], true) || is_dir(Environment::getLabelsPath() . '/' . $languageCode);
             if ($available || $languageCode === 'default') {
                 $localizedName = htmlspecialchars($languageService->getLL('lang_' . $languageCode) ?: $name);
                 $defaultName = $defaultLanguageLabelService->getLL('lang_' . $languageCode);
