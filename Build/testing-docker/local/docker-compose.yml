@@ -1117,7 +1117,7 @@ services:
           set -x
         fi
         mkdir -p .cache
-        bin/phpstan analyse --no-progress --no-interaction --memory-limit 4G
+        bin/phpstan analyse --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}
       "
 
   unit:
