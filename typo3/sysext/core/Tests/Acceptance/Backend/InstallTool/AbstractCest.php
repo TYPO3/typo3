@@ -49,6 +49,7 @@ class AbstractCest
 
         $I->writeToFile(AbstractCest::ENABLE_INSTALL_TOOL_FILEPATH, '');
         $I->reloadPage();
+        $I->waitForElementVisible('#t3-install-form-password');
         $I->fillField('#t3-install-form-password', $password);
         $I->click('Login');
         $I->waitForText('Maintenance');
