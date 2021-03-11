@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -88,6 +89,7 @@ class FrontendLoginControllerTest extends UnitTestCase
         // setUpDatabaseMock() prepares some instances via addInstance(), but not all
         // tests use that instance. purgeInstances() removes left overs
         GeneralUtility::purgeInstances();
+        GeneralUtility::flushInternalRuntimeCaches();
         parent::tearDown();
     }
 
@@ -96,8 +98,20 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     protected function setUpFakeSitePathAndHost()
     {
-        $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
+        $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir . 'index.php';
         $_SERVER['HTTP_HOST'] = $this->testHostName;
+
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
     }
 
     /**
