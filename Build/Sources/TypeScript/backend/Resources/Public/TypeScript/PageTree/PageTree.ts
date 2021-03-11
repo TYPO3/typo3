@@ -20,17 +20,19 @@ import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {KeyTypesEnum as KeyTypes} from '../Enum/KeyTypes';
+import {customElement} from 'lit-element';
 
 /**
  * A Tree based on SVG for pages, which has a AJAX-based loading of the tree
  * and also handles search + filter via AJAX.
  */
+@customElement('typo3-backend-page-tree')
 export class PageTree extends SvgTree
 {
   public nodeIsEdit: boolean;
+  public dragDrop: PageTreeDragDrop;
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
-  private dragDrop: PageTreeDragDrop;
 
   public constructor() {
     super();
@@ -55,11 +57,6 @@ export class PageTree extends SvgTree
     this.dispatch.on('nodeSelectedAfter.pageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('nodeRightClick.pageTree', (node: TreeNode) => this.nodeRightClick(node));
     this.dispatch.on('prepareLoadedNode.pageTree', (node: TreeNode) => this.prepareLoadedNode(node));
-  }
-
-  public initialize(selector: HTMLElement, settings: any, dragDrop?: PageTreeDragDrop) {
-    super.initialize(selector, settings);
-    this.dragDrop = dragDrop;
   }
 
   public sendChangeCommand(data: any): void {

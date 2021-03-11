@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, customElement, property, query, LitElement, TemplateResult} from 'lit-element';
+import {html, customElement, property, query, LitElement, TemplateResult, PropertyValues} from 'lit-element';
+import {until} from 'lit-html/directives/until';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {PageTree} from './PageTree';
 import {PageTreeDragDrop, ToolbarDragHandler} from './PageTreeDragDrop';
@@ -19,8 +20,9 @@ import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
-import 'TYPO3/CMS/Backend/Element/IconElement';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
+import 'TYPO3/CMS/Backend/Element/IconElement';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -35,19 +37,19 @@ import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 export const navigationComponentName: string = 'typo3-backend-navigation-component-pagetree';
 const toolbarComponentName: string = 'typo3-backend-navigation-component-pagetree-toolbar';
 
+
+interface Configuration {
+  [keys: string]: any;
+}
+
 @customElement(navigationComponentName)
 export class PageTreeNavigationComponent extends LitElement {
   @property({type: String}) mountPointPath: string = null;
 
-  // @todo: Migrate svg-tree-wrapper into a custom element
-  @query('.svg-tree-wrapper') treeWrapper: HTMLElement;
+  @query('.svg-tree-wrapper') tree: PageTree;
+  @query(toolbarComponentName) toolbar: Toolbar;
 
-  private readonly tree: PageTree = null;
-
-  public constructor() {
-    super();
-    this.tree = new PageTree();
-  }
+  private configuration: Configuration = null;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -71,45 +73,62 @@ export class PageTreeNavigationComponent extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div id="typo3-pagetree" class="svg-tree">
-        <div>
-          <div id="typo3-pagetree-toolbar" class="svg-toolbar">
-              <typo3-backend-navigation-component-pagetree-toolbar .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
-          </div>
-          <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
-            ${this.renderMountPoint()}
-            <div id="typo3-pagetree-tree" class="svg-tree-wrapper"></div>
-          </div>
-        </div>
-        <div class="svg-tree-loader">
-          <typo3-backend-icon identifier="spinner-circle-light" size="large"></typo3-backend-icon>
-        </div>
+        ${until(this.renderTree(), this.renderLoader())}
       </div>
     `;
   }
 
-  protected firstUpdated() {
-    this.treeWrapper.dispatchEvent(new Event('svg-tree:visible'));
+  protected getConfiguration(): Promise<Configuration> {
+    if (this.configuration !== null) {
+      return Promise.resolve(this.configuration);
+    }
+
     const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
-    (new AjaxRequest(configurationUrl)).get()
-      .then(async (response: AjaxResponse): Promise<void> => {
+    return (new AjaxRequest(configurationUrl)).get()
+      .then(async (response: AjaxResponse): Promise<Configuration> => {
         const configuration = await response.resolve('json');
         Object.assign(configuration, {
           dataUrl: top.TYPO3.settings.ajaxUrls.page_tree_data,
           filterUrl: top.TYPO3.settings.ajaxUrls.page_tree_filter,
           showIcons: true
         });
-        const dragDrop = new PageTreeDragDrop(this.tree);
-        // Initialize the toolbar once the tree was rendered
-        this.treeWrapper.addEventListener('svg-tree:initialized', () => {
-          // set up toolbar now with updated settings
-          const toolbar = this.querySelector(toolbarComponentName) as Toolbar;
-          toolbar.requestUpdate('tree').then(() => toolbar.initializeDragDrop(dragDrop));
-          if (configuration.temporaryMountPoint) {
-            this.mountPointPath = configuration.temporaryMountPoint;
-          }
-        });
-        this.tree.initialize(this.treeWrapper, configuration, dragDrop);
+        this.configuration = configuration;
+        this.mountPointPath = configuration.temporaryMountPoint || null;
+        return configuration;
       });
+  }
+
+  protected renderTree(): Promise<TemplateResult> {
+    return this.getConfiguration()
+      .then((configuration: Configuration): TemplateResult => {
+        // Initialize the toolbar once the tree was rendered
+        const initialized = () => {
+          const dragDrop = new PageTreeDragDrop(this.tree);
+          this.tree.dragDrop = dragDrop;
+          this.toolbar.tree = this.tree;
+        }
+
+        return html`
+          <div>
+            <div id="typo3-pagetree-toolbar" class="svg-toolbar">
+                <typo3-backend-navigation-component-pagetree-toolbar .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
+            </div>
+            <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
+              ${this.renderMountPoint()}
+              <typo3-backend-page-tree id="typo3-pagetree-tree" class="svg-tree-wrapper" .setup=${configuration} @svg-tree:initialized=${initialized}></typo3-backend-page-tree>
+            </div>
+          </div>
+          ${this.renderLoader()}
+        `;
+      });
+  }
+
+  protected renderLoader(): TemplateResult {
+    return html`
+      <div class="svg-tree-loader">
+        <typo3-backend-icon identifier="spinner-circle-light" size="large"></typo3-backend-icon>
+      </div>
+    `;
   }
 
   private refresh = (): void => {
@@ -181,7 +200,7 @@ class Toolbar extends LitElement {
 
   public initializeDragDrop(dragDrop: PageTreeDragDrop): void
   {
-    if (this.tree.settings?.doktypes?.length) {
+    if (this.tree?.settings?.doktypes?.length) {
       this.tree.settings.doktypes.forEach((item: any) => {
         if (item.icon) {
           const htmlElement = this.querySelector('[data-tree-icon="' + item.icon + '"]');
@@ -215,6 +234,14 @@ class Toolbar extends LitElement {
     }
   }
 
+  protected updated(changedProperties: PropertyValues): void {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'tree' && this.tree !== null) {
+        this.initializeDragDrop(this.tree.dragDrop);
+      }
+    });
+  }
+
   protected render(): TemplateResult {
     /* eslint-disable @typescript-eslint/indent */
     return html`
@@ -228,7 +255,7 @@ class Toolbar extends LitElement {
           </button>
         </div>
         <div class="svg-toolbar__submenu">
-          ${this.tree.settings?.doktypes?.length
+          ${this.tree?.settings?.doktypes?.length
             ? this.tree.settings.doktypes.map((item: any) => {
               return html`
                 <div class="svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"

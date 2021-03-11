@@ -64,9 +64,20 @@ $svgColors: (
     }
 }
 
+.svg-tree-element {
+    display: flex;
+    flex-direction: column;
+
+    & > .svg-tree-wrapper {
+        flex: 1 0 auto;
+    }
+}
+
 .svg-tree-wrapper {
+    display: block;
     position: relative;
     overflow-y: scroll;
+    flex-direction: column;
 
     & > svg {
         margin-top: 15px;

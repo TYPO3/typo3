@@ -168,7 +168,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' value="' . htmlspecialchars(implode(',', $parameterArray['itemFormElValue'])) . '"';
         $html[] =                   '/>';
         $html[] =               '</div>';
-        $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-wrapper" style="height: ' . $heightInPx . 'px;"></div>';
+        $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] =           '</div>';
         if ($readOnly === 'false' && !empty($fieldWizardHtml)) {
             $html[] =       '<div class="form-wizards-items-bottom">';

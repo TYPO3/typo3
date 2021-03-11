@@ -18,7 +18,10 @@ import ContextMenu = require('../ContextMenu');
 import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {FileStorageTreeNodeDragHandler, FileStorageTreeActions} from './FileStorageTreeActions';
+import {customElement} from 'lit-element';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
+@customElement('typo3-backend-filestorage-tree')
 export class FileStorageTree extends SvgTree {
   protected networkErrorTitle: string = TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = TYPO3.lang.tree_networkErrorDescription;
@@ -26,6 +29,7 @@ export class FileStorageTree extends SvgTree {
 
   public constructor() {
     super();
+    this.actionHandler = new FileStorageTreeActions(this);
     this.settings.defaultProperties = {
       hasChildren: false,
       nameSourceField: 'title',
@@ -45,11 +49,6 @@ export class FileStorageTree extends SvgTree {
     this.dispatch.on('nodeSelectedAfter.fileStorageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
     this.dispatch.on('nodeRightClick.fileStorageTree', (node: TreeNode) => this.nodeRightClick(node));
     this.dispatch.on('prepareLoadedNode.fileStorageTree', (node: TreeNode) => this.prepareLoadedNode(node));
-  }
-
-  public initialize(selector: HTMLElement, settings: any, actionHandler?: FileStorageTreeActions): void {
-    super.initialize(selector, settings);
-    this.actionHandler = actionHandler;
   }
 
   public hideChildren(node: TreeNode): void {

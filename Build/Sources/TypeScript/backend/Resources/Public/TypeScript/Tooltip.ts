@@ -99,7 +99,10 @@ class Tooltip {
 
     if (elements instanceof NodeList) {
       for (const node of elements) {
-        BootstrapTooltip.getInstance(node).hide();
+        const instance = BootstrapTooltip.getInstance(node);
+        if (instance !== null) {
+          instance.hide();
+        }
       }
       return;
     }

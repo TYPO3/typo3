@@ -15,6 +15,7 @@ import * as d3selection from 'd3-selection';
 import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../../SvgTree';
 import {TreeNode} from '../../Tree/TreeNode';
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
+import {customElement} from 'lit-element';
 
 interface SelectTreeSettings extends SvgTreeSettings {
   exclusiveNodesIdentifiers: '';
@@ -23,6 +24,7 @@ interface SelectTreeSettings extends SvgTreeSettings {
   readOnlyMode: false
 }
 
+@customElement('typo3-backend-form-selecttree')
 export class SelectTree extends SvgTree
 {
   public settings: SelectTreeSettings = {

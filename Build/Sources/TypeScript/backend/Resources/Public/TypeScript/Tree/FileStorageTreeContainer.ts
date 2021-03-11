@@ -26,15 +26,8 @@ const toolbarComponentName: string = 'typo3-backend-navigation-component-filesto
  */
 @customElement(navigationComponentName)
 export class FileStorageTreeNavigationComponent extends LitElement {
-  // @todo: Migrate svg-tree-wrapper into a custom element
-  @query('.svg-tree-wrapper') treeWrapper: HTMLElement;
-
-  private readonly tree: FileStorageTree = null;
-
-  public constructor() {
-    super();
-    this.tree = new FileStorageTree();
-  }
+  @query('.svg-tree-wrapper') tree: FileStorageTree;
+  @query(toolbarComponentName) toolbar: Toolbar;
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -57,12 +50,18 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   }
 
   protected render(): TemplateResult {
+    const treeSetup = {
+      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
+      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
+      showIcons: true
+    };
+
     return html`
       <div id="typo3-filestoragetree" class="svg-tree">
         <div>
           <typo3-backend-navigation-component-filestoragetree-toolbar .tree="${this.tree}" id="filestoragetree-toolbar" class="svg-toolbar"></typo3-backend-navigation-component-filestoragetree-toolbar>
           <div class="navigation-tree-container">
-            <div id="typo3-filestoragetree-tree" class="svg-tree-wrapper"></div>
+            <typo3-backend-filestorage-tree id="typo3-filestoragetree-tree" class="svg-tree-wrapper" .setup=${treeSetup}></typo3-backend-filestorage-tree>
           </div>
         </div>
         <div class="svg-tree-loader">
@@ -73,12 +72,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   }
 
   protected firstUpdated() {
-    this.treeWrapper.dispatchEvent(new Event('svg-tree:visible'));
-    this.tree.initialize(this.treeWrapper, {
-      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
-      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
-      showIcons: true
-    }, new FileStorageTreeActions(this.tree));
+    this.toolbar.tree = this.tree;
   }
 
   private refresh = (): void => {

@@ -11,8 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, TemplateResult} from 'lit-element';
-import {renderNodes} from 'TYPO3/CMS/Core/lit-helper';
+import {html, property, internalProperty, LitElement, TemplateResult} from 'lit-element';
 import {TreeNode} from './Tree/TreeNode';
 import * as d3selection from 'd3-selection';
 import * as d3dispatch from 'd3-dispatch';
@@ -24,7 +23,7 @@ import Tooltip = require('./Tooltip');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {MarkupIdentifiers} from './Enum/IconTypes';
 
-export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, SvgTreeWrapper, any>;
+export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, any, any>;
 export type TreeNodeSelection = d3selection.Selection<d3selection.BaseType, TreeNode, any, any>;
 
 interface SvgTreeData {
@@ -51,7 +50,20 @@ export interface SvgTreeWrapper extends HTMLElement {
   svgtree?: SvgTree
 }
 
-export class SvgTree {
+export class SvgTree extends LitElement {
+  @property({type: Object}) setup?: {[keys: string]: any} = null;
+  @internalProperty() settings: SvgTreeSettings = {
+    showIcons: false,
+    marginTop: 15,
+    nodeHeight: 20,
+    indentWidth: 16,
+    width: 300,
+    duration: 400,
+    dataUrl: '',
+    filterUrl: '',
+    defaultProperties: {},
+    expandUpToLevel: null as any,
+  };
 
   /**
    * D3 event dispatcher
@@ -90,22 +102,9 @@ export class SvgTree {
 
   public nodes: TreeNode[] = [];
 
-  public settings: SvgTreeSettings = {
-    showIcons: false,
-    marginTop: 15,
-    nodeHeight: 20,
-    indentWidth: 16,
-    width: 300,
-    duration: 400,
-    dataUrl: '',
-    filterUrl: '',
-    defaultProperties: {},
-    expandUpToLevel: null as any,
-  };
-
   public textPosition: number = 0;
 
-  protected icons: {[keys: string]: SvgTreeDataIcon};
+  protected icons: {[keys: string]: SvgTreeDataIcon} = {};
 
   /**
    * SVG <defs> container wrapping all icon definitions
@@ -124,13 +123,7 @@ export class SvgTree {
     nodes: TreeNode[] = [];
   };
 
-  /**
-   * HTMLElement (`<div>`) of the wrapper holding the `<svg>` element.
-   * Height of this wrapper is important (we only render as many nodes as fit in the wrapper
-   */
-  protected wrapper: SvgTreeWrapper = null;
   protected viewportHeight: number = 0;
-  protected scrollTop: number = 0;
   protected scrollBottom: number = 0;
   protected searchTerm: string|null = null;
   protected unfilteredNodes: string = '';
@@ -142,6 +135,7 @@ export class SvgTree {
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
 
   constructor() {
+    super();
     this.dispatch = d3dispatch.dispatch(
       'updateNodes',
       'updateSvg',
@@ -154,16 +148,12 @@ export class SvgTree {
 
   /**
    * Initializes the tree component - created basic markup, loads and renders data
-   *
-   * @param {HTMLElement} selector
-   * @param {Object} settings
+   * @todo declare private
    */
-  public initialize(selector: HTMLElement, settings: any): void {
-    this.wrapper = selector;
+  public doSetup(settings: any): void {
     Object.assign(this.settings, settings);
 
-    this.wrapper.append(...renderNodes(this.getTemplate()));
-    this.svg = d3selection.select(this.wrapper).select('svg');
+    this.svg = d3selection.select(this).select('svg');
     this.container = this.svg.select('.nodes-wrapper') as TreeWrapperSelection<SVGGElement>;
     this.nodesBgContainer = this.container.select('.nodes-bg') as TreeWrapperSelection<SVGGElement>;
     this.linksContainer = this.container.select('.links') as TreeWrapperSelection<SVGGElement>;
@@ -172,8 +162,7 @@ export class SvgTree {
 
     this.updateScrollPosition();
     this.loadData();
-    this.addEventListeners();
-    this.wrapper.dispatchEvent(new Event('svg-tree:initialized'));
+    this.dispatchEvent(new Event('svg-tree:initialized'));
   }
 
   /**
@@ -204,7 +193,7 @@ export class SvgTree {
    * Return the DOM element of a tree node
    */
   public getNodeElement(node: TreeNode): HTMLElement|null {
-    return this.wrapper.querySelector('#identifier-' + this.getNodeStateIdentifier(node));
+    return this.querySelector('#identifier-' + this.getNodeStateIdentifier(node));
   }
 
   /**
@@ -289,11 +278,11 @@ export class SvgTree {
   }
 
   public nodesRemovePlaceholder() {
-    const nodeLoader = this.wrapper.querySelector('.node-loader') as HTMLElement;
+    const nodeLoader = this.querySelector('.node-loader') as HTMLElement;
     if (nodeLoader) {
       nodeLoader.style.display = 'none';
     }
-    const componentWrapper = this.wrapper.closest('.svg-tree');
+    const componentWrapper = this.closest('.svg-tree');
     const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
     if (treeLoader) {
       treeLoader.style.display = 'none';
@@ -302,13 +291,13 @@ export class SvgTree {
 
   public nodesAddPlaceholder(node: TreeNode = null) {
     if (node) {
-      const nodeLoader = this.wrapper.querySelector('.node-loader') as HTMLElement;
+      const nodeLoader = this.querySelector('.node-loader') as HTMLElement;
       if (nodeLoader) {
         nodeLoader.style.top = '' + (node.y + this.settings.marginTop);
         nodeLoader.style.display = 'block';
       }
     } else {
-      const componentWrapper = this.wrapper.closest('.svg-tree');
+      const componentWrapper = this.closest('.svg-tree');
       const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
       if (treeLoader) {
         treeLoader.style.display = 'block';
@@ -424,7 +413,6 @@ export class SvgTree {
       return;
     }
 
-    this.icons = this.icons || {};
     if (!(iconName in this.icons)) {
       this.icons[iconName] = {
         identifier: iconName,
@@ -450,7 +438,7 @@ export class SvgTree {
     const position = Math.floor(Math.max(this.scrollTop - (this.settings.nodeHeight * 2), 0) / this.settings.nodeHeight);
 
     const visibleNodes = this.data.nodes.slice(position, position + visibleRows);
-    const focusableElement = this.wrapper.querySelector('[tabindex="0"]');
+    const focusableElement = this.querySelector('[tabindex="0"]');
     const checkedNodeInViewport = visibleNodes.find((node: TreeNode) => node.checked);
     let nodes = this.nodesContainer.selectAll('.node')
       .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
@@ -647,23 +635,33 @@ export class SvgTree {
     }
   }
 
-  /**
-   * Create element:
-   *
-   * <svg version="1.1" width="100%">
-   *   <g class="nodes-wrapper">
-   *     <g class="nodes-bg"><rect class="node-bg"></rect></g>
-   *     <g class="links"><path class="link"></path></g>
-   *     <g class="nodes"><g class="node"></g></g>
-   *   </g>
-   * </svg>
-   */
-  protected getTemplate(): TemplateResult {
+  public connectedCallback(): void {
+    super.connectedCallback();
+    this.addEventListener('resize', () => this.updateView());
+    this.addEventListener('scroll', () => this.updateView());
+    this.addEventListener('svg-tree:visible', () => this.updateView());
+    window.addEventListener('resize', () => {
+      if (this.getClientRects().length > 0) {
+        this.updateView();
+      }
+    });
+  }
+
+  // disable shadow dom for now
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected render(): TemplateResult {
     return html`
       <div class="node-loader">
         <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
       </div>
-      <svg version="1.1" width="100%">
+      <svg version="1.1"
+           width="100%"
+           @mouseover=${() => this.isOverSvg = true}
+           @mouseout=${() => this.isOverSvg = false}
+           @keydown=${(evt: KeyboardEvent) => this.handleKeyboardInteraction(evt)}>
         <g class="nodes-wrapper" transform="translate(${this.settings.indentWidth / 2},${this.settings.nodeHeight / 2})">
           <g class="nodes-bg"></g>
           <g class="links"></g>
@@ -674,22 +672,16 @@ export class SvgTree {
     `;
   }
 
-  /**
-   * Add an event listener Update svg tree after changed window height
-   */
-  protected addEventListeners() {
-    this.wrapper.addEventListener('resize', () => this.updateView());
-    this.wrapper.addEventListener('scroll', () => this.updateView());
-    this.wrapper.addEventListener('svg-tree:visible', () => this.updateView());
-    window.addEventListener('resize', () => {
-      if (this.wrapper.getClientRects().length > 0) {
-        this.updateView();
-      }
-    });
-    const svgElement = this.wrapper.querySelector('svg') as SVGElement;
-    svgElement.addEventListener('mouseover', () => this.isOverSvg = true)
-    svgElement.addEventListener('mouseout', () => this.isOverSvg = false)
-    svgElement.addEventListener('keydown', (evt: KeyboardEvent) => this.handleKeyboardInteraction(evt));
+  protected firstUpdated(): void {
+    this.svg = d3selection.select(this.querySelector('svg'))
+    this.container = d3selection.select(this.querySelector('.nodes-wrapper'))
+      .attr('transform', 'translate(' + (this.settings.indentWidth / 2) + ',' + (this.settings.nodeHeight / 2) + ')') as any;
+    this.nodesBgContainer = d3selection.select(this.querySelector('.nodes-bg')) as any;
+    this.linksContainer = d3selection.select(this.querySelector('.links')) as any;
+    this.nodesContainer = d3selection.select(this.querySelector('.nodes')) as any;
+
+    this.doSetup(this.setup || {});
+    this.updateView();
   }
 
   protected updateView(): void {
@@ -928,11 +920,10 @@ export class SvgTree {
    * Updates variables used for visible nodes calculation
    */
   private updateScrollPosition(): void {
-    this.viewportHeight = this.wrapper.getBoundingClientRect().height;
-    this.scrollTop = this.wrapper.scrollTop;
+    this.viewportHeight = this.getBoundingClientRect().height;
     this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
     // disable tooltips when scrolling
-    Tooltip.hide(this.wrapper.querySelectorAll('[data-bs-toggle=tooltip]'));
+    Tooltip.hide(this.querySelectorAll('[data-bs-toggle=tooltip]'));
   }
 
   /**
@@ -991,15 +982,14 @@ export class SvgTree {
     switch (evt.keyCode) {
       case KeyTypes.END:
         // scroll to end, select last node
-        this.scrollTop = this.wrapper.lastElementChild.getBoundingClientRect().height + this.settings.nodeHeight - this.viewportHeight;
+        this.scrollTop = this.lastElementChild.getBoundingClientRect().height + this.settings.nodeHeight - this.viewportHeight;
         parentDomNode.scrollIntoView({behavior: 'smooth', block: 'end'});
         this.updateVisibleNodes();
         this.switchFocus(parentDomNode.lastElementChild as SVGElement);
         break;
       case KeyTypes.HOME:
         // scroll to top, select first node
-        this.scrollTop = this.nodes[0].y;
-        this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
+        this.scrollTo({'top': this.nodes[0].y, 'behavior': 'smooth'});
         this.prepareDataForVisibleNodes();
         this.updateVisibleNodes();
         this.switchFocus(parentDomNode.firstElementChild as SVGElement);
@@ -1059,14 +1049,15 @@ export class SvgTree {
    * If node is at the bottom of the viewport and direction is down, scroll down by the height of one item
    */
   private scrollNodeIntoVisibleArea(node: TreeNode, direction: string = 'up'): void {
-    if (direction === 'up' && this.scrollTop > node.y - this.settings.nodeHeight) {
-      this.scrollTop = node.y - this.settings.nodeHeight;
-    } else if (direction === 'down' && this.scrollTop + this.viewportHeight <= node.y + (3 * this.settings.nodeHeight)) {
-      this.scrollTop = this.scrollTop + this.settings.nodeHeight;
+    let scrollTop = this.scrollTop;
+    if (direction === 'up' && scrollTop > node.y - this.settings.nodeHeight) {
+      scrollTop = node.y - this.settings.nodeHeight;
+    } else if (direction === 'down' && scrollTop + this.viewportHeight <= node.y + (3 * this.settings.nodeHeight)) {
+      scrollTop = scrollTop + this.settings.nodeHeight;
     } else {
       return;
     }
-    this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
+    this.scrollTo({'top': scrollTop, 'behavior': 'smooth'});
     this.updateVisibleNodes();
   }
 

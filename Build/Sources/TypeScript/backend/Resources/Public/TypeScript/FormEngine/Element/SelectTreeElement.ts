@@ -11,23 +11,24 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import {SelectTree} from './SelectTree';
+import type {SelectTree} from './SelectTree';
 import {Tooltip} from 'bootstrap';
 import {html, customElement, LitElement, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import './SelectTree';
 
 const toolbarComponentName: string = 'typo3-backend-form-selecttree-toolbar';
 
 export class SelectTreeElement {
-  private readonly treeWrapper: HTMLElement = null;
   private readonly recordField: HTMLInputElement = null;
   private readonly tree: SelectTree = null;
 
   constructor(treeWrapperId: string, treeRecordFieldId: string, callback: Function) {
-    this.treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
-    this.tree = new SelectTree();
+    const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
+    this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
+    this.tree.classList.add('svg-tree-wrapper');
     this.tree.dispatch.on('nodeSelectedAfter.requestUpdate', () => { callback(); } );
 
     const settings = {
@@ -39,12 +40,13 @@ export class SelectTreeElement {
       expandUpToLevel: this.recordField.dataset.treeExpandUpToLevel,
       unselectableElements: [] as Array<any>
     };
-    this.treeWrapper.addEventListener('svg-tree:initialized', () => {
+    this.tree.addEventListener('svg-tree:initialized', () => {
       const toolbarElement = document.createElement(toolbarComponentName) as TreeToolbar;
       toolbarElement.tree = this.tree;
-      this.treeWrapper.prepend(toolbarElement);
+      this.tree.prepend(toolbarElement);
     });
-    this.tree.initialize(this.treeWrapper, settings);
+    this.tree.setup = settings;
+    treeWrapper.append(this.tree);
     this.listenForVisibleTree();
   }
 
@@ -53,12 +55,12 @@ export class SelectTreeElement {
    * becomes visible.
    */
   private listenForVisibleTree(): void {
-    if (!this.treeWrapper.offsetParent) {
+    if (!this.tree.offsetParent) {
       // Search for the parents that are tab containers
-      let idOfTabContainer = this.treeWrapper.closest('.tab-pane').getAttribute('id');
+      let idOfTabContainer = this.tree.closest('.tab-pane').getAttribute('id');
       if (idOfTabContainer) {
         let btn = document.querySelector('[aria-controls="' + idOfTabContainer + '"]');
-        btn.addEventListener('shown.bs.tab', () => { this.treeWrapper.dispatchEvent(new Event('svg-tree:visible')); });
+        btn.addEventListener('shown.bs.tab', () => { this.tree.dispatchEvent(new Event('svg-tree:visible')); });
       }
     }
   }
