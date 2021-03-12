@@ -231,7 +231,6 @@ class SearchController extends ActionController
         if ($searchData['sword_prev_include'] && $searchData['sword_prev']) {
             $this->setSword(trim($searchData['sword_prev']) . ' ' . $this->getSword());
         }
-        $this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
         // This is the id of the site root.
         // This value may be a commalist of integer (prepared for this)
         $this->searchRootPageIdList = (int)$GLOBALS['TSFE']->config['rootLine'][0]['uid'];
@@ -249,6 +248,8 @@ class SearchController extends ActionController
         $this->searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
         $this->searchData = $searchData;
+        // $this->searchData is used in $this->getSearchWords
+        $this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
         // Calling hook for modification of initialized content
         if ($hookObj = $this->hookRequest('initialize_postProc')) {
             $hookObj->initialize_postProc();
