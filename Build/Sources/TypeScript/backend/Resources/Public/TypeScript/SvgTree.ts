@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {html, TemplateResult} from 'lit-element';
+import {renderNodes} from 'TYPO3/CMS/Core/lit-helper';
 import {TreeNode} from './Tree/TreeNode';
 import * as d3selection from 'd3-selection';
 import * as d3dispatch from 'd3-dispatch';
@@ -96,6 +98,7 @@ export class SvgTree {
     width: 300,
     duration: 400,
     dataUrl: '',
+    filterUrl: '',
     defaultProperties: {},
     expandUpToLevel: null as any,
   };
@@ -117,8 +120,8 @@ export class SvgTree {
   protected linksContainer: TreeWrapperSelection<SVGGElement> = null;
 
   protected data: SvgTreeData = new class implements SvgTreeData {
-    links: SvgTreeDataLink[];
-    nodes: TreeNode[];
+    links: SvgTreeDataLink[] = [];
+    nodes: TreeNode[] = [];
   };
 
   /**
@@ -156,73 +159,21 @@ export class SvgTree {
    * @param {Object} settings
    */
   public initialize(selector: HTMLElement, settings: any): void {
-    Object.assign(this.settings, settings);
     this.wrapper = selector;
-    /**
-     * Create element:
-     *
-     * <svg version="1.1" width="100%">
-     *   <g class="nodes-wrapper">
-     *     <g class="nodes-bg"><rect class="node-bg"></rect></g>
-     *     <g class="links"><path class="link"></path></g>
-     *     <g class="nodes"><g class="node"></g></g>
-     *   </g>
-     * </svg>
-     */
-    this.svg = d3selection.select(this.wrapper).append('svg')
-      .attr('version', '1.1')
-      .attr('width', '100%')
-      .on('mouseover', () => this.isOverSvg = true)
-      .on('mouseout', () => this.isOverSvg = false)
-      .on('keydown', (evt: KeyboardEvent) => this.handleKeyboardInteraction(evt));
+    Object.assign(this.settings, settings);
 
-    this.container = this.svg
-      .append('g')
-      .attr('class', 'nodes-wrapper')
-      .attr('transform', 'translate(' + (this.settings.indentWidth / 2) + ',' + (this.settings.nodeHeight / 2) + ')');
-    this.nodesBgContainer = this.container.append('g')
-      .attr('class', 'nodes-bg');
-    this.linksContainer = this.container.append('g')
-      .attr('class', 'links');
-    this.nodesContainer = this.container.append('g')
-      .attr('class', 'nodes')
-      .attr('role', 'tree');
-    if (this.settings.showIcons) {
-      this.iconsContainer = this.svg.append('defs');
-    }
+    this.wrapper.append(...renderNodes(this.getTemplate()));
+    this.svg = d3selection.select(this.wrapper).select('svg');
+    this.container = this.svg.select('.nodes-wrapper') as TreeWrapperSelection<SVGGElement>;
+    this.nodesBgContainer = this.container.select('.nodes-bg') as TreeWrapperSelection<SVGGElement>;
+    this.linksContainer = this.container.select('.links') as TreeWrapperSelection<SVGGElement>;
+    this.nodesContainer = this.container.select('.nodes') as TreeWrapperSelection<SVGGElement>;
+    this.iconsContainer = this.svg.select('defs') as TreeWrapperSelection<SVGGElement>;
 
     this.updateScrollPosition();
     this.loadData();
-
-    this.wrapper.addEventListener('resize', () => {
-      this.updateScrollPosition();
-      this.update();
-    });
-
-    this.wrapper.addEventListener('scroll', () => {
-      this.updateScrollPosition();
-      this.update();
-    });
-
-    this.wrapper.addEventListener('svg-tree:visible', () => {
-      this.updateScrollPosition();
-      this.update();
-    });
-
+    this.addEventListeners();
     this.wrapper.dispatchEvent(new Event('svg-tree:initialized'));
-    this.resize();
-  }
-
-  /**
-   * Update svg tree after changed window height
-   */
-  public resize() {
-    window.addEventListener('resize', () => {
-      if (this.wrapper.getClientRects().length > 0) {
-        this.updateScrollPosition();
-        this.update();
-      }
-    });
   }
 
   /**
@@ -245,7 +196,7 @@ export class SvgTree {
   /**
    * Make the DOM element of the node given as parameter focusable and focus it
    */
-  public switchFocusNode(node: TreeNode) {
+  public switchFocusNode(node: TreeNode): void {
     this.switchFocus(this.getNodeElement(node));
   }
 
@@ -253,18 +204,7 @@ export class SvgTree {
    * Return the DOM element of a tree node
    */
   public getNodeElement(node: TreeNode): HTMLElement|null {
-    return document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
-  }
-
-  /**
-   * Updates variables used for visible nodes calculation
-   */
-  public updateScrollPosition() {
-    this.viewportHeight = this.wrapper.getBoundingClientRect().height;
-    this.scrollTop = this.wrapper.scrollTop;
-    this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
-    // disable tooltips when scrolling
-    Tooltip.hide(this.wrapper.querySelectorAll('[data-bs-toggle=tooltip]'));
+    return this.wrapper.querySelector('#identifier-' + this.getNodeStateIdentifier(node));
   }
 
   /**
@@ -272,7 +212,6 @@ export class SvgTree {
    */
   public loadData() {
     this.nodesAddPlaceholder();
-
     (new AjaxRequest(this.settings.dataUrl))
       .get({cache: 'no-cache'})
       .then((response: AjaxResponse) => response.resolve())
@@ -282,7 +221,7 @@ export class SvgTree {
         this.nodesRemovePlaceholder();
         // @todo: needed?
         this.updateScrollPosition();
-        this.update();
+        this.updateVisibleNodes();
       })
       .catch((error) => {
         this.errorNotification(error, false);
@@ -301,7 +240,7 @@ export class SvgTree {
     this.nodesContainer.selectAll('.node').remove();
     this.nodesBgContainer.selectAll('.node-bg').remove();
     this.linksContainer.selectAll('.link').remove();
-    this.update();
+    this.updateVisibleNodes();
   }
 
   /**
@@ -350,11 +289,11 @@ export class SvgTree {
   }
 
   public nodesRemovePlaceholder() {
-    const componentWrapper = this.svg.node().closest('.svg-tree');
-    const nodeLoader = componentWrapper?.querySelector('.node-loader') as HTMLElement;
+    const nodeLoader = this.wrapper.querySelector('.node-loader') as HTMLElement;
     if (nodeLoader) {
       nodeLoader.style.display = 'none';
     }
+    const componentWrapper = this.wrapper.closest('.svg-tree');
     const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
     if (treeLoader) {
       treeLoader.style.display = 'none';
@@ -362,14 +301,14 @@ export class SvgTree {
   }
 
   public nodesAddPlaceholder(node: TreeNode = null) {
-    const componentWrapper = this.svg.node().closest('.svg-tree');
     if (node) {
-      const nodeLoader = componentWrapper?.querySelector('.node-loader') as HTMLElement;
+      const nodeLoader = this.wrapper.querySelector('.node-loader') as HTMLElement;
       if (nodeLoader) {
         nodeLoader.style.top = '' + (node.y + this.settings.marginTop);
         nodeLoader.style.display = 'block';
       }
     } else {
+      const componentWrapper = this.wrapper.closest('.svg-tree');
       const treeLoader = componentWrapper?.querySelector('.svg-tree-loader') as HTMLElement;
       if (treeLoader) {
         treeLoader.style.display = 'block';
@@ -431,29 +370,11 @@ export class SvgTree {
   }
 
   /**
-   * Expand all nodes and refresh view
-   */
-  public expandAll(): void {
-    this.nodes.forEach(this.showChildren.bind(this));
-    this.prepareDataForVisibleNodes();
-    this.update();
-  }
-
-  /**
-   * Collapse all nodes recursively and refresh view
-   */
-  public collapseAll(): void {
-    this.nodes.forEach(this.hideChildren.bind(this));
-    this.prepareDataForVisibleNodes();
-    this.update();
-  }
-
-  /**
    * Filters out invisible nodes (collapsed) from the full dataset (this.rootNode)
    * and enriches dataset with additional properties
    * Visible dataset is stored in this.data
    */
-  public prepareDataForVisibleNodes() {
+  public prepareDataForVisibleNodes(): void {
     const blacklist: {[keys: string]: boolean} = {};
     this.nodes.forEach((node: TreeNode, index: number): void => {
       if (!node.expanded) {
@@ -471,7 +392,6 @@ export class SvgTree {
     this.data.nodes.forEach((node: TreeNode, i: number) => {
       // delete n.children;
       node.x = node.depth * this.settings.indentWidth;
-
       if (node.readableRootline) {
         pathAboveMounts += this.settings.nodeHeight;
       }
@@ -516,7 +436,7 @@ export class SvgTree {
           this.icons[iconName].icon = result[0];
         }
         if (update) {
-          this.update();
+          this.updateVisibleNodes();
         }
       });
     }
@@ -525,7 +445,7 @@ export class SvgTree {
   /**
    * Renders the subset of the tree nodes fitting the viewport (adding, modifying and removing SVG nodes)
    */
-  public update() {
+  public updateVisibleNodes(): void {
     const visibleRows = Math.ceil(this.viewportHeight / this.settings.nodeHeight + 1);
     const position = Math.floor(Math.max(this.scrollTop - (this.settings.nodeHeight * 2), 0) / this.settings.nodeHeight);
 
@@ -656,7 +576,7 @@ export class SvgTree {
       this.searchTerm = searchTerm;
     }
     this.nodesAddPlaceholder();
-    if (this.searchTerm) {
+    if (this.searchTerm && this.settings.filterUrl) {
       (new AjaxRequest(this.settings.filterUrl + '&q=' + this.searchTerm))
         .get({cache: 'no-cache'})
         .then((response: AjaxResponse) => response.resolve())
@@ -703,7 +623,7 @@ export class SvgTree {
       this.refreshTree();
     }
     this.prepareDataForVisibleNodes();
-    this.update();
+    this.updateVisibleNodes();
   }
 
   /**
@@ -725,6 +645,56 @@ export class SvgTree {
     if (refresh) {
       this.loadData();
     }
+  }
+
+  /**
+   * Create element:
+   *
+   * <svg version="1.1" width="100%">
+   *   <g class="nodes-wrapper">
+   *     <g class="nodes-bg"><rect class="node-bg"></rect></g>
+   *     <g class="links"><path class="link"></path></g>
+   *     <g class="nodes"><g class="node"></g></g>
+   *   </g>
+   * </svg>
+   */
+  protected getTemplate(): TemplateResult {
+    return html`
+      <div class="node-loader">
+        <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
+      </div>
+      <svg version="1.1" width="100%">
+        <g class="nodes-wrapper" transform="translate(${this.settings.indentWidth / 2},${this.settings.nodeHeight / 2})">
+          <g class="nodes-bg"></g>
+          <g class="links"></g>
+          <g class="nodes" role="tree"></g>
+        </g>
+        <defs></defs>
+      </svg>
+    `;
+  }
+
+  /**
+   * Add an event listener Update svg tree after changed window height
+   */
+  protected addEventListeners() {
+    this.wrapper.addEventListener('resize', () => this.updateView());
+    this.wrapper.addEventListener('scroll', () => this.updateView());
+    this.wrapper.addEventListener('svg-tree:visible', () => this.updateView());
+    window.addEventListener('resize', () => {
+      if (this.wrapper.getClientRects().length > 0) {
+        this.updateView();
+      }
+    });
+    const svgElement = this.wrapper.querySelector('svg') as SVGElement;
+    svgElement.addEventListener('mouseover', () => this.isOverSvg = true)
+    svgElement.addEventListener('mouseout', () => this.isOverSvg = false)
+    svgElement.addEventListener('keydown', (evt: KeyboardEvent) => this.handleKeyboardInteraction(evt));
+  }
+
+  protected updateView(): void {
+    this.updateScrollPosition();
+    this.updateVisibleNodes();
   }
 
   protected disableSelectedNodes(): void {
@@ -950,9 +920,19 @@ export class SvgTree {
     } else {
       this.showChildren(node);
     }
-
     this.prepareDataForVisibleNodes();
-    this.update();
+    this.updateVisibleNodes();
+  }
+
+  /**
+   * Updates variables used for visible nodes calculation
+   */
+  private updateScrollPosition(): void {
+    this.viewportHeight = this.wrapper.getBoundingClientRect().height;
+    this.scrollTop = this.wrapper.scrollTop;
+    this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
+    // disable tooltips when scrolling
+    Tooltip.hide(this.wrapper.querySelectorAll('[data-bs-toggle=tooltip]'));
   }
 
   /**
@@ -1013,14 +993,15 @@ export class SvgTree {
         // scroll to end, select last node
         this.scrollTop = this.wrapper.lastElementChild.getBoundingClientRect().height + this.settings.nodeHeight - this.viewportHeight;
         parentDomNode.scrollIntoView({behavior: 'smooth', block: 'end'});
-        this.update();
+        this.updateVisibleNodes();
         this.switchFocus(parentDomNode.lastElementChild as SVGElement);
         break;
       case KeyTypes.HOME:
         // scroll to top, select first node
         this.scrollTop = this.nodes[0].y;
         this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
-        this.update();
+        this.prepareDataForVisibleNodes();
+        this.updateVisibleNodes();
         this.switchFocus(parentDomNode.firstElementChild as SVGElement);
         break;
       case KeyTypes.LEFT:
@@ -1029,7 +1010,7 @@ export class SvgTree {
           if (currentNode.hasChildren) {
             this.hideChildren(currentNode);
             this.prepareDataForVisibleNodes();
-            this.update();
+            this.updateVisibleNodes();
           }
         } else if (currentNode.parents.length > 0) {
           // go to parent node
@@ -1053,7 +1034,7 @@ export class SvgTree {
             // expand currentNode
             this.showChildren(currentNode);
             this.prepareDataForVisibleNodes();
-            this.update();
+            this.updateVisibleNodes();
             this.switchFocus(evtTarget as SVGElement);
           }
           //do nothing if node has no children
@@ -1086,7 +1067,7 @@ export class SvgTree {
       return;
     }
     this.wrapper.scrollTo({'top': this.scrollTop, 'behavior': 'smooth'});
-    this.update();
+    this.updateVisibleNodes();
   }
 
   /**
@@ -1103,9 +1084,7 @@ export class SvgTree {
         link.source.owns.push('identifier-' + link.target.stateIdentifier);
         return link;
       });
-    const links = this.linksContainer
-      .selectAll('.link')
-      .data(visibleLinks);
+    const links = this.linksContainer.selectAll('.link').data(visibleLinks);
     // delete
     links.exit().remove();
     // create

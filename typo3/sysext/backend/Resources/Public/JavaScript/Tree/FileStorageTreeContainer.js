@@ -15,11 +15,7 @@ var __decorate=this&&this.__decorate||function(e,t,r,i){var o,s=arguments.length
         <div>
           <typo3-backend-navigation-component-filestoragetree-toolbar .tree="${this.tree}" id="filestoragetree-toolbar" class="svg-toolbar"></typo3-backend-navigation-component-filestoragetree-toolbar>
           <div class="navigation-tree-container">
-            <div id="typo3-filestoragetree-tree" class="svg-tree-wrapper">
-              <div class="node-loader">
-                <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
-              </div>
-            </div>
+            <div id="typo3-filestoragetree-tree" class="svg-tree-wrapper"></div>
           </div>
         </div>
         <div class="svg-tree-loader">

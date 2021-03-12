@@ -238,7 +238,7 @@ export class ToolbarDragHandler implements DragDropHandler {
     this.tree.nodes.splice(index, 0, newNode);
     this.tree.setParametersNode();
     this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
+    this.tree.updateVisibleNodes();
     this.tree.removeEditedText();
 
     d3selection.select(this.tree.svg.node().parentNode as HTMLElement)
@@ -295,7 +295,7 @@ export class ToolbarDragHandler implements DragDropHandler {
     this.tree.nodes.splice(index, 1);
     this.tree.setParametersNode();
     this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
+    this.tree.updateVisibleNodes();
     this.tree.removeEditedText();
   };
 }

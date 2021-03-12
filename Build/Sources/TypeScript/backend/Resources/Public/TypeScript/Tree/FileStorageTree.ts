@@ -80,18 +80,10 @@ export class FileStorageTree extends SvgTree {
     if (!this.isNodeSelectable(node)) {
       return;
     }
-
-    // Disable already selected nodes
-    this.getSelectedNodes().forEach((node: TreeNode) => {
-      if (node.checked === true) {
-        node.checked = false;
-        this.dispatch.call('nodeSelectedAfter', this, node);
-      }
-    });
-
+    this.disableSelectedNodes();
     node.checked = true;
     this.dispatch.call('nodeSelectedAfter', this, node);
-    this.update();
+    this.updateVisibleNodes();
   }
 
   public selectNodeByIdentifier(identifier: string): void {
@@ -119,7 +111,7 @@ export class FileStorageTree extends SvgTree {
   private loadChildrenOfNode(parentNode: TreeNode): void {
     if (parentNode.loaded) {
       this.prepareDataForVisibleNodes();
-      this.update();
+      this.updateVisibleNodes();
       return;
     }
     this.nodesAddPlaceholder();
@@ -137,7 +129,7 @@ export class FileStorageTree extends SvgTree {
         parentNode.loaded = true;
         this.setParametersNode();
         this.prepareDataForVisibleNodes();
-        this.update();
+        this.updateVisibleNodes();
         this.nodesRemovePlaceholder();
         this.switchFocusNode(parentNode);
       })

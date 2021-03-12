@@ -171,6 +171,6 @@ class TreeToolbar extends LitElement {
       this.tree.nodes.forEach((node: any) => node.hidden = false);
     }
     this.tree.prepareDataForVisibleNodes();
-    this.tree.update();
+    this.tree.updateVisibleNodes();
   }
 }

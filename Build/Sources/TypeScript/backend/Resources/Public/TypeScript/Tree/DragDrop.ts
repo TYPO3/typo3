@@ -126,7 +126,7 @@ export class DragDrop {
           if (this.tree.hoveredNode) {
             this.tree.showChildren(this.tree.hoveredNode);
             this.tree.prepareDataForVisibleNodes();
-            this.tree.update();
+            this.tree.updateVisibleNodes();
           }
         }, 1000);
       }

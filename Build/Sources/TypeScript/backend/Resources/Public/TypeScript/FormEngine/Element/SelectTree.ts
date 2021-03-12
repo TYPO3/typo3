@@ -57,6 +57,24 @@ export class SelectTree extends SvgTree
   }
 
   /**
+   * Expand all nodes and refresh view
+   */
+  public expandAll(): void {
+    this.nodes.forEach((node: TreeNode) => { this.showChildren(node); });
+    this.prepareDataForVisibleNodes();
+    this.updateVisibleNodes();
+  }
+
+  /**
+   * Collapse all nodes recursively and refresh view
+   */
+  public collapseAll(): void {
+    this.nodes.forEach((node: TreeNode) => { this.hideChildren(node); });
+    this.prepareDataForVisibleNodes();
+    this.updateVisibleNodes();
+  }
+
+  /**
    * Node selection logic (triggered by different events)
    */
   public selectNode(node: TreeNode): void {
@@ -76,30 +94,7 @@ export class SelectTree extends SvgTree
     node.checked = !checked;
 
     this.dispatch.call('nodeSelectedAfter', this, node);
-    this.update();
-  }
-
-  /**
-   * Function relays on node.indeterminate state being up to date
-   *
-   * @param {Selection} nodes
-   */
-  public updateNodes(nodes: TreeNodeSelection): void {
-    nodes
-      .selectAll('.tree-check use')
-      .attr('visibility', function(this: SVGUseElement, node: TreeNode): string {
-        const checked = Boolean(node.checked);
-        const selection = d3selection.select(this);
-        if (selection.classed('icon-checked') && checked) {
-          return 'visible';
-        } else if (selection.classed('icon-indeterminate') && node.indeterminate && !checked) {
-          return 'visible';
-        } else if (selection.classed('icon-check') && !node.indeterminate && !checked) {
-          return 'visible';
-        } else {
-          return 'hidden';
-        }
-      });
+    this.updateVisibleNodes();
   }
 
   public filter(searchTerm?: string|null): void {
@@ -121,7 +116,7 @@ export class SelectTree extends SvgTree
     });
 
     this.prepareDataForVisibleNodes();
-    this.update();
+    this.updateVisibleNodes();
   }
 
   /**
@@ -145,6 +140,27 @@ export class SelectTree extends SvgTree
    */
   protected isNodeSelectable(node: TreeNode): boolean {
     return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
+  }
+
+  /**
+   * Function relays on node.indeterminate state being up to date
+   */
+  private updateNodes(nodes: TreeNodeSelection): void {
+    nodes
+      .selectAll('.tree-check use')
+      .attr('visibility', function(this: SVGUseElement, node: TreeNode): string {
+        const checked = Boolean(node.checked);
+        const selection = d3selection.select(this);
+        if (selection.classed('icon-checked') && checked) {
+          return 'visible';
+        } else if (selection.classed('icon-indeterminate') && node.indeterminate && !checked) {
+          return 'visible';
+        } else if (selection.classed('icon-check') && !node.indeterminate && !checked) {
+          return 'visible';
+        } else {
+          return 'hidden';
+        }
+      });
   }
 
   /**

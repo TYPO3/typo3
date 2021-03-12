@@ -77,11 +77,7 @@ export class PageTreeNavigationComponent extends LitElement {
           </div>
           <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
             ${this.renderMountPoint()}
-            <div id="typo3-pagetree-tree" class="svg-tree-wrapper">
-              <div class="node-loader">
-                <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
-              </div>
-            </div>
+            <div id="typo3-pagetree-tree" class="svg-tree-wrapper"></div>
           </div>
         </div>
         <div class="svg-tree-loader">
@@ -162,7 +158,7 @@ export class PageTreeNavigationComponent extends LitElement {
       .then((response) => {
         if (response && response.hasErrors) {
           this.tree.errorNotification(response.message, true);
-          this.tree.update();
+          this.tree.updateVisibleNodes();
         } else {
           this.mountPointPath = response.mountPointPath;
           this.tree.refreshOrFilterTree();

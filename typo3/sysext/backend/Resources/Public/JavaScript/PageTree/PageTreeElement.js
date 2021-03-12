@@ -18,11 +18,7 @@ var __decorate=this&&this.__decorate||function(e,t,o,r){var n,i=arguments.length
           </div>
           <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
             ${this.renderMountPoint()}
-            <div id="typo3-pagetree-tree" class="svg-tree-wrapper">
-              <div class="node-loader">
-                <typo3-backend-icon identifier="spinner-circle-light" size="small"></typo3-backend-icon>
-              </div>
-            </div>
+            <div id="typo3-pagetree-tree" class="svg-tree-wrapper"></div>
           </div>
         </div>
         <div class="svg-tree-loader">
@@ -37,7 +33,7 @@ var __decorate=this&&this.__decorate||function(e,t,o,r){var n,i=arguments.length
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
         </div>
       </div>
-    `}setTemporaryMountPoint(e){new s.default(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point).post("pid="+e,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then(e=>e.resolve()).then(e=>{e&&e.hasErrors?(this.tree.errorNotification(e.message,!0),this.tree.update()):(this.mountPointPath=e.mountPointPath,this.tree.refreshOrFilterTree())}).catch(e=>{this.tree.errorNotification(e,!0)})}};__decorate([o.property({type:String})],d.prototype,"mountPointPath",void 0),__decorate([o.query(".svg-tree-wrapper")],d.prototype,"treeWrapper",void 0),d=__decorate([o.customElement(t.navigationComponentName)],d),t.PageTreeNavigationComponent=d;let p=class extends o.LitElement{constructor(){super(...arguments),this.tree=null,this.settings={searchInput:".search-input",filterTimeout:450}}initializeDragDrop(e){var t,o;(null===(o=null===(t=this.tree.settings)||void 0===t?void 0:t.doktypes)||void 0===o?void 0:o.length)&&this.tree.settings.doktypes.forEach(t=>{if(t.icon){const o=this.querySelector('[data-tree-icon="'+t.icon+'"]');a.select(o).call(this.dragToolbar(t,e))}else console.warn("Missing icon definition for doktype: "+t.nodeType)})}createRenderRoot(){return this}firstUpdated(){const e=this.querySelector(this.settings.searchInput);e&&(new l.default("input",e=>{const t=e.target;this.tree.filter(t.value.trim())},this.settings.filterTimeout).bindTo(e),e.focus(),e.clearable({onClear:()=>{this.tree.resetFilter()}}))}render(){var e,t;return o.html`
+    `}setTemporaryMountPoint(e){new s.default(top.TYPO3.settings.ajaxUrls.page_tree_set_temporary_mount_point).post("pid="+e,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then(e=>e.resolve()).then(e=>{e&&e.hasErrors?(this.tree.errorNotification(e.message,!0),this.tree.updateVisibleNodes()):(this.mountPointPath=e.mountPointPath,this.tree.refreshOrFilterTree())}).catch(e=>{this.tree.errorNotification(e,!0)})}};__decorate([o.property({type:String})],d.prototype,"mountPointPath",void 0),__decorate([o.query(".svg-tree-wrapper")],d.prototype,"treeWrapper",void 0),d=__decorate([o.customElement(t.navigationComponentName)],d),t.PageTreeNavigationComponent=d;let p=class extends o.LitElement{constructor(){super(...arguments),this.tree=null,this.settings={searchInput:".search-input",filterTimeout:450}}initializeDragDrop(e){var t,o;(null===(o=null===(t=this.tree.settings)||void 0===t?void 0:t.doktypes)||void 0===o?void 0:o.length)&&this.tree.settings.doktypes.forEach(t=>{if(t.icon){const o=this.querySelector('[data-tree-icon="'+t.icon+'"]');a.select(o).call(this.dragToolbar(t,e))}else console.warn("Missing icon definition for doktype: "+t.nodeType)})}createRenderRoot(){return this}firstUpdated(){const e=this.querySelector(this.settings.searchInput);e&&(new l.default("input",e=>{const t=e.target;this.tree.filter(t.value.trim())},this.settings.filterTimeout).bindTo(e),e.focus(),e.clearable({onClear:()=>{this.tree.resetFilter()}}))}render(){var e,t;return o.html`
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">

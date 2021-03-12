@@ -276,7 +276,7 @@ export class FileStorageTreeNodeDragHandler implements DragDropHandler {
         if (response && response.hasErrors) {
           this.tree.errorNotification(response.messages, false);
           this.tree.nodesContainer.selectAll('.node').remove();
-          this.tree.update();
+          this.tree.updateVisibleNodes();
           this.tree.nodesRemovePlaceholder();
         } else {
           if (response.messages) {

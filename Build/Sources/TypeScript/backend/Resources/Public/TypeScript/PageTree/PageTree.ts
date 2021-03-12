@@ -104,7 +104,7 @@ export class PageTree extends SvgTree
         if (response && response.hasErrors) {
           this.errorNotification(response.messages, false);
           this.nodesContainer.selectAll('.node').remove();
-          this.update();
+          this.updateVisibleNodes();
           this.nodesRemovePlaceholder();
         } else {
           this.refreshOrFilterTree();
@@ -179,7 +179,7 @@ export class PageTree extends SvgTree
     this.disableSelectedNodes();
     node.checked = true;
     this.dispatch.call('nodeSelectedAfter', this, node);
-    this.update();
+    this.updateVisibleNodes();
   }
 
   /**
@@ -239,7 +239,7 @@ export class PageTree extends SvgTree
         parentNode.loaded = true;
         this.setParametersNode();
         this.prepareDataForVisibleNodes();
-        this.update();
+        this.updateVisibleNodes();
         this.nodesRemovePlaceholder();
 
         this.switchFocusNode(parentNode);
