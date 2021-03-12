@@ -27,6 +27,7 @@ class LoginCest extends AbstractCest
     public function installToolLogin(BackendTester $I)
     {
         $I->amGoingTo('assert the install tool is locked in the first place');
+        $I->waitForElementVisible('.panel-heading');
         $I->see('The Install Tool is locked');
         $I->assertFileNotExists(self::ENABLE_INSTALL_TOOL_FILEPATH);
 
