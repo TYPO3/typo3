@@ -40,7 +40,12 @@ class RecoveryCodesTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
             'className' => Argon2iPasswordHash::class,
-            'options' => [],
+            'options' => [
+                // Reduce default costs for quicker unit tests
+                'memory_cost' => 65536,
+                'time_cost' => 4,
+                'threads' => 2,
+            ],
         ];
 
         $codes = $this->subject->generateRecoveryCodes();
@@ -100,7 +105,10 @@ class RecoveryCodesTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
             'className' => BcryptPasswordHash::class,
-            'options' => [],
+            'options' => [
+                // Reduce default costs for quicker unit tests
+                'cost' => 10,
+            ],
         ];
 
         $codes = $this->subject->generatedHashedRecoveryCodes(['12345678', '87654321']);
@@ -114,6 +122,16 @@ class RecoveryCodesTest extends UnitTestCase
      */
     public function verifyRecoveryCodeTest(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
+            'className' => Argon2iPasswordHash::class,
+            'options' => [
+                // Reduce default costs for quicker unit tests
+                'memory_cost' => 65536,
+                'time_cost' => 4,
+                'threads' => 2,
+            ],
+        ];
+
         $recoveryCode = '18742989';
         $codes = [];
 
@@ -138,12 +156,21 @@ class RecoveryCodesTest extends UnitTestCase
     public function verifyRecoveryCodeUsesTheCorrectHashInstanceTest(): void
     {
         $code = '18742989';
-        $codes = [(new Argon2iPasswordHash())->getHashedPassword($code)];
+        $argonOptionsSpeedup = [
+            // Reduce default costs for quicker unit tests
+            'memory_cost' => 65536,
+            'time_cost' => 4,
+            'threads' => 2,
+        ];
+        $codes = [(new Argon2iPasswordHash($argonOptionsSpeedup))->getHashedPassword($code)];
 
         // Ensure we have another default hash instance
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordHashing'] = [
             'className' => BcryptPasswordHash::class,
-            'options' => [],
+            'options' => [
+                // Reduce default costs for quicker unit tests
+                'cost' => 10,
+            ],
         ];
 
         self::assertTrue($this->subject->verifyRecoveryCode($code, $codes));

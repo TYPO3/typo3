@@ -33,16 +33,4 @@ class TimeTrackerTest extends UnitTestCase
         $parseTime = (new TimeTracker())->getParseTime();
         self::assertLessThanOrEqual(1, $parseTime);
     }
-
-    /**
-     * @test
-     */
-    public function getParseTimeReturnsTotalParseTimeInMilliseconds(): void
-    {
-        $subject = new TimeTracker();
-        $subject->start();
-        sleep(1);
-        $subject->finish();
-        self::assertLessThan(1040, $subject->getParseTime());
-    }
 }
