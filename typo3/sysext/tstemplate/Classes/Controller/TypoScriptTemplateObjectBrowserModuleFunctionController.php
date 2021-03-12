@@ -261,12 +261,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $this->templateService->ext_regLinenumbers = true;
         $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
         $this->templateService->bType = $bType;
-        $breakPointLN = $this->request->getParsedBody()['breakPointLN'] ?? $this->request->getQueryParams()['breakPointLN'] ?? 0;
-        if ($this->pObj->MOD_SETTINGS['ts_browser_type'] === 'const') {
-            $this->templateService->ext_constants_BRP = (int)$breakPointLN;
-        } else {
-            $this->templateService->ext_config_BRP = (int)$breakPointLN;
-        }
         $this->templateService->generateConfig();
         if ($bType === 'setup') {
             $theSetup = $this->templateService->setup;

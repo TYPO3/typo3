@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -172,9 +171,7 @@ class TypoScriptParser
     public $lineNumberOffset = 0;
 
     /**
-     * Line for break point.
-     *
-     * @var int
+     * @deprecated Unused since v11, will be removed in v12
      */
     public $breakPointLN = 0;
 
@@ -226,7 +223,7 @@ class TypoScriptParser
     protected $highLightBlockStyles_basecolor = '#cccccc';
 
     /**
-     * @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+     * @deprecated Unused since v11, will be removed in v12
      */
     public $parentObject;
 
@@ -242,10 +239,6 @@ class TypoScriptParser
         $this->rawP = 0;
         $pre = '[GLOBAL]';
         while ($pre) {
-            if ($this->breakPointLN && $pre === '[_BREAK]') {
-                $this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[$this->rawP - 2] . '"', 1);
-                break;
-            }
             if ($pre === '[]') {
                 $this->error('Empty condition is always false, this does not make sense. At line ' . ($this->lineNumberOffset + $this->rawP - 1), 2);
                 break;
@@ -317,11 +310,6 @@ class TypoScriptParser
             $this->rawP++;
             if ($this->syntaxHighLight) {
                 $this->regHighLight('prespace', $lineP, strlen($line));
-            }
-            // Breakpoint?
-            // By adding 1 we get that line processed
-            if ($this->breakPointLN && $this->lineNumberOffset + $this->rawP - 1 === $this->breakPointLN + 1) {
-                return '[_BREAK]';
             }
             // Set comment flag?
             if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
@@ -1484,10 +1472,7 @@ class TypoScriptParser
             }
             if (is_array($lineNumDat)) {
                 $lineNum = $rawP + $lineNumDat[0];
-                if ($this->parentObject instanceof ExtendedTemplateService) {
-                    $lineNum = $this->parentObject->ext_lnBreakPointWrap($lineNum, $lineNum);
-                }
-                $lineC = $this->highLightStyles['linenum'][0] . str_pad($lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
+                $lineC = $this->highLightStyles['linenum'][0] . str_pad((string)$lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
             }
             $lines[] = $lineC;
         }

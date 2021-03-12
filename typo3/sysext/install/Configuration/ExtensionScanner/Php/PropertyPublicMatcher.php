@@ -825,4 +825,24 @@ return [
             'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->breakPointLN' => [
+        'restFiles' => [
+            'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->parentObject' => [
+        'restFiles' => [
+            'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->ext_constants_BRP' => [
+        'restFiles' => [
+            'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->ext_config_BRP' => [
+        'restFiles' => [
+            'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+        ],
+    ],
 ];

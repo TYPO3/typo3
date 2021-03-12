@@ -223,14 +223,6 @@ class TypoScriptTemplateModuleController
                 'function uFormUrl(aname) {
                     document.forms[0].action = ' . GeneralUtility::quoteJSvalue($aHref . '#') . '+aname;
                 }
-                function brPoint(lnumber,t) {
-                    window.location.href = '
-                . GeneralUtility::quoteJSvalue(
-                    $aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\'
-                    . 'TypoScriptTemplateObjectBrowserModuleFunctionController&SET[ts_browser_type]='
-                ) . '+(t?"setup":"const")+"&breakPointLN="+lnumber;
-                    return false;
-                }
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
             );
             // Setting up the context sensitive menu:

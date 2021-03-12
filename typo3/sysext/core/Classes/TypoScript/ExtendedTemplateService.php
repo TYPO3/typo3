@@ -103,11 +103,6 @@ class ExtendedTemplateService extends TemplateService
     public $ext_noPMicons = 0;
 
     /**
-     * @var string
-     */
-    public $ext_lineNumberOffset_mode = '';
-
-    /**
      * Ts analyzer
      *
      * @var array
@@ -362,9 +357,6 @@ class ExtendedTemplateService extends TemplateService
                         'id' => (int)GeneralUtility::_GP('id'),
                         'tsbr[' . $depth . ']' => $deeper ? 0 : 1
                     ];
-                    if (GeneralUtility::_GP('breakPointLN')) {
-                        $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
-                    }
                     $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters) . '#' . $goto;
                     $HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
                 }
@@ -378,9 +370,6 @@ class ExtendedTemplateService extends TemplateService
                             'id' => (int)GeneralUtility::_GP('id'),
                             'sObj' => $depth
                         ];
-                        if (GeneralUtility::_GP('breakPointLN')) {
-                            $urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
-                        }
                         $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                         if ($this->bType !== 'const') {
                             $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
@@ -677,7 +666,6 @@ class ExtendedTemplateService extends TemplateService
         if ($syntaxHL) {
             $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
             $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
-            $tsparser->parentObject = $this;
             return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '');
         }
         return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
@@ -708,17 +696,6 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * @param int $lineNumber Line Number
-     * @param string $str
-     * @return string
-     */
-    public function ext_lnBreakPointWrap($lineNumber, $str)
-    {
-        return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ','
-            . ($this->ext_lineNumberOffset_mode === 'setup' ? 1 : 0) . ');">' . $str . '</a>';
-    }
-
-    /**
      * @param string $input
      * @param bool $ln
      * @param bool $comments
@@ -733,7 +710,7 @@ class ExtendedTemplateService extends TemplateService
         foreach ($cArr as $k => $v) {
             $lln = $k + $this->ext_lineNumberOffset + 1;
             if ($ln) {
-                $lineNum = $this->ext_lnBreakPointWrap($lln, str_replace(' ', '&nbsp;', sprintf('% ' . $n . 'd', $lln))) . ':   ';
+                $lineNum = str_replace(' ', '&nbsp;', sprintf('% ' . $n . 'd', $lln)) . ':   ';
             }
             $v = htmlspecialchars($v);
             if ($crop) {

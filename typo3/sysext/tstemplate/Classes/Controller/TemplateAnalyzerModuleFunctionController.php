@@ -186,7 +186,6 @@ class TemplateAnalyzerModuleFunctionController
 
         if ($template) {
             $this->templateService->ext_lineNumberOffset = 0;
-            $this->templateService->ext_lineNumberOffset_mode = 'const';
             $assigns['constants'] = [];
             foreach ($this->templateService->constants as $key => $val) {
                 $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];
@@ -210,7 +209,6 @@ class TemplateAnalyzerModuleFunctionController
 
             // Output Setup
             $this->templateService->ext_lineNumberOffset = 0;
-            $this->templateService->ext_lineNumberOffset_mode = 'setup';
             $assigns['setups'] = [];
             foreach ($this->templateService->config as $key => $val) {
                 $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];

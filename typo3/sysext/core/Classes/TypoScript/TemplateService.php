@@ -76,14 +76,12 @@ class TemplateService
     protected $matchAll = false;
 
     /**
-     * Externally set breakpoints (used by Backend Modules)
-     *
-     * @var int
+     * @deprecated Unused since v11, will be removed in v12
      */
     public $ext_constants_BRP = 0;
 
     /**
-     * @var int
+     * @deprecated Unused since v11, will be removed in v12
      */
     public $ext_config_BRP = 0;
 
@@ -967,7 +965,6 @@ class TemplateService
         // Initialize parser and match-condition classes:
         /** @var Parser\TypoScriptParser $constants */
         $constants = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $constants->breakPointLN = (int)$this->ext_constants_BRP;
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
@@ -986,7 +983,6 @@ class TemplateService
         // Initialize parser and match-condition classes:
         /** @var Parser\TypoScriptParser $config */
         $config = GeneralUtility::makeInstance(TypoScriptParser::class);
-        $config->breakPointLN = (int)$this->ext_config_BRP;
         $config->regLinenumbers = $this->ext_regLinenumbers;
         $config->regComments = $this->ext_regComments;
         $config->setup = $this->setup;
