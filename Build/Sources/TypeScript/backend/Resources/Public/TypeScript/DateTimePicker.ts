@@ -61,7 +61,7 @@ class DateTimePicker {
   public initialize(element?: string | HTMLElement): void {
     let dateTimePickers;
     if (element instanceof HTMLElement) {
-      if (element.dataset.datepickerInitialized !== 'undefined') {
+      if (typeof element.dataset.datepickerInitialized !== 'undefined') {
         return;
       }
 
