@@ -121,7 +121,6 @@ return [
                 ],
             ]
         ],
-
         'pagetypes_select' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select',
             'config' => [
@@ -130,7 +129,6 @@ return [
                 'special' => 'pagetypes',
                 'size' => 5,
                 'autoSizeMax' => 50,
-                'maxitems' => 20,
             ]
         ],
         'tables_modify' => [
