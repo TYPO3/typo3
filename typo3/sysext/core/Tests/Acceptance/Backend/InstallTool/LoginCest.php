@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\InstallTool;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 class LoginCest extends AbstractCest
@@ -32,12 +33,12 @@ class LoginCest extends AbstractCest
 
         $I->amGoingTo('lock the tool without logging in');
         $I->writeToFile(self::ENABLE_INSTALL_TOOL_FILEPATH, '');
-        $I->seeFileFound(self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->seeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
         $I->reloadPage();
         $I->see('Login to TYPO3 Install Tool');
         $I->click('Lock Install Tool again');
         $I->see('The Install Tool is locked');
-        $I->dontSeeFileFound(self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
 
         $I->amGoingTo('log into Install Tool');
         $this->logIntoInstallTool($I);

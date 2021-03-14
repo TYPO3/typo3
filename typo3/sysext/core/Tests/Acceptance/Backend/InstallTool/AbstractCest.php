@@ -39,8 +39,8 @@ class AbstractCest
         $I->amGoingTo('clean up created files');
         unlink(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
 
-        $I->dontSeeFileFound(self::ENABLE_INSTALL_TOOL_FILEPATH);
-        $I->dontSeeFileFound(self::ADDITIONAL_CONFIGURATION_FILEPATH);
+        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
     }
 
     protected function logIntoInstallTool(BackendTester $I)
