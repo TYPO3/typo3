@@ -79,7 +79,7 @@ group from above:
        ...,
        [
            // Label
-           'LLL:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.CType.slickslider',
+           'LLL:EXT:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.CType.slickslider',
            // Value written to the database
            'slickslider',
            // Icon for the dropdown
@@ -98,7 +98,7 @@ The item can be added via API like this:
        'tt_content',
        'CType',
        [
-           'LLL:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.CType.slickslider',
+           'LLL:EXT:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.CType.slickslider',
            'slickslider',
            'EXT:my_slider_mixtape/Resources/Public/Icons/slickslider.png',
            'sliders'
@@ -120,7 +120,7 @@ which is available in :php:`tt_content.CType` and :php:`tt_content.list_type`.
        // Plugin value
        'slider_from_records',
        // Plugin label
-       'LLL:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.plugin.slider_from_records',
+       'LLL:EXT:my_slider_mixtape/Resources/Private/Locallang/locallang_tca.xlf:tt_content.plugin.slider_from_records',
        // Icon for plugin
        'EXT:my_slider_mixtape/Resources/Public/Icons/slickslider.png',
        // Group ID

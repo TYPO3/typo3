@@ -491,7 +491,7 @@ class ExtensionManagementUtility
      * @param string $table the table name in TCA - e.g. tt_content
      * @param string $field the field name in TCA - e.g. CType
      * @param string $groupId the unique identifier for a group, where all items from addTcaSelectItem() with a group ID are connected
-     * @param string $groupLabel the label e.g. LLL:my_extension/Resources/Private/Language/locallang_tca.xlf:group.mygroupId
+     * @param string $groupLabel the label e.g. LLL:EXT:my_extension/Resources/Private/Language/locallang_tca.xlf:group.mygroupId
      * @param string|null $position e.g. "before:special", "after:default" (where the part after the colon is an existing groupId) or "top" or "bottom"
      */
     public static function addTcaSelectItemGroup(string $table, string $field, string $groupId, string $groupLabel, ?string $position = 'bottom'): void
