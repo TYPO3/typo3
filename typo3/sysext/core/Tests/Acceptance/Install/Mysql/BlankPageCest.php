@@ -59,7 +59,7 @@ class BlankPageCest
         $I->click('Continue');
 
         // DefaultConfiguration step - Create empty page
-        $I->waitForText('Installation Complete', 30);
+        $I->waitForText('Installation Complete', 60);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 

@@ -53,7 +53,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation Complete');
+        $I->waitForText('Installation Complete', 60);
         $I->click('#load-distributions');
         $I->click('Open the TYPO3 Backend');
 
@@ -77,7 +77,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
 
         // Verify default frontend is rendered
         $I->amOnPage('/');
-        $I->waitForText('Deliver business value', 30);
+        $I->waitForText('Deliver business value', 60);
         $I->waitForText('100% free open source software');
 
         // Verify link
