@@ -56,7 +56,7 @@ class BlankPageCest
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation Complete');
+        $I->waitForText('Installation Complete', 60);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 
