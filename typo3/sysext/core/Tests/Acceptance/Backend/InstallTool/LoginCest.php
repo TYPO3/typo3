@@ -35,6 +35,7 @@ class LoginCest extends AbstractCest
         $I->writeToFile(self::ENABLE_INSTALL_TOOL_FILEPATH, '');
         $I->seeFileFound(Environment::getProjectPath() . '/' . self::ENABLE_INSTALL_TOOL_FILEPATH);
         $I->reloadPage();
+        $I->waitForElementVisible('#t3-install-form-password');
         $I->see('Login to TYPO3 Install Tool');
         $I->click('Lock Install Tool again');
         $I->see('The Install Tool is locked');
