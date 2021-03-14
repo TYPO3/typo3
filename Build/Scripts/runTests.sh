@@ -150,14 +150,14 @@ Options:
             - 8.0: use PHP 8.0
 
     -e "<phpunit or codeception options>"
-        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance
+        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|install
         Additional options to send to phpunit (unit & functional tests) or codeception (acceptance
         tests). For phpunit, options starting with "--" must be added after options starting with "-".
         Example -e "-v --filter canRetrieveValueWithGP" to enable verbose output AND filter tests
         named "canRetrieveValueWithGP"
 
     -x
-        Only with -s functional|unit|unitDeprecated|unitRandom
+        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|install
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
