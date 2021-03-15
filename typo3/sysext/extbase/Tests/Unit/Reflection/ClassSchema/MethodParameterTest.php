@@ -93,19 +93,6 @@ class MethodParameterTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsArrayParamTypeFromTypeHint(): void
-    {
-        self::assertTrue(
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
-                ->getMethod('methodWithTypeHintedArrayParam')
-                ->getParameter('param')
-                ->isArray()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsIgnoreValidationAnnotation(): void
     {
         $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAnnotation::class))
