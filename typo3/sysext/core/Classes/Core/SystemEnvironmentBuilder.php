@@ -146,7 +146,7 @@ class SystemEnvironmentBuilder
         /**
          * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
          */
-        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
+        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Troubleshooting/Index.html#opcode-cache-messages');
     }
 
     /**
