@@ -119,7 +119,6 @@ class ClassSchemaTest extends UnitTestCase
                 'methodWithNullableParam',
                 'methodWithDefaultValueParam',
                 'methodWithTypeHintedParam',
-                'methodWithTypeHintedArrayParam',
                 'methodWithDocBlockTypeHintOnly',
             ],
             array_keys((new ClassSchema(DummyClassWithAllTypesOfMethods::class))->getMethods())

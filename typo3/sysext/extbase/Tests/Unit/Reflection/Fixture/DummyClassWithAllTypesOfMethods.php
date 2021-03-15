@@ -82,10 +82,6 @@ class DummyClassWithAllTypesOfMethods
     {
     }
 
-    public static function methodWithTypeHintedArrayParam(array $param)
-    {
-    }
-
     /**
      * @param \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods $param
      */
