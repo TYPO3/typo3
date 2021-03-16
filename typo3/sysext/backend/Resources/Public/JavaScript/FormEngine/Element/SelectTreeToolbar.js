@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=this&&this.__decorate||function(e,t,l,i){var o,n=arguments.length,a=n<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,l):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,l,i);else for(var c=e.length-1;c>=0;c--)(o=e[c])&&(a=(n<3?o(a):n>3?o(t,l,a):o(t,l))||a);return n>3&&a&&Object.defineProperty(t,l,a),a};define(["require","exports","bootstrap","lit","lit/decorators","TYPO3/CMS/Core/lit-helper"],(function(e,t,l,i,o,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.SelectTreeToolbar=void 0;let a=class extends i.LitElement{constructor(){super(...arguments),this.settings={collapseAllBtn:"collapse-all-btn",expandAllBtn:"expand-all-btn",searchInput:"search-input",toggleHideUnchecked:"hide-unchecked-btn"},this.hideUncheckedState=!1}createRenderRoot(){return this}firstUpdated(){this.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(e=>new l.Tooltip(e))}render(){return i.html`
+var __decorate=this&&this.__decorate||function(e,t,l,i){var o,n=arguments.length,a=n<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,l):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,l,i);else for(var s=e.length-1;s>=0;s--)(o=e[s])&&(a=(n<3?o(a):n>3?o(t,l,a):o(t,l))||a);return n>3&&a&&Object.defineProperty(t,l,a),a};define(["require","exports","bootstrap","lit","lit/decorators","TYPO3/CMS/Core/lit-helper"],(function(e,t,l,i,o,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.SelectTreeToolbar=void 0;let a=class extends i.LitElement{constructor(){super(...arguments),this.settings={collapseAllBtn:"collapse-all-btn",expandAllBtn:"expand-all-btn",searchInput:"search-input",toggleHideUnchecked:"hide-unchecked-btn"},this.hideUncheckedState=!1}createRenderRoot(){return this}firstUpdated(){this.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(e=>new l.Tooltip(e))}render(){return i.html`
       <div class="tree-toolbar btn-toolbar">
         <div class="input-group">
           <span class="input-group-addon input-group-icon filter">
@@ -22,7 +22,7 @@ var __decorate=this&&this.__decorate||function(e,t,l,i){var o,n=arguments.length
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${n.lll("tcatree.expandAll")}" @click="${()=>this.expandAll()}">
             <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${n.lll("tcatree.collapseAll")}" @click="${()=>this.collapseAll()}">
+          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${n.lll("tcatree.collapseAll")}" @click="${e=>this.collapseAll(e)}">
             <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${n.lll("tcatree.toggleHideUnchecked")}" @click="${()=>this.toggleHideUnchecked()}">
@@ -30,4 +30,4 @@ var __decorate=this&&this.__decorate||function(e,t,l,i){var o,n=arguments.length
           </button>
         </div>
       </div>
-    `}collapseAll(){this.tree.collapseAll()}expandAll(){this.tree.expandAll()}filter(e){const t=e.target;this.tree.filter(t.value.trim())}toggleHideUnchecked(){this.hideUncheckedState=!this.hideUncheckedState,this.hideUncheckedState?this.tree.nodes.forEach(e=>{e.checked?(this.tree.showParents(e),e.expanded=!0,e.hidden=!1):(e.hidden=!0,e.expanded=!1)}):this.tree.nodes.forEach(e=>e.hidden=!1),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}};a=__decorate([o.customElement("typo3-backend-form-selecttree-toolbar")],a),t.SelectTreeToolbar=a}));
+    `}collapseAll(e){e.preventDefault(),this.tree.nodes.forEach(e=>{e.parents.length&&this.tree.hideChildren(e)}),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}expandAll(){this.tree.expandAll()}filter(e){const t=e.target;this.tree.filter(t.value.trim())}toggleHideUnchecked(){this.hideUncheckedState=!this.hideUncheckedState,this.hideUncheckedState?this.tree.nodes.forEach(e=>{e.checked?(this.tree.showParents(e),e.expanded=!0,e.hidden=!1):(e.hidden=!0,e.expanded=!1)}):this.tree.nodes.forEach(e=>e.hidden=!1),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}};a=__decorate([o.customElement("typo3-backend-form-selecttree-toolbar")],a),t.SelectTreeToolbar=a}));

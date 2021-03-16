@@ -25,7 +25,8 @@ class PageTreeFilterCest
 {
     protected $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
     protected $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
-    protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar button[data-tree-icon=actions-refresh]';
+    protected $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
+    protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
     protected $inPageTree = '#typo3-pagetree-tree .nodes';
 
     public function _before(ApplicationTester $I, PageTree $pageTree)
@@ -65,6 +66,7 @@ class PageTreeFilterCest
         $I->amGoingTo('prove translated pages are not shown in the filtered page tree');
         $I->cantSee('inline mngroup - language 3', $this->inPageTree);
 
+        $I->click($this->pageTreeSecondaryOptions);
         $I->click($this->pageTreeReloadButton);
         $this->waitForAjaxRequestToFinish($I);
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
@@ -132,6 +134,7 @@ class PageTreeFilterCest
         ApplicationTester $I
     ): void {
         $I->click($this->filterInputFieldClearButton);
+        $I->click($this->pageTreeSecondaryOptions);
         $I->click($this->pageTreeReloadButton);
         $I->cantSeeElement($this->filterInputFieldClearButton);
     }

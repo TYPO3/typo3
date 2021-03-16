@@ -16,6 +16,7 @@ import {Tooltip} from 'bootstrap';
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
+import {TreeNode} from '../../Tree/TreeNode';
 
 @customElement('typo3-backend-form-selecttree-toolbar')
 export class SelectTreeToolbar extends LitElement {
@@ -56,7 +57,7 @@ export class SelectTreeToolbar extends LitElement {
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
             <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${() => this.collapseAll()}">
+          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${lll('tcatree.collapseAll')}" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
             <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
           <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${lll('tcatree.toggleHideUnchecked')}" @click="${() => this.toggleHideUnchecked()}">
@@ -70,9 +71,18 @@ export class SelectTreeToolbar extends LitElement {
   /**
    * Collapse children of root node
    */
-  private collapseAll() {
-    this.tree.collapseAll();
+  private collapseAll(evt: MouseEvent): void {
+    evt.preventDefault();
+    // Only collapse nodes that aren't on the root level
+    this.tree.nodes.forEach((node: TreeNode) => {
+      if (node.parents.length) {
+        this.tree.hideChildren(node);
+      }
+    });
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.updateVisibleNodes();
   }
+
 
   /**
    * Expand all nodes

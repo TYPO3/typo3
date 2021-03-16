@@ -1370,9 +1370,23 @@ export class Toolbar extends LitElement {
           <div class="svg-toolbar__search">
               <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
-          <button class="btn btn-default btn-borderless btn-sm" @click="${() => this.refreshTree()}" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
-            <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
-          </button>
+        </div>
+        <div class="svg-toolbar__submenu">
+          <a class="svg-toolbar__menuitem nav-link dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button class="dropdown-item" @click="${() => this.refreshTree()}">
+                <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${lll('labels.refresh')}
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
+                <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${lll('labels.collapse')}
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     `;
@@ -1380,5 +1394,17 @@ export class Toolbar extends LitElement {
 
   protected refreshTree(): void {
     this.tree.refreshOrFilterTree();
+  }
+
+  protected collapseAll(evt: MouseEvent): void {
+    evt.preventDefault();
+    // Only collapse nodes that aren't on the root level
+    this.tree.nodes.forEach((node: TreeNode) => {
+      if (node.parentsStateIdentifier.length) {
+        this.tree.hideChildren(node);
+      }
+    });
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.updateVisibleNodes();
   }
 }

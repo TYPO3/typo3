@@ -253,6 +253,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.refresh" resname="labels.refresh">
 				<source>Reload the tree from server</source>
 			</trans-unit>
+			<trans-unit id="labels.collapse" resname="labels.collapse">
+				<source>Collapse all tree items</source>
+			</trans-unit>
 			<trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount">
 				<source>Cancel temporary DB mount</source>
 			</trans-unit>
