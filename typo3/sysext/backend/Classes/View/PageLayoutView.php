@@ -2240,7 +2240,7 @@ class PageLayoutView implements LoggerAwareInterface
                         BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'menu_type', $row['menu_type'])
                     );
                     $menuTypeLabel = $menuTypeLabel ?: 'invalid menu type';
-                    $out .= $this->linkEditContent($menuTypeLabel, $row);
+                    $out .= $this->linkEditContent(htmlspecialchars($menuTypeLabel), $row);
                     if ($row['menu_type'] !== '2' && ($row['pages'] || $row['selected_categories'])) {
                         // Show pages if menu type is not "Sitemap"
                         $out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($row), $row) . '<br />';
@@ -2353,7 +2353,7 @@ class PageLayoutView implements LoggerAwareInterface
         foreach ($uidList as $uid) {
             $uid = (int)$uid;
             $record = BackendUtility::getRecord($table, $uid, 'title');
-            $content .= '<br>' . $record['title'] . ' (' . $uid . ')';
+            $content .= '<br>' . htmlspecialchars($record['title']) . ' (' . $uid . ')';
         }
         return $content;
     }
