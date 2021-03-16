@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence;
 
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -782,5 +783,232 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         $mockFormPersistenceManager->_set('storageRepository', $mockStorageRepository);
         $mockFormPersistenceManager->_call('getStorageByUid', -1);
+    }
+
+    public function isAllowedPersistencePathReturnsPropperValuesDataProvider(): array
+    {
+        return [
+            [
+                'persistencePath' => '',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.form.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+
+            [
+                'persistencePath' => '-1:/user_uploads/',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/some_path/'],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads/'],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads/'],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads'],
+                'expected' => true,
+            ],
+
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/',
+                'allowedExtensionPaths' => ['EXT:some_extension/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures'],
+                'allowedFileMounts' => [],
+                'expected' => true,
+            ],
+
+            [
+                'persistencePath' => '-1:/user_uploads/example.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/some_path/'],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.form.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/some_path/'],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads/'],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads'],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.form.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads/'],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => '-1:/user_uploads/example.form.yaml',
+                'allowedExtensionPaths' => [],
+                'allowedFileMounts' => ['-1:/user_uploads'],
+                'expected' => true,
+            ],
+
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt',
+                'allowedExtensionPaths' => ['EXT:some_extension/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml',
+                'allowedExtensionPaths' => ['EXT:some_extension/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures'],
+                'allowedFileMounts' => [],
+                'expected' => false,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'],
+                'allowedFileMounts' => [],
+                'expected' => true,
+            ],
+            [
+                'persistencePath' => 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml',
+                'allowedExtensionPaths' => ['EXT:form/Tests/Unit/Mvc/Persistence/Fixtures'],
+                'allowedFileMounts' => [],
+                'expected' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isAllowedPersistencePathReturnsPropperValuesDataProvider
+     */
+    public function isAllowedPersistencePathReturnsPropperValues(string $persistencePath, array $allowedExtensionPaths, array $allowedFileMounts, $expected): void
+    {
+        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'getStorageByUid',
+        ]);
+
+        $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)
+            ->setMethods(['get', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $runtimeCacheMock
+            ->expects(self::any())
+            ->method('get')
+            ->willReturn(false);
+
+        $storageMock = $this->getMockBuilder(ResourceStorage::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $storageMock
+            ->expects(self::any())
+            ->method('getRootLevelFolder')
+            ->willReturn(new Folder($storageMock, '', ''));
+
+        $storageMock
+            ->expects(self::any())
+            ->method('getFileMounts')
+            ->willReturn([]);
+
+        $storageMock
+            ->expects(self::any())
+            ->method('getFolder')
+            ->willReturn(new Folder($storageMock, '', ''));
+
+        $formPersistenceManagerMock
+            ->expects(self::any())
+            ->method('getStorageByUid')
+            ->willReturn($storageMock);
+
+        $formPersistenceManagerMock->_set('runtimeCache', $runtimeCacheMock);
+        $formPersistenceManagerMock->_set('formSettings', [
+            'persistenceManager' => [
+                'allowedExtensionPaths' => $allowedExtensionPaths,
+                'allowedFileMounts' => $allowedFileMounts,
+            ],
+        ]);
+
+        self::assertEquals($expected, $formPersistenceManagerMock->_call('isAllowedPersistencePath', $persistencePath));
     }
 }
