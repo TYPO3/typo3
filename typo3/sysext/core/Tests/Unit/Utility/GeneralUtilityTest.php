@@ -2006,6 +2006,7 @@ class GeneralUtilityTest extends UnitTestCase
             'empty string' => [''],
             'http domain' => ['http://www.google.de/'],
             'https domain' => ['https://www.google.de/'],
+            'domain without schema' => ['//www.google.de/'],
             'XSS attempt' => ['" onmouseover="alert(123)"'],
             'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
             'invalid URL, HTML break out attempt' => ['" >blabuubb'],
@@ -2014,11 +2015,48 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
+     * @param string $url
      * @test
      * @dataProvider sanitizeLocalUrlInvalidDataProvider
      */
-    public function sanitizeLocalUrlDeniesPlainInvalidUrls($url)
+    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInBackendContext(string $url): void
     {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = 'typo3/index.php';
+        self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
+    }
+
+    /**
+     * @param string $url
+     * @test
+     * @dataProvider sanitizeLocalUrlInvalidDataProvider
+     */
+    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInFrontendContext(string $url): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = 'index.php';
         self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
     }
 
