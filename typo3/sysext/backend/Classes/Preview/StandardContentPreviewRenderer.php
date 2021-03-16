@@ -135,7 +135,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     BackendUtility::getLabelFromItemListMerged($record['pid'], 'tt_content', 'menu_type', $record['menu_type'])
                 );
                 $menuTypeLabel = $menuTypeLabel ?: 'invalid menu type';
-                $out .= $this->linkEditContent($menuTypeLabel, $record);
+                $out .= $this->linkEditContent(htmlspecialchars($menuTypeLabel), $record);
                 if ($record['menu_type'] !== '2' && ($record['pages'] || $record['selected_categories'])) {
                     // Show pages if menu type is not "Sitemap"
                     $out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($record), $record) . '<br />';
@@ -379,7 +379,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         foreach ($uidList as $uid) {
             $uid = (int)$uid;
             $pageRecord = BackendUtility::getRecord($table, $uid, 'title');
-            $content .= '<br>' . $pageRecord['title'] . ' (' . $uid . ')';
+            $content .= '<br>' . htmlspecialchars($pageRecord['title']) . ' (' . $uid . ')';
         }
         return $content;
     }
