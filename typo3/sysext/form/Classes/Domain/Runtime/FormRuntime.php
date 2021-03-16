@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
@@ -52,9 +53,12 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -125,6 +129,14 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $formState;
 
     /**
+     * Individual unique random form session identifier valid
+     * for current user session. This value is not persisted server-side.
+     *
+     * @var FormSession|null
+     */
+    protected $formSession;
+
+    /**
      * The current page is the page which will be displayed to the user
      * during rendering.
      *
@@ -164,6 +176,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $currentFinisher;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
      * @internal
      */
@@ -179,6 +196,14 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
     }
 
     /**
@@ -205,16 +230,36 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function initializeObject()
     {
         $this->initializeCurrentSiteLanguage();
+        $this->initializeFormSessionFromRequest();
         $this->initializeFormStateFromRequest();
+        $this->triggerAfterFormStateInitialized();
         $this->processVariants();
         $this->initializeCurrentPageFromRequest();
         $this->initializeHoneypotFromRequest();
 
-        if (!$this->isFirstRequest() && $this->getRequest()->getMethod() === 'POST') {
+        // Only validate and set form values within the form state
+        // if the current request is not the very first request
+        // and the current request can be processed (POST request and uncached).
+        if (!$this->isFirstRequest() && $this->canProcessFormSubmission()) {
             $this->processSubmittedFormValues();
         }
 
         $this->renderHoneypot();
+    }
+
+    /**
+     * @todo `FormRuntime::$formSession` is still vulnerable to session fixation unless a real cookie-based process is used
+     */
+    protected function initializeFormSessionFromRequest(): void
+    {
+        // Initialize the form session only if the current request can be processed
+        // (POST request and uncached) to ensure unique sessions for each form submitter.
+        if (!$this->canProcessFormSubmission()) {
+            return;
+        }
+
+        $sessionIdentifierFromRequest = $this->request->getInternalArgument('__session');
+        $this->formSession = GeneralUtility::makeInstance(FormSession::class, $sessionIdentifierFromRequest);
     }
 
     /**
@@ -223,16 +268,29 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function initializeFormStateFromRequest()
     {
+        // Only try to reconstitute the form state if the current request
+        // is not the very first request and if the current request can
+        // be processed (POST request and uncached).
         $serializedFormStateWithHmac = $this->request->getInternalArgument('__state');
-        if ($serializedFormStateWithHmac === null) {
+        if ($serializedFormStateWithHmac === null || !$this->canProcessFormSubmission()) {
             $this->formState = GeneralUtility::makeInstance(FormState::class);
         } else {
             try {
                 $serializedFormState = $this->hashService->validateAndStripHmac($serializedFormStateWithHmac);
             } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
-                throw new BadRequestException('The HMAC of the form could not be validated.', 1581862823);
+                throw new BadRequestException('The HMAC of the form state could not be validated.', 1581862823);
             }
             $this->formState = unserialize(base64_decode($serializedFormState));
+        }
+    }
+
+    protected function triggerAfterFormStateInitialized(): void
+    {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if ($hookObj instanceof AfterFormStateInitializedInterface) {
+                $hookObj->afterFormStateInitialized($this);
+            }
         }
     }
 
@@ -241,7 +299,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function initializeCurrentPageFromRequest()
     {
-        if (!$this->formState->isFormSubmitted()) {
+        // If there was no previous form submissions or if the current request
+        // can't be processed (no POST request and/or cached) then display the first
+        // form step
+        if (!$this->formState->isFormSubmitted() || !$this->canProcessFormSubmission()) {
             $this->currentPage = $this->formDefinition->getPageByIndex(0);
 
             if (!$this->currentPage->isEnabled()) {
@@ -470,6 +531,31 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
+     * @return bool
+     */
+    protected function isPostRequest(): bool
+    {
+        return $this->getRequest()->getMethod() === 'POST';
+    }
+
+    /**
+     * Determine whether the surrounding content object is cached.
+     * If no surrounding content object can be found (which would be strange)
+     * we assume a cached request for safety which means that an empty form
+     * will be rendered.
+     *
+     * @return bool
+     */
+    protected function isRenderedCached(): bool
+    {
+        $contentObject = $this->configurationManager->getContentObject();
+        return $contentObject === null
+            ? true
+            // @todo this does not work when rendering a cached `FLUIDTEMPLATE` (not nested in `COA_INT`)
+            : $contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER;
+    }
+
+    /**
      * Runs through all validations
      */
     protected function processSubmittedFormValues()
@@ -694,6 +780,29 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     public function getResponse(): Response
     {
         return $this->response;
+    }
+
+    /**
+     * Only process values if there is a post request and if the
+     * surrounding content object is uncached.
+     * Is this not the case, all possible submitted values will be discarded
+     * and the first form step will be shown with an empty form state.
+     *
+     * @return bool
+     * @internal
+     */
+    public function canProcessFormSubmission(): bool
+    {
+        return $this->isPostRequest() && !$this->isRenderedCached();
+    }
+
+    /**
+     * @return FormSession|null
+     * @internal
+     */
+    public function getFormSession(): ?FormSession
+    {
+        return $this->formSession;
     }
 
     /**
