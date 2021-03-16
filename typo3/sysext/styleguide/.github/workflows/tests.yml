@@ -48,4 +48,5 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d sqlite -s functional
 
       - name: Acceptance Tests
+        if: startsWith(matrix.php, '7.4')
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance
