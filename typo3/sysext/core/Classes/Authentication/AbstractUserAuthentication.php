@@ -1194,8 +1194,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function pushModuleData($module, $data, $noSave = 0)
     {
+        $sessionHash = GeneralUtility::hmac(
+            $this->id,
+            'core-session-hash'
+        );
         $this->uc['moduleData'][$module] = $data;
-        $this->uc['moduleSessionID'][$module] = $this->id;
+        $this->uc['moduleSessionID'][$module] = $sessionHash;
         if (!$noSave) {
             $this->writeUC();
         }
@@ -1210,8 +1214,18 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getModuleData($module, $type = '')
     {
-        if ($type !== 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->id)) {
-            return $this->uc['moduleData'][$module];
+        $sessionHash = GeneralUtility::hmac(
+            $this->id,
+            'core-session-hash'
+        );
+        $sessionData = $this->uc['moduleData'][$module] ?? null;
+        $moduleSessionIdHash = $this->uc['moduleSessionID'][$module] ?? null;
+        if ($type !== 'ses'
+            || $sessionData !== null && $moduleSessionIdHash === $sessionHash
+            // @todo Fallback for non-hashed values in `moduleSessionID`, remove for TYPO3 v11.5 LTS
+            || $sessionData !== null && $moduleSessionIdHash === $this->id
+        ) {
+            return $sessionData;
         }
         return null;
     }
