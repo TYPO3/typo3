@@ -23,6 +23,8 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 
@@ -30,12 +32,15 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  * Scope: frontend
  * @internal
  */
-class PropertyMappingConfiguration
+class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
 
     /**
      * This hook is called for each form element after the class
      * TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory has built the entire form.
+     *
+     * It is invoked after the static form definition is ready, but without knowing
+     * about the individual state organized in `FormRuntime` and `FormState`.
      *
      * @param RenderableInterface $renderable
      * @internal
@@ -51,12 +56,17 @@ class PropertyMappingConfiguration
             // * Setup the storage:
             //   If the property "saveToFileMount" exist for this element it will be used.
             //   If this file mount or the property "saveToFileMount" does not exist
-            //   the folder in which the form definition lies (persistence identifier) will be used.
-            //   If the form is generated programmatically and therefore no
-            //   persistence identifier exist the default storage "1:/user_upload/" will be used.
+            //   the default storage "1:/user_uploads/" will be used. Uploads are placed
+            //   in a dedicated sub-folder (e.g. ".../form_<40-chars-hash>/actual.file").
 
+            /** @var UploadedFileReferenceConverter $typeConverter */
+            $typeConverter = GeneralUtility::makeInstance(ObjectManager::class)
+                ->get(UploadedFileReferenceConverter::class);
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
-            $propertyMappingConfiguration = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier())->getPropertyMappingConfiguration();
+            $propertyMappingConfiguration = $renderable->getRootForm()
+                ->getProcessingRule($renderable->getIdentifier())
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter($typeConverter);
 
             $allowedMimeTypes = [];
             $validators = [];
@@ -86,6 +96,7 @@ class PropertyMappingConfiguration
             if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
                 $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
             } else {
+                // @todo Why should uploaded files be stored to the same directory as the *.form.yaml definitions?
                 $persistenceIdentifier = $renderable->getRootForm()->getPersistenceIdentifier();
                 if (!empty($persistenceIdentifier)) {
                     $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
@@ -95,7 +106,6 @@ class PropertyMappingConfiguration
                     }
                 }
             }
-
             $propertyMappingConfiguration->setTypeConverterOptions(UploadedFileReferenceConverter::class, $uploadConfiguration);
             return;
         }
@@ -131,5 +141,47 @@ class PropertyMappingConfiguration
         } catch (\InvalidArgumentException $e) {
             return false;
         }
+    }
+
+    /**
+     * @param FormRuntime $formRuntime holding current form state and static form definition
+     */
+    public function afterFormStateInitialized(FormRuntime $formRuntime): void
+    {
+        foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
+            $this->adjustPropertyMappingForFileUploadsAtRuntime($formRuntime, $renderable);
+        }
+    }
+
+    /**
+     * If the form runtime is able to process form submissions
+     * (determined by $formRuntime->canProcessFormSubmission()) then a
+     * 'form session' is available.
+     * This form session identifier will be used to deriving storage sub-folders
+     * for the file uploads.
+     * This is done by setting `UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED`
+     * type converter option.
+     *
+     * @param FormRuntime $formRuntime
+     * @param RenderableInterface $renderable
+     */
+    protected function adjustPropertyMappingForFileUploadsAtRuntime(
+        FormRuntime $formRuntime,
+        RenderableInterface $renderable
+    ): void {
+        if (!$renderable instanceof FileUpload
+            || $formRuntime->getFormSession() === null
+            || !$formRuntime->canProcessFormSubmission()
+        ) {
+            return;
+        }
+        $renderable->getRootForm()
+            ->getProcessingRule($renderable->getIdentifier())
+            ->getPropertyMappingConfiguration()
+            ->setTypeConverterOption(
+                UploadedFileReferenceConverter::class,
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED,
+                $formRuntime->getFormSession()->getIdentifier()
+            );
     }
 }

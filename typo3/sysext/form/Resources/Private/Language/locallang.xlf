@@ -79,6 +79,9 @@
             <trans-unit id="validation.error.1471708998" resname="validation.error.1471708998" xml:space="preserve">
                 <source>You entered an incorrect media type, "%s" is not allowed for this file. Please refer to the description of this field.</source>
             </trans-unit>
+            <trans-unit id="validation.error.1613126216" resname="validation.error.1613126216" xml:space="preserve">
+                <source>The file extension provided "%s" does not match to expected media types. Please refer to the description of this field.</source>
+            </trans-unit>
             <trans-unit id="validation.error.1476396435" resname="validation.error.1476396435" xml:space="preserve">
                 <source>You must NOT fill this field.</source>
             </trans-unit>

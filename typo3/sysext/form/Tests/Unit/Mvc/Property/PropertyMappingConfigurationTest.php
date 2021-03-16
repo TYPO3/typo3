@@ -117,23 +117,15 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects($this->any())
-            ->method('get')
-            ->willReturnMap([
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(UploadedFileReferenceConverter::class)->willReturn($typeConverter);
+        $objectManager->get(MimeTypeValidator::class)->willReturn($mimeTypeValidator);
+        $objectManager->get(ResourceFactory::class)->willReturn($resourceFactory);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         // No validators
         $this->processingRule
@@ -169,21 +161,14 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->setMethods(['__construct'])
             ->disableOriginalConstructor()
             ->getMock();
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager to return the MimeTypeValidator
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects($this->any())
-            ->method('get')
-            ->with(MimeTypeValidator::class, $mimeTypes)
-            ->willReturn($mimeTypeValidator);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(UploadedFileReferenceConverter::class)->willReturn($typeConverter);
+        $objectManager->get(MimeTypeValidator::class, $mimeTypes)->willReturn($mimeTypeValidator);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         // Don't add any validators for now
         $this->processingRule
@@ -223,6 +208,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
         /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
@@ -235,6 +222,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->willReturnMap([
+                [UploadedFileReferenceConverter::class, $typeConverter],
                 [MimeTypeValidator::class, $mimeTypeValidator],
                 [ResourceFactory::class, $resourceFactory]
             ]);
@@ -279,6 +267,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
         /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
@@ -291,6 +281,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->willReturnMap([
+                [UploadedFileReferenceConverter::class, $typeConverter],
                 [MimeTypeValidator::class, $mimeTypeValidator],
                 [ResourceFactory::class, $resourceFactory]
             ]);
@@ -340,6 +331,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
         /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
@@ -352,6 +345,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->willReturnMap([
+                [UploadedFileReferenceConverter::class, $typeConverter],
                 [MimeTypeValidator::class, $mimeTypeValidator],
                 [ResourceFactory::class, $resourceFactory]
             ]);
@@ -401,6 +395,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
         /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
@@ -413,6 +409,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->willReturnMap([
+                [UploadedFileReferenceConverter::class, $typeConverter],
                 [MimeTypeValidator::class, $mimeTypeValidator],
                 [ResourceFactory::class, $resourceFactory]
             ]);
@@ -457,6 +454,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit_Framework_MockObject_MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
+        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
         // Object Manager (in order to return mocked Resource Factory)
         /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
@@ -469,6 +468,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->expects($this->any())
             ->method('get')
             ->willReturnMap([
+                [UploadedFileReferenceConverter::class, $typeConverter],
                 [MimeTypeValidator::class, $mimeTypeValidator],
                 [ResourceFactory::class, $resourceFactory]
             ]);

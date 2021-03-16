@@ -75,6 +75,7 @@
     "intersection-observer": "^0.11.0",
     "jquery": "~3.3.1",
     "jquery-ui": "github:jquery/jquery-ui#1.11.4",
+    "mime-db": "^1.46.0",
     "moment": "^2.29.0",
     "moment-timezone": "^0.5.31",
     "npm-font-source-sans-pro": "^1.0.2",

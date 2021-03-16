@@ -69,12 +69,11 @@ call_user_func(function () {
     // FE file upload processing
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1489772699]
         = \TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'][1613296803]
+        = \TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class;
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
         \TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter::class
-    );
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
-        \TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter::class
     );
 
     // Register "formvh:" namespace
@@ -128,5 +127,11 @@ call_user_func(function () {
         \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileSetContents,
         \TYPO3\CMS\Form\Slot\FilePersistenceSlot::class,
         'onPreFileSetContents'
+    );
+    $signalSlotDispatcher->connect(
+        \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+        \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreGeneratePublicUrl,
+        \TYPO3\CMS\Form\Slot\ResourcePublicationSlot::class,
+        'onPreGeneratePublicUrl'
     );
 });

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFile;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 
 /**
@@ -40,14 +41,18 @@ class FileSizeValidator extends AbstractValidator
     /**
      * The given value is valid
      *
-     * @param FileReference|File $resource
+     * @param FileReference|File|PseudoFile $resource
      */
     public function isValid($resource)
     {
         $this->validateOptions();
         if ($resource instanceof FileReference) {
-            $resource = $resource->getOriginalResource();
-        } elseif (!$resource instanceof File) {
+            $fileSize = $resource->getOriginalResource()->getSize();
+        } elseif ($resource instanceof File) {
+            $fileSize = $resource->getSize();
+        } elseif ($resource instanceof PseudoFile) {
+            $fileSize = $resource->getSize();
+        } else {
             $this->addError(
                 $this->translateErrorMessage(
                     'validation.error.1505303626',
@@ -58,7 +63,6 @@ class FileSizeValidator extends AbstractValidator
             return;
         }
 
-        $fileSize = $resource->getSize();
         $minFileSize = GeneralUtility::getBytesFromSizeMeasurement($this->options['minimum']);
         $maxFileSize = GeneralUtility::getBytesFromSizeMeasurement($this->options['maximum']);
 

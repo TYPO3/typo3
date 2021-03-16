@@ -16,8 +16,10 @@ namespace TYPO3\CMS\Form\Mvc\Validation;
  */
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\MimeTypeDetector;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFile;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 
 /**
@@ -40,15 +42,22 @@ class MimeTypeValidator extends AbstractValidator
      *
      * Note: a value of NULL or empty string ('') is considered valid
      *
-     * @param FileReference|File $resource The resource that should be validated
+     * @param FileReference|File|PseudoFile $resource The resource that should be validated
      */
     public function isValid($resource)
     {
         $this->validateOptions();
 
         if ($resource instanceof FileReference) {
-            $resource = $resource->getOriginalResource();
-        } elseif (!$resource instanceof File) {
+            $mimeType = $resource->getOriginalResource()->getMimeType();
+            $fileExtension = $resource->getOriginalResource()->getExtension();
+        } elseif ($resource instanceof File) {
+            $mimeType = $resource->getMimeType();
+            $fileExtension = $resource->getExtension();
+        } elseif ($resource instanceof PseudoFile) {
+            $mimeType = $resource->getMimeType();
+            $fileExtension = $resource->getExtension();
+        } else {
             $this->addError(
                 $this->translateErrorMessage(
                     'validation.error.1471708997',
@@ -60,16 +69,33 @@ class MimeTypeValidator extends AbstractValidator
         }
 
         $allowedMimeTypes = $this->options['allowedMimeTypes'];
-        if (!in_array($resource->getMimeType(), $allowedMimeTypes, true)) {
+        if (!in_array($mimeType, $allowedMimeTypes, true)) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validation.error.1471708998',
                     'form',
-                    [$resource->getMimeType()]
+                    [$mimeType]
                 ),
                 1471708998,
-                [$resource->getMimeType()]
+                [$mimeType]
             );
+        } else {
+            // The mime-type which was detected by FAL matches, but the file name does not match.
+            // Example: myfile.txt is actually a PDF file (defined by mime-type), but .txt is not associated
+            // for application/pdf, so this is not valid. The file extension of the uploaded file must match
+            // the mime-type for this file.
+            $assumedMimesTypeOfFileExtension = (new MimeTypeDetector())->getMimeTypesForFileExtension($fileExtension);
+            if (empty(array_intersect($allowedMimeTypes, $assumedMimesTypeOfFileExtension))) {
+                $this->addError(
+                    $this->translateErrorMessage(
+                        'validation.error.1613126216',
+                        'form',
+                        [$fileExtension]
+                    ) ?? '',
+                    1613126216,
+                    [$fileExtension]
+                );
+            }
         }
     }
 

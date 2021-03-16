@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper as FluidFormViewHelper;
+use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -37,13 +38,37 @@ class FormViewHelper extends FluidFormViewHelper
      */
     protected function renderHiddenReferrerFields()
     {
+        $formRuntime = $this->getFormRuntime();
+        $prefix = $this->prefixFieldName($this->getFormObjectName());
+
+        $markup = $this->createHiddenInputElement(
+            $prefix . '[__state]',
+            $this->hashService->appendHmac(
+                base64_encode(serialize($formRuntime->getFormState()))
+            )
+        );
+
+        // ONLY assign `__session` if form is performing (uncached)
+        if ($formRuntime->canProcessFormSubmission() && $formRuntime->getFormSession() !== null) {
+            $markup .= $this->createHiddenInputElement(
+                $prefix . '[__session]',
+                $formRuntime->getFormSession()->getAuthenticatedIdentifier()
+            );
+        }
+        return $markup;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return string
+     */
+    protected function createHiddenInputElement(string $name, string $value): string
+    {
         $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class, 'input');
         $tagBuilder->addAttribute('type', 'hidden');
-        $stateName = $this->prefixFieldName($this->arguments['object']->getFormDefinition()->getIdentifier()) . '[__state]';
-        $tagBuilder->addAttribute('name', $stateName);
-
-        $serializedFormState = base64_encode(serialize($this->arguments['object']->getFormState()));
-        $tagBuilder->addAttribute('value', $this->hashService->appendHmac($serializedFormState));
+        $tagBuilder->addAttribute('name', $name);
+        $tagBuilder->addAttribute('value', $value);
         return $tagBuilder->render();
     }
 
@@ -55,6 +80,11 @@ class FormViewHelper extends FluidFormViewHelper
      */
     protected function getFormObjectName()
     {
-        return $this->arguments['object']->getFormDefinition()->getIdentifier();
+        return $this->getFormRuntime()->getFormDefinition()->getIdentifier();
+    }
+
+    protected function getFormRuntime(): FormRuntime
+    {
+        return $this->arguments['object'];
     }
 }
