@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Linkvalidator\Result;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -72,13 +74,6 @@ class LinkAnalyzerResult
      * @var bool
      */
     protected $differentToLastResult = false;
-
-    /**
-     * Save language codes to reduce database requests
-     *
-     * @var array<int, string>
-     */
-    protected $languageCodes = ['default'];
 
     /**
      * Save localized pages to reduce database requests
@@ -258,50 +253,22 @@ class LinkAnalyzerResult
                 : $brokenLink['record_pid'];
             $pageRecord = BackendUtility::getRecord('pages', $brokenLink['real_pid']);
 
+            try {
+                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($brokenLink['real_pid']);
+                $languageCode = $site->getLanguageById($brokenLink['language'])->getTwoLetterIsoCode() ?: 'default';
+            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+                $languageCode = 'default';
+            }
             if ($pageRecord !== null) {
                 $brokenLink['page_record'] = $pageRecord;
             }
 
             $brokenLink['record_type'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$brokenLink['table_name']]['ctrl']['title'] ?? '');
             $brokenLink['target'] = (((string)($brokenLink['link_type'] ?? '') === 'db') ? 'id:' : '') . $brokenLink['url'];
-            $brokenLink['language_code'] = $this->getLanguageCode((int)$brokenLink['language']);
+            $brokenLink['language_code'] = $languageCode;
         }
 
         return $this;
-    }
-
-    /**
-     * Get language iso code and store it in the local property languageCodes
-     *
-     * @param int $languageId
-     * @return string
-     */
-    protected function getLanguageCode(int $languageId): string
-    {
-        if ((bool)($this->languageCodes[$languageId] ?? false)) {
-            return $this->languageCodes[$languageId];
-        }
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_language');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $langauge = $queryBuilder
-            ->select('uid', 'language_isocode')
-            ->from('sys_language')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)))
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch() ?: [];
-
-        if (is_array($langauge) && $langauge !== []) {
-            $this->languageCodes[(int)$langauge['uid']] = $langauge['language_isocode'];
-            return $langauge['language_isocode'];
-        }
-
-        return '';
     }
 
     /**

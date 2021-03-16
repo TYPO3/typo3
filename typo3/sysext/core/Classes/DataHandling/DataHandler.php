@@ -47,12 +47,15 @@ use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Cache as SystemLogCacheAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
@@ -952,7 +955,7 @@ class DataHandler implements LoggerAwareInterface
                         $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
                     }
                     if ($recordAccess) {
-                        $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray);
+                        $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
                         $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true);
                         if (!$recordAccess) {
                             $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', SystemLogErrorClassification::USER_ERROR);
@@ -1266,9 +1269,9 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($currentRecord)
             && ($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] ?? false)
             && !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
-            && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-            && (int)$currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0
+            && (int)($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] ?? 0) > 0
+            && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? false)
+            && (int)($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?? 0) > 0
         ) {
             $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
@@ -4360,11 +4363,6 @@ class DataHandler implements LoggerAwareInterface
             $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table, SystemLogErrorClassification::USER_ERROR);
             return false;
         }
-        $langRec = BackendUtility::getRecord('sys_language', (int)$language, 'uid,title');
-        if (!$langRec) {
-            $this->newlog('Sys language UID "' . $language . '" not found valid!', SystemLogErrorClassification::USER_ERROR);
-            return false;
-        }
 
         if (!$this->doesRecordExist($table, $uid, Permission::PAGE_SHOW)) {
             $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' without permission.', SystemLogErrorClassification::USER_ERROR);
@@ -4375,6 +4373,14 @@ class DataHandler implements LoggerAwareInterface
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
             $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' that did not exist!', SystemLogErrorClassification::USER_ERROR);
+            return false;
+        }
+
+        [$pageId] = BackendUtility::getTSCpid($table, $uid, '');
+        // Try to fetch the site language from the pages' associated site
+        $siteLanguage = $this->getSiteLanguageForPage((int)$pageId, (int)$language);
+        if ($siteLanguage === null) {
+            $this->newlog('Sys language UID "' . $language . '" not found valid!', SystemLogErrorClassification::USER_ERROR);
             return false;
         }
 
@@ -4415,7 +4421,7 @@ class DataHandler implements LoggerAwareInterface
         // Initialize:
         $overrideValues = [];
         // Set override values:
-        $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $langRec['uid'];
+        $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = (int)$language;
         // If the translated record is a default language record, set it's uid as localization parent of the new record.
         // If translating from any other language, no override is needed; we just can copy the localization parent of
         // the original record (which is pointing to the correspondent default language record) to the new record.
@@ -4440,18 +4446,23 @@ class DataHandler implements LoggerAwareInterface
             // Check if we are just prefixing:
             if (isset($fCfg['l10n_mode']) && $fCfg['l10n_mode'] === 'prefixLangTitle') {
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
-                    [$tscPID] = BackendUtility::getTSCpid($table, $uid, '');
-                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
+                    $TSConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
                     $tE = $this->getTableEntries($table, $TSConfig);
                     if (!empty($TSConfig['translateToMessage']) && !($tE['disablePrependAtCopy'] ?? false)) {
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
-                        $translateToMsg = @sprintf($translateToMsg, $langRec['title']);
+                        $translateToMsg = @sprintf($translateToMsg, $siteLanguage->getTitle());
                     }
 
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] ?? [] as $className) {
                         $hookObj = GeneralUtility::makeInstance($className);
                         if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
-                            $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this, $fN);
+                            // @todo Deprecate passing an array and pass the full SiteLanguage object instead
+                            $hookObj->processTranslateTo_copyAction(
+                                $row[$fN],
+                                ['uid' => $siteLanguage->getLanguageId(), 'title' => $siteLanguage->getTitle()],
+                                $this,
+                                $fN
+                            );
                         }
                     }
                     if (!empty($translateToMsg)) {
@@ -7646,32 +7657,64 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $incomingFieldArray Incoming array (passed by reference)
+     * @param int $pageId the PID of the table (where the record should be inserted)
      * @internal should only be used from within DataHandler
      */
-    public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray)
+    protected function addDefaultPermittedLanguageIfNotSet(string $table, &$incomingFieldArray, int $pageId): void
     {
-        // Checking languages:
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
-            if (!isset($incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
-                // Language field must be found in input row - otherwise it does not make sense.
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('sys_language');
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $queryBuilder
-                    ->select('uid')
-                    ->from('sys_language')
-                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
-                $rows = array_merge([['uid' => 0]], $queryBuilder->execute()->fetchAll(), [['uid' => -1]]);
-                foreach ($rows as $r) {
-                    if ($this->BE_USER->checkLanguageAccess($r['uid'])) {
-                        $incomingFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $r['uid'];
-                        break;
-                    }
+        $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        if (empty($languageFieldName)) {
+            return;
+        }
+        if (isset($incomingFieldArray[$languageFieldName])) {
+            return;
+        }
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            // Checking languages
+            foreach ($site->getAvailableLanguages($this->BE_USER, false, $pageId) as $languageId => $language) {
+                $incomingFieldArray[$languageFieldName] = $languageId;
+                break;
+            }
+        } catch (SiteNotFoundException $e) {
+            // No site found, do not set a default language if nothing was set explicitly
+            return;
+        }
+    }
+
+    /**
+     * Find a site language by the given language ID for a specific page, and check for all available sites
+     * if the page ID is "0".
+     *
+     * Note: Currently, the first language matching the given id is used, while
+     *       there might be more languages with the same id in additional sites.
+     *
+     * @param int $pageId
+     * @param int $languageId
+     * @return SiteLanguage|null
+     */
+    protected function getSiteLanguageForPage(int $pageId, int $languageId): ?SiteLanguage
+    {
+        try {
+            // Try to fetch the site language from the pages' associated site
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            return $site->getLanguageById($languageId);
+        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+            // In case no site language could be found, we might deal with the root node,
+            // we therefore try to fetch the site language from all available sites.
+            // NOTE: This has side effects, in case the SAME ID is used for different languages in different sites!
+            $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+            foreach ($sites as $site) {
+                try {
+                    return $site->getLanguageById($languageId);
+                } catch (\InvalidArgumentException $e) {
+                    // language not found in site, continue
+                    continue;
                 }
             }
         }
+
+        return null;
     }
 
     /**

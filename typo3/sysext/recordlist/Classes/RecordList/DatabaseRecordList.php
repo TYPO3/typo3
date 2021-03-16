@@ -1901,16 +1901,16 @@ class DatabaseRecordList
                 $params['redirect'] = $redirectUrl;
                 $params['cmd'][$table][$row['uid']]['localize'] = $lUid_OnPage;
                 $href = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
+                $title = htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '');
 
                 $lC = ($languageInformation[$lUid_OnPage]['flagIcon'] ?? false)
                     ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render()
-                    : ($languageInformation[$lUid_OnPage]['title'] ?? '');
+                    : $title;
 
-                $lC = '<a href="' . htmlspecialchars($href) . '"'
+                $out .= '<a href="' . htmlspecialchars($href) . '"'
                     . '" class="btn btn-default t3js-action-localize"'
-                    . ' title="' . htmlspecialchars($languageInformation[$lUid_OnPage]['title']) . '">'
+                    . ' title="' . $title . '">'
                     . $lC . '</a> ';
-                $out .= $lC;
             }
         }
         return $out;

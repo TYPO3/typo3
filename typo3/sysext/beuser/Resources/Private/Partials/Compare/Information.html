@@ -2,20 +2,18 @@
 
 <f:section name="languages">
     <table class="table table-sm table-hover">
-        <f:for each="{languages}" key="languageUid" as="language">
+        <f:for each="{languages}" key="languageId" as="language">
             <tr>
-                <f:if condition="{languageUid} ==0">
+                <f:if condition="{languageId} == 0">
                     <f:then>
                         <td class="col-icon"></td>
                         <td class="col-title">{f:translate(key:'information.defaultLanguage')}</td>
                     </f:then>
                     <f:else>
                         <td class="col-icon">
-                            <a href="#" class="t3js-contextmenutrigger" data-table="sys_language" data-uid="{language.uid}" title="id={language.uid}">
-                                <core:iconForRecord table="sys_language" row="{language}"/>
-                            </a>
+                            <core:icon identifier="{language.flagIconIdentifier}"/>
                         </td>
-                        <td class="col-title">{language.title} [{language.uid}]</td>
+                        <td class="col-title">{language.title} [{languageId}]</td>
                     </f:else>
                 </f:if>
             </tr>

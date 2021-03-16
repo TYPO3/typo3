@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Beuser\Service;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -123,12 +124,14 @@ class UserInformationService
         }
 
         // languages
-        $languages = GeneralUtility::trimExplode(',', $user->groupData['allowed_languages'], true);
-        asort($languages);
-        foreach ($languages as $language) {
-            $record = BackendUtility::getRecord('sys_language', (int)$language);
+        $siteLanguages = $this->getAllSiteLanguages();
+        $userLanguages = GeneralUtility::trimExplode(',', $user->groupData['allowed_languages'], true);
+        asort($userLanguages);
+        foreach ($userLanguages as $languageId) {
+            $languageId = (int)$languageId;
+            $record = $siteLanguages[$languageId];
             if ($record) {
-                $data['languages'][$language] = $record;
+                $data['languages'][$languageId] = $record;
             }
         }
 
@@ -227,5 +230,31 @@ class UserInformationService
         }
 
         return $data;
+    }
+
+    protected function getAllSiteLanguages(): array
+    {
+        $siteLanguages = [];
+        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+            foreach ($site->getAllLanguages() as $languageId => $language) {
+                if (isset($siteLanguages[$languageId])) {
+                    // Language already provided by another site, check if values differ
+                    if (strpos($siteLanguages[$languageId]['title'], $language->getTitle()) === false) {
+                        // Language already provided by another site, but with a different title
+                        $siteLanguages[$languageId]['title'] .= ', ' . $language->getTitle();
+                    }
+                    if ($siteLanguages[$languageId]['flagIconIdentifier'] !== $language->getFlagIdentifier()) {
+                        // Language already provided by another site, but with a different flag icon identifier
+                        $siteLanguages[$languageId]['flagIconIdentifier'] = 'flags-multiple';
+                    }
+                } else {
+                    $siteLanguages[$languageId] = [
+                        'title' => $language->getTitle(),
+                        'flagIconIdentifier' => $language->getFlagIdentifier()
+                    ];
+                }
+            }
+        }
+        return $siteLanguages;
     }
 }

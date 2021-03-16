@@ -24,7 +24,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -1325,8 +1327,14 @@ class DataMapProcessor
         }
 
         $languageService = $this->getLanguageService();
-        $languageRecord = BackendUtility::getRecord('sys_language', $language, 'title');
         [$pageId] = BackendUtility::getTSCpid($tableName, (int)$fromId, $data['pid'] ?? null);
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            $siteLanguage = $site->getLanguageById($language);
+            $languageTitle = $siteLanguage->getTitle();
+        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+            $languageTitle = '';
+        }
 
         $tsConfigTranslateToMessage = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['translateToMessage'] ?? '';
         if (!empty($tsConfigTranslateToMessage)) {
@@ -1334,10 +1342,14 @@ class DataMapProcessor
             if ($languageService !== null) {
                 $prefix = $languageService->sL($prefix);
             }
-            $prefix = sprintf($prefix, $languageRecord['title']);
+            $prefix = sprintf($prefix, $languageTitle);
         }
         if (empty($prefix)) {
-            $prefix = 'Translate to ' . $languageRecord['title'] . ':';
+            if ($languageTitle) {
+                $prefix = 'Translate to ' . $languageTitle . ':';
+            } else {
+                $prefix = 'Translate:';
+            }
         }
 
         foreach ($prefixFieldNames as $prefixFieldName) {

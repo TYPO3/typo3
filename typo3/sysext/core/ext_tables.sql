@@ -396,6 +396,7 @@ CREATE TABLE sys_log (
 
 #
 # Table structure for table 'sys_language'
+# This table is deprecated and will be removed in TYPO3 v12
 #
 CREATE TABLE sys_language (
 	title varchar(80) DEFAULT '' NOT NULL,
