@@ -146,7 +146,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [],
-                'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Resource\\Service\\UserFileMountService->renderTceformsSelectDropdown',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Resource\Service\UserFileMountService::class . '->renderTceformsSelectDropdown',
                 'default' => '',
             ]
         ],

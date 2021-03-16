@@ -286,7 +286,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Localization\\TcaSystemLanguageCollector->populateAvailableSystemLanguagesForBackend',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSystemLanguagesForBackend',
                 'default' => 'default',
                 'items' => [
                     ['English', 'default']
