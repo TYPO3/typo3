@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 
@@ -38,6 +39,7 @@ class DeleteUploadsFinisher extends AbstractFinisher
     {
         $formRuntime = $this->finisherContext->getFormRuntime();
 
+        $uploadFolders = [];
         $elements = $formRuntime->getFormDefinition()->getRenderablesRecursively();
         foreach ($elements as $element) {
             if (!$element instanceof FileUpload) {
@@ -51,7 +53,44 @@ class DeleteUploadsFinisher extends AbstractFinisher
             if ($file instanceof FileReference) {
                 $file = $file->getOriginalResource();
             }
+
+            $folder = $file->getParentFolder();
+            $uploadFolders[$folder->getCombinedIdentifier()] = $folder;
+
             $file->getStorage()->deleteFile($file->getOriginalFile());
         }
+
+        $this->deleteEmptyUploadFolders($uploadFolders);
+    }
+
+    /**
+     * note:
+     * TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter::importUploadedResource()
+     * creates a sub-folder for file uploads (e.g. .../form_<40-chars-hash>/actual.file)
+     * @param Folder[] $folders
+     */
+    protected function deleteEmptyUploadFolders(array $folders): void
+    {
+        foreach ($folders as $folder) {
+            $parentFolder = $folder->getParentFolder();
+
+            if ($this->isEmptyFolder($folder)) {
+                $folder->delete();
+            }
+
+            if ($this->isEmptyFolder($parentFolder)) {
+                $parentFolder->delete();
+            }
+        }
+    }
+
+    /**
+     * @param Folder $folder
+     * @return bool
+     */
+    protected function isEmptyFolder(Folder $folder): bool
+    {
+        return $folder->getFileCount() === 0
+            && $folder->getStorage()->countFoldersInFolder($folder) === 0;
     }
 }
