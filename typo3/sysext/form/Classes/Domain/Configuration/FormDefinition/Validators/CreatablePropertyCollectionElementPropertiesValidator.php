@@ -30,6 +30,10 @@ class CreatablePropertyCollectionElementPropertiesValidator extends CollectionBa
      * the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
+     * If the property collection element property is defined within the form editor setup
+     * and there is no valid hmac hash for the value
+     * and is the form property collection element property configured to only allow a limited set of values,
+     * check the current (submitted) value against the allowed set of values (defined within the form setup).
      *
      * @param string $key
      * @param mixed $value
@@ -38,20 +42,22 @@ class CreatablePropertyCollectionElementPropertiesValidator extends CollectionBa
     {
         $dto = $this->validationDto->withPropertyPath($key);
 
-        if (!$this->getConfigurationService()->isPropertyCollectionPropertyDefinedInFormEditorSetup($dto)) {
-            if (
-                $this->getConfigurationService()->isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup($dto)
-                && !ArrayUtility::isValidPath($this->currentElement, $this->buildHmacDataPath($dto->getPropertyPath()), '.')
-            ) {
-                $this->validatePropertyCollectionElementPredefinedDefaultValue($value, $dto);
-            } else {
-                $this->validatePropertyCollectionElementPropertyValueByHmacData(
-                    $this->currentElement,
-                    $value,
-                    $this->sessionToken,
-                    $dto
-                );
+        if ($this->getConfigurationService()->isPropertyCollectionPropertyDefinedInFormEditorSetup($dto)) {
+            if ($this->getConfigurationService()->propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($dto)) {
+                $this->validatePropertyCollectionPropertyValue($value, $dto);
             }
+        } elseif (
+            $this->getConfigurationService()->isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup($dto)
+            && !ArrayUtility::isValidPath($this->currentElement, $this->buildHmacDataPath($dto->getPropertyPath()), '.')
+        ) {
+            $this->validatePropertyCollectionElementPredefinedDefaultValue($value, $dto);
+        } else {
+            $this->validatePropertyCollectionElementPropertyValueByHmacData(
+                $this->currentElement,
+                $value,
+                $this->sessionToken,
+                $dto
+            );
         }
     }
 
@@ -104,6 +110,58 @@ class CreatablePropertyCollectionElementPropertiesValidator extends CollectionBa
                     1528591502
                 );
             }
+        }
+    }
+
+    /**
+     * Throws an exception if the value from a property collection property
+     * does not match the allowed set of values (defined within the form setup).
+     *
+     * @param mixed $value
+     * @param ValidationDto $dto
+     * @throws PropertyException
+     */
+    protected function validatePropertyCollectionPropertyValue(
+        $value,
+        ValidationDto $dto
+    ): void {
+        $allowedValues = $this->getConfigurationService()->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($dto);
+
+        if (!in_array($value, $allowedValues, true)) {
+            $untranslatedAllowedValues = $this->getConfigurationService()->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($dto, false);
+            // Compare the $value against the untranslated set of allowed values
+            if (in_array($value, $untranslatedAllowedValues, true)) {
+                // All good, $value is within the untranslated set of allowed values
+                return;
+            }
+            // Get all translations (from all backend languages) for the untranslated! $allowedValues and
+            // compare the (already translated) $value (from the form definition) against all possible
+            // translations for $untranslatedAllowedValues.
+            $allPossibleAllowedValuesTranslations = $this->getConfigurationService()->getAllBackendTranslationsForTranslationKeys(
+                $untranslatedAllowedValues,
+                $dto->getPrototypeName()
+            );
+
+            foreach ($allPossibleAllowedValuesTranslations as $translations) {
+                if (in_array($value, $translations, true)) {
+                    // All good, $value is within the set of translated allowed values
+                    return;
+                }
+            }
+
+            // Last chance:
+            // If $value is not configured within the form setup as an allowed value
+            // but was written within the form definition by hand (and therefore contains a hmac),
+            // check if $value is manipulated.
+            // If $value has no hmac or if the hmac exists but is not valid,
+            // then $this->validatePropertyCollectionElementPropertyValueByHmacData() will
+            // throw an exception.
+            $this->validatePropertyCollectionElementPropertyValueByHmacData(
+                $this->currentElement,
+                $value,
+                $this->sessionToken,
+                $dto
+            );
         }
     }
 }

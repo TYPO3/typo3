@@ -32,10 +32,12 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\FormEl
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\FormElement\MultiValuePropertiesExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\FormElement\PredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\FormElement\PropertyPathsExtractor;
+use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\FormElement\SelectOptionsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\IsCreatablePropertyCollectionElementExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\MultiValuePropertiesExtractor as CollectionMultiValuePropertiesExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PredefinedDefaultsExtractor as CollectionPredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
+use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 
@@ -184,6 +186,165 @@ class ConfigurationService implements SingletonInterface
         $subConfig = $formDefinitionValidationConfiguration['formElements'][$dto->getFormElementType()]['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()] ?? [];
 
         return $this->isPropertyDefinedInFormEditorSetup($dto->getPropertyPath(), $subConfig);
+    }
+
+    /**
+     * If a form element editor has a property called "selectOptions"
+     * (e.g. editors with templateName "Inspector-SingleSelectEditor" or "Inspector-MultiSelectEditor")
+     * then only the defined values within the selectOptions are allowed to be written
+     * by the form editor.
+     *
+     * @param ValidationDto $dto
+     * @return bool
+     * @internal
+     */
+    public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
+        ValidationDto $dto
+    ): bool {
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $propertyPath = $this->getBasePropertyPathFromMultiValueFormElementProperty($dto);
+        return isset(
+            $formDefinitionValidationConfiguration['formElements'][$dto->getFormElementType()]['selectOptions'][$propertyPath]
+        );
+    }
+
+    /**
+     * Get the "selectOptions" value for a form element property from the form setup.
+     *
+     * @param ValidationDto $dto
+     * @return array
+     * @param bool $translated
+     * @throws PropertyException
+     * @internal
+     */
+    public function getAllowedValuesForFormElementPropertyFromFormEditorSetup(
+        ValidationDto $dto,
+        bool $translated = true
+    ): array {
+        if (!$this->formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($dto)) {
+            throw new PropertyException(
+                sprintf(
+                    'No selectOptions found for form element type "%s" and property path "%s"',
+                    $dto->getFormElementType(),
+                    $dto->getPropertyPath()
+                ),
+                1614264312
+            );
+        }
+
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $property = $translated ? 'selectOptions' : 'untranslatedSelectOptions';
+        $propertyPath = $this->getBasePropertyPathFromMultiValueFormElementProperty($dto);
+        return $formDefinitionValidationConfiguration['formElements'][$dto->getFormElementType()][$property][$propertyPath];
+    }
+
+    /**
+     * If a form elements finisher|validator editor has a property called "selectOptions"
+     * (e.g. editors with templateName "Inspector-SingleSelectEditor" or "Inspector-MultiSelectEditor")
+     * then only the defined values within the selectOptions are allowed to be written
+     * by the form editor.
+     *
+     * @param ValidationDto $dto
+     * @return bool
+     * @internal
+     */
+    public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
+        ValidationDto $dto
+    ): bool {
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $propertyPath = $this->getBasePropertyPathFromMultiValuePropertyCollectionElement($dto);
+        return isset(
+            $formDefinitionValidationConfiguration['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()]['selectOptions'][$propertyPath]
+        );
+    }
+
+    /**
+     * Get the "selectOptions" value for a form elements finisher|validator property from the form setup.
+     *
+     * @param ValidationDto $dto
+     * @param bool $translated
+     * @return array
+     * @throws PropertyException
+     * @internal
+     */
+    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup(
+        ValidationDto $dto,
+        bool $translated = true
+    ): array {
+        if (!$this->propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($dto)) {
+            throw new PropertyException(
+                sprintf(
+                    'No selectOptions found for property collection "%s" and identifier "%s" and property path "%s"',
+                    $dto->getPropertyCollectionName(),
+                    $dto->getPropertyCollectionElementIdentifier(),
+                    $dto->getPropertyPath()
+                ),
+                1614264313
+            );
+        }
+
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $property = $translated ? 'selectOptions' : 'untranslatedSelectOptions';
+        $propertyPath = $this->getBasePropertyPathFromMultiValuePropertyCollectionElement($dto);
+        return $formDefinitionValidationConfiguration['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()][$property][$propertyPath];
+    }
+
+    /**
+     * @param ValidationDto $dto
+     * @return string
+     */
+    protected function getBasePropertyPathFromMultiValueFormElementProperty(
+        ValidationDto $dto
+    ): string {
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $propertyPath = $dto->getPropertyPath();
+        $multiValueProperties = $formDefinitionValidationConfiguration['formElements'][$dto->getFormElementType()]['multiValueProperties'] ?? [];
+        foreach ($multiValueProperties as $multiValueProperty) {
+            if (strpos($propertyPath, $multiValueProperty) === 0) {
+                $propertyPath = $multiValueProperty;
+                continue;
+            }
+        }
+
+        return $propertyPath;
+    }
+
+    /**
+     * @param ValidationDto $dto
+     * @return string
+     */
+    protected function getBasePropertyPathFromMultiValuePropertyCollectionElement(
+        ValidationDto $dto
+    ): string {
+        $formDefinitionValidationConfiguration = $this->buildFormDefinitionValidationConfigurationFromFormEditorSetup(
+            $dto->getPrototypeName()
+        );
+
+        $propertyPath = $dto->getPropertyPath();
+        $multiValueProperties = $formDefinitionValidationConfiguration['collections'][$dto->getPropertyCollectionName()][$dto->getPropertyCollectionElementIdentifier()]['multiValueProperties'] ?? [];
+        foreach ($multiValueProperties as $multiValueProperty) {
+            if (strpos($propertyPath, $multiValueProperty) === 0) {
+                $propertyPath = $multiValueProperty;
+                continue;
+            }
+        }
+
+        return $propertyPath;
     }
 
     /**
@@ -357,6 +518,26 @@ class ConfigurationService implements SingletonInterface
     }
 
     /**
+     * @param array $keys
+     * @param string $prototypeName
+     * @return array
+     * @internal
+     */
+    public function getAllBackendTranslationsForTranslationKeys(array $keys, string $prototypeName): array
+    {
+        $translations = [];
+        foreach ($keys as $key) {
+            if (!is_string($key)) {
+                continue;
+            }
+
+            $translations[$key] = $this->getAllBackendTranslationsForTranslationKey($key, $prototypeName);
+        }
+
+        return $translations;
+    }
+
+    /**
      * @param string $key
      * @param string $prototypeName
      * @return array
@@ -414,6 +595,12 @@ class ConfigurationService implements SingletonInterface
                 ),
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
+                    'formElementSelectOptions',
+                    '^formElementsDefinition\.(.*)\.formEditor\.editors\.([\d]+)\.selectOptions\.([\d]+)\.value$',
+                    GeneralUtility::makeInstance(SelectOptionsExtractor::class, $extractorDto)
+                ),
+                GeneralUtility::makeInstance(
+                    ArrayProcessing::class,
                     'formElementPredefinedDefaults',
                     '^formElementsDefinition\.(.*)\.formEditor\.predefinedDefaults\.(.+)$',
                     GeneralUtility::makeInstance(PredefinedDefaultsExtractor::class, $extractorDto)
@@ -447,6 +634,12 @@ class ConfigurationService implements SingletonInterface
                     'propertyCollectionRelativeMultiValueProperties',
                     '^formElementsDefinition\.(.*)\.formEditor\.propertyCollections\.(finishers|validators)\.([\d]+)\.editors\.([\d]+)\.templateName$',
                     GeneralUtility::makeInstance(CollectionMultiValuePropertiesExtractor::class, $extractorDto)
+                ),
+                GeneralUtility::makeInstance(
+                    ArrayProcessing::class,
+                    'propertyCollectionSelectOptions',
+                    '^formElementsDefinition\.(.*)\.formEditor\.propertyCollections\.(finishers|validators)\.([\d]+)\.editors\.([\d]+)\.selectOptions\.([\d]+)\.value$',
+                    GeneralUtility::makeInstance(CollectionSelectOptionsExtractor::class, $extractorDto)
                 ),
                 GeneralUtility::makeInstance(
                     ArrayProcessing::class,
@@ -634,10 +827,16 @@ class ConfigurationService implements SingletonInterface
                 $prototypeConfiguration,
                 $configuration['formElements']
             );
+
+            $configuration['formElements'] = $this->translateSelectOptions(
+                $prototypeConfiguration,
+                $configuration['formElements']
+            );
         }
 
         foreach ($configuration['collections'] ?? [] as $name => $collections) {
             $configuration['collections'][$name] = $this->translatePredefinedDefaults($prototypeConfiguration, $collections);
+            $configuration['collections'][$name] = $this->translateSelectOptions($prototypeConfiguration, $configuration['collections'][$name]);
         }
         return $configuration;
     }
@@ -657,6 +856,28 @@ class ConfigurationService implements SingletonInterface
             $formElement['predefinedDefaults'] = $this->getTranslationService()->translateValuesRecursive(
                 $formElement['predefinedDefaults'],
                 $prototypeConfiguration['formEditor']['translationFile'] ?? null
+            );
+            $formElements[$name] = $formElement;
+        }
+        return $formElements;
+    }
+
+    /**
+     * @param array $prototypeConfiguration
+     * @param array $formElements
+     * @return array
+     */
+    protected function translateSelectOptions(array $prototypeConfiguration, array $formElements): array
+    {
+        foreach ($formElements ?? [] as $name => $formElement) {
+            if (empty($formElement['selectOptions']) || !is_array($formElement['selectOptions'])) {
+                continue;
+            }
+            $formElement['untranslatedSelectOptions'] = $formElement['selectOptions'];
+
+            $formElement['selectOptions'] = $this->getTranslationService()->translateValuesRecursive(
+                $formElement['selectOptions'],
+                $prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
             $formElements[$name] = $formElement;
         }

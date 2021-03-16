@@ -75,4 +75,121 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
         }
         $this->assertFalse($failed);
     }
+
+    public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider(): array
+    {
+        return [
+            [
+                'input' => 'foo',
+                'allowedValues' => [],
+                'untranslatedAllowedValues' => [],
+            ],
+            [
+                'input' => 'foo',
+                'allowedValues' => ['bar', 'baz'],
+                'untranslatedAllowedValues' => ['bar', 'baz'],
+            ],
+            [
+                'input' => 1,
+                'allowedValues' => ['1', 2],
+                'untranslatedAllowedValues' => ['1', 2],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider
+     */
+    public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues)
+    {
+        $this->expectException(PropertyException::class);
+
+        $validationDto = new ValidationDto('standard', null, 'test-1', 'label', 'validators', 'StringLength');
+        $validatorMock = $this->getAccessibleMock(
+            CreatablePropertyCollectionElementPropertiesValidator::class,
+            ['getConfigurationService'],
+            [[], '', $validationDto]
+        );
+
+        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceMock->expects(self::any())->method(
+            'getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup'
+        )->willReturnMap([
+            [$validationDto, true, $allowedValues],
+            [$validationDto, false, $untranslatedAllowedValues],
+        ]);
+
+        $validatorMock->expects(self::any())->method('getConfigurationService')->willReturn($configurationServiceMock);
+
+        $validatorMock->_call('validatePropertyCollectionPropertyValue', $input, $validationDto);
+    }
+
+    public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider(): array
+    {
+        return [
+            [
+                'input' => 'foo',
+                'allowedValues' => ['foo'],
+                'untranslatedAllowedValues' => ['foo'],
+                'allPossibleAllowedValuesTranslations' => [],
+            ],
+            [
+                'input' => 'foo',
+                'allowedValues' => ['bar'],
+                'untranslatedAllowedValues' => ['foo'],
+                'allPossibleAllowedValuesTranslations' => [],
+            ],
+            [
+                'input' => 'foo',
+                'allowedValues' => ['bar'],
+                'untranslatedAllowedValues' => ['baz'],
+                'allPossibleAllowedValuesTranslations' => ['default' => ['foo'], 'de' => ['bar']],
+            ],
+            [
+                'input' => 'foo',
+                'allowedValues' => ['foo', 'baz'],
+                'untranslatedAllowedValues' => ['foo', 'baz'],
+                'allPossibleAllowedValuesTranslations' => [],
+            ],
+            [
+                'input' => 1,
+                'allowedValues' => ['1', 1, 2],
+                'untranslatedAllowedValues' => ['1', 1, 2],
+                'allPossibleAllowedValuesTranslations' => [],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider
+     */
+    public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations)
+    {
+        $validationDto = new ValidationDto('standard', null, 'test-1', 'label', 'validators', 'StringLength');
+        $validatorMock = $this->getAccessibleMock(
+            CreatablePropertyCollectionElementPropertiesValidator::class,
+            ['getConfigurationService'],
+            [[], '', $validationDto]
+        );
+
+        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceMock->expects(self::any())->method(
+            'getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup'
+        )->willReturnMap([
+            [$validationDto, true, $allowedValues],
+            [$validationDto, false, $untranslatedAllowedValues],
+        ]);
+        $configurationServiceMock->expects(self::any())->method('getAllBackendTranslationsForTranslationKeys')->willReturn($allPossibleAllowedValuesTranslations);
+        $validatorMock->expects(self::any())->method('getConfigurationService')->willReturn($configurationServiceMock);
+
+        $failed = false;
+        try {
+            $validatorMock->_call('validatePropertyCollectionPropertyValue', $input, $validationDto);
+        } catch (PropertyException $e) {
+            $failed = true;
+        }
+        self::assertFalse($failed);
+    }
 }

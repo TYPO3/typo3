@@ -132,7 +132,7 @@ class TranslationService implements SingletonInterface
             $this->languageKey = $language;
         }
 
-        $this->initializeLocalization($locallangPathAndFilename);
+        $this->initializeLocalization($locallangPathAndFilename ?? '');
 
         // The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
         if (!empty($this->LOCAL_LANG[$this->languageKey][$key][0]['target'])
@@ -203,7 +203,7 @@ class TranslationService implements SingletonInterface
                         }
                     }
                 } else {
-                    $result[$key] = $this->translate($value, null, $translationFile, null, $value);
+                    $result[$key] = $this->translate($value, null, null, null, $value);
                 }
             }
         }
