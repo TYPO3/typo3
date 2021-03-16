@@ -19,11 +19,14 @@ define(['jquery',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/MultiStepWizard',
   'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Backend/Notification'
-], function($, Modal, Severity, MultiStepWizard, Icons, Notification) {
+  'TYPO3/CMS/Backend/Notification',
+  'TYPO3/CMS/Core/SecurityUtility'
+], function($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility) {
   'use strict';
 
-  return (function($, Modal, Severity, MultiStepWizard, Icons, Notification) {
+  return (function($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility) {
+
+    var securityUtility = new SecurityUtility();
 
     /**
      * @private
@@ -256,7 +259,7 @@ define(['jquery',
 
           html += '<label class="control-label" for="new-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>';
           if (settings['formName']) {
-            html += '<input class="new-form-name form-control has-error" id="new-form-name" data-identifier="newFormName" value="' + settings['formName'] + '" />';
+            html += '<input class="new-form-name form-control has-error" id="new-form-name" data-identifier="newFormName" value="' + securityUtility.encodeHtml(settings['formName']) + '" />';
 
             setTimeout(
               function() {
@@ -382,7 +385,7 @@ define(['jquery',
               + '</div>'
               + '<div class="col-sm-9">'
               + '<p>'
-              + settings['prototypeNameName']
+              + securityUtility.encodeHtml(settings['prototypeNameName'])
               + '</p>'
               + '</div>'
               + '</div>';
@@ -395,7 +398,7 @@ define(['jquery',
               + '</div>'
               + '<div class="col-sm-9">'
               + '<p>'
-              + settings['templatePathName']
+              + securityUtility.encodeHtml(settings['templatePathName'])
               + '</p>'
               + '</div>'
               + '</div>';
@@ -407,7 +410,7 @@ define(['jquery',
             + '</div>'
             + '<div class="col-sm-9">'
             + '<p>'
-            + settings['formName']
+            + securityUtility.encodeHtml(settings['formName'])
             + '</p>'
             + '</div>'
             + '</div>'
@@ -417,7 +420,7 @@ define(['jquery',
             + '</div>'
             + '<div class="col-sm-9">'
             + '<p>'
-            + settings['savePathName']
+            + securityUtility.encodeHtml(settings['savePathName'])
             + '</p>'
             + '</div>'
             + '</div>';
@@ -633,8 +636,7 @@ define(['jquery',
          * Wizard step 3
          */
         MultiStepWizard.addSlide('duplicate-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, null, function(slide, settings) {
-          var addOnTemplateChangeEvents, folders, html, modal, nextButton, prototypes, prototypeNameSelect,
-            savePathSelect, templates, templateSelect;
+          var html, modal, nextButton;
 
           modal = MultiStepWizard.setup.$carousel.closest('.modal');
           nextButton = modal.find('.modal-footer').find('button[name="next"]');
@@ -651,7 +653,7 @@ define(['jquery',
             + '</div>'
             + '<div class="col-sm-9">'
             + '<p>'
-            + settings['confirmationDuplicateFormName']
+            + securityUtility.encodeHtml(settings['confirmationDuplicateFormName'])
             + '</p>'
             + '</div>'
             + '</div>'
@@ -661,7 +663,7 @@ define(['jquery',
             + '</div>'
             + '<div class="col-sm-9">'
             + '<p>'
-            + settings['formName']
+            + securityUtility.encodeHtml(settings['formName'])
             + '</p>'
             + '</div>'
             + '</div>'
@@ -671,7 +673,7 @@ define(['jquery',
             + '</div>'
             + '<div class="col-sm-9">'
             + '<p>'
-            + settings['confirmationDuplicateFormSavePath']
+            + securityUtility.encodeHtml(settings['confirmationDuplicateFormSavePath'])
             + '</p>'
             + '</div>'
             + '</div>';
@@ -852,5 +854,5 @@ define(['jquery',
     return {
       bootstrap: bootstrap
     };
-  })($, Modal, Severity, MultiStepWizard, Icons, Notification);
+  })($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility);
 });
