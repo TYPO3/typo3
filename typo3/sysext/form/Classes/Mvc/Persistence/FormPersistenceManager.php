@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -182,7 +183,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             throw new PersistenceManagerException(sprintf('The file "%s" could not be saved.', $persistenceIdentifier), 1477679820);
         }
 
-        if (strpos($persistenceIdentifier, 'EXT:') === 0) {
+        if ($this->pathIsIntendedAsExtensionPath($persistenceIdentifier)) {
             if (!$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']) {
                 throw new PersistenceManagerException('Save to extension paths is not allowed.', 1477680881);
             }
@@ -222,7 +223,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         if (!$this->exists($persistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239535);
         }
-        if (strpos($persistenceIdentifier, 'EXT:') === 0) {
+        if ($this->pathIsIntendedAsExtensionPath($persistenceIdentifier)) {
             if (!$this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths']) {
                 throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $persistenceIdentifier), 1472239536);
             }
@@ -254,7 +255,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     {
         $exists = false;
         if ($this->hasValidFileExtension($persistenceIdentifier)) {
-            if (strpos($persistenceIdentifier, 'EXT:') === 0) {
+            if ($this->pathIsIntendedAsExtensionPath($persistenceIdentifier)) {
                 if ($this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)) {
                     $exists = file_exists(GeneralUtility::getFileAbsFileName($persistenceIdentifier));
                 }
@@ -421,9 +422,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         foreach ($this->formSettings['persistenceManager']['allowedFileMounts'] as $allowedFileMount) {
+            $allowedFileMount = rtrim($allowedFileMount, '/') . '/';
+            // $fileMountPath is like "/form_definitions/" or "/group_homes/1/form_definitions/"
             [$storageUid, $fileMountPath] = explode(':', $allowedFileMount, 2);
-            // like "/form_definitions/" or "/group_homes/1/form_definitions/"
-            $fileMountPath = rtrim($fileMountPath, '/') . '/';
 
             try {
                 $storage = $this->getStorageByUid((int)$storageUid);
@@ -499,7 +500,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         foreach ($this->formSettings['persistenceManager']['allowedExtensionPaths'] as $allowedExtensionPath) {
-            if (strpos($allowedExtensionPath, 'EXT:') !== 0) {
+            if (!$this->pathIsIntendedAsExtensionPath($allowedExtensionPath)) {
                 continue;
             }
 
@@ -598,6 +599,83 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             }
         }
         return $identifierUsed;
+    }
+
+    /**
+     * Check if a persistence path or if a persistence identifier path
+     * is configured within the form setup
+     * (TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths / TYPO3.CMS.Form.persistenceManager.allowedFileMounts).
+     * If the input is a persistence identifier an additional check for a
+     * valid file extension will be performed.
+     * .
+     * @param string $persistencePath
+     * @return bool
+     * @internal
+     */
+    public function isAllowedPersistencePath(string $persistencePath): bool
+    {
+        $pathinfo = PathUtility::pathinfo($persistencePath);
+        $persistencePathIsFile = isset($pathinfo['extension']);
+
+        if (
+            $persistencePathIsFile
+            && $this->pathIsIntendedAsExtensionPath($persistencePath)
+            && $this->hasValidFileExtension($persistencePath)
+            && $this->isFileWithinAccessibleExtensionFolders($persistencePath)
+        ) {
+            return true;
+        }
+        if (
+            $persistencePathIsFile
+            && $this->pathIsIntendedAsFileMountPath($persistencePath)
+            && $this->hasValidFileExtension($persistencePath)
+            && $this->isFileWithinAccessibleFormStorageFolders($persistencePath)
+        ) {
+            return true;
+        }
+        if (
+            !$persistencePathIsFile
+            && $this->pathIsIntendedAsExtensionPath($persistencePath)
+            && $this->isAccessibleExtensionFolder($persistencePath)
+        ) {
+            return true;
+        }
+        if (
+            !$persistencePathIsFile
+            && $this->pathIsIntendedAsFileMountPath($persistencePath)
+            && $this->isAccessibleFormStorageFolder($persistencePath)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    protected function pathIsIntendedAsExtensionPath(string $path): bool
+    {
+        return strpos($path, 'EXT:') === 0;
+    }
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    protected function pathIsIntendedAsFileMountPath(string $path): bool
+    {
+        if (empty($path)) {
+            return false;
+        }
+
+        [$storageUid, $pathIdentifier] = explode(':', $path, 2);
+        if (empty($storageUid) || empty($pathIdentifier)) {
+            return false;
+        }
+
+        return MathUtility::canBeInterpretedAsInteger($storageUid);
     }
 
     /**
@@ -753,7 +831,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         if (
-            strpos($persistenceIdentifier, 'EXT:') === 0
+            $this->pathIsIntendedAsExtensionPath($persistenceIdentifier)
             && !$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)
         ) {
             $message = sprintf('The file "%s" could not be loaded. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
@@ -797,6 +875,38 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $pathInfo = is_string($pathInfo) ? $pathInfo : '';
         $dirName = rtrim($pathInfo, '/') . '/';
         return array_key_exists($dirName, $this->getAccessibleExtensionFolders());
+    }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    protected function isFileWithinAccessibleFormStorageFolders(string $fileName): bool
+    {
+        $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
+        $pathInfo = is_string($pathInfo) ? $pathInfo : '';
+        $dirName = rtrim($pathInfo, '/') . '/';
+        return array_key_exists($dirName, $this->getAccessibleFormStorageFolders());
+    }
+
+    /**
+     * @param string $folderName
+     * @return bool
+     */
+    protected function isAccessibleExtensionFolder(string $folderName): bool
+    {
+        $folderName = rtrim($folderName, '/') . '/';
+        return array_key_exists($folderName, $this->getAccessibleExtensionFolders());
+    }
+
+    /**
+     * @param string $folderName
+     * @return bool
+     */
+    protected function isAccessibleFormStorageFolder(string $folderName): bool
+    {
+        $folderName = rtrim($folderName, '/') . '/';
+        return array_key_exists($folderName, $this->getAccessibleFormStorageFolders());
     }
 
     /**

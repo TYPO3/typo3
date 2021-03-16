@@ -78,6 +78,10 @@ class FormEditorController extends AbstractBackendController
         $this->view->getModuleTemplate()->setModuleName($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+            throw new PersistenceManagerException(sprintf('Read "%s" is not allowed', $formPersistenceIdentifier), 1614500662);
+        }
+
         if (
             strpos($formPersistenceIdentifier, 'EXT:') === 0
             && !$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']
@@ -176,6 +180,9 @@ class FormEditorController extends AbstractBackendController
         ];
 
         try {
+            if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+                throw new PersistenceManagerException(sprintf('Save "%s" is not allowed', $formPersistenceIdentifier), 1614500663);
+            }
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
             $configurationService = $this->objectManager->get(ConfigurationService::class);
             $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
@@ -521,6 +528,7 @@ class FormEditorController extends AbstractBackendController
 
         $formDefinitionConversionService = $this->getFormDefinitionConversionService();
         $formDefinition = $formDefinitionConversionService->addHmacData($formDefinition);
+        $formDefinition = $formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
 
         return $formDefinition;
     }

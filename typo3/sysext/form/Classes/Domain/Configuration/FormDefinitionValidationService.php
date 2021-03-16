@@ -48,7 +48,15 @@ class FormDefinitionValidationService implements SingletonInterface
      *     foreach(form element properties) (without finishers|validators)
      *       is the form element property defined in the form setup (can be manipulated)?
      *         YES
-     *           valid!
+     *           is the form element property configured to only allow a limited set of values (e.g. Inspector-MultiSelectEditor, Inspector-SingleSelectEditor ...)
+     *             YES
+     *               is the form element property value within the set of allowed values?
+     *                 YES
+     *                   valid!
+     *                 NO
+     *                   invalid! throw exception
+     *             NO
+     *               valid!
      *         NO
      *           is the form element property defined in "predefinedDefaults" in the form setup (cannot be manipulated but should be written)?
      *             YES
@@ -73,7 +81,15 @@ class FormDefinitionValidationService implements SingletonInterface
      *           foreach(form elements finisher|validator properties)
      *             is the form elements finisher|validator property defined in the form setup (can be manipulated)?
      *               YES
-     *                 valid!
+     *                 is the form elements finisher|validator property configured to only allow a limited set of values (e.g. Inspector-MultiSelectEditor, Inspector-SingleSelectEditor ...)
+     *                   YES
+     *                     is the form elements finisher|validator property value within the set of allowed values?
+     *                       YES
+     *                         valid!
+     *                       NO
+     *                         invalid! throw exception
+     *                   NO
+     *                     valid!
      *               NO
      *                 is the form elements finisher|validator property defined in "predefinedDefaults" in the form setup (cannot be manipulated but should be written)?
      *                   YES
