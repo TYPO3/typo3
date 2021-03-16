@@ -106,10 +106,15 @@ class FormManagerController extends AbstractBackendController
      * @param string $prototypeName
      * @param string $savePath
      * @throws FormException
+     * @throws PersistenceManagerException
      * @internal
      */
     public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath)
     {
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
+            throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500657);
+        }
+
         if (!$this->isValidTemplatePath($prototypeName, $templatePath)) {
             throw new FormException(sprintf('The template path "%s" is not allowed', $templatePath), 1329233410);
         }
@@ -175,10 +180,18 @@ class FormManagerController extends AbstractBackendController
      * @param string $formName
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
      * @param string $savePath
+     * @throws PersistenceManagerException
      * @internal
      */
     public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath)
     {
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
+            throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500658);
+        }
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+            throw new PersistenceManagerException(sprintf('Read of "%s" is not allowed', $formPersistenceIdentifier), 1614500659);
+        }
+
         $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier);
         $formToDuplicate['label'] = $formName;
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
@@ -233,10 +246,15 @@ class FormManagerController extends AbstractBackendController
      * Show references to this persistence identifier
      *
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
+     * @throws PersistenceManagerException
      * @internal
      */
     public function referencesAction(string $formPersistenceIdentifier)
     {
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+            throw new PersistenceManagerException(sprintf('Read from "%s" is not allowed', $formPersistenceIdentifier), 1614500660);
+        }
+
         $this->view->assign('references', $this->getProcessedReferencesRows($formPersistenceIdentifier));
         $this->view->assign('formPersistenceIdentifier', $formPersistenceIdentifier);
         // referencesAction uses the extbase JsonView::class.
@@ -251,10 +269,15 @@ class FormManagerController extends AbstractBackendController
      * Delete a formDefinition identified by the $formPersistenceIdentifier.
      *
      * @param string $formPersistenceIdentifier persistence identifier to delete
+     * @throws PersistenceManagerException
      * @internal
      */
     public function deleteAction(string $formPersistenceIdentifier)
     {
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+            throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
+        }
+
         if (empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier))) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
