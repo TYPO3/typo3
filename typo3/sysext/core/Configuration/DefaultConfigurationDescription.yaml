@@ -578,7 +578,7 @@ MAIL:
             description: '<em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".'
         transport_smtp_encrypt:
             type: bool
-            description: '<em>only with transport=smtp</em>: Connect to the server using SSL/TLS (disables STARTTLS which is used by default if supported by the server). Must not be enabled when connecting to port 587, as servers will use STARTTLS (inner encryption) via SMTP instead of SMTPS.'
+            description: '<em>only with transport=smtp</em>: Connect to the server using SSL/TLS (disables STARTTLS which is used by default if supported by the server). Must not be enabled when connecting to port 587, as servers will use STARTTLS (inner encryption) via SMTP instead of SMTPS. It will automatically be enabled if port is 465.'
         transport_smtp_username:
             type: text
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.'
