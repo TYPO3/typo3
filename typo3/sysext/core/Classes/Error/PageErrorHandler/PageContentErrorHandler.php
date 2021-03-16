@@ -19,10 +19,11 @@ namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -48,6 +49,11 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected $errorHandlerConfiguration;
 
     /**
+     * @var int
+     */
+    protected $pageUid = 0;
+
+    /**
      * PageContentErrorHandler constructor.
      * @param int $statusCode
      * @param array $configuration
@@ -68,31 +74,70 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      * @param array $reasons
      * @return ResponseInterface
      * @throws \RuntimeException
+     * @throws NoSuchCacheException
      */
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
         try {
             $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
-            $content = null;
-            if ($resolvedUrl !== (string)$request->getUri()) {
+
+            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
+            $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
+            $cacheContent = $cache->get($cacheIdentifier);
+
+            if (!$cacheContent && $resolvedUrl !== (string)$request->getUri()) {
                 try {
-                    $subResponse = GeneralUtility::makeInstance(RequestFactory::class)->request($resolvedUrl, 'GET');
+                    $subResponse = GeneralUtility::makeInstance(RequestFactory::class)
+                        ->request($resolvedUrl, 'GET', $this->getSubRequestOptions());
                 } catch (\Exception $e) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $e->getMessage(), 1544172838);
                 }
                 if ($subResponse->getStatusCode() >= 300) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $subResponse->getStatusCode(), 1544172839);
                 }
-                // create new response object and re-use only the body and the content-type of the sub-request
-                return new Response($subResponse->getBody(), $this->statusCode, [
-                    'Content-Type' => $subResponse->getHeader('Content-Type')
-                ]);
+
+                $body = $subResponse->getBody()->getContents();
+                $contentType = $subResponse->getHeader('Content-Type');
+
+                // Cache body and content-type if sub-response returned a HTTP status 200
+                if ($subResponse->getStatusCode() === 200) {
+                    $cacheTags = ['errorPage'];
+                    if ($this->pageUid > 0) {
+                        // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
+                        $cacheTags[] = 'pageId_' . $this->pageUid;
+                    }
+                    $cacheContent = [
+                        'body' => $body,
+                        'headers' => ['Content-Type' => $contentType],
+                    ];
+                    $cache->set($cacheIdentifier, $cacheContent, $cacheTags);
+                }
+            }
+            if ($cacheContent && $cacheContent['body'] && $cacheContent['headers']) {
+                // We use a HtmlResponse here, since no Stream is available for cached response content
+                return new HtmlResponse($cacheContent['body'], $this->statusCode, $cacheContent['headers']);
             }
             $content = 'The error page could not be resolved, as the error page itself is not accessible';
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
         }
         return new HtmlResponse($content, $this->statusCode);
+    }
+
+    /**
+     * Returns request options for the subrequest and ensures, that a reasoneable timeout is present
+     *
+     * @return array|int[]
+     */
+    protected function getSubRequestOptions(): array
+    {
+        $options = [];
+        if ((int)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] === 0) {
+            $options = [
+                'timeout' => 30
+            ];
+        }
+        return $options;
     }
 
     /**
@@ -115,8 +160,10 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             return $urlParams['url'];
         }
 
+        $this->pageUid = (int)$urlParams['pageuid'];
+
         // Get the site related to the configured error page
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($this->pageUid);
         // Fall back to current request for the site
         if (!$site instanceof Site) {
             $site = $request->getAttribute('site', null);
