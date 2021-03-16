@@ -224,7 +224,7 @@ class SetupModuleController
             $save_before = md5(serialize($backendUser->uc));
             // PUT SETTINGS into the ->uc array:
             // Reload left frame when switching BE language
-            if (isset($d['lang']) && $d['lang'] !== $backendUser->user['lang']) {
+            if (isset($d['be_users']['lang']) && $d['be_users']['lang'] !== $backendUser->user['lang']) {
                 $this->languageUpdate = true;
             }
             // Reload pagetree if the title length is changed
