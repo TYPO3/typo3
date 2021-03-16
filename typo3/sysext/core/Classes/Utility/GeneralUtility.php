@@ -3338,7 +3338,9 @@ class GeneralUtility
                 }
             } elseif (self::isAbsPath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
                 $sanitizedUrl = $url;
-            } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/') {
+            } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/' &&
+                substr($decodedUrl, 0, 2) !== '//'
+            ) {
                 $sanitizedUrl = $url;
             } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0
                 && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && strpos($decodedUrl, '\\\\') === false
