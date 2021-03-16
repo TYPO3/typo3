@@ -8,6 +8,13 @@ services:
     resource: '../Classes/*'
     exclude: '../Classes/{Domain/Model}'
 
+  TYPO3\CMS\Form\Slot\ResourcePublicationSlot:
+    tags:
+      - name: event.listener
+        identifier: 'form-framework/resource-getPublicUrl'
+        method: 'getPublicUrl'
+        event: TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent
+
   TYPO3\CMS\Form\Slot\FilePersistenceSlot:
     tags:
       - name: event.listener

@@ -108,4 +108,43 @@ class MimeTypeValidatorTest extends UnitTestCase
 
         self::assertTrue($validator->validate('string')->hasErrors());
     }
+
+    public function fileExtensionMatchesMimeTypesDataProvider(): array
+    {
+        $allowedMimeTypes = ['application/pdf', 'application/vnd.oasis.opendocument.text'];
+        return [
+            // filename,      file mime-type,    allowed types,     is valid (is allowed)
+            ['something.pdf', 'application/pdf', $allowedMimeTypes, true],
+            ['something.txt', 'application/pdf', $allowedMimeTypes, false],
+            ['something.pdf', 'application/pdf', [false], false],
+            ['something.pdf', 'false', $allowedMimeTypes, false],
+        ];
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $fileMimeType
+     * @param array $allowedMimeTypes
+     * @param bool $isValid
+     * @test
+     * @dataProvider fileExtensionMatchesMimeTypesDataProvider
+     */
+    public function fileExtensionMatchesMimeTypes(string $fileName, string $fileMimeType, array $allowedMimeTypes, bool $isValid): void
+    {
+        $options = ['allowedMimeTypes' => $allowedMimeTypes];
+        $validator = $this->getMockBuilder(MimeTypeValidator::class)
+            ->setMethods(['translateErrorMessage'])
+            ->setConstructorArgs(['options' => $options])
+            ->getMock();
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $file = new File([
+            'name' => $fileName,
+            'identifier' => '/folder/' . $fileName,
+            'mime_type' => $fileMimeType
+        ], $mockedStorage);
+        $result = $validator->validate($file);
+        self::assertSame($isValid, !$result->hasErrors());
+    }
 }

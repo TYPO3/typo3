@@ -525,14 +525,16 @@ class FileReference implements FileInterface
     public function __sleep(): array
     {
         $keys = get_object_vars($this);
-        unset($keys['originalFile']);
+        unset($keys['originalFile'], $keys['mergedProperties']);
         return array_keys($keys);
     }
 
     public function __wakeup(): void
     {
+        $factory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->originalFile = $this->getFileObject(
-            (int)$this->propertiesOfFileReference['uid_local']
+            (int)$this->propertiesOfFileReference['uid_local'],
+            $factory
         );
     }
 }
