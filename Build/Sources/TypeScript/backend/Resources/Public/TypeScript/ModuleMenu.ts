@@ -290,7 +290,7 @@ class ModuleMenu {
 
     deferred.then((): void => {
       this.initializeModuleMenuEvents();
-      this.initializeTopBarEvents();
+      Viewport.Topbar.Toolbar.registerEvent(() => this.initializeTopBarEvents());
     });
   }
 
