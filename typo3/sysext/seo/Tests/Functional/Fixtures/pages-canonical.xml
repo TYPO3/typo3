@@ -96,4 +96,81 @@
         <hidden>0</hidden>
         <no_index>1</no_index>
     </pages>
+    <pages>
+        <uid>11</uid>
+        <pid>2</pid>
+        <title>Dummy</title>
+        <canonical_link></canonical_link>
+        <slug>/dummy-1-2-11</slug>
+        <deleted>0</deleted>
+        <doktype>7</doktype>
+        <hidden>0</hidden>
+        <mount_pid_ol>0</mount_pid_ol>
+        <mount_pid>100</mount_pid>
+    </pages>
+    <pages>
+        <uid>12</uid>
+        <pid>2</pid>
+        <title>Dummy</title>
+        <canonical_link></canonical_link>
+        <slug>/dummy-1-2-12</slug>
+        <deleted>0</deleted>
+        <doktype>7</doktype>
+        <hidden>0</hidden>
+        <mount_pid_ol>1</mount_pid_ol>
+        <mount_pid>100</mount_pid>
+    </pages>
+    <pages>
+        <uid>13</uid>
+        <pid>2</pid>
+        <title>Mount point to page without siteroot</title>
+        <slug>/dummy-1-2-13</slug>
+        <deleted>0</deleted>
+        <doktype>7</doktype>
+        <hidden>0</hidden>
+        <mount_pid_ol>1</mount_pid_ol>
+        <mount_pid>200</mount_pid>
+    </pages>
+    <pages>
+        <uid>14</uid>
+        <pid>2</pid>
+        <title>No canonical</title>
+        <canonical_link></canonical_link>
+        <slug>/no-canonical</slug>
+        <content_from_pid>0</content_from_pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+    </pages>
+    <pages>
+        <uid>100</uid>
+        <pid>0</pid>
+        <title>Root 2</title>
+        <is_siteroot>1</is_siteroot>
+        <slug>/</slug>
+        <content_from_pid>0</content_from_pid>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>101</uid>
+        <pid>100</pid>
+        <title>Subpage of new root</title>
+        <is_siteroot>1</is_siteroot>
+        <slug>/subpage-of-new-root</slug>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>200</uid>
+        <pid>0</pid>
+        <title>Page on rootlevel but not a site root</title>
+        <is_siteroot>0</is_siteroot>
+        <slug>/</slug>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>201</uid>
+        <pid>200</pid>
+        <title>Imprint</title>
+        <slug>/imprint</slug>
+        <deleted>0</deleted>
+    </pages>
 </dataset>
