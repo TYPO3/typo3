@@ -105,18 +105,24 @@ class T3editorElement extends AbstractFormElement
 
         $parameterArray = $this->data['parameterArray'];
 
-        $attributes = [];
+        $attributes = [
+            'wrap' => 'off',
+        ];
         if (isset($parameterArray['fieldConf']['config']['rows']) && MathUtility::canBeInterpretedAsInteger($parameterArray['fieldConf']['config']['rows'])) {
             $attributes['rows'] = $parameterArray['fieldConf']['config']['rows'];
         }
 
-        $attributes['wrap'] = 'off';
+        $settings = [];
+        if ($parameterArray['fieldConf']['config']['readOnly'] ?? false) {
+            $settings['readOnly'] = 'nocursor';
+        }
 
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
             'text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
             $attributes,
+            $settings,
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
@@ -172,6 +178,7 @@ class T3editorElement extends AbstractFormElement
      * @param string $class Class attribute of HTML tag
      * @param string $content Content of the editor
      * @param array $attributes Any additional editor parameters
+     * @param array $settings
      * @param string $label Codemirror panel label
      * @param array $hiddenfields
      *
@@ -183,6 +190,7 @@ class T3editorElement extends AbstractFormElement
         string $class = '',
         string $content = '',
         array $attributes = [],
+        array $settings = [],
         string $label = '',
         array $hiddenfields = []
     ): string {
@@ -194,7 +202,8 @@ class T3editorElement extends AbstractFormElement
         $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
 
-        $settings = AddonRegistry::getInstance()->compileSettings($registeredAddons);
+        $settings = array_merge(AddonRegistry::getInstance()->compileSettings($registeredAddons), $settings);
+
         $addons = [];
         foreach ($registeredAddons as $addon) {
             $addons[] = $addon->getIdentifier();
