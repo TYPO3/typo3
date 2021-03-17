@@ -53,6 +53,7 @@
 		"symfony/mime": "^4.4 || ^5.0",
 		"symfony/polyfill-intl-icu": "^1.6",
 		"symfony/polyfill-intl-idn": "^1.10",
+		"symfony/polyfill-intl-normalizer": "^1.22",
 		"symfony/polyfill-mbstring": "^1.2",
 		"symfony/routing": "^4.4 || ^5.0",
 		"symfony/yaml": "^4.4 || ^5.0",

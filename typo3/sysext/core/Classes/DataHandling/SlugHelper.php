@@ -114,6 +114,10 @@ class SlugHelper
         $fallbackCharacter = (string)($this->configuration['fallbackCharacter'] ?? '-');
         $slug = preg_replace('/[ \t\x{00A0}\-+_]+/u', $fallbackCharacter, $slug);
 
+        if (!\Normalizer::isNormalized((string)$slug)) {
+            $slug = \Normalizer::normalize((string)$slug);
+        }
+
         // Convert extended letters to ascii equivalents
         // The specCharsToASCII() converts "€" to "EUR"
         $slug = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $slug);
