@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Seo\Canonical;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
@@ -130,7 +131,19 @@ class CanonicalGenerator
      */
     protected function checkDefaultCanonical(): string
     {
-        return $this->typoScriptFrontendController->cObj->typoLink_URL([
+        // We should only create a canonical link to the target, if the target is within a valid site root
+        $inSiteRoot = $this->isPageWithinSiteRoot((int)$this->typoScriptFrontendController->id);
+        if (!$inSiteRoot) {
+            return '';
+        }
+
+        // Temporarily remove current mountpoint information as we want to have the
+        // URL of the target page and not of the page within the mountpoint if the
+        // current page is a mountpoint.
+        $previousMp = $this->typoScriptFrontendController->MP;
+        $this->typoScriptFrontendController->MP = '';
+
+        $link = $this->typoScriptFrontendController->cObj->typoLink_URL([
             'parameter' => $this->typoScriptFrontendController->id . ',' . $this->typoScriptFrontendController->type,
             'forceAbsoluteUrl' => true,
             'addQueryString' => true,
@@ -144,6 +157,19 @@ class CanonicalGenerator
                 )
             ]
         ]);
+        $this->typoScriptFrontendController->MP = $previousMp;
+        return $link;
+    }
+
+    protected function isPageWithinSiteRoot(int $id): bool
+    {
+        $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $id)->get();
+        foreach ($rootline as $page) {
+            if ($page['is_siteroot']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

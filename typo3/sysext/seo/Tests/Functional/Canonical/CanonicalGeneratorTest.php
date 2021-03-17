@@ -79,7 +79,23 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', 'http://localhost/'),
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+
+        $this->writeSiteConfiguration(
+            'website-example',
+            $this->buildSiteConfiguration(100, 'http://example.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+
+        $this->writeSiteConfiguration(
+            'dummy',
+            $this->buildSiteConfiguration(200, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
 
@@ -127,10 +143,34 @@ class CanonicalGeneratorTest extends FunctionalTestCase
                 'http://localhost/dummy-1-2-10',
                 ''
             ],
-            'uid: 100 typoscript setting config.disableCanonical' => [
+            'uid: 11 with mount_pid_ol = 0' => [
+                'http://localhost/dummy-1-2-11',
+                '<link rel="canonical" href="http://localhost/dummy-1-2-11"/>' . chr(10),
+            ],
+            'uid: 12 with mount_pid_ol = 1' => [
+                'http://localhost/dummy-1-2-12',
+                '<link rel="canonical" href="http://example.com/"/>' . chr(10),
+            ],
+            'subpage of page with mount_pid_ol = 0' => [
+                'http://localhost/dummy-1-2-11/subpage-of-new-root',
+                '<link rel="canonical" href="http://example.com/subpage-of-new-root"/>' . chr(10),
+            ],
+            'subpage of page with mount_pid_ol = 1' => [
+                'http://localhost/dummy-1-2-12/subpage-of-new-root',
+                '<link rel="canonical" href="http://example.com/subpage-of-new-root"/>' . chr(10),
+            ],
+            'mountpoint to page without siteroot' => [
+                'http://localhost/dummy-1-2-13',
+                '',
+            ],
+            'subpage of mountpoint without siteroot' => [
+                'http://localhost/dummy-1-2-13/imprint',
+                '',
+            ],
+            'uid: 14 typoscript setting config.disableCanonical' => [
                 'http://localhost/no-canonical',
                 ''
-            ],
+            ]
         ];
     }
 
