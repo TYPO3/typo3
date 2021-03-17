@@ -36,13 +36,13 @@ class DatabaseCachePreset extends AbstractPreset
     protected $configurationValues = [
         'SYS/caching/cacheConfigurations/hash/backend' => Typo3DatabaseBackend::class,
         'SYS/caching/cacheConfigurations/pages/backend' => Typo3DatabaseBackend::class,
-        'SYS/caching/cacheConfigurations/pages/options/compression' => 1,
+        'SYS/caching/cacheConfigurations/pages/options/compression' => true,
         'SYS/caching/cacheConfigurations/pagesection/backend' => Typo3DatabaseBackend::class,
-        'SYS/caching/cacheConfigurations/pagesection/options/compression' => 1,
+        'SYS/caching/cacheConfigurations/pagesection/options/compression' => true,
         'SYS/caching/cacheConfigurations/imagesizes/backend' => Typo3DatabaseBackend::class,
-        'SYS/caching/cacheConfigurations/imagesizes/options/compression' => 1,
+        'SYS/caching/cacheConfigurations/imagesizes/options/compression' => true,
         'SYS/caching/cacheConfigurations/rootline/backend' => Typo3DatabaseBackend::class,
-        'SYS/caching/cacheConfigurations/rootline/options/compression' => 1,
+        'SYS/caching/cacheConfigurations/rootline/options/compression' => true,
     ];
 
     /**
