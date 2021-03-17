@@ -3,8 +3,8 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <f:for each="{workspaceList}" as="workspace">
-            <li role="presentation" class="nav-item {f:if(condition: '{activeWorkspaceUid} == {workspace.workspaceId}', then: 'active')}">
-                <a href="{workspace.triggerUrl}" class="nav-link" aria-controls="{workspace.itemId}" role="tab">{workspace.title}</a>
+            <li role="presentation" class="nav-item">
+                <a href="{workspace.triggerUrl}" class="nav-link {f:if(condition: '{activeWorkspaceUid} == {workspace.workspaceId}', then: 'active')}" aria-controls="{workspace.itemId}" role="tab">{workspace.title}</a>
             </li>
         </f:for>
     </ul>
