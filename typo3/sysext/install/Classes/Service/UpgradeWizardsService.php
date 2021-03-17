@@ -321,6 +321,7 @@ class UpgradeWizardsService
             $markup = [];
             $radioAttributes = [
                 'type' => 'radio',
+                'class' => 'btn-check',
                 'name' => 'install[values][' . $updateObject->getIdentifier() . '][install]',
                 'value' => '0'
             ];
@@ -332,10 +333,12 @@ class UpgradeWizardsService
             $markup[] = '        <p>' . nl2br(htmlspecialchars($updateObject->getConfirmation()->getMessage())) . '</p>';
             $markup[] = '        <div class="btn-group" data-bs-toggle="buttons">';
             if (!$updateObject->getConfirmation()->isRequired()) {
-                $markup[] = '        <label class="btn btn-default active"><input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked="checked" />' . $updateObject->getConfirmation()->getDeny() . '</label>';
+                $markup[] = '        <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' checked id="upgrade-wizard-deny">';
+                $markup[] = '        <label class="btn btn-default" for="upgrade-wizard-deny">' . $updateObject->getConfirmation()->getDeny() . '</label>';
             }
             $radioAttributes['value'] = '1';
-            $markup[] = '            <label class="btn btn-default"><input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' />' . $updateObject->getConfirmation()->getConfirm() . '</label>';
+            $markup[] = '            <input ' . GeneralUtility::implodeAttributes($radioAttributes, true) . ' id="upgrade-wizard-confirm">';
+            $markup[] = '            <label class="btn btn-default" for="upgrade-wizard-confirm">' . $updateObject->getConfirmation()->getConfirm() . '</label>';
             $markup[] = '        </div>';
             $markup[] = '    </div>';
             $markup[] = '</div>';
