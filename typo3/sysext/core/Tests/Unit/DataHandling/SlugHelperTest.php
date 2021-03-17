@@ -132,6 +132,11 @@ class SlugHelperTest extends UnitTestCase
                 'bla-arg应---用-ascii',
                 'bla-arg应-用-ascii'
             ],
+            'non-normalized characters' => [
+                [],
+                hex2bin('667275cc88686e65757a6569746c696368656e'),
+                'fruehneuzeitlichen'
+            ],
         ];
     }
 
