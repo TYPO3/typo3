@@ -107,6 +107,7 @@ class T3editorElement extends AbstractFormElement
 
         $attributes = [
             'wrap' => 'off',
+            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($parameterArray['fieldConf']['config']),
         ];
         if (isset($parameterArray['fieldConf']['config']['rows']) && MathUtility::canBeInterpretedAsInteger($parameterArray['fieldConf']['config']['rows'])) {
             $attributes['rows'] = $parameterArray['fieldConf']['config']['rows'];

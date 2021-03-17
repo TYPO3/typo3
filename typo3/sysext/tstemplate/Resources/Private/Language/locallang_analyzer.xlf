@@ -27,24 +27,6 @@
 			<trans-unit id="templateHierarchy" resname="templateHierarchy">
 				<source>Template hierarchy</source>
 			</trans-unit>
-			<trans-unit id="displayOptions" resname="displayOptions">
-				<source>Display Options</source>
-			</trans-unit>
-			<trans-unit id="lineNumbers" resname="lineNumbers">
-				<source>Line numbers</source>
-			</trans-unit>
-			<trans-unit id="syntaxHighlight" resname="syntaxHighlight">
-				<source>Syntax highlight</source>
-			</trans-unit>
-			<trans-unit id="comments" resname="comments">
-				<source>Comments</source>
-			</trans-unit>
-			<trans-unit id="cropLines" resname="cropLines">
-				<source>Crop lines</source>
-			</trans-unit>
-			<trans-unit id="blockMode" resname="blockMode">
-				<source>Block mode</source>
-			</trans-unit>
 			<trans-unit id="constants" resname="constants">
 				<source>Constants</source>
 			</trans-unit>
@@ -53,9 +35,6 @@
 			</trans-unit>
 			<trans-unit id="viewCompleteTS" resname="viewCompleteTS">
 				<source>View the complete TS Listing</source>
-			</trans-unit>
-			<trans-unit id="completeTS" resname="completeTS">
-				<source>Complete TS</source>
 			</trans-unit>
 		</body>
 	</file>

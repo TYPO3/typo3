@@ -18,25 +18,11 @@
 
 <div class="row">
     <div class="col-auto">
-        <f:be.link route="web_ts" parameters="{id: pageId, template: 'all'}" class="btn btn-default">
+        <f:be.link route="web_ts" parameters="{id: pageUid, template: 'all'}" class="btn btn-default">
             <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:viewCompleteTS"/>
         </f:be.link>
     </div>
 </div>
-
-<div class="row mt-3">
-    <div class="col-auto">
-        <f:for each="{checkboxes}" as="checkbox">
-            <div class="form-check form-switch">
-                <label class="form-check-label" for="{checkbox.id}">
-                    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:{checkbox.ll}"/>
-                </label>
-                <f:format.raw>{checkbox.label}</f:format.raw>
-            </div>
-        </f:for>
-    </div>
-</div>
-
 
 <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:templateHierarchy"/></h2>
 <div class="table-fit">
@@ -55,19 +41,15 @@
     </table>
 </div>
 
-<f:if condition="{template}">
+<f:if condition="{constants}">
     <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:constants"/></h2>
     <f:for each="{constants}" as="constant">
-        <h4>{constant.title}</h4>
-        <div class="text-nowrap">
-            <f:format.raw>{constant.content}</f:format.raw>
-        </div>
+        <f:format.raw>{constant}</f:format.raw>
     </f:for>
+</f:if>
+<f:if condition="{setups}">
     <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:setup"/></h2>
     <f:for each="{setups}" as="setup">
-        <h4>{setup.title}</h4>
-        <div class="text-nowrap">
-            <f:format.raw>{setup.content}</f:format.raw>
-        </div>
+        <f:format.raw>{setup}</f:format.raw>
     </f:for>
 </f:if>

@@ -8,14 +8,7 @@
         <f:for each="{lines}" as="line">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <f:if condition="{line.defaultPageTSconfig}">
-                        <f:then>
-                        <f:translate key="LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default" />
-                        </f:then>
-                        <f:else>
-                            <f:format.raw>{line.title}</f:format.raw>
-                        </f:else>
-                    </f:if>
+                    <f:format.raw>{line.title}</f:format.raw>
                 </div>
                 <div class="panel-body">
                     <f:if condition="{line.content -> f:format.stripTags() -> f:spaceless()}">

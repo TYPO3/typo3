@@ -340,7 +340,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $pEkey = $bType === 'setup' ? 'config' : 'constants';
             $assigns['hasParseErrors'] = !empty($this->templateService->parserErrors[$pEkey]);
             if (!empty($this->templateService->parserErrors[$pEkey])) {
-                $assigns['showErrorDetailsUri'] = $aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-';
+                $assigns['showErrorDetailsUri'] = $aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&highlightType=' . $bType . '&highlightLine=';
                 $assigns['parseErrors'] = $this->templateService->parserErrors[$pEkey];
             }
 

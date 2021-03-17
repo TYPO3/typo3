@@ -14,9 +14,17 @@
 import CodeMirror from 'codemirror';
 import {LitElement, html, css, CSSResult} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
 import 'TYPO3/CMS/Backend/Element/SpinnerElement'
+
+interface MarkTextPosition {
+  line: number;
+  ch: number;
+}
+interface MarkText {
+  to: MarkTextPosition;
+  from: MarkTextPosition;
+}
 
 /**
  * Module: TYPO3/CMS/T3editor/Element/CodeMirrorElement
@@ -26,8 +34,16 @@ import 'TYPO3/CMS/Backend/Element/SpinnerElement'
 export class CodeMirrorElement extends LitElement {
   @property() mode: string;
   @property() label: string;
-  @property({type: Array}) addons: string[] = [];
+  @property({type: Array}) addons: string[] = ['codemirror/addon/display/panel'];
   @property({type: Object}) options: { [key: string]: any[] } = {};
+
+  @property({type: Number}) scrollto: number = 0;
+  @property({type: Object}) marktext: MarkText[] = [];
+  @property({type: Number}) lineDigits: number = 0;
+  @property({type: Boolean}) autoheight: boolean = false;
+  @property({type: Boolean}) nolazyload: boolean = false;
+  @property({type: String}) panel: string = 'bottom';
+
   @state() loaded: boolean = false;
 
   static styles = css`
@@ -52,6 +68,10 @@ export class CodeMirrorElement extends LitElement {
   }
 
   firstUpdated(): void {
+    if (this.nolazyload) {
+      this.initializeEditor(<HTMLTextAreaElement>this.firstElementChild);
+      return;
+    }
     const observerOptions = {
       root: document.body
     };
@@ -122,14 +142,14 @@ export class CodeMirrorElement extends LitElement {
       // Mark form as changed if code editor content has changed
       cm.on('change', (): void => {
         textarea.value = cm.getValue();
-        FormEngine.Validation.markFieldAsChanged(textarea);
+        textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
       });
 
-      const bottomPanel = this.createPanelNode('bottom', this.label);
+      const panel = this.createPanelNode(this.panel, this.label);
       cm.addPanel(
-        bottomPanel,
+        panel,
         {
-          position: 'bottom',
+          position: this.panel,
           stable: false,
         },
       );
@@ -138,11 +158,32 @@ export class CodeMirrorElement extends LitElement {
       if (textarea.getAttribute('rows')) {
         const lineHeight = 18;
         const paddingBottom = 4;
-        cm.setSize(null, parseInt(textarea.getAttribute('rows'), 10) * lineHeight + paddingBottom + bottomPanel.getBoundingClientRect().height);
+        cm.setSize(null, parseInt(textarea.getAttribute('rows'), 10) * lineHeight + paddingBottom + panel.getBoundingClientRect().height);
       } else {
         // Textarea has no "rows" attribute configured, don't limit editor in space
         cm.getWrapperElement().style.height = (document.body.getBoundingClientRect().height - cm.getWrapperElement().getBoundingClientRect().top - 80) + 'px';
         cm.setOption('viewportMargin', Infinity);
+      }
+
+      if (this.autoheight) {
+        cm.setOption('viewportMargin', Infinity);
+      }
+
+      if (this.lineDigits > 0) {
+        cm.setOption('lineNumberFormatter', (line: number): string => line.toString().padStart(this.lineDigits, ' '))
+      }
+
+      if (this.scrollto > 0) {
+        cm.scrollIntoView({
+          line: this.scrollto,
+          ch: 0
+        });
+      }
+
+      for (let textblock of this.marktext) {
+        if (textblock.from && textblock.to) {
+          cm.markText(textblock.from, textblock.to, {className: 'CodeMirror-markText'});
+        }
       }
 
       this.loaded = true;

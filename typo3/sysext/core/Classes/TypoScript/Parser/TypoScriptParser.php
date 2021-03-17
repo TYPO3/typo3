@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as FrontendConditionMatcher;
@@ -122,27 +121,6 @@ class TypoScriptParser
     public $sectionsMatch = [];
 
     /**
-     * If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
-     *
-     * @var bool
-     */
-    protected $syntaxHighLight = false;
-
-    /**
-     * Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
-     *
-     * @var array
-     */
-    protected $highLightData = [];
-
-    /**
-     * Syntax highlight data keeping track of the curly brace level for each line
-     *
-     * @var array
-     */
-    protected $highLightData_bracelevel = [];
-
-    /**
      * DO NOT register the comments. This is default for the ordinary sitetemplate!
      *
      * @var bool
@@ -174,53 +152,6 @@ class TypoScriptParser
      * @deprecated Unused since v11, will be removed in v12
      */
     public $breakPointLN = 0;
-
-    /**
-     * @var array
-     */
-    protected $highLightStyles = [
-        'prespace' => ['<span class="ts-prespace">', '</span>'],
-        // Space before any content on a line
-        'objstr_postspace' => ['<span class="ts-objstr_postspace">', '</span>'],
-        // Space after the object string on a line
-        'operator_postspace' => ['<span class="ts-operator_postspace">', '</span>'],
-        // Space after the operator on a line
-        'operator' => ['<span class="ts-operator">', '</span>'],
-        // The operator char
-        'value' => ['<span class="ts-value">', '</span>'],
-        // The value of a line
-        'objstr' => ['<span class="ts-objstr">', '</span>'],
-        // The object string of a line
-        'value_copy' => ['<span class="ts-value_copy">', '</span>'],
-        // The value when the copy syntax (<) is used; that means the object reference
-        'value_unset' => ['<span class="ts-value_unset">', '</span>'],
-        // The value when an object is unset. Should not exist.
-        'ignored' => ['<span class="ts-ignored">', '</span>'],
-        // The "rest" of a line which will be ignored.
-        'default' => ['<span class="ts-default">', '</span>'],
-        // The default style if none other is applied.
-        'comment' => ['<span class="ts-comment">', '</span>'],
-        // Comment lines
-        'condition' => ['<span class="ts-condition">', '</span>'],
-        // Conditions
-        'error' => ['<span class="ts-error">', '</span>'],
-        // Error messages
-        'linenum' => ['<span class="ts-linenum">', '</span>']
-    ];
-
-    /**
-     * Additional attributes for the <span> tags for a blockmode line
-     *
-     * @var string
-     */
-    protected $highLightBlockStyles = '';
-
-    /**
-     * The hex-HTML color for the blockmode
-     *
-     * @var string
-     */
-    protected $highLightBlockStyles_basecolor = '#cccccc';
 
     /**
      * @deprecated Unused since v11, will be removed in v12
@@ -257,7 +188,7 @@ class TypoScriptParser
                 if ($specificSection) {
                     $this->sections[md5($pre)] = $pre;
                 }
-                if (is_object($matchObj) && $matchObj->match($pre) || $this->syntaxHighLight) {
+                if (is_object($matchObj) && $matchObj->match($pre)) {
                     if ($specificSection) {
                         $this->sectionsMatch[md5($pre)] = $pre;
                     }
@@ -308,9 +239,6 @@ class TypoScriptParser
             $line = ltrim($this->raw[$this->rawP]);
             $lineP = $this->rawP;
             $this->rawP++;
-            if ($this->syntaxHighLight) {
-                $this->regHighLight('prespace', $lineP, strlen($line));
-            }
             // Set comment flag?
             if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
                 $this->commentSet = true;
@@ -321,9 +249,6 @@ class TypoScriptParser
                 if ($this->multiLineEnabled) {
                     // Multiline ends...
                     if (!empty($line[0]) && $line[0] === ')') {
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('operator', $lineP, strlen($line) - 1);
-                        }
                         // Disable multiline
                         $this->multiLineEnabled = false;
                         $theValue = implode(LF, $this->multiLineValue);
@@ -341,9 +266,6 @@ class TypoScriptParser
                             }
                         }
                     } else {
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('value', $lineP);
-                        }
                         $this->multiLineValue[] = $this->raw[$this->rawP - 1];
                     }
                 } elseif ($this->inBrace === 0 && $line[0] === '[') {
@@ -351,17 +273,10 @@ class TypoScriptParser
                         $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Invalid condition found, any condition must end with "]": ' . $line);
                         return $line;
                     }
-                    // Beginning of condition (only on level zero compared to brace-levels
-                    if ($this->syntaxHighLight) {
-                        $this->regHighLight('condition', $lineP);
-                    }
                     return $line;
                 } else {
                     // Return if GLOBAL condition is set - no matter what.
                     if ($line[0] === '[' && stripos($line, '[GLOBAL]') !== false) {
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('condition', $lineP);
-                        }
                         $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
                         $this->inBrace = 0;
                         return $line;
@@ -376,22 +291,12 @@ class TypoScriptParser
                         }
                         // also remove tabs after the object string name
                         $objStrName = substr($line, 0, $varL);
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('objstr', $lineP, strlen(substr($line, $varL)));
-                        }
                         if ($objStrName !== '') {
                             $r = [];
                             if (preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
                                 $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."');
                             } else {
                                 $line = ltrim(substr($line, $varL));
-                                if ($this->syntaxHighLight) {
-                                    $this->regHighLight('objstr_postspace', $lineP, strlen($line));
-                                    if ($line !== '') {
-                                        $this->regHighLight('operator', $lineP, strlen($line) - 1);
-                                        $this->regHighLight('operator_postspace', $lineP, strlen(ltrim(substr($line, 1))));
-                                    }
-                                }
                                 if ($line === '') {
                                     $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({');
                                 } else {
@@ -410,9 +315,6 @@ class TypoScriptParser
                                     }
                                     switch ($line[0]) {
                                         case '=':
-                                            if ($this->syntaxHighLight) {
-                                                $this->regHighLight('value', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-                                            }
                                             if (strpos($objStrName, '.') !== false) {
                                                 $value = [];
                                                 $value[0] = trim(substr($line, 1));
@@ -456,9 +358,6 @@ class TypoScriptParser
                                             $this->multiLineValue = [];
                                             break;
                                         case '<':
-                                            if ($this->syntaxHighLight) {
-                                                $this->regHighLight('value_copy', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-                                            }
                                             $theVal = trim(substr($line, 1));
                                             if ($theVal[0] === '.') {
                                                 $res = $this->getVal(substr($theVal, 1), $setup);
@@ -470,9 +369,6 @@ class TypoScriptParser
                                             $this->setVal($objStrName, $setup, unserialize(serialize($res), ['allowed_classes' => false]), true);
                                             break;
                                         case '>':
-                                            if ($this->syntaxHighLight) {
-                                                $this->regHighLight('value_unset', $lineP, strlen(ltrim(substr($line, 1))) - strlen(trim(substr($line, 1))));
-                                            }
                                             $this->setVal($objStrName, $setup, 'UNSET');
                                             break;
                                         default:
@@ -485,9 +381,6 @@ class TypoScriptParser
                     } elseif ($line[0] === '}') {
                         $this->inBrace--;
                         $this->lastComment = '';
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('operator', $lineP, strlen($line) - 1);
-                        }
                         if ($this->inBrace < 0) {
                             $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': An end brace is in excess.', 1);
                             $this->inBrace = 0;
@@ -495,9 +388,6 @@ class TypoScriptParser
                             break;
                         }
                     } else {
-                        if ($this->syntaxHighLight) {
-                            $this->regHighLight('comment', $lineP);
-                        }
                         // Comment. The comments are concatenated in this temporary string:
                         if ($this->regComments) {
                             $this->lastComment .= rtrim($line) . LF;
@@ -510,9 +400,6 @@ class TypoScriptParser
             }
             // Unset comment
             if ($this->commentSet) {
-                if ($this->syntaxHighLight) {
-                    $this->regHighLight('comment', $lineP);
-                }
                 if (strpos($line, '*/') !== false) {
                     $this->commentSet = false;
                 }
@@ -1380,103 +1267,14 @@ class TypoScriptParser
         return $array;
     }
 
-    /**********************************
-     *
-     * Syntax highlighting
-     *
-     *********************************/
     /**
-     * Syntax highlight a TypoScript text
-     * Will parse the content. Remember, the internal setup array may contain invalid parsed content since conditions are ignored!
-     *
-     * @param string $string The TypoScript text
-     * @param mixed $lineNum If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
-     * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
-     * @return string HTML code for the syntax highlighted string
+     * @param string $string
+     * @return string
+     * @deprecated since v11, will be removed in v12.
      */
-    public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = false)
+    public function doSyntaxHighlight($string)
     {
-        $this->syntaxHighLight = true;
-        $this->highLightData = [];
-        $this->errors = [];
-        // This is done in order to prevent empty <span>..</span> sections around CR content. Should not do anything but help lessen the amount of HTML code.
-        $string = str_replace(CR, '', $string);
-        $this->parse($string);
-        return $this->syntaxHighlight_print($lineNum, $highlightBlockMode);
-    }
-
-    /**
-     * Registers a part of a TypoScript line for syntax highlighting.
-     *
-     * @param string $code Key from the internal array $this->highLightStyles
-     * @param int $pointer Pointer to the line in $this->raw which this is about
-     * @param int $strlen The number of chars LEFT on this line before the end is reached.
-     * @see parse()
-     */
-    protected function regHighLight($code, $pointer, $strlen = -1)
-    {
-        if ($strlen === -1) {
-            $this->highLightData[$pointer] = [[$code, 0]];
-        } else {
-            $this->highLightData[$pointer][] = [$code, $strlen];
-        }
-        $this->highLightData_bracelevel[$pointer] = $this->inBrace;
-    }
-
-    /**
-     * Formatting the TypoScript code in $this->raw based on the data collected by $this->regHighLight in $this->highLightData
-     *
-     * @param mixed $lineNumDat If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
-     * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
-     * @return string HTML content
-     * @see doSyntaxHighlight()
-     */
-    protected function syntaxHighlight_print($lineNumDat, $highlightBlockMode)
-    {
-        // Registers all error messages in relation to their linenumber
-        $errA = [];
-        foreach ($this->errors as $err) {
-            $errA[$err[2]][] = $err[0];
-        }
-        // Generates the syntax highlighted output:
-        $lines = [];
-        foreach ($this->raw as $rawP => $value) {
-            $start = 0;
-            $strlen = strlen($value);
-            $lineC = '';
-            if (is_array($this->highLightData[$rawP])) {
-                foreach ($this->highLightData[$rawP] as $set) {
-                    $len = $strlen - $start - (int)$set[1];
-                    if ($len > 0) {
-                        $part = substr($value, $start, $len);
-                        $start += $len;
-                        $st = $this->highLightStyles[isset($this->highLightStyles[$set[0]]) ? $set[0] : 'default'];
-                        if (!$highlightBlockMode || $set[0] !== 'prespace') {
-                            $lineC .= $st[0] . htmlspecialchars($part) . $st[1];
-                        }
-                    } elseif ($len < 0) {
-                        debug([$len, $value, $rawP]);
-                    }
-                }
-            } else {
-                debug([$value]);
-            }
-            if (strlen($value) > $start) {
-                $lineC .= $this->highLightStyles['ignored'][0] . htmlspecialchars(substr($value, $start)) . $this->highLightStyles['ignored'][1];
-            }
-            if ($errA[$rawP]) {
-                $lineC .= $this->highLightStyles['error'][0] . '<strong> - ERROR:</strong> ' . htmlspecialchars(implode(';', $errA[$rawP])) . $this->highLightStyles['error'][1];
-            }
-            if ($highlightBlockMode && $this->highLightData_bracelevel[$rawP]) {
-                $lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . $this->modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -(int)($this->highLightData_bracelevel[$rawP] * 16)) : '') . '">' . ($lineC !== '' ? $lineC : '&nbsp;') . '</span>';
-            }
-            if (is_array($lineNumDat)) {
-                $lineNum = $rawP + $lineNumDat[0];
-                $lineC = $this->highLightStyles['linenum'][0] . str_pad((string)$lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
-            }
-            $lines[] = $lineC;
-        }
-        return '<pre class="ts-hl bg-light border p-1 ps-2">' . implode(LF, $lines) . '</pre>';
+        return $string;
     }
 
     /**
@@ -1485,38 +1283,6 @@ class TypoScriptParser
     protected function getTimeTracker()
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * Modifies a HTML Hex color by adding/subtracting $R,$G and $B integers
-     *
-     * @param string $color A hexadecimal color code, #xxxxxx
-     * @param int $R Offset value 0-255
-     * @param int $G Offset value 0-255
-     * @param int $B Offset value 0-255
-     * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
-     * @see modifyHTMLColorAll()
-     */
-    protected function modifyHTMLColor($color, $R, $G, $B)
-    {
-        // This takes a hex-color (# included!) and adds $R, $G and $B to the HTML-color (format: #xxxxxx) and returns the new color
-        $nR = MathUtility::forceIntegerInRange((int)hexdec(substr($color, 1, 2)) + $R, 0, 255);
-        $nG = MathUtility::forceIntegerInRange((int)hexdec(substr($color, 3, 2)) + $G, 0, 255);
-        $nB = MathUtility::forceIntegerInRange((int)hexdec(substr($color, 5, 2)) + $B, 0, 255);
-        return '#' . substr('0' . dechex($nR), -2) . substr('0' . dechex($nG), -2) . substr('0' . dechex($nB), -2);
-    }
-
-    /**
-     * Modifies a HTML Hex color by adding/subtracting $all integer from all R/G/B channels
-     *
-     * @param string $color A hexadecimal color code, #xxxxxx
-     * @param int $all Offset value 0-255 for all three channels.
-     * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
-     * @see modifyHTMLColor()
-     */
-    protected function modifyHTMLColorAll($color, $all)
-    {
-        return $this->modifyHTMLColor($color, $all, $all, $all);
     }
 
     /**

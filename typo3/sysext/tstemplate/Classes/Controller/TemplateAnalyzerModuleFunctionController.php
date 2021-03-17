@@ -16,9 +16,9 @@
 namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -47,11 +47,6 @@ class TemplateAnalyzerModuleFunctionController
     protected $templateService;
 
     /**
-     * @var int GET/POST var 'id'
-     */
-    protected $id;
-
-    /**
      * @var ServerRequestInterface
      */
     protected $request;
@@ -66,52 +61,6 @@ class TemplateAnalyzerModuleFunctionController
     {
         $this->pObj = $pObj;
         $this->request = $request;
-
-        // Setting MOD_MENU items as we need them for logging:
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-        $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
-    }
-
-    /**
-     * Mod menu
-     *
-     * @return array
-     */
-    protected function modMenu()
-    {
-        return [
-            'ts_analyzer_checkSetup' => '1',
-            'ts_analyzer_checkConst' => '1',
-            'ts_analyzer_checkLinenum' => '1',
-            'ts_analyzer_checkComments' => '1',
-            'ts_analyzer_checkCrop' => '1',
-            'ts_analyzer_checkSyntax' => '1'
-        ];
-    }
-
-    /**
-     * Initialize editor
-     *
-     * @param int $pageId
-     * @param int $templateUid
-     * @return bool
-     */
-    protected function initialize_editor($pageId, $templateUid = 0)
-    {
-        // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-
-        // Gets the rootLine
-        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
-        $rootLine = $rootlineUtility->get();
-
-        // This generates the constants/config + hierarchy info for the template.
-        $this->templateService->runThroughTemplates($rootLine, $templateUid);
-
-        // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $templateUid);
-        return is_array($this->templateRow);
     }
 
     /**
@@ -121,17 +70,27 @@ class TemplateAnalyzerModuleFunctionController
      */
     public function main()
     {
-        // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-        // Checking for more than one template an if, set a menu...
+        // The page id TypoScript tree should be show for
+        $pageUid = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
+        // Set if user clicked on one template to show content of this specific one
+        $selectedTemplate = ($this->request->getQueryParams()['template'] ?? '');
+        // The template object browser shows info boxes with parser errors and links to template analyzer to highlight
+        // affected line. Increased by one if set to avoid an off-by-one error.
+        $highlightLine = (int)($this->request->getQueryParams()['highlightLine'] ?? 0);
+        // 'const' or 'setup' or not set
+        $highlightType = (string)($this->request->getQueryParams()['highlightType'] ?? '');
 
-        $assigns = [];
-        $template_uid = 0;
+        $assigns = [
+            'pageUid' => $pageUid,
+        ];
+
+        $templateUid = 0;
         $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu($this->request);
         if ($assigns['manyTemplatesMenu']) {
-            $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
+            $templateUid = (int)$this->pObj->MOD_SETTINGS['templatesOnPage'];
         }
 
-        $assigns['existTemplate'] = $this->initialize_editor($this->id, $template_uid);
+        $assigns['existTemplate'] = $this->initializeTemplates($pageUid, $templateUid);
         if ($assigns['existTemplate']) {
             $assigns['templateRecord'] = $this->templateRow;
             $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title']);
@@ -148,87 +107,15 @@ class TemplateAnalyzerModuleFunctionController
             1
         )));
 
-        $assigns['pageId'] = $this->id;
-        $assigns['template'] = $template = ($this->request->getQueryParams()['template'] ?? null);
-        $addParams = $template ? '&template=' . $template : '';
-        $assigns['checkboxes'] = [
-            'ts_analyzer_checkLinenum' => [
-                'id' => 'checkTs_analyzer_checkLinenum',
-                'll' => 'lineNumbers'
-            ],
-            'ts_analyzer_checkSyntax' => [
-                'id' => 'checkTs_analyzer_checkSyntax',
-                'll' => 'syntaxHighlight'
-            ]
-        ];
+        $assigns['constants'] =  $this->renderTemplates($this->templateService->constants, $selectedTemplate, $highlightType === 'const', $highlightLine);
+        $assigns['setups'] =  $this->renderTemplates($this->templateService->config, $selectedTemplate, $highlightType === 'setup', $highlightLine);
 
-        if (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']) {
-            $assigns['checkboxes']['ts_analyzer_checkComments'] = [
-                'id' => 'checkTs_analyzer_checkComments',
-                'll' => 'comments'
-            ];
-            $assigns['checkboxes']['ts_analyzer_checkCrop'] = [
-                'id' => 'checkTs_analyzer_checkCrop',
-                'll' => 'cropLines'
-            ];
-        }
-
-        foreach ($assigns['checkboxes'] as $key => $conf) {
-            $assigns['checkboxes'][$key]['label'] = BackendUtility::getFuncCheck(
-                $this->id,
-                'SET[' . $key . ']',
-                $this->pObj->MOD_SETTINGS[$key],
-                '',
-                $addParams,
-                'id="' . $conf['id'] . '"'
-            );
-        }
-
-        if ($template) {
-            $this->templateService->ext_lineNumberOffset = 0;
-            $assigns['constants'] = [];
-            foreach ($this->templateService->constants as $key => $val) {
-                $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];
-                if ($currentTemplateId == $template || $template === 'all') {
-                    $assigns['constants'][] = [
-                        'title' => $this->templateService->hierarchyInfo[$key]['title'],
-                        'content' => $this->templateService->ext_outputTS(
-                            [$val],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']
-                        )
-                    ];
-                    if ($template !== 'all') {
-                        break;
-                    }
-                }
-                $this->templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
-            }
-
-            // Output Setup
-            $this->templateService->ext_lineNumberOffset = 0;
-            $assigns['setups'] = [];
-            foreach ($this->templateService->config as $key => $val) {
-                $currentTemplateId = $this->templateService->hierarchyInfo[$key]['templateID'];
-                if ($currentTemplateId == $template || $template === 'all') {
-                    $assigns['setups'][] = [
-                        'title' => $this->templateService->hierarchyInfo[$key]['title'],
-                        'content' => $this->templateService->ext_outputTS(
-                            [$val],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'],
-                            $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']
-                        )
-                    ];
-                    if ($template !== 'all') {
-                        break;
-                    }
-                }
-                $this->templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
-            }
+        if (ExtensionManagementUtility::isLoaded('t3editor')) {
+            // @todo: Let EXT:t3editor add the deps via events in the render-loops above
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+            $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -237,11 +124,135 @@ class TemplateAnalyzerModuleFunctionController
         return $view->render();
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
+    protected function initializeTemplates(int $pageId, int $templateUid = 0): bool
     {
-        return $GLOBALS['LANG'];
+        // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
+        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+
+        // Gets the rootLine
+        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
+        $rootLine = $rootlineUtility->get();
+
+        // This generates the constants/config + hierarchy info for the template.
+        $this->templateService->runThroughTemplates($rootLine, $templateUid);
+
+        // Get the row of the first VISIBLE template of the page. where clause like the frontend.
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $templateUid);
+        return is_array($this->templateRow);
+    }
+
+    /**
+     * Render constants or setup templates using t3editor or plain textarea
+     *
+     * @param array $templates
+     * @param string $selectedTemplate
+     * @param bool $highlight
+     * @param int $highlightLine
+     * @return array Modified assign array
+     */
+    protected function renderTemplates(array $templates, string $selectedTemplate, bool $highlight, int $highlightLine): array
+    {
+        $templatesMarkup = [];
+        $totalLines = 0;
+        foreach ($templates as $templateNumber => $templateContent) {
+            $totalLines += 1 + count(explode(LF, $templateContent));
+        }
+        $thisLineOffset = $nextLineOffset = 0;
+        foreach ($templates as $templateNumber => $templateContent) {
+            $templateId = $this->templateService->hierarchyInfo[$templateNumber]['templateID'];
+            $templateTitle = $this->templateService->hierarchyInfo[$templateNumber]['title'] ?? 'Template';
+            // Prefix content with '[GLOBAL]' even for empty strings, the TemplateService does that, too.
+            // Not replicating this leads to shifted line numbers when parser errors are reported in FE and object browser.
+            // @todo: Locate where TemplateService hard prefixes this for empty strings and drop it.
+            $templateContent = '[GLOBAL]' . LF . (string)$templateContent;
+            $linesInTemplate = count(explode(LF, $templateContent));
+            $nextLineOffset += $linesInTemplate;
+            if ($selectedTemplate === 'all'
+                || $templateId === $selectedTemplate
+                || $highlight && $highlightLine && $highlightLine > $thisLineOffset && $highlightLine <= $nextLineOffset
+            ) {
+                if (ExtensionManagementUtility::isLoaded('t3editor')) {
+                    // @todo: Fire event and let EXT:t3editor fill the markup
+                    $templatesMarkup[] = $this->getCodeMirrorMarkup(
+                        $templateTitle,
+                        $thisLineOffset,
+                        $linesInTemplate,
+                        $totalLines,
+                        $highlight ? $highlightLine : 0,
+                        $templateContent
+                    );
+                } else {
+                    $templatesMarkup[] = $this->getTextareaMarkup(
+                        $templateTitle,
+                        $linesInTemplate,
+                        $templateContent
+                    );
+                }
+            }
+            $thisLineOffset = $nextLineOffset;
+        }
+        return $templatesMarkup;
+    }
+
+    protected function getCodeMirrorMarkup(
+        string $label,
+        int $lineOffset,
+        int $lines,
+        int $totalLines,
+        int $highlightLine,
+        string $content
+    ): string {
+        $codeMirrorConfig = [
+            'label' => $label,
+            'panel' => 'top',
+            'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
+            'autoheight' => 'true',
+            'nolazyload' => 'true',
+            'linedigits' => (string)strlen((string)$totalLines),
+            'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'readOnly' => true,
+                'format' => 'typoscript',
+                'rows' => 'auto',
+                'firstLineNumber' => $lineOffset + 1,
+            ], false),
+        ];
+        $textareaAttributes = [
+            'rows' => (string)$lines,
+            'readonly' => 'readonly',
+        ];
+
+        // If we want to highlight
+        if ($highlightLine && $highlightLine >= $lineOffset && $highlightLine <= ($lineOffset + $lines)) {
+            // Scroll to affected line and highlight line if requested
+            $targetLineInTemplate = $highlightLine - $lineOffset;
+            $codeMirrorConfig['scrollto'] = (string)$targetLineInTemplate;
+            $codeMirrorConfig['marktext'] = GeneralUtility::jsonEncodeForHtmlAttribute([
+                [
+                    'from' => [
+                        'line' => $targetLineInTemplate - 1,
+                        'ch' => 0,
+                    ],
+                    'to' => [
+                        'line' => $targetLineInTemplate - 1,
+                        // Arbitrary high value to match full line
+                        'ch' => 10000,
+                    ]
+                ]
+            ], false);
+        }
+
+        $code = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
+        $code .= '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
+        $code .= '</typo3-t3editor-codemirror>';
+
+        return $code;
+    }
+
+    protected function getTextareaMarkup(string $title, int $linesInTemplate, string $content): string
+    {
+        return htmlspecialchars($title)
+            . '<textarea class="form-control" rows="' . ($linesInTemplate + 1) . '" disabled>'
+            . htmlspecialchars($content)
+            . '</textarea>';
     }
 }

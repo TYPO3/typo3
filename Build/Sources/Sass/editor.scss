@@ -3,6 +3,8 @@
 // ---------------
 // Description: Global styles for t3editor wrapper.
 //
+
+@import "variables/main";
 $panel-bg-color: #f7f7f7;
 $panel-border-color: #ddd;
 $editor-border-color-changed: #6daadf;
@@ -41,9 +43,17 @@ typo3-t3editor-codemirror {
         span.CodeMirror-matchingbracket {
             color: $color-matching-bracket;
         }
+
+        span.CodeMirror-markText {
+            background-color: $warning;
+        }
     }
 
     .has-change & {
         border-color: $editor-border-color-changed;
+    }
+
+    &[autoheight] .CodeMirror {
+        height: auto !important;
     }
 }

@@ -90,11 +90,6 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var int
      */
-    public $ext_lineNumberOffset = 0;
-
-    /**
-     * @var int
-     */
     public $ext_expandAllNotes = 0;
 
     /**
@@ -640,96 +635,6 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         return $depthDataArr;
-    }
-
-    /**
-     * Get formatted HTML output for TypoScript either with Syntaxhighlighting or in plain mode
-     *
-     * @param array $config Array with simple strings of typoscript code.
-     * @param bool $lineNumbers Prepend linNumbers to each line.
-     * @param bool $comments Enable including comments in output.
-     * @param bool $crop Enable cropping of long lines.
-     * @param bool $syntaxHL Enrich output with syntaxhighlighting.
-     * @return string
-     */
-    public function ext_outputTS(
-        array $config,
-        $lineNumbers = false,
-        $comments = false,
-        $crop = false,
-        $syntaxHL = false
-    ) {
-        $all = '';
-        foreach ($config as $str) {
-            $all .= '[GLOBAL]' . LF . $str;
-        }
-        if ($syntaxHL) {
-            $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
-            return $tsparser->doSyntaxHighlight($all, $lineNumbers ? [$this->ext_lineNumberOffset + 1] : '');
-        }
-        return $this->ext_formatTS($all, $lineNumbers, $comments, $crop);
-    }
-
-    /**
-     * Returns a new string of max. $chars length
-     * If the string is longer, it will be truncated and prepended with '...'
-     * $chars must be an integer of at least 4
-     *
-     * @param string $string
-     * @param int $chars
-     * @return string
-     */
-    public function ext_fixed_lgd($string, $chars)
-    {
-        if ($chars >= 4) {
-            if (strlen($string) > $chars) {
-                if (strlen($string) > 24 && preg_match('/^##[a-z0-9]{6}_B##$/', substr($string, 0, 12))) {
-                    $string = GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), $chars - 3);
-                    $marker = substr(md5($string), 0, 6);
-                    return '##' . $marker . '_B##' . $string . '##' . $marker . '_E##';
-                }
-                return GeneralUtility::fixed_lgd_cs($string, $chars - 3);
-            }
-        }
-        return $string;
-    }
-
-    /**
-     * @param string $input
-     * @param bool $ln
-     * @param bool $comments
-     * @param bool $crop
-     * @return string
-     */
-    public function ext_formatTS($input, $ln, $comments = true, $crop = false)
-    {
-        $cArr = explode(LF, $input);
-        $n = ceil(log10(count($cArr) + $this->ext_lineNumberOffset));
-        $lineNum = '';
-        foreach ($cArr as $k => $v) {
-            $lln = $k + $this->ext_lineNumberOffset + 1;
-            if ($ln) {
-                $lineNum = str_replace(' ', '&nbsp;', sprintf('% ' . $n . 'd', $lln)) . ':   ';
-            }
-            $v = htmlspecialchars($v);
-            if ($crop) {
-                $v = $this->ext_fixed_lgd($v, $ln ? 71 : 77);
-            }
-            $cArr[$k] = $lineNum . str_replace(' ', '&nbsp;', $v);
-            $firstChar = substr(trim($v), 0, 1);
-            if ($firstChar === '[') {
-                $cArr[$k] = '<strong class="text-success">' . $cArr[$k] . '</strong>';
-            } elseif ($firstChar === '/' || $firstChar === '#') {
-                if ($comments) {
-                    $cArr[$k] = '<span class="text-muted">' . $cArr[$k] . '</span>';
-                } else {
-                    unset($cArr[$k]);
-                }
-            }
-        }
-        $output = implode('<br />', $cArr) . '<br />';
-        return $output;
     }
 
     /**

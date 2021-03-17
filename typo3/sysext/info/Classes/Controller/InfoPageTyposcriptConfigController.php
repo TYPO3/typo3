@@ -26,8 +26,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -91,7 +92,7 @@ class InfoPageTyposcriptConfigController
                 $this->view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
             }
         } else {
-            if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
+            if ((int)$this->pObj->MOD_SETTINGS['tsconf_parts'] === 99) {
                 $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
                 /** @var array<string, string> $TSparts */
                 $TSparts = GeneralUtility::makeInstance(PageTsConfigLoader::class)->collect($rootLine);
@@ -101,7 +102,8 @@ class InfoPageTyposcriptConfigController
                 foreach ($TSparts as $k => $v) {
                     $line = [];
                     if ($k === 'default') {
-                        $line['defaultPageTSconfig'] = 1;
+                        $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default');
+                        $line['title'] = $title;
                     } else {
                         // Remove the "page_" prefix
                         [, $pageId] = explode('_', $k, 3);
@@ -121,12 +123,24 @@ class InfoPageTyposcriptConfigController
                         ];
                         $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $line['editTitle'] = 'editTSconfig';
-                        $line['title'] = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid'])
-                            . ' ' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $row));
+                        $title = BackendUtility::getRecordTitle('pages', $row);
+                        $line['title'] = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
                     }
-                    $tsparser = GeneralUtility::makeInstance(TypoScriptParser::class);
-                    $tsparser->lineNumberOffset = 0;
-                    $line['content'] = $tsparser->doSyntaxHighlight(trim($v) . LF);
+
+                    if (ExtensionManagementUtility::isLoaded('t3editor')) {
+                        // @todo: Let EXT:t3editor add the deps via events in the render-loops above
+                        $line['content'] = $this->getCodeMirrorHtml(
+                            $title,
+                            trim($v)
+                        );
+                        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+                        $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+                        $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+                        $pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+                    } else {
+                        $line['content'] = $this->getTextareaMarkup(trim($v));
+                    }
+
                     $lines[] = $line;
                 }
 
@@ -385,6 +399,39 @@ class InfoPageTyposcriptConfigController
 
         $view->getRequest()->setControllerExtensionName('info');
         return $view;
+    }
+
+    protected function getCodeMirrorHtml(string $label, string $content): string
+    {
+        $codeMirrorConfig = [
+            'label' => $label,
+            'panel' => 'top',
+            'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
+            'autoheight' => 'true',
+            'nolazyload' => 'true',
+            'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                'readOnly' => true,
+                'format' => 'typoscript',
+                'rows' => 'auto',
+            ], false),
+        ];
+        $textareaAttributes = [
+            'rows' => (string)count(explode(LF, $content)),
+            'readonly' => 'readonly',
+        ];
+
+        $code = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
+        $code .= '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
+        $code .= '</typo3-t3editor-codemirror>';
+
+        return $code;
+    }
+
+    protected function getTextareaMarkup(string $content): string
+    {
+        return '<textarea class="form-control" rows="' . (string)count(explode(LF, $content)) . '" disabled>'
+            . htmlspecialchars($content)
+            . '</textarea>';
     }
 
     /**

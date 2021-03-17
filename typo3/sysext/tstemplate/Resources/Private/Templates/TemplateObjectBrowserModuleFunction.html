@@ -202,7 +202,7 @@
                 <f:for each="{parseErrors}" as="parseError">
                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:severity.{parseError.1}"/>
                     : {parseError.0}
-                    <f:link.external uri="{showErrorDetailsUri}{parseError.2}" defaultScheme="" class="text-warning">
+                    <f:link.external uri="{showErrorDetailsUri}{parseError.2 + parseError.3}" defaultScheme="" class="text-warning">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:errorShowDetails"/>
                     </f:link.external>
                     <br/>
