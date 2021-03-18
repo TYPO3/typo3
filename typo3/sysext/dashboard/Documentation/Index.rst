@@ -22,7 +22,7 @@ Dashboard Core extension
       dashboard, widgets
 
 :Copyright:
-      2020-2020
+      2020-2021
 
 :Author:
       TYPO3 CMS Core Development Team

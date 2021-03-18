@@ -28,7 +28,7 @@ Indexed Search
       indexed search, reference, forDevelopers, forAdvanced
 
 :Copyright:
-      2000-2020
+      2000-2021
 
 :Author:
       TYPO3 CMS Core Development Team
