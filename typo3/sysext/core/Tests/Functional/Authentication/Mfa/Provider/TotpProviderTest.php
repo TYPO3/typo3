@@ -62,10 +62,19 @@ class TotpProviderTest extends FunctionalTestCase
      */
     public function isActiveTest(): void
     {
+        // No provider entry exists
         self::assertFalse($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
 
-        // Activate provider
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+        // Active state missing
+        $this->setupUser(['secret' => 'KRMVATZTJFZUC53FONXW2ZJB']);
+        self::assertFalse($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Secret missing
+        $this->setupUser(['active' => true]);
+        self::assertFalse($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Active provider
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']);
         self::assertTrue($this->subject->isActive(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
@@ -74,10 +83,15 @@ class TotpProviderTest extends FunctionalTestCase
      */
     public function isLockedTest(): void
     {
+        // No provider entry exists
+        self::assertFalse($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Provider is not locked
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
         self::assertFalse($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
 
         // Lock provider by setting attempts=3
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true, 'attempts' => 3]]);
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]);
         self::assertTrue($this->subject->isLocked(MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
@@ -86,30 +100,45 @@ class TotpProviderTest extends FunctionalTestCase
      */
     public function verifyTest(): void
     {
-        $this->user->user['mfa'] = json_encode([
-            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]
-        ]);
-
         $request = (new ServerRequest('https://example.com', 'POST'));
-        $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
-
-        self::assertFalse(
-            $this->subject->verify(
-                $request->withQueryParams(['totp' => '123456']),
-                $propertyManager
-            )
-        );
-
         $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $totp = GeneralUtility::makeInstance(
             Totp::class,
             'KRMVATZTJFZUC53FONXW2ZJB'
         )->generateTotp((int)floor($timestamp / 30));
 
+        // Provider is inactive (secret missing)
+        $this->setupUser(['active' => true]);
+        self::assertFalse(
+            $this->subject->verify(
+                $request->withQueryParams(['totp' => $totp]),
+                MfaProviderPropertyManager::create($this->subject, $this->user)
+            )
+        );
+
+        // Provider is locked (attempts=3)
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]);
+        self::assertFalse(
+            $this->subject->verify(
+                $request->withQueryParams(['totp' => $totp]),
+                MfaProviderPropertyManager::create($this->subject, $this->user)
+            )
+        );
+
+        // Wrong totp
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
+        self::assertFalse(
+            $this->subject->verify(
+                $request->withQueryParams(['totp' => '123456']),
+                MfaProviderPropertyManager::create($this->subject, $this->user)
+            )
+        );
+
+        // Correct totp
         self::assertTrue(
             $this->subject->verify(
                 $request->withQueryParams(['totp' => $totp]),
-                $propertyManager
+                MfaProviderPropertyManager::create($this->subject, $this->user)
             )
         );
     }
@@ -122,6 +151,7 @@ class TotpProviderTest extends FunctionalTestCase
         $request = (new ServerRequest('https://example.com', 'POST'));
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
 
+        // Wrong totp
         self::assertFalse($this->subject->activate($request->withParsedBody(['totp' => '123456']), $propertyManager));
 
         // Setup form data to activate provider
@@ -134,6 +164,8 @@ class TotpProviderTest extends FunctionalTestCase
 
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));
+        self::assertTrue($propertyManager->getProperty('active'));
+        self::assertEquals('KRMVATZTJFZUC53FONXW2ZJB', $propertyManager->getProperty('secret'));
     }
 
     /**
@@ -142,10 +174,16 @@ class TotpProviderTest extends FunctionalTestCase
     public function deactivateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
+
+        // No provider entry exists
         self::assertFalse($this->subject->deactivate($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
 
         // Only an active provider can be deactivated
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+        $this->setupUser(['active' => false, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']);
+        self::assertFalse($this->subject->deactivate($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Active provider is deactivated
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']);
         self::assertTrue($this->subject->deactivate($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
@@ -155,13 +193,20 @@ class TotpProviderTest extends FunctionalTestCase
     public function unlockTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
+
+        // No provider entry exists
         self::assertFalse($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
 
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+        // Provider is inactive (missing secret)
+        $this->setupUser(['active' => true, 'attempts' => 3]);
         self::assertFalse($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
 
-        // Only an active and locked provider can be unlocked
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true, 'attempts' => 3]]);
+        // Provider is not locked
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
+        self::assertFalse($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Active and locked provider is unlocked
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]);
         self::assertTrue($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
 
@@ -171,13 +216,20 @@ class TotpProviderTest extends FunctionalTestCase
     public function updateTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
+
+        // No provider entry exists
         self::assertFalse($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
 
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true, 'attempts' => 3]]);
+        // Provider is inactive (missing secret)
+        $this->setupUser(['active' => true, 'attempts' => 0]);
         self::assertFalse($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
 
-        // Only an active and unlocked provider can be updated
-        $this->user->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+        // Provider is locked (attempts=3)
+        $this->setupUser(['active' => true, 'attempts' => 3]);
+        self::assertFalse($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
+
+        // Active and unlocked provider is updated
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
         $request = $request->withParsedBody(['name' => 'some name']);
         self::assertTrue($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
     }
@@ -203,9 +255,7 @@ class TotpProviderTest extends FunctionalTestCase
     public function editViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
-        $this->user->user['mfa'] = json_encode([
-            'totp' => ['name' => 'some name', 'updated' => 1616099471, 'lastUsed' => 1616099472]
-        ]);
+        $this->setupUser(['name' => 'some name', 'updated' => 1616099471, 'lastUsed' => 1616099472]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
 
@@ -220,21 +270,22 @@ class TotpProviderTest extends FunctionalTestCase
     public function authViewTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
-        $this->user->user['mfa'] = json_encode([
-            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]
-        ]);
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();
 
         self::assertRegExp('/<input.*id="totp"/s', $response);
 
         // Lock the provider by setting attempts=3
-        $this->user->user['mfa'] = json_encode([
-            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]
-        ]);
+        $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();
 
         self::assertStringContainsString('The maximum attempts for this provider are exceeded.', $response);
+    }
+
+    protected function setupUser(array $properties = []): void
+    {
+        $this->user->user['mfa'] = json_encode(['totp' => $properties]);
     }
 }

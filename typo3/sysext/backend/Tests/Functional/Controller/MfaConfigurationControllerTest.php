@@ -132,7 +132,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
      */
     public function handleRequestIndicatesDefaultProviderTest(): void
     {
-        $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+        $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         $GLOBALS['BE_USER']->uc['mfa']['defaultProvider'] = 'totp';
 
         $response = $this->subject->handleRequest(
@@ -181,7 +181,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         ];
 
         if ($providerActive) {
-            $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+            $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         }
 
         $response = $this->subject->handleRequest(
@@ -274,6 +274,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             $GLOBALS['BE_USER']->user['mfa'] = json_encode([
                 'totp' => [
                     'active' => true,
+                    'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
                     'attempts' => ($action === 'unlock' ? 3 : 0)
                 ]
             ]);
@@ -367,7 +368,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         ];
 
         if ($providerActive) {
-            $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true]]);
+            $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         }
 
         $response = $this->subject->handleRequest(

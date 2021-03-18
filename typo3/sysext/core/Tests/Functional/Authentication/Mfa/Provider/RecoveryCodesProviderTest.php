@@ -278,6 +278,8 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
 
     protected function setupUser(array $additional = []): void
     {
-        $this->user->user['mfa'] = json_encode(array_replace_recursive(['totp' => ['active' => true]], $additional));
+        $this->user->user['mfa'] = json_encode(
+            array_replace_recursive(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']], $additional)
+        );
     }
 }

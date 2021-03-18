@@ -60,15 +60,16 @@ class TotpProvider implements MfaProviderInterface
     }
 
     /**
-     * Evaluate if the provider is activated by checking
-     * the active state from the provider properties.
+     * Evaluate if the provider is activated by checking the
+     * active state and the secret from the provider properties.
      *
      * @param MfaProviderPropertyManager $propertyManager
      * @return bool
      */
     public function isActive(MfaProviderPropertyManager $propertyManager): bool
     {
-        return (bool)$propertyManager->getProperty('active');
+        return (bool)$propertyManager->getProperty('active')
+            && $propertyManager->getProperty('secret', '') !== '';
     }
 
     /**
@@ -81,7 +82,6 @@ class TotpProvider implements MfaProviderInterface
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool
     {
         $attempts = (int)$propertyManager->getProperty('attempts', 0);
-        // @todo Also check for the secret here - No secret => Locked!
 
         // Assume the provider is locked in case the maximum attempts are exceeded.
         // A provider however can only be locked if set up - an entry exists in database.
