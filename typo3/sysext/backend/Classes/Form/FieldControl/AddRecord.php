@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -70,7 +71,12 @@ class AddRecord extends AbstractNode
         $pid = $this->data['effectivePid'];
         if (isset($options['pid'])) {
             // pid configured in options - use it
-            $pid = $options['pid'];
+            if ($options['pid'] === '###SITEROOT###' && ($this->data['site'] ?? null) instanceof Site) {
+                // Substitute marker with pid from site object
+                $pid = $this->data['site']->getRootPageId();
+            } else {
+                $pid = $options['pid'];
+            }
         } elseif (
             isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel'])
             && (int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1
