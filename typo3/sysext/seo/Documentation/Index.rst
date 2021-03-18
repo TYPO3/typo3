@@ -29,7 +29,7 @@ SEO Core extension
       seo, google, meta tags, search engine optimization, sitemap
 
 :Copyright:
-      2018-2020
+      2018-2021
 
 :Author:
       TYPO3 CMS Core Development Team
