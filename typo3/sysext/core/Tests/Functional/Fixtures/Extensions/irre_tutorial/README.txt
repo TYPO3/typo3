@@ -1,6 +1,6 @@
 =====================================================================================================
 TYPO3: Inline Relational Record Editing Tutorial
-(c) 2007-2010 Oliver Hader <oliver@typo3.org> - All rights reserved
+(c) 2007-2021 Oliver Hader <oliver@typo3.org> - All rights reserved
 =====================================================================================================
 This script is part of the TYPO3 project. The TYPO3 project is free software; you can redistribute
 it and/or modify it under the terms of the GNU General Public License as published by the Free So
