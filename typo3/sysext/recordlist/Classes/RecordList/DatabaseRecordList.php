@@ -1127,17 +1127,10 @@ class DatabaseRecordList
             $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse in';
             $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
 
-            // The list of records is added after the header:
+            // The list of records is added after the header and wrapped
             $out .= $rowOutput;
-            // ... and it is all wrapped in a table:
             $out = '
-
-
-
-			<!--
-				DB listing of elements:	"' . htmlspecialchars($tableIdentifier) . '"
-			-->
-				<div class="panel panel-space panel-default recordlist">
+				<div class="panel panel-space panel-default recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
 					<div class="panel-heading">
 					' . $tableHeader . '
 					</div>
