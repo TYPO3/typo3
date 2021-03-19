@@ -14,12 +14,9 @@
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {SvgTree, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
-import ContextMenu = require('../ContextMenu');
-import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {FileStorageTreeNodeDragHandler, FileStorageTreeActions} from './FileStorageTreeActions';
 import {customElement} from 'lit-element';
-import 'TYPO3/CMS/Backend/Input/Clearable';
 
 @customElement('typo3-backend-filestorage-tree')
 export class FileStorageTree extends SvgTree {
@@ -46,20 +43,11 @@ export class FileStorageTree extends SvgTree {
       class: '',
       readableRootline: ''
     };
-    this.dispatch.on('nodeSelectedAfter.fileStorageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
-    this.dispatch.on('nodeRightClick.fileStorageTree', (node: TreeNode) => this.nodeRightClick(node));
-    this.dispatch.on('prepareLoadedNode.fileStorageTree', (node: TreeNode) => this.prepareLoadedNode(node));
-  }
-
-  public hideChildren(node: TreeNode): void {
-    super.hideChildren(node);
-    Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, '0');
   }
 
   public showChildren(node: TreeNode): void {
     this.loadChildrenOfNode(node);
     super.showChildren(node);
-    Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, '1');
   }
 
   public updateNodeBgClass(nodeBg: TreeNodeSelection) {
@@ -68,29 +56,6 @@ export class FileStorageTree extends SvgTree {
 
   public nodesUpdate(nodes: TreeNodeSelection) {
     return super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
-  }
-
-  /**
-   * Node selection logic (triggered by different events)
-   * Folder tree supports only one node to be selected at a time
-   * so the default function from SvgTree needs to be overridden
-   */
-  public selectNode(node: TreeNode): void {
-    if (!this.isNodeSelectable(node)) {
-      return;
-    }
-    this.disableSelectedNodes();
-    node.checked = true;
-    this.dispatch.call('nodeSelectedAfter', this, node);
-    this.updateVisibleNodes();
-  }
-
-  public selectNodeByIdentifier(identifier: string): void {
-    identifier = encodeURIComponent(identifier);
-    let nodeToSelect = this.nodes.filter((node: TreeNode) => { return node.identifier === identifier})[0];
-    if (nodeToSelect && this.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
-      this.selectNode(nodeToSelect);
-    }
   }
 
   /**
@@ -137,43 +102,5 @@ export class FileStorageTree extends SvgTree {
         this.nodesRemovePlaceholder();
         throw error;
       });
-  }
-
-  /**
-   * Observer for the selectedNode event
-   */
-  private nodeSelectedAfter(node: TreeNode): void {
-    if (!node.checked) {
-      return;
-    }
-    // remember the selected page in the global state
-    window.fsMod.recentIds.file = node.identifier;
-    window.fsMod.navFrameHighlightedID.file = node.stateIdentifier;
-
-    const separator = (window.currentSubScript.indexOf('?') !== -1) ? '&' : '?';
-    TYPO3.Backend.ContentContainer.setUrl(
-      window.currentSubScript + separator + 'id=' + node.identifier
-    );
-  };
-
-  private nodeRightClick(node: TreeNode): void {
-    ContextMenu.show(
-      node.itemType,
-      decodeURIComponent(node.identifier),
-      'tree',
-      '',
-      '',
-      this.getNodeElement(node)
-    );
-  };
-
-  /**
-   * Event listener called for each loaded node,
-   * here used to mark node remembered in fsMode as selected
-   */
-  private prepareLoadedNode(node: TreeNode): void {
-    if (node.stateIdentifier === window.fsMod.navFrameHighlightedID.file) {
-      node.checked = true;
-    }
   }
 }

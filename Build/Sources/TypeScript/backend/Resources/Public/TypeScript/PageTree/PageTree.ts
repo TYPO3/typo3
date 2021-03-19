@@ -16,8 +16,6 @@ import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {SvgTree, TreeNodeSelection} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
 import {PageTreeDragDrop, PageTreeNodeDragHandler} from './PageTreeDragDrop';
-import ContextMenu = require('../ContextMenu');
-import Persistent from '../Storage/Persistent';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {KeyTypesEnum as KeyTypes} from '../Enum/KeyTypes';
 import {customElement} from 'lit-element';
@@ -54,9 +52,6 @@ export class PageTree extends SvgTree
       readableRootline: '',
       isMountPoint: false,
     };
-    this.dispatch.on('nodeSelectedAfter.pageTree', (node: TreeNode) => this.nodeSelectedAfter(node));
-    this.dispatch.on('nodeRightClick.pageTree', (node: TreeNode) => this.nodeRightClick(node));
-    this.dispatch.on('prepareLoadedNode.pageTree', (node: TreeNode) => this.prepareLoadedNode(node));
   }
 
   public sendChangeCommand(data: any): void {
@@ -112,37 +107,11 @@ export class PageTree extends SvgTree
       });
   }
 
-  public nodeRightClick(node: TreeNode): void {
-    ContextMenu.show(
-      node.itemType,
-      parseInt(node.identifier, 10),
-      'tree',
-      '',
-      '',
-      this.getNodeElement(node)
-    );
-  }
-
-  /**
-   * Event listener called for each loaded node,
-   * here used to mark node remembered in fsMode as selected
-   */
-  public prepareLoadedNode(node: TreeNode) {
-    if (node.stateIdentifier === top.window.fsMod.navFrameHighlightedID.web) {
-      node.checked = true;
-    }
-  }
-
-  public hideChildren(node: TreeNode) {
-    super.hideChildren(node);
-    Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, '0');
-  }
-
   public showChildren(node: TreeNode) {
     this.loadChildrenOfNode(node);
     super.showChildren(node);
-    Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, '1');
   }
+
   public updateNodeBgClass(nodeBg: TreeNodeSelection) {
     return super.updateNodeBgClass.call(this, nodeBg).call(this.initializeDragForNode());
   }
@@ -163,21 +132,6 @@ export class PageTree extends SvgTree
     return nodes;
   }
 
-  /**
-   * Node selection logic (triggered by different events)
-   * Page tree supports only one node to be selected at a time
-   * so the default function from SvgTree needs to be overridden
-   */
-  public selectNode(node: TreeNode) {
-    if (!this.isNodeSelectable(node)) {
-      return;
-    }
-    // Disable already selected nodes
-    this.disableSelectedNodes();
-    node.checked = true;
-    this.dispatch.call('nodeSelectedAfter', this, node);
-    this.updateVisibleNodes();
-  }
 
   /**
    * Make the DOM element of the node given as parameter focusable and focus it
@@ -246,29 +200,6 @@ export class PageTree extends SvgTree
         this.nodesRemovePlaceholder();
         throw error;
       });
-  }
-
-
-  /**
-   * Observer for the selectedNode event
-   */
-  protected nodeSelectedAfter(node: TreeNode) {
-    if (!node.checked) {
-      return;
-    }
-    //remember the selected page in the global state
-    top.window.fsMod.recentIds.web = node.identifier;
-    top.window.fsMod.currentBank = node.stateIdentifier.split('_')[0];
-    top.window.fsMod.navFrameHighlightedID.web = node.stateIdentifier;
-
-    let separator = '?';
-    if (top.window.currentSubScript.indexOf('?') !== -1) {
-      separator = '&';
-    }
-
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.window.currentSubScript + separator + 'id=' + node.identifier
-    );
   }
 
   /**

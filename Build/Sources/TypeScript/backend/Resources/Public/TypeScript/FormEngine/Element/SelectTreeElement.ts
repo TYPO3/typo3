@@ -17,6 +17,8 @@ import {html, customElement, LitElement, TemplateResult} from 'lit-element';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import './SelectTree';
+import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
+import {TreeNode} from 'TYPO3/CMS/Backend/Tree/TreeNode';
 
 const toolbarComponentName: string = 'typo3-backend-form-selecttree-toolbar';
 
@@ -29,7 +31,9 @@ export class SelectTreeElement {
     const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
     this.tree.classList.add('svg-tree-wrapper');
-    this.tree.dispatch.on('nodeSelectedAfter.requestUpdate', () => { callback(); } );
+    this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.loadDataAfter);
+    this.tree.addEventListener('typo3:svg-tree:node-selected', this.selectNode);
+    this.tree.addEventListener('typo3:svg-tree:node-selected', () => { callback(); } );
 
     const settings = {
       dataUrl: this.generateRequestUrl(),
@@ -81,6 +85,70 @@ export class SelectTreeElement {
       command: this.recordField.dataset.command,
     };
     return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params);
+  }
+
+  private selectNode = (evt: CustomEvent) => {
+    const node = evt.detail.node as TreeNode;
+    this.updateAncestorsIndeterminateState(node);
+    // check all nodes again, to ensure correct display of indeterminate state
+    this.calculateIndeterminate(this.tree.nodes);
+    this.saveCheckboxes();
+  }
+
+  /**
+   * Resets the node.indeterminate for the whole tree.
+   * It's done once after loading data.
+   * Later indeterminate state is updated just for the subset of nodes
+   */
+  private loadDataAfter = () => {
+    this.tree.nodes = this.tree.nodes.map((node: TreeNode) => {
+      node.indeterminate = false;
+      return node;
+    });
+    this.calculateIndeterminate(this.tree.nodes);
+
+    // Initialise "value" attribute of input field after load and revalidate form engine fields
+    this.saveCheckboxes();
+    // @todo Unsure if this has ever worked before from `TYPO3.FormEngine.Validation`
+    FormEngineValidation.validateField(this.recordField);
+  }
+
+  /**
+   * Sets a comma-separated list of selected nodes identifiers to configured input
+   */
+  private saveCheckboxes = (): void => {
+    if (typeof this.recordField === 'undefined') {
+      return;
+    }
+    this.recordField.value = this.tree.getSelectedNodes().map((node: TreeNode): string => node.identifier).join(',');
+  }
+
+  /**
+   * Updates the indeterminate state for ancestors of the current node
+   */
+  private updateAncestorsIndeterminateState(node: TreeNode): void {
+    // foreach ancestor except node itself
+    let indeterminate = false;
+    node.parents.forEach((index: number) => {
+      const node = this.tree.nodes[index];
+      node.indeterminate = (node.checked || node.indeterminate || indeterminate);
+      // check state for the next level
+      indeterminate = (node.checked || node.indeterminate || node.checked || node.indeterminate);
+    });
+  }
+
+  /**
+   * Sets indeterminate state for a subtree.
+   * It relays on the tree to have indeterminate state reset beforehand.
+   */
+  private calculateIndeterminate(nodes: TreeNode[]): void {
+    nodes.forEach((node: TreeNode) => {
+      if ((node.checked || node.indeterminate) && node.parents && node.parents.length > 0) {
+        node.parents.forEach((parentNodeIndex: number) => {
+          nodes[parentNodeIndex].indeterminate = true;
+        });
+      }
+    });
   }
 }
 

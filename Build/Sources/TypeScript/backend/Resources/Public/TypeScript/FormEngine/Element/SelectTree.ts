@@ -14,7 +14,6 @@
 import * as d3selection from 'd3-selection';
 import {SvgTree, SvgTreeSettings, TreeNodeSelection} from '../../SvgTree';
 import {TreeNode} from '../../Tree/TreeNode';
-import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import {customElement} from 'lit-element';
 
 interface SelectTreeSettings extends SvgTreeSettings {
@@ -27,6 +26,7 @@ interface SelectTreeSettings extends SvgTreeSettings {
 @customElement('typo3-backend-form-selecttree')
 export class SelectTree extends SvgTree
 {
+  public textPosition: number = 30;
   public settings: SelectTreeSettings = {
     unselectableElements: [],
     exclusiveNodesIdentifiers: '',
@@ -51,11 +51,7 @@ export class SelectTree extends SvgTree
   constructor() {
     super();
     this.addIcons();
-    this.dispatch.on('updateNodes.selectTree', (nodes: TreeNodeSelection) => this.updateNodes(nodes));
-    this.dispatch.on('loadDataAfter.selectTree', () => this.loadDataAfter());
-    this.dispatch.on('updateSvg.selectTree', (nodes: TreeNodeSelection) => this.renderCheckbox(nodes));
-    this.dispatch.on('nodeSelectedAfter.selectTree', (node: TreeNode) => this.nodeSelectedAfter(node));
-    this.dispatch.on('prepareLoadedNode.selectTree', (node: TreeNode) => this.prepareLoadedNode(node));
+    this.addEventListener('typo3:svg-tree:nodes-prepared', this.prepareLoadedNodes);
   }
 
   /**
@@ -77,7 +73,8 @@ export class SelectTree extends SvgTree
   }
 
   /**
-   * Node selection logic (triggered by different events)
+   * Node selection logic (triggered by different events) to select multiple
+   * nodes (unlike SVG Tree itself).
    */
   public selectNode(node: TreeNode): void {
     if (!this.isNodeSelectable(node)) {
@@ -95,7 +92,7 @@ export class SelectTree extends SvgTree
 
     node.checked = !checked;
 
-    this.dispatch.call('nodeSelectedAfter', this, node);
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node}}));
     this.updateVisibleNodes();
   }
 
@@ -136,18 +133,18 @@ export class SelectTree extends SvgTree
   }
 
   /**
-   * Check whether node can be selected.
-   * In some cases (e.g. selecting a parent) it should not be possible to select
-   * element (as it's own parent).
-   */
-  protected isNodeSelectable(node: TreeNode): boolean {
-    return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
-  }
-
-  /**
    * Function relays on node.indeterminate state being up to date
+   *
+   * Fetches all visible nodes
    */
-  private updateNodes(nodes: TreeNodeSelection): void {
+  public updateVisibleNodes(): void {
+    super.updateVisibleNodes();
+    const visibleRows = Math.ceil(this.viewportHeight / this.settings.nodeHeight + 1);
+    const position = Math.floor(Math.max(this.scrollTop - (this.settings.nodeHeight * 2), 0) / this.settings.nodeHeight);
+
+    const visibleNodes = this.data.nodes.slice(position, position + visibleRows);
+    let nodes = this.nodesContainer.selectAll('.node')
+      .data(visibleNodes, (node: TreeNode) => node.stateIdentifier);
     nodes
       .selectAll('.tree-check use')
       .attr('visibility', function(this: SVGUseElement, node: TreeNode): string {
@@ -166,17 +163,19 @@ export class SelectTree extends SvgTree
   }
 
   /**
-   * Check if a node has all information to be used.
+   * Check whether node can be selected.
+   * In some cases (e.g. selecting a parent) it should not be possible to select
+   * element (as it's own parent).
    */
-  private prepareLoadedNode(node: TreeNode): void {
-    // create stateIdentifier if doesn't exist (for category tree)
-    if (!node.stateIdentifier) {
-      const parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
-      node.stateIdentifier = parentId + '_' + node.identifier;
-    }
-    if (node.selectable === false) {
-      this.settings.unselectableElements.push(node.identifier);
-    }
+  protected isNodeSelectable(node: TreeNode): boolean {
+    return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
+  }
+  /**
+   * Add checkbox before the text element
+   */
+  protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
+    this.renderCheckbox(nodes);
+    return super.appendTextElement(nodes)
   }
 
   /**
@@ -185,8 +184,6 @@ export class SelectTree extends SvgTree
    * @param {Selection} nodeSelection ENTER selection (only new DOM objects)
    */
   private renderCheckbox(nodeSelection: TreeNodeSelection): void {
-    this.textPosition = 50;
-
     // this can be simplified to single "use" element with changing href on click
     // when we drop IE11 on WIN7 support
     const g = nodeSelection.filter((node: TreeNode) => {
@@ -218,70 +215,21 @@ export class SelectTree extends SvgTree
   }
 
   /**
-   * Updates the indeterminate state for ancestors of the current node
+   * Check if a node has all information to be used.
+   * create stateIdentifier if doesn't exist (for category tree)
    */
-  private updateAncestorsIndeterminateState(node: TreeNode): void {
-    // foreach ancestor except node itself
-    let indeterminate = false;
-    node.parents.forEach((index: number) => {
-      const node = this.nodes[index];
-      node.indeterminate = (node.checked || node.indeterminate || indeterminate);
-      // check state for the next level
-      indeterminate = (node.checked || node.indeterminate || node.checked || node.indeterminate);
-    });
-  };
-
-  /**
-   * Resets the node.indeterminate for the whole tree.
-   * It's done once after loading data.
-   * Later indeterminate state is updated just for the subset of nodes
-   */
-  private loadDataAfter(): void {
-    this.nodes = this.nodes.map((node: TreeNode) => {
-      node.indeterminate = false;
+  private prepareLoadedNodes(evt: CustomEvent): void {
+    let nodes = evt.detail.nodes as Array<TreeNode>;
+    evt.detail.nodes = nodes.map((node: TreeNode) => {
+      if (!node.stateIdentifier) {
+        const parentId = (node.parents.length) ? node.parents[node.parents.length - 1] : node.identifier;
+        node.stateIdentifier = parentId + '_' + node.identifier;
+      }
+      if (node.selectable === false) {
+        this.settings.unselectableElements.push(node.identifier);
+      }
       return node;
     });
-    this.calculateIndeterminate(this.nodes);
-
-    // Initialise "value" attribute of input field after load and revalidate form engine fields
-    this.saveCheckboxes();
-    // @todo Unsure if this has ever worked before from `TYPO3.FormEngine.Validation`
-    FormEngineValidation.validateField(this.settings.input);
-  };
-
-  /**
-   * Sets indeterminate state for a subtree.
-   * It relays on the tree to have indeterminate state reset beforehand.
-   */
-  private calculateIndeterminate(nodes: TreeNode[]): void {
-    nodes.forEach((node: TreeNode) => {
-      if ((node.checked || node.indeterminate) && node.parents && node.parents.length > 0) {
-        node.parents.forEach((parentNodeIndex: number) => {
-          nodes[parentNodeIndex].indeterminate = true;
-        });
-      }
-    });
-  };
-
-  /**
-   * Observer for the selectedNode event
-   */
-  private nodeSelectedAfter(node: TreeNode): void {
-    this.updateAncestorsIndeterminateState(node);
-    // check all nodes again, to ensure correct display of indeterminate state
-    this.calculateIndeterminate(this.nodes);
-    this.saveCheckboxes();
-  };
-
-  /**
-   * Sets a comma-separated list of selected nodes identifiers to configured input
-   */
-  private saveCheckboxes(): void {
-    if (typeof this.settings.input === 'undefined') {
-      return;
-    }
-    this.settings.input.value = this.getSelectedNodes()
-      .map((node: TreeNode): string => node.identifier);
   }
 
   /**
@@ -302,7 +250,6 @@ export class SelectTree extends SvgTree
 
         // current node is not exclusive, but other exclusive node is already selected
         this.exclusiveSelectedNode.checked = false;
-        this.dispatch.call('nodeSelectedAfter', this, this.exclusiveSelectedNode);
         this.exclusiveSelectedNode = null;
       }
     }

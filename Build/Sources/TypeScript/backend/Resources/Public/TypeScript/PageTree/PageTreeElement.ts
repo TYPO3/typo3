@@ -21,6 +21,8 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
+import ContextMenu = require('../ContextMenu');
+import {TreeNode} from './../Tree/TreeNode';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 
@@ -106,6 +108,10 @@ export class PageTreeNavigationComponent extends LitElement {
           const dragDrop = new PageTreeDragDrop(this.tree);
           this.tree.dragDrop = dragDrop;
           this.toolbar.tree = this.tree;
+          this.tree.addEventListener('typo3:svg-tree:expand-toggle', this.toggleExpandState);
+          this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadContent);
+          this.tree.addEventListener('typo3:svg-tree:node-context', this.showContextMenu);
+          this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActiveNode);
         }
 
         return html`
@@ -186,6 +192,63 @@ export class PageTreeNavigationComponent extends LitElement {
       .catch((error) => {
         this.tree.errorNotification(error, true);
       });
+  }
+
+  private toggleExpandState = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (node) {
+      Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
+    }
+  }
+
+  private loadContent = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (!node?.checked) {
+      return;
+    }
+    //remember the selected page in the global state
+    top.window.fsMod.recentIds.web = node.identifier;
+    top.window.fsMod.currentBank = node.stateIdentifier.split('_')[0];
+    top.window.fsMod.navFrameHighlightedID.web = node.stateIdentifier;
+
+    let separator = '?';
+    if (top.window.currentSubScript.indexOf('?') !== -1) {
+      separator = '&';
+    }
+
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.window.currentSubScript + separator + 'id=' + node.identifier
+    );
+  }
+
+  private showContextMenu = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (!node) {
+      return;
+    }
+    ContextMenu.show(
+      node.itemType,
+      parseInt(node.identifier, 10),
+      'tree',
+      '',
+      '',
+      this.tree.getNodeElement(node)
+    );
+  }
+
+  /**
+   * Event listener called for each loaded node,
+   * here used to mark node remembered in fsMod as selected
+   */
+  private selectActiveNode = (evt: CustomEvent): void => {
+    const selectedNodeIdentifier = window.fsMod.navFrameHighlightedID.web;
+    let nodes = evt.detail.nodes as Array<TreeNode>;
+    evt.detail.nodes = nodes.map((node: TreeNode) => {
+      if (node.stateIdentifier === selectedNodeIdentifier) {
+        node.checked = true;
+      }
+      return node;
+    });
   }
 }
 

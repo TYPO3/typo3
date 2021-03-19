@@ -15,8 +15,10 @@ import {html, customElement, property, query, LitElement, TemplateResult} from '
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {FileStorageTree} from './FileStorageTree';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
-import {FileStorageTreeActions} from './FileStorageTreeActions';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import {TreeNode} from 'TYPO3/CMS/Backend/Tree/TreeNode';
+import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
+import ContextMenu = require('../ContextMenu');
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 const toolbarComponentName: string = 'typo3-backend-navigation-component-filestoragetree-toolbar';
@@ -73,6 +75,10 @@ export class FileStorageTreeNavigationComponent extends LitElement {
 
   protected firstUpdated() {
     this.toolbar.tree = this.tree;
+    this.tree.addEventListener('typo3:svg-tree:expand-toggle', this.toggleExpandState);
+    this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadContent);
+    this.tree.addEventListener('typo3:svg-tree:node-context', this.showContextMenu);
+    this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.selectActiveNode);
   }
 
   private refresh = (): void => {
@@ -88,7 +94,64 @@ export class FileStorageTreeNavigationComponent extends LitElement {
 
   // event listener updating current tree state, this can be removed in TYPO3 v12
   private treeUpdateRequested = (evt: CustomEvent): void => {
-    this.tree.selectNodeByIdentifier(evt.detail.payload.identifier);
+    const identifier = encodeURIComponent(evt.detail.payload.identifier);
+    let nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier})[0];
+    if (nodeToSelect && this.tree.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
+      this.tree.selectNode(nodeToSelect);
+    }
+  }
+
+  private toggleExpandState = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (node) {
+      Persistent.set('BackendComponents.States.FileStorageTree.stateHash.' + node.stateIdentifier, (node.expanded ? '1' : '0'));
+    }
+  }
+
+  private loadContent = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (!node?.checked) {
+      return;
+    }
+
+    // remember the selected folder in the global state
+    window.fsMod.recentIds.file = node.identifier;
+    window.fsMod.navFrameHighlightedID.file = node.stateIdentifier;
+
+    const separator = (window.currentSubScript.indexOf('?') !== -1) ? '&' : '?';
+    TYPO3.Backend.ContentContainer.setUrl(
+      window.currentSubScript + separator + 'id=' + node.identifier
+    );
+  }
+
+  private showContextMenu = (evt: CustomEvent): void => {
+    const node = evt.detail.node as TreeNode;
+    if (!node) {
+      return;
+    }
+    ContextMenu.show(
+      node.itemType,
+      decodeURIComponent(node.identifier),
+      'tree',
+      '',
+      '',
+      this.tree.getNodeElement(node)
+    );
+  }
+
+  /**
+   * Event listener called for each loaded node,
+   * here used to mark node remembered in fsMod as selected
+   */
+  private selectActiveNode = (evt: CustomEvent): void => {
+    const selectedNodeIdentifier = window.fsMod.navFrameHighlightedID.file;
+    let nodes = evt.detail.nodes as Array<TreeNode>;
+    evt.detail.nodes = nodes.map((node: TreeNode) => {
+      if (node.stateIdentifier === selectedNodeIdentifier) {
+        node.checked = true;
+      }
+      return node;
+    });
   }
 }
 

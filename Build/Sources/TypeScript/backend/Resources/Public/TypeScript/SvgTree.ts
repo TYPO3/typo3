@@ -14,7 +14,6 @@
 import {html, property, internalProperty, LitElement, TemplateResult} from 'lit-element';
 import {TreeNode} from './Tree/TreeNode';
 import * as d3selection from 'd3-selection';
-import * as d3dispatch from 'd3-dispatch';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import Notification = require('./Notification');
 import {KeyTypesEnum as KeyTypes} from './Enum/KeyTypes';
@@ -66,11 +65,6 @@ export class SvgTree extends LitElement {
   };
 
   /**
-   * D3 event dispatcher
-   */
-  public dispatch: d3dispatch.Dispatch<any> = null;
-
-  /**
    * Check if cursor is over the SVG element
    */
   public isOverSvg: boolean = false;
@@ -102,7 +96,7 @@ export class SvgTree extends LitElement {
 
   public nodes: TreeNode[] = [];
 
-  public textPosition: number = 0;
+  public textPosition: number = 10;
 
   protected icons: {[keys: string]: SvgTreeDataIcon} = {};
 
@@ -134,24 +128,15 @@ export class SvgTree extends LitElement {
   protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
   protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
 
-  constructor() {
-    super();
-    this.dispatch = d3dispatch.dispatch(
-      'updateNodes',
-      'updateSvg',
-      'loadDataAfter',
-      'prepareLoadedNode',
-      'nodeSelectedAfter',
-      'nodeRightClick'
-    );
-  }
-
   /**
    * Initializes the tree component - created basic markup, loads and renders data
    * @todo declare private
    */
   public doSetup(settings: any): void {
     Object.assign(this.settings, settings);
+    if (this.settings.showIcons) {
+      this.textPosition += 20;
+    }
 
     this.svg = d3selection.select(this).select('svg');
     this.container = this.svg.select('.nodes-wrapper') as TreeWrapperSelection<SVGGElement>;
@@ -224,7 +209,6 @@ export class SvgTree extends LitElement {
    */
   public replaceData(nodes: TreeNode[]) {
     this.setParametersNode(nodes);
-    this.dispatch.call('loadDataAfter', this);
     this.prepareDataForVisibleNodes();
     this.nodesContainer.selectAll('.node').remove();
     this.nodesBgContainer.selectAll('.node-bg').remove();
@@ -262,9 +246,6 @@ export class SvgTree extends LitElement {
       if (typeof node.checked === 'undefined') {
         node.checked = false;
       }
-
-      // dispatch event
-      this.dispatch.call('prepareLoadedNode', this, node);
       return node;
     });
 
@@ -273,8 +254,9 @@ export class SvgTree extends LitElement {
     if (nodesOnRootLevel.length === 1) {
       nodes[0].expanded = true;
     }
-
-    this.nodes = nodes;
+    const evt = new CustomEvent('typo3:svg-tree:nodes-prepared', {detail: {nodes: nodes}, bubbles: false});
+    this.dispatchEvent(evt);
+    this.nodes = evt.detail.nodes;
   }
 
   public nodesRemovePlaceholder() {
@@ -313,6 +295,7 @@ export class SvgTree extends LitElement {
   public hideChildren(node: TreeNode): void {
     node.expanded = false;
     this.setExpandedState(node);
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:expand-toggle', {detail: {node: node}}));
   }
 
   /**
@@ -323,6 +306,7 @@ export class SvgTree extends LitElement {
   public showChildren(node: TreeNode): void {
     node.expanded = true;
     this.setExpandedState(node);
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:expand-toggle', {detail: {node: node}}));
   }
 
   /**
@@ -510,9 +494,7 @@ export class SvgTree extends LitElement {
         .attr('xlink:href', (node: TreeNode) => {
           return '#icon-' + (node.locked ? 'warning-in-use' : '');
         });
-
     }
-    this.dispatch.call('updateNodes', this, nodes);
   }
 
   public updateNodeBgClass(nodesBg: TreeNodeSelection): TreeNodeSelection {
@@ -530,7 +512,7 @@ export class SvgTree extends LitElement {
         this.switchFocusNode(node);
       })
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
-        this.dispatch.call('nodeRightClick', this, node);
+        this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', {detail: {node: node}}));
       });
   }
 
@@ -556,7 +538,11 @@ export class SvgTree extends LitElement {
     if (!this.isNodeSelectable(node)) {
       return;
     }
-    this.dispatch.call('nodeSelectedAfter', this, node);
+    // Disable already selected nodes
+    this.disableSelectedNodes();
+    node.checked = true;
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node}}));
+    this.updateVisibleNodes();
   }
 
   public filter(searchTerm?: string|null): void {
@@ -647,6 +633,13 @@ export class SvgTree extends LitElement {
     });
   }
 
+  /**
+   * Returns an array of selected nodes
+   */
+  public getSelectedNodes(): TreeNode[] {
+    return this.nodes.filter((node: TreeNode) => node.checked);
+  }
+
   // disable shadow dom for now
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
@@ -694,7 +687,6 @@ export class SvgTree extends LitElement {
     this.getSelectedNodes().forEach((node: TreeNode) => {
       if (node.checked === true) {
         node.checked = false;
-        this.dispatch.call('nodeSelectedAfter', this, node);
       }
     });
   }
@@ -706,13 +698,6 @@ export class SvgTree extends LitElement {
    */
   protected isNodeSelectable(node: TreeNode): boolean {
     return true;
-  }
-
-  /**
-   * Returns an array of selected nodes
-   */
-  protected getSelectedNodes(): TreeNode[] {
-    return this.nodes.filter((node: TreeNode) => node.checked);
   }
 
   protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
@@ -751,7 +736,7 @@ export class SvgTree extends LitElement {
       .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
         evt.preventDefault();
-        this.dispatch.call('nodeRightClick', this, node);
+        this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', {detail: {node: node}}));
       });
     nodes
       .append('text')
@@ -900,7 +885,7 @@ export class SvgTree extends LitElement {
    * Event handler for clicking on a node's icon
    */
   protected clickOnIcon(node: TreeNode): void {
-    this.dispatch.call('nodeRightClick', this, node);
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', {detail: {node: node}}));
   }
 
   /**
@@ -916,6 +901,98 @@ export class SvgTree extends LitElement {
     this.updateVisibleNodes();
   }
 
+  /**
+   * Adds missing SVG nodes
+   *
+   * @param {Selection} nodes
+   * @returns {Selection}
+   */
+  protected enterSvgElements(nodes: TreeNodeSelection): TreeNodeSelection {
+    if (this.settings.showIcons) {
+      const iconsArray = Object.values(this.icons)
+        .filter((icon: SvgTreeDataIcon): boolean => icon.icon !== '');
+      const icons = this.iconsContainer
+        .selectAll('.icon-def')
+        .data(iconsArray, (icon: SvgTreeDataIcon) => icon.identifier);
+      icons.exit().remove();
+
+      icons
+        .enter()
+        .append('g')
+        .attr('class', 'icon-def')
+        .attr('id', (node: TreeNode) => 'icon-' + node.identifier)
+        .append((node: TreeNode): SVGElement => {
+          // workaround for IE11 where you can't simply call .html(content) on svg
+          const parser = new DOMParser();
+          const markupText = node.icon.replace('<svg', '<g').replace('/svg>', '/g>');
+          const markup = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + markupText + '</svg>';
+          const dom = parser.parseFromString(markup, 'image/svg+xml');
+          return dom.documentElement.firstChild as SVGElement;
+        });
+    }
+
+    // create the node elements
+    const nodeEnter = this.nodesUpdate(nodes);
+
+    // append the chevron element
+    let chevron = nodeEnter
+      .append('g')
+      .attr('class', 'toggle')
+      .attr('visibility', this.getToggleVisibility)
+      .attr('transform', 'translate(-8, -8)')
+      .on('click', (evt: MouseEvent, node: TreeNode) => this.chevronClick(node));
+
+    // improve usability by making the click area a 16px square
+    chevron
+      .append('path')
+      .style('opacity', 0)
+      .attr('d', 'M 0 0 L 16 0 L 16 16 L 0 16 Z');
+    chevron
+      .append('path')
+      .attr('class', 'chevron')
+      .attr('d', 'M 4 3 L 13 8 L 4 13 Z');
+
+    // append the icon element
+    if (this.settings.showIcons) {
+      const nodeContainer = nodeEnter
+        .append('g')
+        .attr('class', 'node-icon-container')
+        .attr('title', this.getNodeTitle)
+        .attr('data-bs-toggle', 'tooltip')
+        .on('click', (evt: MouseEvent, node: TreeNode) => {
+          this.clickOnIcon(node)
+        });
+
+      nodeContainer
+        .append('use')
+        .attr('class', 'node-icon')
+        .attr('data-uid', this.getNodeIdentifier)
+        .attr('transform', 'translate(8, -8)');
+
+      nodeContainer
+        .append('use')
+        .attr('transform', 'translate(8, -3)')
+        .attr('class', 'node-icon-overlay');
+
+      nodeContainer
+        .append('use')
+        .attr('x', 27)
+        .attr('y', -7)
+        .attr('class', 'node-icon-locked');
+    }
+
+    Tooltip.initialize('[data-bs-toggle="tooltip"]', {
+      delay: {
+        'show': 50,
+        'hide': 50
+      },
+      trigger: 'hover',
+      placement: 'right'
+    });
+
+    this.appendTextElement(nodeEnter);
+    return nodes.merge(nodeEnter);
+  }
   /**
    * Updates variables used for visible nodes calculation
    */
@@ -1103,101 +1180,4 @@ export class SvgTree extends LitElement {
     return link.target.siblingsPosition === 1 ? 'group-identifier-' + link.source.stateIdentifier : null;
   }
 
-  /**
-   * Adds missing SVG nodes
-   *
-   * @param {Selection} nodes
-   * @returns {Selection}
-   */
-  private enterSvgElements(nodes: TreeNodeSelection): TreeNodeSelection {
-    this.textPosition = 10;
-
-    if (this.settings.showIcons) {
-      const iconsArray = Object.values(this.icons)
-        .filter((icon: SvgTreeDataIcon): boolean => icon.icon !== '');
-      const icons = this.iconsContainer
-        .selectAll('.icon-def')
-        .data(iconsArray, (icon: SvgTreeDataIcon) => icon.identifier);
-      icons.exit().remove();
-
-      icons
-        .enter()
-        .append('g')
-        .attr('class', 'icon-def')
-        .attr('id', (node: TreeNode) => 'icon-' + node.identifier)
-        .append((node: TreeNode): SVGElement => {
-          // workaround for IE11 where you can't simply call .html(content) on svg
-          const parser = new DOMParser();
-          const markupText = node.icon.replace('<svg', '<g').replace('/svg>', '/g>');
-          const markup = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + markupText + '</svg>';
-          const dom = parser.parseFromString(markup, 'image/svg+xml');
-          return dom.documentElement.firstChild as SVGElement;
-        });
-    }
-
-    // create the node elements
-    const nodeEnter = this.nodesUpdate(nodes);
-
-    // append the chevron element
-    let chevron = nodeEnter
-      .append('g')
-      .attr('class', 'toggle')
-      .attr('visibility', this.getToggleVisibility)
-      .attr('transform', 'translate(-8, -8)')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.chevronClick(node));
-
-    // improve usability by making the click area a 16px square
-    chevron
-      .append('path')
-      .style('opacity', 0)
-      .attr('d', 'M 0 0 L 16 0 L 16 16 L 0 16 Z');
-    chevron
-      .append('path')
-      .attr('class', 'chevron')
-      .attr('d', 'M 4 3 L 13 8 L 4 13 Z');
-
-    // append the icon element
-    if (this.settings.showIcons) {
-      this.textPosition = 30;
-
-      const nodeContainer = nodeEnter
-        .append('g')
-        .attr('class', 'node-icon-container')
-        .attr('title', this.getNodeTitle)
-        .attr('data-bs-toggle', 'tooltip')
-        .on('click', (evt: MouseEvent, node: TreeNode) => {
-          this.clickOnIcon(node)
-        });
-
-      nodeContainer
-        .append('use')
-        .attr('class', 'node-icon')
-        .attr('data-uid', this.getNodeIdentifier)
-        .attr('transform', 'translate(8, -8)');
-
-      nodeContainer
-        .append('use')
-        .attr('transform', 'translate(8, -3)')
-        .attr('class', 'node-icon-overlay');
-
-      nodeContainer
-        .append('use')
-        .attr('x', 27)
-        .attr('y', -7)
-        .attr('class', 'node-icon-locked');
-    }
-
-    Tooltip.initialize('[data-bs-toggle="tooltip"]', {
-      delay: {
-        'show': 50,
-        'hide': 50
-      },
-      trigger: 'hover',
-      placement: 'right'
-    });
-
-    this.dispatch.call('updateSvg', this, nodeEnter);
-    this.appendTextElement(nodeEnter);
-    return nodes.merge(nodeEnter);
-  }
 }
