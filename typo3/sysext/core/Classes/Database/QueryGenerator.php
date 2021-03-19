@@ -1268,12 +1268,7 @@ class QueryGenerator
         $first = 1;
         foreach ($queryConfig as $key => $conf) {
             // Convert ISO-8601 timestamp (string) into unix timestamp (int)
-            if (strtotime($conf['inputValue'])) {
-                $conf['inputValue'] = strtotime($conf['inputValue']);
-                if ($conf['inputValue1'] && strtotime($conf['inputValue1'])) {
-                    $conf['inputValue1'] = strtotime($conf['inputValue1']);
-                }
-            }
+            $conf = $this->convertIso8601DatetimeStringToUnixTimestamp($conf);
             switch ($conf['type']) {
                 case 'newlevel':
                     $qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
@@ -1698,6 +1693,38 @@ class QueryGenerator
         return implode(LF, $html);
     }
 
+    /**
+     * Convert ISO-8601 timestamp (string) into unix timestamp (int)
+     *
+     * @param array $conf
+     * @return array
+     */
+    protected function convertIso8601DatetimeStringToUnixTimestamp(array $conf): array
+    {
+        if ($this->isDateOfIso8601Format($conf['inputValue'])) {
+            $conf['inputValue'] = strtotime($conf['inputValue']);
+            if ($this->isDateOfIso8601Format($conf['inputValue1'])) {
+                $conf['inputValue1'] = strtotime($conf['inputValue1']);
+            }
+        }
+        return $conf;
+    }
+
+    /**
+     * Checks if the given value is of the ISO 8601 format.
+     *
+     * @param mixed $date
+     * @return bool
+     */
+    protected function isDateOfIso8601Format($date): bool
+    {
+        if (!is_int($date) && !is_string($date)) {
+            return false;
+        }
+        $format = 'Y-m-d\\TH:i:s\\Z';
+        $formattedDate = \DateTime::createFromFormat($format, $date);
+        return $formattedDate && $formattedDate->format($format) === $date;
+    }
     /**
      * Sets the current name of the input form.
      *
