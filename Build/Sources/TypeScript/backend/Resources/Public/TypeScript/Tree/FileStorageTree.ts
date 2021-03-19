@@ -12,21 +12,19 @@
  */
 
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
-import {SvgTree, TreeNodeSelection} from '../SvgTree';
+import {SvgTree} from '../SvgTree';
 import {TreeNode} from '../Tree/TreeNode';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {FileStorageTreeNodeDragHandler, FileStorageTreeActions} from './FileStorageTreeActions';
-import {customElement} from 'lit-element';
 
-@customElement('typo3-backend-filestorage-tree')
+/**
+ * A tree for folders / storages
+ */
 export class FileStorageTree extends SvgTree {
   protected networkErrorTitle: string = TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = TYPO3.lang.tree_networkErrorDescription;
-  private actionHandler: FileStorageTreeActions;
 
   public constructor() {
     super();
-    this.actionHandler = new FileStorageTreeActions(this);
     this.settings.defaultProperties = {
       hasChildren: false,
       nameSourceField: 'title',
@@ -48,21 +46,6 @@ export class FileStorageTree extends SvgTree {
   public showChildren(node: TreeNode): void {
     this.loadChildrenOfNode(node);
     super.showChildren(node);
-  }
-
-  public updateNodeBgClass(nodeBg: TreeNodeSelection) {
-    return super.updateNodeBgClass.call(this, nodeBg).call(this.initializeDragForNode());
-  }
-
-  public nodesUpdate(nodes: TreeNodeSelection) {
-    return super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
-  }
-
-  /**
-   * Initializes a drag&drop when called on the tree. Should be moved somewhere else at some point
-   */
-  protected initializeDragForNode() {
-    return this.actionHandler.connectDragHandler(new FileStorageTreeNodeDragHandler(this, this.actionHandler))
   }
 
   protected getNodeTitle(node: TreeNode): string {

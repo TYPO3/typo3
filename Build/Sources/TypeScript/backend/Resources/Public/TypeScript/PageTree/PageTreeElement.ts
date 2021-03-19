@@ -15,16 +15,21 @@ import {html, customElement, property, query, LitElement, TemplateResult, Proper
 import {until} from 'lit-html/directives/until';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {PageTree} from './PageTree';
-import {PageTreeDragDrop, ToolbarDragHandler} from './PageTreeDragDrop';
+import {TreeNode} from './../Tree/TreeNode';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import {select as d3select} from 'd3-selection';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 import ContextMenu = require('../ContextMenu');
-import {TreeNode} from './../Tree/TreeNode';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import * as d3selection from 'd3-selection';
+import {KeyTypesEnum as KeyTypes} from 'TYPO3/CMS/Backend/Enum/KeyTypes';
+import {TreeNodeSelection, TreeWrapperSelection} from '../SvgTree';
+import {DragDrop, DragDropHandler, DraggablePositionEnum} from '../Tree/DragDrop';
+import {D3DragEvent} from 'd3-drag';
+import Modal = require('../Modal');
+import Severity = require('../Severity');
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -40,6 +45,205 @@ export const navigationComponentName: string = 'typo3-backend-navigation-compone
 const toolbarComponentName: string = 'typo3-backend-navigation-component-pagetree-toolbar';
 
 
+/**
+ * PageTree which allows for drag+drop, and in-place editing, as well as
+ * tree highlighting from the outside
+ */
+@customElement('typo3-backend-navigation-component-pagetree-tree')
+export class EditablePageTree extends PageTree {
+  public nodeIsEdit: boolean;
+  public dragDrop: PageTreeDragDrop;
+
+  public selectFirstNode(): void {
+    this.selectNode(this.nodes[0]);
+  }
+
+  public sendChangeCommand(data: any): void {
+    let params = '';
+    let targetUid = 0;
+
+    if (data.target) {
+      targetUid = data.target.identifier;
+      if (data.position === 'after') {
+        targetUid = -targetUid;
+      }
+    }
+
+    if (data.command === 'new') {
+      params = '&data[pages][NEW_1][pid]=' + targetUid +
+        '&data[pages][NEW_1][title]=' + encodeURIComponent(data.name) +
+        '&data[pages][NEW_1][doktype]=' + data.type;
+
+    } else if (data.command === 'edit') {
+      params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + encodeURIComponent(data.title);
+    } else {
+      if (data.command === 'delete') {
+        if (data.uid === window.fsMod.recentIds.web) {
+          this.selectFirstNode();
+        }
+        params = '&cmd[pages][' + data.uid + '][delete]=1';
+      } else {
+        params = 'cmd[pages][' + data.uid + '][' + data.command + ']=' + targetUid;
+      }
+    }
+
+    this.requestTreeUpdate(params).then((response) => {
+      if (response && response.hasErrors) {
+        this.errorNotification(response.messages, false);
+        this.nodesContainer.selectAll('.node').remove();
+        this.updateVisibleNodes();
+        this.nodesRemovePlaceholder();
+      } else {
+        this.refreshOrFilterTree();
+      }
+    });
+  }
+
+  /**
+   * Make the DOM element of the node given as parameter focusable and focus it
+   */
+  public switchFocusNode(node: TreeNode) {
+    // Focus node only if it's not currently in edit mode
+    if (!this.nodeIsEdit) {
+      this.switchFocus(this.getNodeElement(node));
+    }
+  }
+
+  public nodesUpdate(nodes: TreeNodeSelection): TreeNodeSelection {
+    return super.nodesUpdate.call(this, nodes).call(this.initializeDragForNode());
+  }
+
+  public updateNodeBgClass(nodeBg: TreeNodeSelection) {
+    return super.updateNodeBgClass.call(this, nodeBg).call(this.initializeDragForNode());
+  }
+
+  /**
+   * Initializes a drag&drop when called on the page tree. Should be moved somewhere else at some point
+   */
+  public initializeDragForNode() {
+    return this.dragDrop.connectDragHandler(new PageTreeNodeDragHandler(this, this.dragDrop))
+  }
+
+  public removeEditedText() {
+    const inputWrapper = d3selection.selectAll('.node-edit');
+    if (inputWrapper.size()) {
+      try {
+        inputWrapper.remove();
+        this.nodeIsEdit = false;
+      } catch (e) {
+        // ...
+      }
+    }
+  }
+
+  /**
+   * Event handler for double click on a node's label
+   */
+  protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
+    let clicks = 0;
+    return super.appendTextElement(nodes)
+      .on('click', (event, node: TreeNode) => {
+        if (node.identifier === '0') {
+          this.selectNode(node);
+          return;
+        }
+        if (++clicks === 1) {
+          setTimeout(() => {
+            if (clicks === 1) {
+              this.selectNode(node);
+            } else {
+              this.editNodeLabel(node);
+            }
+            clicks = 0;
+          }, 300);
+        }
+      });
+  }
+
+  private sendEditNodeLabelCommand(node: TreeNode) {
+    const params = '&data[pages][' + node.identifier + '][' + node.nameSourceField + ']=' + encodeURIComponent(node.newName);
+    this.requestTreeUpdate(params, node)
+      .then((response) => {
+        if (response && response.hasErrors) {
+          this.errorNotification(response.messages, false);
+        } else {
+          node.name = node.newName;
+        }
+        this.refreshOrFilterTree();
+      });
+  }
+
+  private requestTreeUpdate(params: any, node: any = null): Promise<any> {
+    // remove old node from svg tree
+    this.nodesAddPlaceholder(node);
+    return (new AjaxRequest(top.TYPO3.settings.ajaxUrls.record_process))
+      .post(params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+      })
+      .then((response) => {
+        return response.resolve();
+      })
+      .catch((error) => {
+        this.errorNotification(error, true);
+      });
+  }
+
+  private editNodeLabel(node: TreeNode) {
+    if (!node.allowEdit) {
+      return;
+    }
+    this.removeEditedText();
+    this.nodeIsEdit = true;
+
+    d3selection.select(this.svg.node().parentNode as HTMLElement)
+      .append('input')
+      .attr('class', 'node-edit')
+      .style('top', () => {
+        const top = node.y + this.settings.marginTop;
+        return top + 'px';
+      })
+      .style('left', (node.x + this.textPosition + 5) + 'px')
+      .style('width', this.settings.width - (node.x + this.textPosition + 20) + 'px')
+      .style('height', this.settings.nodeHeight + 'px')
+      .attr('type', 'text')
+      .attr('value', node.name)
+      .on('keydown', (event: KeyboardEvent) => {
+        // @todo Migrate to `evt.code`, see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+        const code = event.keyCode;
+
+        if (code === KeyTypes.ENTER || code === KeyTypes.TAB) {
+          const target = event.target as HTMLInputElement;
+          const newName = target.value.trim();
+          this.nodeIsEdit = false;
+          this.removeEditedText();
+          if (newName.length && (newName !== node.name)) {
+            node.nameSourceField = node.nameSourceField || 'title';
+            node.newName = newName;
+            this.sendEditNodeLabelCommand(node);
+          }
+        } else if (code === KeyTypes.ESCAPE) {
+          this.nodeIsEdit = false;
+          this.removeEditedText();
+        }
+      })
+      .on('blur', (evt: FocusEvent) => {
+        if (!this.nodeIsEdit) {
+          return;
+        }
+        const target = evt.target as HTMLInputElement;
+        const newName = target.value.trim();
+        if (newName.length && (newName !== node.name)) {
+          node.nameSourceField = node.nameSourceField || 'title';
+          node.newName = newName;
+          this.sendEditNodeLabelCommand(node);
+        }
+        this.removeEditedText();
+      })
+      .node()
+      .select();
+  }
+}
+
 interface Configuration {
   [keys: string]: any;
 }
@@ -48,7 +252,7 @@ interface Configuration {
 export class PageTreeNavigationComponent extends LitElement {
   @property({type: String}) mountPointPath: string = null;
 
-  @query('.svg-tree-wrapper') tree: PageTree;
+  @query('.svg-tree-wrapper') tree: EditablePageTree;
   @query(toolbarComponentName) toolbar: Toolbar;
 
   private configuration: Configuration = null;
@@ -105,8 +309,7 @@ export class PageTreeNavigationComponent extends LitElement {
       .then((configuration: Configuration): TemplateResult => {
         // Initialize the toolbar once the tree was rendered
         const initialized = () => {
-          const dragDrop = new PageTreeDragDrop(this.tree);
-          this.tree.dragDrop = dragDrop;
+          this.tree.dragDrop = new PageTreeDragDrop(this.tree);
           this.toolbar.tree = this.tree;
           this.tree.addEventListener('typo3:svg-tree:expand-toggle', this.toggleExpandState);
           this.tree.addEventListener('typo3:svg-tree:node-selected', this.loadContent);
@@ -121,7 +324,7 @@ export class PageTreeNavigationComponent extends LitElement {
             </div>
             <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
               ${this.renderMountPoint()}
-              <typo3-backend-page-tree id="typo3-pagetree-tree" class="svg-tree-wrapper" .setup=${configuration} @svg-tree:initialized=${initialized}></typo3-backend-page-tree>
+              <typo3-backend-navigation-component-pagetree-tree id="typo3-pagetree-tree" class="svg-tree-wrapper" .setup=${configuration} @svg-tree:initialized=${initialized}></typo3-backend-navigation-component-pagetree-tree>
             </div>
           </div>
           ${this.renderLoader()}
@@ -146,10 +349,7 @@ export class PageTreeNavigationComponent extends LitElement {
   }
 
   private selectFirstNode = (): void => {
-    const node = this.tree.nodes[0];
-    if (node) {
-      this.tree.selectNode(node);
-    }
+    this.tree.selectFirstNode();
   }
 
   private unsetTemporaryMountPoint() {
@@ -254,7 +454,7 @@ export class PageTreeNavigationComponent extends LitElement {
 
 @customElement(toolbarComponentName)
 class Toolbar extends LitElement {
-  @property({type: PageTree}) tree: PageTree = null;
+  @property({type: EditablePageTree}) tree: EditablePageTree = null;
 
   private settings = {
     searchInput: '.search-input',
@@ -267,7 +467,7 @@ class Toolbar extends LitElement {
       this.tree.settings.doktypes.forEach((item: any) => {
         if (item.icon) {
           const htmlElement = this.querySelector('[data-tree-icon="' + item.icon + '"]');
-          d3select(htmlElement).call(this.dragToolbar(item, dragDrop));
+          d3selection.select(htmlElement).call(this.dragToolbar(item, dragDrop));
         } else {
           console.warn('Missing icon definition for doktype: ' + item.nodeType);
         }
@@ -344,5 +544,549 @@ class Toolbar extends LitElement {
    */
   private dragToolbar(item: any, dragDrop: PageTreeDragDrop) {
     return dragDrop.connectDragHandler(new ToolbarDragHandler(item, this.tree, dragDrop));
+  }
+}
+
+
+type TreeNodeDragEvent = D3DragEvent<SVGElement, any, TreeNode>;
+
+interface NodeCreationOptions {
+  type: string,
+  name: string,
+  title?: string;
+  tooltip: string,
+  icon: string,
+  position: DraggablePositionEnum,
+  target: TreeNode
+}
+
+interface NodePositionOptions {
+  node: TreeNode,
+  target: TreeNode,
+  uid: string,
+  position: DraggablePositionEnum,
+  command: string
+}
+
+interface NodeTargetPosition {
+  target: TreeNode,
+  position: DraggablePositionEnum
+}
+
+/**
+ * Extends Drag&Drop functionality for Page Tree positioning when dropping
+ */
+class PageTreeDragDrop extends DragDrop {
+  public changeNodePosition(droppedNode: TreeNode, command: string = ''): null|NodePositionOptions {
+    const nodes = this.tree.nodes;
+    const uid = this.tree.settings.nodeDrag.identifier;
+    let position = this.tree.settings.nodeDragPosition;
+    let target = droppedNode || this.tree.settings.nodeDrag;
+
+    if (uid === target.identifier && command !== 'delete') {
+      return null;
+    }
+
+    if (position === DraggablePositionEnum.BEFORE) {
+      const index = nodes.indexOf(droppedNode);
+      const positionAndTarget = this.setNodePositionAndTarget(index);
+      if (positionAndTarget === null) {
+        return null;
+      }
+      position = positionAndTarget.position;
+      target = positionAndTarget.target;
+    }
+
+    return {
+      node: this.tree.settings.nodeDrag,
+      uid: uid, // dragged node id
+      target: target, // hovered node
+      position: position, // before, in, after
+      command: command // element is copied or moved
+    }
+  }
+
+  /**
+   * Returns Array of position and target node
+   *
+   * @param {number} index of node which is over mouse
+   * @returns {Array} [position, target]
+   * @todo this should be moved into PageTree.js
+   */
+  public setNodePositionAndTarget(index: number): null|NodeTargetPosition {
+    const nodes = this.tree.nodes;
+    const nodeOver = nodes[index];
+    const nodeOverDepth = nodeOver.depth;
+    if (index > 0) {
+      index--;
+    }
+    const nodeBefore = nodes[index];
+    const nodeBeforeDepth = nodeBefore.depth;
+    const target = this.tree.nodes[index];
+
+    if (nodeBeforeDepth === nodeOverDepth) {
+      return {position: DraggablePositionEnum.AFTER, target};
+    } else if (nodeBeforeDepth < nodeOverDepth) {
+      return {position: DraggablePositionEnum.INSIDE, target};
+    } else {
+      for (let i = index; i >= 0; i--) {
+        if (nodes[i].depth === nodeOverDepth) {
+          return {position: DraggablePositionEnum.AFTER, target: this.tree.nodes[i]};
+        } else if (nodes[i].depth < nodeOverDepth) {
+          return {position: DraggablePositionEnum.AFTER, target: nodes[i]};
+        }
+      }
+    }
+    return null;
+  }
+}
+
+/**
+ * Main Handler for the toolbar when creating new items
+ */
+class ToolbarDragHandler implements DragDropHandler {
+  public startDrag: boolean = false;
+  public startPageX: number = 0;
+  public startPageY: number = 0;
+  private readonly id: string = '';
+  private readonly name: string = '';
+  private readonly tooltip: string = '';
+  private readonly icon: string = '';
+  private isDragged: boolean = false;
+  private dragDrop: PageTreeDragDrop;
+  private tree: EditablePageTree;
+
+  constructor(item: any, tree: EditablePageTree, dragDrop: PageTreeDragDrop) {
+    this.id = item.nodeType;
+    this.name = item.title;
+    this.tooltip = item.tooltip;
+    this.icon = item.icon;
+    this.tree = tree;
+    this.dragDrop = dragDrop;
+  }
+
+  public dragStart(event: TreeNodeDragEvent): boolean {
+    this.isDragged = false;
+    this.startDrag = false;
+    this.startPageX = event.sourceEvent.pageX;
+    this.startPageY = event.sourceEvent.pageY;
+    return true;
+  }
+
+  public dragDragged(event: TreeNodeDragEvent): boolean {
+    if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
+      this.startDrag = true;
+    } else {
+      return false;
+    }
+
+    // Add the draggable element
+    if (this.isDragged === false) {
+      this.isDragged = true;
+      this.dragDrop.createDraggable('#icon-' + this.icon, this.name);
+    }
+    this.dragDrop.openNodeTimeout();
+    this.dragDrop.updateDraggablePosition(event);
+    this.dragDrop.changeNodeClasses(event);
+    return true;
+  }
+
+  public dragEnd(event: TreeNodeDragEvent): boolean {
+    if (!this.startDrag) {
+      return false;
+    }
+
+    this.isDragged = false;
+    this.dragDrop.removeNodeDdClass();
+    if (this.tree.settings.allowDragMove !== true || !this.tree.hoveredNode || !this.tree.isOverSvg) {
+      return false;
+    }
+    if (this.tree.settings.canNodeDrag) {
+      this.addNewNode({
+        type: this.id,
+        name: this.name,
+        tooltip: this.tooltip,
+        icon: this.icon,
+        position: this.tree.settings.nodeDragPosition,
+        target: this.tree.hoveredNode
+      });
+    }
+    return true;
+  }
+
+  /**
+   * Add new node to the tree (used in drag+drop)
+   *
+   * @type {Object} options
+   * @private
+   */
+  private addNewNode(options: NodeCreationOptions): void {
+    const target = options.target;
+    let index = this.tree.nodes.indexOf(target);
+    const newNode = {} as TreeNode;
+    newNode.command = 'new';
+    newNode.type = options.type;
+    newNode.identifier = '-1';
+    newNode.target = target;
+    newNode.parents = target.parents;
+    newNode.parentsStateIdentifier = target.parentsStateIdentifier;
+    newNode.depth = target.depth;
+    newNode.position = options.position;
+    newNode.name = (typeof options.title !== 'undefined') ? options.title : TYPO3.lang['tree.defaultPageTitle'];
+    newNode.y = newNode.y || newNode.target.y;
+    newNode.x = newNode.x || newNode.target.x;
+
+    this.tree.nodeIsEdit = true;
+
+    if (options.position === DraggablePositionEnum.INSIDE) {
+      newNode.depth++;
+      newNode.parents.unshift(index);
+      newNode.parentsStateIdentifier.unshift(this.tree.nodes[index].stateIdentifier);
+      this.tree.nodes[index].hasChildren = true;
+      this.tree.showChildren(this.tree.nodes[index]);
+    }
+
+    if (options.position === DraggablePositionEnum.INSIDE || options.position === DraggablePositionEnum.AFTER) {
+      index++;
+    }
+
+    if (options.icon) {
+      newNode.icon = options.icon;
+    }
+
+    if (newNode.position === DraggablePositionEnum.AFTER) {
+      const positionAndTarget = this.dragDrop.setNodePositionAndTarget(index);
+      // @todo Check whether an error should be thrown in case of `null`
+      if (positionAndTarget !== null) {
+        newNode.position = positionAndTarget.position;
+        newNode.target = positionAndTarget.target;
+      }
+    }
+
+    this.tree.nodes.splice(index, 0, newNode);
+    this.tree.setParametersNode();
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.updateVisibleNodes();
+    this.tree.removeEditedText();
+
+    d3selection.select(this.tree.svg.node().parentNode as HTMLElement)
+      .append('input')
+      .attr('class', 'node-edit')
+      .style('top', newNode.y + this.tree.settings.marginTop + 'px')
+      .style('left', newNode.x + this.tree.textPosition + 5 + 'px')
+      .style('width', this.tree.settings.width - (newNode.x + this.tree.textPosition + 20) + 'px')
+      .style('height', this.tree.settings.nodeHeight + 'px')
+      .attr('text', 'text')
+      .attr('value', newNode.name)
+      .on('keydown', (evt: KeyboardEvent) => {
+        const target = evt.target as HTMLInputElement;
+        const code = evt.keyCode;
+        if (code === 13 || code === 9) { // enter || tab
+          this.tree.nodeIsEdit = false;
+          const newName = target.value.trim();
+          if (newName.length) {
+            newNode.name = newName;
+            this.tree.removeEditedText();
+            this.tree.sendChangeCommand(newNode);
+          } else {
+            this.removeNode(newNode);
+          }
+        } else if (code === 27) { // esc
+          this.tree.nodeIsEdit = false;
+          this.removeNode(newNode);
+        }
+      })
+      .on('blur', (evt: FocusEvent) => {
+        if (this.tree.nodeIsEdit && (this.tree.nodes.indexOf(newNode) > -1)) {
+          const target = evt.target as HTMLInputElement;
+          const newName = target.value.trim();
+          if (newName.length) {
+            newNode.name = newName;
+            this.tree.removeEditedText();
+            this.tree.sendChangeCommand(newNode);
+          } else {
+            this.removeNode(newNode);
+          }
+        }
+      })
+      .node()
+      .select();
+  }
+
+  private removeNode(newNode: TreeNode) {
+    let index = this.tree.nodes.indexOf(newNode);
+    // if newNode is only one child
+    if (this.tree.nodes[index - 1].depth != newNode.depth
+      && (!this.tree.nodes[index + 1] || this.tree.nodes[index + 1].depth != newNode.depth)) {
+      this.tree.nodes[index - 1].hasChildren = false;
+    }
+    this.tree.nodes.splice(index, 1);
+    this.tree.setParametersNode();
+    this.tree.prepareDataForVisibleNodes();
+    this.tree.updateVisibleNodes();
+    this.tree.removeEditedText();
+  };
+}
+
+/**
+ * Drag and drop for nodes (copy/move) including the deleting / drop functionality.
+ */
+class PageTreeNodeDragHandler implements DragDropHandler {
+  public startDrag: boolean = false;
+  public startPageX: number = 0;
+  public startPageY: number = 0;
+
+  /**
+   * SVG <g> container for deleting drop zone
+   *
+   * @type {Selection}
+   */
+  private dropZoneDelete: null|TreeWrapperSelection<SVGGElement>;
+  private isDragged: boolean = false;
+  private tree: any;
+  private dragDrop: PageTreeDragDrop;
+  private nodeIsOverDelete: boolean = false;
+
+  constructor(tree: any, dragDrop: PageTreeDragDrop) {
+    this.tree = tree;
+    this.dragDrop = dragDrop;
+  }
+
+  public dragStart(event: TreeNodeDragEvent): boolean {
+    const node = event.subject;
+    if (this.tree.settings.allowDragMove !== true || node.depth === 0) {
+      return false;
+    }
+    this.dropZoneDelete = null;
+
+    if (node.allowDelete) {
+      this.dropZoneDelete = this.tree.nodesContainer
+        .select('.node[data-state-id="' + node.stateIdentifier + '"]')
+        .append('g')
+        .attr('class', 'nodes-drop-zone')
+        .attr('height', this.tree.settings.nodeHeight);
+      this.nodeIsOverDelete = false;
+      this.dropZoneDelete.append('rect')
+        .attr('height', this.tree.settings.nodeHeight)
+        .attr('width', '50px')
+        .attr('x', 0)
+        .attr('y', 0)
+        .on('mouseover', () => {
+          this.nodeIsOverDelete = true;
+        })
+        .on('mouseout', () => {
+          this.nodeIsOverDelete = false;
+        });
+
+      this.dropZoneDelete.append('text')
+        .text(TYPO3.lang.deleteItem)
+        .attr('dx', 5)
+        .attr('dy', 15);
+
+      this.dropZoneDelete.node().dataset.open = 'false';
+      this.dropZoneDelete.node().style.transform = this.getDropZoneCloseTransform(node);
+    }
+
+    this.startPageX = event.sourceEvent.pageX;
+    this.startPageY = event.sourceEvent.pageY;
+    this.startDrag = false;
+    return true;
+  };
+
+  public dragDragged(event: TreeNodeDragEvent): boolean {
+    const node = event.subject;
+    if (this.dragDrop.isDragNodeDistanceMore(event, this)) {
+      this.startDrag = true;
+    } else {
+      return false;
+    }
+
+    if (this.tree.settings.allowDragMove !== true || node.depth === 0) {
+      return false;
+    }
+
+    this.tree.settings.nodeDrag = node;
+
+    const nodeBg = this.tree.svg.node().querySelector('.node-bg[data-state-id="' + node.stateIdentifier + '"]');
+    const nodeDd = this.tree.svg.node().parentNode.querySelector('.node-dd');
+
+    // Create the draggable
+    if (!this.isDragged) {
+      this.isDragged = true;
+      this.dragDrop.createDraggable(this.tree.getIconId(node), node.name);
+      nodeBg.classList.add('node-bg--dragging');
+    }
+
+    this.tree.settings.nodeDragPosition = false;
+    this.dragDrop.openNodeTimeout();
+    this.dragDrop.updateDraggablePosition(event);
+
+    if (node.isOver
+      || (this.tree.hoveredNode && this.tree.hoveredNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+      || !this.tree.isOverSvg) {
+
+      this.dragDrop.addNodeDdClass(nodeDd, 'nodrop');
+
+      if (!this.tree.isOverSvg) {
+        this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
+      }
+
+      if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open !== 'true' && this.tree.isOverSvg) {
+        this.animateDropZone('show', this.dropZoneDelete.node(), node);
+      }
+    } else if (!this.tree.hoveredNode) {
+      this.dragDrop.addNodeDdClass(nodeDd, 'nodrop');
+      this.tree.nodesBgContainer.selectAll('.node-bg__border').style('display', 'none');
+    } else if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open !== 'false') {
+      this.animateDropZone('hide', this.dropZoneDelete.node(), node);
+    }
+    this.dragDrop.changeNodeClasses(event);
+    return true;
+  }
+
+  public dragEnd(event: TreeNodeDragEvent): boolean {
+    const node = event.subject;
+    if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open === 'true') {
+      const dropZone = this.dropZoneDelete;
+      this.animateDropZone('hide', this.dropZoneDelete.node(), node, () => {
+        dropZone.remove();
+        this.dropZoneDelete = null;
+      });
+    } else {
+      this.dropZoneDelete = null;
+    }
+
+    if (!this.startDrag || this.tree.settings.allowDragMove !== true || node.depth === 0) {
+      return false;
+    }
+
+    const droppedNode = this.tree.hoveredNode;
+    this.isDragged = false;
+    this.dragDrop.removeNodeDdClass();
+
+    if (
+      !(node.isOver
+        || (droppedNode && droppedNode.parentsStateIdentifier.indexOf(node.stateIdentifier) !== -1)
+        || !this.tree.settings.canNodeDrag
+        || !this.tree.isOverSvg
+      )
+    ) {
+      const options = this.dragDrop.changeNodePosition(droppedNode, '');
+      if (options === null) {
+        return false;
+      }
+      let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
+      modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
+
+      Modal.confirm(
+        TYPO3.lang.move_page,
+        modalText,
+        Severity.warning, [
+          {
+            text: TYPO3.lang['labels.cancel'] || 'Cancel',
+            active: true,
+            btnClass: 'btn-default',
+            name: 'cancel'
+          },
+          {
+            text: TYPO3.lang['cm.copy'] || 'Copy',
+            btnClass: 'btn-warning',
+            name: 'copy'
+          },
+          {
+            text: TYPO3.lang['labels.move'] || 'Move',
+            btnClass: 'btn-warning',
+            name: 'move'
+          }
+        ])
+        .on('button.clicked', (e: JQueryEventObject) => {
+          const target = e.target as HTMLInputElement;
+          if (target.name === 'move') {
+            options.command = 'move';
+            this.tree.sendChangeCommand(options);
+          } else if (target.name === 'copy') {
+            options.command = 'copy';
+            this.tree.sendChangeCommand(options);
+          }
+          Modal.dismiss();
+        });
+    } else if (this.nodeIsOverDelete) {
+      const options = this.dragDrop.changeNodePosition(droppedNode, 'delete');
+      if (options === null) {
+        return false;
+      }
+      if (this.tree.settings.displayDeleteConfirmation) {
+        const $modal = Modal.confirm(
+          TYPO3.lang.deleteItem,
+          TYPO3.lang['mess.delete'].replace('%s', options.node.name),
+          Severity.warning, [
+            {
+              text: TYPO3.lang['labels.cancel'] || 'Cancel',
+              active: true,
+              btnClass: 'btn-default',
+              name: 'cancel'
+            },
+            {
+              text: TYPO3.lang['cm.delete'] || 'Delete',
+              btnClass: 'btn-warning',
+              name: 'delete'
+            }
+          ]);
+        $modal.on('button.clicked', (e: JQueryEventObject) => {
+          const target = e.target as HTMLInputElement;
+          if (target.name === 'delete') {
+            this.tree.sendChangeCommand(options);
+          }
+          Modal.dismiss();
+        });
+      } else {
+        this.tree.sendChangeCommand(options);
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Returns deleting drop zone open 'transform' attribute value
+   */
+  private getDropZoneOpenTransform(node: TreeNode): string {
+    const svgWidth = parseFloat(this.tree.svg.style('width')) || 300;
+    return 'translate(' + (svgWidth - 58 - node.x) + 'px, -10px)';
+  }
+
+  /**
+   * Returns deleting drop zone close 'transform' attribute value
+   */
+  private getDropZoneCloseTransform(node: TreeNode): string {
+    const svgWidth = parseFloat(this.tree.svg.style('width')) || 300;
+    return 'translate(' + (svgWidth - node.x) + 'px, -10px)';
+  }
+
+  /**
+   * Animates the drop zone next to given node
+   */
+  private animateDropZone(action: string, dropZone: SVGElement, node: TreeNode, onfinish: Function = null) {
+    dropZone.classList.add('animating');
+    dropZone.dataset.open = (action === 'show') ? 'true' : 'false';
+    let keyframes = [
+      { transform: this.getDropZoneCloseTransform(node) },
+      { transform: this.getDropZoneOpenTransform(node) }
+    ];
+    if (action !== 'show') {
+      keyframes = keyframes.reverse();
+    }
+    const done = function() {
+      dropZone.style.transform = keyframes[1].transform;
+      dropZone.classList.remove('animating');
+      onfinish && onfinish();
+    };
+    if ('animate' in dropZone) {
+      dropZone.animate(keyframes, {
+        duration: 300,
+        easing: 'cubic-bezier(.02, .01, .47, 1)'
+      }).onfinish = done;
+    } else {
+      done();
+    }
   }
 }
