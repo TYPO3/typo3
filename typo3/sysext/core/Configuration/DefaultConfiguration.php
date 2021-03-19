@@ -282,16 +282,6 @@ return [
                         'LocalImageProcessor',
                     ],
                 ],
-                'DeferredBackendImageProcessor' => [
-                    'className' => \TYPO3\CMS\Backend\Resource\Processing\DeferredBackendImageProcessor::class,
-                    'before' => [
-                        'LocalImageProcessor',
-                        'OnlineMediaPreviewProcessor',
-                    ],
-                    'after' => [
-                        'SvgImageProcessor',
-                    ],
-                ],
                 'OnlineMediaPreviewProcessor' => [
                     'className' => \TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing::class,
                     'after' => [
