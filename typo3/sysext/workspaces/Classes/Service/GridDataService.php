@@ -138,7 +138,10 @@ class GridDataService implements LoggerAwareInterface
         $data = [];
         $data['data'] = [];
         $this->generateDataArray($versions, $filterTxt);
-        $data['total'] = count($this->dataArray);
+        // Only count parent records for pagination
+        $data['total'] = count(array_filter($this->dataArray, static function ($element) {
+            return (int)($element[self::GridColumn_CollectionLevel] ?? 0) === 0;
+        }));
         $data['data'] = $this->getDataArray($start, $limit);
         return $data;
     }
@@ -318,23 +321,14 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function getDataArray($start, $limit)
     {
-        $dataArrayPart = [];
         $dataArrayCount = count($this->dataArray);
+        $start = $this->calculateStartWithCollections($start);
         $end = ($start + $limit < $dataArrayCount ? $start + $limit : $dataArrayCount);
 
         // Ensure that there are numerical indexes
         $this->dataArray = array_values($this->dataArray);
-        for ($i = $start; $i < $end; $i++) {
-            $dataArrayPart[] = $this->dataArray[$i];
-        }
-
-        // Ensure that collections are not cut for the pagination
-        if (!empty($this->dataArray[$i][self::GridColumn_Collection])) {
-            $collectionIdentifier = $this->dataArray[$i][self::GridColumn_Collection];
-            for ($i = $i + 1; $i < $dataArrayCount && $collectionIdentifier === $this->dataArray[$i][self::GridColumn_Collection]; $i++) {
-                $dataArrayPart[] = $this->dataArray[$i];
-            }
-        }
+        // Fill the data array part
+        $dataArrayPart = $this->fillDataArrayPart($start, $end);
 
         // Trigger a PSR-14 event
         $event = new GetVersionedDataEvent($this, $this->dataArray, $start, $limit, $dataArrayPart);
@@ -676,6 +670,104 @@ class GridDataService implements LoggerAwareInterface
             $value = $systemLanguages[$id][$key];
         }
         return $value;
+    }
+
+    /**
+     * Calculate the "real" start value by also taking collection children into account
+     *
+     * @param int $start
+     * @return int
+     */
+    protected function calculateStartWithCollections(int $start): int
+    {
+        // The recordsCount is the real record items count, while the
+        // parentRecordsCount only takes the parent records into account
+        $recordsCount = $parentRecordsCount = 0;
+        while ($parentRecordsCount < $start) {
+            // Loop over the dataArray until we found enough parent records
+            $item = $this->dataArray[$recordsCount];
+            if (($item[self::GridColumn_CollectionLevel] ?? 0) === 0) {
+                // In case the current parent record is the last one ($start is reached),
+                // ensure its collection children are counted as well.
+                if (($parentRecordsCount + 1) === $start && (int)($item[self::GridColumn_Collection] ?? 0) !== 0) {
+                    // By not providing the third parameter, we only count the collection children recursively
+                    $this->addCollectionChildrenRecursive($item, $recordsCount);
+                }
+                // Only increase the parent records count in case $item is a parent record
+                $parentRecordsCount++;
+            }
+            // Always increase the record items count
+            $recordsCount++;
+        }
+
+        return $recordsCount;
+    }
+
+    /**
+     * Fill the data array part until enough parent records are found ($end is reached).
+     * Also adds the related collection children, but without increasing the corresponding
+     * parent records count.
+     *
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    private function fillDataArrayPart(int $start, int $end): array
+    {
+        // Initialize empty data array part
+        $dataArrayPart = [];
+        // The recordsCount is the real record items count, while the
+        // parentRecordsCount only takes the parent records into account.
+        $itemsCount = $parentRecordsCount = $start;
+        while ($parentRecordsCount < $end) {
+            // Loop over the dataArray until we found enough parent records
+            $item = $this->dataArray[$itemsCount];
+            // Add the item to the $dataArrayPart
+            $dataArrayPart[] = $item;
+            if (($item[self::GridColumn_CollectionLevel] ?? 0) === 0) {
+                // In case the current parent record is the last one ($end is reached),
+                // ensure its collection children are added as well.
+                if (($parentRecordsCount + 1) === $end && (int)($item[self::GridColumn_Collection] ?? 0) !== 0) {
+                    // Add collection children recursively
+                    $this->addCollectionChildrenRecursive($item, $itemsCount, $dataArrayPart);
+                }
+                // Only increase the parent records count in case $item is a parent record
+                $parentRecordsCount++;
+            }
+            // Always increase the record items count
+            $itemsCount++;
+        }
+        return $dataArrayPart;
+    }
+
+    /**
+     * Add collection children to the data array part recursively
+     *
+     * @param array $item
+     * @param int $recordsCount
+     * @param array $dataArrayPart
+     */
+    protected function addCollectionChildrenRecursive(array $item, int &$recordsCount, array &$dataArrayPart = []): void
+    {
+        $collectionParent = (string)$item[self::GridColumn_CollectionCurrent];
+        foreach ($this->dataArray as $element) {
+            if ((string)($element[self::GridColumn_CollectionParent] ?? '') === $collectionParent) {
+                // Increase the "real" record items count
+                $recordsCount++;
+                // Fetch the children from the dataArray using the current record items
+                // count. This is possible since the dataArray is already sorted.
+                $child = $this->dataArray[$recordsCount];
+                // In case $dataArrayPart is not given, just count the item
+                if ($dataArrayPart !== []) {
+                    // Add the children
+                    $dataArrayPart[] = $child;
+                }
+                // In case the $child is also a collection, add it's children as well (recursively)
+                if ((int)($child[self::GridColumn_Collection] ?? 0) !== 0) {
+                    $this->addCollectionChildrenRecursive($child, $recordsCount, $dataArrayPart);
+                }
+            }
+        }
     }
 
     /**
