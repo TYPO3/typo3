@@ -82,7 +82,7 @@
                                 {redirect.source_path -> f:format.crop(maxCharacters:100)}
                             </be:link.editRecord>
                         </td>
-                        <td><f:link.typolink parameter="{redirect.target}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:visit_destination')} {targetUri}">{targetUri}</f:link.typolink>
+                        <td><f:link.typolink parameter="{redirect.target}" target="_blank" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:visit_destination')} {f:if(condition: targetUri, then:targetUri, else:redirect.target)}">{f:if(condition: targetUri, then:targetUri, else:redirect.target)}</f:link.typolink>
                             (<f:if condition="{pageId}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:pageID"/>: {pageId},
                             </f:if><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination_status_code"/>: {redirect.target_statuscode})</td>
                         <f:if condition="{showHitCounter}">
