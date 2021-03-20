@@ -446,6 +446,11 @@ class InputLinkElement extends AbstractFormElement
                 if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']])) {
                     $linkBuilder = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']]);
                     $data = $linkBuilder->getFormData($linkData, $linkParts, $this->data, $this);
+                } elseif ($linkData['type'] === LinkService::TYPE_UNKNOWN) {
+                    $data = [
+                        'text' => $linkData['file'],
+                        'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render()
+                    ];
                 } else {
                     $data = [
                         'text' => 'not implemented type ' . $linkData['type'],
