@@ -81,7 +81,7 @@ class SelectTreeElement extends AbstractFormElement
 
         // Field configuration from TCA:
         $config = $parameterArray['fieldConf']['config'];
-        $readOnly = !empty($config['readOnly']) ? 1 : 0;
+        $readOnly = !empty($config['readOnly']) && $config['readOnly'];
         $exclusiveKeys = !empty($config['exclusiveKeys']) ? $config['exclusiveKeys'] : '';
         $exclusiveKeys = $exclusiveKeys . ',';
         $appearance = !empty($config['treeConfig']['appearance']) ? $config['treeConfig']['appearance'] : [];
@@ -159,7 +159,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
         $html[] =                       ' data-flexformsectioncontainerisnew="' . htmlspecialchars((string)$flexFormSectionContainerIsNew) . '"';
         $html[] =                       ' data-command="' . htmlspecialchars($this->data['command']) . '"';
-        $html[] =                       ' data-read-only="' . $readOnly . '"';
+        $html[] =                       ' data-read-only="' . ($readOnly ? '1' : '0') . '"';
         $html[] =                       ' data-tree-exclusive-keys="' . htmlspecialchars($exclusiveKeys) . '"';
         $html[] =                       ' data-tree-expand-up-to-level="' . ($expanded ? '999' : '1') . '"';
         $html[] =                       ' data-tree-show-toolbar="' . $showHeader . '"';
@@ -170,7 +170,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =               '</div>';
         $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] =           '</div>';
-        if ($readOnly === 'false' && !empty($fieldWizardHtml)) {
+        if (!$readOnly && !empty($fieldWizardHtml)) {
             $html[] =       '<div class="form-wizards-items-bottom">';
             $html[] =           $fieldWizardHtml;
             $html[] =       '</div>';
