@@ -111,6 +111,12 @@ class LocalizationController
             $result = $this->localizationRepository->fetchOriginLanguage($pageId, $languageId);
             $availableLanguages[] = $systemLanguages[$result['sys_language_uid']];
         }
+        // Language "All" should not appear as a source of translations (see bug 92757) and keys should be sequential
+        $availableLanguages = array_values(
+            array_filter($availableLanguages, function (array $languageRecord): bool {
+                return (int)$languageRecord['uid'] !== -1;
+            })
+        );
 
         // Pre-render all flag icons
         foreach ($availableLanguages as &$language) {
