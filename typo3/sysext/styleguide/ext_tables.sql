@@ -452,6 +452,7 @@ CREATE TABLE tx_styleguide_inline_fal (
     inline_2 int(11) DEFAULT '0' NOT NULL,
     inline_3 int(11) DEFAULT '0' NOT NULL,
     inline_4 int(11) DEFAULT '0' NOT NULL,
+    inline_5 int(11) DEFAULT '0' NOT NULL,
     inline_flex_1 text
 );
 

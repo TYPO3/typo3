@@ -167,6 +167,22 @@ return [
                 $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
             ),
         ],
+        'inline_5' => [
+            'label' => 'inline_5 appearance localization toggles',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'inline_5',
+                [
+                    'appearance' => [
+                        'showPossibleLocalizationRecords' => true,
+                        'showRemovedLocalizationRecords' => true,
+                        'showAllLocalizationLink' => true,
+                        'showSynchronizationLink' => true,
+                    ]
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
+            ),
+        ],
+
 
         'inline_flex_1' => [
             'exclude' => 1,
@@ -291,7 +307,7 @@ return [
                 --div--;typical fal,
                     inline_1, inline_2,
                 --div--;media,
-                    inline_3, inline_4,
+                    inline_3, inline_4, inline_5,
                 --div--;in flex,
                     inline_flex_1,
             ',
