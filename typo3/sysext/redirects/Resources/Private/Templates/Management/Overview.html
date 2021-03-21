@@ -9,6 +9,7 @@
 </f:section>
 
 <f:section name="content">
+    <f:variable name="returnUrl" value="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" />
     <f:if condition="{redirects -> f:count()}">
         <f:then>
             <f:render section="filter" arguments="{_all}" />
@@ -23,7 +24,7 @@
                         <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}">
                             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
                         </a>
-                        <be:link.newRecord class="btn btn-primary" table="sys_redirect">
+                        <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_redirect">
                             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
@@ -78,7 +79,7 @@
                             </f:if>
                             <core:iconForRecord table="sys_redirect" row="{redirect}" /></span>
                             </f:alias>
-                            <be:link.editRecord table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {redirect.source_path}">
+                            <be:link.editRecord returnUrl="{returnUrl}" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {redirect.source_path}">
                                 {redirect.source_path -> f:format.crop(maxCharacters:100)}
                             </be:link.editRecord>
                         </td>
@@ -91,7 +92,7 @@
                                         <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit{f:if(condition:'{redirect.hitcount} > 1',then:'s')}_text" arguments="{0:redirect.hitcount}"/>
                                         <f:if condition="{redirect.hitcount} != 0">
                                         <a class="t3js-modal-trigger"
-                                            href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][hitcount]=0', currentUrlParameterName:'redirect')}"
+                                            href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][hitcount]=0', arguments:'{redirect: returnUrl}')}"
                                             title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset')}"
                                             data-title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.title')}"
                                             data-content="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:hit_reset.confirm.content')}"
@@ -118,19 +119,19 @@
                                         </f:link.external>
                                     </f:else>
                                 </f:if>
-                                <be:link.editRecord class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
+                                <be:link.editRecord returnUrl="{returnUrl}" class="btn btn-default" table="sys_redirect" uid="{redirect.uid}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}">
                                     <core:icon identifier="actions-open" />
                                 </be:link.editRecord>
                                 <f:if condition="{redirect.disabled} == 1">
                                     <f:then>
-                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
+                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=0', arguments:'{redirect: returnUrl}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide')}"><core:icon identifier="actions-edit-unhide" /></a>
                                     </f:then>
                                     <f:else>
-                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
+                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[sys_redirect][{redirect.uid}][disabled]=1', arguments:'{redirect: returnUrl}')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:hide')}"><core:icon identifier="actions-edit-hide" /></a>
                                     </f:else>
                                 </f:if>
                                 <a class="btn btn-default t3js-modal-trigger"
-                                    href="{be:moduleLink(route:'tce_db', query:'cmd[sys_redirect][{redirect.uid}][delete]=1', currentUrlParameterName:'redirect')}"
+                                    href="{be:moduleLink(route:'tce_db', query:'cmd[sys_redirect][{redirect.uid}][delete]=1', arguments:'{redirect: returnUrl}')}"
                                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete')}"
                                     data-severity="warning"
                                     data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
