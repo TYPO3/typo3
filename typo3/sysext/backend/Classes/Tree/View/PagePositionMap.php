@@ -572,8 +572,7 @@ class PagePositionMap
     public function getRecordHeader($row)
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
-        $line = '<span ' . $toolTip . ' title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">' . $iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $line = '<span ' . BackendUtility::getRecordToolTip($row, 'tt_content') . '">' . $iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '</span>';
         $line .= BackendUtility::getRecordTitle('tt_content', $row, true);
         return $this->wrapRecordTitle($line, $row);
     }

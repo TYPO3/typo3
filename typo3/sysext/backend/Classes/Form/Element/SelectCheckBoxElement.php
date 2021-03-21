@@ -231,7 +231,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =            '<thead>';
                     $html[] =                '<tr>';
                     $html[] =                    '<th class="col-checkbox">';
-                    $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" data-bs-trigger="hover" data-bs-placement="right" data-title="' . $title . '" data-bs-toggle="tooltip" />';
+                    $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" data-bs-trigger="hover" data-bs-placement="right" title="' . $title . '" data-bs-toggle="tooltip" />';
                     $html[] =                    '</th>';
                     $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
                     $html[] =                    '<th class="text-right">' . $resetGroupBtn . '</th>';

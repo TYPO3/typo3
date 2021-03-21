@@ -1124,7 +1124,7 @@ class DatabaseRecordList
                 // If the record is edit-locked	by another user, we will show a little warning sign:
                 $lockInfo = BackendUtility::isRecordLocked($table, $row['uid']);
                 if ($lockInfo) {
-                    $warning = '<span data-bs-toggle="tooltip" data-bs-placement="right" data-title="' . htmlspecialchars($lockInfo['msg']) . '">'
+                    $warning = '<span data-bs-toggle="tooltip" data-bs-placement="right" title="' . htmlspecialchars($lockInfo['msg']) . '">'
                         . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '</span>';
                 }
                 if ($this->isRecordDeletePlaceholder($row)) {

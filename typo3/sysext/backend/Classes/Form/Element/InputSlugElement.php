@@ -123,7 +123,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =                  '<input';
         $mainFieldHtml[] =                      ' class="form-control t3js-form-field-slug-readonly"';
         $mainFieldHtml[] =                      ' data-bs-toggle="tooltip"';
-        $mainFieldHtml[] =                      ' data-title="' . htmlspecialchars($itemValue) . '"';
+        $mainFieldHtml[] =                      ' title="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                      ' value="' . htmlspecialchars($itemValue) . '"';
         $mainFieldHtml[] =                      ' readonly';
         $mainFieldHtml[] =                  ' />';

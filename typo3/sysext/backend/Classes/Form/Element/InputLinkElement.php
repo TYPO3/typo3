@@ -223,7 +223,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
         $expansionHtml[] =              '<span class="t3js-form-field-inputlink-icon input-group-addon">' . $linkExplanation['icon'] . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" data-bs-toggle="tooltip" data-title="' . $explanation . '" value="' . $explanation . '" readonly>';
+        $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" data-bs-toggle="tooltip" title="' . $explanation . '" value="' . $explanation . '" readonly>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<span class="input-group-btn">';
         $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
