@@ -367,6 +367,15 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     $transOrigPointerFieldValue = $childData['databaseRow'][$transOrigPointerFieldName];
                     if (is_array($transOrigPointerFieldValue)) {
                         $transOrigPointerFieldValue = $transOrigPointerFieldValue[0];
+                        if (is_array($transOrigPointerFieldValue) && ($transOrigPointerFieldValue['uid'] ?? false)) {
+                            // With nested inline containers (eg. fal sys_file_reference), row[l10n_parent][0] is sometimes
+                            // a table / row combination again. See tx_styleguide_inline_fal inline_5. If this happens we
+                            // pick the uid field from the array ... Basically, we need the uid of the 'default language' record,
+                            // since this is used in JS to locate and remove the 'shadowed' container.
+                            // @todo: Find out if this is really necessary that sometimes ['databaseRow']['l10n_parent'][0]
+                            // is resolved to a direct uid, and sometimes it's a array with items. Could this be harmonized?
+                            $transOrigPointerFieldValue = $transOrigPointerFieldValue['uid'];
+                        }
                     }
                     $jsonArray['compilerInput']['localize'][$i]['remove'] = $transOrigPointerFieldValue;
                 }
