@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -40,43 +42,29 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class LiveSearch
 {
-    /**
-     * @var int
-     */
-    const RECURSIVE_PAGE_LEVEL = 99;
+    private const RECURSIVE_PAGE_LEVEL = 99;
 
-    /**
-     * @var string
-     */
-    private $queryString = '';
+    private string $queryString = '';
+    private int $startCount = 0;
+    private int $limitCount = 5;
+    protected string $userPermissions = '';
 
-    /**
-     * @var int
-     */
-    private $startCount = 0;
+    protected UriBuilder $uriBuilder;
+    protected IconFactory $iconFactory;
+    protected QueryParser $queryParser;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var int
-     */
-    private $limitCount = 5;
-
-    /**
-     * @var string
-     */
-    protected $userPermissions = '';
-
-    /**
-     * @var QueryParser
-     */
-    protected $queryParser;
-
-    /**
-     * Initialize access settings
-     */
-    public function __construct()
-    {
+    public function __construct(
+        UriBuilder $uriBuilder,
+        IconFactory $iconFactory,
+        QueryParser $queryParser,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->uriBuilder = $uriBuilder;
+        $this->iconFactory = $iconFactory;
+        $this->queryParser = $queryParser;
+        $this->eventDispatcher = $eventDispatcher;
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->queryParser = GeneralUtility::makeInstance(QueryParser::class);
     }
 
     /**
@@ -201,7 +189,8 @@ class LiveSearch
 
             $queryBuilder->addOrderBy('uid', 'DESC');
 
-            $getRecordArray = $this->getRecordArray($queryBuilder, $tableName);
+            $event = $this->eventDispatcher->dispatch(new ModifyQueryForLiveSearchEvent($queryBuilder, $tableName));
+            $getRecordArray = $this->getRecordArray($event->getQueryBuilder(), $tableName);
         }
 
         return $getRecordArray;
@@ -220,7 +209,6 @@ class LiveSearch
     {
         $collect = [];
         $result = $queryBuilder->execute();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {
@@ -232,7 +220,7 @@ class LiveSearch
                 'id' => $tableName . ':' . $row['uid'],
                 'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
                 'typeLabel' => $this->getTitleOfCurrentRecordType($tableName),
-                'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
+                'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
                 'title' => BackendUtility::getRecordTitle($tableName, $row),
                 'editLink' => $this->getEditLink($tableName, $row),
             ];
@@ -271,9 +259,8 @@ class LiveSearch
                 )
             )
         ) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $returnUrl = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
-            $editLink = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
+            $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',
                 'returnUrl' => $returnUrl,
             ]);

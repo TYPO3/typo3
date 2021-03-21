@@ -63,6 +63,9 @@ services:
   TYPO3\CMS\Backend\View\AuthenticationStyleInformation:
     public: true
 
+  TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch:
+    public: true
+
   TYPO3\CMS\Backend\Controller\BackendController:
     tags: ['backend.controller']
 
