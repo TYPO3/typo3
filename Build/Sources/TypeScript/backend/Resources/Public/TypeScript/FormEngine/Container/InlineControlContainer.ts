@@ -407,10 +407,6 @@ class InlineControlContainer {
           typeof afterUid !== 'undefined' ? afterUid : null,
           typeof response.compilerInput.childChildUid !== 'undefined' ? response.compilerInput.childChildUid : null,
         );
-
-        FormEngine.reinitialize();
-        FormEngineValidation.initializeInputFields();
-        FormEngineValidation.validate(this.container);
       }
     });
   }
@@ -676,6 +672,10 @@ class InlineControlContainer {
     if (!this.isBelowMax()) {
       this.toggleContainerControls(false);
     }
+
+    FormEngine.reinitialize();
+    FormEngineValidation.initializeInputFields();
+    FormEngineValidation.validate(this.container);
 
     TBE_EDITOR.fieldChanged_fName((<HTMLInputElement>formField).name, formField);
   }
