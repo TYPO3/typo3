@@ -120,6 +120,18 @@ return [
                 ],
             ],
         ],
+        'input_3' => [
+            'exclude' => 1,
+            'label' => 'input_3',
+            'description' => 'placeholder=__row|input_1 mode=useOrOverridePlaceholder eval=null default=null',
+            'config' => [
+                'type' => 'input',
+                'placeholder' => '__row|input_1',
+                'eval' => 'null',
+                'default' => null,
+                'mode' => 'useOrOverridePlaceholder',
+            ],
+        ],
         'group_db_1' => [
             'exclude' => 1,
             'label' => 'group_db_1 allowed=tx_styleguide_staticdata',
@@ -146,7 +158,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, input_1, input_2, group_db_1, select_tree_1,
+                --div--;General, input_1, input_2, input_3, group_db_1, select_tree_1,
                 --div--;meta, disable, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],

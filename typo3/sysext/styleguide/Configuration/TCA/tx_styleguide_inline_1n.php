@@ -105,6 +105,7 @@ return [
                     'showSynchronizationLink' => true,
                     'showAllLocalizationLink' => true,
                     'showPossibleLocalizationRecords' => true,
+                    'showRemovedLocalizationRecords' => true,
                 ]
             ],
         ],

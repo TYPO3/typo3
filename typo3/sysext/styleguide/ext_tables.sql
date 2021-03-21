@@ -379,6 +379,7 @@ CREATE TABLE tx_styleguide_inline_1n_child (
 
     input_1 text,
     input_2 text,
+    input_3 text,
     group_db_1 text,
     select_tree_1 text
 );
