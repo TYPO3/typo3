@@ -296,6 +296,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getPropertyValue()
     {
+        if ($this->arguments['property'] === null) {
+            return null;
+        }
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if (!$viewHelperVariableContainer->exists(
             FormViewHelper::class,
