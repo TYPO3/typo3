@@ -102,6 +102,15 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
             'string value, string selection' => [
                 'val1', 'val1'
             ],
+            'string value, int selection' => [
+                '1', 1
+            ],
+            'string value, int array selection' => [
+                '1', [1]
+            ],
+            'string value, iterable selection with int' => [
+                '1', (new \ArrayObject([1]))->getIterator()
+            ],
             'string value, array selection' => [
                 'val1', ['val1']
             ],
@@ -117,7 +126,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      * @dataProvider selectedIsAddedToSelectedOptionForProvidedValueDataProvider
-     * @param string $value
+     * @param mixed $value
      * @param mixed $selected
      */
     public function selectedIsAddedToSelectedOptionForProvidedValue($value, $selected): void
@@ -171,7 +180,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      * @dataProvider selectedIsNotAddedToSelectedOptionForProvidedValueDataProvider
-     * @param string $value
+     * @param mixed $value
      * @param mixed $selected
      */
     public function selectedIsNotAddedToSelectedOptionForProvidedValue($value, $selected): void
