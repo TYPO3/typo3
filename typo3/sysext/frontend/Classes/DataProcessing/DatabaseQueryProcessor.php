@@ -31,7 +31,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  *   table = tt_address
  *   pidInList = 123
  *   where = company="Acme" AND first_name="Ralph"
- *   orderBy = RAND()
+ *   orderBy = sorting DESC
  *   as = addresses
  *   dataProcessing {
  *     10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
