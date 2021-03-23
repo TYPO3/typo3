@@ -153,7 +153,7 @@ class LinkAnalyzerResult
 
         $pageIds = array_merge($pageIds, $pageTranslations);
 
-        $this->linkAnalyzer->init($searchFields, implode(',', $pageIds), $modTSconfig);
+        $this->linkAnalyzer->init($searchFields, $pageIds, $modTSconfig);
         $this->oldBrokenLinkCounts = $this->linkAnalyzer->getLinkCounts();
 
         $this->linkAnalyzer->getLinkStatistics($linkTypes, $checkHidden);
