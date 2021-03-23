@@ -51,6 +51,25 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 {
     use LoggerAwareTrait;
 
+    /**
+     * Menu content types defined by TYPO3
+     *
+     * @var string[]
+     */
+    private const MENU_CONTENT_TYPES = [
+        'menu_abstract',
+        'menu_categorized_content',
+        'menu_categorized_pages',
+        'menu_pages',
+        'menu_recently_updated',
+        'menu_related_pages',
+        'menu_section',
+        'menu_section_pages',
+        'menu_sitemap',
+        'menu_sitemap_pages',
+        'menu_subpages',
+    ];
+
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
         $record = $item->getRecord();
@@ -127,20 +146,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'media'), $record) . '<br />';
                 }
                 break;
-            case 'menu':
-                $contentType = $contentTypeLabels[$record['CType']];
-                $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $record) . '<br />';
-                // Add Menu Type
-                $menuTypeLabel = $languageService->sL(
-                    BackendUtility::getLabelFromItemListMerged($record['pid'], 'tt_content', 'menu_type', $record['menu_type'])
-                );
-                $menuTypeLabel = $menuTypeLabel ?: 'invalid menu type';
-                $out .= $this->linkEditContent(htmlspecialchars($menuTypeLabel), $record);
-                if ($record['menu_type'] !== '2' && ($record['pages'] || $record['selected_categories'])) {
-                    // Show pages if menu type is not "Sitemap"
-                    $out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($record), $record) . '<br />';
-                }
-                break;
             case 'shortcut':
                 if (!empty($record['records'])) {
                     $shortcutContent = [];
@@ -185,7 +190,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     if (!empty($label)) {
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record) . '<br />';
                     } else {
-                        $message = sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
+                        $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
                         $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                     }
                 } elseif (!empty($record['select_key'])) {
@@ -197,22 +202,30 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 $out .= htmlspecialchars($languageService->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $record['pages']))) . '<br />';
                 break;
             default:
-                $contentType = $contentTypeLabels[$record['CType']];
-
-                if (isset($contentType)) {
-                    $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $record) . '<br />';
-                    if ($record['bodytext']) {
-                        $out .= $this->linkEditContent($this->renderText($record['bodytext']), $record) . '<br />';
-                    }
-                    if ($record['image']) {
-                        $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'image'), $record) . '<br />';
-                    }
-                } else {
+                $contentTypeLabel = (string)($contentTypeLabels[$record['CType']] ?? '');
+                if ($contentTypeLabel === '') {
                     $message = sprintf(
-                        $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                         $record['CType']
                     );
                     $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
+                    break;
+                }
+                // Handle menu content types
+                if (in_array($record['CType'], self::MENU_CONTENT_TYPES, true)) {
+                    $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentTypeLabel) . '</strong>', $record);
+                    if ($record['CType'] !== 'menu_sitemap' && (($record['pages'] ?? false) || ($record['selected_categories'] ?? false))) {
+                        // Show pages/categories if menu type is not "Sitemap"
+                        $out .= ':' . $this->linkEditContent($this->generateListForMenuContentTypes($record), $record) . '<br />';
+                    }
+                    break;
+                }
+                $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentTypeLabel) . '</strong>', $record) . '<br />';
+                if ($record['bodytext']) {
+                    $out .= $this->linkEditContent($this->renderText($record['bodytext']), $record) . '<br />';
+                }
+                if ($record['image']) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'image'), $record) . '<br />';
                 }
         }
 
@@ -357,17 +370,17 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     }
 
     /**
-     * Generates a list of selected pages or categories for the CType menu
+     * Generates a list of selected pages or categories for the menu content types
      *
      * @param array $record row from pages
      * @return string
      */
-    protected function generateListForCTypeMenu(array $record): string
+    protected function generateListForMenuContentTypes(array $record): string
     {
         $table = 'pages';
         $field = 'pages';
         // get categories instead of pages
-        if (strpos($record['menu_type'], 'categorized_') !== false) {
+        if (strpos($record['CType'], 'menu_categorized') !== false) {
             $table = 'sys_category';
             $field = 'selected_categories';
         }
