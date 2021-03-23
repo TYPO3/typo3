@@ -72,15 +72,8 @@ class DeleteUploadsFinisher extends AbstractFinisher
     protected function deleteEmptyUploadFolders(array $folders): void
     {
         foreach ($folders as $folder) {
-            /** @var Folder $parentFolder */
-            $parentFolder = $folder->getParentFolder();
-
             if ($this->isEmptyFolder($folder)) {
                 $folder->delete();
-            }
-
-            if ($this->isEmptyFolder($parentFolder)) {
-                $parentFolder->delete();
             }
         }
     }
