@@ -1155,10 +1155,12 @@ class EnvironmentController extends AbstractController
         ];
         foreach ($testResult as $resultKey => $value) {
             if ($resultKey === 'referenceFile' && !empty($testResult['referenceFile'])) {
-                $fileExt = end(explode('.', $testResult['referenceFile']));
+                $referenceFileArray = explode('.', $testResult['referenceFile']);
+                $fileExt = end($referenceFileArray);
                 $responseData['referenceFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['referenceFile']));
             } elseif ($resultKey === 'outputFile' && !empty($testResult['outputFile'])) {
-                $fileExt = end(explode('.', $testResult['outputFile']));
+                $outputFileArray = explode('.', $testResult['outputFile']);
+                $fileExt = end($outputFileArray);
                 $responseData['outputFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['outputFile']));
             } else {
                 $responseData[$resultKey] = $value;

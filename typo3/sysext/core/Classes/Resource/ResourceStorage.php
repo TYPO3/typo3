@@ -1796,11 +1796,12 @@ class ResourceStorage implements ResourceStorageInterface
         $contentDisposition = $asDownload ? 'attachment' : 'inline';
 
         $stream = new FalDumpFileContentsDecoratorStream($file->getIdentifier(), $this->driver, $file->getSize());
+        $fileInfo = $this->driver->getFileInfoByIdentifier($file->getIdentifier(), ['mtime']);
         $headers = [
             'Content-Disposition' => $contentDisposition . '; filename="' . $downloadName . '"',
             'Content-Type' => $overrideMimeType ?: $file->getMimeType(),
             'Content-Length' => (string)$file->getSize(),
-            'Last-Modified' => gmdate('D, d M Y H:i:s', array_pop($this->driver->getFileInfoByIdentifier($file->getIdentifier(), ['mtime']))) . ' GMT',
+            'Last-Modified' => gmdate('D, d M Y H:i:s', array_pop($fileInfo)) . ' GMT',
             // Cache-Control header is needed here to solve an issue with browser IE8 and lower
             // See for more information: http://support.microsoft.com/kb/323308
             'Cache-Control' => '',

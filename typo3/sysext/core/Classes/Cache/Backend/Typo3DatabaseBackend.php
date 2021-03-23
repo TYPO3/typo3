@@ -278,7 +278,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         // A large set of tags was detected. Process it in chunks to guard against exceeding
         // maximum SQL query limits.
         if (count($tags) > 100) {
-            array_walk(array_chunk($tags, 100), [$this, 'flushByTags']);
+            $chunks = array_chunk($tags, 100);
+            array_walk($chunks, [$this, 'flushByTags']);
             return;
         }
         // VERY simple quoting of tags is sufficient here for performance. Tags are already

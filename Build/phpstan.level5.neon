@@ -7,7 +7,7 @@ conditionalTags:
 
 parameters:
 	checkFunctionArgumentTypes: true
-#	checkArgumentsPassedByReference: true
+	checkArgumentsPassedByReference: true
 
 services:
 	-
