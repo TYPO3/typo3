@@ -1,0 +1,43 @@
+diff --git a/node_modules/@types/jqueryui/index.d.ts b/node_modules/@types/jqueryui/index.d.ts
+index 6fa8730..f4ad856 100644
+--- a/node_modules/@types/jqueryui/index.d.ts
++++ b/node_modules/@types/jqueryui/index.d.ts
+@@ -1148,18 +1148,6 @@ interface JQuery {
+     autocomplete(optionLiteral: string, options: JQueryUI.AutocompleteOptions): any;
+     autocomplete(optionLiteral: string, optionName: string, optionValue: any): JQuery;
+ 
+-    button(): JQuery;
+-    button(methodName: 'destroy'): void;
+-    button(methodName: 'disable'): void;
+-    button(methodName: 'enable'): void;
+-    button(methodName: 'refresh'): void;
+-    button(methodName: 'widget'): JQuery;
+-    button(methodName: string): JQuery;
+-    button(options: JQueryUI.ButtonOptions): JQuery;
+-    button(optionLiteral: string, optionName: string): any;
+-    button(optionLiteral: string, options: JQueryUI.ButtonOptions): any;
+-    button(optionLiteral: string, optionName: string, optionValue: any): JQuery;
+-
+     buttonset(): JQuery;
+     buttonset(methodName: 'destroy'): void;
+     buttonset(methodName: 'disable'): void;
+@@ -1892,19 +1880,6 @@ interface JQuery {
+     tabs(optionLiteral: string, options: JQueryUI.TabsOptions): any;
+     tabs(optionLiteral: string, optionName: string, optionValue: any): JQuery;
+ 
+-    tooltip(): JQuery;
+-    tooltip(methodName: 'destroy'): void;
+-    tooltip(methodName: 'disable'): void;
+-    tooltip(methodName: 'enable'): void;
+-    tooltip(methodName: 'open'): void;
+-    tooltip(methodName: 'close'): void;
+-    tooltip(methodName: 'widget'): JQuery;
+-    tooltip(methodName: string): JQuery;
+-    tooltip(options: JQueryUI.TooltipOptions): JQuery;
+-    tooltip(optionLiteral: string, optionName: string): any;
+-    tooltip(optionLiteral: string, options: JQueryUI.TooltipOptions): any;
+-    tooltip(optionLiteral: string, optionName: string, optionValue: any): JQuery;
+-
+ 
+     addClass(classNames: string, speed?: number, callback?: Function): JQuery;
+     addClass(classNames: string, speed?: string, callback?: Function): JQuery;

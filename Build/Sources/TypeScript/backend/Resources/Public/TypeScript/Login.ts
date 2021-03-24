@@ -69,7 +69,8 @@ class BackendLogin {
    * Show the loading spinner in the submit button
    */
   private showLoadingIndicator(): void {
-    $(this.options.submitButton).button('loading');
+    const button = $(this.options.submitButton);
+    button.html(button.data('loading-text'));
   }
 
   /**

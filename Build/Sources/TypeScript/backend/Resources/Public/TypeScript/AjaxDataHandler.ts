@@ -180,13 +180,14 @@ class AjaxDataHandler {
     $anchorElement.data('state', nextState).data('params', nextParams);
 
     // Update tooltip title
-    $anchorElement.tooltip('hide').one('hidden.bs.tooltip', (): void => {
+    $anchorElement.one('hidden.bs.tooltip', (): void => {
       const nextTitle = $anchorElement.data('toggleTitle');
       // Bootstrap Tooltip internally uses only .attr('data-bs-original-title')
       $anchorElement
         .data('toggleTitle', $anchorElement.attr('data-bs-original-title'))
         .attr('data-bs-original-title', nextTitle);
     });
+    $anchorElement.tooltip('hide');
 
     const $iconElement = $anchorElement.find(Identifiers.icon);
     Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {
