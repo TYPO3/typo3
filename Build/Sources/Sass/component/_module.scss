@@ -71,8 +71,7 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
     top: 0;
     left: 0;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     min-height: $module-docheader-height;
     z-index: $module-docheader-zindex;
     background-color: $module-docheader-bg;

@@ -77,8 +77,7 @@ $contrast-color: rgba(0, 0, 0, 0.1);
 .alert-actions {
     border-top: 1px solid $contrast-color;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     margin: 10px -31px -12px -11px;
 
     a {

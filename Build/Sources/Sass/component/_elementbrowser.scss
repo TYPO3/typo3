@@ -45,8 +45,7 @@ $elementbrowser-breakpoint: 600px;
 //
 .element-browser {
     display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
+    flex-flow: nowrap column;
     width: 100%;
 
     @media (min-width: $elementbrowser-breakpoint) {

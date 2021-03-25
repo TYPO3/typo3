@@ -1193,10 +1193,7 @@ body {
             &,
             &:focus,
             &:active {
-                outline: 0;
-                outline-color: initial;
-                outline-style: initial;
-                outline-width: 0;
+                outline: initial initial 0;
             }
         }
 

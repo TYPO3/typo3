@@ -11,6 +11,7 @@
     img {
         display: block; // Avoid margin top issue (Occur only when margin-top <= -height)
         image-orientation: 0deg !important; // https://developer.mozilla.org/en-US/docs/Web/CSS/image-orientation
+
         @include square(100%);
 
         min-width: 0 !important;

@@ -54,8 +54,7 @@ body {
     position: relative;
     height: 100vh;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
 }
 
 .scaffold-header {
@@ -64,8 +63,7 @@ body {
     top: 0;
     z-index: $scaffold-header-zindex;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     align-items: stretch;
     height: $scaffold-topbar-height;
 }
