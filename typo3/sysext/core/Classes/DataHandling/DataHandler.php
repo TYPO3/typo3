@@ -2514,7 +2514,7 @@ class DataHandler implements LoggerAwareInterface
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
         if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude'
             && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '') !== ''
-            && ($GLOBALS['TCA'][$table]['columns'][$field]['languageField'] ?? '') !== '') {
+            && ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '') !== '') {
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->orX(
