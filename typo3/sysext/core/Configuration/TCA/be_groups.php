@@ -126,7 +126,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'pagetypes',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailablePageTypes',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ]
@@ -136,7 +136,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'tables',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableTables',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ]
@@ -146,7 +146,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'tables',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableTables',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ]
@@ -156,7 +156,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'exclude',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateExcludeFields',
                 'size' => 25,
                 'autoSizeMax' => 50,
             ]
@@ -166,7 +166,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'explicitValues',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateExplicitAuthValues',
             ]
         ],
         'allowed_languages' => [
@@ -182,7 +182,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'custom',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateCustomPermissionOptions',
             ]
         ],
         'hidden' => [
@@ -206,7 +206,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'modListGroup',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableGroupModules',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ]

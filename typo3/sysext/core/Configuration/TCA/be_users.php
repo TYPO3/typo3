@@ -302,7 +302,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'special' => 'modListUser',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableUserModules',
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,

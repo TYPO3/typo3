@@ -16,18 +16,15 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use Doctrine\DBAL\Exception as DBALException;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -155,6 +152,7 @@ abstract class AbstractItemProvider
      * @param array $items Incoming items
      * @return array Modified item array
      * @throws \UnexpectedValueException
+     * @deprecated since v11, will be removed in v12
      */
     protected function addItemsFromSpecial(array $result, $fieldName, array $items)
     {
@@ -165,179 +163,48 @@ abstract class AbstractItemProvider
             return $items;
         }
 
-        $languageService = $this->getLanguageService();
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $special = $result['processedTca']['columns'][$fieldName]['config']['special'];
+
+        trigger_error(
+            'Using the TCA property \'special=' . $special . '\' is deprecated and will be removed in TYPO3 v12. Use a custom itemsProcFunc instead.',
+            E_USER_DEPRECATED
+        );
+
         switch (true) {
             case $special === 'tables':
-                foreach ($GLOBALS['TCA'] as $currentTable => $_) {
-                    if (!empty($GLOBALS['TCA'][$currentTable]['ctrl']['adminOnly'])) {
-                        // Hide "admin only" tables
-                        continue;
-                    }
-                    $label = !empty($GLOBALS['TCA'][$currentTable]['ctrl']['title']) ? $GLOBALS['TCA'][$currentTable]['ctrl']['title'] : '';
-                    $icon = $iconFactory->mapRecordTypeToIconIdentifier($currentTable, []);
-                    $languageService->loadSingleTableDescription($currentTable);
-                    $helpText = (string)($GLOBALS['TCA_DESCR'][$currentTable]['columns']['']['description'] ?? '');
-                    $items[] = [$label, $currentTable, $icon, null, $helpText];
-                }
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateAvailableTables($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
             case $special === 'pagetypes':
-                if (isset($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'])
-                    && is_array($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'])
-                ) {
-                    $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
-                    foreach ($specialItems as $specialItem) {
-                        if (!is_array($specialItem) || $specialItem[1] === '--div--') {
-                            // Skip non arrays and divider items
-                            continue;
-                        }
-                        $label = $specialItem[0];
-                        $value = $specialItem[1];
-                        $icon = $iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $specialItem[1]]);
-                        $items[] = [$label, $value, $icon];
-                    }
-                }
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateAvailablePageTypes($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
             case $special === 'exclude':
-                $excludeArrays = $this->getExcludeFields();
-                foreach ($excludeArrays as $excludeArray) {
-                    // If the field comes from a FlexForm, the syntax is more complex
-                    if ($excludeArray['origin'] === 'flexForm') {
-                        // The field comes from a plugins FlexForm
-                        // Add header if not yet set for plugin section
-                        if (!isset($items[$excludeArray['sectionHeader']])) {
-                            // there is no icon handling for plugins - we take the icon from the table
-                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], []);
-                            $items[$excludeArray['sectionHeader']] = [
-                                $excludeArray['sectionHeader'],
-                                '--div--',
-                                $icon
-                            ];
-                        }
-                    } else {
-                        // Add header if not yet set for table
-                        if (!isset($items[$excludeArray['table']])) {
-                            $icon = $iconFactory->mapRecordTypeToIconIdentifier($excludeArray['table'], []);
-                            $items[$excludeArray['table']] = [
-                                $GLOBALS['TCA'][$excludeArray['table']]['ctrl']['title'],
-                                '--div--',
-                                $icon
-                            ];
-                        }
-                    }
-                    // Add help text
-                    $languageService->loadSingleTableDescription($excludeArray['table']);
-                    $helpText = (string)($GLOBALS['TCA_DESCR'][$excludeArray['table']]['columns'][$excludeArray['fullField']]['description'] ?? '');
-                    // Item configuration:
-                    $items[] = [
-                        rtrim($excludeArray['origin'] === 'flexForm' ? $excludeArray['fieldLabel'] : $languageService->sL($GLOBALS['TCA'][$excludeArray['table']]['columns'][$excludeArray['fieldName']]['label']), ':') . ' (' . $excludeArray['fieldName'] . ')',
-                        $excludeArray['table'] . ':' . $excludeArray['fullField'],
-                        'empty-empty',
-                        null,
-                        $helpText
-                    ];
-                }
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
             case $special === 'explicitValues':
-                $theTypes = $this->getExplicitAuthFieldValues();
-                $icons = [
-                    'ALLOW' => 'status-status-permission-granted',
-                    'DENY' => 'status-status-permission-denied'
-                ];
-                // Traverse types:
-                foreach ($theTypes as $tableFieldKey => $theTypeArrays) {
-                    if (!empty($theTypeArrays['items'])) {
-                        // Add header:
-                        $items[] = [
-                            $theTypeArrays['tableFieldLabel'],
-                            '--div--',
-                        ];
-                        // Traverse options for this field:
-                        foreach ($theTypeArrays['items'] as $itemValue => $itemContent) {
-                            // Add item to be selected:
-                            $items[] = [
-                                '[' . $itemContent[2] . '] ' . $itemContent[1],
-                                $tableFieldKey . ':' . preg_replace('/[:|,]/', '', $itemValue) . ':' . $itemContent[0],
-                                $icons[$itemContent[0]]
-                            ];
-                        }
-                    }
-                }
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateExplicitAuthValues($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
             case $special === 'custom':
-                $customOptions = $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions'];
-                if (is_array($customOptions)) {
-                    foreach ($customOptions as $coKey => $coValue) {
-                        if (is_array($coValue['items'])) {
-                            // Add header:
-                            $items[] = [
-                                $languageService->sL($coValue['header']),
-                                '--div--'
-                            ];
-                            // Traverse items:
-                            foreach ($coValue['items'] as $itemKey => $itemCfg) {
-                                $icon = 'empty-empty';
-                                $helpText = '';
-                                if (!empty($itemCfg[1])) {
-                                    if ($iconRegistry->isRegistered($itemCfg[1])) {
-                                        // Use icon identifier when registered
-                                        $icon = $itemCfg[1];
-                                    }
-                                }
-                                if (!empty($itemCfg[2])) {
-                                    $helpText = $languageService->sL($itemCfg[2]);
-                                }
-                                $items[] = [
-                                    $languageService->sL($itemCfg[0]),
-                                    $coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
-                                    $icon,
-                                    null,
-                                    $helpText
-                                ];
-                            }
-                        }
-                    }
-                }
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateCustomPermissionOptions($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
-            case $special === 'modListGroup' || $special === 'modListUser':
-                /** @var ModuleLoader $loadModules */
-                $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-                $loadModules->load($GLOBALS['TBE_MODULES']);
-                $modList = $special === 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
-                if (is_array($modList)) {
-                    foreach ($modList as $theMod) {
-                        $moduleLabels = $loadModules->getLabelsForModule($theMod);
-                        $moduleArray = GeneralUtility::trimExplode('_', $theMod, true);
-                        $mainModule = $moduleArray[0] ?? '';
-                        $subModule = $moduleArray[1] ?? '';
-                        // Icon:
-                        if (!empty($subModule)) {
-                            $icon = $loadModules->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
-                        } else {
-                            $icon = $loadModules->modules[$theMod]['iconIdentifier'];
-                        }
-                        // Add help text
-                        $helpText = [
-                            'title' => $languageService->sL($moduleLabels['shortdescription']),
-                            'description' => $languageService->sL($moduleLabels['description'])
-                        ];
-
-                        $label = '';
-                        // Add label for main module if this is a submodule
-                        if (!empty($subModule)) {
-                            $mainModuleLabels = $loadModules->getLabelsForModule($mainModule);
-                            $label .= $languageService->sL($mainModuleLabels['title']) . '>';
-                        }
-                        // Add modules own label now
-                        $label .= $languageService->sL($moduleLabels['title']);
-
-                        // Item configuration
-                        $items[] = [$label, $theMod, $icon, null, $helpText];
-                    }
-                }
+            case $special === 'modListGroup':
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateAvailableGroupModules($fieldInformation);
+                $items = $fieldInformation['items'];
+                break;
+            case $special === 'modListUser':
+                $fieldInformation = ['items' => $items];
+                (new TcaItemsProcessorFunctions())->populateAvailableUserModules($fieldInformation);
+                $items = $fieldInformation['items'];
                 break;
             default:
                 throw new \UnexpectedValueException(
@@ -698,233 +565,6 @@ abstract class AbstractItemProvider
                     || in_array((int)$itemValue, $allowedStorageIds, true);
             }
         );
-    }
-
-    /**
-     * Returns an array with the exclude fields as defined in TCA and FlexForms
-     * Used for listing the exclude fields in be_groups forms.
-     *
-     * @return array Array of arrays with excludeFields (fieldName, table:fieldName) from TCA
-     *               and FlexForms (fieldName, table:extKey;sheetName;fieldName)
-     */
-    protected function getExcludeFields()
-    {
-        $languageService = $this->getLanguageService();
-        $finalExcludeArray = [];
-
-        // Fetch translations for table names
-        $tableToTranslation = [];
-        // All TCA keys
-        foreach ($GLOBALS['TCA'] as $table => $conf) {
-            $tableToTranslation[$table] = $languageService->sL($conf['ctrl']['title']);
-        }
-        /** @var array<string, string> $tableToTranslation */
-        // Sort by translations
-        asort($tableToTranslation);
-        foreach ($tableToTranslation as $table => $translatedTable) {
-            $excludeArrayTable = [];
-
-            // All field names configured and not restricted to admins
-            if (is_array($GLOBALS['TCA'][$table]['columns'])
-                && empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
-                && (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
-            ) {
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
-                    $isExcludeField = (bool)($GLOBALS['TCA'][$table]['columns'][$field]['exclude'] ?? false);
-                    $isOnlyVisibleForAdmins = ($GLOBALS['TCA'][$table]['columns'][$field]['displayCond'] ?? '') === 'HIDE_FOR_NON_ADMINS';
-                    // Only show fields that can be excluded for editors, or are hidden for non-admins
-                    if ($isExcludeField && !$isOnlyVisibleForAdmins) {
-                        // Get human readable names of fields
-                        $translatedField = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
-                        // Add entry, key 'labels' needed for sorting
-                        $excludeArrayTable[] = [
-                            'labels' => $translatedTable . ':' . $translatedField,
-                            'sectionHeader' => $translatedTable,
-                            'table' => $table,
-                            'tableField' => $field,
-                            'fieldName' => $field,
-                            'fullField' => $field,
-                            'fieldLabel' => $translatedField,
-                            'origin' => 'tca',
-                        ];
-                    }
-                }
-            }
-            // All FlexForm fields
-            $flexFormArray = $this->getRegisteredFlexForms($table);
-            foreach ($flexFormArray as $tableField => $flexForms) {
-                // Prefix for field label, e.g. "Plugin Options:"
-                $labelPrefix = '';
-                if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
-                    $labelPrefix = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
-                }
-                // Get all sheets
-                foreach ($flexForms as $extIdent => $extConf) {
-                    // Get all fields in sheet
-                    foreach ($extConf['sheets'] as $sheetName => $sheet) {
-                        if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
-                            continue;
-                        }
-                        foreach ($sheet['ROOT']['el'] as $pluginFieldName => $field) {
-                            // Use only fields that have exclude flag set
-                            if (empty($field['TCEforms']['exclude'])) {
-                                continue;
-                            }
-                            $fieldLabel = !empty($field['TCEforms']['label'])
-                                ? $languageService->sL($field['TCEforms']['label'])
-                                : $pluginFieldName;
-                            $excludeArrayTable[] = [
-                                'labels' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ': ') . ':' . $fieldLabel,
-                                'sectionHeader' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ':'),
-                                'table' => $table,
-                                'tableField' => $tableField,
-                                'extIdent' => $extIdent,
-                                'fieldName' => $pluginFieldName,
-                                'fullField' => $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $pluginFieldName,
-                                'fieldLabel' => $fieldLabel,
-                                'origin' => 'flexForm',
-                            ];
-                        }
-                    }
-                }
-            }
-            // Sort fields by the translated value
-            if (!empty($excludeArrayTable)) {
-                usort($excludeArrayTable, function (array $array1, array $array2) {
-                    $array1 = reset($array1);
-                    $array2 = reset($array2);
-                    if (is_string($array1) && is_string($array2)) {
-                        return strcasecmp($array1, $array2);
-                    }
-                    return 0;
-                });
-                $finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
-            }
-        }
-
-        return $finalExcludeArray;
-    }
-
-    /**
-     * Returns FlexForm data structures it finds. Used in select "special" for be_groups
-     * to set "exclude" flags for single flex form fields.
-     *
-     * This only finds flex forms registered in 'ds' config sections.
-     * This does not resolve other sophisticated flex form data structure references.
-     *
-     * @todo: This approach is limited and doesn't find everything. It works for casual tt_content plugins, though:
-     * @todo: The data structure identifier determination depends on data row, but we don't have all rows at hand here.
-     * @todo: The code thus "guesses" some standard data structure identifier scenarios and tries to resolve those.
-     * @todo: This guessing can not be solved in a good way. A general registry of "all" possible data structures is
-     * @todo: probably not wanted, since that wouldn't work for truly dynamic DS calculations. Probably the only
-     * @todo: thing we could do here is a hook to allow extensions declaring specific data structures to
-     * @todo: allow backend admins to set exclude flags for certain fields in those cases.
-     *
-     * @param string $table Table to handle
-     * @return array Data structures
-     */
-    protected function getRegisteredFlexForms($table)
-    {
-        if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
-            return [];
-        }
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-        $flexForms = [];
-        foreach ($GLOBALS['TCA'][$table]['columns'] as $tableField => $fieldConf) {
-            if (!empty($fieldConf['config']['type']) && !empty($fieldConf['config']['ds']) && $fieldConf['config']['type'] === 'flex') {
-                $flexForms[$tableField] = [];
-                foreach (array_keys($fieldConf['config']['ds']) as $flexFormKey) {
-                    $flexFormKey = (string)$flexFormKey;
-                    // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
-                    $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
-                    $extIdent = $identFields[0];
-                    if (!empty($identFields[1]) && $identFields[1] !== 'list' && $identFields[1] !== '*') {
-                        $extIdent = $identFields[1];
-                    }
-                    $flexFormDataStructureIdentifier = json_encode([
-                        'type' => 'tca',
-                        'tableName' => $table,
-                        'fieldName' => $tableField,
-                        'dataStructureKey' => $flexFormKey,
-                    ]);
-                    try {
-                        $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
-                        $flexForms[$tableField][$extIdent] = $dataStructure;
-                    } catch (InvalidIdentifierException $e) {
-                        // Deliberately empty: The DS identifier is guesswork and the flex ds parser throws
-                        // this exception if it can not resolve to a valid data structure. This is "ok" here
-                        // and the exception is just eaten.
-                    }
-                }
-            }
-        }
-        return $flexForms;
-    }
-
-    /**
-     * Returns an array with explicit Allow/Deny fields.
-     * Used for listing these field/value pairs in be_groups forms
-     *
-     * @return array Array with information from all of $GLOBALS['TCA']
-     */
-    protected function getExplicitAuthFieldValues()
-    {
-        $languageService = static::getLanguageService();
-        $adLabel = [
-            'ALLOW' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allow'),
-            'DENY' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny')
-        ];
-        $allowDenyOptions = [];
-        foreach ($GLOBALS['TCA'] as $table => $_) {
-            // All field names configured:
-            if (is_array($GLOBALS['TCA'][$table]['columns'])) {
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $__) {
-                    $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                    if ($fieldConfig['type'] === 'select' && $fieldConfig['authMode']) {
-                        // Check for items
-                        if (is_array($fieldConfig['items'])) {
-                            // Get Human Readable names of fields and table:
-                            $allowDenyOptions[$table . ':' . $field]['tableFieldLabel'] =
-                                $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']) . ': '
-                                . $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
-                            foreach ($fieldConfig['items'] as $iVal) {
-                                $itemIdentifier = (string)$iVal[1];
-                                // Values '' and '--div--' are not controlled by this setting.
-                                if ($itemIdentifier === '' || $itemIdentifier === '--div--') {
-                                    continue;
-                                }
-                                // Find iMode
-                                $iMode = '';
-                                switch ((string)$fieldConfig['authMode']) {
-                                    case 'explicitAllow':
-                                        $iMode = 'ALLOW';
-                                        break;
-                                    case 'explicitDeny':
-                                        $iMode = 'DENY';
-                                        break;
-                                    case 'individual':
-                                        if (isset($iVal[4]) && $iVal[4] === 'EXPL_ALLOW') {
-                                            $iMode = 'ALLOW';
-                                        } elseif (isset($iVal[4]) && $iVal[4] === 'EXPL_DENY') {
-                                            $iMode = 'DENY';
-                                        }
-                                        break;
-                                }
-                                // Set iMode
-                                if ($iMode) {
-                                    $allowDenyOptions[$table . ':' . $field]['items'][$itemIdentifier] = [
-                                        $iMode,
-                                        $languageService->sL($iVal[0]),
-                                        $adLabel[$iMode]
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $allowDenyOptions;
     }
 
     /**

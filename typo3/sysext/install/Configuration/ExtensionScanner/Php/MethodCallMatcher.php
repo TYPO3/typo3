@@ -4788,4 +4788,11 @@ return [
             'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->addItemsFromSpecial' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-93837-DeprecatedSpecialPropertyOfTCATypeSelect.rst'
+        ],
+    ],
 ];

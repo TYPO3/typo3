@@ -100,7 +100,7 @@ return [
                 'items' => [
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.table2index.I.0', '0']
                 ],
-                'special' => 'tables',
+                'itemsProcFunc' => \TYPO3\CMS\IndexedSearch\Hook\AvailableTcaTables::class . '->populateTables',
                 'size' => 1,
                 'maxitems' => 1
             ]
