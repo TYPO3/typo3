@@ -179,13 +179,8 @@ abstract class AbstractItemProvider
                     }
                     $label = !empty($GLOBALS['TCA'][$currentTable]['ctrl']['title']) ? $GLOBALS['TCA'][$currentTable]['ctrl']['title'] : '';
                     $icon = $iconFactory->mapRecordTypeToIconIdentifier($currentTable, []);
-                    $helpText = [];
                     $languageService->loadSingleTableDescription($currentTable);
-                    // @todo: check if this actually works, currently help texts are missing
-                    $helpTextArray = $GLOBALS['TCA_DESCR'][$currentTable]['columns'][''];
-                    if (!empty($helpTextArray['description'])) {
-                        $helpText['description'] = $helpTextArray['description'];
-                    }
+                    $helpText = (string)($GLOBALS['TCA_DESCR'][$currentTable]['columns']['']['description'] ?? '');
                     $items[] = [$label, $currentTable, $icon, null, $helpText];
                 }
                 break;
@@ -234,12 +229,8 @@ abstract class AbstractItemProvider
                         }
                     }
                     // Add help text
-                    $helpText = [];
                     $languageService->loadSingleTableDescription($excludeArray['table']);
-                    $helpTextArray = $GLOBALS['TCA_DESCR'][$excludeArray['table']]['columns'][$excludeArray['table']] ?? [];
-                    if (!empty($helpTextArray['description'])) {
-                        $helpText['description'] = $helpTextArray['description'];
-                    }
+                    $helpText = (string)($GLOBALS['TCA_DESCR'][$excludeArray['table']]['columns'][$excludeArray['fullField']]['description'] ?? '');
                     // Item configuration:
                     $items[] = [
                         rtrim($excludeArray['origin'] === 'flexForm' ? $excludeArray['fieldLabel'] : $languageService->sL($GLOBALS['TCA'][$excludeArray['table']]['columns'][$excludeArray['fieldName']]['label']), ':') . ' (' . $excludeArray['fieldName'] . ')',
@@ -289,7 +280,7 @@ abstract class AbstractItemProvider
                             // Traverse items:
                             foreach ($coValue['items'] as $itemKey => $itemCfg) {
                                 $icon = 'empty-empty';
-                                $helpText = [];
+                                $helpText = '';
                                 if (!empty($itemCfg[1])) {
                                     if ($iconRegistry->isRegistered($itemCfg[1])) {
                                         // Use icon identifier when registered
@@ -297,7 +288,7 @@ abstract class AbstractItemProvider
                                     }
                                 }
                                 if (!empty($itemCfg[2])) {
-                                    $helpText['description'] = $languageService->sL($itemCfg[2]);
+                                    $helpText = $languageService->sL($itemCfg[2]);
                                 }
                                 $items[] = [
                                     $languageService->sL($itemCfg[0]),

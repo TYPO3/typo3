@@ -119,7 +119,9 @@ class WidgetRegistry implements SingletonInterface
             $parameters['items'][] = [
                 $widget->getTitle(),
                 $widget->getIdentifier(),
-                $widget->getIconIdentifier()
+                $widget->getIconIdentifier(),
+                null,
+                $widget->getDescription()
             ];
         }
     }

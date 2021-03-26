@@ -188,12 +188,16 @@ class WidgetRegistryTest extends UnitTestCase
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:T3OrgNews.title',
                         't3orgnews',
-                        'content-widget-rss'
+                        'content-widget-rss',
+                        null,
+                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:T3OrgNews.description'
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:2ndWidget.title',
                         '2ndWidget',
-                        'content-widget-2nd'
+                        'content-widget-2nd',
+                        null,
+                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:2ndWidget.description'
                     ],
                 ]
             ],

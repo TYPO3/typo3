@@ -118,12 +118,12 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $hasHelp = false;
                         $help = '';
                         $helpArray = [];
-                        if (!empty($p[3])) {
+                        if (!empty($p[4])) {
                             $hasHelp = true;
-                            if (is_array($p[3])) {
-                                $helpArray = $p[3];
+                            if (is_array($p[4])) {
+                                $helpArray = $p[4];
                             } else {
-                                $helpArray['description'] = $p[3];
+                                $helpArray['description'] = $p[4];
                             }
                         }
                         if ($hasHelp) {

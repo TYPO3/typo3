@@ -80,7 +80,7 @@ class ContextHelp {
       const description = $me.data('description');
       if (typeof description !== 'undefined' && description !== '') {
         const options = <BootstrapPopover.Options>{
-          title: $me.data('title'),
+          title: $me.data('title') || '',
           content: description,
         };
         Popover.setOptions($me, options);

@@ -142,7 +142,9 @@ class MfaProviderRegistry
             $parameters['items'][] = [
                 $provider->getTitle(),
                 $provider->getIdentifier(),
-                $provider->getIconIdentifier()
+                $provider->getIconIdentifier(),
+                null,
+                $provider->getDescription()
             ];
         }
     }
