@@ -156,7 +156,15 @@ class ContentFetcher
             if (!empty($contentRecordsInDefaultLanguage)) {
                 $contentRecordsInDefaultLanguage = array_merge(...$contentRecordsInDefaultLanguage);
             }
-            $untranslatedRecordUids = array_flip(array_column($contentRecordsInDefaultLanguage, 'uid'));
+            $untranslatedRecordUids = array_flip(
+                array_column(
+                    // Eliminate records with "-1" as sys_language_uid since they can not be translated
+                    array_filter($contentRecordsInDefaultLanguage, static function (array $record): bool {
+                        return (int)($record['sys_language_uid'] ?? 0) !== -1;
+                    }),
+                    'uid'
+                )
+            );
 
             foreach ($contentElements as $contentElement) {
                 if ((int)$contentElement['sys_language_uid'] === -1) {
