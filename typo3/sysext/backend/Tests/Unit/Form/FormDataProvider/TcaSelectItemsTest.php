@@ -465,6 +465,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
         $languageService->sL(Argument::containingString('INVALID VALUE'))->willReturnArgument(0);
 
+        $languageService->sL('aDescription')->shouldBeCalled()->willReturnArgument(0);
         $languageService->sL('aTitle')->shouldBeCalled()->willReturnArgument(0);
         $languageService->loadSingleTableDescription('aTable')->shouldBeCalled();
 
@@ -476,9 +477,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 'aTable',
                 2 => null,
                 3 => null,
-                4 => [
-                    'description' => 'aDescription',
-                ],
+                4 => 'aDescription',
             ]
         ];
 
@@ -586,7 +585,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
                         3 => null,
-                        4 => null,
+                        4 => 'aDescription',
                     ],
                 ],
             ],
@@ -623,7 +622,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
                         3 => null,
-                        4 => null,
+                        4 => 'aDescription',
                     ],
                 ],
             ],
@@ -692,6 +691,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TCA'] = $tca;
+        $GLOBALS['TCA_DESCR']['fooTable']['columns']['bar']['description'] = 'aDescription';
 
         $result = (new TcaSelectItems())->addData($input);
 
@@ -1225,7 +1225,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 1 => 'aKey:anotherKey',
                 2 => 'empty-empty',
                 3 => null,
-                4 => [ 'description' => 'aDescription' ],
+                4 => 'aDescription',
             ],
         ];
 

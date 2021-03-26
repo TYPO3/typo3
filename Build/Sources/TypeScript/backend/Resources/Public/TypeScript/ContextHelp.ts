@@ -79,7 +79,7 @@ class ContextHelp {
       const description = $me.data('description');
       if (typeof description !== 'undefined' && description !== '') {
         Popover.setOptions($me, {
-          title: $me.data('title'),
+          title: $me.data('title') || '',
           content: description,
         });
       } else if ($me.attr('data-loaded') === 'false' && $me.data('table')) {
