@@ -87,8 +87,10 @@ class TextElement extends AbstractFormElement
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
-        $cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = $this->formMaxWidth($cols);
+        $width = null;
+        if ($config['cols'] ?? false) {
+            $width = $this->formMaxWidth(MathUtility::forceIntegerInRange($config['cols'], $this->minimumInputWidth, $this->maxInputWidth));
+        }
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
         // Setting number of rows
@@ -116,7 +118,7 @@ class TextElement extends AbstractFormElement
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
-            $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
+            $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
@@ -217,7 +219,7 @@ class TextElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $mainFieldHtml = [];
-        $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
+        $mainFieldHtml[] = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
@@ -285,7 +287,7 @@ class TextElement extends AbstractFormElement
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';
             $fullElement[] = '<div class="t3js-formengine-placeholder-placeholder">';
-            $fullElement[] =    '<div class="form-control-wrap" style="max-width:' . $width . 'px">';
+            $fullElement[] =    '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $fullElement[] =        '<textarea';
             $fullElement[] =            ' class="form-control formengine-textarea' . (isset($config['fixedFont']) ? ' text-monospace'  : '') . '"';
             $fullElement[] =            ' disabled="disabled"';
