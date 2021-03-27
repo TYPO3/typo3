@@ -21,24 +21,34 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
+use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * This middleware authenticates a Frontend User (fe_users).
  */
-class FrontendUserAuthenticator implements MiddlewareInterface
+class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Context
      */
     protected $context;
+    protected RateLimiterFactory $rateLimiterFactory;
 
-    public function __construct(Context $context)
+    public function __construct(Context $context, RateLimiterFactory $rateLimiterFactory)
     {
         $this->context = $context;
+        $this->rateLimiterFactory = $rateLimiterFactory;
     }
 
     /**
@@ -59,6 +69,9 @@ class FrontendUserAuthenticator implements MiddlewareInterface
             $frontendUser->checkPid_value = implode(',', GeneralUtility::intExplode(',', $pid));
         }
 
+        // Rate Limiting
+        $rateLimiter = $this->ensureLoginRateLimit($frontendUser, $request);
+
         // Authenticate now
         $frontendUser->start();
         $frontendUser->unpack_uc();
@@ -70,6 +83,10 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         $userAspect = $frontendUser->createUserAspect();
         $this->context->setAspect('frontend.user', $userAspect);
         $request = $request->withAttribute('frontend.user', $frontendUser);
+
+        if ($this->context->getAspect('frontend.user')->isLoggedIn() && $rateLimiter) {
+            $rateLimiter->reset();
+        }
 
         $response = $handler->handle($request);
 
@@ -92,5 +109,27 @@ class FrontendUserAuthenticator implements MiddlewareInterface
     protected function sessionGarbageCollection(): void
     {
         UserSessionManager::create('FE')->collectGarbage();
+    }
+
+    protected function ensureLoginRateLimit(FrontendUserAuthentication $user, ServerRequestInterface $request): ?LimiterInterface
+    {
+        if (!$user->isActiveLogin($request)) {
+            return null;
+        }
+        $loginRateLimiter = $this->rateLimiterFactory->createLoginRateLimiter($user, $request);
+        $limit = $loginRateLimiter->consume();
+        if ($limit && !$limit->isAccepted()) {
+            $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
+            $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0 ?
+                ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
+            throw new RequestRateLimitedException(
+                HttpUtility::HTTP_STATUS_403,
+                'The login is locked' . $lockedUntil . ' due to too many failed login attempts from your IP address.',
+                'Login Request Rate Limited',
+                1616175847
+            );
+        }
+        return $loginRateLimiter;
     }
 }

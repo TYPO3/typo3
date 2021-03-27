@@ -42,7 +42,9 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     private const IGNORED_EXCEPTION_CODES = [
         1396795884, // Current host header value does not match the configured trusted hosts pattern
         1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
-        1581862823  // Failed HMAC validation due to modified form state in ext:forms
+        1581862823, // Failed HMAC validation due to modified form state in ext:forms
+        1616175867, // Backend login request is rate limited
+        1616175847  // Frontend login request is rate limited
     ];
 
     /**

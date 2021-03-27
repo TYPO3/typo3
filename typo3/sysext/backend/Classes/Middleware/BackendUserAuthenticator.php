@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,16 +34,21 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
+use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Initializes the backend user authentication object (BE_USER) and the global LANG object.
  *
  * @internal
  */
-class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
+class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * List of requests that don't need a valid BE user
      *
@@ -62,13 +70,16 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     ];
 
     private LanguageServiceFactory $languageServiceFactory;
+    private RateLimiterFactory $rateLimiterFactory;
 
     public function __construct(
         Context $context,
-        LanguageServiceFactory $languageServiceFactory
+        LanguageServiceFactory $languageServiceFactory,
+        RateLimiterFactory $rateLimiterFactory
     ) {
         parent::__construct($context);
         $this->languageServiceFactory = $languageServiceFactory;
+        $this->rateLimiterFactory = $rateLimiterFactory;
     }
 
     /**
@@ -86,6 +97,8 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        // Rate Limiting
+        $rateLimiter = $this->ensureLoginRateLimit($GLOBALS['BE_USER'], $request);
         try {
             $GLOBALS['BE_USER']->start();
         } catch (MfaRequiredException $mfaRequiredException) {
@@ -122,6 +135,10 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         }
         if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             $GLOBALS['BE_USER']->initializeBackendLogin();
+            // Reset the limiter after successful login
+            if ($rateLimiter) {
+                $rateLimiter->reset();
+            }
         }
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         // Re-setting the user and take the workspace from the user object now
@@ -208,5 +225,27 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     protected function isLoggedInBackendUserRequired(Route $route): bool
     {
         return in_array($route->getPath(), $this->publicRoutes, true) === false;
+    }
+
+    protected function ensureLoginRateLimit(BackendUserAuthentication $user, ServerRequestInterface $request): ?LimiterInterface
+    {
+        if (!$user->isActiveLogin($request)) {
+            return null;
+        }
+        $loginRateLimiter = $this->rateLimiterFactory->createLoginRateLimiter($user, $request);
+        $limit = $loginRateLimiter->consume();
+        if ($limit && !$limit->isAccepted()) {
+            $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
+            $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0 ?
+                ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
+            throw new RequestRateLimitedException(
+                HttpUtility::HTTP_STATUS_403,
+                'The login is locked' . $lockedUntil . ' due to too many failed login attempts from your IP address.',
+                'Login Request Rate Limited',
+                1616175867
+            );
+        }
+        return $loginRateLimiter;
     }
 }

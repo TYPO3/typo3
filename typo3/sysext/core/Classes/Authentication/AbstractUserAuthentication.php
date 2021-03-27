@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Authentication;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -690,17 +691,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     protected function handleLoginFailure(): void
     {
         $_params = [];
-        $sleep = true;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] ?? [] as $hookIdentifier => $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            // This hack will be removed once this is migrated into PSR-14 Events
-            if ($hookIdentifier !== 'sendEmailOnFailedLoginAttempt') {
-                $sleep = false;
-            }
-        }
-        if ($sleep) {
-            // No hooks were triggered - default login failure behavior is to sleep 5 seconds
-            sleep(5);
         }
     }
 
@@ -1129,6 +1121,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $loginData = $this->processLoginData($loginData);
         }
         return $loginData;
+    }
+
+    public function isActiveLogin(ServerRequestInterface $request): bool
+    {
+        $status = $request->getParsedBody()[$this->formfield_status] ?? $request->getQueryParams()[$this->formfield_status] ?? '';
+        return $status === LoginType::LOGIN;
     }
 
     /**

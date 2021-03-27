@@ -74,6 +74,9 @@ services:
   TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry:
     public: true
 
+  TYPO3\CMS\Core\RateLimiter\Storage\CachingFrameworkStorage:
+    public: true
+
   TYPO3\CMS\Core\Authentication\Mfa\Provider\TotpProvider:
     tags:
       - name: mfa.provider
@@ -111,6 +114,10 @@ services:
     public: true
 
   TYPO3\CMS\Core\Authentication\GroupResolver:
+    shared: false
+    public: true
+
+  TYPO3\CMS\Core\RateLimiter\RateLimiterFactory:
     shared: false
     public: true
 

@@ -276,6 +276,20 @@ BE:
         recommendedMfaProvider:
           type: text
           description: 'Set the identifier of the multi-factor authentication provider, recommended for all users.'
+        loginRateLimit:
+          type: int
+          description: 'Maximum amount of login attempts for the time interval in [BE][loginRateLimitInterval], before further login requests will be denied. Setting this value to "0" will disable login rate limiting.'
+        loginRateLimitInterval:
+          type: dropdown
+          allowedValues:
+            '1 minute': '1 minute'
+            '5 minutes': '5 minutes'
+            '15 minutes': '15 minutes'
+            '30 minutes': '30 minutes'
+          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in AdditionalConfiguration.php.'
+        loginRateLimitIpExcludeList:
+          type: list
+          description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
         lockIP:
             type: int
             allowedValues:
@@ -410,6 +424,20 @@ FE:
         checkFeUserPid:
             type: bool
             description: 'If set, the pid of fe_user logins must be sent in the form as the field ''pid'' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag ''uniqueInPid'' to ''unique'' in $TCA. This will do: <code>$TCA[''fe_users''][''columns''][''username''][''config''][''eval'']= ''nospace,lower,required,unique'';</code>'
+        loginRateLimit:
+          type: int
+          description: 'Maximum amount of login attempts for the time interval in [FE][loginRateLimitInterval], before further login requests will be denied. Setting this value to "0" will disable login rate limiting.'
+        loginRateLimitInterval:
+          type: dropdown
+          allowedValues:
+            '1 minute': '1 minute'
+            '5 minutes': '5 minutes'
+            '15 minutes': '15 minutes'
+            '30 minutes': '30 minutes'
+          description: 'Allowed time interval for the configured rate limit. Individual values using PHP relative formats can be set in AdditionalConfiguration.php.'
+        loginRateLimitIpExcludeList:
+          type: list
+          description: 'IP-numbers (with *-wildcards) that are excluded from rate limiting. Syntax similar to [BE][IPmaskList]. An empty value disables the exclude list check.'
         lockIP:
             type: int
             allowedValues:

@@ -60,6 +60,7 @@
 		"symfony/polyfill-mbstring": "^1.2",
 		"symfony/routing": "^5.3.0",
 		"symfony/yaml": "^5.3.0",
+		"symfony/rate-limiter": "^5.3",
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^3.0",
 		"typo3/cms-composer-installers": "^2.0 || ^3.0",

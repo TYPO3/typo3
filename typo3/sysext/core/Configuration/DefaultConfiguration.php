@@ -240,6 +240,11 @@ return [
                     ],
                     'groups' => ['system']
                 ],
+                'ratelimiter' => [
+                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                    'groups' => ['system']
+                ],
             ],
         ],
         'defaultCategorizedTables' => '',
@@ -1181,6 +1186,9 @@ return [
         'passwordResetForAdmins' => true,
         'requireMfa' => 0,
         'recommendedMfaProvider' => 'totp',
+        'loginRateLimit' => 5,
+        'loginRateLimitInterval' => '15 minutes',
+        'loginRateLimitIpExcludeList' => '',
         'lockIP' => 0,
         'lockIPv6' => 0,
         'sessionTimeout' => 28800,  // a backend user logged in for 8 hours
@@ -1361,6 +1369,9 @@ return [
         'pageUnavailable_force' => false,
         'addRootLineFields' => '',
         'checkFeUserPid' => true,
+        'loginRateLimit' => 10,
+        'loginRateLimitInterval' => '15 minutes',
+        'loginRateLimitIpExcludeList' => '',
         'lockIP' => 0,
         'lockIPv6' => 0,
         'lifetime' => 0,
