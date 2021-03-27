@@ -58,7 +58,7 @@ class SvgSpriteIconProviderTest extends UnitTestCase
             'sprite' => 'fileadmin/sprites/actions.svg#actions-add',
             'source' => 'fileadmin/svg/actions-add.svg',
         ]);
-        self::assertEquals('<svg class="icon-color" role="img"><use xlink:href="fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
     }
 
     /**
@@ -70,7 +70,7 @@ class SvgSpriteIconProviderTest extends UnitTestCase
             'sprite' => '/fileadmin/sprites/actions.svg#actions-add',
             'source' => '/fileadmin/svg/actions-add.svg',
         ]);
-        self::assertEquals('<svg class="icon-color" role="img"><use xlink:href="/fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
     }
 
     /**
@@ -82,7 +82,7 @@ class SvgSpriteIconProviderTest extends UnitTestCase
             'sprite' => 'EXT:core/Resources/Public/Images/sprites/actions.svg#actions-add',
             'source' => 'EXT:core/Resources/Public/Images/svg/actions-add.svg',
         ]);
-        self::assertEquals('<svg class="icon-color" role="img"><use xlink:href="typo3/sysext/core/Resources/Public/Images/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Images/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
     }
 
     /**

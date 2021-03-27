@@ -48,7 +48,7 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider implements IconProvi
         }
 
         $source = PathUtility::getAbsoluteWebPath($source);
-        return '<svg class="icon-color" role="img"><use xlink:href="' . htmlspecialchars($source) . '" /></svg>';
+        return '<svg class="icon-color"><use xlink:href="' . htmlspecialchars($source) . '" /></svg>';
     }
 
     /**
