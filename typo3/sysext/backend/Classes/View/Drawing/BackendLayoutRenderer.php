@@ -268,7 +268,7 @@ class BackendLayoutRenderer
 
                 $unusedGrid = GeneralUtility::makeInstance(Grid::class, $this->context);
                 $unusedRow = GeneralUtility::makeInstance(GridRow::class, $this->context);
-                $unusedColumn = GeneralUtility::makeInstance(GridColumn::class, $this->context, ['colPos' => false, 'name' => 'unused']);
+                $unusedColumn = GeneralUtility::makeInstance(GridColumn::class, $this->context, ['name' => 'unused']);
 
                 $unusedGrid->addRow($unusedRow);
                 $unusedRow->addColumn($unusedColumn);
