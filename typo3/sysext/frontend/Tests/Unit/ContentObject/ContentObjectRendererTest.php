@@ -1408,18 +1408,34 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
 
+    public function getDataWithTypeFileReturnsUidOfFileObjectDataProvider(): array
+    {
+        return [
+            'no whitespace' => [
+                'typoScriptPath' => 'file:current:uid',
+            ],
+            'always whitespace' => [
+                'typoScriptPath' => 'file : current : uid',
+            ],
+            'mixed whitespace' => [
+                'typoScriptPath' => 'file:current : uid',
+            ],
+        ];
+    }
+
     /**
      * Basic check if getData gets the uid of a file object
      *
      * @test
+     * @dataProvider getDataWithTypeFileReturnsUidOfFileObjectDataProvider
      */
-    public function getDataWithTypeFileReturnsUidOfFileObject(): void
+    public function getDataWithTypeFileReturnsUidOfFileObject(string $typoScriptPath): void
     {
         $uid = StringUtility::getUniqueId();
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);
-        self::assertEquals($uid, $this->subject->getData('file:current:uid'));
+        self::assertEquals($uid, $this->subject->getData($typoScriptPath));
     }
 
     /**
