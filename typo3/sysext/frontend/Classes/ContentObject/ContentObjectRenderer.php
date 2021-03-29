@@ -4410,7 +4410,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getFileDataKey($key)
     {
-        [$fileUidOrCurrentKeyword, $requestedFileInformationKey] = explode(':', $key, 3);
+        [$fileUidOrCurrentKeyword, $requestedFileInformationKey] = GeneralUtility::trimExplode(':', $key, false, 3);
         try {
             if ($fileUidOrCurrentKeyword === 'current') {
                 $fileObject = $this->getCurrentFile();
