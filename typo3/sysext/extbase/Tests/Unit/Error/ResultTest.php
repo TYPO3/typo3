@@ -256,4 +256,15 @@ class ResultTest extends UnitTestCase
         self::assertSame([$error3], $this->result->getErrors());
         self::assertSame([$error1, $error2], $this->result->forProperty('foo')->getErrors());
     }
+
+    /**
+     * @test
+     */
+    public function getFirstReturnsFalseOnEmptyResult()
+    {
+        $subject = new Result();
+        self::assertFalse($subject->getFirstError());
+        self::assertFalse($subject->getFirstNotice());
+        self::assertFalse($subject->getFirstWarning());
+    }
 }
