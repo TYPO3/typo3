@@ -155,9 +155,9 @@ class Result
     /**
      * Get the first error object of the current Result object (non-recursive)
      *
-     * @return Error
+     * @return false|Error
      */
-    public function getFirstError(): Error
+    public function getFirstError()
     {
         reset($this->errors);
         return current($this->errors);
@@ -166,9 +166,9 @@ class Result
     /**
      * Get the first warning object of the current Result object (non-recursive)
      *
-     * @return Warning
+     * @return false|Warning
      */
-    public function getFirstWarning(): Warning
+    public function getFirstWarning()
     {
         reset($this->warnings);
         return current($this->warnings);
@@ -177,9 +177,9 @@ class Result
     /**
      * Get the first notice object of the current Result object (non-recursive)
      *
-     * @return Notice
+     * @return false|Notice
      */
-    public function getFirstNotice(): Notice
+    public function getFirstNotice()
     {
         reset($this->notices);
         return current($this->notices);
