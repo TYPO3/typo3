@@ -127,6 +127,22 @@ abstract class AbstractValidator implements ValidatorInterface
     }
 
     /**
+     * Creates a new validation error object for a property and adds it to the proper sub result of $this->result
+     *
+     * @param string|array $message The property path (string or array)
+     * @param string $message The error message
+     * @param int $code The error code (a unix timestamp)
+     * @param array $arguments Arguments to be replaced in message
+     * @param string $title title of the error
+     */
+    protected function addErrorForProperty($propertyPath, $message, $code, array $arguments = [], $title = '')
+    {
+        $propertyPath = is_array($propertyPath) ? implode('.', $propertyPath) : (string)$propertyPath;
+        $error = new Error((string)$message, (int)$code, $arguments, (string)$title);
+        $this->result->forProperty($propertyPath)->addError($error);
+    }
+
+    /**
      * Returns the options of this validator
      *
      * @return array
