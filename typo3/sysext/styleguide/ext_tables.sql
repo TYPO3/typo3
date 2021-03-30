@@ -308,7 +308,6 @@ CREATE TABLE tx_styleguide_elements_special (
     special_custom_1 text,
     special_exclude_1 text,
     special_explicitvalues_1 text,
-    special_languages_1 text,
     special_modlistgroup_1 text,
     special_pagetypes_1 text,
     special_tables_1 text,

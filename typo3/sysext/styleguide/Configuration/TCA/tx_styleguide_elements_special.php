@@ -37,17 +37,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'special' => 'languages',
-                'items' => [
-                    [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-                        -1,
-                        'flags-multiple'
-                    ],
-                ],
-                'default' => 0,
+                'type' => 'language'
             ]
         ],
         'l10n_parent' => [
@@ -122,16 +112,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'special' => 'explicitValues',
-            ],
-        ],
-        'special_languages_1' => [
-            'exclude' => 1,
-            'label' => 'special_languages_1, identical to be_groups allowed_languages description',
-            'description' => 'field description',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectCheckBox',
-                'special' => 'languages',
             ],
         ],
         'special_modlistgroup_1' => [
