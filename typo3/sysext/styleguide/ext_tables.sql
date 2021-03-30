@@ -241,9 +241,12 @@ CREATE TABLE tx_styleguide_elements_select (
     select_single_13 text,
     select_single_14 text,
     select_single_15 text,
+    select_single_16 text,
+    select_single_17 text,
 
     select_singlebox_1 text,
     select_singlebox_2 text,
+    select_singlebox_3 text,
 
     select_checkbox_1 text,
     select_checkbox_2 text,
@@ -251,6 +254,7 @@ CREATE TABLE tx_styleguide_elements_select (
     select_checkbox_4 text,
     select_checkbox_5 text,
     select_checkbox_6 text,
+    select_checkbox_7 text,
 
     select_multiplesidebyside_1 text,
     select_multiplesidebyside_2 text,
@@ -260,6 +264,7 @@ CREATE TABLE tx_styleguide_elements_select (
     select_multiplesidebyside_7 text,
     select_multiplesidebyside_8 text,
     select_multiplesidebyside_9 text,
+    select_multiplesidebyside_10 text,
 
     select_tree_1 text,
     select_tree_2 text,
