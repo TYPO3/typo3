@@ -258,7 +258,10 @@ return [
                         'FIELD:select_2:>:3'
                     ]
                 ]
-            ]
+            ],
+            'config' => [
+                'type' => 'input',
+            ],
         ],
         // Tab FIELD AND OR end
 
