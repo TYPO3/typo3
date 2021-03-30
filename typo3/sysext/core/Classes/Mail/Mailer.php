@@ -141,8 +141,7 @@ class Mailer implements MailerInterface
      * Used options:
      * $TYPO3_CONF_VARS['MAIL']['transport'] = 'smtp' | 'sendmail' | 'null' | 'mbox'
      *
-     * $TYPO3_CONF_VARS['MAIL']['transport_smtp_server'] = 'smtp.example.org';
-     * $TYPO3_CONF_VARS['MAIL']['transport_smtp_port'] = '25';
+     * $TYPO3_CONF_VARS['MAIL']['transport_smtp_server'] = 'smtp.example.org:25';
      * $TYPO3_CONF_VARS['MAIL']['transport_smtp_encrypt'] = FALSE; # requires openssl in PHP
      * $TYPO3_CONF_VARS['MAIL']['transport_smtp_username'] = 'username';
      * $TYPO3_CONF_VARS['MAIL']['transport_smtp_password'] = 'password';
