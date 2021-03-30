@@ -94,7 +94,7 @@ class MailMessageTest extends UnitTestCase
     {
         return [
             'address without name' => ['admin@typo3.com', null, 'admin@typo3.com'],
-            'address with name' => ['admin@typo3.com', 'Admin', 'Admin <admin@typo3.com>'],
+            'address with name' => ['admin@typo3.com', 'Admin', '"Admin" <admin@typo3.com>'],
         ];
     }
 
@@ -117,11 +117,11 @@ class MailMessageTest extends UnitTestCase
     {
         return [
             'address without name' => ['admin@typo3.com', null, ['admin@typo3.com']],
-            'address with name' => ['admin@typo3.com', 'Admin', ['Admin <admin@typo3.com>']],
+            'address with name' => ['admin@typo3.com', 'Admin', ['"Admin" <admin@typo3.com>']],
             'multiple addresses without name' => [['admin@typo3.com', 'system@typo3.com'], null, ['admin@typo3.com', 'system@typo3.com']],
-            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['Admin <admin@typo3.com>']],
-            'multiple addresses as array' => [['admin@typo3.com' => 'Admin', 'system@typo3.com' => 'System'], null, ['Admin <admin@typo3.com>', 'System <system@typo3.com>']],
-            'multiple addresses as array mixed' => [['admin@typo3.com' => 'Admin', 'it@typo3.com', 'system@typo3.com' => 'System'], null, ['Admin <admin@typo3.com>', 'it@typo3.com', 'System <system@typo3.com>']],
+            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['"Admin" <admin@typo3.com>']],
+            'multiple addresses as array' => [['admin@typo3.com' => 'Admin', 'system@typo3.com' => 'System'], null, ['"Admin" <admin@typo3.com>', '"System" <system@typo3.com>']],
+            'multiple addresses as array mixed' => [['admin@typo3.com' => 'Admin', 'it@typo3.com', 'system@typo3.com' => 'System'], null, ['"Admin" <admin@typo3.com>', 'it@typo3.com', '"System" <system@typo3.com>']],
         ];
     }
 
@@ -204,8 +204,8 @@ class MailMessageTest extends UnitTestCase
     {
         return [
             'address without name' => ['admin@typo3.com', null, ['admin@typo3.com']],
-            'address with name' => ['admin@typo3.com', 'Admin', ['Admin <admin@typo3.com>']],
-            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['Admin <admin@typo3.com>']],
+            'address with name' => ['admin@typo3.com', 'Admin', ['"Admin" <admin@typo3.com>']],
+            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['"Admin" <admin@typo3.com>']],
         ];
     }
 
