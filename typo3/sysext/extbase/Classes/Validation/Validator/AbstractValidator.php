@@ -114,7 +114,7 @@ abstract class AbstractValidator implements ValidatorInterface
     abstract protected function isValid($value);
 
     /**
-     * Creates a new validation error object and adds it to $this->results
+     * Creates a new validation error object and adds it to $this->result
      *
      * @param string $message The error message
      * @param int $code The error code (a unix timestamp)
