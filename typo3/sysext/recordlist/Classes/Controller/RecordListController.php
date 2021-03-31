@@ -16,9 +16,11 @@
 namespace TYPO3\CMS\Recordlist\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -31,7 +33,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -41,9 +42,11 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent;
+use TYPO3\CMS\Recordlist\RecordList\CsvExportRecordList;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
@@ -80,19 +83,22 @@ class RecordListController
     protected EventDispatcherInterface $eventDispatcher;
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     public function __construct(
         IconFactory $iconFactory,
         PageRenderer $pageRenderer,
         EventDispatcherInterface $eventDispatcher,
         UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        ResponseFactoryInterface $responseFactory
     ) {
         $this->iconFactory = $iconFactory;
         $this->pageRenderer = $pageRenderer;
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -160,6 +166,9 @@ class RecordListController
         $MOD_SETTINGS['clipBoard'] = ($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated' ? false : true;
         $clipboard = $this->initializeClipboard($request, (bool)($MOD_SETTINGS['clipBoard'] ?? false));
 
+        $csvExport = (bool)($request->getQueryParams()['csv'] ?? false);
+        $enableListing = $access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '');
+
         // Initialize the dblist object:
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dblist->setModuleData($MOD_SETTINGS ?? []);
@@ -183,13 +192,20 @@ class RecordListController
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $dblist->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
         }
+
+        // Return early if CSV Export is requested
+        if ($enableListing && $csvExport) {
+            $dblist->start($this->id, $table, 0, $search_field, $search_levels);
+            return $this->csvExportAction($dblist, $table);
+        }
+
         $dblist->clipObj = $clipboard;
         // This flag will prevent the clipboard panel in being shown.
         // It is set, if the clickmenu-layer is active AND the extended view is not enabled.
         $dblist->dontShowClipControlPanels = ($clipboard->current === 'normal' && !($this->modTSconfig['showClipControlPanelsDespiteOfCMlayers'] ?? false));
         // If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
         $tableOutput = '';
-        if ($access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '')) {
+        if ($enableListing) {
             // Deleting records...:
             // Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
             if ($cmd === 'delete') {
@@ -259,7 +275,7 @@ class RecordListController
         $output = '';
         // Show the selector to add page translations and the list of translations of the current page
         // but only when in "default" mode
-        if ($this->id && !$dblist->csvOutput && !$search_field && !$cmd && !$table) {
+        if ($this->id && !$search_field && !$cmd && !$table) {
             $beforeOutput .= $this->languageSelector($request->getAttribute('normalizedParams')->getRequestUri());
             $pageTranslationsDatabaseRecordList = clone $dblist;
             $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
@@ -367,7 +383,7 @@ class RecordListController
         }
 
         $this->moduleTemplate->setContent($body);
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -712,6 +728,51 @@ class RecordListController
             $pageTitle,
             $this->id
         ));
+    }
+
+    protected function csvExportAction(DatabaseRecordList $recordList, string $table): ResponseInterface
+    {
+        $user = $this->getBackendUserAuthentication();
+        $csvExporter = GeneralUtility::makeInstance(
+            CsvExportRecordList::class,
+            $recordList,
+            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
+        );
+        // Ensure the fields chosen by the backend editor are selected / displayed
+        $recordList->setFields = $user->getModuleData('list/displayFields');
+        $columnsToRender = $recordList->getColumnsToRender($table, false);
+        $headerRow = $csvExporter->getHeaderRow($columnsToRender);
+        $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*' || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $table);
+        $records = $csvExporter->getRecords($table, $this->id, $columnsToRender, $user, $hideTranslations);
+        return $this->csvResponse(
+            $table . '_' . date('dmy-Hi') . '.csv',
+            $records,
+            $headerRow
+        );
+    }
+
+    protected function htmlResponse(string $html): ResponseInterface
+    {
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8');
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    protected function csvResponse($fileName, array $data, array $headerRow = []): ResponseInterface
+    {
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'application/octet-stream')
+            ->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
+
+        $csvDelimiter = $this->modTSconfig['csvDelimiter'] ?? ',';
+        $csvQuote = $this->modTSconfig['csvQuote'] ?? '"';
+        $result[] = CsvUtility::csvValues($headerRow, $csvDelimiter, $csvQuote);
+        foreach ($data as $csvRow) {
+            $result[] = CsvUtility::csvValues($csvRow, $csvDelimiter, $csvQuote);
+        }
+        $response->getBody()->write(implode(CRLF, $result));
+        return $response;
     }
 
     /**

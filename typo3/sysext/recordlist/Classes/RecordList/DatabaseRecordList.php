@@ -41,7 +41,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -133,13 +132,6 @@ class DatabaseRecordList
      * @var string
      */
     public $hideTranslations = '';
-
-    /**
-     * If set, the listing is returned as CSV instead.
-     *
-     * @var bool
-     */
-    public $csvOutput = false;
 
     /**
      * Cache for record path
@@ -323,13 +315,6 @@ class DatabaseRecordList
      * @var string
      */
     public $tableList = '';
-
-    /**
-     * Used to accumulate CSV lines for CSV export.
-     *
-     * @var string[]
-     */
-    protected $csvLines = [];
 
     /**
      * Clipboard object
@@ -591,7 +576,7 @@ class DatabaseRecordList
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $l10nEnabled = BackendUtility::isTableLocalizable($table);
 
-        $this->fieldArray = $this->getColumnsToRender($table, $this->csvOutput === false);
+        $this->fieldArray = $this->getColumnsToRender($table, true);
         // Creating the list of fields to include in the SQL query
         $selectFields = $this->getFieldsToSelect($table, $this->fieldArray);
 
@@ -612,9 +597,6 @@ class DatabaseRecordList
         $onlyShowRecordsInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
         // Fetch records only if not in single table mode
         if ($onlyShowRecordsInSingleTableMode) {
-            $dbCount = $totalItems;
-        } elseif ($this->csvOutput) {
-            $itemsPerPage = $totalItems;
             $dbCount = $totalItems;
         } elseif ($firstElement + $itemsPerPage <= $totalItems) {
             $dbCount = $itemsPerPage + 2;
@@ -717,10 +699,6 @@ class DatabaseRecordList
                     }
                 }
             }
-            // CSV initiated
-            if ($this->csvOutput) {
-                $this->addHeaderRowToCSV();
-            }
             // Render items:
             $this->CBnames = [];
             $this->duplicateStack = [];
@@ -780,12 +758,6 @@ class DatabaseRecordList
             }
             // The header row for the table is now created
             $columnsOutput = $this->renderListHeader($table, $currentIdList);
-        }
-
-        // Output csv if...
-        // This ends the page with exit.
-        if ($this->csvOutput) {
-            $this->outputCSV($table);
         }
 
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
@@ -963,29 +935,11 @@ class DatabaseRecordList
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
                 $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], true, $pageId);
                 $theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
-                if ($this->csvOutput) {
-                    $row[$fCol] = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);
-                }
             }
         }
         // Reset the ID if it was overwritten
         if ((string)$this->searchString !== '') {
             $this->id = $id_orig;
-        }
-        // Add row to CSV list:
-        if ($this->csvOutput) {
-            $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvRow'] ?? [];
-            if (!empty($hooks)) {
-                $hookParameters = [
-                    'databaseRow' => &$row,
-                    'tableName' => $table,
-                    'pageId' => $this->id
-                ];
-                foreach ($hooks as $hookFunction) {
-                    GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-                }
-            }
-            $this->setCsvRow($row);
         }
         // Add classes to table cells
         $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $deletePlaceholderClass;
@@ -2084,7 +2038,7 @@ class DatabaseRecordList
      */
     public function clipNumPane()
     {
-        return $this->showClipboard && $this->noControlPanels === false && $this->csvOutput === false && $this->clipObj->current !== 'normal';
+        return $this->showClipboard && $this->noControlPanels === false && $this->clipObj->current !== 'normal';
     }
 
     /**
@@ -2147,64 +2101,6 @@ class DatabaseRecordList
         }
         return !in_array($table, $this->deniedNewTables)
             && (empty($this->allowedNewTables) || in_array($table, $this->allowedNewTables));
-    }
-
-    /************************************
-     *
-     * CSV related functions
-     *
-     ************************************/
-
-    /**
-     * Add header line with field names as CSV line
-     */
-    protected function addHeaderRowToCSV()
-    {
-        $fieldArray = array_combine($this->fieldArray, $this->fieldArray) ?: [];
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][__CLASS__]['customizeCsvHeader'] ?? [];
-        if (!empty($hooks)) {
-            $hookParameters = [
-                'fields' => &$fieldArray
-            ];
-            foreach ($hooks as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-            }
-        }
-        $this->setCsvRow($fieldArray);
-    }
-
-    /**
-     * Adds input row of values to the internal csvLines array as a CSV formatted line
-     *
-     * @param mixed[] $csvRow Array with values to be listed.
-     */
-    public function setCsvRow($csvRow)
-    {
-        $csvRow = array_intersect_key($csvRow, array_flip($this->fieldArray));
-        $csvDelimiter = $this->modTSconfig['csvDelimiter'] ?? ',';
-        $csvQuote = $this->modTSconfig['csvQuote'] ?? '"';
-        $this->csvLines[] = CsvUtility::csvValues($csvRow, (string)$csvDelimiter, (string)$csvQuote);
-    }
-
-    /**
-     * Compiles the internal csvLines array to a csv-string and outputs it to the browser.
-     *
-     * @param string $prefix Filename prefix:
-     */
-    public function outputCSV($prefix)
-    {
-        // Setting filename:
-        $filename = $prefix . '_' . date('dmy-Hi') . '.csv';
-        // Creating output header:
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        // Cache-Control header is needed here to solve an issue with browser IE and
-        // versions lower than 9. See for more information: http://support.microsoft.com/kb/323308
-        header("Cache-Control: ''");
-        // Printing the content of the CSV lines:
-        echo implode(CRLF, $this->csvLines);
-        // Exits:
-        die;
     }
 
     /**
@@ -2334,7 +2230,6 @@ class DatabaseRecordList
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
         // Setting GPvars:
-        $this->csvOutput = (bool)GeneralUtility::_GP('csv');
         $this->sortField = GeneralUtility::_GP('sortField');
         $this->sortRev = GeneralUtility::_GP('sortRev');
         $this->displayFields = GeneralUtility::_GP('displayFields');
