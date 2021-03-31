@@ -607,8 +607,6 @@ class DatabaseRecordList
 
         $this->getTranslateTools();
         $this->determineScriptUrl();
-
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
