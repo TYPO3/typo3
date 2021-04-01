@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","jquery","TYPO3/CMS/Backend/Input/Clearable"],(function(e,t,l){"use strict";l=__importDefault(l);return new class{constructor(){l.default(()=>{this.initialize()})}initialize(){const e=l.default("#db_list-searchbox-toolbar");let t;if(l.default(".t3js-toggle-search-toolbox").on("click",()=>{e.toggle(),e.is(":visible")&&l.default("#search_field").focus()}),null!==(t=document.getElementById("search_field"))){const e=""!==t.value;t.clearable({onClear:t=>{e&&t.closest("form").trigger("submit")}})}}}}));
+var __importDefault=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};define(["require","exports","jquery"],(function(t,e,i){"use strict";i=__importDefault(i);return new class{constructor(){i.default(()=>{this.initialize()})}initialize(){const t=i.default("#db_list-searchbox-toolbar");i.default(".t3js-toggle-search-toolbox").on("click",()=>{t.toggle(),t.is(":visible")&&i.default("#search_field").focus()})}}}));

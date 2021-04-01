@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./ElementBrowser","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,s,l){"use strict";l=__importDefault(l);return new class{constructor(){new l.default("click",(e,t)=>{e.preventDefault();const l=t.closest("span").dataset;s.insertElement(l.table,l.uid,l.title,"",1===parseInt(t.dataset.close||"0",10))}).delegateTo(document,"[data-close]");const e=document.getElementById("db_list-searchbox-toolbar");e.style.display="block",e.style.position="relative"}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./ElementBrowser","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r,n){"use strict";n=__importDefault(n);return new class{constructor(){new n.default("click",(e,t)=>{e.preventDefault();const n=t.closest("span").dataset;r.insertElement(n.table,n.uid,n.title,"",1===parseInt(t.dataset.close||"0",10))}).delegateTo(document,"[data-close]")}}}));

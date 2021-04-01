@@ -12,7 +12,6 @@
  */
 
 import $ from 'jquery';
-import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Backend/ToggleSearchToolbox
@@ -34,20 +33,6 @@ class ToggleSearchToolbox {
         $('#search_field').focus();
       }
     });
-
-    let searchField: HTMLInputElement;
-    if ((searchField = document.getElementById('search_field') as HTMLInputElement) !== null) {
-      const searchResultShown = ('' !== searchField.value);
-
-      // make search field clearable
-      searchField.clearable({
-        onClear: (input: HTMLInputElement): void => {
-          if (searchResultShown) {
-            input.closest('form').trigger('submit');
-          }
-        },
-      });
-    }
   }
 }
 

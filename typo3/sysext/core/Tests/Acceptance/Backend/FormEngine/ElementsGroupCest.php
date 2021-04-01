@@ -152,20 +152,6 @@ class ElementsGroupCest
         $I->switchToWindow();
         $I->switchToIFrame('modal_frame');
 
-        $I->amGoingTo("search record '' and limit 1 in DB-Browser");
-        $I->fillField('#showLimit', 1);
-        $I->click('button[name="search"]');
-        $I->waitForElement('.recordlist');
-        $I->seeNumberOfElements('.recordlist #recordlist-be_groups  table tbody tr', 1);
-
-        $I->amGoingTo('search record style and limit 1 in DB-Browser');
-        $I->fillField('#search_field', 'style');
-        $I->click('button[name="search"]');
-        $I->waitForElement('.recordlist');
-        $I->seeNumberOfElements('.recordlist #recordlist-be_groups  table tbody tr', 1);
-
-        $I->amGoingTo('reset limit');
-        $I->fillField('#showLimit', '');
         $I->amGoingTo('search record foo in DB-Browser');
         $I->fillField('#search_field', 'foo');
         $I->click('button[name="search"]');

@@ -112,7 +112,6 @@ class RecordListController
         $table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? '');
         $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
-        $showLimit = (int)($parsedBody['showLimit'] ?? $queryParams['showLimit'] ?? 0);
         $returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
         $cmd_table = (string)($parsedBody['cmd_table'] ?? $queryParams['cmd_table'] ?? '');
@@ -231,7 +230,7 @@ class RecordListController
                 }
             }
             // Initialize the listing object, dblist, for rendering the list:
-            $dblist->start($id, $table, $pointer, $search_field, $search_levels, $showLimit);
+            $dblist->start($id, $table, $pointer, $search_field, $search_levels);
             $dblist->setDispFields();
             // Render the list of tables:
             $tableOutput = $dblist->generateList();
@@ -372,7 +371,9 @@ class RecordListController
         // search box toolbar
         $content = '';
         if (!($modTSconfig['properties']['disableSearchBox'] ?? false) && ($tableOutput || !empty($dblist->searchString))) {
-            $content .= $dblist->getSearchBox();
+            $searchBoxVisible = !empty($dblist->searchString);
+            $searchBox = $dblist->getSearchBox();
+            $content .= '<div class="module-docheader-bar mb-0 t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="' . ($searchBoxVisible ? 'display: block;' : 'display: none;') . '"><div class="panel panel-default"><div class="p-2 ps-4">' . $searchBox . '</div></div></div>';
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 
             $searchButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton();

@@ -600,7 +600,6 @@ class DatabaseRecordList
                 'table',
                 'search_field',
                 'search_levels',
-                'showLimit',
                 'sortField',
                 'sortRev'
             ];
@@ -779,8 +778,8 @@ class DatabaseRecordList
         $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
 
         // Set limit from search
-        if ($this->showLimit) {
-            $itemsPerPage = $this->showLimit;
+        if ($this->searchString) {
+            $itemsPerPage = $totalItems;
         }
 
         // Init
@@ -814,8 +813,8 @@ class DatabaseRecordList
             $this->showLimit = $totalItems;
             $itemsPerPage = $totalItems;
             $dbCount = $totalItems;
-        } elseif ($firstElement + $this->showLimit <= $totalItems) {
-            $dbCount = $this->showLimit + 2;
+        } elseif ($firstElement + $itemsPerPage <= $totalItems) {
+            $dbCount = $itemsPerPage + 2;
         } else {
             $dbCount = $totalItems - $firstElement + 2;
         }
@@ -2479,7 +2478,6 @@ class DatabaseRecordList
         $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 1000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
-        $this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
         // Setting GPvars:
         $this->csvOutput = (bool)GeneralUtility::_GP('csv');
         $this->sortField = GeneralUtility::_GP('sortField');
@@ -2589,15 +2587,14 @@ class DatabaseRecordList
      *
      * @return string HTML for the search box
      */
-    public function getSearchBox(): string
+    public function getSearchBox(string $formUrl = null): string
     {
         return $this->getFluidTemplateObject('Search.html')
             ->assignMultiple([
-                'formUrl' => $this->listURL('', '-1', 'pointer,search_field'),
+                'formUrl' => $formUrl ?? $this->listURL('', '-1', 'pointer,search_field'),
                 'searchLevelsFromTSconfig' => (array)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.']['searchLevel.']['items.'] ?? []),
                 'selectedSearchLevel' => $this->searchLevels,
-                'searchString' => $this->searchString,
-                'showLimit' => $this->showLimit
+                'searchString' => $this->searchString
             ])
             ->render();
     }
@@ -3022,7 +3019,7 @@ class DatabaseRecordList
 
     /**
      * Creates the URL to this script, including all relevant GPvars
-     * Fixed GPvars are id, table, returnUrl, search_field, search_levels and showLimit
+     * Fixed GPvars are id, table, returnUrl, search_field, and search_levels
      * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
@@ -3051,9 +3048,6 @@ class DatabaseRecordList
         }
         if ($this->searchLevels) {
             $urlParameters['search_levels'] = $this->searchLevels;
-        }
-        if ($this->showLimit) {
-            $urlParameters['showLimit'] = $this->showLimit;
         }
         if ((!$exclList || !GeneralUtility::inList($exclList, 'pointer')) && $this->page) {
             $urlParameters['pointer'] = $this->page;

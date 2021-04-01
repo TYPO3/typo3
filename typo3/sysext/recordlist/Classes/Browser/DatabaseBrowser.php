@@ -221,14 +221,13 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             GeneralUtility::_GP('table'),
             MathUtility::forceIntegerInRange(GeneralUtility::_GP('pointer'), 0, 100000),
             GeneralUtility::_GP('search_field'),
-            GeneralUtility::_GP('search_levels'),
-            GeneralUtility::_GP('showLimit')
+            GeneralUtility::_GP('search_levels')
         );
 
         $dbList->setDispFields();
         $tableList = $dbList->generateList();
 
-        $out .= $dbList->getSearchBox();
+        $out .= '<div class="p-2 pb-3 border">' . $dbList->getSearchBox() . '</div>';
 
         // Add the HTML for the record list to output variable:
         $out .= $tableList;

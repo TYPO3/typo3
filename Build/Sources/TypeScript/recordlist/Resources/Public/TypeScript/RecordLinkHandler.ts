@@ -26,11 +26,6 @@ class RecordLinkHandler {
     this.currentLink = document.body.dataset.currentLink;
     this.identifier = document.body.dataset.identifier;
 
-    // adjust searchbox layout
-    const searchbox: HTMLElement = document.getElementById('db_list-searchbox-toolbar');
-    searchbox.style.display = 'block';
-    searchbox.style.position = 'relative';
-
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
       const data = targetEl.closest('span').dataset;

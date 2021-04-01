@@ -32,11 +32,6 @@ class BrowseDatabase {
         parseInt(targetEl.dataset.close || '0', 10) === 1,
       );
     }).delegateTo(document, '[data-close]');
-
-    // adjust searchbox layout
-    const searchbox: HTMLElement = document.getElementById('db_list-searchbox-toolbar');
-    searchbox.style.display = 'block';
-    searchbox.style.position = 'relative';
   }
 }
 

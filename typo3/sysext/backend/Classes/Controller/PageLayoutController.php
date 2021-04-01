@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
+use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Script Class for Web > Layout module
@@ -1044,64 +1045,12 @@ class PageLayoutController
         if (!$this->getBackendUser()->check('modules', 'web_list')) {
             return '';
         }
-        $lang = $this->getLanguageService();
-        $listModule = $this->uriBuilder->buildUriFromRoute('web_list', ['id' => $this->id]);
-        // Make level selector:
-        $opt = [];
 
-        // "New" generation of search levels ... based on TS config
-        $config = BackendUtility::getPagesTSconfig($this->id);
-        $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
-        $searchLevelItems = [];
+        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->start($this->id, '', '');
+        $formUrl = $this->uriBuilder->buildUriFromRoute('web_list', ['id' => $this->id]);
 
-        // get translated labels for search levels from pagets
-        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
-            $label = $lang->sL('LLL:' . $labelConfigured);
-            if ($label === '') {
-                $label = $labelConfigured;
-            }
-            $searchLevelItems[$keySearchLevel] = $label;
-        }
-
-        foreach ($searchLevelItems as $kv => $label) {
-            $opt[] = '<option value="' . $kv . '"' . ($kv === 0 ? ' selected="selected"' : '') . '>'
-                . htmlspecialchars($label)
-                . '</option>';
-        }
-        $searchLevelLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels');
-        $searchStringLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString');
-        $lMenu = '<select class="form-select" name="search_levels" title="' . htmlspecialchars($searchLevelLabel) . '" id="search_levels">' . implode('', $opt) . '</select>';
-        return '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: none;">
-			<form action="' . htmlspecialchars((string)$listModule) . '" method="post">
-                <div id="typo3-dblist-search">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="form-group col-12">
-                                    <label for="search_field">' . htmlspecialchars($searchStringLabel) . ': </label>
-									<input class="form-control" type="search" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')) . '" name="search_field" id="search_field" value="" />
-                                </div>
-                                <div class="form-group col-12 col-sm-6">
-									<label for="search_levels">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')) . ': </label>
-									' . $lMenu . '
-                                </div>
-                                <div class="form-group col-12 col-sm-6">
-									<label for="showLimit">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')) . ': </label>
-									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')) . '" name="showLimit" id="showLimit" value="" />
-                                </div>
-                                <div class="form-group col-12">
-                                    <div class="form-control-wrap">
-                                        <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')) . '">
-                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')) . '
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>';
+        return '<div class="module-docheader-bar t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: none;"><div class="panel panel-default"><div class="p-2 ps-4">' . $dbList->getSearchBox((string)$formUrl) . '</div></div></div>';
     }
 
     /**
