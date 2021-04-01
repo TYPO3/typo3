@@ -280,13 +280,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Create links for adding the file:
             $filesIndex = count($this->elements);
             $this->elements['file_' . $filesIndex] = [
-                'type' => 'file',
-                'table' => 'sys_file',
                 'uid' => $fileObject->getUid(),
                 'fileName' => $fileObject->getName(),
-                'filePath' => $fileObject->getUid(),
-                'fileExt' => $fileObject->getExtension(),
-                'fileIcon' => $icon
             ];
             if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {
                 $ATag = '<a href="#" class="btn btn-default" title="' . htmlspecialchars($fileObject->getName()) . '" data-file-index="' . $filesIndex . '" data-close="0">';

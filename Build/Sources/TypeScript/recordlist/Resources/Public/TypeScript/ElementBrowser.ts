@@ -12,7 +12,7 @@
  */
 
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
-import $ from 'jquery';
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 interface RTESettings {
@@ -21,7 +21,7 @@ interface RTESettings {
 }
 
 interface InlineSettings {
-  objectId: number;
+  objectId: string;
 }
 
 declare global {
@@ -54,12 +54,12 @@ class ElementBrowser {
     configuration: '',
   };
   private irre: InlineSettings = {
-    objectId: 0,
+    objectId: '',
   };
 
   constructor() {
-    $((): void => {
-      const data = $('body').data();
+    DocumentService.ready().then((): void => {
+      const data = document.body.dataset;
       this.thisScriptUrl = data.thisScriptUrl;
       this.mode = data.mode;
       this.formFieldName = data.formFieldName;
@@ -80,18 +80,6 @@ class ElementBrowser {
     } else {
       return false;
     }
-  }
-
-  /**
-   * Dynamically calls a function on a given context object.
-   */
-  public executeFunctionByName(functionName: string, context: any, ...args: Array<any>): any {
-    const namespaces = functionName.split('.');
-    const func = namespaces.pop();
-    for (let namespace of namespaces) {
-      context = context[namespace];
-    }
-    return context[func].apply(context, args);
   }
 
   /**
@@ -128,13 +116,9 @@ class ElementBrowser {
 
   public insertElement(
     table: string,
-    uid: number,
-    type: string,
-    filename: string,
-    fp: string,
-    filetype: string,
-    imagefile: string,
-    action: string,
+    uid: string,
+    title: string,
+    value: string,
     close: boolean,
   ): boolean {
     // Call a check function in the opener window (e.g. for uniqueness handling):
@@ -160,18 +144,27 @@ class ElementBrowser {
     }
 
     if (this.fieldReference && !this.rte.parameters && !this.rte.configuration) {
-      this.addElement(filename, table + '_' + uid, fp, close);
+      this.addElement(title, value ? value : table + '_' + uid, close);
     }
     return false;
   }
 
-  public addElement(elName: string, elValue: string, altElValue: string, close: boolean): void {
+  public focusOpenerAndClose = (): void => {
+    if (this.getParent()) {
+      this.getParent().focus();
+    }
+    Modal.dismiss();
+    close();
+  }
+
+
+  private addElement(label: string, value: string, close: boolean): void {
     if (this.getParent()) {
       const message = {
         actionName: 'typo3:elementBrowser:elementAdded',
         fieldName: this.fieldReference,
-        value: altElValue ? altElValue : elValue,
-        label: elName
+        value: value,
+        label: label
       };
       MessageUtility.send(message, this.getParent());
 
@@ -182,14 +175,6 @@ class ElementBrowser {
       alert('Error - reference to main window is not set properly!');
       this.focusOpenerAndClose();
     }
-  }
-
-  public focusOpenerAndClose = (): void => {
-    if (this.getParent()) {
-      this.getParent().focus();
-    }
-    Modal.dismiss();
-    close();
   }
 }
 

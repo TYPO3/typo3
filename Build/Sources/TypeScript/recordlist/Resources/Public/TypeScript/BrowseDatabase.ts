@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import ElementBrowser = require('./ElementBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/BrowseDatabase
@@ -21,24 +21,17 @@ import ElementBrowser = require('./ElementBrowser');
  */
 class BrowseDatabase {
   constructor() {
-    $((): void => {
-      $('[data-close]').on('click', (event: JQueryEventObject): void => {
-        event.preventDefault();
-        const data = $(event.currentTarget).parents('span').data();
-
-        ElementBrowser.insertElement(
-          data.table,
-          data.uid,
-          'db',
-          data.title,
-          '',
-          '',
-          data.icon,
-          '',
-          parseInt($(event.currentTarget).data('close'), 10) === 1,
-        );
-      });
-    });
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const data = targetEl.closest('span').dataset;
+      ElementBrowser.insertElement(
+        data.table,
+        data.uid,
+        data.title,
+        '',
+        parseInt(targetEl.dataset.close || '0', 10) === 1,
+      );
+    }).delegateTo(document, '[data-close]');
 
     // adjust searchbox layout
     const searchbox: HTMLElement = document.getElementById('db_list-searchbox-toolbar');

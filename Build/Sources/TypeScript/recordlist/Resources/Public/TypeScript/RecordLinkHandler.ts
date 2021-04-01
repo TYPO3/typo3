@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/RecordLinkHandler
@@ -23,36 +23,23 @@ class RecordLinkHandler {
   private identifier: string = '';
 
   constructor() {
-    $((): void => {
-      const body = $('body');
-      this.currentLink = body.data('currentLink');
-      this.identifier = body.data('identifier');
+    this.currentLink = document.body.dataset.currentLink;
+    this.identifier = document.body.dataset.identifier;
 
-      // adjust searchbox layout
-      const searchbox: HTMLElement = document.getElementById('db_list-searchbox-toolbar');
-      searchbox.style.display = 'block';
-      searchbox.style.position = 'relative';
+    // adjust searchbox layout
+    const searchbox: HTMLElement = document.getElementById('db_list-searchbox-toolbar');
+    searchbox.style.display = 'block';
+    searchbox.style.position = 'relative';
 
-      $('[data-close]').on('click', this.linkRecord);
-      $('input.t3js-linkCurrent').on('click', this.linkCurrent);
-    });
-  }
-
-  /**
-   * @param {JQueryEventObject} event
-   */
-  public linkRecord = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    const data = $(event.currentTarget).parents('span').data();
-    LinkBrowser.finalizeFunction(this.identifier + data.uid);
-  }
-
-  /**
-   * @param {JQueryEventObject} event
-   */
-  public linkCurrent = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction(this.currentLink);
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const data = targetEl.closest('span').dataset;
+      LinkBrowser.finalizeFunction(this.identifier + data.uid);
+    }).delegateTo(document, '[data-close]');
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      LinkBrowser.finalizeFunction(this.currentLink);
+    }).delegateTo(document, 'input.t3js-linkCurrent');
   }
 }
 

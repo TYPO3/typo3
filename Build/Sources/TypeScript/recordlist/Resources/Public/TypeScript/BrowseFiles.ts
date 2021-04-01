@@ -21,13 +21,8 @@ import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Icons = TYPO3.Icons;
 
 interface LinkElement {
-  fileExt: string;
-  fileIcon: string;
   fileName: string;
-  filePath: any;
-  table: string;
-  type: string;
-  uid: number;
+  uid: string;
 }
 
 interface LinkElementStorage {
@@ -46,20 +41,20 @@ class BrowseFiles {
     BrowseFiles.File = new File();
     BrowseFiles.Selector = new Selector();
 
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      BrowseFiles.File.insertElement(
+        'file_' + targetEl.dataset.fileIndex,
+        parseInt(targetEl.dataset.close || '0', 10) === 1,
+      );
+    }).delegateTo(document, '[data-close]');
+
+    new RegularEvent('change', (): void => {
+      BrowseFiles.Selector.toggleImportButton();
+    }).delegateTo(document, '.typo3-bulk-item');
+
     $((): void => {
       BrowseFiles.elements = $('body').data('elements');
-
-      $('[data-close]').on('click', (e: JQueryEventObject): void => {
-        e.preventDefault();
-        BrowseFiles.File.insertElement(
-          'file_' + $(e.currentTarget).data('fileIndex'),
-          parseInt($(e.currentTarget).data('close'), 10) === 1,
-        );
-      });
-
-      new RegularEvent('change', (): void => {
-        BrowseFiles.Selector.toggleImportButton();
-      }).delegateTo(document, '.typo3-bulk-item');
 
       $('#t3js-importSelection').on('click', BrowseFiles.Selector.handle);
       $('#t3js-toggleSelection').on('click', BrowseFiles.Selector.toggle);
@@ -77,14 +72,10 @@ class File {
     if (typeof BrowseFiles.elements[index] !== 'undefined') {
       const element: LinkElement = BrowseFiles.elements[index];
       result = ElementBrowser.insertElement(
-        element.table,
+        'sys_file',
         element.uid,
-        element.type,
         element.fileName,
-        element.filePath,
-        element.fileExt,
-        element.fileIcon,
-        '',
+        element.uid,
         close,
       );
     }

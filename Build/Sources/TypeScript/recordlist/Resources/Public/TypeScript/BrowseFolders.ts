@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import ElementBrowser = require('./ElementBrowser');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Severity = require('TYPO3/CMS/Backend/Severity');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 /**
  * Module: TYPO3/CMS/Recordlist/BrowseFolders
@@ -23,20 +23,22 @@ import Severity = require('TYPO3/CMS/Backend/Severity');
  */
 class BrowseFolders {
   constructor() {
-    $(() => {
-      $('[data-folder-id]').on('click', (event: JQueryEventObject): void => {
-        event.preventDefault();
-        const $element: JQuery = $(event.currentTarget);
-        const folderId = $element.data('folderId');
-        const close = parseInt($element.data('close'), 10) === 1;
-        ElementBrowser.insertElement('', folderId, 'folder', folderId, folderId, '', '', '', close);
-      });
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const folderId = targetEl.dataset.folderId;
+      ElementBrowser.insertElement(
+        '',
+        folderId,
+        folderId,
+        folderId,
+        parseInt(targetEl.dataset.close || '0', 10) === 1
+      );
+    }).delegateTo(document, '[data-folder-id]');
 
-      $('.t3js-folderIdError').on('click', (event: JQueryEventObject): void => {
-        event.preventDefault();
-        Modal.confirm('', $(event.currentTarget).data('message'), Severity.error, [], []);
-      });
-    });
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      Modal.confirm('', targetEl.dataset.message, Severity.error, [], []);
+    }).delegateTo(document, '.t3js-folderIdError');
   }
 }
 

@@ -15,9 +15,6 @@
 
 namespace TYPO3\CMS\Recordlist\Tree\View;
 
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
@@ -49,9 +46,7 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
     public function wrapTitle($title, $v, $ext_pArrPages = false)
     {
         if ($ext_pArrPages && $v['uid']) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $ficon = $iconFactory->getIconForRecord('pages', $v, Icon::SIZE_SMALL)->render();
-            $out = '<span data-uid="' . htmlspecialchars($v['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($v['title']) . '" data-icon="' . htmlspecialchars($ficon) . '">';
+            $out = '<span data-uid="' . htmlspecialchars($v['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($v['title']) . '">';
             $out .= '<a href="#" data-close="1">' . $title . '</a>';
             $out .= '</span>';
             return $out;

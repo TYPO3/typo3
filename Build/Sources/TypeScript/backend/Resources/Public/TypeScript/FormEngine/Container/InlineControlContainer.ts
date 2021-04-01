@@ -365,8 +365,6 @@ class InlineControlContainer {
           MessageUtility.send(message, e.source as Window);
         }
       });
-    } else {
-      console.warn(`Unhandled action "${e.data.actionName}"`);
     }
   }
 
