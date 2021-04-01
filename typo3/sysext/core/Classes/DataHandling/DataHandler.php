@@ -2327,8 +2327,11 @@ class DataHandler implements LoggerAwareInterface
         if ($statement->fetchColumn()) {
             for ($counter = 0; $counter <= 100; $counter++) {
                 $newValue = $value . $counter;
-                $queryBuilder->setParameter('value', $newValue);
-                $statement = $queryBuilder->execute();
+                if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
+                    $statement = $statement->getIterator();
+                }
+                $statement->bindValue(1, $newValue);
+                $statement->execute();
                 if (!$statement->fetchColumn()) {
                     break;
                 }
@@ -2365,8 +2368,8 @@ class DataHandler implements LoggerAwareInterface
             ->count('uid')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR, ':value')),
-                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value)),
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT))
             );
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
         if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude'
@@ -2378,24 +2381,24 @@ class DataHandler implements LoggerAwareInterface
                     // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT)
                         ),
                         // translations of other records must be taken into account
                         $queryBuilder->expr()->neq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)
                         )
                     )
                 );
         }
         if ($pid !== 0) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, \PDO::PARAM_INT))
             );
         } else {
             // pid>=0 for versioning
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT))
             );
         }
         return $queryBuilder;

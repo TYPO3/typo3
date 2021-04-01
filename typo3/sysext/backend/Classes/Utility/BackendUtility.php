@@ -425,8 +425,8 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            $queryBuilder = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
-            if (!$queryBuilder) {
+            $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
+            if (!$statement) {
                 $queryBuilder = static::getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                              ->removeAll()
@@ -459,14 +459,24 @@ class BackendUtility
                     )
                     ->from('pages')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':uid')),
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)),
                         QueryHelper::stripLogicalOperatorPrefix($clause)
                     );
-                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $queryBuilder);
+                $statement = $queryBuilder->execute();
+                if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
+                    $statement = $statement->getIterator();
+                }
+                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $statement);
+            } else {
+                $statement->bindValue(1, (int)$uid);
+                $statement->execute();
             }
-            $queryBuilder->setParameter('uid', (int)$uid);
-            $statement = $queryBuilder->execute();
             $row = $statement->fetch();
+            if (method_exists($statement, 'free')) {
+                $statement->free();
+            } else {
+                $statement->closeCursor();
+            }
 
             if ($row) {
                 if ($workspaceOL) {
