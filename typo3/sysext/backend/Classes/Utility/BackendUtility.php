@@ -424,8 +424,8 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
-            if (!$statement) {
+            $queryBuilder = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
+            if (!$queryBuilder) {
                 $queryBuilder = static::getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                              ->removeAll()
@@ -458,17 +458,14 @@ class BackendUtility
                     )
                     ->from('pages')
                     ->where(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':uid')),
                         QueryHelper::stripLogicalOperatorPrefix($clause)
                     );
-                $statement = $queryBuilder->execute();
-                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $statement);
-            } else {
-                $statement->bindValue(1, (int)$uid);
-                $statement->execute();
+                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $queryBuilder);
             }
+            $queryBuilder->setParameter('uid', (int)$uid);
+            $statement = $queryBuilder->execute();
             $row = $statement->fetch();
-            $statement->closeCursor();
 
             if ($row) {
                 $newLocation = false;

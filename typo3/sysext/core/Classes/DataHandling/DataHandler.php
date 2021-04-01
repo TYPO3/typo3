@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
@@ -2465,13 +2466,14 @@ class DataHandler implements LoggerAwareInterface
         }
 
         $newValue = $originalValue = $value;
-        $statement = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
+        $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
+        $statement = $queryBuilder->execute();
         if ($statement->fetchColumn()) {
             for ($counter = 0; $counter <= 100; $counter++) {
                 $newValue = $value . $counter;
-                $statement->bindValue(1, $newValue);
-                $statement->execute();
+                $queryBuilder->setParameter('value', $newValue);
+                $statement = $queryBuilder->execute();
                 if (!$statement->fetchColumn()) {
                     break;
                 }
@@ -2493,7 +2495,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name for which $value must be unique
      * @param int $uid UID to filter out in the lookup (the record itself...)
      * @param int $pid If set, the value will be unique for this PID
-     * @return \Doctrine\DBAL\Driver\Statement Return the prepared statement to check uniqueness
+     * @return QueryBuilder Return the prepared statement to check uniqueness
      */
     protected function getUniqueCountStatement(
         string $value,
@@ -2501,15 +2503,15 @@ class DataHandler implements LoggerAwareInterface
         string $field,
         int $uid,
         int $pid
-    ): Statement {
+    ) {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $queryBuilder
             ->count('uid')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq($field, $queryBuilder->createPositionalParameter($value, \PDO::PARAM_STR)),
-                $queryBuilder->expr()->neq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR, ':value')),
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             );
         // ignore translations of current record if field is configured with l10n_mode = "exclude"
         if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude'
@@ -2521,27 +2523,27 @@ class DataHandler implements LoggerAwareInterface
                     // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         // translations of other records must be taken into account
                         $queryBuilder->expr()->neq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                            $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         )
                     )
                 );
         }
         if ($pid !== 0) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createPositionalParameter($pid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
             );
         } else {
             // pid>=0 for versioning
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createPositionalParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         }
-        return $queryBuilder->execute();
+        return $queryBuilder;
     }
 
     /**

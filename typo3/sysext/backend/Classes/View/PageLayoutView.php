@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\View;
 
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -1623,10 +1624,10 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
-     * @param Statement $result DBAL Statement
+     * @param Statement|Result $result DBAL Statement or Result
      * @return array The selected rows returned in this array.
      */
-    public function getResult(Statement $result): array
+    public function getResult($result): array
     {
         $output = [];
         // Traverse the result:

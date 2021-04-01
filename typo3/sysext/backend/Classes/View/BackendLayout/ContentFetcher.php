@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
-use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
@@ -78,7 +77,6 @@ class ContentFetcher
         if (empty($this->fetchedContentRecords)) {
             $isLanguageMode = $this->context->getDrawingConfiguration()->getLanguageMode();
             $queryBuilder = $this->getQueryBuilder();
-            /** @var Statement $result */
             $result = $queryBuilder->execute();
             $records = $this->getResult($result);
             foreach ($records as $record) {
@@ -260,7 +258,7 @@ class ContentFetcher
         return $queryBuilder;
     }
 
-    protected function getResult(Statement $result): array
+    protected function getResult($result): array
     {
         $output = [];
         while ($row = $result->fetch()) {
