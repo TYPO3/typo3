@@ -22,6 +22,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
@@ -242,7 +243,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param int $limit The maximum number of rows to return.
      * @param int $offset The first result row to select (when used with limit)
      *
-     * @return Statement The executed statement.
+     * @return Statement|Result The executed statement.
      */
     public function select(
         array $columns,
@@ -252,7 +253,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         array $orderBy = [],
         int $limit = 0,
         int $offset = 0
-    ): Statement {
+    ) {
         $query = $this->createQueryBuilder();
         $query->select(...$columns)
             ->from($tableName);
