@@ -162,7 +162,7 @@ class RecordListController
         $dblist->setModuleData($MOD_SETTINGS ?? []);
         $dblist->calcPerms = $calcPerms;
         $dblist->returnUrl = $returnUrl;
-        $dblist->allFields = $MOD_SETTINGS['bigControlPanel'] || $table ? 1 : 0;
+        $dblist->allFields = (bool)($MOD_SETTINGS['bigControlPanel'] || $table);
         $dblist->showClipboard = true;
         $dblist->disableSingleTableView = $modTSconfig['properties']['disableSingleTableView'];
         $dblist->listOnlyInSingleTableMode = $modTSconfig['properties']['listOnlyInSingleTableView'];
@@ -363,7 +363,7 @@ class RecordListController
         }
         // Printing clipboard if enabled
         if ($MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($tableOutput || $dblist->clipObj->hasElements())) {
-            $body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
+            $body .= $dblist->clipObj->printClipboard();
         }
         // Additional footer content
         $body .= $additionalRecordListEvent->getAdditionalContentBelow();

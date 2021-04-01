@@ -220,9 +220,9 @@ class DatabaseRecordList
     /**
      * Indicates if all available fields for a user should be selected or not.
      *
-     * @var int
+     * @var bool
      */
-    public $allFields = 0;
+    public $allFields = false;
 
     /**
      * Number of records to show
@@ -464,6 +464,7 @@ class DatabaseRecordList
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $this->calcPerms = new Permission();
+        $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
     }
 
     /**
@@ -565,7 +566,7 @@ class DatabaseRecordList
             ) {
                 // CSV
                 $csvButton = $buttonBar->makeLinkButton()
-                    ->setHref($this->listURL() . '&csv=1')
+                    ->setHref($this->listURL('', $this->table) . '&csv=1')
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.csv'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
@@ -628,6 +629,118 @@ class DatabaseRecordList
     }
 
     /**
+     * Returns a list of all fields / columns including meta columns such as "REF", "_CLIPBOARD_"
+     * which should be rendered for the databsae table.
+     *
+     * @param string $table
+     * @param bool $includeMetaColumns
+     * @return array
+     */
+    public function getColumnsToRender(string $table, bool $includeMetaColumns): array
+    {
+        $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
+
+        // Setting fields selected in fieldselectBox (saved in uc)
+        $rowListArray = [];
+        if ($this->allFields && is_array($this->setFields[$table] ?? null)) {
+            $rowListArray = $this->makeFieldList($table, false, true);
+            if ($includeMetaColumns) {
+                $rowListArray[] = '_PATH_';
+                $rowListArray[] = '_REF_';
+            }
+            $rowListArray = array_intersect($rowListArray, $this->setFields[$table]);
+        }
+        // if no columns have been specified, show description (if configured)
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
+            $rowListArray[] = $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'];
+        }
+
+        // Place the $titleCol as the first column always!
+        $columnsToSelect = [
+            $titleCol
+        ];
+        if ($includeMetaColumns) {
+            // Control-Panel
+            if ($this->noControlPanels === false) {
+                $columnsToSelect[] = '_CONTROL_';
+            }
+            // Clipboard
+            if ($this->showClipboard && $this->noControlPanels === false) {
+                $columnsToSelect[] = '_CLIPBOARD_';
+            }
+            // Ref
+            if (!in_array('_REF_', $rowListArray, true) && !$this->dontShowClipControlPanels) {
+                $columnsToSelect[] = '_REF_';
+            }
+            // Path
+            if (!in_array('_PATH_', $rowListArray, true) && $this->searchLevels) {
+                $columnsToSelect[] = '_PATH_';
+            }
+            // Localization
+            if (BackendUtility::isTableLocalizable($table)) {
+                $columnsToSelect[] = '_LOCALIZATION_';
+                // Do not show the "Localize to:" field when only translated records should be shown
+                if (!$this->showOnlyTranslatedRecords) {
+                    $columnsToSelect[] = '_LOCALIZATION_b';
+                }
+            }
+        }
+        return array_unique(array_merge($columnsToSelect, $rowListArray));
+    }
+
+    /**
+     * Based on the columns which should be rendered this method returns a list of actual
+     * database fields to be selected from the query string.
+     *
+     * @param string $table
+     * @param array $columnsToRender
+     * @return string[] a list of all database table fields
+     */
+    public function getFieldsToSelect(string $table, array $columnsToRender): array
+    {
+        $selectFields = $columnsToRender;
+        $selectFields[] = 'uid';
+        $selectFields[] = 'pid';
+        if ($table === 'pages') {
+            $selectFields[] = 'module';
+            $selectFields[] = 'extendToSubpages';
+            $selectFields[] = 'nav_hide';
+            $selectFields[] = 'doktype';
+            $selectFields[] = 'shortcut';
+            $selectFields[] = 'shortcut_mode';
+            $selectFields[] = 'mount_pid';
+        }
+        if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? null)) {
+            $selectFields = array_merge($selectFields, array_values($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']));
+        }
+        foreach (['type', 'typeicon_column', 'editlock'] as $field) {
+            if ($GLOBALS['TCA'][$table]['ctrl'][$field] ?? false) {
+                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl'][$field];
+            }
+        }
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
+            $selectFields[] = 't3ver_state';
+            $selectFields[] = 't3ver_wsid';
+            $selectFields[] = 't3ver_oid';
+        }
+        if (BackendUtility::isTableLocalizable($table)) {
+            $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+            $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        }
+        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? false) {
+            $selectFields = array_merge(
+                $selectFields,
+                GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true)
+            );
+        }
+        // Unique list!
+        $selectFields = array_unique($selectFields);
+        $fieldListFields = $this->makeFieldList($table, true);
+        // Making sure that the fields in the field-list ARE in the field-list from TCA!
+        return array_intersect($selectFields, $fieldListFields);
+    }
+
+    /**
      * Creates the listing of records from a single table
      *
      * @param string $table Table name
@@ -648,7 +761,6 @@ class DatabaseRecordList
         // set the limits
         // Use default value and overwrite with page ts config and tca config depending on the current view
         // Force limit in range 5, 10000
-
         // default 100
         $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
             $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ??
@@ -664,343 +776,230 @@ class DatabaseRecordList
         ), 5, 10000);
 
         // Set limit depending on the view (single table vs. default)
-        $iLimit = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
+        $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
 
         // Set limit from search
         if ($this->showLimit) {
-            $iLimit = $this->showLimit;
-        }
-
-        // csv export - set no limit at all
-        if ($this->csvOutput) {
-            $iLimit = 0;
+            $itemsPerPage = $this->showLimit;
         }
 
         // Init
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
-        $l10nEnabled = $GLOBALS['TCA'][$table]['ctrl']['languageField']
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        $l10nEnabled = BackendUtility::isTableLocalizable($table);
 
-        // Setting fields selected in fieldselectBox (saved in uc)
-        $rowListArray = [];
-        if ($this->allFields && is_array($this->setFields[$table] ?? null)) {
-            $rowListArray = $this->makeFieldList($table, false, true);
-            if ($this->csvOutput === false) {
-                $rowListArray[] = '_PATH_';
-                $rowListArray[] = '_REF_';
-            }
-            $rowListArray = array_intersect($rowListArray, $this->setFields[$table]);
-        }
-        // if no columns have been specified, show description (if configured)
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
-            $rowListArray[] = $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'];
-        }
-        $backendUser = $this->getBackendUserAuthentication();
-        $lang = $this->getLanguageService();
-        // Get configuration of collapsed tables from user uc
-        $tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
-            ? $backendUser->uc['moduleData']['list']
-            : [];
-        $tableCollapsed = (bool)($tablesCollapsed[$table] ?? false);
-        // prepare space icon
-        $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
-        // Place the $titleCol as the first column always!
-        $this->fieldArray = [];
-        // Add title column
-        $this->fieldArray[] = $titleCol;
-        if ($this->csvOutput === false) {
-            // Control-Panel
-            if ($this->noControlPanels === false) {
-                $this->fieldArray[] = '_CONTROL_';
-            }
-            // Clipboard
-            if ($this->showClipboard && $this->noControlPanels === false) {
-                $this->fieldArray[] = '_CLIPBOARD_';
-            }
-            // Ref
-            if (!in_array('_REF_', $rowListArray, true) && !$this->dontShowClipControlPanels) {
-                $this->fieldArray[] = '_REF_';
-            }
-            // Path
-            if (!in_array('_PATH_', $rowListArray, true) && $this->searchLevels) {
-                $this->fieldArray[] = '_PATH_';
-            }
-            // Localization
-            if ($l10nEnabled) {
-                $this->fieldArray[] = '_LOCALIZATION_';
-                // Do not show the "Localize to:" field when only translated records should be shown
-                if (!$this->showOnlyTranslatedRecords) {
-                    $this->fieldArray[] = '_LOCALIZATION_b';
-                }
-            }
-        }
-        // Cleaning up:
-        $this->fieldArray = array_unique(array_merge($this->fieldArray, $rowListArray));
-        // Creating the list of fields to include in the SQL query:
-        $selectFields = $this->fieldArray;
-        $selectFields[] = 'uid';
-        $selectFields[] = 'pid';
-        if ($table === 'pages') {
-            $selectFields[] = 'module';
-            $selectFields[] = 'extendToSubpages';
-            $selectFields[] = 'nav_hide';
-            $selectFields[] = 'doktype';
-            $selectFields[] = 'shortcut';
-            $selectFields[] = 'shortcut_mode';
-            $selectFields[] = 'mount_pid';
-        }
-        if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
-            $selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
-        }
-        foreach (['type', 'typeicon_column', 'editlock'] as $field) {
-            if ($GLOBALS['TCA'][$table]['ctrl'][$field]) {
-                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl'][$field];
-            }
-        }
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            $selectFields[] = 't3ver_state';
-            $selectFields[] = 't3ver_wsid';
-            $selectFields[] = 't3ver_oid';
-        }
-        if ($l10nEnabled) {
-            $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-            $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-        }
-        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {
-            $selectFields = array_merge(
-                $selectFields,
-                GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true)
-            );
-        }
-        // Unique list!
-        $selectFields = array_unique($selectFields);
-        $fieldListFields = $this->makeFieldList($table, true);
-        // Making sure that the fields in the field-list ARE in the field-list from TCA!
-        $selectFields = array_intersect($selectFields, $fieldListFields);
+        $this->fieldArray = $this->getColumnsToRender($table, $this->csvOutput === false);
+        // Creating the list of fields to include in the SQL query
+        $selectFields = $this->getFieldsToSelect($table, $this->fieldArray);
 
-        // Implode it into a list of fields for the SQL-statement.
-        $selFieldList = implode(',', $selectFields);
-
-        $firstElement = (($this->page -1) * $iLimit);
-        if ($firstElement > 2 && $iLimit > 0) {
+        $firstElement = ($this->page - 1) * $itemsPerPage;
+        if ($firstElement > 2 && $itemsPerPage > 0) {
             // Get the two previous rows for sorting if displaying page > 1
             $firstElement -= 2;
-            $iLimit += 2;
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $firstElement, $iLimit);
+            $itemsPerPage += 2;
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], $selectFields, true, $firstElement, $itemsPerPage);
             $firstElement += 2;
-            $iLimit -= 2;
+            $itemsPerPage -= 2;
         } else {
-            $queryBuilder = $this->getQueryBuilder($table, $id, [], array_values($selectFields), true, $firstElement, $iLimit);
+            $queryBuilder = $this->getQueryBuilder($table, $id, [], $selectFields, true, $firstElement, $itemsPerPage);
         }
 
-        // Init:
         $queryResult = $queryBuilder->execute();
-        $dbCount = 0;
-        $out = '';
-        $tableHeader = '';
-        $listOnlyInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
-        // If the count query returned any number of records, we perform the real query,
-        // selecting records.
-        if ($totalItems) {
-            // Fetch records only if not in single table mode
-            if ($listOnlyInSingleTableMode) {
-                $dbCount = $totalItems;
-            } else {
-                // Set the showLimit to the number of records when outputting as CSV
-                if ($this->csvOutput) {
-                    $this->showLimit = $totalItems;
-                    $iLimit = $totalItems;
-                    $dbCount = $totalItems;
-                } else {
-                    if ($firstElement + $this->showLimit <= $totalItems) {
-                        $dbCount = $this->showLimit + 2;
-                    } else {
-                        $dbCount = $totalItems - $firstElement + 2;
-                    }
-                }
-            }
+        $columnsOutput = '';
+        $onlyShowRecordsInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
+        // Fetch records only if not in single table mode
+        if ($onlyShowRecordsInSingleTableMode) {
+            $dbCount = $totalItems;
+        } elseif ($this->csvOutput) {
+            // Set the showLimit to the number of records when outputting as CSV
+            $this->showLimit = $totalItems;
+            $itemsPerPage = $totalItems;
+            $dbCount = $totalItems;
+        } elseif ($firstElement + $this->showLimit <= $totalItems) {
+            $dbCount = $this->showLimit + 2;
+        } else {
+            $dbCount = $totalItems - $firstElement + 2;
         }
         // If any records was selected, render the list:
-        if ($dbCount) {
-            $tableIdentifier = $table;
-            // Use a custom table title for translated pages
-            if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
-                // pages records in list module are split into two own sections, one for pages with
-                // sys_language_uid = 0 "Page" and an own section for sys_language_uid > 0 "Page Translation".
-                // This if sets the different title for the page translation case and a unique table identifier
-                // which is used in DOM as id.
-                $tableTitle = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:pageTranslation'));
-                $tableIdentifier = 'pages_translated';
-            } else {
-                $tableTitle = htmlspecialchars($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
-                if ($tableTitle === '') {
-                    $tableTitle = $table;
-                }
-            }
-            // Header line is drawn
-            $theData = [];
-            if ($this->disableSingleTableView) {
-                $theData[$titleCol] = '<span class="c-table">' . BackendUtility::wrapInHelp($table, '', $tableTitle)
-                    . '</span> (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
-            } else {
-                $icon = $this->table
-                    ? '<span title="' . htmlspecialchars($lang->getLL('contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
-                    : '<span title="' . htmlspecialchars($lang->getLL('expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
-                $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
-            }
-            if ($listOnlyInSingleTableMode) {
-                $tableHeader .= BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
-            } else {
-                // Render collapse button if in multi table mode
-                $collapseButton = '';
-                if (!$this->table) {
-                    $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                    $collapseButton = '<button type="button"'
-                        . ' class="btn btn-default btn-sm pull-right t3js-toggle-recordlist"'
-                        . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
-                        . ' aria-label="' . sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle) . '"'
-                        . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
-                        . ' data-bs-toggle="collapse"'
-                        . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
-                        . $icon
-                        . '</button>';
-                }
-                $tableHeader .= $theData[$titleCol] . $collapseButton;
-            }
-            // Render table rows only if in multi table view or if in single table view
-            $rowOutput = '';
-            if (!$listOnlyInSingleTableMode || $this->table) {
-                // Fixing an order table for sortby tables
-                $this->currentTable = [];
-                $currentIdList = [];
-                $doSort = $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField;
-                $prevUid = 0;
-                $prevPrevUid = 0;
-                // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
-                if ($firstElement > 2 && $iLimit > 0) {
-                    $row = $queryResult->fetch();
-                    $prevPrevUid = -((int)$row['uid']);
-                    $row = $queryResult->fetch();
-                    $prevUid = $row['uid'];
-                }
-                $accRows = [];
-                // Accumulate rows here
-                while ($row = $queryResult->fetch()) {
-                    if (!$this->isRowListingConditionFulfilled($table, $row)) {
-                        continue;
-                    }
-                    // In offline workspace, look for alternative record:
-                    BackendUtility::workspaceOL($table, $row, $backendUser->workspace, true);
-                    if (is_array($row)) {
-                        $accRows[] = $row;
-                        $currentIdList[] = $row['uid'];
-                        if ($doSort) {
-                            if ($prevUid) {
-                                $this->currentTable['prev'][$row['uid']] = $prevPrevUid;
-                                $this->currentTable['next'][$prevUid] = '-' . $row['uid'];
-                                $this->currentTable['prevUid'][$row['uid']] = $prevUid;
-                            }
-                            $prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
-                            $prevUid = $row['uid'];
-                        }
-                    }
-                }
-                // CSV initiated
-                if ($this->csvOutput) {
-                    $this->addHeaderRowToCSV();
-                }
-                // Render items:
-                $this->CBnames = [];
-                $this->duplicateStack = [];
-                $cc = 0;
-                foreach ($accRows as $row) {
-                    // Render item row if counter < limit
-                    if ($cc < $iLimit) {
-                        $cc++;
-                        // Reset translations
-                        $translations = [];
-                        // Initialize with FALSE which causes the localization panel to not beeing displayed as
-                        // the record is already localized, in free mode or has sys_language_uid -1 set.
-                        // Only set to TRUE if TranslationConfigurationProvider::translationInfo() returns
-                        // an array indicating the record can be translated.
-                        $translationEnabled = false;
-                        // Guard clause so we can quickly return if a record is localized to "all languages"
-                        // It should only be possible to localize a record off default (uid 0)
-                        if ($l10nEnabled && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
-                            $translationsRaw = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $selFieldList);
-                            if (is_array($translationsRaw)) {
-                                $translationEnabled = true;
-                                if (is_array($translationsRaw['translations'])) {
-                                    $translations = $translationsRaw['translations'];
-                                }
-                            }
-                        }
-                        $rowOutput .= $this->renderListRow($table, $row, $cc, $titleCol, '', 0, $translations, $translationEnabled);
-                        // If no search happened it means that the selected
-                        // records are either default or All language and here we will not select translations
-                        // which point to the main record:
-                        if ($l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table))) {
-                            foreach ($translations as $lRow) {
-                                if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
-                                    continue;
-                                }
-                                // In offline workspace, look for alternative record:
-                                BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
-                                if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
-                                    $currentIdList[] = $lRow['uid'];
-                                    $rowOutput .= $this->renderListRow($table, $lRow, $cc, $titleCol, '', 18, [], false);
-                                }
-                            }
-                        }
-                    }
-                }
-                // Record navigation is added to the beginning and end of the table if in single
-                // table mode
-                if ($this->table) {
-                    $rowOutput = $this->renderListNavigation($totalItems, $iLimit) . $rowOutput . $this->renderListNavigation($totalItems, $iLimit);
-                } else {
-                    // Show that there are more records than shown
-                    if ($totalItems > $itemsLimitPerTable) {
-                        $countOnFirstPage = $totalItems > $itemsLimitSingleTable ? $itemsLimitSingleTable : $totalItems;
-                        $hasMore = $totalItems > $itemsLimitSingleTable;
-                        $colspan =  (count($this->fieldArray) + 1);
-                        $rowOutput .= '<tr><td colspan="' . $colspan . '">
-								<a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
-                            . '<span class="t3-icon fa fa-chevron-down"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
-								</td></tr>';
-                    }
-                }
-                // The header row for the table is now created:
-                $out .= $this->renderListHeader($table, $currentIdList);
-            }
+        if ($dbCount === 0) {
+            return '';
+        }
 
-            $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
-            $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
+        // Get configuration of collapsed tables from user uc
+        $lang = $this->getLanguageService();
 
-            // The list of records is added after the header and wrapped
-            $out .= $rowOutput;
-            $out = '
-				<div class="panel panel-space panel-default recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
-					<div class="panel-heading">
-					' . $tableHeader . '
-					</div>
-					<div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
-						<div class="table-fit">
-							<table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
-								' . $out . '
-							</table>
-						</div>
-					</div>
-				</div>
-			';
-            // Output csv if...
-            // This ends the page with exit.
-            if ($this->csvOutput) {
-                $this->outputCSV($table);
+        $tableIdentifier = $table;
+        // Use a custom table title for translated pages
+        if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
+            // pages records in list module are split into two own sections, one for pages with
+            // sys_language_uid = 0 "Page" and an own section for sys_language_uid > 0 "Page Translation".
+            // This if sets the different title for the page translation case and a unique table identifier
+            // which is used in DOM as id.
+            $tableTitle = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:pageTranslation'));
+            $tableIdentifier = 'pages_translated';
+        } else {
+            $tableTitle = htmlspecialchars($lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
+            if ($tableTitle === '') {
+                $tableTitle = $table;
             }
         }
-        // Return content:
-        return $out;
+
+        $backendUser = $this->getBackendUserAuthentication();
+        $tablesCollapsed = (array)$backendUser->getModuleData('list') ?? [];
+        $tableCollapsed = (bool)($tablesCollapsed[$table] ?? false);
+
+        // Header line is drawn
+        $theData = [];
+        if ($this->disableSingleTableView) {
+            $theData[$titleCol] = BackendUtility::wrapInHelp($table, '', $tableTitle) . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
+        } else {
+            $icon = $this->table
+                ? '<span title="' . htmlspecialchars($lang->getLL('contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
+                : '<span title="' . htmlspecialchars($lang->getLL('expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
+            $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
+        }
+        if ($onlyShowRecordsInSingleTableMode) {
+            $tableHeader = BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
+        } else {
+            $tableHeader = $theData[$titleCol];
+            // Render collapse button if in multi table mode
+            if (!$this->table) {
+                $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
+                $tableHeader .= '<button type="button"'
+                    . ' class="btn btn-default btn-sm pull-right t3js-toggle-recordlist"'
+                    . ' aria-expanded="' . ($tableCollapsed ? 'false' : 'true') . '"'
+                    . ' aria-label="' . sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle) . '"'
+                    . ' data-table="' . htmlspecialchars($tableIdentifier) . '"'
+                    . ' data-bs-toggle="collapse"'
+                    . ' data-bs-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">'
+                    . $icon
+                    . '</button>';
+            }
+        }
+        // Render table rows only if in multi table view or if in single table view
+        $rowOutput = '';
+        if (!$onlyShowRecordsInSingleTableMode || $this->table) {
+            // Fixing an order table for sortby tables
+            $this->currentTable = [];
+            $currentIdList = [];
+            $allowManualSorting = $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField;
+            $prevUid = 0;
+            $prevPrevUid = 0;
+            // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
+            if ($firstElement > 2 && $itemsPerPage > 0) {
+                $row = $queryResult->fetch();
+                $prevPrevUid = -((int)$row['uid']);
+                $row = $queryResult->fetch();
+                $prevUid = $row['uid'];
+            }
+            $accRows = [];
+            // Accumulate rows here
+            while ($row = $queryResult->fetch()) {
+                if (!$this->isRowListingConditionFulfilled($table, $row)) {
+                    continue;
+                }
+                // In offline workspace, look for alternative record
+                BackendUtility::workspaceOL($table, $row, $backendUser->workspace, true);
+                if (is_array($row)) {
+                    $accRows[] = $row;
+                    $currentIdList[] = $row['uid'];
+                    if ($allowManualSorting) {
+                        if ($prevUid) {
+                            $this->currentTable['prev'][$row['uid']] = $prevPrevUid;
+                            $this->currentTable['next'][$prevUid] = '-' . $row['uid'];
+                            $this->currentTable['prevUid'][$row['uid']] = $prevUid;
+                        }
+                        $prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
+                        $prevUid = $row['uid'];
+                    }
+                }
+            }
+            // CSV initiated
+            if ($this->csvOutput) {
+                $this->addHeaderRowToCSV();
+            }
+            // Render items:
+            $this->CBnames = [];
+            $this->duplicateStack = [];
+            $cc = 0;
+
+            // If no search happened it means that the selected
+            // records are either default or All language and here we will not select translations
+            // which point to the main record:
+            $listTranslatedRecords = $l10nEnabled && $this->searchString === '' && !($this->hideTranslations === '*' || GeneralUtility::inList($this->hideTranslations, $table));
+            foreach ($accRows as $row) {
+                // Render item row if counter < limit
+                if ($cc < $itemsPerPage) {
+                    $cc++;
+                    // Reset translations
+                    $translations = [];
+                    // Initialize with FALSE which causes the localization panel to not beeing displayed as
+                    // the record is already localized, in free mode or has sys_language_uid -1 set.
+                    // Only set to TRUE if TranslationConfigurationProvider::translationInfo() returns
+                    // an array indicating the record can be translated.
+                    $translationEnabled = false;
+                    // Guard clause so we can quickly return if a record is localized to "all languages"
+                    // It should only be possible to localize a record off default (uid 0)
+                    if ($l10nEnabled && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== -1) {
+                        $translationsRaw = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $selectFields);
+                        if (is_array($translationsRaw)) {
+                            $translationEnabled = true;
+                            $translations = $translationsRaw['translations'] ?: [];
+                        }
+                    }
+                    $rowOutput .= $this->renderListRow($table, $row, 0, $translations, $translationEnabled);
+                    if ($listTranslatedRecords) {
+                        foreach ($translations ?? [] as $lRow) {
+                            if (!$this->isRowListingConditionFulfilled($table, $lRow)) {
+                                continue;
+                            }
+                            // In offline workspace, look for alternative record:
+                            BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
+                            if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+                                $currentIdList[] = $lRow['uid'];
+                                $rowOutput .= $this->renderListRow($table, $lRow, 18, [], false);
+                            }
+                        }
+                    }
+                }
+            }
+            // Record navigation is added to the beginning and end of the table if in single table mode
+            if ($this->table) {
+                $pagination = $this->renderListNavigation($this->table, $totalItems, $itemsPerPage);
+                $rowOutput = $pagination . $rowOutput . $pagination;
+            } elseif ($totalItems > $itemsLimitPerTable) {
+                // Show that there are more records than shown
+                $colspan = count($this->fieldArray) + 1;
+                $rowOutput .= '<tr><td colspan="' . $colspan . '">
+                        <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
+                    . $this->iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL)->render() . ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable') . '</a>
+                        </td></tr>';
+            }
+            // The header row for the table is now created
+            $columnsOutput = $this->renderListHeader($table, $currentIdList);
+        }
+
+        // Output csv if...
+        // This ends the page with exit.
+        if ($this->csvOutput) {
+            $this->outputCSV($table);
+        }
+
+        $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
+        $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
+        return '
+            <div class="panel panel-space panel-default recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
+                <div class="panel-heading">
+                ' . $tableHeader . '
+                </div>
+                <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
+                    <div class="table-fit">
+                        <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
+                            ' . $columnsOutput . $rowOutput . '
+                        </table>
+                    </div>
+                </div>
+            </div>
+        ';
     }
 
     /**
@@ -1056,9 +1055,6 @@ class DatabaseRecordList
      *
      * @param string $table Table name
      * @param mixed[] $row Current record
-     * @param int $cc Counter, counting for each time an element is rendered (used for alternating colors)
-     * @param string $titleCol Table field (column) where header value is found
-     * @param string $thumbsCol Table field (column) where (possible) thumbnails can be found
      * @param int $indent Indent from left.
      * @param array $translations Array of already existing translations for the current record
      * @param bool $translationEnabled Whether the record can be translated
@@ -1066,11 +1062,9 @@ class DatabaseRecordList
      * @internal
      * @see getTable()
      */
-    public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent, array $translations, bool $translationEnabled)
+    public function renderListRow($table, array $row, int $indent, array $translations, bool $translationEnabled)
     {
-        if (!is_array($row)) {
-            return '';
-        }
+        $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $languageService = $this->getLanguageService();
         $rowOutput = '';
         $id_orig = null;
@@ -1112,7 +1106,7 @@ class DatabaseRecordList
         $theData = [];
         $deletePlaceholderClass = '';
         foreach ($this->fieldArray as $fCol) {
-            if ($fCol == $titleCol) {
+            if ($fCol === $titleCol) {
                 $recTitle = BackendUtility::getRecordTitle($table, $row, false, true);
                 $warning = '';
                 // If the record is edit-locked	by another user, we will show a little warning sign:
@@ -1503,30 +1497,31 @@ class DatabaseRecordList
     /**
      * Creates a page browser for tables with many records
      *
+     * @param string $table
      * @param int $totalItems
-     * @param int $iLimit
+     * @param int $itemsPerPage
      * @return string Navigation HTML
      */
-    protected function renderListNavigation(int $totalItems, int $iLimit): string
+    protected function renderListNavigation(string $table, int $totalItems, int $itemsPerPage): string
     {
         $currentPage = $this->page;
         $paginationColumns = count($this->fieldArray);
-        $totalPages = (int)ceil($totalItems / $iLimit);
+        $totalPages = (int)ceil($totalItems / $itemsPerPage);
         // Show page selector if not all records fit into one page
         if ($totalPages <= 1) {
             return '';
         }
-        if ($totalItems > $currentPage * $iLimit) {
-            $lastElementNumber = $currentPage * $iLimit;
+        if ($totalItems > $currentPage * $itemsPerPage) {
+            $lastElementNumber = $currentPage * $itemsPerPage;
         } else {
             $lastElementNumber = $totalItems;
         }
         return $this->getFluidTemplateObject('ListNavigation.html')
             ->assignMultiple([
-                'currentUrl' => $this->listURL('', '-1', 'pointer'),
+                'currentUrl' => $this->listURL('', $table, 'pointer'),
                 'currentPage' => $currentPage,
                 'totalPages' => $totalPages,
-                'firstElement' => ((($currentPage -1) * $iLimit) + 1),
+                'firstElement' => ((($currentPage -1) * $itemsPerPage) + 1),
                 'lastElement' => $lastElementNumber,
                 'colspan' => $paginationColumns
             ])
@@ -2247,7 +2242,7 @@ class DatabaseRecordList
             $field = 'pid';
         }
         //	 Create the sort link:
-        $sortUrl = $this->listURL('', '-1', 'sortField,sortRev,table,pointer') . '&table=' . $table
+        $sortUrl = $this->listURL('', $table, 'sortField,sortRev,table,pointer')
             . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || $this->sortField != $field ? 0 : 1);
         $sortArrow = $this->sortField === $field
             ? $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render()
@@ -2531,15 +2526,28 @@ class DatabaseRecordList
      */
     public function generateList(): string
     {
+        $tableNames = $this->getTablesToRender();
         $output = '';
-        // Set page record in header
-        $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
+        foreach ($tableNames as $tableName) {
+            $output .= $this->getTable($tableName, $this->id);
+        }
+        return $output;
+    }
 
+    /**
+     * Depending on various options returns a list of all TCA tables which should be shown
+     * and are allowed by the current user.
+     *
+     * @return array a list of all TCA tables
+     */
+    protected function getTablesToRender(): array
+    {
+        $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
         $backendUser = $this->getBackendUserAuthentication();
 
         // pre-process tables and add sorting instructions
         $tableNames = array_flip(array_keys($GLOBALS['TCA']));
-        foreach ($tableNames as $tableName => &$config) {
+        foreach ($tableNames as $tableName => $_) {
             $hideTable = false;
 
             // Checking if the table should be rendered:
@@ -2554,14 +2562,11 @@ class DatabaseRecordList
             if (!$hideTable) {
                 // Don't show table if hidden by TCA ctrl section
                 // Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-                $hideTable = $hideTable
-                    || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])
+                $hideTable = !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])
                     || in_array($tableName, $hideTablesArray, true)
                     || in_array('*', $hideTablesArray, true);
                 // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
-                if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
-                    $hideTable = (bool)$this->tableTSconfigOverTCA[$tableName . '.']['hideTable'];
-                }
+                $hideTable = (bool)($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'] ?? $hideTable);
             }
             if ($hideTable) {
                 unset($tableNames[$tableName]);
@@ -2574,15 +2579,9 @@ class DatabaseRecordList
                 }
             }
         }
-        unset($config);
-
         $orderedTableNames = GeneralUtility::makeInstance(DependencyOrderingService::class)
             ->orderByDependencies($tableNames);
-
-        foreach ($orderedTableNames as $tableName => $_) {
-            $output .= $this->getTable($tableName, $this->id);
-        }
-        return $output;
+        return array_keys($orderedTableNames);
     }
 
     /**
@@ -3086,54 +3085,50 @@ class DatabaseRecordList
         // Init fieldlist array:
         $fieldListArr = [];
         // Check table:
-        if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array(
-            $GLOBALS['TCA'][$table]['columns']
-        )) {
-            if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-                // Traverse configured columns and add them to field array, if available for user.
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                    if ($fieldValue['config']['type'] === 'none') {
-                        // Never render or fetch type=none fields from db
-                        continue;
-                    }
-                    if ($dontCheckUser
-                        || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] !== 'passthrough'
-                    ) {
-                        $fieldListArr[] = $fN;
-                    }
+        if (is_array($GLOBALS['TCA'][$table]['columns'] ?? null)) {
+            // Traverse configured columns and add them to field array, if available for user.
+            foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
+                if ($fieldValue['config']['type'] === 'none') {
+                    // Never render or fetch type=none fields from db
+                    continue;
                 }
-
-                $fieldListArr[] = 'uid';
-                $fieldListArr[] = 'pid';
-
-                // Add date fields
-                if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
-                    if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-                    }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
-                    }
+                if ($dontCheckUser
+                    || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] !== 'passthrough'
+                ) {
+                    $fieldListArr[] = $fN;
                 }
-                // Add more special fields:
-                if ($dontCheckUser || $backendUser->isAdmin()) {
-                    if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-                    }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-                    }
-                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                        $fieldListArr[] = 't3ver_state';
-                        $fieldListArr[] = 't3ver_wsid';
-                        $fieldListArr[] = 't3ver_oid';
-                    }
-                }
-            } else {
-                GeneralUtility::makeInstance(LogManager::class)
-                    ->getLogger(__CLASS__)
-                    ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
             }
+
+            $fieldListArr[] = 'uid';
+            $fieldListArr[] = 'pid';
+
+            // Add date fields
+            if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
+                if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
+                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+                }
+                if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
+                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+                }
+            }
+            // Add more special fields:
+            if ($dontCheckUser || $backendUser->isAdmin()) {
+                if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
+                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+                }
+                if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
+                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+                }
+                if (BackendUtility::isTableWorkspaceEnabled($table)) {
+                    $fieldListArr[] = 't3ver_state';
+                    $fieldListArr[] = 't3ver_wsid';
+                    $fieldListArr[] = 't3ver_oid';
+                }
+            }
+        } else {
+            GeneralUtility::makeInstance(LogManager::class)
+                ->getLogger(__CLASS__)
+                ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
         }
         return $fieldListArr;
     }

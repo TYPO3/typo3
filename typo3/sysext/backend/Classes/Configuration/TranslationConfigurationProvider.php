@@ -102,7 +102,7 @@ class TranslationConfigurationProvider
      * @param int $uid Record uid
      * @param int $languageUid Language uid. If 0, then all languages are selected.
      * @param array $row The record to be translated
-     * @param string $selFieldList Select fields for the query which fetches the translations of the current record
+     * @param array|string $selFieldList Select fields for the query which fetches the translations of the current record
      * @return mixed Array with information or error message as a string.
      */
     public function translationInfo($table, $uid, $languageUid = 0, array $row = null, $selFieldList = '')
@@ -126,8 +126,14 @@ class TranslationConfigurationProvider
             return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a relation to record "' . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] . '")';
         }
         // Look for translations of this record, index by language field value:
-        if (!$selFieldList) {
-            $selFieldList = 'uid,' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        if (!empty($selFieldList)) {
+            if (is_array($selFieldList)) {
+                $selectFields = $selFieldList;
+            } else {
+                $selectFields = GeneralUtility::trimExplode(',', $selFieldList);
+            }
+        } else {
+            $selectFields = ['uid', $GLOBALS['TCA'][$table]['ctrl']['languageField']];
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
@@ -135,7 +141,7 @@ class TranslationConfigurationProvider
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUserAuthentication()->workspace));
         $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $selFieldList))
+            ->select(...$selectFields)
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
