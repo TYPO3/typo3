@@ -129,8 +129,9 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
      */
     public function render(ServerRequestInterface $request): string
     {
-        // Declare JS module
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordLinkHandler');
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordLinkHandler');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
 
         // Define the current page
         if (isset($request->getQueryParams()['expandPage'])) {
@@ -156,6 +157,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
         $view->assignMultiple([
             'tree' => $this->configuration['hidePageTree'] ? '' : $this->renderPageTree(),
             'recordList' => $recordList,
+            'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250
         ]);
 
         return $view->render();

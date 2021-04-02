@@ -275,7 +275,6 @@ body {
     &:after {
         content: '';
         position: absolute;
-        top: 0;
         height: 100%;
         width: 8px;
         margin-left: -5px;
@@ -349,4 +348,8 @@ body {
             display: inline-block;
         }
     }
+}
+
+typo3-backend-navigation-switcher {
+    display: flex;
 }

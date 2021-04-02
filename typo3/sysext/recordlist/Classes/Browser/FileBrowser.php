@@ -207,6 +207,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $view->assignMultiple([
             'treeEnabled' => true,
             'tree' => $tree,
+            'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'content' => $files . $uploadForm . $createFolder
         ]);
         return $this->moduleTemplate->renderContent();

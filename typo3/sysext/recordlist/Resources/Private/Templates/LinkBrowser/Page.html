@@ -1,5 +1,5 @@
-<div class="element-browser-panel element-browser-main">
-    <div class="element-browser-main-sidebar">
+<div class="element-browser-panel element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
+    <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
         <div class="element-browser-body">
             <f:if condition="{temporaryTreeMountCancelLink}">
                 <p>
@@ -11,6 +11,13 @@
             {tree -> f:format.raw()}
         </div>
     </div>
+    <typo3-backend-navigation-switcher
+        parent=".element-browser-main"
+        navigation=".element-browser-main-sidebar"
+        minimum-width="250"
+        initial-width="{initialNavigationWidth}"
+        persistence-identifier="selector.navigation.width"
+    ></typo3-backend-navigation-switcher>
     <div class="element-browser-main-content">
         <div class="element-browser-body">
             <f:if condition="{expandActivePage}">

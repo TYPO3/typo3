@@ -103,7 +103,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function render(ServerRequestInterface $request)
     {
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Recordlist/PageLinkHandler');
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/PageLinkHandler');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
 
         $this->expandPage = isset($request->getQueryParams()['expandPage']) ? (int)$request->getQueryParams()['expandPage'] : 0;
         $this->setTemporaryDbMounts();
@@ -119,6 +121,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         $this->view->assign('temporaryTreeMountCancelLink', $this->getTemporaryTreeMountCancelNotice());
         $this->view->assign('tree', $pageTree->getBrowsableTree());
+        $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
         $this->getRecordsOnExpandedPage($this->expandPage);
         return $this->view->render('Page');
     }

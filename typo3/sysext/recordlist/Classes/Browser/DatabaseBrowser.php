@@ -116,6 +116,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             'treeEnabled' => $withTree,
             'temporaryTreeMountCancelUrl' => $this->getTemporaryTreeMountCancelNotice(),
             'tree' => $tree,
+            'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'content' => $renderedRecordList
         ]);
         return $this->moduleTemplate->renderContent();

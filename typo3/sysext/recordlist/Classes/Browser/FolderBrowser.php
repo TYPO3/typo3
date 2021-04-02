@@ -108,6 +108,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         $view->assignMultiple([
             'treeEnabled' => true,
             'tree' => $tree,
+            'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'content' => $folders
         ]);
         return $this->moduleTemplate->renderContent();

@@ -137,6 +137,14 @@ $elementbrowser-breakpoint: 600px;
     .list-tree-control > .fa:before {
         background-color: #f2f2f2;
     }
+
+    .scaffold-content-navigation-available & {
+        display: none;
+    }
+
+    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
+        display: flex;
+    }
 }
 
 .element-browser-main-content {

@@ -22,12 +22,12 @@ class NavigationContainer extends AbstractContainer {
   private readonly switcher: HTMLElement = null;
   private activeComponentId: string = '';
 
-  public constructor(consumerScope: any, navigationSwitcher?: HTMLElement)
+  public constructor(consumerScope: any)
   {
     super(consumerScope);
     this.parent = document.querySelector(ScaffoldIdentifierEnum.scaffold);
     this.container = document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
-    this.switcher = navigationSwitcher;
+    this.switcher = <HTMLElement>document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher);
   }
 
   /**
@@ -84,39 +84,11 @@ class NavigationContainer extends AbstractContainer {
     });
   }
 
-  public toggle(): void {
-    this.parent.classList.toggle('scaffold-content-navigation-expanded');
-  }
-
   public hide(hideSwitcher: boolean): void {
     this.parent.classList.remove('scaffold-content-navigation-expanded');
     this.parent.classList.remove('scaffold-content-navigation-available');
     if (hideSwitcher && this.switcher) {
       this.switcher.style.display = 'none';
-    }
-  }
-
-  public getPosition(): DOMRect {
-    return this.container.getBoundingClientRect();
-  }
-
-  public getWidth(): number {
-    if (this.container) {
-      return <number>this.container.offsetWidth;
-    }
-    return 0;
-  }
-
-  public autoWidth(): void {
-    if (this.container) {
-      this.container.style.width = 'auto';
-    }
-  }
-
-  public setWidth(width: number): void {
-    width = width > 300 ? width : 300;
-    if (this.container) {
-      this.container.style.width = width + 'px';
     }
   }
 
