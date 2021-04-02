@@ -123,7 +123,7 @@ class CropVariant
     {
         $coverAreasAsArray = null;
         $allowedAspectRatiosAsArray = [];
-        foreach ($this->allowedAspectRatios as $id => $allowedAspectRatio) {
+        foreach ($this->allowedAspectRatios ?? [] as $id => $allowedAspectRatio) {
             $allowedAspectRatiosAsArray[$id] = $allowedAspectRatio->asArray();
         }
         if ($this->coverAreas !== null) {

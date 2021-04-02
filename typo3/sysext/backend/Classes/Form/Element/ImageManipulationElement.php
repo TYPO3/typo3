@@ -275,14 +275,26 @@ class ImageManipulationElement extends AbstractFormElement
 
         $cropVariants = [];
         foreach ($config['cropVariants'] as $id => $cropVariant) {
+
+            // Filter allowed aspect ratios
+            $cropVariant['allowedAspectRatios'] = array_filter($cropVariant['allowedAspectRatios'] ?? [], static function ($aspectRatio) {
+                return !(bool)($aspectRatio['disabled'] ?? false);
+            });
+
             // Ignore disabled crop variants
             if (!empty($cropVariant['disabled'])) {
                 continue;
             }
+
+            if (empty($cropVariant['allowedAspectRatios'])) {
+                throw new InvalidConfigurationException('Crop variants configuration ' . $id . ' contains no allowed aspect ratios', 1620147893);
+            }
+
             // Enforce a crop area (default is full image)
             if (empty($cropVariant['cropArea'])) {
                 $cropVariant['cropArea'] = Area::createEmpty()->asArray();
             }
+
             $cropVariants[$id] = $cropVariant;
         }
 
