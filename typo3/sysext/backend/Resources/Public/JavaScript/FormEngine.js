@@ -131,13 +131,14 @@ define(['jquery',
     exclusiveValues = String(exclusiveValues);
 
     var $fieldEl,
-      $originalFieldEl,
+      originalFieldEl,
       isMultiple = false,
       isList = false;
 
-    $originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName);
+    $fieldEl = FormEngine.getFieldElement(fieldName);
+    originalFieldEl = $fieldEl.get(0);
 
-    if ($originalFieldEl.length === 0 || value === '--div--') {
+    if (originalFieldEl === null || value === '--div--') {
       return;
     }
 
@@ -227,11 +228,11 @@ define(['jquery',
         $option.appendTo($fieldEl);
 
         // set the hidden field
-        FormEngine.updateHiddenFieldValueFromSelect($fieldEl, $originalFieldEl);
+        FormEngine.updateHiddenFieldValueFromSelect($fieldEl, originalFieldEl);
 
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
-        FormEngineValidation.markFieldAsChanged($originalFieldEl);
+        FormEngineValidation.markFieldAsChanged(originalFieldEl);
         FormEngine.Validation.validateField($fieldEl);
         FormEngine.Validation.validateField($availableFieldEl);
       }
@@ -282,7 +283,8 @@ define(['jquery',
 
     // make a comma separated list, if it is a multi-select
     // set the values to the final hidden field
-    $(originalFieldEl).val(selectedValues.join(','));
+    originalFieldEl.value = selectedValues.join(',');
+    originalFieldEl.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
   };
 
   /**
@@ -947,16 +949,26 @@ define(['jquery',
 
         $modal.on('button.clicked', function(e) {
           if (e.target.name === 'ok') {
+            FormEngine.closeModalsRecursive();
             FormEngine.saveDocument();
+          } else {
+            Modal.dismiss();
           }
-
-          Modal.dismiss();
         });
       } else {
         FormEngine.saveDocument();
       }
     });
   };
+
+  FormEngine.closeModalsRecursive = function() {
+    if (typeof Modal.currentModal !== 'undefined' && Modal.currentModal !== null) {
+      Modal.currentModal.on('hidden.bs.modal', function () {
+        FormEngine.closeModalsRecursive(Modal.currentModal);
+      });
+      Modal.currentModal.trigger('modal-dismiss');
+    }
+  }
 
   /**
    * Preview action

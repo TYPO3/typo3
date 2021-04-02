@@ -246,7 +246,6 @@ class GroupElement extends AbstractFormElement
         $selectorAttributes = [
             'id' => $fieldId,
             'data-formengine-input-name' => htmlspecialchars($elementName),
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-maxitems' => (string)$maxItems,
             'size' => (string)$size,
         ];
@@ -365,7 +364,12 @@ class GroupElement extends AbstractFormElement
             $html[] = '</div>';
         }
         $html[] =   '</div>';
-        $html[] =   '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
+        $html[] =   '<input type="hidden"';
+        $html[] =       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
+        $html[] =       ' name="' . htmlspecialchars($elementName) . '"';
+        $html[] =       ' value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '"';
+        $html[] =       ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
+        $html[] =   ' />';
         $html[] = '</div>';
 
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/GroupElement' => '
