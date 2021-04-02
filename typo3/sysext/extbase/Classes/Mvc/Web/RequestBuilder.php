@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -79,17 +80,17 @@ class RequestBuilder implements SingletonInterface
     protected $allowedControllerActions = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+     * @var ExtensionService
      */
     protected $extensionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+     * @var EnvironmentService
      */
     protected $environmentService;
 
@@ -109,7 +110,7 @@ class RequestBuilder implements SingletonInterface
     private $allowedControllerAliases = [];
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -117,7 +118,7 @@ class RequestBuilder implements SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     * @param ExtensionService $extensionService
      */
     public function injectExtensionService(ExtensionService $extensionService)
     {
@@ -125,7 +126,7 @@ class RequestBuilder implements SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+     * @param EnvironmentService $environmentService
      */
     public function injectEnvironmentService(EnvironmentService $environmentService)
     {
@@ -167,26 +168,24 @@ class RequestBuilder implements SingletonInterface
     /**
      * Builds a web request object from the raw HTTP information and the configuration
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request The web request as an object
+     * @param ServerRequestInterface $mainRequest
+     * @return Request The web request as an object
      */
-    public function build()
+    public function build(ServerRequestInterface $mainRequest)
     {
         $this->loadDefaultValues();
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
-        /** @var \TYPO3\CMS\Core\Http\ServerRequest $typo3Request */
-        $typo3Request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        if ($typo3Request instanceof ServerRequestInterface) {
-            $queryArguments = $typo3Request->getAttribute('routing');
-            if ($queryArguments instanceof PageArguments) {
-                $getParameters = $queryArguments->get($pluginNamespace) ?? [];
-            } else {
-                $getParameters = $typo3Request->getQueryParams()[$pluginNamespace] ?? [];
-            }
-            $bodyParameters = $typo3Request->getParsedBody()[$pluginNamespace] ?? [];
-            $parameters = $getParameters;
-            ArrayUtility::mergeRecursiveWithOverrule($parameters, $bodyParameters);
+        /** @var NormalizedParams $normalizedParams */
+        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
+        $queryArguments = $mainRequest->getAttribute('routing');
+        if ($queryArguments instanceof PageArguments) {
+            $parameters = $queryArguments->get($pluginNamespace) ?? [];
         } else {
-            $parameters = GeneralUtility::_GPmerged($pluginNamespace);
+            $parameters = $mainRequest->getQueryParams()[$pluginNamespace] ?? [];
+        }
+        if ($mainRequest->getMethod() === 'POST') {
+            $postParameters = $mainRequest->getParsedBody()[$pluginNamespace] ?? [];
+            ArrayUtility::mergeRecursiveWithOverrule($parameters, $postParameters);
         }
 
         $files = $this->untangleFilesArray($_FILES);
@@ -197,22 +196,20 @@ class RequestBuilder implements SingletonInterface
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
 
-        $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseUri = $normalizedParams->getSiteUrl();
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             $baseUri .= TYPO3_mainDir;
         }
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
         $request = GeneralUtility::makeInstance(Request::class);
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
         $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
-        // @todo Use Environment
-        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        $request->setRequestUri($normalizedParams->getRequestUrl());
         $request->setBaseUri($baseUri);
-        $request->setMethod($this->getServerRequestMethod($typo3Request));
+        $request->setMethod($mainRequest->getMethod());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {
@@ -358,13 +355,5 @@ class RequestBuilder implements SingletonInterface
             }
         }
         return $fieldPaths;
-    }
-
-    protected function getServerRequestMethod(?ServerRequestInterface $typo3Request): string
-    {
-        if ($typo3Request instanceof ServerRequestInterface) {
-            return $typo3Request->getMethod();
-        }
-        return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
     }
 }

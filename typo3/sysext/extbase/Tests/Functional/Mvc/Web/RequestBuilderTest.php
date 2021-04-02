@@ -17,10 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -58,8 +59,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('html', $request->getFormat());
@@ -90,8 +92,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('json', $request->getFormat());
@@ -102,8 +105,6 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function buildOverridesFormatIfSetInGetParameters()
     {
-        $_GET['tx_blog_example_blog']['format'] = 'json';
-
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
@@ -123,8 +124,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['format' => 'json']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('json', $request->getFormat());
@@ -139,8 +142,9 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectExceptionCode(1289843275);
         static::expectExceptionMessage('"extensionName" is not properly configured. Request can\'t be dispatched!');
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -156,8 +160,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -192,8 +197,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('name.pdf', $request->getArgument('name'));
@@ -249,8 +255,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
 
@@ -301,8 +308,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -313,8 +322,6 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectException(PageNotFoundException::class);
         static::expectExceptionCode(1313857897);
         static::expectExceptionMessage('The requested resource was not found');
-
-        $_GET['tx_blog_example_blog']['controller'] = 'NonExistentController';
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -336,8 +343,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -360,8 +369,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -369,8 +379,6 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveControllerClassNameReturnsDefaultControllerIfCallDefaultActionIfActionCantBeResolvedIsConfigured()
     {
-        $_GET['tx_blog_example_blog']['controller'] = 'NonExistentController';
-
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
@@ -391,8 +399,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('BlogController', $request->getControllerName());
@@ -403,8 +413,6 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveControllerClassNameReturnsControllerDefinedViaParametersIfControllerIsConfigured()
     {
-        $_GET['tx_blog_example_blog']['controller'] = 'UserController';
-
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
@@ -433,8 +441,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'UserController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('UserController', $request->getControllerName());
@@ -448,8 +458,6 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectException(InvalidActionNameException::class);
         static::expectExceptionCode(1313855175);
         static::expectExceptionMessage('The action "NonExistentAction" (controller "ExtbaseTeam\BlogExample\Controller\BlogController") is not allowed by this plugin / module. Please check TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\CMS\Extbase\Utility\ExtensionUtility::configureModule() in your ext_tables.php.');
-
-        $_GET['tx_blog_example_blog']['action'] = 'NonExistentAction';
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -470,8 +478,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -482,8 +492,6 @@ class RequestBuilderTest extends FunctionalTestCase
         static::expectException(PageNotFoundException::class);
         static::expectExceptionCode(1313857898);
         static::expectExceptionMessage('The requested resource was not found');
-
-        $_GET['tx_blog_example_blog']['action'] = 'NonExistentAction';
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -505,8 +513,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -514,8 +524,6 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveActionNameReturnsDefaultActionIfCallDefaultActionIfActionCantBeResolvedIsConfigured()
     {
-        $_GET['tx_blog_example_blog']['action'] = 'NonExistentAction';
-
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
@@ -536,8 +544,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('list', $request->getControllerActionName());
@@ -548,8 +558,6 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveActionNameReturnsActionDefinedViaParametersIfActionIsConfigured()
     {
-        $_GET['tx_blog_example_blog']['action'] = 'show';
-
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
@@ -571,8 +579,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -605,8 +615,9 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
         $configurationManager->setConfiguration($configuration);
 
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $requestBuilder->build();
+        $requestBuilder->build($mainRequest);
     }
 
     /**
@@ -614,11 +625,10 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveActionNameReturnsActionDefinedViaParametersOfServerRequest()
     {
-        $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest
             ->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -642,7 +652,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -655,11 +665,10 @@ class RequestBuilderTest extends FunctionalTestCase
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => ['action' => 'show']]);
 
-        $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest
+        $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest
             ->withAttribute('routing', $pageArguments)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -683,7 +692,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
@@ -694,11 +703,10 @@ class RequestBuilderTest extends FunctionalTestCase
      */
     public function resolveActionNameReturnsActionDefinedViaParsedBodyOfServerRequest()
     {
-        $serverRequest = new ServerRequest(new Uri(''));
-        $serverRequest = $serverRequest
+        $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
+        $mainRequest = $mainRequest
             ->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -722,9 +730,16 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
-        $request = $requestBuilder->build();
+        $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
         self::assertSame('show', $request->getControllerActionName());
+    }
+
+    protected function prepareServerRequest(string $url, $method = 'GET'): ServerRequestInterface
+    {
+        $request = new ServerRequest($url, $method);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        return $request->withAttribute('normalizedParams', $normalizedParams);
     }
 }

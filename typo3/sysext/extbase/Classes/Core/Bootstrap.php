@@ -186,7 +186,7 @@ class Bootstrap
      */
     protected function handleRequest(ServerRequestInterface $request): string
     {
-        $extbaseRequest = $this->extbaseRequestBuilder->build();
+        $extbaseRequest = $this->extbaseRequestBuilder->build($request);
         $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
         $response = $requestHandler->handleRequest($extbaseRequest);
         // If response is NULL after handling the request we need to stop
@@ -233,7 +233,7 @@ class Bootstrap
 
         $this->initialize($configuration);
 
-        $extbaseRequest = $this->extbaseRequestBuilder->build();
+        $extbaseRequest = $this->extbaseRequestBuilder->build($request);
         $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
         $response = $requestHandler->handleRequest($extbaseRequest);
 
