@@ -343,7 +343,7 @@ define([
           break;
         case 'group':
           if (rule.minItems || rule.maxItems) {
-            selected = field.querySelectorAll('option').length;
+            selected = FormEngineValidation.trimExplode(',', field.value).length;
             if (typeof rule.minItems !== 'undefined') {
               minItems = rule.minItems * 1;
               if (!isNaN(minItems) && selected < minItems) {
