@@ -115,6 +115,7 @@ class Persistent {
       data: {
         action: 'clear',
       },
+      method: 'post',
     });
     this.data = false;
   }

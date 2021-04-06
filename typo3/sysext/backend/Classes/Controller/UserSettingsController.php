@@ -30,6 +30,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UserSettingsController
 {
+    private const ALLOWED_ACTIONS = [
+        'GET' => ['get', 'getAll'],
+        'POST' => ['set', 'addToList', 'removeFromList', 'unset', 'clear']
+    ];
+
     /**
      * Processes all AJAX calls and returns a JSON for the data
      *
@@ -39,7 +44,8 @@ class UserSettingsController
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         // do the regular / main logic, depending on the action parameter
-        $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'] ?? '';
+        $action = $this->getValidActionFromRequest($request);
+
         $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? '';
         $value = $request->getParsedBody()['value'] ?? $request->getQueryParams()['value'] ?? '';
         $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
@@ -74,5 +80,11 @@ class UserSettingsController
                 $content = ['result' => false];
         }
         return (new JsonResponse())->setPayload($content);
+    }
+
+    protected function getValidActionFromRequest(ServerRequestInterface $request): string
+    {
+        $action = $request->getParsedBody()['action'] ?? $request->getQueryParams()['action'] ?? '';
+        return in_array($action, (self::ALLOWED_ACTIONS[$request->getMethod()] ?? []), true) ? $action : '';
     }
 }
