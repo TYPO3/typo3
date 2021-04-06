@@ -396,19 +396,26 @@ class EditDocumentController
 
         // Process incoming data via DataHandler?
         $parsedBody = $request->getParsedBody();
-        if ($this->doSave
-            || isset($parsedBody['_savedok'])
-            || isset($parsedBody['_saveandclosedok'])
-            || isset($parsedBody['_savedokview'])
-            || isset($parsedBody['_savedoknew'])
-            || isset($parsedBody['_duplicatedoc'])
+        if ((
+            $this->doSave
+                || isset($parsedBody['_savedok'])
+                || isset($parsedBody['_saveandclosedok'])
+                || isset($parsedBody['_savedokview'])
+                || isset($parsedBody['_savedoknew'])
+                || isset($parsedBody['_duplicatedoc'])
+        )
+            && $request->getMethod() === 'POST'
+            && $response = $this->processData($request)
         ) {
-            if ($response = $this->processData($request)) {
-                return $response;
-            }
+            return $response;
         }
 
         $this->init($request);
+
+        if ($request->getMethod() === 'POST') {
+            return new RedirectResponse($this->R_URI, 302);
+        }
+
         $this->main($request);
 
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -435,7 +442,7 @@ class EditDocumentController
         $this->columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? null);
         $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
-        $this->doSave = (bool)($parsedBody['doSave'] ?? $queryParams['doSave'] ?? false);
+        $this->doSave = (bool)($parsedBody['doSave'] ?? false) && $request->getMethod() === 'POST';
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
 
         // Set overrideVals as default values if defVals does not exist.
@@ -509,24 +516,23 @@ class EditDocumentController
     protected function processData(ServerRequestInterface $request): ?ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
 
         $beUser = $this->getBackendUser();
 
         // Processing related GET / POST vars
-        $this->data = $parsedBody['data'] ?? $queryParams['data'] ?? [];
-        $this->cmd = $parsedBody['cmd'] ?? $queryParams['cmd'] ?? [];
-        $this->mirror = $parsedBody['mirror'] ?? $queryParams['mirror'] ?? [];
-        $this->returnNewPageId = (bool)($parsedBody['returnNewPageId'] ?? $queryParams['returnNewPageId'] ?? false);
+        $this->data = $parsedBody['data'] ?? [];
+        $this->cmd = $parsedBody['cmd'] ?? [];
+        $this->mirror = $parsedBody['mirror']  ?? [];
+        $this->returnNewPageId = (bool)($parsedBody['returnNewPageId'] ?? false);
 
         // Only options related to $this->data submission are included here
         $tce = GeneralUtility::makeInstance(DataHandler::class);
 
-        $tce->setControl($parsedBody['control'] ?? $queryParams['control'] ?? []);
+        $tce->setControl($parsedBody['control'] ?? []);
 
         // Set internal vars
         if (isset($beUser->uc['neverHideAtCopy']) && $beUser->uc['neverHideAtCopy']) {
-            $tce->neverHideAtCopy = 1;
+            $tce->neverHideAtCopy = true;
         }
 
         // Set default values fetched previously from GET / POST vars
@@ -2532,7 +2538,7 @@ class EditDocumentController
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {

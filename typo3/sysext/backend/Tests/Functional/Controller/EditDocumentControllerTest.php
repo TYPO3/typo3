@@ -37,11 +37,6 @@ class EditDocumentControllerTest extends FunctionalTestCase
     protected $subject;
 
     /**
-     * @var ServerRequest
-     */
-    protected $request;
-
-    /**
      * @var NormalizedParams
      */
     protected $normalizedParams;
@@ -60,7 +55,6 @@ class EditDocumentControllerTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $this->subject = GeneralUtility::makeInstance(EditDocumentController::class);
-        $this->request = new ServerRequest();
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 
@@ -69,7 +63,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
      */
     public function processedDataTakesOverDefaultValues(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+        $request = (new ServerRequest('https://www.example.com/', 'POST'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -79,8 +73,8 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
         $parsedBody = $this->getParsedBody();
 
-        $this->subject->mainAction(
-            $this->request
+        $response = $this->subject->mainAction(
+            $request
                 ->withAttribute('normalizedParams', $this->normalizedParams)
                 ->withQueryParams($queryParams)
                 ->withParsedBody($parsedBody)
@@ -88,9 +82,11 @@ class EditDocumentControllerTest extends FunctionalTestCase
 
         $newRecord = BackendUtility::getRecord('tt_content', 2);
         self::assertEquals(
-            [$newRecord['colPos'], $newRecord['CType']],
-            [$defaultValues['colPos'], $defaultValues['CType']]
+            [$defaultValues['colPos'], $defaultValues['CType']],
+            [$newRecord['colPos'], $newRecord['CType']]
         );
+        // Redirect to GET is applied after processing
+        self::assertEquals(302, $response->getStatusCode());
     }
 
     /**
@@ -98,7 +94,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
      */
     public function processedDataDoesNotOverridePostWithDefaultValues(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+        $request = (new ServerRequest('https://www.example.com/', 'POST'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
@@ -108,8 +104,8 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
         $parsedBody = $this->getParsedBody(['colPos' => 0, 'CType' => 'text']);
 
-        $this->subject->mainAction(
-            $this->request
+        $response = $this->subject->mainAction(
+            $request
                 ->withAttribute('normalizedParams', $this->normalizedParams)
                 ->withQueryParams($queryParams)
                 ->withParsedBody($parsedBody)
@@ -117,9 +113,11 @@ class EditDocumentControllerTest extends FunctionalTestCase
 
         $newRecord = BackendUtility::getRecord('tt_content', 2);
         self::assertEquals(
+            [0, 'text'],
             [$newRecord['colPos'], $newRecord['CType']],
-            [0, 'text']
         );
+        // Redirect to GET is applied after processing
+        self::assertEquals(302, $response->getStatusCode());
     }
 
     protected function getParsedBody(array $additionalData = []): array
@@ -127,7 +125,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
         return [
             'data' => [
               'tt_content' => [
-                  'NEW123456' => \array_replace_recursive([
+                  'NEW123456' => array_replace_recursive([
                       'sys_language_uid' => 0,
                       'header' => 'Test header',
                       'pid' => -1,
