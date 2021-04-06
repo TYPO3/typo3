@@ -144,6 +144,9 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<trans-unit id="password_recovery_mail_header" resname="password_recovery_mail_header">
 				<source>Your new password</source>
 			</trans-unit>
+			<trans-unit id="password_recovery_link" resname="password_recovery_link">
+				<source>Password recovery link</source>
+			</trans-unit>
 			<trans-unit id="password_recovery_link_expired" resname="password_recovery_link_expired">
 				<source>Your password recovery link is expired.</source>
 			</trans-unit>
