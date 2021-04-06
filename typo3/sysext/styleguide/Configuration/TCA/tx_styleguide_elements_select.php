@@ -315,6 +315,63 @@ return [
                 'size' => 6,
             ],
         ],
+        'select_single_18' => [
+            'exclude' => 1,
+            'label' => 'select_single_18',
+            'description' => 'sortItems label asc',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['Plum tree', 1],
+                    ['Walnut tree', 2],
+                    ['Apple tree', 3],
+                    ['Cherry tree', 4],
+                ],
+                'sortItems' => [
+                    'label' => 'asc'
+                ],
+                'size' => 4,
+            ],
+        ],
+        'select_single_19' => [
+            'exclude' => 1,
+            'label' => 'select_single_19',
+            'description' => 'sortItems value desc',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['Plum tree', 1],
+                    ['Walnut tree', 2],
+                    ['Apple tree', 3],
+                    ['Cherry tree', 4],
+                ],
+                'sortItems' => [
+                    'value' => 'desc'
+                ],
+                'size' => 4,
+            ],
+        ],
+        'select_single_20' => [
+            'exclude' => 1,
+            'label' => 'select_single_20',
+            'description' => 'sortItems custom',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['Plum tree', 1],
+                    ['Walnut tree', 2],
+                    ['Apple tree', 3],
+                    ['Cherry tree', 4],
+                ],
+                'sortItems' => [
+                    'tx_styleguide' => 'TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SelectItemSorter->sortReverseTitles'
+                ],
+                'size' => 4,
+            ],
+        ],
         'select_singlebox_1' => [
             'exclude' => 1,
             'label' => 'select_singlebox_1 description',
@@ -1056,7 +1113,8 @@ return [
                 --div--;renderType=selectSingle,
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
-                    select_single_11, select_single_14, select_single_15,select_single_16,,select_single_17,
+                    select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
+                    select_single_18, select_single_19, select_single_20,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,
