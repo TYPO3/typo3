@@ -168,7 +168,7 @@ class UserSessionManager implements LoggerAwareInterface
         $sessionRecord['ses_iplock'] = $sessionIpLock;
         $sessionRecord['ses_userid'] = 0;
         if ($isPermanent) {
-            $sessionRecord['ses_permanent'] = $isPermanent;
+            $sessionRecord['ses_permanent'] = 1;
         }
         $this->sessionBackend->set($session->getIdentifier(), $sessionRecord);
     }
@@ -198,7 +198,7 @@ class UserSessionManager implements LoggerAwareInterface
             'ses_data' => '',
         ];
         if ($isPermanent) {
-            $sessionRecord['is_permanent'] = 1;
+            $sessionRecord['ses_permanent'] = 1;
         }
         $sessionRecord = $this->sessionBackend->set($sessionId, $sessionRecord);
         return UserSession::createFromRecord($sessionId, $sessionRecord, true);
