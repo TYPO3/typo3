@@ -2768,6 +2768,9 @@ class GeneralUtilityTest extends UnitTestCase
             'Deep directory' => [
                 Environment::getVarPath() . '/climbing/up/the/walls',
             ],
+            'File in typo3temp/var directory' => [
+                Environment::getPublicPath() . '/typo3temp/var/path/foo.txt'
+            ]
         ];
     }
 
