@@ -194,7 +194,8 @@ class SlugElement {
 
       const isChanged = this.hiddenField.value !== data.proposal;
       if (isChanged) {
-        this.fullElement.querySelector('input').dispatchEvent(new Event('change'));
+        this.fullElement.querySelector('input[data-formengine-input-name]')
+          .dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
       }
       if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
         this.readOnlyField.value = data.proposal;
