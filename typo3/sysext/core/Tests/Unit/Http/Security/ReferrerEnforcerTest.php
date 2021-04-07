@@ -212,13 +212,6 @@ class ReferrerEnforcerTest extends UnitTestCase
         $request->getUri()->willReturn($requestUriInstance);
         $request->getQueryParams()->willReturn($queryParams);
 
-        $subject = $this->getMockBuilder(ReferrerEnforcer::class)
-            ->setConstructorArgs([$request->reveal()])
-            ->onlyMethods(['resolveAbsoluteWebPath'])
-            ->getMock();
-        $subject->method('resolveAbsoluteWebPath')
-            ->with('EXT:core/Resources/Public/JavaScript/ReferrerRefresh.js')
-            ->willReturn('/typo3/sysext/core/Resources/Public/JavaScript/ReferrerRefresh.js');
-        return $subject;
+        return new ReferrerEnforcer($request->reveal());
     }
 }
