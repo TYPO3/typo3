@@ -1975,16 +1975,14 @@ class GeneralUtility
                     static::writeFile($filepath, $content);
                     if (!@is_file($filepath)) {
                         $errorMessage = 'The file was not written to the disk. Please, check that you have write permissions to the ' . $prefixLabel . ' directory.';
-                        break;
                     }
-                } else {
-                    $errorMessage = 'Calculated file location didn\'t match input "' . $filepath . '".';
                     break;
                 }
-            } else {
-                $errorMessage = '"' . $dirName . '" is not a directory!';
+                $errorMessage = 'Calculated file location didn\'t match input "' . $filepath . '".';
                 break;
             }
+            $errorMessage = '"' . $dirName . '" is not a directory!';
+            break;
         }
         return $errorMessage;
     }
