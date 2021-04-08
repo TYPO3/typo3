@@ -244,6 +244,8 @@ class ContextMenuActions {
               top.document.dispatchEvent(new CustomEvent('typo3:pagetree:selectFirstNode'));
             }
             ContextMenuActions.refreshPageTree();
+          } else if (table === 'tt_content' && top.currentModuleLoaded === 'web_layout') {
+            Viewport.ContentContainer.refresh();
           }
         });
       }
