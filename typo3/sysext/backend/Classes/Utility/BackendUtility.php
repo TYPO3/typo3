@@ -3921,11 +3921,35 @@ class BackendUtility
      */
     public static function ADMCMD_previewCmds($pageInfo, Context $context)
     {
+        if ($pageInfo === []) {
+            return '';
+        }
+        // Initialize access restriction values from current page
+        $access = [
+            'fe_group' => (string)($pageInfo['fe_group'] ?? ''),
+            'starttime' => (int)($pageInfo['starttime'] ?? 0),
+            'endtime' => (int)($pageInfo['endtime'] ?? 0)
+        ];
+        // Only check rootline if the current page has not set extendToSubpages itself
+        if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {
+            $rootline = self::BEgetRootLine((int)($pageInfo['uid'] ?? 0));
+            // remove the current page from the rootline
+            array_shift($rootline);
+            foreach ($rootline as $page) {
+                // Skip root node, invalid pages and pages which do not define extendToSubpages
+                if ((int)($page['uid'] ?? 0) <= 0 || !(bool)($page['extendToSubpages'] ?? false)) {
+                    continue;
+                }
+                $access['fe_group'] = (string)($page['fe_group'] ?? '');
+                $access['starttime'] = (int)($page['starttime'] ?? 0);
+                $access['endtime'] = (int)($page['endtime'] ?? 0);
+                // Stop as soon as a page in the rootline has extendToSubpages set
+                break;
+            }
+        }
         $simUser = '';
         $simTime = '';
-        if (($pageInfo['fe_group'] ?? 0) > 0) {
-            $simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
-        } elseif ((int)($pageInfo['fe_group'] ?? 0) === -2) {
+        if ((int)$access['fe_group'] === -2) {
             // -2 means "show at any login". We simulate first available fe_group.
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('fe_groups');
@@ -3934,33 +3958,33 @@ class BackendUtility
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
-            $activeFeGroupRow = $queryBuilder->select('uid')
+            $activeFeGroupId = $queryBuilder->select('uid')
                 ->from('fe_groups')
                 ->execute()
-                ->fetch();
+                ->fetchColumn();
 
-            if (!empty($activeFeGroupRow)) {
-                $simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
+            if ($activeFeGroupId) {
+                $simUser = '&ADMCMD_simUser=' . $activeFeGroupId;
             }
+        } elseif (!empty($access['fe_group'])) {
+            $simUser = '&ADMCMD_simUser=' . $access['fe_group'];
         }
-        $startTime = (int)($pageInfo['starttime'] ?? 0);
-        $endTime = (int)($pageInfo['endtime'] ?? 0);
-        if ($startTime > $GLOBALS['EXEC_TIME']) {
+        if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
             // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
             // an URL for it
-            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $startTime));
+            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $access['starttime']));
             $context->setAspect('date', $dateAspect);
-            $simTime = '&ADMCMD_simTime=' . $startTime;
+            $simTime = '&ADMCMD_simTime=' . $access['starttime'];
         }
-        if ($endTime < $GLOBALS['EXEC_TIME'] && $endTime !== 0) {
+        if ($access['endtime'] < $GLOBALS['EXEC_TIME'] && $access['endtime'] !== 0) {
             // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
             // in turn PageRouter will generate an URL for it
             $dateAspect = GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                new \DateTimeImmutable('@' . ($endTime - 1))
+                new \DateTimeImmutable('@' . ($access['endtime'] - 1))
             );
             $context->setAspect('date', $dateAspect);
-            $simTime = '&ADMCMD_simTime=' . ($endTime - 1);
+            $simTime = '&ADMCMD_simTime=' . ($access['endtime'] - 1);
         }
         return $simUser . $simTime;
     }
