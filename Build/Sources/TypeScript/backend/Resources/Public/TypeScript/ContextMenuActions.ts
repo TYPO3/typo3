@@ -238,8 +238,9 @@ class ContextMenuActions {
               let node = Viewport.NavigationContainer.PageTree.getFirstNode();
               Viewport.NavigationContainer.PageTree.selectNode(node);
             }
-
             Viewport.NavigationContainer.PageTree.refreshTree();
+          } else if (table === 'tt_content' && top.currentModuleLoaded === 'web_layout') {
+            Viewport.ContentContainer.refresh();
           }
         });
       }
