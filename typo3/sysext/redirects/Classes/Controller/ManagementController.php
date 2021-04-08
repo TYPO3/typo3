@@ -22,12 +22,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Redirects\Repository\Demand;
@@ -55,27 +57,21 @@ class ManagementController
      */
     protected $request;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var RedirectRepository
-     */
-    protected $redirectRepository;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected RedirectRepository $redirectRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
-        ModuleTemplate $moduleTemplate,
         IconFactory $iconFactory,
-        RedirectRepository $redirectRepository
+        PageRenderer $pageRenderer,
+        RedirectRepository $redirectRepository,
+        ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->moduleTemplate = $moduleTemplate;
         $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
         $this->redirectRepository = $redirectRepository;
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Redirects/RedirectsModule');
-        $this->getLanguageService()->includeLLFile('EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf');
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -84,6 +80,10 @@ class ManagementController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Redirects/RedirectsModule');
+        $this->getLanguageService()->includeLLFile('EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf');
         $this->initializeView('overview');
         $this->overviewAction($request);
         $this->moduleTemplate->setContent($this->view->render());

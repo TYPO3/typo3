@@ -18,11 +18,14 @@ namespace TYPO3\CMS\Impexp\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -64,11 +67,6 @@ abstract class ImportExportController
     protected $lang;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * The name of the module
      *
      * @var string
@@ -101,13 +99,21 @@ abstract class ImportExportController
      */
     protected $returnUrl;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
 
         $templatePath = ExtensionManagementUtility::extPath('impexp') . 'Resources/Private/';
 
@@ -171,7 +177,7 @@ abstract class ImportExportController
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
     }

@@ -42,24 +42,7 @@ class ElementBrowserController
      *
      * @var string
      */
-    protected $mode;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    /**
-     * Initialize the controller
-     */
-    protected function init()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
-        $this->mode = GeneralUtility::_GP('mode');
-    }
+    protected string $mode = '';
 
     /**
      * Injects the request object for the current request or sub-request
@@ -70,6 +53,8 @@ class ElementBrowserController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
+        $this->mode = $request->getQueryParams()['mode'] ?? $request->getQueryParams()['mode'] ?? '';
         // Fallback for old calls, which use mode "wizard" or "rte" for link selection
         if ($this->mode === 'wizard' || $this->mode === 'rte') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

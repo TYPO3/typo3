@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -65,11 +66,6 @@ class DatabaseIntegrityController
     protected $templatePath = 'EXT:lowlevel/Resources/Private/Templates/Backend/';
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * ModuleTemplate Container
      *
      * @var ModuleTemplate
@@ -93,6 +89,23 @@ class DatabaseIntegrityController
      */
     protected $MOD_SETTINGS = [];
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Injects the request object for the current request or subrequest
      * Simply calls main() and init() and outputs the content
@@ -103,12 +116,11 @@ class DatabaseIntegrityController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->getLanguageService()->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('lowlevel');
 
         $this->menuConfig();
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
@@ -252,12 +264,11 @@ class DatabaseIntegrityController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('DatabaseJumpMenu');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => 0,
@@ -283,9 +294,8 @@ class DatabaseIntegrityController
     {
         $modules = [];
         $availableModFuncs = ['records', 'relations', 'search', 'refindex'];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($availableModFuncs as $modFunc) {
-            $modules[$modFunc] = (string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=' . $modFunc;
+            $modules[$modFunc] = (string)$this->uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=' . $modFunc;
         }
         $this->view->assign('availableFunctions', $modules);
     }
@@ -351,7 +361,7 @@ class DatabaseIntegrityController
         $this->view->assign('searchMode', $searchMode);
         switch ($searchMode) {
             case 'query':
-                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/QueryGenerator');
+                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/QueryGenerator');
                 $this->view->assign('queryMaker', $fullsearch->queryMaker());
                 break;
             case 'raw':
@@ -436,11 +446,10 @@ class DatabaseIntegrityController
                     $theNumberOfRe = '';
                 }
                 $lr = '';
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 if (is_array($admin->getLRecords()[$t])) {
                     foreach ($admin->getLRecords()[$t] as $data) {
                         if (!GeneralUtility::inList($admin->getLostPagesList(), $data['pid'])) {
-                            $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid']) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                            $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid']) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         } else {
                             $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         }
@@ -483,13 +492,5 @@ class DatabaseIntegrityController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

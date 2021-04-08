@@ -19,9 +19,7 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
@@ -146,8 +144,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function initDocumentTemplate()
     {
         parent::initDocumentTemplate();
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule(
+        $this->pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/RteCkeditor/RteLinkBrowser',
             'function(RteLinkBrowser) {
                 RteLinkBrowser.initialize(' . GeneralUtility::quoteJSvalue($this->editorId) . ');
@@ -165,8 +162,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         }
 
         if (!empty($this->currentLinkParts['url'])) {
-            $linkService = GeneralUtility::makeInstance(LinkService::class);
-            $data = $linkService->resolve($this->currentLinkParts['url']);
+            $data = $this->linkService->resolve($this->currentLinkParts['url']);
             $this->currentLinkParts['type'] = $data['type'];
             unset($data['type']);
             $this->currentLinkParts['url'] = $data;

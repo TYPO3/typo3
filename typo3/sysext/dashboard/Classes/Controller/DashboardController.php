@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException as RouteNotFoundExceptionAlias;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -47,49 +48,29 @@ class DashboardController extends AbstractController
     private $moduleTemplate;
 
     /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
      * @var ViewInterface
      */
     protected $view;
 
-    /**
-     * @var Dashboard
-     */
-    protected $currentDashboard;
-
-    /**
-     * @var DashboardPresetRegistry
-     */
-    protected $dashboardPresetRepository;
-
-    /**
-     * @var DashboardRepository
-     */
-    protected $dashboardRepository;
-
-    /**
-     * @var DashboardInitializationService
-     */
-    private $dashboardInitializationService;
-
-    /**
-     * @var WidgetGroupInitializationService
-     */
-    private $widgetGroupInitializationService;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected Dashboard $currentDashboard;
+    protected DashboardPresetRegistry $dashboardPresetRepository;
+    protected DashboardRepository $dashboardRepository;
+    protected DashboardInitializationService $dashboardInitializationService;
+    protected WidgetGroupInitializationService $widgetGroupInitializationService;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
-        ModuleTemplate $moduleTemplate,
+        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         DashboardPresetRegistry $dashboardPresetRepository,
         DashboardRepository $dashboardRepository,
         DashboardInitializationService $dashboardInitializationService,
-        WidgetGroupInitializationService $widgetGroupInitializationService
+        WidgetGroupInitializationService $widgetGroupInitializationService,
+        ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->moduleTemplate = $moduleTemplate;
+        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->dashboardPresetRepository = $dashboardPresetRepository;
         $this->dashboardRepository = $dashboardRepository;
@@ -98,6 +79,8 @@ class DashboardController extends AbstractController
         $this->dashboardInitializationService->initializeDashboards($this->getBackendUser());
         $this->currentDashboard = $this->dashboardInitializationService->getCurrentDashboard();
         $this->widgetGroupInitializationService = $widgetGroupInitializationService;
+
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -128,8 +111,8 @@ class DashboardController extends AbstractController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $this->preparePageRenderer($pageRenderer);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->preparePageRenderer();
 
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'main';
         $this->initializeView('Dashboard/' . ucfirst($action));
@@ -137,7 +120,7 @@ class DashboardController extends AbstractController
         if ($result instanceof ResponseInterface) {
             return $result;
         }
-        $this->addFrontendResources($pageRenderer);
+        $this->addFrontendResources();
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
@@ -259,37 +242,33 @@ class DashboardController extends AbstractController
 
     /**
      * Adds CSS and JS files that are necessary for widgets to the page renderer
-     *
-     * @param PageRenderer $pageRenderer
      */
-    protected function addFrontendResources(PageRenderer $pageRenderer): void
+    protected function addFrontendResources(): void
     {
         foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
-                $pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);
+                $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);
             } else {
-                $pageRenderer->loadRequireJsModule($requireJsModule);
+                $this->pageRenderer->loadRequireJsModule($requireJsModule);
             }
         }
         foreach ($this->dashboardInitializationService->getCssFiles() as $cssFile) {
-            $pageRenderer->addCssFile($cssFile);
+            $this->pageRenderer->addCssFile($cssFile);
         }
         foreach ($this->dashboardInitializationService->getJsFiles() as $jsFile) {
-            $pageRenderer->addJsFile($jsFile);
+            $this->pageRenderer->addJsFile($jsFile);
         }
     }
 
     /**
      * Add the CSS and JS of the dashboard module to the page renderer
-     *
-     * @param PageRenderer $pageRenderer
      */
-    protected function preparePageRenderer(PageRenderer $pageRenderer): void
+    protected function preparePageRenderer(): void
     {
         $publicResourcesPath =
             PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('dashboard')) . 'Resources/Public/';
 
-        $pageRenderer->addRequireJsConfiguration(
+        $this->pageRenderer->addRequireJsConfiguration(
             [
                 'paths' => [
                     'muuri' => $publicResourcesPath . 'JavaScript/Contrib/muuri',
@@ -298,14 +277,14 @@ class DashboardController extends AbstractController
             ]
         );
 
-        $pageRenderer->loadRequireJsModule('muuri');
-        $pageRenderer->loadRequireJsModule('web-animate');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/Grid');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetContentCollector');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetSelector');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRemover');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');
-        $pageRenderer->addCssFile($publicResourcesPath . 'Css/dashboard.css');
+        $this->pageRenderer->loadRequireJsModule('muuri');
+        $this->pageRenderer->loadRequireJsModule('web-animate');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/Grid');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetContentCollector');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetSelector');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRemover');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');
+        $this->pageRenderer->addCssFile($publicResourcesPath . 'Css/dashboard.css');
     }
 }

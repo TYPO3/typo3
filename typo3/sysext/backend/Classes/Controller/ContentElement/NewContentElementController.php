@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
@@ -28,7 +29,9 @@ use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -104,20 +107,21 @@ class NewContentElementController
      */
     protected $moduleTemplate;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->view = $this->getFluidTemplateObject();
-        $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -127,6 +131,9 @@ class NewContentElementController
      */
     protected function init(ServerRequestInterface $request)
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->view = $this->getFluidTemplateObject();
+        $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
         $lang = $this->getLanguageService();
         $lang->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
@@ -143,7 +150,7 @@ class NewContentElementController
         $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
         $this->config = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         // Getting the current page and receiving access information (used in main())
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
     }
@@ -276,7 +283,7 @@ class NewContentElementController
                         $aOnClick = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . '; return false';
                     }
 
-                    $icon = $this->moduleTemplate->getIconFactory()->getIcon(
+                    $icon = $this->iconFactory->getIcon(
                         ($wInfo['iconIdentifier'] ?? ''),
                         Icon::SIZE_DEFAULT,
                         ($wInfo['iconOverlay'] ?? '')
@@ -342,10 +349,7 @@ class NewContentElementController
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->R_URI)
                 ->setTitle($this->getLanguageService()->getLL('goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-view-go-back',
-                    Icon::SIZE_SMALL
-                ));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
         $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_ce');

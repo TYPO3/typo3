@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -33,7 +34,9 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -161,13 +164,21 @@ class NewRecordController
      */
     protected $moduleTemplate;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+    protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -196,6 +207,8 @@ class NewRecordController
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
@@ -217,9 +230,9 @@ class NewRecordController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         $this->pagesOnly = $parsedBody['pagesOnly'] ?? $queryParams['pagesOnly'] ?? null;
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions');
         // Creating content
         $this->content = '';
         $this->content .= '<h1>'
@@ -333,7 +346,7 @@ class NewRecordController
                 $newPageButton = $buttonBar->makeLinkButton()
                     ->setHref(GeneralUtility::linkThisScript(['pagesOnly' => '1']))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
+                    ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // CSH
@@ -351,7 +364,7 @@ class NewRecordController
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
@@ -380,7 +393,7 @@ class NewRecordController
                     ->setHref('#')
                     ->setDataAttributes($previewDataAttributes ?? [])
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                    ->setIcon($this->iconFactory->getIcon(
                         'actions-view-page',
                         Icon::SIZE_SMALL
                     ));
@@ -417,7 +430,6 @@ class NewRecordController
                 $this->returnUrl
             );
         } else {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // No pages yet, no need to prompt for position, redirect to page creation.
             $urlParameters = [
                 'edit' => [
@@ -426,9 +438,9 @@ class NewRecordController
                     ]
                 ],
                 'returnNewPageId' => 1,
-                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
             ];
-            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             @ob_end_clean();
 
             return new RedirectResponse($url);
@@ -461,12 +473,12 @@ class NewRecordController
         // New Page
         $table = 'pages';
         $v = $GLOBALS['TCA'][$table];
-        $pageIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord(
+        $pageIcon = $this->iconFactory->getIconForRecord(
             $table,
             [],
             Icon::SIZE_SMALL
         )->render();
-        $newPageIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
+        $newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
         $rowContent = '';
         // New pages INSIDE this pages
         $newPageLinks = [];
@@ -476,7 +488,7 @@ class NewRecordController
             && $this->getBackendUserAuthentication()->workspaceCanCreateNewRecord('pages')
         ) {
             // Create link to new page inside:
-            $recordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
+            $recordIcon = $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
             $newPageLinks[] = $this->renderLink(
                 $recordIcon . htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
                 $table,
@@ -511,14 +523,12 @@ class NewRecordController
         } else {
             $rowContent = '<ul class="list-tree"><li><ul>' . $rowContent . '</li></ul>';
         }
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Compile table row
         $startRows = [$rowContent];
         $iconFile = [];
         // New tables (but not pages) INSIDE this pages
         $isAdmin = $this->getBackendUserAuthentication()->isAdmin();
-        $newContentIcon = $this->moduleTemplate->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+        $newContentIcon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
         if ($this->newContentInto) {
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';
@@ -532,7 +542,7 @@ class NewRecordController
                         && ($rootLevelConfiguration === -1 || ($this->id xor $rootLevelConfiguration))
                         && $this->getBackendUserAuthentication()->workspaceCanCreateNewRecord($table)
                     ) {
-                        $newRecordIcon = $this->moduleTemplate->getIconFactory()->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
+                        $newRecordIcon = $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
                         $rowContent = '';
                         $thisTitle = '';
                         // Create new link for record:
@@ -552,7 +562,7 @@ class NewRecordController
                                 ?? 'new_content_element_wizard';
                             /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
                             $normalizedParams = $request->getAttribute('normalizedParams');
-                            $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
+                            $url = (string)$this->uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
                             $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
@@ -602,7 +612,7 @@ class NewRecordController
                             } else {
                                 $_EXTKEY = 'system';
                                 $thisTitle = $lang->getLL('system_records');
-                                $iconFile['system'] = $this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
+                                $iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
                             }
 
                             if ($groupName === '' || $groupName !== $_EXTKEY) {
@@ -699,10 +709,7 @@ class NewRecordController
             $urlParameters['returnNewPageId'] = 1;
         }
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-
-        return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';
+        return '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters)) . '">' . $linkText . '</a>';
     }
 
     /**

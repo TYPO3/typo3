@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\MfaConfigurationController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -53,9 +54,10 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
 
         $container = $this->getContainer();
         $this->subject = new MfaConfigurationController(
-            $container->get(ModuleTemplate::class),
+            $container->get(IconFactory::class),
             $container->get(UriBuilder::class),
-            $container->get(MfaProviderRegistry::class)
+            $container->get(MfaProviderRegistry::class),
+            $container->get(ModuleTemplateFactory::class),
         );
 
         $this->request = (new ServerRequest())

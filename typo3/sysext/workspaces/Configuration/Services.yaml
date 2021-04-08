@@ -22,6 +22,12 @@ services:
     public: true
     shared: true
 
+  TYPO3\CMS\Workspaces\Controller\PreviewController:
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Workspaces\Controller\ReviewController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Workspaces\Command\WorkspaceVersionRecordsCommand:
     tags:
       - name: 'console.command'

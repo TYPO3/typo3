@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -73,8 +71,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     protected $thumbnailConfiguration = [];
 
-    protected ?ServerRequestInterface $request = null;
-
     /**
      * Loads additional JavaScript
      */
@@ -98,8 +94,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected function initVariables()
     {
         parent::initVariables();
-        $this->expandFolder = GeneralUtility::_GP('expandFolder');
-        $this->searchWord = (string)GeneralUtility::_GP('searchWord');
+        $this->expandFolder = $this->getRequest()->getParsedBody()['expandFolder'] ?? $this->getRequest()->getQueryParams()['expandFolder'] ?? null;
+        $this->searchWord = $this->getRequest()->getParsedBody()['searchWord'] ?? $this->getRequest()->getQueryParams()['searchWord'] ?? '';
     }
 
     /**
@@ -296,10 +292,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $ATag_e = '';
                 $bulkCheckBox = '';
             }
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // Create link to showing details about the file in a window:
-            $Ahref = (string)$uriBuilder->buildUriFromRoute('show_item', [
+            $Ahref = (string)$this->uriBuilder->buildUriFromRoute('show_item', [
                 'type' => 'file',
                 'table' => '_FILE',
                 'uid' => $fileObject->getCombinedIdentifier(),
@@ -448,15 +442,5 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     public function getScriptUrl()
     {
         return $this->thisScript;
-    }
-
-    public function setRequest(ServerRequestInterface $request): void
-    {
-        $this->request = $request;
-    }
-
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $this->request ?? $GLOBALS['TYPO3_REQUEST'];
     }
 }

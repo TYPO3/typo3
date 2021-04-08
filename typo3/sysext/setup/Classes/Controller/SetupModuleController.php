@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
@@ -146,50 +147,52 @@ class SetupModuleController
      */
     protected $moduleTemplate;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
+    protected EventDispatcherInterface $eventDispatcher;
     protected MfaProviderRegistry $mfaProviderRegistry;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Instantiate the form protection before a simulated user is initialized.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher, MfaProviderRegistry $mfaProviderRegistry)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        MfaProviderRegistry $mfaProviderRegistry,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->mfaProviderRegistry = $mfaProviderRegistry;
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        // Instantiate the form protection before a simulated user is initialized
         $this->formProtection = FormProtectionFactory::get();
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Setup/SetupModule');
-        $this->processAdditionalJavaScriptModules($pageRenderer);
-        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
-        $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
-        ]);
     }
 
-    protected function processAdditionalJavaScriptModules(PageRenderer $pageRenderer): void
+    protected function processAdditionalJavaScriptModules(): void
     {
         $event = new AddJavaScriptModulesEvent();
         /** @var AddJavaScriptModulesEvent $event */
         $event = $this->eventDispatcher->dispatch($event);
         foreach ($event->getModules() as $moduleName) {
-            $pageRenderer->loadRequireJsModule($moduleName);
+            $this->pageRenderer->loadRequireJsModule($moduleName);
         }
     }
 
     /**
      * Initializes the module for display of the settings form.
      */
-    protected function initialize()
+    protected function initialize(ServerRequestInterface $request)
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Setup/SetupModule');
+        $this->processAdditionalJavaScriptModules();
+        $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
+        $this->pageRenderer->addInlineLanguageLabelArray([
+            'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+        ]);
         $this->getLanguageService()->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
         $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('UserSettings'));
         // Getting the 'override' values as set might be set in User TSconfig
@@ -347,7 +350,7 @@ class SetupModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initialize();
+        $this->initialize($request);
         if ($request->getMethod() === 'POST') {
             $postData = $request->getParsedBody();
             if (is_array($postData) && !empty($postData)) {
@@ -414,7 +417,7 @@ class SetupModuleController
             ->setValue('1')
             ->setForm('SetupModuleController')
             ->setShowLabelText(true)
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -632,19 +635,18 @@ class SetupModuleController
                             ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
                     $html .= '<div class="btn-group">';
-                    $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     if ($avatarFileUid) {
                         $html .=
                             '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
                                 . ' class="btn btn-default">'
-                                . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
+                                . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
                             . '</button>';
                     }
                     $html .=
                         '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
                             . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
                             . ' data-setup-avatar-url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||__IDENTIFIER__'])) . '"'
-                            . '>' . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
+                            . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</button></div>';
                     break;
                 case 'mfa':
@@ -664,7 +666,7 @@ class SetupModuleController
                         break;
                     }
                     $html .= '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
-                    $html .=    GeneralUtility::makeInstance(IconFactory::class)->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-add', Icon::SIZE_SMALL);
+                    $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-add', Icon::SIZE_SMALL);
                     $html .=    ' <span>' . htmlspecialchars($lang->getLL('mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
                     $html .= '</a>';
                     break;

@@ -21,11 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -41,16 +43,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class PreviewController
 {
-    /**
-     * @var StagesService
-     */
-    protected $stageService;
-
-    /**
-     * @var WorkspaceService
-     */
-    protected $workspaceService;
-
     /**
      * @var int
      */
@@ -68,25 +60,27 @@ class PreviewController
      */
     protected $view;
 
-    /**
-     * Set up the module template
-     */
-    public function __construct()
-    {
-        $this->stageService = GeneralUtility::makeInstance(StagesService::class);
-        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Workspaces/Preview');
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'States', $states);
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
-        $this->moduleTemplate->getPageRenderer()->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
-        $this->moduleTemplate->getPageRenderer()->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
+    protected StagesService $stageService;
+    protected WorkspaceService $workspaceService;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected SiteFinder $siteFinder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        StagesService $stageService,
+        WorkspaceService $workspaceService,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        SiteFinder $siteFinder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->stageService = $stageService;
+        $this->workspaceService = $workspaceService;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->siteFinder = $siteFinder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -110,10 +104,20 @@ class PreviewController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Preview');
+        $this->pageRenderer->addInlineSetting('Workspaces', 'States', $this->getBackendUser()->uc['moduleData']['Workspaces']['States'] ?? []);
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
+        $this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
+        $this->pageRenderer->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
+
         $liveUrl = false;
         $this->initializeView('Index');
 
@@ -144,9 +148,8 @@ class PreviewController
             BackendUtility::setUpdateSignal('updatePageTree');
         }
 
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         try {
-            $site = $siteFinder->getSiteByPageId($this->pageId);
+            $site = $this->siteFinder->getSiteByPageId($this->pageId);
             if (isset($queryParameters['L'])) {
                 $queryParameters['_language'] = $site->getLanguageById((int)$queryParameters['L']);
                 unset($queryParameters['L']);
@@ -174,9 +177,9 @@ class PreviewController
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
-        $this->moduleTemplate->getPageRenderer()->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'id', $this->pageId);
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
+        $this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
+        $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
 
         $this->view->assignMultiple([
             'logoLink' => Typo3Information::URL_COMMUNITY,
@@ -220,7 +223,7 @@ class PreviewController
     {
         // Needed for FormEngine manipulation (date picker)
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
-        $this->moduleTemplate->getPageRenderer()->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+        $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         // If another page module was specified, replace the default Page module with the new one
         $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
@@ -229,7 +232,7 @@ class PreviewController
         if (!$this->getBackendUser()->check('modules', $pageModule)) {
             $pageModule = '';
         } else {
-            $pageModuleUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($pageModule);
+            $pageModuleUrl = (string)$this->uriBuilder->buildUriFromRoute($pageModule);
         }
         $t3Configuration = [
             'username' => htmlspecialchars($this->getBackendUser()->user['username']),

@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -76,11 +77,6 @@ class SchedulerModuleController
     protected $cshKey = '_MOD_system_txschedulerM1';
 
     /**
-     * @var Scheduler Local scheduler instance
-     */
-    protected $scheduler;
-
-    /**
      * @var string
      */
     protected $backendTemplatePath = '';
@@ -103,11 +99,6 @@ class SchedulerModuleController
     protected $moduleTemplate;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * @var Action
      */
     protected $action;
@@ -128,23 +119,30 @@ class SchedulerModuleController
      */
     protected $MOD_SETTINGS = [];
 
-    /**
-     * Default constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected Scheduler $scheduler;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        Scheduler $scheduler,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->scheduler = $scheduler;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->getLanguageService()->includeLLFile('EXT:scheduler/Resources/Private/Language/locallang.xlf');
         $this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('scheduler');
-        $this->view->setPartialRootPaths([ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Partials/Backend/SchedulerModule/']);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->moduleUri = (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
-
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->view->setPartialRootPaths(['EXT:scheduler/Resources/Private/Partials/Backend/SchedulerModule/']);
+        $this->moduleUri = (string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1');
     }
 
     /**
@@ -155,6 +153,8 @@ class SchedulerModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -202,13 +202,11 @@ class SchedulerModuleController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('SchedulerJumpMenu');
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         'system_txschedulerM1',
                         [
                             'id' => 0,
@@ -617,8 +615,8 @@ class SchedulerModuleController
         }
 
         // Load necessary JavaScript
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 
         // Start rendering the add/edit form
         $this->view->assign('uid', htmlspecialchars((string)$this->submittedData['uid']));
@@ -727,8 +725,7 @@ class SchedulerModuleController
     protected function getBrowseButton($fieldID, array $fieldInfo): string
     {
         if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
+            $url = (string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser');
 
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
             return '
@@ -853,8 +850,8 @@ class SchedulerModuleController
             return $this->view->render();
         }
 
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
 
         $tasks = $temporaryResult;
 
@@ -1299,7 +1296,6 @@ class SchedulerModuleController
     protected function getButtons(ServerRequestInterface $request): void
     {
         $queryParams = $request->getQueryParams();
-
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
         $helpButton = $buttonBar->makeHelpButton()
@@ -1311,13 +1307,13 @@ class SchedulerModuleController
         if (in_array((string)$this->getCurrentAction(), [Action::LIST, Action::DELETE, Action::STOP, Action::TOGGLE_HIDDEN, Action::SET_NEXT_EXECUTION_TIME], true)) {
             $reloadButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
                 ->setHref($this->moduleUri);
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
             if ($this->MOD_SETTINGS['function'] === 'scheduler' && !empty($this->getRegisteredClasses())) {
                 $addButton = $buttonBar->makeLinkButton()
                     ->setTitle($this->getLanguageService()->getLL('action.add'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
                     ->setHref($this->moduleUri . '&CMD=' . Action::ADD);
                 $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
@@ -1328,7 +1324,7 @@ class SchedulerModuleController
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
                 ->setHref($this->moduleUri);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             // Save, SaveAndClose, SaveAndNew
@@ -1337,21 +1333,21 @@ class SchedulerModuleController
                 ->setName('CMD')
                 ->setValue(Action::SAVE)
                 ->setForm('tx_scheduler_form')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'));
             $saveButtonDropdown->addItem($saveButton);
             $saveAndNewButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue(Action::SAVE_NEW)
                 ->setForm('tx_scheduler_form')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.saveAndCreateNewTask'));
             $saveButtonDropdown->addItem($saveAndNewButton);
             $saveAndCloseButton = $buttonBar->makeInputButton()
                 ->setName('CMD')
                 ->setValue(Action::SAVE_CLOSE)
                 ->setForm('tx_scheduler_form')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:saveAndClose'));
             $saveButtonDropdown->addItem($saveAndCloseButton);
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
@@ -1368,7 +1364,7 @@ class SchedulerModuleController
                     'button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
                     'content' => $this->getLanguageService()->getLL('msg.delete'),
                 ])
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
@@ -1421,18 +1417,10 @@ class SchedulerModuleController
     /**
      * Returns the global BackendUserAuthentication object.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

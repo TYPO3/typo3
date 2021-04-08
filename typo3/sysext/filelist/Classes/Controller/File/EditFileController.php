@@ -24,10 +24,12 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -85,18 +87,21 @@ class EditFileController
      */
     protected $moduleTemplate;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+    protected ResourceFactory $resourceFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    public function __construct(
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        ResourceFactory $resourceFactory,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->resourceFactory = $resourceFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -124,6 +129,7 @@ class EditFileController
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -131,8 +137,7 @@ class EditFileController
         $this->target = $this->origTarget = $parsedBody['target'] ?? $queryParams['target'] ?? '';
         // create the file object
         if ($this->target) {
-            $this->fileObject = GeneralUtility::makeInstance(ResourceFactory::class)
-                ->retrieveFileOrFolderObject($this->target);
+            $this->fileObject = $this->resourceFactory->retrieveFileOrFolderObject($this->target);
         }
         // Cleaning and checking target directory
         if (!$this->fileObject) {
@@ -295,7 +300,7 @@ class EditFileController
             ->setValue('1')
             ->setForm('EditFileController')
             ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.submit'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
 
         // Save and Close button
         $saveAndCloseButton = $buttonBar->makeInputButton()
@@ -303,7 +308,7 @@ class EditFileController
             ->setValue('1')
             ->setForm('EditFileController')
             ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.saveAndClose'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+            ->setIcon($this->iconFactory->getIcon(
                 'actions-document-save-close',
                 Icon::SIZE_SMALL
             ));
@@ -318,7 +323,7 @@ class EditFileController
             ->setShowLabelText(true)
             ->setHref($this->returnUrl)
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
     }
 

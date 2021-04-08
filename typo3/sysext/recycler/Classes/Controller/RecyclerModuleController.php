@@ -19,12 +19,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -72,6 +75,20 @@ class RecyclerModuleController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Injects the request object for the current request, and renders correct action
      *
@@ -84,7 +101,7 @@ class RecyclerModuleController
         $backendUser = $this->getBackendUser();
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         $this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->getBackendUser()->isAdmin();
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         // don't access in workspace
         if ($backendUser->workspace !== 0) {
@@ -137,8 +154,8 @@ class RecyclerModuleController
      */
     public function indexAction(ServerRequestInterface $request)
     {
-        $this->moduleTemplate->getPageRenderer()->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration($request->getAttribute('normalizedParams')));
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
+        $this->pageRenderer->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration($request->getAttribute('normalizedParams')));
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
         if ($this->isAccessibleForCurrentUser) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
@@ -166,7 +183,7 @@ class RecyclerModuleController
             ->setHref('#')
             ->setDataAttributes(['action' => 'reload'])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 

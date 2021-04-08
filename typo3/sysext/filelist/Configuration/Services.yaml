@@ -6,3 +6,18 @@ services:
 
   TYPO3\CMS\Filelist\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Filelist\Controller\File\CreateFolderController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Filelist\Controller\File\EditFileController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Filelist\Controller\File\FileUploadController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Filelist\Controller\File\RenameFileController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Filelist\Controller\File\ReplaceFileController:
+    tags: [ 'backend.controller' ]

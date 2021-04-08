@@ -22,10 +22,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,32 +52,30 @@ class HelpController
      */
     const TOC_ONLY = 1;
 
-    /**
-     * @var TableManualRepository
-     */
-    protected $tableManualRepository;
-
     /** @var ModuleTemplate */
     protected $moduleTemplate;
 
     /** @var ViewInterface */
     protected $view;
 
-    /**
-     * @var Typo3Information
-     */
-    protected $typo3Information;
+    protected Typo3Information $typo3Information;
+    protected TableManualRepository $tableManualRepository;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Instantiate the report controller
-     *
-     * @param Typo3Information $typo3Information
-     */
-    public function __construct(Typo3Information $typo3Information)
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->tableManualRepository = GeneralUtility::makeInstance(TableManualRepository::class);
+    public function __construct(
+        Typo3Information $typo3Information,
+        TableManualRepository $tableManualRepository,
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->typo3Information = $typo3Information;
+        $this->tableManualRepository = $tableManualRepository;
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -86,13 +86,13 @@ class HelpController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
 
         if ($action === 'detail') {
             $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
             if (!$table) {
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('help_cshmanual', [
+                return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('help_cshmanual', [
                     'action' => 'index',
                 ]), 303);
             }
@@ -184,11 +184,10 @@ class HelpController
         $buttonBar->addButton($shortcutButton);
 
         if ($action !== 'index') {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $backButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref((string)$uriBuilder->buildUriFromRoute('help_cshmanual'));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('help_cshmanual'));
             $buttonBar->addButton($backButton);
         }
     }

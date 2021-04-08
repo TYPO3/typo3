@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -60,15 +61,27 @@ class ViewModuleController
      */
     protected $view;
 
-    /**
-     * Initialize module template and language service
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected PageRepository $pageRepository;
+    protected SiteFinder $siteFinder;
+
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        PageRepository $pageRepository,
+        SiteFinder $siteFinder
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->pageRepository = $pageRepository;
+        $this->siteFinder = $siteFinder;
     }
 
     /**
@@ -100,9 +113,8 @@ class ViewModuleController
         if (count($languages) > 1) {
             $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             foreach ($languages as $value => $label) {
-                $href = (string)$uriBuilder->buildUriFromRoute(
+                $href = (string)$this->uriBuilder->buildUriFromRoute(
                     'web_ViewpageView',
                     [
                         'id' => $pageId,
@@ -125,13 +137,13 @@ class ViewModuleController
             ->setHref($targetUrl)
             ->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($showButton);
 
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref('javascript:document.getElementById(\'tx_viewpage_iframe\').contentWindow.location.reload(true);')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // Shortcut
@@ -151,6 +163,9 @@ class ViewModuleController
      */
     public function showAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->getLanguageService()->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
 
         $this->initializeView('show');
@@ -190,22 +205,22 @@ class ViewModuleController
 
         $this->registerDocHeader($pageId, $languageId, $targetUrl, $request->getQueryParams()['route']);
 
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $backendUser = $this->getBackendUser();
         $icons = [];
-        $icons['orientation'] = $iconFactory->getIcon('actions-device-orientation-change', Icon::SIZE_SMALL)->render('inline');
-        $icons['fullscreen'] = $iconFactory->getIcon('actions-fullscreen', Icon::SIZE_SMALL)->render('inline');
-        $icons['expand'] = $iconFactory->getIcon('actions-expand', Icon::SIZE_SMALL)->render('inline');
-        $icons['desktop'] = $iconFactory->getIcon('actions-device-desktop', Icon::SIZE_SMALL)->render('inline');
-        $icons['tablet'] = $iconFactory->getIcon('actions-device-tablet', Icon::SIZE_SMALL)->render('inline');
-        $icons['mobile'] = $iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
-        $icons['unidentified'] = $iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
+        $icons['orientation'] = $this->iconFactory->getIcon('actions-device-orientation-change', Icon::SIZE_SMALL)->render('inline');
+        $icons['fullscreen'] = $this->iconFactory->getIcon('actions-fullscreen', Icon::SIZE_SMALL)->render('inline');
+        $icons['expand'] = $this->iconFactory->getIcon('actions-expand', Icon::SIZE_SMALL)->render('inline');
+        $icons['desktop'] = $this->iconFactory->getIcon('actions-device-desktop', Icon::SIZE_SMALL)->render('inline');
+        $icons['tablet'] = $this->iconFactory->getIcon('actions-device-tablet', Icon::SIZE_SMALL)->render('inline');
+        $icons['mobile'] = $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
+        $icons['unidentified'] = $this->iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
 
-        $current = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['current'] ?: []);
+        $current = ($backendUser->uc['moduleData']['web_view']['States']['current'] ?: []);
         $current['label'] = ($current['label'] ?? $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
         $current['width'] = (isset($current['width']) && (int)$current['width'] >= 300 ? (int)$current['width'] : 320);
         $current['height'] = (isset($current['height']) && (int)$current['height'] >= 300 ? (int)$current['height'] : 480);
 
-        $custom = ($this->getBackendUser()->uc['moduleData']['web_view']['States']['custom'] ?: []);
+        $custom = ($backendUser->uc['moduleData']['web_view']['States']['custom'] ?: []);
         $custom['width'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 320);
         $custom['height'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 480);
 
@@ -305,15 +320,14 @@ class ViewModuleController
         }
 
         try {
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            $site = $this->siteFinder->getSiteByPageId($pageId);
             $siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
 
             foreach ($siteLanguages as $siteLanguage) {
                 $languageAspectToTest = LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
-                $page = $pageRepository->getPageOverlay($pageRepository->getPage($pageId), $siteLanguage->getLanguageId());
+                $page = $this->pageRepository->getPageOverlay($this->pageRepository->getPage($pageId), $siteLanguage->getLanguageId());
 
-                if ($pageRepository->isPageSuitableForLanguage($page, $languageAspectToTest)) {
+                if ($this->pageRepository->isPageSuitableForLanguage($page, $languageAspectToTest)) {
                     $languages[$siteLanguage->getLanguageId()] = $siteLanguage->getTitle();
                 }
             }

@@ -19,8 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -43,28 +43,33 @@ class ReviewController
     protected $moduleTemplate;
 
     /**
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * @var BackendTemplateView
+     * @var StandaloneView
      */
     protected $view;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
 
     /**
      * @var int
      */
     protected $pageId;
 
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected WorkspaceService $workspaceService;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        WorkspaceService $workspaceService,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->workspaceService = $workspaceService;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -72,21 +77,20 @@ class ReviewController
      */
     protected function initializeAction()
     {
-        $this->pageRenderer = $this->getPageRenderer();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $lang = $this->getLanguageService();
         $icons = [
-            'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
-            'integrity' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
-            'success' => $iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
-            'info' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
-            'warning' => $iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
-            'error' => $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
+            'language' => $this->iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
+            'integrity' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
+            'success' => $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
+            'info' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
+            'warning' => $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
+            'error' => $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
         ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
         $this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
         $this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
+
+        $lang = $this->getLanguageService();
         $this->pageRenderer->addInlineLanguageLabelArray([
             'title' => $lang->getLL('title'),
             'path' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path'),
@@ -103,10 +107,9 @@ class ReviewController
         $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
     }
 
@@ -119,6 +122,7 @@ class ReviewController
      */
     public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $queryParams = $request->getQueryParams();
         $this->pageId = (int)($queryParams['id'] ?? 0);
 
@@ -133,17 +137,16 @@ class ReviewController
         $this->view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
 
         $backendUser = $this->getBackendUser();
-        $moduleTemplate = $this->moduleTemplate;
         $pageTitle = '';
 
         if ($this->pageId) {
             $pageRecord = BackendUtility::getRecord('pages', $this->pageId);
             if ($pageRecord) {
-                $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
+                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
                 $pageTitle = BackendUtility::getRecordTitle('pages', $pageRecord);
             }
         }
-        $wsList = GeneralUtility::makeInstance(WorkspaceService::class)->getAvailableWorkspaces();
+        $wsList = $this->workspaceService->getAvailableWorkspaces();
         $customWorkspaceExists = $this->customWorkspaceExists($wsList);
         $activeWorkspace = (int)$backendUser->workspace;
         $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
@@ -174,15 +177,14 @@ class ReviewController
             'activeWorkspaceTitle' => $activeWorkspaceTitle,
         ]);
 
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->canCreatePreviewLink($this->pageId, $activeWorkspace)) {
-            $iconFactory = $moduleTemplate->getIconFactory();
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-preview-link')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview'))
-                ->setIcon($iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -244,8 +246,7 @@ class ReviewController
             'id' => $this->pageId,
             'workspace' => $workspaceId,
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
+        return (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }
 
     /**
@@ -297,14 +298,6 @@ class ReviewController
             }
         }
         return false;
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**

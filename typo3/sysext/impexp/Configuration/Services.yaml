@@ -10,6 +10,12 @@ services:
   TYPO3\CMS\Impexp\Utility\ImportExportUtility:
     public: true
 
+  TYPO3\CMS\Impexp\Controller\ExportController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Impexp\Controller\ImportController:
+    tags: [ 'backend.controller' ]
+
   TYPO3\CMS\Impexp\Command\ImportCommand:
     tags:
       - name: 'console.command'

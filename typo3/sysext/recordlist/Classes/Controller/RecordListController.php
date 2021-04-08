@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -51,11 +53,6 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 class RecordListController
 {
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * ModuleTemplate object
      *
      * @var ModuleTemplate
@@ -68,16 +65,6 @@ class RecordListController
     protected $siteLanguages = [];
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
      * @var Permission
      */
     protected $pagePermissions;
@@ -87,22 +74,24 @@ class RecordListController
     protected string $returnUrl = '';
     protected array $modTSconfig = [];
 
-    /**
-     * Constructor
-     */
-    public function __construct(IconFactory $iconFactory, ModuleTemplate $moduleTemplate, EventDispatcherInterface $eventDispatcher, UriBuilder $uriBuilder)
-    {
-        $this->moduleTemplate = $moduleTemplate;
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        EventDispatcherInterface $eventDispatcher,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -113,6 +102,14 @@ class RecordListController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+
         BackendUtility::lockRecords();
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -150,7 +147,7 @@ class RecordListController
                 PageActions.setPageId(' . (int)$this->id . ');
             }';
         }
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
         // Apply predefined values for hidden checkboxes
         // Set predefined value for DisplayBigControlPanel:
         if ($this->modTSconfig['enableDisplayBigControlPanel'] === 'activated') {
@@ -224,7 +221,7 @@ class RecordListController
             $tableOutput = $dblist->generateList();
 
             // Add JavaScript functions to the page:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
 
             $this->moduleTemplate->addJavaScriptCode(
                 'RecordListInlineJS',
@@ -246,7 +243,7 @@ class RecordListController
             );
 
             // Setting up the context sensitive menu:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         }
         // access
         // Begin to compile the whole page, starting out with page header:
@@ -366,7 +363,7 @@ class RecordListController
             $searchBoxVisible = !empty($dblist->searchString);
             $searchBox = $dblist->getSearchBox();
             $content .= '<div class="module-docheader-bar mb-0 t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="' . ($searchBoxVisible ? 'display: block;' : 'display: none;') . '"><div class="panel panel-default"><div class="p-2 ps-4">' . $searchBox . '</div></div></div>';
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 
             $searchButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton();
             $searchButton

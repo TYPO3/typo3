@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,22 +34,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractMfaController
 {
-    protected ModuleTemplate $moduleTemplate;
     protected UriBuilder $uriBuilder;
     protected MfaProviderRegistry $mfaProviderRegistry;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ?ModuleTemplate $moduleTemplate;
     protected array $mfaTsConfig;
     protected bool $mfaRequired;
     protected array $allowedProviders;
     protected array $allowedActions = [];
 
     public function __construct(
-        ModuleTemplate $moduleTemplate,
         UriBuilder $uriBuilder,
-        MfaProviderRegistry $mfaProviderRegistry
+        MfaProviderRegistry $mfaProviderRegistry,
+        ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->moduleTemplate = $moduleTemplate;
         $this->uriBuilder = $uriBuilder;
         $this->mfaProviderRegistry = $mfaProviderRegistry;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->initializeMfaConfiguration();
     }
 

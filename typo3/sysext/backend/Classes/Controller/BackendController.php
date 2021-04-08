@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -64,55 +64,38 @@ class BackendController
      */
     protected $partialPath = 'EXT:backend/Resources/Private/Partials/';
 
-    /**
-     * @var BackendModuleRepository
-     */
-    protected $backendModuleRepository;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var Typo3Version
-     */
-    protected $typo3Version;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected BackendModuleRepository $backendModuleRepository;
+    protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
+    protected Typo3Version $typo3Version;
+    protected UriBuilder $uriBuilder;
+    protected ModuleLoader $moduleLoader;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
      * @var \SplObjectStorage
      */
     protected $moduleStorage;
 
-    /**
-     * @var ModuleLoader
-     */
-    protected $moduleLoader;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
+    public function __construct(
+        Typo3Version $typo3Version,
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        PageRenderer $pageRenderer,
+        ModuleLoader $moduleLoader,
+        BackendModuleRepository $backendModuleRepository,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
+        $this->backendModuleRepository = $backendModuleRepository;
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->typo3Version = $typo3Version;
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleLoader = $moduleLoader;
         $this->moduleLoader->observeWorkspaces = true;
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
 
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
@@ -209,7 +192,7 @@ class BackendController
         $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $hasModules ? ' scaffold-modulemenu-expanded' : '') . '">';
 
         // Prepare the scaffolding, at this point extension may still add javascript and css
-        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $view = $moduleTemplate->getView();
         $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . 'Backend/Main.html'));

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\MfaController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
@@ -43,9 +43,9 @@ class MfaControllerTest extends FunctionalTestCase
 
         $container = $this->getContainer();
         $this->subject = new MfaController(
-            $container->get(ModuleTemplate::class),
             $container->get(UriBuilder::class),
-            $container->get(MfaProviderRegistry::class)
+            $container->get(MfaProviderRegistry::class),
+            $container->get(ModuleTemplateFactory::class),
         );
         $this->subject->setLogger($this->prophesize(Logger::class)->reveal());
 

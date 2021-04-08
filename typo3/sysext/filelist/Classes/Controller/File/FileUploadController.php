@@ -21,9 +21,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -69,6 +72,26 @@ class FileUploadController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ResourceFactory $resourceFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ResourceFactory $resourceFactory,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->resourceFactory = $resourceFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Processes the request, currently everything is handled and put together via "renderContent()"
      *
@@ -77,7 +100,7 @@ class FileUploadController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->init($request);
         $this->renderContent();
@@ -95,20 +118,17 @@ class FileUploadController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // Initialize GPvars:
         $this->target = $parsedBody['target'] ?? $queryParams['target'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         if (!$this->returnUrl) {
-            $this->returnUrl = (string)$uriBuilder->buildUriFromRoute('file_list', [
+            $this->returnUrl = (string)$this->uriBuilder->buildUriFromRoute('file_list', [
                 'id' => rawurlencode($this->target)
             ]);
         }
         // Create the folder object
         if ($this->target) {
-            $this->folderObject = GeneralUtility::makeInstance(ResourceFactory::class)
-                ->retrieveFileOrFolderObject($this->target);
+            $this->folderObject = $this->resourceFactory->retrieveFileOrFolderObject($this->target);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
             throw new InsufficientFolderAccessPermissionsException(
@@ -125,7 +145,7 @@ class FileUploadController
         }
 
         // Setting up the context sensitive menu
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // building pathInfo for metaInformation
         $pathInfo = [
@@ -140,14 +160,12 @@ class FileUploadController
     protected function renderContent(): void
     {
         $lang = $this->getLanguageService();
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // set page title
         $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.pagetitle'));
 
         $pageContent = '<form action="'
-            . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_file'))
+            . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('tce_file'))
             . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
         // Make page header:
         $pageContent .= '<h1>' . $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.pagetitle') . '</h1>';
@@ -167,7 +185,7 @@ class FileUploadController
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
 

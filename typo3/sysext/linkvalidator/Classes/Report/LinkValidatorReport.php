@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Linkvalidator\Report;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -24,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -147,9 +150,22 @@ class LinkValidatorReport
      */
     protected $view;
 
-    public function __construct(PagesRepository $pagesRepository = null, BrokenLinkRepository $brokenLinkRepository = null)
-    {
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        PagesRepository $pagesRepository = null,
+        BrokenLinkRepository $brokenLinkRepository = null,
+        ModuleTemplateFactory $moduleTemplateFactory = null,
+        IconFactory $iconFactory = null
+    ) {
+        $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PagesRepository::class);
+        $this->moduleTemplateFactory = $moduleTemplateFactory ?? GeneralUtility::makeInstance(
+            ModuleTemplateFactory::class,
+            GeneralUtility::makeInstance(PageRenderer::class),
+            $this->iconFactory,
+            GeneralUtility::makeInstance(FlashMessageService::class)
+        );
         $this->brokenLinkRepository = $brokenLinkRepository ??
             GeneralUtility::makeInstance(BrokenLinkRepository::class);
     }
@@ -159,13 +175,11 @@ class LinkValidatorReport
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
-    public function init($pObj)
+    public function init($pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
-        $this->id = (int)GeneralUtility::_GP('id');
-        $this->brokenLinkRepository = GeneralUtility::makeInstance(BrokenLinkRepository::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->view = $this->createView('InfoModule');
     }
 

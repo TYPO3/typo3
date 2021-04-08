@@ -12,3 +12,6 @@ services:
 
   TYPO3\CMS\Tstemplate\Hooks\DataHandlerClearCachePostProcHook:
     public: true
+
+  TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController:
+    tags: [ 'backend.controller' ]

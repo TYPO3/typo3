@@ -22,13 +22,16 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -63,21 +66,6 @@ class InfoModuleController
      * @var StandaloneView
      */
     protected $view;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var FlashMessageService
-     */
-    protected $flashMessageService;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
 
     /**
      * @var int Value of the GET/POST var 'id'
@@ -159,19 +147,27 @@ class InfoModuleController
      */
     protected $extObj;
 
-    /**
-     * Constructor
-     */
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected FlashMessageService $flashMessageService;
+    protected ContainerInterface $container;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
     public function __construct(
-        ModuleTemplate $moduleTemplate,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         FlashMessageService $flashMessageService,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->moduleTemplate = $moduleTemplate;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->flashMessageService = $flashMessageService;
         $this->container = $container;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
 
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
     }
@@ -214,7 +210,7 @@ class InfoModuleController
 				'
             );
             // Setting up the context sensitive menu:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
             $this->view = $this->getFluidTemplateObject();
             $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
@@ -238,6 +234,8 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+
         $this->init($request);
 
         // Checking for first level external objects
@@ -266,7 +264,7 @@ class InfoModuleController
             ->setHref('#')
             ->setDataAttributes($previewDataAttributes ?? [])
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
         $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         // Shortcut

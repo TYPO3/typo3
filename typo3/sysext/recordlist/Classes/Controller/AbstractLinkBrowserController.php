@@ -19,10 +19,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -114,14 +118,24 @@ abstract class AbstractLinkBrowserController
      */
     protected $hookObjects = [];
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
-        $this->moduleTemplate->getView()->setTemplate('LinkBrowser');
+    protected DependencyOrderingService $dependencyOrderingService;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected LinkService $linkService;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        DependencyOrderingService $dependencyOrderingService,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        LinkService $linkService,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->dependencyOrderingService = $dependencyOrderingService;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->linkService = $linkService;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->initHookObjects();
         $this->init();
     }
@@ -141,7 +155,7 @@ abstract class AbstractLinkBrowserController
      */
     protected function initHookObjects()
     {
-        $hooks = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
+        $hooks = $this->dependencyOrderingService->orderByDependencies(
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'] ?? []
         );
         foreach ($hooks as $key => $hook) {
@@ -158,6 +172,9 @@ abstract class AbstractLinkBrowserController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
+        $this->moduleTemplate->getView()->setTemplate('LinkBrowser');
         $this->determineScriptUrl($request);
         $this->initVariables($request);
         $this->loadLinkHandlers();
@@ -193,10 +210,11 @@ abstract class AbstractLinkBrowserController
     protected function determineScriptUrl(ServerRequestInterface $request)
     {
         if ($routePath = $request->getQueryParams()['route']) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->thisScript = (string)$uriBuilder->buildUriFromRoutePath($routePath);
+            $this->thisScript = (string)$this->uriBuilder->buildUriFromRoutePath($routePath);
         } else {
-            $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
+            /** @var NormalizedParams $normalizedParams */
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $this->thisScript = $normalizedParams->getScriptName();
         }
     }
 
@@ -277,7 +295,7 @@ abstract class AbstractLinkBrowserController
             return;
         }
 
-        $orderedHandlers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($this->linkHandlers, 'scanBefore', 'scanAfter');
+        $orderedHandlers = $this->dependencyOrderingService->orderByDependencies($this->linkHandlers, 'scanBefore', 'scanAfter');
 
         // find responsible handler for current link
         foreach ($orderedHandlers as $key => $configuration) {
@@ -359,7 +377,7 @@ abstract class AbstractLinkBrowserController
             ];
         }
 
-        $menuDef = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($menuDef);
+        $menuDef = $this->dependencyOrderingService->orderByDependencies($menuDef);
 
         // if there is no active tab
         if (!$this->displayedLinkHandler) {

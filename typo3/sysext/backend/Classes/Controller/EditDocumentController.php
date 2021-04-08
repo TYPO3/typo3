@@ -34,6 +34,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -46,7 +47,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -377,23 +378,24 @@ class EditDocumentController
      */
     protected $isPageInFreeTranslationMode = false;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->setUiBlock(true);
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -404,6 +406,10 @@ class EditDocumentController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->setUiBlock(true);
+        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+
         // Unlock all locked records
         BackendUtility::lockRecords();
         if ($response = $this->preInit($request)) {
@@ -794,14 +800,13 @@ class EditDocumentController
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
         $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
         if (isset($parsedBody['_savedokview']) && $this->popViewId) {
             $this->previewCode = $this->generatePreviewCode();
         }
         // Set context sensitive menu
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         $event = new AfterFormEnginePageInitializedEvent($this, $request);
         $this->eventDispatcher->dispatch($event);
@@ -1400,10 +1405,7 @@ class EditDocumentController
                 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'
             ))
             ->setShowLabelText(true)
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                'actions-close',
-                Icon::SIZE_SMALL
-            ));
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($closeButton, $position, $group);
     }
@@ -1419,7 +1421,7 @@ class EditDocumentController
     {
         $saveButton = $buttonBar->makeInputButton()
             ->setForm('EditDocumentController')
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
             ->setName('_savedok')
             ->setShowLabelText(true)
             ->setTitle($this->getLanguageService()->sL(
@@ -1483,10 +1485,7 @@ class EditDocumentController
 
                     $viewButton = $buttonBar->makeLinkButton()
                         ->setHref($previewUrl)
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                            'actions-view',
-                            Icon::SIZE_SMALL
-                        ))
+                        ->setIcon($this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'));
 
@@ -1549,10 +1548,7 @@ class EditDocumentController
 
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-add',
-                    Icon::SIZE_SMALL
-                ))
+                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.newDoc'));
 
@@ -1611,10 +1607,7 @@ class EditDocumentController
                 ->setHref('#')
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.duplicateDoc'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-document-duplicates-select',
-                    Icon::SIZE_SMALL
-                ));
+                ->setIcon($this->iconFactory->getIcon('actions-document-duplicates-select', Icon::SIZE_SMALL));
 
             if (!$this->isSavedRecord) {
                 $duplicateButton->setDataAttributes(['is-new' => '']);
@@ -1701,10 +1694,7 @@ class EditDocumentController
                     'translation-count-message' => $translationCountMessage
                 ])
                 ->setHref($deleteUrl)
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-edit-delete',
-                    Icon::SIZE_SMALL
-                ))
+                ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->getLL('deleteItem'));
 
@@ -1733,10 +1723,7 @@ class EditDocumentController
             $historyButton = $buttonBar->makeLinkButton()
                 ->setHref($historyUrl)
                 ->setTitle('Open history of this record')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-document-history-open',
-                    Icon::SIZE_SMALL
-                ));
+                ->setIcon($this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($historyButton, $position, $group);
         }
@@ -1758,10 +1745,7 @@ class EditDocumentController
             $columnsOnlyButton = $buttonBar->makeLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
                 ->setTitle($this->getLanguageService()->getLL('editWholeRecord'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                    'actions-open',
-                    Icon::SIZE_SMALL
-                ));
+                ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($columnsOnlyButton, $position, $group);
         }
@@ -1790,7 +1774,7 @@ class EditDocumentController
                 ->makeLinkButton()
                 ->setHref('#')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openInNewWindow'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-window-open', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
                 ->setOnClick($aOnClick);
 
             $buttonBar->addButton($openInNewWindowButton, $position, $group);

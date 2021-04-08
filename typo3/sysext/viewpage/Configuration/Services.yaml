@@ -6,3 +6,6 @@ services:
 
   TYPO3\CMS\Viewpage\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Viewpage\Controller\ViewModuleController:
+    tags: ['backend.controller']

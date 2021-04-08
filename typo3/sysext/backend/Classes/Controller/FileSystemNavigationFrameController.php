@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileListFolderTree;
 use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
@@ -68,6 +70,23 @@ class FileSystemNavigationFrameController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
@@ -104,7 +123,7 @@ class FileSystemNavigationFrameController
      */
     protected function init(ServerRequestInterface $request)
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -131,9 +150,8 @@ class FileSystemNavigationFrameController
                 $this->foldertree->setLinkParameterProvider($linkParamProvider);
             }
         } else {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);
-            $this->foldertree->thisScript = (string)$uriBuilder->buildUriFromRoute('file_navframe');
+            $this->foldertree->thisScript = (string)$this->uriBuilder->buildUriFromRoute('file_navframe');
         }
     }
 
@@ -153,10 +171,9 @@ class FileSystemNavigationFrameController
         ';
 
         // Adding javascript for drag & drop activation and highlighting
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
             DragDrop.table = "folders";
             Tree.registerDragDropHandlers();
             ' . $dragDropCode . '
@@ -181,10 +198,7 @@ class FileSystemNavigationFrameController
         }
         ';
 
-        $this->moduleTemplate->getPageRenderer()->addJsInlineCode(
-            'FileSystemNavigationFrame',
-            $inlineJs
-        );
+        $this->pageRenderer->addJsInlineCode('FileSystemNavigationFrame', $inlineJs);
     }
 
     /**
@@ -214,8 +228,6 @@ class FileSystemNavigationFrameController
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        /** @var IconFactory $iconFactory */
-        $iconFactory = $this->moduleTemplate->getIconFactory();
         /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
 
@@ -223,7 +235,7 @@ class FileSystemNavigationFrameController
         $refreshButton = $buttonBar->makeLinkButton()
             ->setHref($normalizedParams->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // CSH

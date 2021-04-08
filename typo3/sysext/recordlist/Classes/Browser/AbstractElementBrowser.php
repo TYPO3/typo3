@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -37,21 +39,11 @@ abstract class AbstractElementBrowser
     protected $moduleTemplate;
 
     /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
      * URL of current request
      *
      * @var string
      */
     protected $thisScript = '';
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
 
     /**
      * Active with TYPO3 Element Browser: Contains the name of the form field for which this window
@@ -73,19 +65,23 @@ abstract class AbstractElementBrowser
      */
     protected $bparams;
 
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
-        $this->moduleTemplate->getView()->setTemplate('ElementBrowser');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ElementBrowser');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
-        $this->initialize();
+    protected ?ServerRequestInterface $request = null;
+
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -93,6 +89,11 @@ abstract class AbstractElementBrowser
      */
     protected function initialize()
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->getRequest());
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
+        $this->moduleTemplate->getView()->setTemplate('ElementBrowser');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ElementBrowser');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
         $this->determineScriptUrl();
         $this->initVariables();
     }
@@ -102,17 +103,14 @@ abstract class AbstractElementBrowser
      */
     protected function determineScriptUrl()
     {
-        $this->thisScript = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoutePath(
-            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath()
+        $this->thisScript = (string)$this->uriBuilder->buildUriFromRoutePath(
+            $this->getRequest()->getAttribute('route')->getPath()
         );
     }
 
     protected function initVariables()
     {
-        $this->bparams = GeneralUtility::_GP('bparams');
-        if ($this->bparams === null) {
-            $this->bparams = '';
-        }
+        $this->bparams = $this->getRequest()->getParsedBody()['bparams'] ?? $this->getRequest()->getQueryParams()['bparams'] ?? '';
     }
 
     /**
@@ -152,6 +150,19 @@ abstract class AbstractElementBrowser
             'data-rte-configuration' => $rteConfig,
             'data-irre-object-id' => $irreObjectId,
         ];
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+        // initialize here, this is a dirty hack as long as the interface does not support setting a request object properly
+        // see ElementBrowserController.php for the process on how the program code flow is used
+        $this->initialize();
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->request ?? $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**

@@ -19,8 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
@@ -43,8 +41,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         unset($currentLinkParts['additionalParams']);
 
         if (!empty($currentLinkParts['url'])) {
-            $linkService = GeneralUtility::makeInstance(LinkService::class);
-            $data = $linkService->resolve($currentLinkParts['url']);
+            $data = $this->linkService->resolve($currentLinkParts['url']);
             $currentLinkParts['type'] = $data['type'];
             unset($data['type']);
             $currentLinkParts['url'] = $data;
@@ -69,8 +66,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         }
         $inlineJS = implode(LF, $update);
 
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
 			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};
 		}');
     }

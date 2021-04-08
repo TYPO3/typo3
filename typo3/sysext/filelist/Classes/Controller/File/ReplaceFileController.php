@@ -21,12 +21,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -46,7 +50,7 @@ class ReplaceFileController
     /**
      * The file or folder object that should be renamed
      *
-     * @var \TYPO3\CMS\Core\Resource\ResourceInterface $fileOrFolderObject
+     * @var ResourceInterface $fileOrFolderObject
      */
     protected $fileOrFolderObject;
 
@@ -64,6 +68,26 @@ class ReplaceFileController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ResourceFactory $resourceFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ResourceFactory $resourceFactory,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->resourceFactory = $resourceFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Processes the request, currently everything is handled and put together via "main()"
      *
@@ -72,7 +96,7 @@ class ReplaceFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         $this->renderContent();
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -97,8 +121,7 @@ class ReplaceFileController
 
         // Cleaning and checking uid
         if ($this->uid > 0) {
-            $this->fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)
-                ->retrieveFileOrFolderObject('file:' . $this->uid);
+            $this->fileOrFolderObject = $this->resourceFactory->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {
             $title = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
@@ -132,8 +155,8 @@ class ReplaceFileController
             'combined_identifier' => $this->fileOrFolderObject->getCombinedIdentifier(),
         ];
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/FileReplace');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileReplace');
     }
 
     /**
@@ -143,9 +166,7 @@ class ReplaceFileController
     {
         // Assign variables used by the fluid template
         $assigns = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
+        $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
         $assigns['uid'] = $this->uid;
         $assigns['returnUrl'] = $this->returnUrl;
 
@@ -161,7 +182,7 @@ class ReplaceFileController
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton);
         }
 

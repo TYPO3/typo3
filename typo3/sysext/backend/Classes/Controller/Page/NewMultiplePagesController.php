@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -49,14 +50,13 @@ class NewMultiplePagesController
      */
     protected $moduleTemplate;
 
-    /**
-     * Constructor Method
-     *
-     * @var ModuleTemplate $moduleTemplate
-     */
-    public function __construct(ModuleTemplate $moduleTemplate = null)
+    protected IconFactory $iconFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(IconFactory $iconFactory, ModuleTemplateFactory $moduleTemplateFactory)
     {
-        $this->moduleTemplate = $moduleTemplate ?? GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->iconFactory = $iconFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -67,6 +67,7 @@ class NewMultiplePagesController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $pageUid = (int)$request->getQueryParams()['id'];
 
@@ -79,7 +80,6 @@ class NewMultiplePagesController
         }
 
         // Doc header handling
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
@@ -91,7 +91,7 @@ class NewMultiplePagesController
         $viewButton = $buttonBar->makeLinkButton()
             ->setDataAttributes($previewDataAttributes ?? [])
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-            ->setIcon($iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
         $buttonBar->addButton($cshButton)->addButton($viewButton);
 

@@ -16,8 +16,10 @@
 namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -46,30 +48,37 @@ class AboutController
      */
     protected $view;
 
-    /**
-     * @var Typo3Version
-     */
-    protected $version;
+    protected Typo3Version $version;
+    protected Typo3Information $typo3Information;
+    protected ModuleLoader $moduleLoader;
+    protected PackageManager $packageManager;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * @var Typo3Information
-     */
-    protected $typo3Information;
-
-    public function __construct(Typo3Version $version, Typo3Information $typo3Information)
-    {
+    public function __construct(
+        Typo3Version $version,
+        Typo3Information $typo3Information,
+        ModuleLoader $moduleLoader,
+        PackageManager $packageManager,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->version = $version;
         $this->typo3Information = $typo3Information;
+        $this->moduleLoader = $moduleLoader;
+        $this->moduleLoader->observeWorkspaces = true;
+        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
+        $this->packageManager = $packageManager;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Main action: Show standard information
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface the HTML output
      */
-    public function indexAction(): ResponseInterface
+    public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->initializeView('index');
         $warnings = [];
         // Hook for additional warnings
@@ -102,18 +111,15 @@ class AboutController
      */
     protected function getModulesData(): array
     {
-        $loadedModules = GeneralUtility::makeInstance(ModuleLoader::class);
-        $loadedModules->observeWorkspaces = true;
-        $loadedModules->load($GLOBALS['TBE_MODULES']);
         $mainModulesData = [];
-        foreach ($loadedModules->modules as $moduleName => $moduleInfo) {
-            $moduleLabels = $loadedModules->getLabelsForModule($moduleName);
+        foreach ($this->moduleLoader->modules as $moduleName => $moduleInfo) {
+            $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
             $mainModuleData = [
                 'name'  => $moduleName,
                 'label' => $moduleLabels['title']
             ];
             if (is_array($moduleInfo['sub']) && !empty($moduleInfo['sub'])) {
-                $mainModuleData['subModules'] = $this->getSubModuleData($loadedModules, $moduleName);
+                $mainModuleData['subModules'] = $this->getSubModuleData((string)$moduleName);
             }
             $mainModulesData[] = $mainModuleData;
         }
@@ -123,19 +129,18 @@ class AboutController
     /**
      * Create array with data of all subModules of a specific main module
      *
-     * @param ModuleLoader $loadedModules the module loader instance
      * @param string $moduleName Name of the main module
      * @return array
      */
-    protected function getSubModuleData(ModuleLoader $loadedModules, $moduleName): array
+    protected function getSubModuleData(string $moduleName): array
     {
-        if (empty($loadedModules->modules[$moduleName]['sub'])) {
+        if (empty($this->moduleLoader->modules[$moduleName]['sub'])) {
             return [];
         }
 
         $subModulesData = [];
-        foreach ($loadedModules->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
-            $moduleLabels = $loadedModules->getLabelsForModule($moduleName . '_' . $subModuleName);
+        foreach ($this->moduleLoader->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
+            $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName . '_' . $subModuleName);
             $subModuleData = [];
             $subModuleData['name'] = $subModuleName;
             $subModuleData['icon'] = $subModuleInfo['icon'] ?? null;
@@ -156,8 +161,7 @@ class AboutController
     protected function getLoadedExtensions(): array
     {
         $extensions = [];
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-        foreach ($packageManager->getActivePackages() as $package) {
+        foreach ($this->packageManager->getActivePackages() as $package) {
             // Skip system extensions (= type: typo3-cms-framework)
             if ($package->getValueFromComposerManifest('type') !== 'typo3-cms-extension') {
                 continue;

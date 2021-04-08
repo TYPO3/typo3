@@ -20,13 +20,17 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -45,12 +49,25 @@ class MfaConfigurationController extends AbstractMfaController
     private array $providerActionsWhenInactive = ['setup', 'activate'];
     private array $providerActionsWhenActive = ['deactivate', 'unlock', 'edit', 'save'];
 
+    protected IconFactory $iconFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        MfaProviderRegistry $mfaProviderRegistry,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        parent::__construct($uriBuilder, $mfaProviderRegistry, $moduleTemplateFactory);
+    }
+
     /**
      * Main entry point, checking prerequisite, initializing and setting
      * up the view and finally dispatching to the requested action.
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview');
 
         if (!$this->isActionAllowed($action)) {
@@ -374,7 +391,7 @@ class MfaConfigurationController extends AbstractMfaController
             $button = $buttonBar
                 ->makeLinkButton()
                 ->setHref($returnUrl)
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setShowLabelText(true);
             $buttonBar->addButton($button);
@@ -384,7 +401,7 @@ class MfaConfigurationController extends AbstractMfaController
             ->makeLinkButton()
             ->setHref($request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
@@ -399,7 +416,7 @@ class MfaConfigurationController extends AbstractMfaController
             ->setClasses('t3js-editform-close')
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton);
 
         $saveButton = $buttonBar
@@ -409,7 +426,7 @@ class MfaConfigurationController extends AbstractMfaController
             ->setValue('1')
             ->setShowLabelText(true)
             ->setForm('mfaConfigurationController')
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 

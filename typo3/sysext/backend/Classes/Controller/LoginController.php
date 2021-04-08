@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelecti
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -109,41 +110,30 @@ class LoginController implements LoggerAwareInterface
      */
     protected $moduleTemplate;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var Typo3Information
-     */
-    protected $typo3Information;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var Features
-     */
-    protected $features;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected Typo3Information $typo3Information;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected Features $features;
+    protected Context $context;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
         Typo3Information $typo3Information,
         EventDispatcherInterface $eventDispatcher,
+        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
-        Features $features
+        Features $features,
+        Context $context,
+        ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
+        $this->pageRenderer = $pageRenderer;
         $this->features = $features;
+        $this->context = $context;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -181,8 +171,7 @@ class LoginController implements LoggerAwareInterface
     public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
     {
         // Only allow to execute this if not logged in as a user right now
-        $context = GeneralUtility::makeInstance(Context::class);
-        if ($context->getAspect('backend.user')->isLoggedIn()) {
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             return $this->formAction($request);
         }
         $this->init($request);
@@ -204,8 +193,7 @@ class LoginController implements LoggerAwareInterface
     public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
     {
         // Only allow to execute this if not logged in as a user right now
-        $context = GeneralUtility::makeInstance(Context::class);
-        if ($context->getAspect('backend.user')->isLoggedIn()) {
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             return $this->formAction($request);
         }
         $this->init($request);
@@ -218,7 +206,7 @@ class LoginController implements LoggerAwareInterface
         if (!GeneralUtility::validEmail($emailAddress)) {
             $this->view->assign('invalidEmail', true);
         } else {
-            $passwordReset->initiateReset($request, $context, $emailAddress);
+            $passwordReset->initiateReset($request, $this->context, $emailAddress);
             $this->view->assign('resetInitiated', true);
         }
         $this->moduleTemplate->setContent($this->view->render());
@@ -239,8 +227,7 @@ class LoginController implements LoggerAwareInterface
     public function passwordResetAction(ServerRequestInterface $request): ResponseInterface
     {
         // Only allow to execute this if not logged in as a user right now
-        $context = GeneralUtility::makeInstance(Context::class);
-        if ($context->getAspect('backend.user')->isLoggedIn()) {
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             return $this->formAction($request);
         }
         $this->init($request);
@@ -268,8 +255,7 @@ class LoginController implements LoggerAwareInterface
     public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
     {
         // Only allow to execute this if not logged in as a user right now
-        $context = GeneralUtility::makeInstance(Context::class);
-        if ($context->getAspect('backend.user')->isLoggedIn()) {
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             return $this->formAction($request);
         }
         $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
@@ -283,7 +269,7 @@ class LoginController implements LoggerAwareInterface
         $this->view->assign('token', $request->getQueryParams()['t'] ?? '');
         $this->view->assign('identity', $request->getQueryParams()['i'] ?? '');
         $this->view->assign('expirationDate', $request->getQueryParams()['e'] ?? '');
-        if ($passwordReset->resetPassword($request, $context)) {
+        if ($passwordReset->resetPassword($request, $this->context)) {
             $this->view->assign('resetExecuted', true);
         } else {
             $this->view->assign('error', true);
@@ -309,9 +295,8 @@ class LoginController implements LoggerAwareInterface
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $this->pageRenderer = $this->moduleTemplate->getPageRenderer();
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();

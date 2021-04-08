@@ -48,7 +48,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     protected function initVariables()
     {
         parent::initVariables();
-        $this->expandPage = GeneralUtility::_GP('expandPage');
+        $this->expandPage = $this->getRequest()->getParsedBody()['expandPage'] ?? $this->getRequest()->getQueryParams()['expandPage'] ?? null;
     }
 
     /**

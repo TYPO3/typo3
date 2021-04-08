@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Template;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -34,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
@@ -111,17 +113,10 @@ class ModuleTemplate
      */
     protected $content = '';
 
-    /**
-     * IconFactory Member
-     *
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var FlashMessageService
-     */
-    protected $flashMessageService;
+    protected IconFactory $iconFactory;
+    protected FlashMessageService $flashMessageService;
+    protected FlashMessageQueue $flashMessageQueue;
+    protected ServerRequestInterface $request;
 
     /**
      * Module ID
@@ -150,13 +145,6 @@ class ModuleTemplate
      * @var string
      */
     protected $bodyTag = '<body>';
-
-    /**
-     * Flash message queue
-     *
-     * @var FlashMessageQueue
-     */
-    protected $flashMessageQueue;
 
     /**
      * Returns the current body tag
@@ -214,12 +202,7 @@ class ModuleTemplate
         return $this;
     }
 
-    /**
-     * Returns the IconFactory
-     *
-     * @return IconFactory
-     */
-    public function getIconFactory()
+    public function getIconFactory(): IconFactory
     {
         return $this->iconFactory;
     }
@@ -231,21 +214,41 @@ class ModuleTemplate
      * @param PageRenderer $pageRenderer
      * @param IconFactory $iconFactory
      * @param FlashMessageService $flashMessageService
-     * @throws InvalidTemplateResourceException In case a template is invalid
+     * @param ServerRequestInterface|null $request
+     * @param ViewInterface|null $view
      */
     public function __construct(
         PageRenderer $pageRenderer,
         IconFactory $iconFactory,
-        FlashMessageService $flashMessageService
+        FlashMessageService $flashMessageService,
+        ServerRequestInterface $request = null,
+        ViewInterface $view = null
     ) {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setPartialRootPaths($this->partialRootPaths);
-        $this->view->setTemplateRootPaths($this->templateRootPaths);
-        $this->view->setLayoutRootPaths($this->layoutRootPaths);
-        $this->view->setTemplate($this->templateFile);
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;
         $this->flashMessageService = $flashMessageService;
+        $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
+
+        $currentRoute = $this->request->getAttribute('route');
+        if ($currentRoute instanceof Route) {
+            if ($currentRoute->hasOption('module') && $currentRoute->getOption('module')) {
+                $moduleConfiguration = $currentRoute->getOption('moduleConfiguration');
+                if ($moduleConfiguration['name']) {
+                    $this->setModuleName($moduleConfiguration['name']);
+                }
+            } else {
+                $this->setModuleName($currentRoute->getOption('_identifier'));
+            }
+        }
+        if ($view === null) {
+            $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+            $this->view->setPartialRootPaths($this->partialRootPaths);
+            $this->view->setTemplateRootPaths($this->templateRootPaths);
+            $this->view->setLayoutRootPaths($this->layoutRootPaths);
+            $this->view->setTemplate($this->templateFile);
+        } else {
+            $this->view = $view;
+        }
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
         $this->setupPage();
         $this->loadJavaScripts();
@@ -384,12 +387,7 @@ class ModuleTemplate
         return $this->pageRenderer->render();
     }
 
-    /**
-     * Get PageRenderer
-     *
-     * @return PageRenderer
-     */
-    public function getPageRenderer()
+    public function getPageRenderer(): PageRenderer
     {
         return $this->pageRenderer;
     }

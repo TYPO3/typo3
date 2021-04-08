@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -115,17 +116,18 @@ class ElementInformationController
      */
     protected $folderObject;
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    public function __construct(
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -150,14 +152,14 @@ class ElementInformationController
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
         $queryParams = $request->getQueryParams();
 
         $this->table = $queryParams['table'] ?? null;
         $this->uid = $queryParams['uid'] ?? null;
 
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
 
         if (isset($GLOBALS['TCA'][$this->table])) {
             $this->initDatabaseRecord();
@@ -607,19 +609,18 @@ class ElementInformationController
             ],
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $actions['recordEditUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+        $actions['recordEditUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
         ];
-        $actions['recordHistoryUrl'] = (string)$uriBuilder->buildUriFromRoute('record_history', $urlParameters);
+        $actions['recordHistoryUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
         if ($table === 'pages') {
             // Recordlist button
-            $actions['webListUrl'] = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
+            $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
             $previewUriBuilder = PreviewUriBuilder::create((int)$uid)
                 ->withRootLine(BackendUtility::BEgetRootLine($uid));
@@ -708,8 +709,7 @@ class ElementInformationController
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;
@@ -789,8 +789,7 @@ class ElementInformationController
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
                 $line['row'] = $row;

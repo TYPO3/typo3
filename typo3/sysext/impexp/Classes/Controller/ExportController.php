@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -32,8 +33,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -80,10 +83,13 @@ class ExportController extends ImportExportController
      */
     protected $presetRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        parent::__construct($iconFactory, $pageRenderer, $uriBuilder, $moduleTemplateFactory);
         $this->presetRepository = GeneralUtility::makeInstance(PresetRepository::class);
     }
 
@@ -96,6 +102,7 @@ class ExportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
 
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -103,8 +110,8 @@ class ExportController extends ImportExportController
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
         $this->moduleTemplate->addJavaScriptCode(
             'ImpexpInLineJS',
             'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
@@ -116,8 +123,7 @@ class ExportController extends ImportExportController
             // flag doesn't exist initially; state is on by default
             $inData['excludeDisabled'] = 1;
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->standaloneView->assign('moduleUrl', (string)$uriBuilder->buildUriFromRoute($this->moduleName));
+        $this->standaloneView->assign('moduleUrl', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
 

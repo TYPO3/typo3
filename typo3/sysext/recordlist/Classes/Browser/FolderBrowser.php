@@ -58,7 +58,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
     protected function initVariables()
     {
         parent::initVariables();
-        $this->expandFolder = GeneralUtility::_GP('expandFolder');
+        $this->expandFolder = $this->getRequest()->getParsedBody()['expandFolder'] ?? $this->getRequest()->getQueryParams()['expandFolder'] ?? null;
     }
 
     /**

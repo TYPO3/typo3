@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -56,12 +57,15 @@ class ReportController
      */
     protected $shortcutName;
 
-    /**
-     * Instantiate the report controller
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -72,6 +76,7 @@ class ReportController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? '';
         $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'] ?? '';
         $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
@@ -80,8 +85,7 @@ class ReportController
             && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
             $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
             if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('system_reports', [
+                return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('system_reports', [
                     'action' => 'detail',
                     'extension' => $previousSelection['extension'],
                     'report' => $previousSelection['report'],
@@ -164,8 +168,7 @@ class ReportController
 
         if ($reportClass === null || !class_exists($reportClass)) {
             $this->resetState();
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('system_reports', [
+            return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('system_reports', [
                 'action' => 'index',
                 'redirect' => 1,
             ]), 303);
@@ -198,7 +201,6 @@ class ReportController
      */
     protected function generateMenu(ServerRequestInterface $request)
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $lang = $this->getLanguageService();
         $lang->includeLLFile('EXT:reports/Resources/Private/Language/locallang.xlf');
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
@@ -206,7 +208,7 @@ class ReportController
         $menuItem = $menu
             ->makeMenuItem()
             ->setHref(
-                $uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
+                $this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
             )
             ->setTitle($lang->getLL('reports_overview'));
         $menu->addMenuItem($menuItem);
@@ -219,7 +221,7 @@ class ReportController
             foreach ($reports as $reportName => $report) {
                 $menuItem = $menu
                     ->makeMenuItem()
-                    ->setHref($uriBuilder->buildUriFromRoute(
+                    ->setHref($this->uriBuilder->buildUriFromRoute(
                         'system_reports',
                         ['action' => 'detail', 'extension' => $extKey, 'report' => $reportName]
                     ))

@@ -16,9 +16,9 @@
 namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * '/empty' routing target returns dummy content.
@@ -26,14 +26,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DummyController
 {
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(ModuleTemplateFactory $moduleTemplateFactory)
+    {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Return simple dummy content
      *
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(): ResponseInterface
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->setTitle('Blank');
         $moduleTemplate->getDocHeaderComponent()->disable();
         return new HtmlResponse($moduleTemplate->renderContent());

@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -39,9 +40,11 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -71,18 +74,24 @@ class SiteConfigurationController
      */
     protected $view;
 
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
+    protected SiteFinder $siteFinder;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Default constructor
-     */
-    public function __construct()
-    {
-        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    public function __construct(
+        SiteFinder $siteFinder,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->siteFinder = $siteFinder;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -93,11 +102,12 @@ class SiteConfigurationController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         // forcing uncached sites will re-initialize `SiteFinder`
         // which is used later by FormEngine (implicit behavior)
         $this->siteFinder->getAllSites(false);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'));
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
 
@@ -176,8 +186,7 @@ class SiteConfigurationController
             throw new \RuntimeException('Existing config for site ' . $siteIdentifier . ' not found', 1521561226);
         }
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $returnUrl = $uriBuilder->buildUriFromRoute('site_configuration');
+        $returnUrl = $this->uriBuilder->buildUriFromRoute('site_configuration');
 
         $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
@@ -220,10 +229,9 @@ class SiteConfigurationController
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $siteTca = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
 
-        $overviewRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
+        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
         $parsedBody = $request->getParsedBody();
         if (isset($parsedBody['closeDoc']) && (int)$parsedBody['closeDoc'] === 1) {
             // Closing means no save, just redirect to overview
@@ -355,7 +363,7 @@ class SiteConfigurationController
             // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message
         }
 
-        $saveRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'edit', 'site' => $siteIdentifier]);
+        $saveRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'edit', 'site' => $siteIdentifier]);
         if ($isSaveClose) {
             return new RedirectResponse($overviewRoute);
         }
@@ -587,8 +595,7 @@ class SiteConfigurationController
         }
         // Verify site does exist, method throws if not
         GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $overviewRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
+        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
         return new RedirectResponse($overviewRoute);
     }
 
@@ -611,7 +618,6 @@ class SiteConfigurationController
      */
     protected function configureEditViewDocHeader(): void
     {
-        $iconFactory = $this->moduleTemplate->getIconFactory();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
         $closeButton = $buttonBar->makeLinkButton()
@@ -619,14 +625,14 @@ class SiteConfigurationController
             ->setClasses('t3js-editform-close')
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)
-            ->setIcon($iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
         $saveButton = $buttonBar->makeInputButton()
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
             ->setName('_savedok')
             ->setValue('1')
             ->setShowLabelText(true)
             ->setForm('siteConfigurationController')
-            ->setIcon($iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
         $buttonBar->addButton($closeButton);
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
@@ -638,12 +644,11 @@ class SiteConfigurationController
      */
     protected function configureOverViewDocHeader(string $requestUri): void
     {
-        $iconFactory = $this->moduleTemplate->getIconFactory();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($requestUri)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('site_configuration')

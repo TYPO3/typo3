@@ -6,3 +6,8 @@ services:
 
   TYPO3\CMS\RteCKEditor\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController:
+    shared: false
+    public: true
+

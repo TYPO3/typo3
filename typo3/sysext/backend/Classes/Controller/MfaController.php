@@ -43,6 +43,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'auth');
 
         switch ($action) {

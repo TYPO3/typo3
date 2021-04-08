@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -59,8 +59,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $this->subject = new EditDocumentController($eventDispatcher->reveal());
+        $this->subject = GeneralUtility::makeInstance(EditDocumentController::class);
         $this->request = new ServerRequest();
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }

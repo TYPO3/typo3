@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception;
@@ -75,6 +74,7 @@ class ImportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
 
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -82,8 +82,8 @@ class ImportController extends ImportExportController
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
         $this->moduleTemplate->addJavaScriptCode(
             'ImpexpInLineJS',
             'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
@@ -104,8 +104,7 @@ class ImportController extends ImportExportController
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->standaloneView->assign('moduleUrl', (string)$uriBuilder->buildUriFromRoute($this->moduleName));
+        $this->standaloneView->assign('moduleUrl', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
         $this->standaloneView->assign('id', $this->id);
         $this->standaloneView->assign('inData', $inData);
 

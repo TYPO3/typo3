@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -27,7 +28,9 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -94,6 +97,20 @@ class MoveElementController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
@@ -103,7 +120,7 @@ class MoveElementController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->init($request);
         $this->renderContent();
@@ -142,7 +159,7 @@ class MoveElementController
         if ($this->page_id) {
             $assigns = [];
             $backendUser = $this->getBackendUser();
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
             // Get record for element:
             $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
             // Headerline: Icon, record title:
@@ -272,10 +289,7 @@ class MoveElementController
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref($this->R_URI)
                     ->setTitle($this->getLanguageService()->getLL('goBack'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-view-go-back',
-                        Icon::SIZE_SMALL
-                    ));
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                 $buttonBar->addButton($backButton);
             }
         }

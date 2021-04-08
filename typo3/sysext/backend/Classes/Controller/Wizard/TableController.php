@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -98,16 +100,25 @@ class TableController extends AbstractWizardController
     protected $tableParsing_delimiter;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * ModuleTemplate object
      *
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
+
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
 
     /**
      * Injects the request object for the current request or subrequest
@@ -118,9 +129,9 @@ class TableController extends AbstractWizardController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Element/TableWizardElement');
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf', 'table_');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/TableWizardElement');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf', 'table_');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_wizards.xlf');
         $this->init($request);
 
@@ -187,7 +198,7 @@ class TableController extends AbstractWizardController
             // Close
             $closeButton = $buttonBar->makeLinkButton()
                 ->setHref($this->P['returnUrl'])
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -196,7 +207,7 @@ class TableController extends AbstractWizardController
                 ->setName('_savedok')
                 ->setValue('1')
                 ->setForm('TableController')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
                 ->setShowLabelText(true);
             $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -205,7 +216,7 @@ class TableController extends AbstractWizardController
                 ->setName('_refresh')
                 ->setValue('1')
                 ->setForm('TableController')
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->getLL('forms_refresh'));
             $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }

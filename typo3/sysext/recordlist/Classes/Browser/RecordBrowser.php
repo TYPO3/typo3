@@ -26,10 +26,7 @@ namespace TYPO3\CMS\Recordlist\Browser;
  */
 class RecordBrowser extends DatabaseBrowser
 {
-    /**
-     * @var array
-     */
-    protected $urlParameters = [];
+    protected array $urlParameters = [];
 
     /**
      * Main initialization

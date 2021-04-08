@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Lowlevel\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
@@ -35,10 +36,20 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 class ConfigurationController
 {
     protected ProviderRegistry $configurationProviderRegistry;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    public function __construct(ProviderRegistry $configurationProviderRegistry)
-    {
+    public function __construct(
+        ProviderRegistry $configurationProviderRegistry,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
         $this->configurationProviderRegistry = $configurationProviderRegistry;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -52,6 +63,7 @@ class ConfigurationController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $queryParams = $request->getQueryParams();
         $postValues = $request->getParsedBody();
@@ -113,9 +125,8 @@ class ConfigurationController
         ]);
 
         // Prepare module setup
-        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $moduleTemplate->setContent($view->render());
-        $moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
 
         // Shortcut in doc header
         $shortcutButton = $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
@@ -131,9 +142,8 @@ class ConfigurationController
 
         foreach ($this->configurationProviderRegistry->getProviders() as $provider) {
             $menuItem = $menu->makeMenuItem();
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $menuItem
-                ->setHref((string)$uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_config', ['tree' => $provider->getIdentifier()]))
                 ->setTitle($provider->getLabel());
             if ($configurationProvider === $provider) {
                 $menuItem->setActive(true);

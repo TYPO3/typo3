@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -141,13 +143,21 @@ class TypoScriptTemplateModuleController
      */
     protected $request;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -159,12 +169,11 @@ class TypoScriptTemplateModuleController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => $this->id,
@@ -192,6 +201,8 @@ class TypoScriptTemplateModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
         $this->request = $request;
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
@@ -209,13 +220,12 @@ class TypoScriptTemplateModuleController
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $this->access = is_array($this->pageinfo);
         $view = $this->getFluidTemplateObject('tstemplate');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if ($this->id && $this->access) {
             $urlParameters = [
                 'id' => $this->id,
                 'template' => 'all'
             ];
-            $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $aHref = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
 
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
@@ -226,7 +236,7 @@ class TypoScriptTemplateModuleController
                 if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
             );
             // Setting up the context sensitive menu:
-            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             // Build the module content
             $view->assign('actionName', $aHref);
             $view->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());
@@ -301,7 +311,7 @@ class TypoScriptTemplateModuleController
                 ->setHref('#')
                 ->setDataAttributes($previewDataAttributes ?? [])
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
 
             $sObj = $this->request->getParsedBody()['sObj'] ?? $this->request->getQueryParams()['sObj'] ?? null;
@@ -312,14 +322,10 @@ class TypoScriptTemplateModuleController
                     'template' => 'all',
                     'createExtension' => 'new'
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $newButton = $buttonBar->makeLinkButton()
-                    ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-add',
-                        Icon::SIZE_SMALL
-                    ));
+                    ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class
                 && !empty($this->MOD_MENU['constant_editor_cat'])) {
@@ -329,10 +335,7 @@ class TypoScriptTemplateModuleController
                     ->setValue('1')
                     ->setForm('TypoScriptTemplateModuleController')
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.saveDoc'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-document-save',
-                        Icon::SIZE_SMALL
-                    ))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class
@@ -342,15 +345,11 @@ class TypoScriptTemplateModuleController
                 $urlParameters = [
                     'id' => $this->id
                 ];
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $backButton = $buttonBar->makeLinkButton()
-                    ->setHref((string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
                     ->setClasses('typo3-goBack')
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-view-go-back',
-                        Icon::SIZE_SMALL
-                    ));
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                 $buttonBar->addButton($backButton);
             }
         }
@@ -380,8 +379,7 @@ class TypoScriptTemplateModuleController
             $urlParameters['e'] = ['constants' => 1];
         }
         $urlParameters['SET'] = ['function' => TypoScriptTemplateInformationModuleFunctionController::class];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+        $url = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($title) . '</a>';
     }
 
@@ -744,13 +742,5 @@ page.10.value = HELLO WORLD!
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

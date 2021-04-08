@@ -21,10 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -84,14 +87,24 @@ class CreateFolderController
      */
     protected $moduleTemplate;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ResourceFactory $resourceFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    public function __construct()
-    {
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ResourceFactory $resourceFactory,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->resourceFactory = $resourceFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -102,7 +115,7 @@ class CreateFolderController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         $this->main();
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -124,8 +137,7 @@ class CreateFolderController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the folder object
         if ($combinedIdentifier) {
-            $this->folderObject = GeneralUtility::makeInstance(ResourceFactory::class)
-                ->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+            $this->folderObject = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
         }
         // Cleaning and checking target directory
         if (!$this->folderObject) {
@@ -145,8 +157,8 @@ class CreateFolderController
         ];
 
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/CreateFolder');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/CreateFolder');
     }
 
     /**
@@ -226,7 +238,7 @@ class CreateFolderController
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
 

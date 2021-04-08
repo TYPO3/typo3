@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
@@ -119,11 +120,6 @@ class PageLayoutController
     protected $activeColPosList;
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * The name of the module
      *
      * @var string
@@ -151,20 +147,29 @@ class PageLayoutController
     protected $availableLanguages;
 
     /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
      * @var PageLayoutContext|null
      */
     protected $context;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected PageRepository $pageRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        PageRepository $pageRepository,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->pageRepository = $pageRepository;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
@@ -174,10 +179,7 @@ class PageLayoutController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $this->iconFactory = $this->moduleTemplate->getIconFactory();
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         // Setting module configuration / page select clause
@@ -367,7 +369,6 @@ class PageLayoutController
             }
         } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
             $shortcutMode = (int)$this->pageinfo['shortcut_mode'];
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $targetPage = [];
             $message = '';
             $state = InfoboxViewHelper::STATE_ERROR;
@@ -375,20 +376,20 @@ class PageLayoutController
             if ($shortcutMode || $this->pageinfo['shortcut']) {
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
-                        $targetPage = $this->getTargetPageIfVisible($pageRepository->getPage($this->pageinfo['shortcut']));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['shortcut']));
                         $message .= $targetPage === [] ? $lang->getLL('pageIsMisconfiguredOrNotAccessibleInternalLinkMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
-                        $menuOfPages = $pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
+                        $menuOfPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
                         $targetPage = reset($menuOfPages) ?: [];
                         $message .= $targetPage === [] ? $lang->getLL('pageIsMisconfiguredFirstSubpageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-                        $targetPage = $this->getTargetPageIfVisible($pageRepository->getPage($this->pageinfo['pid']));
+                        $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['pid']));
                         $message .= $targetPage === [] ? $lang->getLL('pageIsMisconfiguredParentPageMessage') : '';
                         break;
                     case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                        $possibleTargetPages = $pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
+                        $possibleTargetPages = $this->pageRepository->getMenu($this->pageinfo['uid'], '*', 'sorting', 'AND hidden = 0');
                         if ($possibleTargetPages === []) {
                             $message .= $lang->getLL('pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage');
                             break;
@@ -426,7 +427,7 @@ class PageLayoutController
                 ]);
                 $content .= $view->render();
             } else {
-                $externalUrl = GeneralUtility::makeInstance(PageRepository::class)->getExtURL($this->pageinfo);
+                $externalUrl = $this->pageRepository->getExtURL($this->pageinfo);
                 if (is_string($externalUrl)) {
                     $externalUrl = htmlspecialchars($externalUrl);
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';

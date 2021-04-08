@@ -22,9 +22,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
@@ -68,6 +71,26 @@ class RenameFileController
      */
     protected $moduleTemplate;
 
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ResourceFactory $resourceFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ResourceFactory $resourceFactory,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->uriBuilder = $uriBuilder;
+        $this->resourceFactory = $resourceFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     /**
      * Processes the request, currently everything is handled and put together via "renderContent()"
      *
@@ -76,7 +99,7 @@ class RenameFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         $this->renderContent();
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -98,7 +121,7 @@ class RenameFileController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // Cleaning and checking target
         if ($this->target) {
-            $this->fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->target);
+            $this->fileOrFolderObject = $this->resourceFactory->retrieveFileOrFolderObject($this->target);
         }
         if (!$this->fileOrFolderObject) {
             $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
@@ -132,8 +155,8 @@ class RenameFileController
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
 
         // Setting up the context sensitive menu
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/RenameFile');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/RenameFile');
     }
 
     /**
@@ -142,9 +165,7 @@ class RenameFileController
     protected function renderContent(): void
     {
         $assigns = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
+        $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
         $assigns['returnUrl'] = $this->returnUrl;
 
         if ($this->fileOrFolderObject instanceof Folder) {
@@ -175,7 +196,7 @@ class RenameFileController
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
 
@@ -187,11 +208,11 @@ class RenameFileController
             ->setClasses('t3js-submit-file-rename')
             ->setForm('RenameFileController')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.saveAndClose'))
-            ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
 
         $buttonBar->addButton($saveAndCloseButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
 
-        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelArray([
+        $this->pageRenderer->addInlineLanguageLabelArray([
             'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_rename.actions.cancel'),
             'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_rename.actions.rename'),
             'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_rename.actions.override'),

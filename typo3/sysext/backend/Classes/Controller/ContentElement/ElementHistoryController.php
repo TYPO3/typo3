@@ -22,11 +22,13 @@ use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -74,9 +76,18 @@ class ElementHistoryController
      */
     protected string $returnUrl = '';
 
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->view = $this->initializeView();
     }
 
@@ -89,6 +100,7 @@ class ElementHistoryController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -126,7 +138,7 @@ class ElementHistoryController
                 $this->displayMultipleDiff($completeDiff);
                 $button = $buttonBar->makeLinkButton()
                     ->setHref($this->buildUrl(['historyEntry' => '']))
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:fullView'))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($button);
@@ -151,7 +163,7 @@ class ElementHistoryController
                             'element' => 'pages:' . $parentPage['pid'],
                             'historyEntry' => '',
                         ]))
-                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL))
+                        ->setIcon($this->iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL))
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:elementHistory_link'))
                         ->setShowLabelText(true);
                     $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -209,7 +221,7 @@ class ElementHistoryController
                 ->setHref($this->returnUrl)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true)
-                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
     }
@@ -404,8 +416,7 @@ class ElementHistoryController
         $params = array_merge($params, $overrideParameters);
 
         // Make the link:
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return (string)$uriBuilder->buildUriFromRoute('record_history', $params);
+        return (string)$this->uriBuilder->buildUriFromRoute('record_history', $params);
     }
 
     /**
