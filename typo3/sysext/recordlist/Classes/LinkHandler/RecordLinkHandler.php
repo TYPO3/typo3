@@ -151,11 +151,13 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             $this->getUrlParameters([])
         );
 
+        $treeEnabled = ($this->configuration['hidePageTree'] ?? false) === false;
         $path = GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Templates/LinkBrowser/Record.html');
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename($path);
         $view->assignMultiple([
-            'tree' => $this->configuration['hidePageTree'] ? '' : $this->renderPageTree(),
+            'treeEnabled' => $treeEnabled,
+            'tree' => $treeEnabled ? $this->renderPageTree() : '',
             'recordList' => $recordList,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250
         ]);

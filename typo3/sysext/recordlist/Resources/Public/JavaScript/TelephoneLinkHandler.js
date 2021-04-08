@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","jquery","./LinkBrowser"],(function(e,t,r,u){"use strict";r=__importDefault(r);return new class{constructor(){r.default(()=>{r.default("#ltelephoneform").on("submit",e=>{e.preventDefault();let t=r.default(e.currentTarget).find('[name="ltelephone"]').val();"tel:"!==t&&(t.startsWith("tel:")&&(t=t.substr(4)),u.finalizeFunction("tel:"+t))})})}}}));
+var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./LinkBrowser","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r,l){"use strict";l=__importDefault(l);return new class{constructor(){new l.default("submit",(e,t)=>{e.preventDefault();let l=t.querySelector('[name="ltelephone"]').value;"tel:"!==l&&(l.startsWith("tel:")&&(l=l.substr(4)),r.finalizeFunction("tel:"+l))}).delegateTo(document,"#ltelephoneform")}}}));

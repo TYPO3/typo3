@@ -1,21 +1,9 @@
-<div class="element-browser-panel element-browser-main {f:if(condition: tree, then: 'scaffold-content-navigation-available scaffold-content-navigation-expanded')}">
-    <f:if condition="{tree}">
-        <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
-            <div class="element-browser-body">
-                {tree -> f:format.raw()}
-            </div>
-        </div>
-        <typo3-backend-navigation-switcher
-            parent=".element-browser-main"
-            navigation=".element-browser-main-sidebar"
-            minimum-width="250"
-            initial-width="{initialNavigationWidth}"
-            persistence-identifier="selector.navigation.width"
-        ></typo3-backend-navigation-switcher>
-    </f:if>
-    <div class="element-browser-main-content">
-        <div class="element-browser-body">
-            {recordList -> f:format.raw()}
-        </div>
-    </div>
-</div>
+<f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
+
+<f:section name="Navigation">
+    {tree -> f:format.raw()}
+</f:section>
+
+<f:section name="Content">
+    {recordList -> f:format.raw()}
+</f:section>

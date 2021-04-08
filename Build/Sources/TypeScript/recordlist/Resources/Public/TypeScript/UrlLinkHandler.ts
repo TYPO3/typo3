@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/UrlLinkHandler
@@ -21,19 +21,15 @@ import LinkBrowser = require('./LinkBrowser');
  */
 class UrlLinkHandler {
   constructor() {
-    $((): void => {
-      $('#lurlform').on('submit', this.link);
-    });
-  }
-
-  public link = (event: JQueryEventObject): void => {
-    event.preventDefault();
-
-    const value = $(event.currentTarget).find('[name="lurl"]').val();
-    if (value === '') {
-      return;
-    }
-    LinkBrowser.finalizeFunction(value);
+    new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const inputField = targetEl.querySelector('[name="lurl"]') as HTMLInputElement;
+      let value = inputField.value;
+      if (value === '') {
+        return;
+      }
+      LinkBrowser.finalizeFunction(value);
+    }).delegateTo(document, '#lurlform');
   }
 }
 

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/TelephoneLinkHandler
@@ -21,21 +21,19 @@ import LinkBrowser = require('./LinkBrowser');
  */
 class TelephoneLinkHandler {
   constructor() {
-    $((): void => {
-      $('#ltelephoneform').on('submit', (event: JQueryEventObject): void => {
-        event.preventDefault();
+    new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const inputField = targetEl.querySelector('[name="ltelephone"]') as HTMLInputElement;
+      let value = inputField.value;
+      if (value === 'tel:') {
+        return;
+      }
+      if (value.startsWith('tel:')) {
+        value = value.substr(4);
+      }
 
-        let value = $(event.currentTarget).find('[name="ltelephone"]').val();
-        if (value === 'tel:') {
-          return;
-        }
-        if (value.startsWith('tel:')) {
-          value = value.substr(4);
-        }
-
-        LinkBrowser.finalizeFunction('tel:' + value);
-      });
-    });
+      LinkBrowser.finalizeFunction('tel:' + value);
+    }).delegateTo(document, '#ltelephoneform');
   }
 }
 

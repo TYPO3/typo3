@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/PageLinkHandler
@@ -20,51 +20,37 @@ import LinkBrowser = require('./LinkBrowser');
  * Page link interaction
  */
 class PageLinkHandler {
-  private currentLink: string = '';
-
   constructor() {
-    $((): void => {
-      this.currentLink = $('body').data('currentLink');
-      $('a.t3js-pageLink').on('click', this.linkPage);
-      $('input.t3js-linkCurrent').on('click', this.linkCurrent);
-      $('input.t3js-pageLink').on('click', this.linkPageByTextfield);
-    });
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      LinkBrowser.finalizeFunction(targetEl.getAttribute('href'));
+    }).delegateTo(document, 'a.t3js-pageLink');
+
+    // Link to current page
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
+    }).delegateTo(document, 'input.t3js-linkCurrent');
+
+    // Input field
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      this.linkPageByTextfield();
+    }).delegateTo(document, 'input.t3js-pageLink');
   }
 
-  /**
-   * @param {JQueryEventObject} event
-   */
-  public linkPage = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction($(event.currentTarget).attr('href'));
-  }
-
-  /**
-   * @param {JQueryEventObject} event
-   */
-  public linkPageByTextfield = (event: JQueryEventObject): void => {
-    event.preventDefault();
-
-    let value = $('#luid').val();
+  private linkPageByTextfield = (): void => {
+    const textField = document.getElementById('luid') as HTMLInputElement;
+    let value = textField.value;
     if (!value) {
       return;
     }
-
     // make sure we use proper link syntax if this is an integer only
     const valueAsNumber = parseInt(value, 10);
     if (!isNaN(valueAsNumber)) {
       value = 't3://page?uid=' + valueAsNumber;
     }
-
     LinkBrowser.finalizeFunction(value);
-  }
-
-  /**
-   * @param {JQueryEventObject} event
-   */
-  public linkCurrent = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction(this.currentLink);
   }
 }
 

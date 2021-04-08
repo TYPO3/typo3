@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/MailLinkHandler
@@ -21,22 +21,20 @@ import LinkBrowser = require('./LinkBrowser');
  */
 class MailLinkHandler {
   constructor() {
-    $((): void => {
-      $('#lmailform').on('submit', (event: JQueryEventObject): void => {
-        event.preventDefault();
+    new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      const inputField = targetEl.querySelector('[name="lemail"]') as HTMLInputElement;
+      let value = inputField.value;
+      if (value === 'mailto:') {
+        return;
+      }
 
-        let value = $(event.currentTarget).find('[name="lemail"]').val();
-        if (value === 'mailto:') {
-          return;
-        }
+      while (value.substr(0, 7) === 'mailto:') {
+        value = value.substr(7);
+      }
 
-        while (value.substr(0, 7) === 'mailto:') {
-          value = value.substr(7);
-        }
-
-        LinkBrowser.finalizeFunction('mailto:' + value);
-      });
-    });
+      LinkBrowser.finalizeFunction('mailto:' + value);
+    }).delegateTo(document, '#lmailform');
   }
 }
 

@@ -1,44 +1,34 @@
-<div class="element-browser-panel element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
-    <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
-        <div class="element-browser-body">
-            {tree -> f:format.raw()}
-        </div>
-    </div>
-    <typo3-backend-navigation-switcher
-        parent=".element-browser-main"
-        navigation=".element-browser-main-sidebar"
-        minimum-width="250"
-        initial-width="{initialNavigationWidth}"
-        persistence-identifier="selector.navigation.width"
-    ></typo3-backend-navigation-switcher>
-    <div class="element-browser-main-content">
-        <div class="element-browser-body">
-            <f:if condition="{selectedFolder}">
-                <div class="row pb-3">
-                    <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
-                    <span title="{selectedFolder.identifier}">
-                    {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
-                </span>
-                    <f:if condition="{itemsInSelectedFolder}">
-                        <ul class="list-tree">
-                            <f:for each="{itemsInSelectedFolder}" as="file">
-                                <li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
-                                <span class="list-tree-group">
-                                        <a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
-                                            <span class="list-tree-icon">
-                                                <span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
-                                            </span>
-                                            <span class="list-tree-title">{file.title}</span>
-                                        </a>
-                                    </span>
-                                </li>
-                            </f:for>
-                        </ul>
-                    </f:if>
-                </div>
+<f:layout name="ElementBrowserWithNavigation" />
+
+<f:section name="Navigation">
+    {tree -> f:format.raw()}
+</f:section>
+
+<f:section name="Content">
+    <f:if condition="{selectedFolder}">
+        <div class="row pb-3">
+            <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:files" /></h3>
+            <span title="{selectedFolder.identifier}">
+                {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+            </span>
+            <f:if condition="{itemsInSelectedFolder}">
+                <ul class="list-tree">
+                    <f:for each="{itemsInSelectedFolder}" as="file">
+                        <li{f:if(condition: '{file.uid} == {currentIdentifier}', then: ' class="active"')}>
+                        <span class="list-tree-group">
+                            <a href="{file.url}" class="t3js-fileLink list-tree-group" title="{file.name}">
+                                <span class="list-tree-icon">
+                                    <span title="{file.name} ({file.size})">{file.icon -> f:format.raw()}</span>
+                                </span>
+                                <span class="list-tree-title">{file.title}</span>
+                            </a>
+                        </span>
+                        </li>
+                    </f:for>
+                </ul>
             </f:if>
-            {uploadFileForm -> f:format.raw()}
-            {createFolderForm -> f:format.raw()}
         </div>
-    </div>
-</div>
+    </f:if>
+    {uploadFileForm -> f:format.raw()}
+    {createFolderForm -> f:format.raw()}
+</f:section>

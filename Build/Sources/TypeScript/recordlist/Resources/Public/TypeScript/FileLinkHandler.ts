@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import LinkBrowser = require('./LinkBrowser');
 // Yes we really need this import, because Tree... is used in inline markup...
 import Tree = require('TYPO3/CMS/Backend/LegacyTree');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/FileLinkHandler
@@ -22,27 +22,22 @@ import Tree = require('TYPO3/CMS/Backend/LegacyTree');
  * @exports TYPO3/CMS/Recordlist/FileLinkHandler
  */
 class FileLinkHandler {
-  currentLink: string = '';
-
   constructor() {
     // until we use onclick attributes, we need the Tree component
     Tree.noop();
-    $(() => {
-      this.currentLink = $('body').data('currentLink');
-      $('a.t3js-fileLink').on('click', this.linkFile);
-      $('input.t3js-linkCurrent').on('click', this.linkCurrent);
-    });
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      LinkBrowser.finalizeFunction(targetEl.getAttribute('href'));
+    }).delegateTo(document, 'a.t3js-fileLink');
+
+    // Link to current page
+    new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
+      evt.preventDefault();
+      LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
+    }).delegateTo(document, 'input.t3js-linkCurrent');
+
   }
 
-  public linkFile = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction($(event.currentTarget).attr('href'));
-  }
-
-  public linkCurrent = (event: JQueryEventObject): void => {
-    event.preventDefault();
-    LinkBrowser.finalizeFunction(this.currentLink);
-  }
 }
 
 export = new FileLinkHandler();

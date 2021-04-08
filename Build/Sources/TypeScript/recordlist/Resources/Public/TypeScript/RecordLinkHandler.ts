@@ -19,21 +19,15 @@ import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
  * record link interaction
  */
 class RecordLinkHandler {
-  private currentLink: string = '';
-  private identifier: string = '';
-
   constructor() {
-    this.currentLink = document.body.dataset.currentLink;
-    this.identifier = document.body.dataset.identifier;
-
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
       const data = targetEl.closest('span').dataset;
-      LinkBrowser.finalizeFunction(this.identifier + data.uid);
+      LinkBrowser.finalizeFunction(document.body.dataset.identifier + data.uid);
     }).delegateTo(document, '[data-close]');
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      LinkBrowser.finalizeFunction(this.currentLink);
+      LinkBrowser.finalizeFunction(document.body.dataset.currentLink);
     }).delegateTo(document, 'input.t3js-linkCurrent');
   }
 }

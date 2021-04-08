@@ -78,9 +78,9 @@ abstract class AbstractLinkHandler
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('recordlist');
-        $this->view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Templates/LinkBrowser')]);
-        $this->view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Partials/LinkBrowser')]);
-        $this->view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:recordlist/Resources/Private/Layouts/LinkBrowser')]);
+        $this->view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates/LinkBrowser/']);
+        $this->view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials/LinkBrowser/']);
+        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts/', 'EXT:recordlist/Resources/Private/Layouts/']);
     }
 
     /**

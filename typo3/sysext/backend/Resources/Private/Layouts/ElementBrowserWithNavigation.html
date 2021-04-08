@@ -1,0 +1,19 @@
+<div class="element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
+    <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
+        <div class="element-browser-body">
+            <f:render section="Navigation" />
+        </div>
+    </div>
+    <typo3-backend-navigation-switcher
+        parent=".element-browser-main"
+        navigation=".element-browser-main-sidebar"
+        minimum-width="250"
+        initial-width="{initialNavigationWidth}"
+        persistence-identifier="selector.navigation.width"
+    ></typo3-backend-navigation-switcher>
+    <div class="element-browser-main-content">
+        <div class="element-browser-body">
+            <f:render section="Content" />
+        </div>
+    </div>
+</div>

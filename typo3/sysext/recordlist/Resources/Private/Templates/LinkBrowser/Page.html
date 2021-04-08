@@ -1,50 +1,40 @@
-<div class="element-browser-panel element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
-    <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">
-        <div class="element-browser-body">
-            <f:if condition="{temporaryTreeMountCancelLink}">
-                <p>
-                    <a href="{temporaryTreeMountCancelLink}" class="btn btn-primary">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount" />
-                    </a>
-                </p>
-            </f:if>
-            {tree -> f:format.raw()}
-        </div>
-    </div>
-    <typo3-backend-navigation-switcher
-        parent=".element-browser-main"
-        navigation=".element-browser-main-sidebar"
-        minimum-width="250"
-        initial-width="{initialNavigationWidth}"
-        persistence-identifier="selector.navigation.width"
-    ></typo3-backend-navigation-switcher>
-    <div class="element-browser-main-content">
-        <div class="element-browser-body">
-            <f:if condition="{expandActivePage}">
-                <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h3>
-                <ul class="list-tree list-tree-root list-tree-root-clean">
-                    <li class="list-tree-control-open">
-                        <span class="list-tree-group">
-                            <span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
-                            <span class="list-tree-title">{activePageTitle -> f:format.raw()}</span>
-                        </span>
-                        <ul>
-                            <f:for each="{contentElements}" as="content">
-                                <li{f:if(condition: content.isSelected, then: ' class="active"')}>
-                                    <span class="list-tree-group">
-                                        <span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
-                                        <span class="list-tree-title">
-                                            <a href="{content.url}" class="t3js-pageLink">
-                                                {content.title -> f:format.raw()}
-                                            </a>
-                                        </span>
-                                    </span>
-                                </li>
-                            </f:for>
-                        </ul>
-                    </li>
+<f:layout name="ElementBrowserWithNavigation" />
+
+<f:section name="Navigation">
+    <f:if condition="{temporaryTreeMountCancelLink}">
+        <p>
+            <a href="{temporaryTreeMountCancelLink}" class="btn btn-primary">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount" />
+            </a>
+        </p>
+    </f:if>
+    {tree -> f:format.raw()}
+</f:section>
+
+<f:section name="Content">
+    <f:if condition="{expandActivePage}">
+        <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:contentElements" /></h3>
+        <ul class="list-tree list-tree-root list-tree-root-clean">
+            <li class="list-tree-control-open">
+                <span class="list-tree-group">
+                    <span class="list-tree-icon">{activePageIcon -> f:format.raw()}</span>
+                    <span class="list-tree-title">{activePageTitle -> f:format.raw()}</span>
+                </span>
+                <ul>
+                    <f:for each="{contentElements}" as="content">
+                        <li{f:if(condition: content.isSelected, then: ' class="active"')}>
+                            <span class="list-tree-group">
+                                <span class="list-tree-icon">{content.icon -> f:format.raw()}</span>
+                                <span class="list-tree-title">
+                                    <a href="{content.url}" class="t3js-pageLink">
+                                        {content.title -> f:format.raw()}
+                                    </a>
+                                </span>
+                            </span>
+                        </li>
+                    </f:for>
                 </ul>
-            </f:if>
-        </div>
-    </div>
-</div>
+            </li>
+        </ul>
+    </f:if>
+</f:section>
