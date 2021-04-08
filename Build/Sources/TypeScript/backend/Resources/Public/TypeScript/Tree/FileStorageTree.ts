@@ -20,9 +20,6 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
  * A tree for folders / storages
  */
 export class FileStorageTree extends SvgTree {
-  protected networkErrorTitle: string = TYPO3.lang.tree_networkError;
-  protected networkErrorMessage: string = TYPO3.lang.tree_networkErrorDescription;
-
   public constructor() {
     super();
     this.settings.defaultProperties = {

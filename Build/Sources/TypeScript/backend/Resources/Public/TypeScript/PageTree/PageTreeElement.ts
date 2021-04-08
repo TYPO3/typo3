@@ -18,14 +18,11 @@ import {PageTree} from './PageTree';
 import {TreeNode} from './../Tree/TreeNode';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 import ContextMenu = require('../ContextMenu');
-import 'TYPO3/CMS/Backend/Element/IconElement';
-import 'TYPO3/CMS/Backend/Input/Clearable';
 import * as d3selection from 'd3-selection';
 import {KeyTypesEnum as KeyTypes} from 'TYPO3/CMS/Backend/Enum/KeyTypes';
-import {TreeNodeSelection, TreeWrapperSelection} from '../SvgTree';
+import {TreeNodeSelection, TreeWrapperSelection, Toolbar} from '../SvgTree';
 import {DragDrop, DragDropHandler, DraggablePositionEnum} from '../Tree/DragDrop';
 import {D3DragEvent} from 'd3-drag';
 import Modal = require('../Modal');
@@ -42,8 +39,6 @@ import Severity = require('../Severity');
  */
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-pagetree';
-const toolbarComponentName: string = 'typo3-backend-navigation-component-pagetree-toolbar';
-
 
 /**
  * PageTree which allows for drag+drop, and in-place editing, as well as
@@ -253,7 +248,7 @@ export class PageTreeNavigationComponent extends LitElement {
   @property({type: String}) mountPointPath: string = null;
 
   @query('.svg-tree-wrapper') tree: EditablePageTree;
-  @query(toolbarComponentName) toolbar: Toolbar;
+  @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
 
   private configuration: Configuration = null;
 
@@ -319,9 +314,7 @@ export class PageTreeNavigationComponent extends LitElement {
 
         return html`
           <div>
-            <div id="typo3-pagetree-toolbar" class="svg-toolbar">
-                <typo3-backend-navigation-component-pagetree-toolbar .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
-            </div>
+            <typo3-backend-navigation-component-pagetree-toolbar id="typo3-pagetree-toolbar" class="svg-toolbar" .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
             <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
               ${this.renderMountPoint()}
               <typo3-backend-navigation-component-pagetree-tree id="typo3-pagetree-tree" class="svg-tree-wrapper" .setup=${configuration} @svg-tree:initialized=${initialized}></typo3-backend-navigation-component-pagetree-tree>
@@ -452,14 +445,9 @@ export class PageTreeNavigationComponent extends LitElement {
   }
 }
 
-@customElement(toolbarComponentName)
-class Toolbar extends LitElement {
+@customElement('typo3-backend-navigation-component-pagetree-toolbar')
+class PageTreeToolbar extends Toolbar {
   @property({type: EditablePageTree}) tree: EditablePageTree = null;
-
-  private settings = {
-    searchInput: '.search-input',
-    filterTimeout: 450
-  };
 
   public initializeDragDrop(dragDrop: PageTreeDragDrop): void
   {
@@ -470,28 +458,6 @@ class Toolbar extends LitElement {
           d3selection.select(htmlElement).call(this.dragToolbar(item, dragDrop));
         } else {
           console.warn('Missing icon definition for doktype: ' + item.nodeType);
-        }
-      });
-    }
-  }
-
-  // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
-    return this;
-  }
-
-  protected firstUpdated(): void
-  {
-    const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
-    if (inputEl) {
-      new DebounceEvent('input', (evt: InputEvent) => {
-        const el = evt.target as HTMLInputElement;
-        this.tree.filter(el.value.trim());
-      }, this.settings.filterTimeout).bindTo(inputEl);
-      inputEl.focus();
-      inputEl.clearable({
-        onClear: () => {
-          this.tree.resetFilter();
         }
       });
     }
@@ -532,10 +498,6 @@ class Toolbar extends LitElement {
         </div>
       </div>
     `;
-  }
-
-  private refreshTree(): void {
-    this.tree.refreshOrFilterTree();
   }
 
   /**

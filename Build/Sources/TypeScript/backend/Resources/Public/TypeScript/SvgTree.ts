@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, property, internalProperty, LitElement, TemplateResult} from 'lit-element';
+import {html, property, internalProperty, LitElement, TemplateResult, customElement} from 'lit-element';
 import {TreeNode} from './Tree/TreeNode';
 import * as d3selection from 'd3-selection';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
@@ -21,6 +21,10 @@ import Icons = require('./Icons');
 import Tooltip = require('./Tooltip');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {MarkupIdentifiers} from './Enum/IconTypes';
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
+import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
+import 'TYPO3/CMS/Backend/Element/IconElement';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, any, any>;
 export type TreeNodeSelection = d3selection.Selection<d3selection.BaseType, TreeNode, any, any>;
@@ -122,11 +126,8 @@ export class SvgTree extends LitElement {
   protected searchTerm: string|null = null;
   protected unfilteredNodes: string = '';
 
-  /**
-   * @todo: use generic labels
-   */
-  protected networkErrorTitle: string = TYPO3.lang.pagetree_networkErrorTitle;
-  protected networkErrorMessage: string = TYPO3.lang.pagetree_networkErrorDesc;
+  protected networkErrorTitle: string = top.TYPO3.lang.tree_networkError;
+  protected networkErrorMessage: string = top.TYPO3.lang.tree_networkErrorDescription;
 
   /**
    * Initializes the tree component - created basic markup, loads and renders data
@@ -1180,4 +1181,58 @@ export class SvgTree extends LitElement {
     return link.target.siblingsPosition === 1 ? 'group-identifier-' + link.source.stateIdentifier : null;
   }
 
+}
+
+
+/**
+ * A basic toolbar allowing to search / filter
+ */
+@customElement('typo3-backend-tree-toolbar')
+export class Toolbar extends LitElement {
+  @property({type: SvgTree}) tree: SvgTree = null;
+  protected settings = {
+    searchInput: '.search-input',
+    filterTimeout: 450
+  };
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected firstUpdated(): void
+  {
+    const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
+    if (inputEl) {
+      new DebounceEvent('input', (evt: InputEvent) => {
+        const el = evt.target as HTMLInputElement;
+        this.tree.filter(el.value.trim());
+      }, this.settings.filterTimeout).bindTo(inputEl);
+      inputEl.focus();
+      inputEl.clearable({
+        onClear: () => {
+          this.tree.resetFilter();
+        }
+      });
+    }
+  }
+
+  protected render(): TemplateResult {
+    /* eslint-disable @typescript-eslint/indent */
+    return html`
+      <div class="tree-toolbar">
+        <div class="svg-toolbar__menu">
+          <div class="svg-toolbar__search">
+              <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
+          </div>
+          <button class="btn btn-default btn-borderless btn-sm" @click="${() => this.refreshTree()}" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
+            <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  protected refreshTree(): void {
+    this.tree.refreshOrFilterTree();
+  }
 }
