@@ -268,8 +268,8 @@ class NewContentElementController
                         $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();";
                     }
 
-                    // Go to DataHandler directly instead of FormEngine
-                    if ($wInfo['saveAndClose'] ?? false) {
+                    // Go to DataHandler directly instead of FormEngine - Only when colPos must not be selected
+                    if (($wInfo['saveAndClose'] ?? false) && $onClickEvent !== '') {
                         $urlParams = [];
                         $id = StringUtility::getUniqueId('NEW');
                         parse_str($wInfo['params'], $urlParams);
