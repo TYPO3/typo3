@@ -59,11 +59,6 @@ class MaintenanceController extends AbstractController
     private $clearCacheService;
 
     /**
-     * @var LanguagePackService
-     */
-    private $languagePackService;
-
-    /**
      * @var Typo3tempFileService
      */
     private $typo3tempFileService;
@@ -86,7 +81,6 @@ class MaintenanceController extends AbstractController
     public function __construct(
         LateBootService $lateBootService,
         ClearCacheService $clearCacheService,
-        LanguagePackService $languagePackService,
         Typo3tempFileService $typo3tempFileService,
         ConfigurationManager $configurationManager,
         PasswordHashFactory $passwordHashFactory,
@@ -94,7 +88,6 @@ class MaintenanceController extends AbstractController
     ) {
         $this->lateBootService = $lateBootService;
         $this->clearCacheService = $clearCacheService;
-        $this->languagePackService = $languagePackService;
         $this->typo3tempFileService = $typo3tempFileService;
         $this->configurationManager = $configurationManager;
         $this->passwordHashFactory = $passwordHashFactory;
@@ -643,14 +636,15 @@ class MaintenanceController extends AbstractController
             'languagePacksUpdateIsoTimesToken' => $formProtection->generateToken('installTool', 'languagePacksUpdateIsoTimes'),
         ]);
         // This action needs TYPO3_CONF_VARS for full GeneralUtility::getUrl() config
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
-        $this->languagePackService->updateMirrorBaseUrl();
-        $extensions = $this->languagePackService->getExtensionLanguagePackDetails();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $languagePackService = $container->get(LanguagePackService::class);
+        $languagePackService->updateMirrorBaseUrl();
+        $extensions = $languagePackService->getExtensionLanguagePackDetails();
         return new JsonResponse([
             'success' => true,
-            'languages' => $this->languagePackService->getLanguageDetails(),
+            'languages' => $languagePackService->getLanguageDetails(),
             'extensions' => $extensions,
-            'activeLanguages' => $this->languagePackService->getActiveLanguages(),
+            'activeLanguages' => $languagePackService->getActiveLanguages(),
             'activeExtensions' => array_column($extensions, 'key'),
             'html' => $view->render(),
         ]);
@@ -796,10 +790,12 @@ class MaintenanceController extends AbstractController
      */
     public function languagePacksUpdatePackAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $iso = $request->getParsedBody()['install']['iso'];
         $key = $request->getParsedBody()['install']['extension'];
-        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+
+        $languagePackService = $container->get(LanguagePackService::class);
+
         return new JsonResponse([
             'success' => true,
             'packResult' => $languagePackService->languagePackDownload($key, $iso)

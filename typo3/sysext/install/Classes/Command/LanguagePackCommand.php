@@ -27,12 +27,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\LanguagePackService;
+use TYPO3\CMS\Install\Service\LateBootService;
 
 /**
  * Core function for updating language packs
  */
 class LanguagePackCommand extends Command
 {
+    /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    public function __construct(
+        string $name,
+        LateBootService $lateBootService
+    ) {
+        $this->lateBootService = $lateBootService;
+        parent::__construct($name);
+    }
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -71,7 +84,8 @@ class LanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $languagePackService = $container->get(LanguagePackService::class);
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');
         $skipExtensions = (array)$input->getOption('skip-extension');

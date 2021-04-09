@@ -241,7 +241,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\MaintenanceController(
             $container->get(Service\LateBootService::class),
             $container->get(Service\ClearCacheService::class),
-            $container->get(Service\LanguagePackService::class),
             $container->get(Service\Typo3tempFileService::class),
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
@@ -269,7 +268,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getLanguagePackCommand(ContainerInterface $container): Command\LanguagePackCommand
     {
-        return new Command\LanguagePackCommand('language:update');
+        return new Command\LanguagePackCommand(
+            'language:update',
+            $container->get(Service\LateBootService::class)
+        );
     }
 
     public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
