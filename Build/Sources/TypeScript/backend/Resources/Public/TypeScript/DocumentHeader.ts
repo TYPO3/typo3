@@ -42,11 +42,6 @@ class DocumentHeader {
         return;
       }
 
-      const documentHeaderSearchBar = document.querySelector(this.settings.selectors.moduleSearchBar);
-      if (documentHeaderSearchBar !== null) {
-        this.documentHeader.appendChild(documentHeaderSearchBar);
-      }
-
       const moduleElement = this.documentHeader.parentElement;
       new ThrottleEvent('scroll', this.scroll, 100).bindTo(moduleElement);
     });

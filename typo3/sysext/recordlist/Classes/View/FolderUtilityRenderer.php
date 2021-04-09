@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Recordlist\View;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -38,7 +36,6 @@ class FolderUtilityRenderer
      */
     protected $parameterProvider;
     protected UriBuilder $uriBuilder;
-    protected IconFactory $iconFactory;
 
     /**
      * @param LinkParameterProviderInterface $parameterProvider
@@ -47,7 +44,6 @@ class FolderUtilityRenderer
     {
         $this->parameterProvider = $parameterProvider;
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -225,31 +221,6 @@ class FolderUtilityRenderer
         }
 
         return $code;
-    }
-
-    /**
-     * Get the HTML data required for the file search field of the TYPO3 Element Browser.
-     *
-     * @param string $searchWord
-     * @return string HTML data required for the search field in the file list of the Element Browser
-     */
-    public function getFileSearchField(string $searchWord): string
-    {
-        $action = $this->parameterProvider->getScriptUrl()
-            . HttpUtility::buildQueryString($this->parameterProvider->getUrlParameters([]), '&');
-
-        $markup = [];
-        $markup[] = '<form method="post" action="' . htmlspecialchars($action) . '" class="pt-2 pb-3">';
-        $markup[] = '   <div class="input-group">';
-        $markup[] = '       <span class="input-group-text">';
-        $markup[] = $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
-        $markup[] = '       </span>';
-        $markup[] = '       <input class="form-control" type="search" name="searchWord" value="' . htmlspecialchars($searchWord) . '" placeholder="' . htmlspecialchars(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')
-        ) . '">';
-        $markup[] = '   </div>';
-        $markup[] = '</form>';
-        return implode(LF, $markup);
     }
 
     protected function getLanguageService(): LanguageService

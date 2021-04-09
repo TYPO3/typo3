@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
+use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
  * Browser for files
@@ -95,7 +96,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     {
         parent::initVariables();
         $this->expandFolder = $this->getRequest()->getParsedBody()['expandFolder'] ?? $this->getRequest()->getQueryParams()['expandFolder'] ?? null;
-        $this->searchWord = $this->getRequest()->getParsedBody()['searchWord'] ?? $this->getRequest()->getQueryParams()['searchWord'] ?? '';
+        $this->searchWord = $this->getRequest()->getParsedBody()['search_field'] ?? $this->getRequest()->getQueryParams()['search_field'] ?? '';
     }
 
     /**
@@ -320,8 +321,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             }
         }
 
+        $formUrl = $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&');
+        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+            ->setSearchWord($this->searchWord)
+            ->render($formUrl);
+
         $markup = [];
-        $markup[] = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this)->getFileSearchField($this->searchWord);
+        $markup[] = '<div class="pt-2 pb-3">' . $searchBox . '</div>';
         $markup[] = '<div id="filelist">';
         $markup[] = '   ' . $this->getBulkSelector();
         $markup[] = '     <table class="table table-sm table-responsive table-striped table-hover" id="typo3-filelist">';

@@ -2381,23 +2381,6 @@ class DatabaseRecordList
     }
 
     /**
-     * Creates the search box
-     *
-     * @return string HTML for the search box
-     */
-    public function getSearchBox(string $formUrl = null): string
-    {
-        return $this->getFluidTemplateObject('Search.html')
-            ->assignMultiple([
-                'formUrl' => $formUrl ?? $this->listURL('', '-1', 'pointer,search_field'),
-                'searchLevelsFromTSconfig' => (array)(BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.']['searchLevel.']['items.'] ?? []),
-                'selectedSearchLevel' => $this->searchLevels,
-                'searchString' => $this->searchString
-            ])
-            ->render();
-    }
-
-    /**
      * Setting the field names to display in extended list.
      * Sets the internal variable $this->setFields
      */

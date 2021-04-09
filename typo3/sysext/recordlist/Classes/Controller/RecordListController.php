@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
+use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
@@ -260,11 +261,12 @@ class RecordListController
         $body .= $additionalRecordListEvent->getAdditionalContentAbove();
         $this->moduleTemplate->setTitle($title);
 
+        $beforeOutput = '';
         $output = '';
         // Show the selector to add page translations and the list of translations of the current page
         // but only when in "default" mode
         if ($this->id && !$dblist->csvOutput && !$search_field && !$cmd && !$table) {
-            $output .= $this->languageSelector($request->getAttribute('normalizedParams')->getRequestUri());
+            $beforeOutput .= $this->languageSelector($request->getAttribute('normalizedParams')->getRequestUri());
             $pageTranslationsDatabaseRecordList = clone $dblist;
             $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
             $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
@@ -273,6 +275,11 @@ class RecordListController
             $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
             $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
             $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
+        }
+
+        // search box toolbar
+        if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableOutput || !empty($search_field))) {
+            $beforeOutput .= $this->renderSearchBox($dblist, $search_field, $search_levels);
         }
 
         if (!empty($tableOutput)) {
@@ -301,6 +308,9 @@ class RecordListController
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
 
+        if ($beforeOutput) {
+            $body .= '<div class="row">' . $beforeOutput . '</div>';
+        }
         $body .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">';
         $body .= $output;
         $body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
@@ -357,34 +367,12 @@ class RecordListController
             $dblist->listURL(),
             $MOD_SETTINGS
         );
-        // search box toolbar
-        $content = '';
-        if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableOutput || !empty($dblist->searchString))) {
-            $searchBoxVisible = !empty($dblist->searchString);
-            $searchBox = $dblist->getSearchBox();
-            $content .= '<div class="module-docheader-bar mb-0 t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="' . ($searchBoxVisible ? 'display: block;' : 'display: none;') . '"><div class="panel panel-default"><div class="p-2 ps-4">' . $searchBox . '</div></div></div>';
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-
-            $searchButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton();
-            $searchButton
-                ->setHref('#')
-                ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
-                ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
-            $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton(
-                $searchButton,
-                ButtonBar::BUTTON_POSITION_LEFT,
-                90
-            );
-        }
 
         if ($pageinfo) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
 
-        // Build the <body> for the module
-        $content .= $body;
-        $this->moduleTemplate->setContent($content);
+        $this->moduleTemplate->setContent($body);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -422,6 +410,31 @@ class RecordListController
         // Save the clipboard content
         $clipboard->endClipboard();
         return $clipboard;
+    }
+
+    protected function renderSearchBox(DatabaseRecordList $dblist, string $searchWord, int $searchLevels): string
+    {
+        $searchBoxVisible = !empty($dblist->searchString);
+        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+            ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
+            ->setSearchWord($searchWord)
+            ->setSearchLevel($searchLevels)
+            ->render($dblist->listURL('', '-1', 'pointer,search_field'));
+
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $searchButton = $buttonBar->makeLinkButton();
+        $searchButton
+            ->setHref('#')
+            ->setClasses('t3js-toggle-search-toolbox')
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+            ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
+        $buttonBar->addButton(
+            $searchButton,
+            ButtonBar::BUTTON_POSITION_LEFT,
+            90
+        );
+        return '<div class="col-6" style="' . ($searchBoxVisible ?: 'display: none') . '" id="db_list-searchbox-toolbar">' . $searchBox . '</div>';
     }
 
     /**
@@ -641,11 +654,10 @@ class RecordListController
                 $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
 
-            return '<div class="form-inline form-inline-spaced">'
-                . '<div class="form-group">'
+            return '<div class="col-auto">'
                 . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
                 . $output
-                . '</select></div></div>';
+                . '</select></div>';
         }
         return '';
     }

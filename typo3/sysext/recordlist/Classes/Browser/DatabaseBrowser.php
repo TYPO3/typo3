@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
+use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
  * Showing a page tree and allows you to browse for records
@@ -38,6 +39,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      * @var int|null
      */
     protected $expandPage;
+    protected array $modTSconfig = [];
 
     protected function initialize()
     {
@@ -75,6 +77,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     public function render()
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $this->modTSconfig = BackendUtility::getPagesTSconfig((int)$this->expandPage)['mod.']['web_list.'] ?? [];
 
         $this->setTemporaryDbMounts();
         [, , , $allowedTables] = explode('|', $this->bparams);
@@ -217,18 +220,21 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $dbList->setRelatingTableAndField($relatingTableName, $relatingFieldName);
         }
 
+        $selectedTable = GeneralUtility::_GP('table');
+        $searchWord = (string)GeneralUtility::_GP('search_field');
+        $searchLevels = (int)GeneralUtility::_GP('search_levels');
         $dbList->start(
             $this->expandPage,
-            GeneralUtility::_GP('table'),
+            $selectedTable,
             MathUtility::forceIntegerInRange(GeneralUtility::_GP('pointer'), 0, 100000),
-            GeneralUtility::_GP('search_field'),
-            GeneralUtility::_GP('search_levels')
+            $searchWord,
+            $searchLevels
         );
 
         $dbList->setDispFields();
         $tableList = $dbList->generateList();
 
-        $out .= '<div class="p-2 pb-3 border">' . $dbList->getSearchBox() . '</div>';
+        $out .= $this->renderSearchBox($dbList, $searchWord, $searchLevels);
 
         // Add the HTML for the record list to output variable:
         $out .= $tableList;
@@ -240,6 +246,16 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         }
 
         return $out;
+    }
+
+    protected function renderSearchBox(ElementBrowserRecordList $dblist, string $searchWord, int $searchLevels): string
+    {
+        $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+            ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
+            ->setSearchWord($searchWord)
+            ->setSearchLevel($searchLevels)
+            ->render($dblist->listURL('', '-1', 'pointer,search_field'));
+        return '<div class="pt-2">' . $searchBox . '</div>';
     }
 
     /**

@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
-use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
  * Script Class for Web > Layout module
@@ -592,7 +591,6 @@ class PageLayoutController
             // All other listings
             $content .= $this->renderContent();
             $content .= '</form>';
-            $content .= $this->searchContent;
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
 
@@ -694,17 +692,7 @@ class PageLayoutController
             $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         $content .= $tableOutput;
-        // Making search form:
-        $this->searchContent = $this->getSearchBox();
-        if ($this->searchContent) {
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-            $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
-                ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
-                ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
-                ->setHref('#');
-            $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-        }
+
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
             $params = [];
@@ -1034,24 +1022,6 @@ class PageLayoutController
     protected function getTargetPageIfVisible(array $targetPage): array
     {
         return !(bool)($targetPage['hidden'] ?? false) ? $targetPage : [];
-    }
-
-    /**
-     * Creates the search box
-     *
-     * @return string HTML for the search box
-     */
-    protected function getSearchBox(): string
-    {
-        if (!$this->getBackendUser()->check('modules', 'web_list')) {
-            return '';
-        }
-
-        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dbList->start($this->id, '', '');
-        $formUrl = $this->uriBuilder->buildUriFromRoute('web_list', ['id' => $this->id]);
-
-        return '<div class="module-docheader-bar t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: none;"><div class="panel panel-default"><div class="p-2 ps-4">' . $dbList->getSearchBox((string)$formUrl) . '</div></div></div>';
     }
 
     /**
