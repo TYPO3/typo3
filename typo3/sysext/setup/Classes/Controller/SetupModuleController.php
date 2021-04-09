@@ -340,21 +340,6 @@ class SetupModuleController
     }
 
     /**
-     * Generate necessary JavaScript
-     *
-     * @return string
-     */
-    protected function getJavaScript()
-    {
-        $javaScript = '';
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'] ?? [] as $function) {
-            $params = [];
-            $javaScript .= GeneralUtility::callUserFunction($function, $params, $this);
-        }
-        return $javaScript;
-    }
-
-    /**
      * Injects the request object, checks if data should be saved, and prepares a HTML page
      *
      * @param ServerRequestInterface $request the current request
@@ -378,7 +363,7 @@ class SetupModuleController
         }
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->content .= '<form action="' . (string)$uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
+        $this->content .= '<form action="' . $uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         $this->content .= '<div id="user-setup-wrapper">';
         $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'));
         $this->addFlashMessages();
@@ -396,7 +381,7 @@ class SetupModuleController
         // End of wrapper div
         $this->content .= '</div>';
         // Setting up the buttons and markers for docheader
-        $this->getButtons($request->getQueryParams()['route']);
+        $this->getButtons();
         // Build the <body> for the module
         // Renders the module page
         $this->moduleTemplate->setContent($this->content);
@@ -415,7 +400,7 @@ class SetupModuleController
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons(string $route)
+    protected function getButtons(): void
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
@@ -644,7 +629,7 @@ class SetupModuleController
                     }
                     $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
                             'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
-                            ' value="' . (int)$avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
+                            ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
                     $html .= '<div class="btn-group">';
                     $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
