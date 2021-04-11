@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -429,7 +430,7 @@ class RemoteServer
             ->where(
                 $queryBuilder->expr()->eq(
                     'action',
-                    $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(DatabaseAction::UPDATE, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'details_nr',
