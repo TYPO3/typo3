@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Core\Utility;
 
-use Symfony\Polyfill\Intl\Idn\Idn;
-
 /**
  * HTTP Utility class
  */
@@ -180,31 +178,5 @@ class HttpUtility
         $prependCharacter = $prependCharacter === '?' || $prependCharacter === '&' ? $prependCharacter : '';
 
         return $queryString && $prependCharacter ? $prependCharacter . $queryString : $queryString;
-    }
-
-    /**
-     * Compatibility layer for PHP versions running ICU 4.4, as the constant INTL_IDNA_VARIANT_UTS46
-     * is only available as of ICU 4.6.
-     *
-     * Please note: Once PHP 7.4 is the minimum requirement, this method will vanish without further notice
-     * as it is recommended to use the native method instead, when working against a clean environment.
-     *
-     * @param string $domain the domain name to convert Punicode to ASCII.
-     * @return string|bool
-     */
-    public static function idn_to_ascii(string $domain)
-    {
-        if (defined('INTL_IDNA_VARIANT_UTS46') && !defined('TYPO3_IDN_TO_ASCII_USE_COMPAT')) {
-            return idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
-        }
-        // This is done due to some heavy old systems where native functionality is there, but does not support UTS46 yet.
-        if (!defined('TYPO3_IDN_TO_ASCII_USE_COMPAT')) {
-            define('TYPO3_IDN_TO_ASCII_USE_COMPAT', true);
-        }
-        if (!defined('INTL_IDNA_VARIANT_UTS46')) {
-            define('INTL_IDNA_VARIANT_UTS46', 1);
-        }
-        $result = [];
-        return Idn::idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $result);
     }
 }

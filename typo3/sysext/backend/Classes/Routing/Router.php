@@ -23,7 +23,6 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Implementation of a class for adding routes, collecting throughout the Bootstrap
@@ -123,7 +122,7 @@ class Router implements SingletonInterface
         $context = new RequestContext(
             $path,
             $request->getMethod(),
-            (string)HttpUtility::idn_to_ascii($request->getUri()->getHost()),
+            (string)idn_to_ascii($request->getUri()->getHost()),
             $request->getUri()->getScheme()
         );
         try {

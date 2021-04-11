@@ -62,7 +62,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -2609,7 +2608,7 @@ class DataHandler implements LoggerAwareInterface
                     break;
                 case 'domainname':
                     if (!preg_match('/^[a-z0-9.\\-]*$/i', $value)) {
-                        $value = (string)HttpUtility::idn_to_ascii($value);
+                        $value = (string)idn_to_ascii($value);
                     }
                     break;
                 case 'email':

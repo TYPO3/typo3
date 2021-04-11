@@ -297,7 +297,7 @@ class ExternalLinktype extends AbstractLinktype
         $parts = parse_url($url);
         if ($parts['host'] ?? false) {
             try {
-                $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
+                $newDomain = (string)idn_to_ascii($parts['host']);
                 if (strcmp($parts['host'], $newDomain) !== 0) {
                     $parts['host'] = $newDomain;
                     $url = HttpUtility::buildUrl($parts);
