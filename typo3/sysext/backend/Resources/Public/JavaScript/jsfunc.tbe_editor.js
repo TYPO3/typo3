@@ -58,6 +58,8 @@ var TBE_EDITOR = {
   },
   fieldChanged: function(table, uid, field, el) {
     var theField = 'data[' + table + '][' + uid + '][' + field + ']';
+    console.warn('The method `TBE_EDITOR.fieldChanged()` is deprecated, consider dispatching the `change` event instead: document.querySelector(\'[name="' + theField + '"]\').dispatchEvent(new Event(\'change\', {bubbles: true, cancelable: true}));');
+
     TBE_EDITOR.isChanged = 1;
 
     // modify the "field has changed" info by adding a class to the container element (based on palette or main field)

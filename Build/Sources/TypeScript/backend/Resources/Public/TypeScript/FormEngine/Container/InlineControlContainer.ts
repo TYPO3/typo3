@@ -423,7 +423,7 @@ class InlineControlContainer {
       if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
         hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
         hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
-        TBE_EDITOR.fieldChanged(this.container.dataset.localTable, this.container.dataset.uid, this.container.dataset.localField, hiddenFieldName);
+        FormEngineValidation.markFieldAsChanged(hiddenValueCheckBox);
       }
 
       const hiddenClass = 't3-form-field-container-inline-hidden';
@@ -674,8 +674,6 @@ class InlineControlContainer {
     FormEngine.reinitialize();
     FormEngineValidation.initializeInputFields();
     FormEngineValidation.validate(this.container);
-
-    TBE_EDITOR.fieldChanged(this.container.dataset.localTable, this.container.dataset.uid, this.container.dataset.localField, formField);
   }
 
   /**

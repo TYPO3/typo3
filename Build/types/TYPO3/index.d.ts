@@ -85,10 +85,6 @@ declare namespace TYPO3 {
   }
 }
 
-declare namespace TBE_EDITOR {
-  export let fieldChanged: Function;
-}
-
 /**
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */

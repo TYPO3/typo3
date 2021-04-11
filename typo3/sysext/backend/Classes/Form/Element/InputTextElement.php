@@ -213,7 +213,6 @@ class InputTextElement extends AbstractFormElement
                 $valueType = 'double';
                 $itemValue = (double)$itemValue;
             }
-            $callbackParams = [ $table, $row['uid'], $fieldName, $parameterArray['itemFormElName'] ];
             $rangeAttributes = [
                 'id' => $id,
                 'type' => 'range',
@@ -227,7 +226,6 @@ class InputTextElement extends AbstractFormElement
                 'data-slider-id' => $id,
                 'data-slider-value-type' => $valueType,
                 'data-slider-item-name' => (string)($parameterArray['itemFormElName'] ?? ''),
-                'data-slider-callback-params' => (string)json_encode($callbackParams),
             ];
             $valueSliderHtml[] = '<div class="slider-wrapper">';
             $valueSliderHtml[] = '<input ' . GeneralUtility::implodeAttributes($rangeAttributes, true) . '>';

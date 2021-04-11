@@ -23,10 +23,9 @@ class ValueSlider {
    */
   private static updateValue(element: HTMLInputElement): void {
     const foreignField = document.querySelector(`[data-formengine-input-name="${element.dataset.sliderItemName}"]`) as HTMLInputElement;
-    const sliderCallbackParams = JSON.parse(element.dataset.sliderCallbackParams);
 
     foreignField.value = element.value;
-    TBE_EDITOR.fieldChanged.apply(TBE_EDITOR, sliderCallbackParams);
+    foreignField.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
   }
 
   /**
