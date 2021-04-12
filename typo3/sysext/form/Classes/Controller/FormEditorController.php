@@ -72,7 +72,7 @@ class FormEditorController extends AbstractBackendController
     public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null)
     {
         $this->registerDocheaderButtons();
-        $this->view->getModuleTemplate()->setModuleName($this->request->getPluginName() . '_' . $this->request->getControllerName());
+        $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {

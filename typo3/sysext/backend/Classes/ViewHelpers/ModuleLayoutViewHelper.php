@@ -55,6 +55,17 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    /**
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('name', 'string', 'Name of the module, defaults to the current plugin name, if available', false);
+    }
+
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
@@ -76,6 +87,9 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
 
         $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $moduleTemplate->setFlashMessageQueue($flashMessageQueue);
+        if (($arguments['name'] ?? null) !== null) {
+            $moduleTemplate->setModuleName($arguments['name']);
+        }
 
         $viewHelperVariableContainer->add(self::class, ModuleTemplate::class, $moduleTemplate);
         $moduleTemplate->setContent($renderChildrenClosure());

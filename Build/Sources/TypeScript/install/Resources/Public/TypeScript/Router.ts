@@ -101,7 +101,7 @@ class Router {
     }
   }
 
-  public getUrl(action?: string, controller?: string): string {
+  public getUrl(action?: string, controller?: string, query?: string): string {
     const context = $(this.selectorBody).data('context');
     let url = location.href;
     url = url.replace(location.search, '');
@@ -114,6 +114,9 @@ class Router {
     }
     if (action !== undefined) {
       url = url + '&install[action]=' + action;
+    }
+    if (query !== undefined) {
+      url = url + '&' + query;
     }
     return url;
   }
@@ -183,8 +186,9 @@ class Router {
 
   public loadMainLayout(): void {
     const $outputContainer = $(this.selectorBody);
+    const controller = $outputContainer.data('controller');
     this.updateLoadingInfo('Loading main layout');
-    (new AjaxRequest(this.getUrl('mainLayout', 'layout')))
+    (new AjaxRequest(this.getUrl('mainLayout', 'layout', 'install[module]=' + controller)))
       .get({cache: 'no-cache'})
       .then(
         async (response: AjaxResponse): Promise<any> => {
@@ -193,7 +197,6 @@ class Router {
             $outputContainer.empty().append(data.html);
             // Mark main module as active in standalone
             if ($(this.selectorBody).data('context') !== 'backend') {
-              const controller = $outputContainer.data('controller');
               $outputContainer.find('.t3js-modulemenu-action[data-controller="' + controller + '"]').addClass('modulemenu-action-active');
             }
             this.loadCards();

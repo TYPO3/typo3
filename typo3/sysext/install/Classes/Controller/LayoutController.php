@@ -90,6 +90,7 @@ class LayoutController extends AbstractController
     public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Layout/MainLayout.html');
+        $view->assign('moduleName', 'tools_tools' . ($request->getQueryParams()['install']['module'] ?? 'layout'));
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),

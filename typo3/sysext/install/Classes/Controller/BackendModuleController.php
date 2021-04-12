@@ -119,6 +119,7 @@ class BackendModuleController
                 'flags' => $flags | self::FLAG_CONFIRMATION_REQUEST,
             ]),
             'cancelUri' => '',
+            'targetController' => $targetController,
         ]);
         return new HtmlResponse($view->render());
     }
