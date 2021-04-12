@@ -88,6 +88,9 @@
 			<trans-unit id="runMassAction.init" resname="runMassAction.init">
 				<source>init</source>
 			</trans-unit>
+			<trans-unit id="tooltip.publish" resname="tooltip.publish">
+				<source>Publish version of record</source>
+			</trans-unit>
 			<trans-unit id="tooltip.publishAll" resname="tooltip.publishAll">
 				<source>Really publish entire workspace?</source>
 			</trans-unit>
