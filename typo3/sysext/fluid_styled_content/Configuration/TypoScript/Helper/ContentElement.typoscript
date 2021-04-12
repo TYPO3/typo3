@@ -19,6 +19,7 @@ lib.contentElement {
         defaultHeaderType = {$styles.content.defaultHeaderType}
         media {
             lazyLoading = {$styles.content.image.lazyLoading}
+            imageDecoding = {$styles.content.image.imageDecoding}
             popup {
                 bodyTag = <body style="margin:0; background:#fff;">
                 wrap = <a href="javascript:close();"> | </a>

@@ -88,6 +88,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
         $this->registerArgument('fileExtension', 'string', 'Custom file extension to use for images');
         $this->registerArgument('loading', 'string', 'Native lazy-loading for images property. Can be "lazy", "eager" or "auto". Used on image files only.');
+        $this->registerArgument('decoding', 'string', 'Provides an image decoding hint to the browser. Can be "sync", "async" or "auto"', false);
     }
 
     /**
@@ -165,6 +166,9 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('height', $processedImage->getProperty('height'));
         if (in_array($this->arguments['loading'] ?? '', ['lazy', 'eager', 'auto'], true)) {
             $this->tag->addAttribute('loading', $this->arguments['loading']);
+        }
+        if (in_array($this->arguments['decoding'] ?? '', ['sync', 'async', 'auto'], true)) {
+            $this->tag->addAttribute('decoding', $this->arguments['decoding']);
         }
 
         $alt = $image->getProperty('alternative');

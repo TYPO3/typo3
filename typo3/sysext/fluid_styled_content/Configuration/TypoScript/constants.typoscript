@@ -20,7 +20,10 @@ styles.content {
     # cat=content/cImage/a0; type=options[lazy,eager,auto,]; label=Default settings for browser-native image lazy loading: Can be "lazy" (browsers could choose to load images later), "eager" (load images right away) or "auto" (browser will determine whether the image should be lazy loaded or not)
     image.lazyLoading = lazy
 
-    textmedia {
+    # cat=content/cImage/a1; type=options[sync,async,auto,]; label=Default settings for an image decoding hint to the browser: Can be "sync" (synchronously for atomic presentation with other content), "async" (asynchronously to avoid delaying presentation of other content), "auto" (no preference in decoding mode) or an empty value to omit the usage of the decoding attribute (same as "auto")
+    image.imageDecoding =
+
+  textmedia {
         # cat=content/cTextmedia/b1; type=int+; label= Max Image/Media Width: This indicates that maximum number of pixels (width) a block of media elements inserted as content is allowed to consume
         maxW = 600
         # cat=content/cTextmedia/b2; type=int+; label= Max Image/Media Width (Text): Same as above, but this is the maximum width when text is wrapped around an block of media elements. Default is 50% of the normal Max Media Item Width
