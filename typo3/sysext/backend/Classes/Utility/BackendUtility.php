@@ -471,11 +471,7 @@ class BackendUtility
                 $statement->execute();
             }
             $row = $statement->fetch();
-            if (method_exists($statement, 'free')) {
-                $statement->free();
-            } else {
-                $statement->closeCursor();
-            }
+            $statement->closeCursor();
 
             if ($row) {
                 $newLocation = false;
