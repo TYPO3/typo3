@@ -22,11 +22,16 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Controller to provide a multi-factor authentication endpoint
@@ -36,6 +41,21 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 class MfaController extends AbstractMfaController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    protected AuthenticationStyleInformation $authenticationStyleInformation;
+    protected PageRenderer $pageRenderer;
+
+    public function __construct(
+        UriBuilder $uriBuilder,
+        MfaProviderRegistry $mfaProviderRegistry,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        AuthenticationStyleInformation $authenticationStyleInformation,
+        PageRenderer $pageRenderer
+    ) {
+        parent::__construct($uriBuilder, $mfaProviderRegistry, $moduleTemplateFactory);
+        $this->authenticationStyleInformation = $authenticationStyleInformation;
+        $this->pageRenderer = $pageRenderer;
+    }
 
     /**
      * Main entry point, checking prerequisite, initializing and setting
@@ -87,9 +107,11 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
             'provider' => $mfaProvider,
             'alternativeProviders' => $this->getAlternativeProviders($mfaProvider),
             'isLocked' => $mfaProvider->isLocked($propertyManager),
-            'providerContent' => $providerResponse->getBody()
+            'providerContent' => $providerResponse->getBody(),
+            'footerNote' => $this->authenticationStyleInformation->getFooterNote()
         ]);
         $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $this->addCustomAuthenticationFormStyles();
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -187,5 +209,15 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
             }
         }
         return null;
+    }
+
+    protected function addCustomAuthenticationFormStyles(): void
+    {
+        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles);
+        }
+        if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles);
+        }
     }
 }

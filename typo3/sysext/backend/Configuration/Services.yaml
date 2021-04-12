@@ -49,6 +49,9 @@ services:
   TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository:
     public: true
 
+  TYPO3\CMS\Backend\View\AuthenticationStyleInformation:
+    public: true
+
   TYPO3\CMS\Backend\Controller\BackendController:
     tags: ['backend.controller']
 
