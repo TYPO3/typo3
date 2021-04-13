@@ -36,25 +36,25 @@ return [
     'password_forget' => [
         'path' => '/login/password-reset/forget',
         'access' => 'public',
-        'target' => Controller\LoginController::class . '::forgetPasswordFormAction'
+        'target' => Controller\ResetPasswordController::class . '::forgetPasswordFormAction'
     ],
     // Send out the password reset email
     'password_forget_initiate_reset' => [
         'path' => '/login/password-reset/initiate-reset',
         'access' => 'public',
         'methods' => ['POST'],
-        'target' => Controller\LoginController::class . '::initiatePasswordResetAction'
+        'target' => Controller\ResetPasswordController::class . '::initiatePasswordResetAction'
     ],
     'password_reset_validate' => [
         'path' => '/login/password-reset/validate',
         'access' => 'public',
-        'target' => Controller\LoginController::class . '::passwordResetAction'
+        'target' => Controller\ResetPasswordController::class . '::passwordResetAction'
     ],
     'password_reset_finish' => [
         'path' => '/login/password-reset/finish',
         'access' => 'public',
         'methods' => ['POST'],
-        'target' => Controller\LoginController::class . '::passwordResetFinishAction'
+        'target' => Controller\ResetPasswordController::class . '::passwordResetFinishAction'
     ],
 
     // Register login frameset

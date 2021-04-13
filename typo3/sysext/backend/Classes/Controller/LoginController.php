@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -158,122 +157,6 @@ class LoginController
     }
 
     /**
-     * Show a form to enter an email address to request an email.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
-    {
-        // Only allow to execute this if not logged in as a user right now
-        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            return $this->formAction($request);
-        }
-        $this->init($request);
-        // Enable the switch in the template
-        $this->view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
-        $this->view->setTemplate('Login/ForgetPasswordForm');
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Validate the email address.
-     *
-     * Restricted to POST method in Configuration/Backend/Routes.php
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
-    {
-        // Only allow to execute this if not logged in as a user right now
-        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            return $this->formAction($request);
-        }
-        $this->init($request);
-        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
-        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
-        $this->view->setTemplate('Login/ForgetPasswordForm');
-
-        $emailAddress = $request->getParsedBody()['email'] ?? '';
-        $this->view->assign('email', $emailAddress);
-        if (!GeneralUtility::validEmail($emailAddress)) {
-            $this->view->assign('invalidEmail', true);
-        } else {
-            $passwordReset->initiateReset($request, $this->context, $emailAddress);
-            $this->view->assign('resetInitiated', true);
-        }
-        $this->moduleTemplate->setContent($this->view->render());
-        // Prevent time based information disclosure by waiting a random time
-        // before sending a response. This prevents that the reponse time
-        // can be an indicator if the used email exists or not.
-        // wait a random time between 200 milliseconds and 3 seconds.
-        usleep(random_int(200000, 3000000));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Validates the link and show a form to enter the new password.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function passwordResetAction(ServerRequestInterface $request): ResponseInterface
-    {
-        // Only allow to execute this if not logged in as a user right now
-        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            return $this->formAction($request);
-        }
-        $this->init($request);
-        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
-        $this->view->setTemplate('Login/ResetPasswordForm');
-        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
-        if (!$passwordReset->isValidResetTokenFromRequest($request)) {
-            $this->view->assign('invalidToken', true);
-        }
-        $this->view->assign('token', $request->getQueryParams()['t'] ?? '');
-        $this->view->assign('identity', $request->getQueryParams()['i'] ?? '');
-        $this->view->assign('expirationDate', $request->getQueryParams()['e'] ?? '');
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Updates the password in the database.
-     *
-     * Restricted to POST method in Configuration/Backend/Routes.php
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
-    {
-        // Only allow to execute this if not logged in as a user right now
-        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
-            return $this->formAction($request);
-        }
-        $passwordReset = GeneralUtility::makeInstance(PasswordReset::class);
-        // Token is invalid
-        if (!$passwordReset->isValidResetTokenFromRequest($request)) {
-            return $this->passwordResetAction($request);
-        }
-        $this->init($request);
-        $this->view->setTemplate('Login/ResetPasswordForm');
-        $this->view->assign('enablePasswordReset', $passwordReset->isEnabled());
-        $this->view->assign('token', $request->getQueryParams()['t'] ?? '');
-        $this->view->assign('identity', $request->getQueryParams()['i'] ?? '');
-        $this->view->assign('expirationDate', $request->getQueryParams()['e'] ?? '');
-        if ($passwordReset->resetPassword($request, $this->context)) {
-            $this->view->assign('resetExecuted', true);
-        } else {
-            $this->view->assign('error', true);
-        }
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
      * This can be called by single login providers, they receive an instance of $this
      *
      * @return string
@@ -397,6 +280,11 @@ class LoginController
             'hasLoginError' => $this->isLoginInProgress($request),
             'action' => $action,
             'formActionUrl' => $formActionUrl,
+            'forgetPasswordUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest(
+                'password_forget',
+                ['loginProvider' => $this->loginProviderIdentifier],
+                $request
+            ),
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
             'loginProviders' => $this->loginProviders,

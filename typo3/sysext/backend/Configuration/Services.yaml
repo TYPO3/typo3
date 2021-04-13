@@ -73,6 +73,9 @@ services:
   TYPO3\CMS\Backend\Controller\LoginController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\ResetPasswordController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\HelpController:
     tags: ['backend.controller']
 
