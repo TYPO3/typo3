@@ -149,11 +149,11 @@ $login-container-padding-horizontal: 2.5em;
 
     .card-body {
         padding: 1.75em $login-container-padding-horizontal 2.5em;
-        border-bottom: 3px solid $login-highlight;
     }
 
     .card-footer {
         padding: 1.5em $login-container-padding-horizontal;
+        border-top: 3px solid $login-highlight;
         border-bottom-left-radius: $login-border-radius - 1;
         border-bottom-right-radius: $login-border-radius - 1;
     }
@@ -164,6 +164,14 @@ $login-container-padding-horizontal: 2.5em;
 
     @media (max-width: $screen-xs-max) {
         margin-bottom: 0;
+    }
+
+    &.card-mfa {
+        .card-heading {
+            h2 {
+                margin: 0.75rem 0;
+            }
+        }
     }
 }
 

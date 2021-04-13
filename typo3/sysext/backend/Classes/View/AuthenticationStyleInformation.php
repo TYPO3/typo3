@@ -58,7 +58,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
         return '
             .typo3-login-carousel-control.right,
             .typo3-login-carousel-control.left,
-            .panel-login { border: 0; }
+            .card-login { border: 0; }
             .typo3-login { background-image: url("' . $backgroundImageUri . '"); }
             .typo3-login-footnote { background-color: #000000; color: #ffffff; opacity: 0.5; }
         ';
@@ -81,7 +81,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
             .btn-login:hover, .btn-login:focus, .btn-login:active,
             .btn-login:active:hover, .btn-login:active:focus,
             .btn-login { background-color: ' . $highlightColor . '; }
-            .panel-login .panel-body { border-color: ' . $highlightColor . '; }
+            .card-login .card-footer { border-color: ' . $highlightColor . '; }
         ';
     }
 
