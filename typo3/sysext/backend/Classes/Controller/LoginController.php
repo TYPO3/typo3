@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
+use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -69,14 +70,7 @@ class LoginController
      *
      * @var string
      */
-    protected $loginProviderIdentifier;
-
-    /**
-     * List of registered and sorted login providers
-     *
-     * @var array
-     */
-    protected $loginProviders = [];
+    protected string $loginProviderIdentifier = '';
 
     /**
      * Login-refresh bool; The backend will call this script
@@ -111,6 +105,7 @@ class LoginController
     protected Features $features;
     protected Context $context;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected LoginProviderResolver $loginProviderResolver;
 
     public function __construct(
         Typo3Information $typo3Information,
@@ -119,7 +114,8 @@ class LoginController
         UriBuilder $uriBuilder,
         Features $features,
         Context $context,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        LoginProviderResolver $loginProviderResolver
     ) {
         $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
@@ -128,6 +124,7 @@ class LoginController
         $this->features = $features;
         $this->context = $context;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->loginProviderResolver = $loginProviderResolver;
     }
 
     /**
@@ -140,7 +137,8 @@ class LoginController
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
-        return new HtmlResponse($this->createLoginLogoutForm($request));
+        $response = new HtmlResponse($this->createLoginLogoutForm($request));
+        return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
     }
 
     /**
@@ -153,7 +151,36 @@ class LoginController
     {
         $this->init($request);
         $this->loginRefresh = true;
-        return new HtmlResponse($this->createLoginLogoutForm($request));
+        $response = new HtmlResponse($this->createLoginLogoutForm($request));
+        return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
+    }
+
+    /**
+     * If a login provider was chosen in the previous request, which is not the default provider, it is stored in a
+     * Cookie and appended to the HTTP Response.
+     *
+     * @param NormalizedParams $normalizedParams
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
+    protected function appendLoginProviderCookie(NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
+    {
+        if ($this->loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier()) {
+            return $response;
+        }
+        // Use the secure option when the current request is served by a secure connection
+        $cookie = new Cookie(
+            'be_lastLoginProvider',
+            $this->loginProviderIdentifier,
+            $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
+            $normalizedParams->getSitePath() . TYPO3_mainDir,
+            '',
+            $normalizedParams->isHttps(),
+            true,
+            false,
+            Cookie::SAMESITE_STRICT
+        );
+        return $response->withAddedHeader('Set-Cookie', $cookie->__toString());
     }
 
     /**
@@ -177,10 +204,9 @@ class LoginController
         $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $this->validateAndSortLoginProviders();
 
         $this->redirectUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect_url'] ?? $queryParams['redirect_url'] ?? null);
-        $this->loginProviderIdentifier = $this->detectLoginProvider($request);
+        $this->loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
 
         $this->loginRefresh = (bool)($parsedBody['loginRefresh'] ?? $queryParams['loginRefresh'] ?? false);
         // Value of "Login" button. If set, the login button was pressed.
@@ -287,7 +313,7 @@ class LoginController
             ),
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
-            'loginProviders' => $this->loginProviders,
+            'loginProviders' => $this->loginProviderResolver->getLoginProviders(),
             'loginNewsItems' => $this->getSystemNews(),
         ]);
 
@@ -301,8 +327,9 @@ class LoginController
 
     protected function renderHtmlViaLoginProvider(): void
     {
+        $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($this->loginProviderIdentifier);
         /** @var LoginProviderInterface $loginProvider */
-        $loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
+        $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
         $this->eventDispatcher->dispatch(
             new ModifyPageLayoutOnLoginProviderSelectionEvent(
                 $this,
@@ -469,82 +496,6 @@ class LoginController
     protected function redirectToUrl(): void
     {
         throw new PropagateResponseException(new RedirectResponse($this->redirectToURL, 303), 1607271511);
-    }
-
-    /**
-     * Validates the registered login providers
-     *
-     * @throws \RuntimeException
-     */
-    protected function validateAndSortLoginProviders()
-    {
-        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] ?? [];
-        if (empty($providers) || !is_array($providers)) {
-            throw new \RuntimeException('No login providers are registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'loginProviders\'].', 1433417281);
-        }
-        foreach ($providers as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException('Missing configuration for login provider "' . $identifier . '".', 1433416043);
-            }
-            if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of($configuration['provider'], LoginProviderInterface::class)) {
-                throw new \RuntimeException('The login provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . LoginProviderInterface::class . '".', 1460977275);
-            }
-            if (empty($configuration['label'])) {
-                throw new \RuntimeException('Missing label definition for login provider "' . $identifier . '".', 1433416044);
-            }
-            if (empty($configuration['icon-class'])) {
-                throw new \RuntimeException('Missing icon definition for login provider "' . $identifier . '".', 1433416045);
-            }
-            if (!isset($configuration['sorting'])) {
-                throw new \RuntimeException('Missing sorting definition for login provider "' . $identifier . '".', 1433416046);
-            }
-        }
-        // sort providers
-        uasort($providers, function ($a, $b) {
-            return $b['sorting'] - $a['sorting'];
-        });
-        $this->loginProviders = $providers;
-    }
-
-    /**
-     * Detect the login provider, get from request or choose the
-     * first one as default
-     *
-     * @param ServerRequestInterface $request
-     * @return string
-     */
-    protected function detectLoginProvider(ServerRequestInterface $request): string
-    {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $loginProvider = $parsedBody['loginProvider'] ?? $queryParams['loginProvider'] ?? '';
-        if ((empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) && !empty($_COOKIE['be_lastLoginProvider'])) {
-            $loginProvider = $_COOKIE['be_lastLoginProvider'];
-        }
-        reset($this->loginProviders);
-        $primaryLoginProvider = (string)key($this->loginProviders);
-        if (empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) {
-            $loginProvider = $primaryLoginProvider;
-        }
-
-        if ($loginProvider !== $primaryLoginProvider) {
-            // Use the secure option when the current request is served by a secure connection
-            /** @var NormalizedParams $normalizedParams */
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $cookie = new Cookie(
-                'be_lastLoginProvider',
-                $loginProvider,
-                $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
-                $normalizedParams->getSitePath() . TYPO3_mainDir,
-                '',
-                $normalizedParams->isHttps(),
-                true,
-                false,
-                Cookie::SAMESITE_STRICT
-            );
-            header('Set-Cookie: ' . $cookie->__toString(), false);
-        }
-        return (string)$loginProvider;
     }
 
     /**
