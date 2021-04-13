@@ -197,6 +197,11 @@ table {
 //
 .table-transparent {
     background-color: transparent;
+
+    th,
+    td {
+        background-color: transparent;
+    }
 }
 
 //
