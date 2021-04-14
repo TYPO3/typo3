@@ -148,6 +148,9 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             // Translate labels
             $fieldConfig['config']['items'] = $this->translateLabels($result, $fieldConfig['config']['items'], $table, $fieldName);
 
+            // Add icons
+            $fieldConfig['config']['items'] = $this->addIconFromAltIcons($result, $fieldConfig['config']['items'], $table, $fieldName);
+
             $result['processedTca']['columns'][$fieldName] = $fieldConfig;
         }
 

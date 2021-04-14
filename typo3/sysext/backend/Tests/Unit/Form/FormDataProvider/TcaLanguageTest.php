@@ -478,6 +478,46 @@ class TcaLanguageTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataRespectsAltIcons(): void
+    {
+        $input = $this->getDefaultResultArray(
+            [],
+            $this->getDefaultSystemLanguages(),
+            [],
+            [
+                'pageTsConfig' => [
+                    'TCEFORM.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'altIcons.' => [
+                                    '0' => 'alternative-icon-default',
+                                    '14' => 'alternative-icon-german'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $expected = [
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
+            ['English', 0, 'alternative-icon-default', null, null],
+            ['Danish', 13, 'flags-dk', null, null],
+            ['German', 14, 'alternative-icon-german', null, null],
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null]
+        ];
+
+        self::assertEquals(
+            $expected,
+            (new TcaLanguage())->addData($input)['processedTca']['columns']['aField']['config']['items']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function addDataRemovesLastItemIfDivider(): void
     {
         $input = $this->getDefaultResultArray(

@@ -128,8 +128,10 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                         // itemsProcFunc must not be used anymore
                         unset($fieldConfig['config']['itemsProcFunc']);
                     }
-                    // And translate any labels from the static list
+                    // translate any labels
                     $staticItems = $this->translateLabels($result, $staticItems, $table, $fieldName);
+                    // and add icons from the static list
+                    $staticItems = $this->addIconFromAltIcons($result, $staticItems, $table, $fieldName);
                     // Now compile the target items using the same array structure as the "dynamic" list below
                     foreach ($staticItems as $item) {
                         if ($item[1] === '--div--') {
