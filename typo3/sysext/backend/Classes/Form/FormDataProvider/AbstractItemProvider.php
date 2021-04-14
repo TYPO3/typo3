@@ -1352,6 +1352,29 @@ abstract class AbstractItemProvider
     }
 
     /**
+     * Add alternative icon using "altIcons" TSconfig
+     *
+     * @param array $result
+     * @param array $items
+     * @param string $table
+     * @param string $fieldName
+     *
+     * @return array
+     */
+    public function addIconFromAltIcons(array $result, array $items, string $table, string $fieldName): array
+    {
+        foreach ($items as &$item) {
+            if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]])
+                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]])
+            ) {
+                $item[2] = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altIcons.'][$item[1]];
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * Sanitize incoming item array
      *
      * Used by TcaSelectItems and TcaSelectTreeItems data providers

@@ -237,7 +237,10 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                                 'childrenField' => 'childrenField'
                             ],
                             'foreign_table' => 'foreignTable',
-                            'items' => [],
+                            'items' => [
+                                [ 'static item foo', 1, 'foo-icon' ],
+                                [ 'static item bar', 2, 'bar-icon' ],
+                            ],
                             'maxitems' => 1
                         ],
                     ],
@@ -257,6 +260,14 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                                     ],
                                 ],
                             ],
+                            'altLabels.' => [
+                                1 => 'alt static item foo',
+                                2 => 'alt static item bar'
+                            ],
+                            'altIcons.' => [
+                                1 => 'foo-alt-icon',
+                                2 => 'bar-alt-icon'
+                            ],
                         ],
                     ],
                 ],
@@ -264,11 +275,17 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             'selectTreeCompileItems' => true,
         ];
 
-        (new TcaSelectTreeItems())->addData($input);
+        $result = (new TcaSelectTreeItems())->addData($input);
 
         $treeDataProviderProphecy->setRootUid(42)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setLevelMaximum(4)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setNonSelectableLevelList('0,1')->shouldHaveBeenCalled();
+
+        $resultItems = $result['processedTca']['columns']['aField']['config']['items'];
+        self::assertEquals('alt static item foo', $resultItems[0]['name']);
+        self::assertEquals('foo-alt-icon', $resultItems[0]['icon']);
+        self::assertEquals('alt static item bar', $resultItems[1]['name']);
+        self::assertEquals('bar-alt-icon', $resultItems[1]['icon']);
     }
 }

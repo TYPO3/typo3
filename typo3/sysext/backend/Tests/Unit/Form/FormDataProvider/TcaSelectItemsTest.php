@@ -3549,6 +3549,61 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
+    public function addDataAddsIconsFromPageTsConfig(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'tableName' => 'aTable',
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                0 => [
+                                    0 => 'aLabel',
+                                    1 => 'aValue',
+                                    2 => 'icon-identifier',
+                                    null,
+                                    null
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'altIcons.' => [
+                                'aValue' => 'icon-identifier-override',
+                            ],
+                        ]
+                    ],
+                ],
+            ],
+        ];
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL('aLabel')->willReturnArgument(0);
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = ['aValue'];
+        $expected['processedTca']['columns']['aField']['config']['items'][0][2] = 'icon-identifier-override';
+
+        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+    }
+
+    /**
+     * @test
+     */
     public function processSelectFieldValueSetsMmForeignRelationValues(): void
     {
         $GLOBALS['TCA']['foreignTable'] = [];
