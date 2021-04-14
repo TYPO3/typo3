@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
@@ -51,10 +49,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Controller responsible for rendering the TYPO3 Backend login form
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-class LoginController implements LoggerAwareInterface
+class LoginController
 {
-    use LoggerAwareTrait;
-
     /**
      * The URL to redirect to after login.
      *
