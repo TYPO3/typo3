@@ -126,11 +126,9 @@ SYS:
         UTF8filesystem:
             type: bool
             description: |
-              <p>
-                If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
-                <strong>IMPORTANT:</strong> This requires a UTF-8 compatible locale in order to work. Otherwise problems with filenames containing special characters will occur.
-                See [SYS][systemLocale] and <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.
-              </p>
+              If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
+              <strong>IMPORTANT:</strong> This requires a UTF-8 compatible locale in order to work. Otherwise problems with filenames containing special characters will occur.
+              See [SYS][systemLocale] and <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.
         systemLocale:
             type: text
             description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.'
@@ -369,11 +367,10 @@ BE:
         versionNumberInFilename:
             type: bool
             description: |
-              <p>
-                If enabled, included CSS and JS files loaded in the TYPO3 Backend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
-                This will make browsers and proxies reload the files if they change (thus avoiding caching issues).
-                <strong>IMPORTANT:</strong> This feature requires extra <code>.htaccess</code> rules to work (please refer to the <code>typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess</code> file shipped with TYPO3).</p>
-              <p>If disabled the last modification date of the file will be appended as a query-string.</p>
+              If enabled, included CSS and JS files loaded in the TYPO3 Backend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
+              This will make browsers and proxies reload the files if they change (thus avoiding caching issues).
+              <strong>IMPORTANT:</strong> This feature requires extra <code>.htaccess</code> rules to work (please refer to the <code>typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess</code> file shipped with TYPO3).<br />
+              If disabled the last modification date of the file will be appended as a query-string.
         debug:
             type: bool
             description: 'If enabled, the loginrefresh is disabled and pageRenderer is set to debug mode. Furthermore the fieldname is appended to the label of fields. Use this to debug the backend only!'
@@ -616,9 +613,9 @@ HTTP:
         proxy:
             type: mixed
             description: |
-              <p>Default single proxy server as &quot;proxy.example.org&quot;.</p>
-              <p>Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noreferrer">the documentation</a> for details.</p>
-              <p>The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.</p>
+              Default single proxy server as &quot;proxy.example.org&quot;.<br />
+              Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
+              The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
         ssl_key:
             type: mixed
             description: 'Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key'
