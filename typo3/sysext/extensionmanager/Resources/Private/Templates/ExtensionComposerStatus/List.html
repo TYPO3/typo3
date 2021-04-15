@@ -1,0 +1,77 @@
+<f:layout name="main" />
+<f:section name="content">
+    <h1><f:translate key="extensionComposerStatus" /></h1>
+    <f:if condition="{extensions}">
+        <f:then>
+            <f:be.infobox title="Invalid composer.json files in extensions" state="-1">
+                <p><f:translate key="extensionList.composerStatus.information" /></p>
+                <p><f:translate key="extensionList.composerStatus.thirdParty" /></p>
+                <h4 class="mt-3"><f:translate key="extensionList.composerStatus.missingManifest" /></h4>
+                <p><f:translate key="extensionList.composerStatus.terRequest" /></p>
+                <p><f:translate key="extensionList.composerStatus.additionalInformation" />: <f:link.typolink parameter="https://extensions.typo3.org/help/composer-support" />.</p>
+            </f:be.infobox>
+            <div class="table-fit">
+                <table id="typo3-extension-list" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th data-filterable><f:translate key="extensionList.header.extensionName" /></th>
+                            <th data-filterable data-sort-default><f:translate key="extensionList.header.extensionKey" /></th>
+                            <th data-filterable><f:translate key="extensionList.header.extensionDeficit" /></th>
+                            <th data-sort-method="none"><f:translate key="extensionList.header.extensionActions" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{extensions}" as="extension" key="extensionKey">
+                            <tr role="row" id="{extensionKey}">
+                                <td>
+                                    <f:render section="Icon" arguments="{extension: extension}" />
+                                    <a href="{extension.detailLink}" title="{f:translate(key:'extensionList.showComposerProposal')}" class="btn btn-link p-0">
+                                        {extension.title}
+                                    </a>
+                                </td>
+                                <td>
+                                    {extensionKey}
+                                </td>
+                                <td>
+                                    <span class="label {f:if(condition: '{extension.deficit} == 2', then: 'label-warning', else: 'label-danger')}">{f:translate(key: 'extensionComposerStatus.deficit.{extension.deficit}.short')}</span>
+                                </td>
+                                <td>
+                                    <f:if condition="{extension.deficit} == 2">
+                                        <f:then>
+                                            <a href="{extension.detailLink}" title="{f:translate(key:'extensionList.showComposerProposal')}" class="btn btn-default">
+                                                <core:icon identifier="actions-document-synchronize" />
+                                                {f:translate(key:'extensionList.showComposerProposal')}
+                                            </a>
+                                        </f:then>
+                                        <f:else>
+                                            <a href="{extension.detailLink}" title="{f:translate(key:'extensionList.fetchComposerProposal.details')}" class="btn btn-warning">
+                                                <core:icon identifier="actions-document-synchronize" />
+                                                {f:translate(key:'extensionList.fetchComposerProposal')}
+                                            </a>
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.title')}"
+                message="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.message.multiple')}"
+                state="-1" />
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Icon">
+    <f:if condition="{extension.icon}">
+        <f:then>
+            <img class="extension-icon" src="{extension.icon}" alt="{extension.title}" />
+        </f:then>
+        <f:else>
+            <core:icon identifier="empty-empty" />
+        </f:else>
+    </f:if>
+</f:section>

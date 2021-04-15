@@ -1,0 +1,32 @@
+<f:layout name="main" />
+<f:section name="content">
+    <f:if condition="{deficit}">
+        <f:then>
+            <h1><f:translate key="extensionComposerStatus.title" arguments="{0: extensionKey}" /></h1>
+            <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.deficit.{deficit}', arguments: '{0: \'{extensionKey}\'}')}"
+                message="{f:translate(key: 'extensionComposerStatus.deficit.information')}"
+                state="1" />
+            <f:if condition="{composerManifestMarkup}">
+                <f:then>
+                    <div class="row">
+                        <p>
+                            <strong><f:translate key="extensionComposerStatus.manifest.title" /></strong>
+                            <f:translate key="extensionComposerStatus.manifest.description" arguments="{0: extensionKey}" />
+                        </p>
+                        {composerManifestMarkup -> f:format.raw()}
+                    </div>
+                </f:then>
+                <f:else>
+                    <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.manifest.error')}"
+                        message="{f:translate(key: 'extensionComposerStatus.manifest.error.message')}"
+                        state="2" />
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.title')}"
+                message="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.message.single', arguments: '{0: \'{extensionKey}\'}')}"
+                state="-1" />
+        </f:else>
+    </f:if>
+</f:section>

@@ -13,7 +13,8 @@ defined('TYPO3') or die();
         \TYPO3\CMS\Extensionmanager\Controller\DownloadController::class => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
         \TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class => 'updateExtensionListFromTer',
         \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController::class => 'form,extract',
-        \TYPO3\CMS\Extensionmanager\Controller\DistributionController::class => 'show'
+        \TYPO3\CMS\Extensionmanager\Controller\DistributionController::class => 'show',
+        \TYPO3\CMS\Extensionmanager\Controller\ExtensionComposerStatusController::class => 'list,detail'
     ],
     [
         'access' => 'systemMaintainer',

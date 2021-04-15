@@ -116,7 +116,10 @@ table {
 
     .btn-default {
         @include button-variant($gray-200, $gray-500, $gray-800, $gray-400, $gray-600);
+    }
 
+    .btn-default,
+    .btn-warning {
         padding: 0.375rem;
     }
 

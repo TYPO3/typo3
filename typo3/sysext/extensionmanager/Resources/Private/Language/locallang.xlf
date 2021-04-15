@@ -21,6 +21,9 @@
 			<trans-unit id="installedExtensions" resname="installedExtensions">
 				<source>Installed Extensions</source>
 			</trans-unit>
+			<trans-unit id="extensionComposerStatus" resname="extensionComposerStatus">
+				<source>Composer Support of Extensions</source>
+			</trans-unit>
 			<trans-unit id="getExtensions" resname="getExtensions">
 				<source>Get Extensions</source>
 			</trans-unit>
@@ -81,6 +84,44 @@
 			<trans-unit id="extensionList.overwriteExtension" resname="extensionList.overwriteExtension">
 				<source>Overwrite</source>
 			</trans-unit>
+			<trans-unit id="extensionList.composerStatus.information" resname="extensionList.composerStatus.information">
+				<source>
+					Future TYPO3 versions will require all extensions in your TYPO3 installation to contain a
+					composer.json file in their extension directory. This is needed to properly detect the
+					composer-based package name, the relevant extension key and the dependencies to other packages /
+					extensions. Below is a list of extensions in your TYPO3 installation, which currently do not meet
+					those requirements and therefore need adaptations to their composer.json file.
+				</source>
+			</trans-unit>
+			<trans-unit id="extensionList.composerStatus.thirdParty" resname="extensionList.composerStatus.thirdParty">
+				<source>
+					For third-party extensions that were fetched from TER, it is helpful to update to their latest
+					version from TER which probably already contains a valid composer.json file.
+				</source>
+			</trans-unit>
+			<trans-unit id="extensionList.composerStatus.missingManifest" resname="extensionList.composerStatus.missingManifest">
+				<source>Missing composer.json file</source>
+			</trans-unit>
+			<trans-unit id="extensionList.composerStatus.terRequest" resname="extensionList.composerStatus.terRequest">
+				<source>
+					To support you creating a valid composer.json file for your extensions, TYPO3 will send your
+					ext_emconf.php contents to TYPO3.org (TER). TYPO3.org will then resolve your dependencies and
+					return a valid composer.json proposal which can be copied to the corresponding extension directory.
+					This is especially helpful in case your TYPO3 installation contains custom extensions.
+				</source>
+			</trans-unit>
+			<trans-unit id="extensionList.composerStatus.additionalInformation" resname="extensionList.composerStatus.additionalInformation">
+				<source>For more information regarding the migration and the upcoming changes, please have a look at</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showComposerProposal" resname="extensionList.showComposerProposal">
+				<source>Show composer.json proposal</source>
+			</trans-unit>
+			<trans-unit id="extensionList.fetchComposerProposal" resname="extensionList.fetchComposerProposal">
+				<source>Check TYPO3.org for composer.json proposal</source>
+			</trans-unit>
+			<trans-unit id="extensionList.fetchComposerProposal.details" resname="extensionList.fetchComposerProposal.details">
+				<source>Send this extensions' ext_emconf.php contents to TYPO3.org for a valid and resolved composer.json proposal</source>
+			</trans-unit>
 			<trans-unit id="extensionList.overwritingDisabled" resname="extensionList.overwritingDisabled">
 				<source>Extension is already available and overwriting was not enabled</source>
 			</trans-unit>
@@ -116,6 +157,9 @@
 			</trans-unit>
 			<trans-unit id="extensionList.header.extensionState" resname="extensionList.header.extensionState">
 				<source>State</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionDeficit" resname="extensionList.header.extensionDeficit">
+				<source>Deficit</source>
 			</trans-unit>
 			<trans-unit id="extensionList.header.extensionType" resname="extensionList.header.extensionType">
 				<source>Type</source>
@@ -524,6 +568,21 @@
 			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" resname="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension">
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
+			<trans-unit id="report.status.composerManifest.extensionKeyMissing" resname="report.status.composerManifest.extensionKeyMissing">
+				<source>Extensions missing extension-key in composer.json</source>
+			</trans-unit>
+			<trans-unit id="report.status.composerManifest.composerJsonMissing" resname="report.status.composerManifest.composerJsonMissing">
+				<source>Extensions missing composer.json</source>
+			</trans-unit>
+			<trans-unit id="report.status.composerManifest.extensionKeyMissing.message" resname="report.status.composerManifest.extensionKeyMissing.message">
+				<source>%d extension(s) do not have an extension-key set in their composer.json file.</source>
+			</trans-unit>
+			<trans-unit id="report.status.composerManifest.composerJsonMissing.message" resname="report.status.composerManifest.composerJsonMissing.message">
+				<source>%d extension(s) do not provide a composer.json file.</source>
+			</trans-unit>
+			<trans-unit id="report.status.composerManifest.update" resname="report.status.composerManifest.update">
+				<source>Update extensions</source>
+			</trans-unit>
 			<trans-unit id="fileHandling.couldNotRemoveDirectory" resname="fileHandling.couldNotRemoveDirectory">
 				<source>ERROR: Could not remove extension directory "%s". Reasons</source>
 			</trans-unit>
@@ -559,6 +618,57 @@
 			</trans-unit>
 			<trans-unit id="pagination.refresh" resname="pagination.refresh">
 				<source>Refresh</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.nothingToUpdate.title" resname="extensionComposerStatus.nothingToUpdate.title">
+				<source>Good job!</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.nothingToUpdate.message.single" resname="extensionComposerStatus.nothingToUpdate.message.single">
+				<source>Extension %s does not need to be updated.</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.nothingToUpdate.message.multiple" resname="extensionComposerStatus.nothingToUpdate.message.multiple">
+				<source>There are no extensions which need to be updated.</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.title" resname="extensionComposerStatus.title">
+				<source>Update composer.json of %s</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.1" resname="extensionComposerStatus.deficit.1">
+				<source>%s does not contain a composer.json</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.1.short" resname="extensionComposerStatus.deficit.1.short">
+				<source>composer.json missing</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.2" resname="extensionComposerStatus.deficit.2">
+				<source>%s is missing the extension-key property in the composer.json</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.2.short" resname="extensionComposerStatus.deficit.2.short">
+				<source>Extension Key missing</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.deficit.information" resname="extensionComposerStatus.deficit.information.single">
+				<source>
+					In future versions of TYPO3, it will be mandatory for extensions to provide a composer.json file. This will be
+					needed to identify an extension and works as a replacement for the ext_emconf.php. Therefore,
+					the composer.json file must also include the extension key under "extra > typo3/cms > extension-key".
+					Please add a composer.json, including the extension-key property, in the corresponding extension
+					folder. You can use the auto-generated proposal below and update the composer.json file extension.
+				</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.manifest.title" resname="extensionComposerStatus.manifest.title">
+				<source>Auto-generated composer.json</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.manifest.description" resname="extensionComposerStatus.manifest.description">
+				<source>
+					Please verify its contents, adjust it to your needs and and put it into typo3conf/ext/%s/composer.json.
+				</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.manifest.error" resname="extensionComposerStatus.manifest.error">
+				<source>Auto-generation of a composer.json proposal failed</source>
+			</trans-unit>
+			<trans-unit id="extensionComposerStatus.manifest.error.message" resname="extensionComposerStatus.manifest.error.message">
+				<source>
+					TYPO3 could not create a composer.json proposal. This could be due to an invalid composer.json
+					or network problems while requesting the TER API. Please check for an already exisiting invalid
+					composer.json or try again later.
+				</source>
 			</trans-unit>
 		</body>
 	</file>
