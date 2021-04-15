@@ -14,6 +14,7 @@
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import shortcutMenu = require('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
+import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
 import documentService = require('TYPO3/CMS/Core/DocumentService');
 
 /**
@@ -75,6 +76,7 @@ class ActionDispatcher {
     this.delegates = {
       'TYPO3.InfoWindow.showItem': InfoWindow.showItem.bind(null),
       'TYPO3.ShortcutMenu.createShortcut': shortcutMenu.createShortcut.bind(shortcutMenu),
+      'TYPO3.ModuleMenu.showModule': moduleMenuApp.App.showModule.bind(moduleMenuApp.App),
     };
   }
 

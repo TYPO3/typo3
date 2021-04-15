@@ -17,3 +17,7 @@ if (!(bool)\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 // Register extension status report system
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
     \TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class;
+
+// Register extension composer status report
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Composer Manifest'][] =
+    \TYPO3\CMS\Extensionmanager\Report\ExtensionComposerStatus::class;

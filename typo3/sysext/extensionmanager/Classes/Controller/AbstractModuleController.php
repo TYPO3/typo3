@@ -66,6 +66,11 @@ class AbstractModuleController extends AbstractController
                 'controller' => 'List',
                 'action' => 'index',
                 'label' => $this->translate('installedExtensions')
+            ],
+            'extensionComposerStatus' => [
+                'controller' => 'ExtensionComposerStatus',
+                'action' => 'list',
+                'label' => $this->translate('extensionComposerStatus')
             ]
         ];
 
