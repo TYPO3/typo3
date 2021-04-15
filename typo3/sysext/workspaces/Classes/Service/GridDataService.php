@@ -118,15 +118,14 @@ class GridDataService implements LoggerAwareInterface
         } else {
             throw new \InvalidArgumentException('No such workspace defined', 1476048304);
         }
-        $data = [];
-        $data['data'] = [];
         $this->generateDataArray($versions, $filterTxt);
-        // Only count parent records for pagination
-        $data['total'] = count(array_filter($this->dataArray, static function ($element) {
-            return (int)($element[self::GridColumn_CollectionLevel] ?? 0) === 0;
-        }));
-        $data['data'] = $this->getDataArray($start, $limit);
-        return $data;
+        return [
+            // Only count parent records for pagination
+            'total' => count(array_filter($this->dataArray, static function ($element) {
+                return (int)($element[self::GridColumn_CollectionLevel] ?? 0) === 0;
+            })),
+            'data' =>  $this->getDataArray($start, $limit)
+        ];
     }
 
     /**
@@ -670,6 +669,15 @@ class GridDataService implements LoggerAwareInterface
         // parentRecordsCount only takes the parent records into account
         $recordsCount = $parentRecordsCount = 0;
         while ($parentRecordsCount < $start) {
+            // As soon as no more item exists in the dataArray, the loop needs to end
+            // prematurely to prevent invalid items which would may led to some unexpected
+            // behaviour. Note: This usually should never happen since these records must
+            // exists => As they were responsible for increasing the start value. However to
+            // prevent errors in case multiple different users manipulate the records count
+            // somehow simultaneously, we apply this check to be save.
+            if (!isset($this->dataArray[$recordsCount])) {
+                break;
+            }
             // Loop over the dataArray until we found enough parent records
             $item = $this->dataArray[$recordsCount];
             if (($item[self::GridColumn_CollectionLevel] ?? 0) === 0) {
@@ -706,6 +714,11 @@ class GridDataService implements LoggerAwareInterface
         // parentRecordsCount only takes the parent records into account.
         $itemsCount = $parentRecordsCount = $start;
         while ($parentRecordsCount < $end) {
+            // As soon as no more item exists in the dataArray, the loop needs to end
+            // prematurely to prevent invalid items which would trigger JavaScript errors.
+            if (!isset($this->dataArray[$itemsCount])) {
+                break;
+            }
             // Loop over the dataArray until we found enough parent records
             $item = $this->dataArray[$itemsCount];
             // Add the item to the $dataArrayPart
