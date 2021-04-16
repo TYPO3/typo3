@@ -79,7 +79,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @internal
      */
     public $groupData = [
-        'filemounts' => [],
         'allowed_languages' => ''
     ];
 
