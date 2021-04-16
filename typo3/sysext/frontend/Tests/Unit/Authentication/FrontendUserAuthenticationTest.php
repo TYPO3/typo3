@@ -21,6 +21,7 @@ use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -62,7 +64,11 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     public function userFieldIsNotSetForAnonymousSessions(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
-        $_COOKIE['fe_typo_user'] = $uniqueSessionId;
+
+        // Prepare a request with session id cookie
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getCookieParams()->willReturn(['fe_typo_user' => $uniqueSessionId]);
+        $request->getQueryParams(Argument::cetera())->willReturn();
 
         // This setup fakes the "getAuthInfoArray() db call
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
@@ -94,7 +100,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
         $subject->initializeUserSessionManager($userSessionManager);
-        $subject->start();
+        $subject->start($request->reveal());
 
         self::assertIsNotArray($subject->user);
         self::assertEquals('bar', $subject->getSessionData('foo'));
@@ -118,7 +124,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         $userSessionManager = $this->prophesize(UserSessionManager::class);
-        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn(UserSession::createNonFixated('newSessionId'));
+        $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn(UserSession::createNonFixated('newSessionId'));
         // Verify new session id is generated
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('newSessionId'));
         // set() and update() shouldn't be called since no session cookie is set
@@ -128,7 +134,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
         $subject->initializeUserSessionManager($userSessionManager->reveal());
-        $subject->start();
+        $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
         $subject->storeSessionData();
     }
 
@@ -164,7 +170,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // Main session backend setup
         /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
-        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         // Verify new session id is generated
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('newSessionId'));
         // set() and update() shouldn't be called since no session cookie is set
@@ -179,7 +185,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->start();
+        $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
         $subject->setSessionData('foo', 'bar');
         $subject->removeSessionData();
         self::assertNull($subject->getSessionData('someKey'));
@@ -210,7 +216,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $userSession = UserSession::createNonFixated($uniqueSessionId);
         /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
-        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         $userSessionManager->createAnonymousSession(Argument::cetera())->willReturn($userSession);
         // Verify new session id is generated
         // set() and update() shouldn't be called since no session cookie is set
@@ -238,7 +244,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->start();
+        $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
         self::assertEmpty($subject->getSessionData($uniqueSessionId));
         self::assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');
@@ -285,7 +291,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
-        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         $userSessionManager->hasExpired($userSession)->willReturn(false);
         $userSessionManager->updateSessionTimestamp($userSession)->shouldBeCalled()->willReturn($userSession);
 
@@ -318,7 +324,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject = new FrontendUserAuthentication();
         $subject->initializeUserSessionManager($userSessionManager->reveal());
         $subject->setLogger(new NullLogger());
-        $subject->start();
+        $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
 
         self::assertNotNull($subject->user);
         self::assertEquals('existingUserName', $subject->user['username']);
@@ -347,7 +353,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
-        $userSessionManager->createFromGlobalCookieOrAnonymous(Argument::cetera())->willReturn($userSession);
+        $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         $userSessionManager->removeSession($userSession)->shouldBeCalled();
         $userSessionManager->elevateToFixatedUserSession(Argument::cetera())->shouldBeCalled()->willReturn($elevatedUserSession);
 
@@ -381,7 +387,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $authServiceMock->method('authUser')->willReturn(200);
         // We need to wrap the array to something thats is \Traversable, in PHP 7.1 we can use traversable pseudo type instead
         $subject->method('getAuthServices')->willReturn(new \ArrayIterator([$authServiceMock]));
-        $subject->start();
+        $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
         self::assertEquals('existingUserName', $subject->user['username']);
     }
 

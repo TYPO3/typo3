@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -251,9 +252,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * c) Lookup a session attached to a user and check timeout etc.
      * d) Garbage collection, setting of no-cache headers.
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
+     *
+     * @param ServerRequestInterface|null $request @todo: Make mandatory in v12.
      */
-    public function start()
+    public function start(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $this->logger->debug('## Beginning of auth logging.');
         // Make certain that NO user is set initially
         $this->user = null;
@@ -261,12 +265,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (!isset($this->userSessionManager)) {
             $this->initializeUserSessionManager();
         }
-        $this->userSession = $this->userSessionManager->createFromGlobalCookieOrAnonymous($this->name);
+        $this->userSession = $this->userSessionManager->createFromRequestOrAnonymous($request, $this->name);
 
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
         // the user with the session. $this->user[uid] may be used to write log...
         try {
-            $this->checkAuthentication();
+            $this->checkAuthentication($request);
         } catch (MfaRequiredException $mfaRequiredException) {
             // Ensure the cookie is still set to keep the user session available
             if (!$this->dontSetCookie || $this->isRefreshTimeBasedCookie()) {
@@ -419,11 +423,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Checks if a submission of username and password is present or use other authentication by auth services
      *
-     * @throws \RuntimeException
+     * @param ServerRequestInterface|null $request @todo: Make mandatory in v12.
+     * @throws MfaRequiredException
      * @internal
      */
-    public function checkAuthentication()
+    public function checkAuthentication(ServerRequestInterface $request = null)
     {
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $authConfiguration = $this->getAuthServiceConfiguration();
         if (!empty($authConfiguration)) {
             $this->logger->debug('Authentication Service Configuration found.', ['auth_configuration' => $authConfiguration]);
@@ -452,7 +458,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         // Determine whether we need to skip session update.
         // This is used mainly for checking session timeout in advance without refreshing the current session's timeout.
-        $skipSessionUpdate = (bool)GeneralUtility::_GP('skipSessionUpdate');
+        $skipSessionUpdate = (bool)($request->getQueryParams()['skipSessionUpdate'] ?? false);
         $haveSession = false;
         $anonymousSession = false;
         if (!$this->userSession->isNew()) {

@@ -20,6 +20,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
@@ -576,16 +577,17 @@ class Bootstrap
      * Initialize backend user object in globals
      *
      * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
+     * @param ServerRequestInterface|null $request
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function initializeBackendUser($className = BackendUserAuthentication::class)
+    public static function initializeBackendUser($className = BackendUserAuthentication::class, ServerRequestInterface $request = null)
     {
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = $backendUser;
-        $backendUser->start();
+        $backendUser->start($request);
     }
 
     /**

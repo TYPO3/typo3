@@ -92,7 +92,7 @@ class AjaxLoginController
      */
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getBackendUser()->checkAuthentication();
+        $this->getBackendUser()->checkAuthentication($request);
         return new JsonResponse([
             'refresh' => [
                 'success' => true,

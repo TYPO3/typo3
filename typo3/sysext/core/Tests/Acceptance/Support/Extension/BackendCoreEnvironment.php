@@ -18,8 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Extension;
 
 use Codeception\Event\SuiteEvent;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mailer\Transport\NullTransport;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
@@ -93,7 +97,8 @@ class BackendCoreEnvironment extends BackendEnvironment
         parent::bootstrapTypo3Environment($suiteEvent);
         // styleguide generator uses DataHandler for some parts. DataHandler needs an initialized BE user
         // with admin right and the live workspace.
-        Bootstrap::initializeBackendUser();
+        $request = $this->createServerRequest('https://typo3-testing.local/typo3/');
+        Bootstrap::initializeBackendUser(BackendUserAuthentication::class, $request);
         $GLOBALS['BE_USER']->user['username'] = 'acceptanceTestSetup';
         $GLOBALS['BE_USER']->user['admin'] = 1;
         $GLOBALS['BE_USER']->user['uid'] = 1;
@@ -108,5 +113,44 @@ class BackendCoreEnvironment extends BackendEnvironment
         // Otherwise the page can not be found, also do not set root page to
         // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
         $styleguideGeneratorFrontend->create('/typo3temp/var/tests/acceptance/', 0);
+    }
+
+    // @todo Eventually move this up to TF::BackendEnvironment, but then as protected.
+    private function createServerRequest(string $url, string $method = 'GET'): ServerRequestInterface
+    {
+        $requestUrlParts = parse_url($url);
+        $docRoot = getenv('TYPO3_PATH_APP') ?? '';
+        $serverParams = [
+            'DOCUMENT_ROOT' => $docRoot,
+            'HTTP_USER_AGENT' => 'TYPO3 Functional Test Request',
+            'HTTP_HOST' => $requestUrlParts['host'] ?? 'localhost',
+            'SERVER_NAME' => $requestUrlParts['host'] ?? 'localhost',
+            'SERVER_ADDR' => '127.0.0.1',
+            'REMOTE_ADDR' => '127.0.0.1',
+            'SCRIPT_NAME' => '/typo3/index.php',
+            'PHP_SELF' => '/typo3/index.php',
+            'SCRIPT_FILENAME' => $docRoot . '/index.php',
+            'PATH_TRANSLATED' => $docRoot . '/index.php',
+            'QUERY_STRING' => $requestUrlParts['query'] ?? '',
+            'REQUEST_URI' => $requestUrlParts['path'] . (isset($requestUrlParts['query']) ? '?' . $requestUrlParts['query'] : ''),
+            'REQUEST_METHOD' => $method,
+        ];
+        // Define HTTPS and server port
+        if (isset($requestUrlParts['scheme'])) {
+            if ($requestUrlParts['scheme'] === 'https') {
+                $serverParams['HTTPS'] = 'on';
+                $serverParams['SERVER_PORT'] = '443';
+            } else {
+                $serverParams['SERVER_PORT'] = '80';
+            }
+        }
+
+        // Define a port if used in the URL
+        if (isset($requestUrlParts['port'])) {
+            $serverParams['SERVER_PORT'] = $requestUrlParts['port'];
+        }
+        // set up normalizedParams
+        $request = new ServerRequest($url, $method, null, [], $serverParams);
+        return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
 }

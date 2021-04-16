@@ -96,7 +96,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // New backend user object
         $backendUserObject = GeneralUtility::makeInstance(FrontendBackendUserAuthentication::class);
         try {
-            $backendUserObject->start();
+            $backendUserObject->start($request);
         } catch (MfaRequiredException $e) {
             // Do nothing, as the user is not fully authenticated - has not
             // passed required multi-factor authentication - via the backend.

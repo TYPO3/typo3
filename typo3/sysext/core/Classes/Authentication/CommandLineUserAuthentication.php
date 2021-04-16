@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -57,8 +58,10 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      *
      * We do not need support for sessions, cookies, $_GET-modes, the postUserLookup hook or
      * a database connection during CLI Bootstrap
+     *
+     * @param ServerRequestInterface|null $request
      */
-    public function start()
+    public function start(ServerRequestInterface $request = null)
     {
         // do nothing
     }
@@ -68,7 +71,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      *
      * Not required in CLI mode, therefore empty.
      */
-    public function checkAuthentication()
+    public function checkAuthentication(ServerRequestInterface $request = null)
     {
         // do nothing
     }

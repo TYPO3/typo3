@@ -102,7 +102,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // Whether multi-factor authentication is requested
         $mfaRequested = $route->getOption('_identifier') === 'auth_mfa';
         try {
-            $GLOBALS['BE_USER']->start();
+            $GLOBALS['BE_USER']->start($request);
         } catch (MfaRequiredException $mfaRequiredException) {
             // If MFA is required and we are not already on the "auth_mfa"
             // route, force the user to it for further authentication.
