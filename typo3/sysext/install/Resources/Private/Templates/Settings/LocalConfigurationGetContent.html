@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="panel-group" role="tablist" aria-multiselectable="true">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <f:for each="{localConfigurationData}" as="sectionData" key="sectionName">
             <f:if condition="{sectionData.items}">
                 <f:render partial="Settings/LocalConfiguration/SubSection" arguments="{_all}"/>
