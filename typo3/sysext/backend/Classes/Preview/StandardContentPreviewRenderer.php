@@ -394,7 +394,9 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         foreach ($uidList as $uid) {
             $uid = (int)$uid;
             $pageRecord = BackendUtility::getRecord($table, $uid, 'title');
-            $content .= '<br>' . htmlspecialchars($pageRecord['title']) . ' (' . $uid . ')';
+            if ($pageRecord) {
+                $content .= '<br>' . htmlspecialchars($pageRecord['title']) . ' (' . $uid . ')';
+            }
         }
         return $content;
     }
