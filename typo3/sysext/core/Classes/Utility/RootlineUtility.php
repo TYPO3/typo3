@@ -280,6 +280,10 @@ class RootlineUtility
      */
     protected function enrichWithRelationFields($uid, array $pageRecord)
     {
+        if (!isset($GLOBALS['TCA']['pages']['columns']) || !is_array($GLOBALS['TCA']['pages']['columns'])) {
+            return $pageRecord;
+        }
+
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // @todo Remove this special interpretation of relations by consequently using RelationHandler

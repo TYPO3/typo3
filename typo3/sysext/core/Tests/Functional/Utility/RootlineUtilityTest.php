@@ -74,6 +74,7 @@ class RootlineUtilityTest extends FunctionalTestCase
 
     public static function tearDownAfterClass(): void
     {
+        RootlineUtility::purgeCaches();
         static::destroyDatabaseSnapshot();
         parent::tearDownAfterClass();
     }
@@ -89,6 +90,50 @@ class RootlineUtilityTest extends FunctionalTestCase
         static::failIfArrayIsNotEmpty(
             $writer->getErrors()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function getForRootPageOnlyReturnsRootPageInformation(): void
+    {
+        $rootPageUid = 1000;
+        $subject = new RootlineUtility($rootPageUid);
+
+        $result = $subject->get();
+
+        self::assertCount(1, $result);
+        self::assertSame($rootPageUid, (int)$result[0]['uid']);
+    }
+
+    /**
+     * @test
+     */
+    public function getForRootPageAndWithMissingTableColumnsTcaReturnsEmptyArray(): void
+    {
+        $rootPageUid = 1000;
+        $subject = new RootlineUtility($rootPageUid);
+
+        unset($GLOBALS['TCA']['pages']['columns']);
+        $result = $subject->get();
+
+        self::assertCount(1, $result);
+        self::assertSame($rootPageUid, (int)$result[0]['uid']);
+    }
+
+    /**
+     * @test
+     */
+    public function getForRootPageAndWithNonArrayTableColumnsTcaReturnsEmptyArray(): void
+    {
+        $rootPageUid = 1000;
+        $subject = new RootlineUtility($rootPageUid);
+
+        $GLOBALS['TCA']['pages']['columns'] = 'This is not an array.';
+        $result = $subject->get();
+
+        self::assertCount(1, $result);
+        self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
 
     /**
