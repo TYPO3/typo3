@@ -301,4 +301,80 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         self::assertEquals(200, $response->getStatusCode());
     }
+
+    /**
+     * @test
+     */
+    public function useDefaultLanguageIfNoLanguageIsGiven(): void
+    {
+        $incomingUrl = 'https://twenty.one/';
+        $site = new Site('random-site', 13, [
+            'base' => 'https://twenty.one/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/en/'
+                ],
+                1 => [
+                    'languageId' => 1,
+                    'locale' => 'fr_FR.UTF-8',
+                    'base' => '/fr'
+                ],
+                2 => [
+                    'languageId' => 2,
+                    'locale' => 'fr_CA.UTF-8',
+                    'base' => '/fr_ca'
+                ]
+            ]
+        ]);
+
+        $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site);
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('routing', $routeResult);
+
+        $subject = new SiteBaseRedirectResolver();
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        self::assertEquals('https://twenty.one/en/', $response->getHeader('Location')[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function useFirstAvailableLanguageIfDefaultLanguageIsNotEnabledAndLanguageIsGiven(): void
+    {
+        $incomingUrl = 'https://twenty.one/';
+        $site = new Site('random-site', 13, [
+            'base' => 'https://twenty.one/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'enabled' => false,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/en/'
+                ],
+                1 => [
+                    'languageId' => 1,
+                    'enabled' => false,
+                    'locale' => 'fr_FR.UTF-8',
+                    'base' => '/fr'
+                ],
+                2 => [
+                    'languageId' => 2,
+                    'locale' => 'fr_CA.UTF-8',
+                    'base' => '/fr_ca'
+                ]
+            ]
+        ]);
+
+        $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site);
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('routing', $routeResult);
+
+        $subject = new SiteBaseRedirectResolver();
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        self::assertEquals('https://twenty.one/fr_ca', $response->getHeader('Location')[0]);
+    }
 }

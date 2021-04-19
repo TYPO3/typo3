@@ -58,7 +58,13 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
         if ($site instanceof Site && !($language instanceof SiteLanguage)) {
             if ($routeResult instanceof SiteRouteResult && $routeResult->getTail() === '') {
                 $language = $site->getDefaultLanguage();
-                return new RedirectResponse($language->getBase(), 307);
+                if ($language->isEnabled()) {
+                    return new RedirectResponse($language->getBase(), 307);
+                }
+                // Default language is disabled, check for the first (enabled) language in list to redirect to that
+                foreach ($site->getLanguages() as $language) {
+                    return new RedirectResponse($language->getBase(), 307);
+                }
             }
             return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
