@@ -213,18 +213,6 @@ $tree-control-icon-size: 12px;
     }
 }
 
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] {
-    .list-tree li:last-child:before,
-    .list-tree-control > .fa:before {
-        background-color: #f5f5f5;
-    }
-
-    .module-body {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-
 //
 // Treeline Icons
 //
@@ -316,12 +304,6 @@ span.dragIcon {
 //
 // Tree
 //
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php],
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-body {
-    background-color: $navigation-bg;
-    height: 100%;
-}
-
 .scaffold-content-navigation-component {
     &,
     .svg-tree,
@@ -339,11 +321,6 @@ span.dragIcon {
     .navigation-tree-container {
         background-color: $navigation-bg;
     }
-}
-
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .module-docheader {
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 //

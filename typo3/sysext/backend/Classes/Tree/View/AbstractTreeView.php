@@ -57,13 +57,6 @@ abstract class AbstractTreeView
      */
     public $titleAttrib = 'title';
 
-    // If TRUE, no context menu is rendered on icons. If set to "titlelink" the
-    // icon is linked as the title is.
-    /**
-     * @var bool
-     */
-    public $ext_IconMode = false;
-
     /**
      * @var bool
      */
@@ -331,132 +324,6 @@ abstract class AbstractTreeView
 
     /*******************************************
      *
-     * output
-     *
-     *******************************************/
-    /**
-     * Will create and return the HTML code for a browsable tree
-     * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
-     *
-     * @return string HTML code for the browsable tree
-     */
-    public function getBrowsableTree()
-    {
-        // Get stored tree structure AND updating it if needed according to incoming PM GET var.
-        $this->initializePositionSaving();
-        // Init done:
-        $lastMountPointPid = 0;
-        $treeArr = [];
-        // Traverse mounts:
-        foreach ($this->MOUNTS as $idx => $uid) {
-            // Set first:
-            $this->bank = $idx;
-            $isOpen = $this->stored[$idx][$uid] || $this->expandFirst;
-            // Save ids while resetting everything else.
-            $curIds = $this->ids;
-            $this->reset();
-            $this->ids = $curIds;
-            // Set PM icon for root of mount:
-            $cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-
-            $firstHtml = $this->PM_ATagWrap('', $cmd, '', $isOpen);
-            // Preparing rootRec for the mount
-            if ($uid) {
-                $rootRec = $this->getRecord($uid);
-                if (is_array($rootRec)) {
-                    $firstHtml .= $this->getIcon($rootRec);
-                }
-
-                if ($this->ext_showPathAboveMounts) {
-                    $mountPointPid = $rootRec['pid'];
-                    if ($lastMountPointPid !== $mountPointPid) {
-                        $title = $this->getMountPointPath((int)$mountPointPid);
-                        $this->tree[] = ['isMountPointPath' => true, 'title' => $title];
-                    }
-                    $lastMountPointPid = $mountPointPid;
-                }
-            } else {
-                // Artificial record for the tree root, id=0
-                $rootRec = $this->getRootRecord();
-                $firstHtml .= $this->getRootIcon($rootRec);
-            }
-            if (is_array($rootRec)) {
-                // In case it was swapped inside getRecord due to workspaces.
-                $uid = $rootRec['uid'];
-                // Add the root of the mount to ->tree
-                $this->tree[] = ['HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen, 'bank' => $this->bank];
-                // If the mount is expanded, go down:
-                if ($isOpen) {
-                    $depthData = '<span class="treeline-icon treeline-icon-clear"></span>';
-                    if ($this->addSelfId) {
-                        $this->ids[] = $uid;
-                    }
-                    $this->getTree($uid, 999, $depthData);
-                }
-                // Add tree:
-                $treeArr = array_merge($treeArr, $this->tree);
-            }
-        }
-        return $this->printTree($treeArr);
-    }
-
-    /**
-     * Compiles the HTML code for displaying the structure found inside the ->tree array
-     *
-     * @param array|string $treeArr "tree-array" - if blank string, the internal ->tree array is used.
-     * @return string The HTML code for the tree
-     */
-    public function printTree($treeArr = '')
-    {
-        $titleLen = (int)$this->BE_USER->uc['titleLen'];
-        if (!is_array($treeArr)) {
-            $treeArr = $this->tree;
-        }
-        $out = '';
-        $closeDepth = [];
-        foreach ($treeArr as $treeItem) {
-            $classAttr = '';
-            if ($treeItem['isFirst']) {
-                $out .= '<ul class="list-tree">';
-            }
-
-            // Add CSS classes to the list item
-            if ($treeItem['hasSub']) {
-                $classAttr .= ' list-tree-control-open';
-            }
-
-            $idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($treeItem['row']) . '_' . $treeItem['bank']);
-            $out .= '
-				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
-					<span class="list-tree-group">
-						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
-						<span class="list-tree-title">' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>
-					</span>';
-
-            if (!$treeItem['hasSub']) {
-                $out .= '</li>';
-            }
-
-            // We have to remember if this is the last one
-            // on level X so the last child on level X+1 closes the <ul>-tag
-            if ($treeItem['isLast']) {
-                $closeDepth[$treeItem['invertedDepth']] = 1;
-            }
-            // If this is the last one and does not have subitems, we need to close
-            // the tree as long as the upper levels have last items too
-            if ($treeItem['isLast'] && !$treeItem['hasSub']) {
-                for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
-                    $closeDepth[$i] = 0;
-                    $out .= '</ul></li>';
-                }
-            }
-        }
-        $out = '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
-        return $out;
-    }
-
-    /*******************************************
-     *
      * rendering parts
      *
      *******************************************/
@@ -504,21 +371,6 @@ abstract class AbstractTreeView
     }
 
     /**
-     * Wrapping $title in a-tags.
-     *
-     * @param string $title Title string
-     * @param array $row Item record
-     * @param int $bank Bank pointer (which mount point number)
-     * @return string
-     * @internal
-     */
-    public function wrapTitle($title, $row, $bank = 0)
-    {
-        $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
-        return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
-    }
-
-    /**
      * Wrapping the image tag, $icon, for the row, $row (except for mount points)
      *
      * @param string $icon The image tag for the icon
@@ -541,22 +393,6 @@ abstract class AbstractTreeView
     public function addTagAttributes($icon, $attr)
     {
         return preg_replace('/ ?\\/?>$/', '', $icon) . ' ' . $attr . ' />';
-    }
-
-    /**
-     * Adds a red "+" to the input string, $str, if the field "php_tree_stop" in the $row (pages) is set
-     *
-     * @param string $str Input string, like a page title for the tree
-     * @param array $row record row with "php_tree_stop" field
-     * @return string Modified string
-     * @internal
-     */
-    public function wrapStop($str, $row)
-    {
-        if ($row['php_tree_stop']) {
-            $str .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['setTempDBmount' => $row['uid']])) . '" class="text-danger">+</a> ';
-        }
-        return $str;
     }
 
     /*******************************************
@@ -700,17 +536,6 @@ abstract class AbstractTreeView
         return $row['uid'];
     }
 
-    /**
-     * Returns jump-url parameter value.
-     *
-     * @param array $row The record array.
-     * @return string The jump-url parameter.
-     */
-    public function getJumpToParam($row)
-    {
-        return $this->getId($row);
-    }
-
     /********************************
      *
      * tree data building
@@ -781,7 +606,7 @@ abstract class AbstractTreeView
             }
             // Set HTML-icons, if any:
             if ($this->makeHTML) {
-                $HTML = $this->PMicon($row, $a, $c, $nextCount, $isOpen) . $this->wrapStop($this->getIcon($row), $row);
+                $HTML = $this->PMicon($row, $a, $c, $nextCount, $isOpen);
             }
             // Finally, add the row/HTML content to the ->tree array in the reserved key.
             $this->tree[$treeKey] = [
@@ -938,33 +763,6 @@ abstract class AbstractTreeView
     public function getDataFree(&$res)
     {
         $res->closeCursor();
-    }
-
-    /**
-     * Returns the mount point path for a temporary mount or the given id
-     *
-     * @param int $uid
-     * @return string
-     */
-    protected function getMountPointPath(int $uid): string
-    {
-        if ($uid <= 0) {
-            return '';
-        }
-        $rootline = array_reverse(BackendUtility::BEgetRootLine($uid));
-        array_shift($rootline);
-        $path = [];
-        foreach ($rootline as $rootlineElement) {
-            $record = BackendUtility::getRecordWSOL('pages', $rootlineElement['uid'], 'title, nav_title', '', true, true);
-            $text = $record['title'];
-            if ((bool)($this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showNavTitle'] ?? false)
-                && trim($record['nav_title'] ?? '') !== ''
-            ) {
-                $text = $record['nav_title'];
-            }
-            $path[] = htmlspecialchars($text);
-        }
-        return '/' . implode('/', $path);
     }
 
     /**

@@ -109,12 +109,6 @@ return [
 
     /** File- and folder-related routes */
 
-    // File navigation tree
-    'file_navframe' => [
-        'path' => '/folder/tree',
-        'target' => Controller\FileSystemNavigationFrameController::class . '::mainAction'
-    ],
-
     // Add new online media
     'online_media' => [
         'path' => '/online-media',

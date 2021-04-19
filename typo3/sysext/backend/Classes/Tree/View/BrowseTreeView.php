@@ -114,28 +114,6 @@ class BrowseTreeView extends AbstractTreeView
     }
 
     /**
-     * Wrapping the image tag, $icon, for the row, $row (except for mount points)
-     *
-     * @param string $icon The image tag for the icon
-     * @param array $row The row for the current element
-     * @return string The processed icon input value.
-     * @internal
-     */
-    public function wrapIcon($icon, $row)
-    {
-        // Wrap icon in click-menu link.
-        $theIcon = '';
-        if (!$this->ext_IconMode) {
-            $theIcon = BackendUtility::wrapClickMenuOnIcon($icon, $this->treeName, $this->getId($row), '0');
-        } elseif ($this->ext_IconMode === 'titlelink') {
-            $aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,'
-                        . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $this->bank . ');';
-            $theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
-        }
-        return $theIcon;
-    }
-
-    /**
      * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
      * Do NOT htmlspecialchar the string from this function - has already been done.
      *

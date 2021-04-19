@@ -12,8 +12,6 @@
  */
 
 import LinkBrowser = require('./LinkBrowser');
-// Yes we really need this import, because Tree... is used in inline markup...
-import Tree = require('TYPO3/CMS/Backend/LegacyTree');
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
@@ -23,8 +21,6 @@ import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
  */
 class FileLinkHandler {
   constructor() {
-    // until we use onclick attributes, we need the Tree component
-    Tree.noop();
     new RegularEvent('click', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
       LinkBrowser.finalizeFunction(targetEl.getAttribute('href'));

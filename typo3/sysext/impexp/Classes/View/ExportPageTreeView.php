@@ -127,4 +127,59 @@ class ExportPageTreeView extends BrowseTreeView
         // Add tree:
         return array_merge($treeArr, $this->tree);
     }
+
+    /**
+     * Compiles the HTML code for displaying the structure found inside the ->tree array
+     *
+     * @param array|string $treeArr "tree-array" - if blank string, the internal ->tree array is used.
+     * @return string The HTML code for the tree
+     */
+    public function printTree($treeArr = '')
+    {
+        $titleLen = (int)$this->BE_USER->uc['titleLen'];
+        if (!is_array($treeArr)) {
+            $treeArr = $this->tree;
+        }
+        $out = '';
+        $closeDepth = [];
+        foreach ($treeArr as $treeItem) {
+            $classAttr = '';
+            if ($treeItem['isFirst']) {
+                $out .= '<ul class="list-tree">';
+            }
+
+            // Add CSS classes to the list item
+            if ($treeItem['hasSub']) {
+                $classAttr .= ' list-tree-control-open';
+            }
+
+            $idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($treeItem['row']) . '_' . $treeItem['bank']);
+            $out .= '
+				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
+					<span class="list-tree-group">
+						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
+						<span class="list-tree-title">' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>
+					</span>';
+
+            if (!$treeItem['hasSub']) {
+                $out .= '</li>';
+            }
+
+            // We have to remember if this is the last one
+            // on level X so the last child on level X+1 closes the <ul>-tag
+            if ($treeItem['isLast']) {
+                $closeDepth[$treeItem['invertedDepth']] = 1;
+            }
+            // If this is the last one and does not have subitems, we need to close
+            // the tree as long as the upper levels have last items too
+            if ($treeItem['isLast'] && !$treeItem['hasSub']) {
+                for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+                    $closeDepth[$i] = 0;
+                    $out .= '</ul></li>';
+                }
+            }
+        }
+        $out = '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
+        return $out;
+    }
 }
