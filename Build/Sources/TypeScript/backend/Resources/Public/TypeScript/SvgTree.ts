@@ -1002,8 +1002,18 @@ export class SvgTree extends LitElement {
         .attr('title', this.getNodeTitle)
         .attr('data-bs-toggle', 'tooltip')
         .on('click', (evt: MouseEvent, node: TreeNode) => {
+          evt.preventDefault();
           this.clickOnIcon(node)
         });
+
+      // improve usability by making the click area a 20px square
+      nodeContainer
+        .append('rect')
+        .style('opacity', 0)
+        .attr('width', '20')
+        .attr('height', '20')
+        .attr('x', '6')
+        .attr('y', '-10');
 
       nodeContainer
         .append('use')
