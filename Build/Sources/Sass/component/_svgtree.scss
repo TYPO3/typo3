@@ -2,6 +2,7 @@ $svgColors: (
     border: #d7d7d7,
     lines: #ddd,
     nodeSelectedBg: #fff,
+    nodeHighlightText: #0078e6,
     nodeOverBg: #f2f2f2,
     dragOverBg: #d7e4f1,
     dragOverBorder: transparent,
@@ -298,6 +299,13 @@ $svgColors: (
 
     text {
         pointer-events: none;
+    }
+}
+
+.node-name {
+    .node-highlight-text {
+        fill: map_get($svgColors, nodeHighlightText);
+        font-weight: 700;
     }
 }
 

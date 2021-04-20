@@ -481,7 +481,7 @@ export class SvgTree extends LitElement {
       })
       .attr('transform', this.getNodeTransform)
       .select('.node-name')
-      .text(this.getNodeLabel);
+      .html((node: TreeNode) => this.getNodeLabel(node));
 
     nodes
       .select('.chevron')
@@ -804,7 +804,17 @@ export class SvgTree extends LitElement {
   }
 
   protected getNodeLabel(node: TreeNode): string {
-    return (node.prefix || '') + node.name + (node.suffix || '');
+    let label = (node.prefix || '') + node.name + (node.suffix || '');
+    // make a text node out of it, and strip out any HTML (this is because the return value uses html()
+    // instead of text() which is needed to avoid XSS in a page title
+    const labelNode = document.createElement('div');
+    labelNode.textContent = label;
+    label = labelNode.innerHTML;
+    if (this.searchTerm) {
+      const regexp = new RegExp(this.searchTerm, 'gi');
+      label = label.replace(regexp, '<tspan class="node-highlight-text">$&</tspan>');
+    }
+    return label;
   }
 
   protected getNodeClass(node: TreeNode): string {
