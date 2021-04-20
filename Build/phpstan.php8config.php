@@ -42,21 +42,6 @@ if (PHP_MAJOR_VERSION === 8) {
             'count' => 6,
         ],
         [
-            'message' => '#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\|false given\\.$#',
-            'path' => '../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
-            'count' => 1,
-        ],
-        [
-            'message' => '#^Parameter \\#6 \\$color of function imagefilledrectangle expects int, int\\|false given\\.$#',
-            'path' => '../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
-            'count' => 1,
-        ],
-        [
-            'message' => '#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#',
-            'path' => '../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
-            'count' => 1,
-        ],
-        [
             'message' => '#^Parameter \\#[1-4]{1} \\$[a-z]* of function [a-z_]* expects XmlParser, resource\\|XmlParser given\\.$#',
             'path' => '../typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
             'count' => 9,
@@ -72,30 +57,10 @@ if (PHP_MAJOR_VERSION === 8) {
             'count' => 1,
         ],
         [
-            'message' => '#^Parameter \\#1 \\$function of class ReflectionFunction constructor expects Closure\\|string, callable\\(\\)\\: mixed given\\.$#',
-            'path' => '../typo3/sysext/core/Classes/DependencyInjection/ServiceProviderCompilationPass.php',
-            'count' => 1,
-        ],
-        [
-            'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, string given\\.$#',
-            'path' => '../typo3/sysext/core/Classes/Database/QueryGenerator.php',
-            'count' => 2,
-        ],
-        [
-            'message' => '#^Parameter \\#1 \\$array of function array_slice expects array, string given\\.$#',
-            'path' => '../typo3/sysext/core/Classes/Database/QueryGenerator.php',
-            'count' => 2,
-        ],
-        [
-            'message' => '#^Parameter \\#1 \\$callback of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\DebugExceptionHandler\\), \'handleException\'\\) given\\.$#',
-            'path' => '../typo3/sysext/core/Classes/Error/DebugExceptionHandler.php',
-            'count' => 1,
-        ],
-        [
-            'message' => '#^Parameter \\#1 \\$callback of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\ProductionExceptionHandler\\), \'handleException\'\\) given\\.$#',
-            'path' => '../typo3/sysext/core/Classes/Error/ProductionExceptionHandler.php',
-            'count' => 1,
-        ],
+            'message' => '#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\|false given\\.$#',
+            'path' => '../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
+            'count' => 1
+        ]
     ];
 }
 

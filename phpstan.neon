@@ -21,9 +21,7 @@ parameters:
   # removed from this file.
   checkThisOnly: true
   checkPhpDocMissingReturn: false
-
-  # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
-  reportUnmatchedIgnoredErrors: false
+  reportUnmatchedIgnoredErrors: true
 
   scanDirectories:
     - %currentWorkingDirectory%/typo3/sysext/
@@ -125,11 +123,11 @@ parameters:
 
     # Ignored errors for level 5
     -
-      message: "#^Parameter \\#1 \\$var of function count expects array\\|Countable, string given\\.$#"
+      message: "#^Parameter \\#1 \\$(var|value) of function count expects array\\|Countable, string given\\.$#"
       count: 2
       path: typo3/sysext/core/Classes/Database/QueryGenerator.php
     -
-      message: "#^Parameter \\#1 \\$input of function array_slice expects array, string given\\.$#"
+      message: "#^Parameter \\#1 \\$(input|array) of function array_slice expects array, string given\\.$#"
       count: 2
       path: typo3/sysext/core/Classes/Database/QueryGenerator.php
     -
@@ -153,28 +151,12 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Database/QueryGenerator.php
     -
-      message: "#^Parameter \\#2 \\$time of static method DateTime\\:\\:createFromFormat\\(\\) expects string, int\\|string given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
       message: "#^Parameter \\#2 \\$replace of function str_replace expects array\\|string, int given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#1 \\$str of function trim expects string, array\\|string given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$timestamp of function date expects int, int\\|false given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Database/QueryGenerator.php
     -
       message: "#^Parameter \\#2 \\$storeIndex of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryView\\:\\:loadStoreQueryConfigs\\(\\) expects int, string given\\.$#"
       count: 1
-      path: typo3/sysext/core/Classes/Database/QueryView.php
-    -
-      message: "#^Parameter \\#2 \\$timestamp of function strftime expects int, string given\\.$#"
-      count: 3
       path: typo3/sysext/core/Classes/Database/QueryView.php
     -
       message: "#^Parameter \\#1 \\$constraint of static method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryHelper\\:\\:stripLogicalOperatorPrefix\\(\\) expects string, string\\|null given\\.$#"
@@ -189,45 +171,9 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/DataHandling/DataHandler.php
     -
-      message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\), mixed\\) given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/DataHandling/DataHandler.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagecolorallocate expects resource, resource\\|false given\\.$#"
-      count: 6
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagettftext expects resource, resource\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#6 \\$col of function imagettftext expects int, int\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagegif expects resource, resource\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagefilledrectangle expects resource, resource\\|false given\\.$#"
-      count: 4
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#6 \\$col of function imagefilledrectangle expects int, int\\|false given\\.$#"
-      count: 4
-      path: typo3/sysext/install/Classes/Controller/EnvironmentController.php
-    -
-      message: "#^Parameter \\#1 \\$im of function imagedestroy expects resource, resource\\|false given\\.$#"
-      count: 3
-      path: typo3/sysext/install/Classes/SystemEnvironment/Check.php
-    -
       message: "#^Parameter \\#1 \\$stageRecord of method TYPO3\\\\CMS\\\\Workspaces\\\\Controller\\\\Remote\\\\ActionHandler\\:\\:getRecipientsOfStage\\(\\) expects int\\|TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord, TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\StageRecord\\|null given\\.$#"
       count: 1
       path: typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
-    -
-      message: "#^Parameter \\#2 \\$now of function strtotime expects int, int\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
     -
       message: "#^Parameter \\#1 \\$name of function setcookie expects string, string\\|false given\\.$#"
       count: 1
@@ -241,15 +187,11 @@ parameters:
       count: 1
       path: typo3/sysext/install/Classes/Controller/InstallerController.php
     -
-      message: "#^Parameter \\#4 \\$col of function imagefill expects int, int\\|false given\\.$#"
+      message: "#^Parameter \\#4 \\$(col|color) of function imagefill expects int, int\\|false given\\.$#"
       count: 1
       path: typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
     -
-      message: "#^Parameter \\#6 \\$col of function imagefilledrectangle expects int, int\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-    -
-      message: "#^Parameter \\#2 \\$col of function imagecolortransparent expects int, int\\|false given\\.$#"
+      message: "#^Parameter \\#6 \\$(col|color) of function imagefilledrectangle expects int, int\\|false given\\.$#"
       count: 1
       path: typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
     -
@@ -297,15 +239,11 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
     -
-      message: "#^Parameter \\#1 \\$fp of function fclose expects resource, resource\\|null given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Http/Stream.php
-    -
-      message: "#^Parameter \\#1 \\$exception_handler of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\ProductionExceptionHandler\\), 'handleException'\\) given\\.$#"
+      message: "#^Parameter \\#1 \\$(exception_handler|callback) of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\ProductionExceptionHandler\\), 'handleException'\\) given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Error/ProductionExceptionHandler.php
     -
-      message: "#^Parameter \\#1 \\$exception_handler of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\DebugExceptionHandler\\), 'handleException'\\) given\\.$#"
+      message: "#^Parameter \\#1 \\$(exception_handler|callback) of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\DebugExceptionHandler\\), 'handleException'\\) given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Error/DebugExceptionHandler.php
     -
@@ -313,21 +251,13 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/DependencyInjection/ServiceProviderRegistry.php
     -
-      message: "#^Parameter \\#1 \\$name of class ReflectionFunction constructor expects Closure\\|string, callable\\(\\)\\: mixed given\\.$#"
+      message: "#^Parameter \\#1 \\$(name|function) of class ReflectionFunction constructor expects Closure\\|string, callable\\(\\)\\: mixed given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/DependencyInjection/ServiceProviderCompilationPass.php
     -
       message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\DBAL\\\\DriverManager\\:\\:getConnection\\(\\)$#"
       count: 1
       path: typo3/sysext/core/Classes/Database/ConnectionPool.php
-    -
-      message: "#^Parameter \\#2 \\$algo of function password_hash expects string\\|null, int\\|string\\|null given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Crypto/PasswordHashing/AbstractArgon2PasswordHash.php
-    -
-      message: "#^Parameter \\#2 \\$algo of function password_needs_rehash expects string\\|null, int\\|string\\|null given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Crypto/PasswordHashing/AbstractArgon2PasswordHash.php
     -
       message: "#^Parameter \\#1 \\$manifest of method TYPO3\\\\CMS\\\\Core\\\\Core\\\\ClassLoadingInformationGenerator\\:\\:getAutoloadSectionFromManifest\\(\\) expects stdClass, object given\\.$#"
       count: 2
