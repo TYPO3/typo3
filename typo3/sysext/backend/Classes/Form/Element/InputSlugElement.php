@@ -106,8 +106,8 @@ class InputSlugElement extends AbstractFormElement
         $toggleButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleSlugExplanation');
         $recreateButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.recreateSlugExplanation');
 
-        $successMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.success.' . ($table === 'pages' ? 'page' : 'record')), $baseUrl);
-        $errorMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.error'), $baseUrl);
+        $successMessage = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.success.' . ($table === 'pages' ? 'page' : 'record'));
+        $errorMessage = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.error');
 
         $thisSlugId = 't3js-form-field-slug-id' . StringUtility::getUniqueId();
         $mainFieldHtml = [];
@@ -158,8 +158,8 @@ class InputSlugElement extends AbstractFormElement
             $mainFieldHtml[] =      '</div>';
         }
         $mainFieldHtml[] =          '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] =              '<span class="t3js-form-proposal-accepted hidden label label-success">' . htmlspecialchars($successMessage) . '<span>/abc/</span></span>';
-        $mainFieldHtml[] =              '<span class="t3js-form-proposal-different hidden label label-warning">' . htmlspecialchars($errorMessage) . '<span>/abc/</span></span>';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-accepted hidden d-inline-block bg-success mt-2 p-1 ps-2 pe-2 lh-base">' . sprintf(htmlspecialchars($successMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>') . '</span>';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-different hidden d-inline-block bg-warning mt-2 p-1 ps-2 pe-2 lh-base">' . sprintf(htmlspecialchars($errorMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>') . '</span>';
         $mainFieldHtml[] =              $fieldWizardHtml;
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
