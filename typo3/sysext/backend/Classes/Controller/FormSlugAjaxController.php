@@ -137,7 +137,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
         }
 
         return new JsonResponse([
-            'hasConflicts' => !$mode && $hasConflict,
+            'hasConflicts' => $hasConflict,
             'manual' => $values['manual'] ?? '',
             'proposal' => $proposal,
         ]);
