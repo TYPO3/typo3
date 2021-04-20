@@ -358,8 +358,9 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
   }
 
   public isInSameParentNode(activeHoveredNode: TreeNode, targetNode: TreeNode): boolean {
-    return activeHoveredNode.parentsStateIdentifier[0] == targetNode.parentsStateIdentifier[0]
-      || activeHoveredNode.parentsStateIdentifier[0] == targetNode.stateIdentifier;
+    return activeHoveredNode.stateIdentifier == targetNode.stateIdentifier
+      || activeHoveredNode.parentsStateIdentifier[0] == targetNode.stateIdentifier
+      || targetNode.parentsStateIdentifier.includes(activeHoveredNode.stateIdentifier);
   }
 
   public dragEnd(event: D3DragEvent<any, any, any>): boolean {
