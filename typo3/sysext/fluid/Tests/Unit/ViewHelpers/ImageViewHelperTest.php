@@ -52,10 +52,11 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
     public function getInvalidArguments()
     {
         return [
-            [['image' => null]],
-            [['src' => null]],
-            [['src' => '']],
-            [['src' => 'something', 'image' => 'something']],
+            [['image' => null], 1382284106],
+            [['src' => null], 1382284106],
+            [['src' => ''], 1382284106],
+            [['src' => 'something', 'image' => 'something'], 1382284106],
+            [['src' => 'something', 'fileExtension' => 'dummy'], 1618989190],
         ];
     }
 
@@ -63,13 +64,14 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
      * @test
      * @dataProvider getInvalidArguments
      * @param array $arguments
+     * @param int $expectedExceptionCode
      */
-    public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments)
+    public function renderMethodThrowsExceptionOnInvalidArguments(array $arguments, int $expectedExceptionCode)
     {
         $this->setArgumentsUnderTest($this->viewHelper, $arguments);
 
         $this->expectException(Exception::class);
-        $this->expectExceptionCode(1382284106);
+        $this->expectExceptionCode($expectedExceptionCode);
 
         $this->viewHelper->render();
     }

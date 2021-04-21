@@ -128,6 +128,10 @@ class ImageViewHelper extends AbstractViewHelper
             throw new Exception('You must either specify a string src or a File object.', 1460976233);
         }
 
+        if ((string)$arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$arguments['fileExtension'])) {
+            throw new Exception('The extension ' . $arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1618992262);
+        }
+
         // A URL was given as src, this is kept as is
         if ($src !== '' && preg_match('/^(https?:)?\/\//', $src)) {
             return $src;
