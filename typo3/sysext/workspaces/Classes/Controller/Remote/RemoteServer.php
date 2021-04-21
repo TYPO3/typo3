@@ -209,18 +209,18 @@ class RemoteServer
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
-                    $versionRecord[$fieldName] = BackendUtility::getProcessedValue(
+                    $newOrDeleteRecord[$fieldName] = BackendUtility::getProcessedValue(
                         $parameter->table,
                         $fieldName,
-                        $versionRecord[$fieldName],
+                        $liveRecord[$fieldName], // Both (live and version) values are the same
                         0,
                         true,
                         false,
-                        $versionRecord['uid']
+                        $liveRecord['uid'] // Relations of new/delete placeholder do always contain the live uid
                     ) ?? '';
 
                     // Don't add empty fields
-                    if ($versionRecord[$fieldName] === '') {
+                    if ($newOrDeleteRecord[$fieldName] === '') {
                         continue;
                     }
 
@@ -228,23 +228,15 @@ class RemoteServer
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $versionState->equals(VersionState::NEW_PLACEHOLDER_VERSION)
-                            ? $diffUtility->makeDiffDisplay('', $versionRecord[$fieldName])
-                            : $diffUtility->makeDiffDisplay($versionRecord[$fieldName], '')
+                            ? $diffUtility->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
+                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], '')
                     ];
 
                     // Generally not needed by Core, but let's make it available for further processing in hooks
                     $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => BackendUtility::getProcessedValue(
-                            $parameter->table,
-                            $fieldName,
-                            $liveReturnArray[$fieldName],
-                            0,
-                            true,
-                            false,
-                            $liveReturnArray['uid']
-                        )
+                        'content' => $newOrDeleteRecord[$fieldName]
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
