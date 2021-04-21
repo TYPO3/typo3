@@ -25,6 +25,7 @@ import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import {Tooltip as BootstrapTooltip} from 'bootstrap';
 
 export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, any, any>;
 export type TreeNodeSelection = d3selection.Selection<d3selection.BaseType, TreeNode, any, any>;
@@ -131,6 +132,8 @@ export class SvgTree extends LitElement {
   protected networkErrorTitle: string = top.TYPO3.lang.tree_networkError;
   protected networkErrorMessage: string = top.TYPO3.lang.tree_networkErrorDescription;
 
+  protected tooltipOptions: Partial<BootstrapTooltip.Options> = {};
+
   /**
    * Initializes the tree component - created basic markup, loads and renders data
    * @todo declare private
@@ -148,6 +151,13 @@ export class SvgTree extends LitElement {
     this.linksContainer = this.container.select('.links') as TreeWrapperSelection<SVGGElement>;
     this.nodesContainer = this.container.select('.nodes') as TreeWrapperSelection<SVGGElement>;
     this.iconsContainer = this.svg.select('defs') as TreeWrapperSelection<SVGGElement>;
+
+    this.tooltipOptions = {
+      delay: 50,
+      trigger: 'hover',
+      placement: 'right',
+      container: '#' + this.id,
+    }
 
     this.updateScrollPosition();
     this.loadData();
@@ -1043,14 +1053,7 @@ export class SvgTree extends LitElement {
         .attr('class', 'node-icon-locked');
     }
 
-    Tooltip.initialize('[data-bs-toggle="tooltip"]', {
-      delay: {
-        'show': 50,
-        'hide': 50
-      },
-      trigger: 'hover',
-      placement: 'right'
-    });
+    Tooltip.initialize('[data-bs-toggle="tooltip"]', this.tooltipOptions);
 
     this.appendTextElement(nodeEnter);
     return nodes.merge(nodeEnter);
@@ -1061,8 +1064,10 @@ export class SvgTree extends LitElement {
   private updateScrollPosition(): void {
     this.viewportHeight = this.getBoundingClientRect().height;
     this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
-    // disable tooltips when scrolling
-    Tooltip.hide(this.querySelectorAll('[data-bs-toggle=tooltip]'));
+    // wait for the tooltip to appear and disable tooltips when scrolling
+    setTimeout(() => {
+      Tooltip.hide(this.querySelectorAll('.bs-tooltip-end'));
+    }, <number>this.tooltipOptions.delay)
   }
 
   /**
@@ -1087,6 +1092,7 @@ export class SvgTree extends LitElement {
       elementNodeAction.attr('fill', elementNodeBg.style('fill'));
     }
   }
+
   /**
    * node background events
    */
