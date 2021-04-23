@@ -1,0 +1,22 @@
+<p class="lead">
+    <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_explanation" />
+</p>
+
+<f:for each="{statusCollection}" as="statuses" key="title">
+    <h2>{title}</h2>
+    <table class="table table-striped table-hover">
+        <tbody>
+            <f:for each="{statuses}" as="status">
+                <tr>
+                    <td class="{severityClassMapping.{status.severity}} col-6">
+                        {status.title}
+                    </td>
+                    <td class="{severityClassMapping.{status.severity}} col-6">
+                        {status.value}<br />
+                        {status.message -> f:format.raw()}
+                    </td>
+                </tr>
+            </f:for>
+        </tbody>
+    </table>
+</f:for>

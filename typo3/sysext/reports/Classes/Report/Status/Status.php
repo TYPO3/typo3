@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
@@ -52,14 +53,10 @@ class Status implements RequestAwareReportInterface
      */
     public function getReport(ServerRequestInterface $request = null)
     {
-        $content = '';
         $status = $this->getSystemStatus($request);
-        $highestSeverity = $this->getHighestSeverity($status);
-        // Updating the registry
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-        $content .= '<p class="lead">' . $this->getLanguageService()->getLL('status_report_explanation') . '</p>';
-        return $content . $this->renderStatus($status);
+        $registry->set('tx_reports', 'status.highestSeverity', $this->getHighestSeverity($status));
+        return $this->renderStatus($status);
     }
 
     /**
@@ -153,44 +150,28 @@ class Status implements RequestAwareReportInterface
      */
     protected function renderStatus(array $statusCollection)
     {
-        $content = '';
-        $template = '
-			<tr>
-				<td class="###CLASS### col-6">###HEADER###</td>
-				<td class="###CLASS### col-6">###STATUS###<br>###CONTENT###</td>
-			</tr>
-		';
-        $statuses = $this->sortStatusProviders($statusCollection);
-        $id = 0;
-        foreach ($statuses as $provider => $providerStatus) {
-            $providerState = $this->sortStatuses($providerStatus);
-            $id++;
-            $classes = [
+        // Apply sorting to collection and the providers
+        $statusCollection = $this->sortStatusProviders($statusCollection);
+        foreach ($statusCollection as &$statuses) {
+            $statuses = $this->sortStatuses($statuses);
+        }
+        unset($statuses);
+
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:reports/Resources/Private/Templates/StatusReport.html'
+        ));
+
+        return $view->assignMultiple([
+            'statusCollection' => $statusCollection,
+            'severityClassMapping' => [
                 ReportStatus::NOTICE => 'notice',
                 ReportStatus::INFO => 'info',
                 ReportStatus::OK => 'success',
                 ReportStatus::WARNING => 'warning',
                 ReportStatus::ERROR => 'danger'
-            ];
-            $messages = '';
-            /** @var ReportStatus $status */
-            foreach ($providerState as $status) {
-                $severity = $status->getSeverity();
-                $messages .= strtr($template, [
-                    '###CLASS###' => $classes[$severity],
-                    '###HEADER###' => $status->getTitle(),
-                    '###STATUS###' => $status->getValue(),
-                    '###CONTENT###' => $status->getMessage()
-                ]);
-            }
-            $header = '<h2>' . $provider . '</h2>';
-            $table = '<table class="table table-striped table-hover">';
-            $table .= '<tbody>' . $messages . '</tbody>';
-            $table .= '</table>';
-
-            $content .= $header . $table;
-        }
-        return $content;
+            ]
+        ])->render();
     }
 
     /**
