@@ -24,9 +24,10 @@ define(
     'TYPO3/CMS/Backend/Notification',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/Tooltip',
-    'TYPO3/CMS/Backend/Enum/KeyTypes'
+    'TYPO3/CMS/Backend/Enum/KeyTypes',
+    'TYPO3/CMS/Core/SecurityUtility'
   ],
-  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
+  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes, SecurityUtility) {
     'use strict';
 
     /**
@@ -686,7 +687,7 @@ define(
           })
           .attr('transform', this.getNodeTransform)
           .select('.node-name')
-          .text(this.getNodeLabel);
+          .html(function(node) { return this.getNodeLabel(node); }.bind(this));
 
         nodes
           .select('.chevron')
@@ -1074,7 +1075,9 @@ define(
        * @returns {String}
        */
       getNodeLabel: function(node) {
-        return (node.prefix || '') + node.name + (node.suffix || '');
+        var label = (node.prefix || '') + node.name + (node.suffix || '');
+        var sec = new SecurityUtility();
+        return sec.encodeHtml(label);
       },
 
       /**

@@ -218,6 +218,16 @@ define(['jquery',
       });
     };
 
+    PageTree.prototype.getNodeLabel = function(node) {
+      var _this = this;
+      var label = _super_.getNodeLabel(node);
+      if (_this.searchQuery) {
+        var regexp = new RegExp(_this.searchQuery, 'gi');
+        label = label.replace(regexp, '<tspan class="node-highlight-text">$&</tspan>');
+      }
+      return label;
+    }
+
     /**
      * Observer for the selectedNode event
      *
