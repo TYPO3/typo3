@@ -106,7 +106,7 @@ class PageTreeFilterCest
         $I->canSee('elements group', $this->inPageTree);
         $I->canSee('inline mngroup', $this->inPageTree);
 
-        $I->clickWithRightButton('//*[text()=\'inline mngroup\']');
+        $I->clickWithRightButton('//*[text()=\'inline mn\']');
 
         $I->canSeeElement('#contentMenu0');
         $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
