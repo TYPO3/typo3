@@ -3204,14 +3204,14 @@ class BackendUtility
                 ->fetchColumn(0);
         }
 
-        if ($count && $msg) {
+        if ($count !== null && $msg !== '') {
             return sprintf($msg, $count);
         }
 
-        if ($count) {
-            return $msg ? sprintf($msg, $count) : $count;
+        if ($count !== null) {
+            return (string)$count;
         }
-        return $msg ? '' : 0;
+        return $msg !== '' ? '' : '0';
     }
 
     /*******************************************

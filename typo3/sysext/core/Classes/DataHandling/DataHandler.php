@@ -4592,7 +4592,10 @@ class DataHandler implements LoggerAwareInterface
                     continue;
                 }
                 $item['id'] = $this->localize($item['table'], $item['id'], $language);
-                $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+
+                if (is_int($item['id'])) {
+                    $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+                }
                 $dbAnalysisCurrent->itemArray[] = $item;
             }
         } elseif (!empty($ids)) {
@@ -4605,7 +4608,9 @@ class DataHandler implements LoggerAwareInterface
                     continue;
                 }
                 $item['id'] = $this->localize($item['table'], $item['id'], $language);
-                $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+                if (is_int($item['id'])) {
+                    $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+                }
                 $dbAnalysisCurrent->itemArray[] = $item;
             }
         }

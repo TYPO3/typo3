@@ -42,11 +42,6 @@ if (PHP_MAJOR_VERSION === 8) {
             'count' => 6,
         ],
         [
-            'message' => '#^Parameter \\#[1-4]{1} \\$[a-z]* of function [a-z_]* expects XmlParser, resource\\|XmlParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
-            'count' => 9,
-        ],
-        [
             'message' => '#^Parameter \\#1 \\$semaphore of function sem_release expects SysvSemaphore, resource\\|SysvSemaphore given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/core/Classes/Locking/SemaphoreLockStrategy.php',
             'count' => 1,
@@ -60,7 +55,32 @@ if (PHP_MAJOR_VERSION === 8) {
             'message' => '#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\|false given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
             'count' => 1
-        ]
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_parse expects XMLParser, resource given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'count' => 1
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_parser_free expects XMLParser, resource given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'count' => 1
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_parser_set_option expects XMLParser, resource given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'count' => 3
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_set_character_data_handler expects XMLParser, resource given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'count' => 1
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_set_element_handler expects XMLParser, resource given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'count' => 1
+        ],
     ];
 }
 

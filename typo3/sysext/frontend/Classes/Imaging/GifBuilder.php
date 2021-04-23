@@ -244,9 +244,9 @@ class GifBuilder extends GraphicalFunctions
             }
             // Calculate offsets on elements
             $this->setup['XY'] = $this->calcOffset($this->setup['XY']);
-            $this->setup['offset'] = $this->cObj->stdWrapValue('offset', $this->setup ?? []);
+            $this->setup['offset'] = (string)$this->cObj->stdWrapValue('offset', $this->setup ?? []);
             $this->setup['offset'] = $this->calcOffset($this->setup['offset']);
-            $this->setup['workArea'] = $this->cObj->stdWrapValue('workArea', $this->setup ?? []);
+            $this->setup['workArea'] = (string)$this->cObj->stdWrapValue('workArea', $this->setup ?? []);
             $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];

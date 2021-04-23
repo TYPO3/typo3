@@ -118,16 +118,17 @@ class RenderFormValueViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $properties = $element->getProperties();
-        if (isset($properties['options']) && is_array($properties['options'])) {
+        $options = $properties['options'] ?? null;
+        if ($options !== null && is_array($options)) {
             $properties['options'] = TranslateElementPropertyViewHelper::renderStatic(
                 ['element' => $element, 'property' => 'options'],
                 $renderChildrenClosure,
                 $renderingContext
             );
             if (is_array($value)) {
-                return self::mapValuesToOptions($value, $properties['options']);
+                return self::mapValuesToOptions($value, $options);
             }
-            return self::mapValueToOption($value, $properties['options']);
+            return self::mapValueToOption($value, $options);
         }
         if (is_object($value)) {
             return self::processObject($element, $value);

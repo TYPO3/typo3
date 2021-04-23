@@ -26,12 +26,15 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  */
 class ExtensionXmlPullParser extends AbstractExtensionXmlParser
 {
+    protected \XMLReader $xmlReader;
+
     /**
      * Class constructor.
      */
     public function __construct()
     {
         $this->requiredPhpExtensions = 'xmlreader';
+        $this->createParser();
     }
 
     /**
@@ -39,7 +42,7 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
      */
     protected function createParser()
     {
-        $this->objXml = new \XMLReader();
+        $this->xmlReader = new \XMLReader();
     }
 
     /**
@@ -51,27 +54,24 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
     public function parseXml($file)
     {
         $this->createParser();
-        if (!(is_object($this->objXml) && get_class($this->objXml) === \XMLReader::class)) {
-            throw new ExtensionManagerException('Unable to create XML parser.', 1342640540);
-        }
-        if ($this->objXml->open($file, 'utf-8') === false) {
+        if ($this->xmlReader->open($file, 'utf-8') === false) {
             throw new ExtensionManagerException(
                 sprintf('Unable to open file resource %s.', $file),
                 1476108651
             );
         }
-        while ($this->objXml->read()) {
-            if ($this->objXml->nodeType == \XMLReader::ELEMENT) {
-                $this->startElement($this->objXml->name);
+        while ($this->xmlReader->read()) {
+            if ($this->xmlReader->nodeType == \XMLReader::ELEMENT) {
+                $this->startElement($this->xmlReader->name);
             } else {
-                if ($this->objXml->nodeType == \XMLReader::END_ELEMENT) {
-                    $this->endElement($this->objXml->name);
+                if ($this->xmlReader->nodeType == \XMLReader::END_ELEMENT) {
+                    $this->endElement($this->xmlReader->name);
                 } else {
                     continue;
                 }
             }
         }
-        $this->objXml->close();
+        $this->xmlReader->close();
     }
 
     /**
@@ -83,10 +83,10 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
     {
         switch ($elementName) {
             case 'extension':
-                $this->extensionKey = $this->objXml->getAttribute('extensionkey');
+                $this->extensionKey = $this->xmlReader->getAttribute('extensionkey');
                 break;
             case 'version':
-                $this->version = $this->objXml->getAttribute('version');
+                $this->version = $this->xmlReader->getAttribute('version');
                 break;
             case 'downloadcounter':
                 // downloadcounter could be a child node of
@@ -173,13 +173,13 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
     protected function getElementValue(&$elementName)
     {
         $value = null;
-        if (!$this->objXml->isEmptyElement) {
+        if (!$this->xmlReader->isEmptyElement) {
             $value = '';
-            while ($this->objXml->read()) {
-                if ($this->objXml->nodeType == \XMLReader::TEXT || $this->objXml->nodeType == \XMLReader::CDATA || $this->objXml->nodeType == \XMLReader::WHITESPACE || $this->objXml->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
-                    $value .= $this->objXml->value;
+            while ($this->xmlReader->read()) {
+                if ($this->xmlReader->nodeType == \XMLReader::TEXT || $this->xmlReader->nodeType == \XMLReader::CDATA || $this->xmlReader->nodeType == \XMLReader::WHITESPACE || $this->xmlReader->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
+                    $value .= $this->xmlReader->value;
                 } else {
-                    if ($this->objXml->nodeType == \XMLReader::END_ELEMENT && $this->objXml->name === $elementName) {
+                    if ($this->xmlReader->nodeType == \XMLReader::END_ELEMENT && $this->xmlReader->name === $elementName) {
                         break;
                     }
                 }

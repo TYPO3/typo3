@@ -47,7 +47,7 @@ parameters:
       message: '#Parameter \$event of method [\w\\]+::\w+\(\) has invalid typehint type Composer\\Script\\Event\.#'
       path: %currentWorkingDirectory%/typo3/sysext/*/Classes/Composer/*
     -
-      message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\:\\:__default\\.$#"
+      message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\)\\:\\:__default\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Type/Enumeration.php
     -
@@ -179,10 +179,6 @@ parameters:
       count: 1
       path: typo3/sysext/install/Classes/Service/SessionService.php
     -
-      message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\DBAL\\\\DriverManager\\:\\:getConnection\\(\\)$#"
-      count: 4
-      path: typo3/sysext/install/Classes/Controller/InstallerController.php
-    -
       message: "#^Parameter \\#1 \\$params of static method Doctrine\\\\DBAL\\\\DriverManager\\:\\:getConnection\\(\\) expects array\\(\\?'wrapperClass' \\=\\> class\\-string\\<Doctrine\\\\DBAL\\\\Connection\\>\\), array\\<string, string\\>&nonEmpty given\\.$#"
       count: 1
       path: typo3/sysext/install/Classes/Controller/InstallerController.php
@@ -239,14 +235,6 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
     -
-      message: "#^Parameter \\#1 \\$(exception_handler|callback) of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\ProductionExceptionHandler\\), 'handleException'\\) given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Error/ProductionExceptionHandler.php
-    -
-      message: "#^Parameter \\#1 \\$(exception_handler|callback) of function set_exception_handler expects \\(callable\\(Throwable\\)\\: void\\)\\|null, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Error\\\\DebugExceptionHandler\\), 'handleException'\\) given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Error/DebugExceptionHandler.php
-    -
       message: "#^Parameter \\#2 \\$package of method TYPO3\\\\CMS\\\\Core\\\\DependencyInjection\\\\ServiceProviderRegistry\\:\\:create\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\|null, TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageInterface given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/DependencyInjection/ServiceProviderRegistry.php
@@ -254,10 +242,6 @@ parameters:
       message: "#^Parameter \\#1 \\$(name|function) of class ReflectionFunction constructor expects Closure\\|string, callable\\(\\)\\: mixed given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/DependencyInjection/ServiceProviderCompilationPass.php
-    -
-      message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\DBAL\\\\DriverManager\\:\\:getConnection\\(\\)$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/ConnectionPool.php
     -
       message: "#^Parameter \\#1 \\$manifest of method TYPO3\\\\CMS\\\\Core\\\\Core\\\\ClassLoadingInformationGenerator\\:\\:getAutoloadSectionFromManifest\\(\\) expects stdClass, object given\\.$#"
       count: 2

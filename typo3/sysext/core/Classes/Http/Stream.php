@@ -344,8 +344,9 @@ class Stream implements StreamInterface
     {
         $error = null;
         if (!is_resource($resource) && is_string($resource)) {
-            set_error_handler(function ($e) use (&$error) {
+            set_error_handler(function ($e) use (&$error): bool {
                 $error = $e;
+                return true;
             }, E_WARNING);
             $resource = fopen($resource, $mode);
             restore_error_handler();

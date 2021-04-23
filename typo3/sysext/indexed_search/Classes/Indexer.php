@@ -383,7 +383,7 @@ class Indexer
     {
         // divide head from body ( u-ouh :) )
         $contentArr = $this->defaultContentArray;
-        $contentArr['body'] = stristr($content, '<body');
+        $contentArr['body'] = stristr($content, '<body') ?: '';
         $headPart = substr($content, 0, -strlen($contentArr['body']));
         // get title
         $this->embracingTags($headPart, 'TITLE', $contentArr['title'], $dummy2, $dummy);

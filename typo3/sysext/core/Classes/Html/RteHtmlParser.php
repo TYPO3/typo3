@@ -398,14 +398,16 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             } else {
                 // NON-block:
                 if (trim($blockSplit[$k]) !== '') {
-                    $blockSplit[$k] = str_replace('<hr/>', '<hr />', $blockSplit[$k]);
+                    $string = $blockSplit[$k];
+                    $string = str_replace('<hr/>', '<hr />', $string);
                     // Remove linebreaks preceding hr tags
-                    $blockSplit[$k] = preg_replace('/[' . LF . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $blockSplit[$k]);
+                    $string = preg_replace('/[' . LF . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $string) ?? '';
                     // Remove linebreaks following hr tags
-                    $blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . ']+/', '<$1$2/>', $blockSplit[$k]);
+                    $string = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . ']+/', '<$1$2/>', $string) ?? '';
                     // Replace other linebreaks with space
-                    $blockSplit[$k] = preg_replace('/[' . LF . ']+/', ' ', $blockSplit[$k]);
-                    $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]);
+                    $string = preg_replace('/[' . LF . ']+/', ' ', $string);
+                    /** @var string $string */
+                    $blockSplit[$k] = $this->divideIntoLines($string);
                 } else {
                     unset($blockSplit[$k]);
                 }

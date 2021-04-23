@@ -135,9 +135,10 @@ class TreeController
                 return false;
             });
             $positionFound = false;
-            $siblingsBeforeInSameDepth = array_filter($siblings, function ($itemInArray) use ($stateIdentifier, &$positionFound) {
+            $siblingsBeforeInSameDepth = array_filter($siblings, function ($itemInArray) use ($stateIdentifier, &$positionFound): bool {
                 if ($itemInArray['stateIdentifier'] === $stateIdentifier) {
                     $positionFound = true;
+                    return false;
                 }
                 return !$positionFound;
             });

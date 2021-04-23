@@ -31,6 +31,19 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 class ExtensionXmlPushParser extends AbstractExtensionXmlParser
 {
     /**
+     * Property to store the xml parser resource in when run with PHP <= 7.4
+     *
+     * @var resource|null
+     * @deprecated will be removed as soon as the minimum version of TYPO3 is 8.0
+     */
+    protected $legacyXmlParserResource;
+
+    /**
+     * Property to store the xml parser resource in when run with PHP >= 8.0
+     */
+    protected ?\XMLParser $xmlParser = null;
+
+    /**
      * Keeps current data of element to process.
      *
      * @var string
@@ -43,6 +56,7 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
     public function __construct()
     {
         $this->requiredPhpExtensions = 'xml';
+        $this->createParser();
     }
 
     /**
@@ -50,8 +64,13 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
      */
     protected function createParser()
     {
-        $this->objXml = xml_parser_create();
-        xml_set_object($this->objXml, $this);
+        if (PHP_MAJOR_VERSION >= 8) {
+            $this->xmlParser = xml_parser_create();
+            xml_set_object($this->xmlParser, $this);
+        } else {
+            $this->legacyXmlParserResource = xml_parser_create();
+            xml_set_object($this->legacyXmlParserResource, $this);
+        }
     }
 
     /**
@@ -63,32 +82,92 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
     public function parseXml($file)
     {
         $this->createParser();
-        if (!is_resource($this->objXml) && !$this->objXml instanceof \XmlParser) {
-            throw new ExtensionManagerException('Unable to create XML parser.', 1342640663);
-        }
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = null;
         if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+            $this->parseWithLegacyResource($file);
+            return;
         }
+
+        if ($this->xmlParser === null) {
+            throw $this->createUnableToCreateXmlParseException();
+        }
+
+        /** @var \XMLParser $parser */
+        $parser = $this->xmlParser;
+
         // keep original character case of XML document
-        xml_parser_set_option($this->objXml, XML_OPTION_CASE_FOLDING, 0);
-        xml_parser_set_option($this->objXml, XML_OPTION_SKIP_WHITE, 0);
-        xml_parser_set_option($this->objXml, XML_OPTION_TARGET_ENCODING, 'utf-8');
-        xml_set_element_handler($this->objXml, [$this, 'startElement'], [$this, 'endElement']);
-        xml_set_character_data_handler($this->objXml, [$this, 'characterData']);
+        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
+        xml_set_element_handler($parser, [$this, 'startElement'], [$this, 'endElement']);
+        xml_set_character_data_handler($parser, [$this, 'characterData']);
         if (!($fp = fopen($file, 'r'))) {
-            throw new ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342640689);
+            throw $this->createUnableToOpenFileResourceException($file);
         }
         while ($data = fread($fp, 4096)) {
-            if (!xml_parse($this->objXml, $data, feof($fp))) {
-                throw new ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), $file), 1342640703);
+            if (!xml_parse($parser, $data, feof($fp))) {
+                throw $this->createXmlErrorException($parser, $file);
             }
         }
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
+        xml_parser_free($parser);
+    }
+
+    /**
+     * @throws ExtensionManagerException
+     * @internal
+     */
+    private function parseWithLegacyResource(string $file)
+    {
+        if ($this->legacyXmlParserResource === null) {
+            throw $this->createUnableToCreateXmlParseException();
         }
-        xml_parser_free($this->objXml);
+
+        /** @var resource $parser */
+        $parser = $this->legacyXmlParserResource;
+
+        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
+        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+
+        // keep original character case of XML document
+        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
+        xml_set_element_handler($parser, [$this, 'startElement'], [$this, 'endElement']);
+        xml_set_character_data_handler($parser, [$this, 'characterData']);
+        if (!($fp = fopen($file, 'r'))) {
+            throw $this->createUnableToOpenFileResourceException($file);
+        }
+        while ($data = fread($fp, 4096)) {
+            if (!xml_parse($parser, $data, feof($fp))) {
+                throw $this->createXmlErrorException($parser, $file);
+            }
+        }
+
+        libxml_disable_entity_loader($previousValueOfEntityLoader);
+
+        xml_parser_free($parser);
+    }
+
+    private function createUnableToCreateXmlParseException(): ExtensionManagerException
+    {
+        return new ExtensionManagerException('Unable to create XML parser.', 1342640663);
+    }
+
+    private function createUnableToOpenFileResourceException(string $file): ExtensionManagerException
+    {
+        return new ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342640689);
+    }
+
+    private function createXmlErrorException($parser, string $file): ExtensionManagerException
+    {
+        return new ExtensionManagerException(
+            sprintf(
+                'XML error %s in line %u of file resource %s.',
+                xml_error_string(xml_get_error_code($parser)),
+                xml_get_current_line_number($parser),
+                $file
+            ),
+            1342640703
+        );
     }
 
     /**

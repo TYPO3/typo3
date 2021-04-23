@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -135,6 +136,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $severity = ReportStatus::OK;
         $failedConnections = [];
         $defaultMemcachedPort = ini_get('memcache.default_port');
+        $defaultMemcachedPort = MathUtility::canBeInterpretedAsInteger($defaultMemcachedPort) ? (int)$defaultMemcachedPort : 11211;
         $memcachedServers = $this->getConfiguredMemcachedServers();
         if (function_exists('memcache_connect') && is_array($memcachedServers)) {
             foreach ($memcachedServers as $testServer) {
@@ -148,6 +150,7 @@ class ConfigurationStatus implements StatusProviderInterface
                     }
                     if (strpos($testServer, ':') !== false) {
                         [$host, $port] = explode(':', $testServer, 2);
+                        $port = (int)$port;
                     } else {
                         $host = $testServer;
                         $port = $defaultMemcachedPort;

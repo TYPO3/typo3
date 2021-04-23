@@ -236,7 +236,7 @@ abstract class AbstractMenuContentObject
             $this->tmpl = $tmpl;
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
-            $this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
+            $this->conf['alwaysActivePIDlist'] = (string)$this->parent_cObj->stdWrapValue('alwaysActivePIDlist', $this->conf ?? []);
             if (trim($this->conf['alwaysActivePIDlist'])) {
                 $this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
             }

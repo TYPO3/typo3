@@ -22,13 +22,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 abstract class AbstractExtensionXmlParser implements \SplSubject
 {
     /**
-     * Keeps XML parser instance.
-     *
-     * @var mixed
-     */
-    protected $objXml;
-
-    /**
      * Keeps name of required PHP extension
      * for this class to work properly.
      *
