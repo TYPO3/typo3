@@ -34,7 +34,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:beUser_email',
             'table' => 'be_users',
             'csh' => 'beUser_email',
-            'max' => 80
+            'max' => 255
         ],
         'emailMeAtLogin' => [
             'type' => 'check',
