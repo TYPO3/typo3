@@ -279,7 +279,7 @@ class SetupModuleController
                 }
                 // Update the email address:
                 if ($be_user_data['email'] !== $backendUser->user['email']) {
-                    $backendUser->user['email'] = ($storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80));
+                    $backendUser->user['email'] = ($storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 255));
                 }
                 // Update the password:
                 if ($passwordIsConfirmed) {
