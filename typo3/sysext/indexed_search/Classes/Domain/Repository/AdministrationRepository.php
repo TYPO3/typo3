@@ -484,7 +484,7 @@ class AdministrationRepository
         ];
 
         if ($depth > 0) {
-            $tree->getTree((int)$pageId, $depth, '');
+            $tree->getTree((int)$pageId, $depth);
         }
 
         foreach ($tree->tree as $singleLine) {

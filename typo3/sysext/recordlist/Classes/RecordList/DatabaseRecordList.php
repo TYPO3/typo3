@@ -3006,7 +3006,7 @@ class DatabaseRecordList
             foreach ($allowedMounts as $allowedMount) {
                 $idList[] = $allowedMount;
                 if ($depth) {
-                    $tree->getTree($allowedMount, $depth, '');
+                    $tree->getTree($allowedMount, $depth);
                 }
                 $idList = array_merge($idList, $tree->ids);
             }

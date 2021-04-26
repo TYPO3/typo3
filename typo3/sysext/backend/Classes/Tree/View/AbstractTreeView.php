@@ -33,17 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractTreeView
 {
     // EXTERNAL, static:
-    // If set, the first element in the tree is always expanded.
-    /**
-     * @var bool
-     */
-    public $expandFirst = false;
-
-    // If set, then ALL items will be expanded, regardless of stored settings.
-    /**
-     * @var bool
-     */
-    public $expandAll = false;
 
     // Holds the current script to reload to.
     /**
@@ -51,36 +40,11 @@ abstract class AbstractTreeView
      */
     public $thisScript = '';
 
-    // Which HTML attribute to use: alt/title. See init().
-    /**
-     * @var string
-     */
-    public $titleAttrib = 'title';
-
-    /**
-     * @var bool
-     */
-    public $ext_showPathAboveMounts = false;
-
-    // If set, the id of the mounts will be added to the internal ids array
-    /**
-     * @var int
-     */
-    public $addSelfId = 0;
-
     // Used if the tree is made of records (not folders for ex.)
     /**
      * @var string
      */
     public $title = 'no title';
-
-    // If TRUE, a default title attribute showing the UID of the record is shown.
-    // This cannot be enabled by default because it will destroy many applications
-    // where another title attribute is in fact applied later.
-    /**
-     * @var bool
-     */
-    public $showDefaultTitleAttribute = false;
 
     /**
      * Needs to be initialized with $GLOBALS['BE_USER']
@@ -141,7 +105,25 @@ abstract class AbstractTreeView
      * @see addField()
      * @var array
      */
-    public $fieldArray = ['uid', 'pid', 'title', 'is_siteroot'];
+    public $fieldArray = [
+        'uid',
+        'pid',
+        'title',
+        'is_siteroot',
+        'doktype',
+        'nav_title',
+        'mount_pid',
+        'php_tree_stop',
+        't3ver_state',
+        'hidden',
+        'starttime',
+        'endtime',
+        'fe_group',
+        'module',
+        'extendToSubpages',
+        'nav_hide',
+        't3ver_wsid',
+    ];
 
     /**
      * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
@@ -150,27 +132,6 @@ abstract class AbstractTreeView
      * @var string
      */
     public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
-
-    /**
-     * Unique name for the tree.
-     * Used as key for storing the tree into the BE users settings.
-     * Used as key to pass parameters in links.
-     * MUST NOT contain underscore chars.
-     * etc.
-     *
-     * @var string
-     */
-    public $treeName = '';
-
-    /**
-     * A prefix for table cell id's which will be wrapped around an item.
-     * Can be used for highlighting by JavaScript.
-     * Needs to be unique if multiple trees are on one HTML page.
-     *
-     * @see printTree()
-     * @var string
-     */
-    public $domIdPrefix = 'row';
 
     /**
      * If 1, HTML code is also accumulated in ->tree array during rendering of the tree
@@ -213,13 +174,6 @@ abstract class AbstractTreeView
      * @var array
      */
     public $buffer_idH = [];
-
-    // For FOLDER trees:
-    // Special UIDs for folders (integer-hashes of paths)
-    /**
-     * @var array
-     */
-    public $specUIDmap = [];
 
     // For both types
     // Tree is accumulated in this variable
@@ -293,8 +247,6 @@ abstract class AbstractTreeView
             // Dummy
             $this->MOUNTS = [0 => 0];
         }
-        // Sets the tree name which is used to identify the tree, used for JavaScript and other things
-        $this->treeName = str_replace('_', '', $this->treeName ?: $this->table);
     }
 
     /**
@@ -342,9 +294,8 @@ abstract class AbstractTreeView
     public function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         if ($nextCount) {
-            $cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
             $bMark = $this->bank . '_' . $row['uid'];
-            return $this->PM_ATagWrap('', $cmd, $bMark, $isOpen);
+            return $this->PM_ATagWrap($bMark, $isOpen);
         }
         return '';
     }
@@ -352,35 +303,20 @@ abstract class AbstractTreeView
     /**
      * Wrap the plus/minus icon in a link
      *
-     * @param string $icon HTML string to wrap, probably an image tag.
-     * @param string $cmd Command for 'PM' get var
      * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
      * @param bool $isOpen
      * @return string Link-wrapped input string
      * @internal
      */
-    public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
+    public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
         if ($this->thisScript) {
             $anchor = $bMark ? '#' . $bMark : '';
             $name = $bMark ? ' name="' . $bMark . '"' : '';
-            $aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
+            $aUrl = $this->getThisScript() . $anchor;
             return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
         }
-        return $icon;
-    }
-
-    /**
-     * Wrapping the image tag, $icon, for the row, $row (except for mount points)
-     *
-     * @param string $icon The image tag for the icon
-     * @param array $row The row for the current element
-     * @return string The processed icon input value.
-     * @internal
-     */
-    public function wrapIcon($icon, $row)
-    {
-        return $icon;
+        return '';
     }
 
     /**
@@ -412,47 +348,7 @@ abstract class AbstractTreeView
      */
     public function expandNext($id)
     {
-        return !empty($this->stored[$this->bank][$id]) || $this->expandAll;
-    }
-
-    /**
-     * Get stored tree structure AND updating it if needed according to incoming PM GET var.
-     *
-     * @internal
-     */
-    public function initializePositionSaving()
-    {
-        // Get stored tree structure:
-        $this->stored = json_decode($this->BE_USER->uc['browseTrees'][$this->treeName], true);
-        // PM action
-        // (If a plus/minus icon has been clicked, the PM GET var is sent and we
-        // must update the stored positions in the tree):
-        // 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
-        $PM = explode('_', GeneralUtility::_GP('PM'));
-        if (count($PM) === 4 && $PM[3] == $this->treeName) {
-            if (isset($this->MOUNTS[$PM[0]])) {
-                // set
-                if ($PM[1]) {
-                    $this->stored[$PM[0]][$PM[2]] = 1;
-                    $this->savePosition();
-                } else {
-                    unset($this->stored[$PM[0]][$PM[2]]);
-                    $this->savePosition();
-                }
-            }
-        }
-    }
-
-    /**
-     * Saves the content of ->stored (keeps track of expanded positions in the tree)
-     * $this->treeName will be used as key for BE_USER->uc[] to store it in
-     *
-     * @internal
-     */
-    public function savePosition()
-    {
-        $this->BE_USER->uc['browseTrees'][$this->treeName] = json_encode($this->stored);
-        $this->BE_USER->writeUC();
+        return !empty($this->stored[$this->bank][$id]);
     }
 
     /******************************
@@ -469,7 +365,7 @@ abstract class AbstractTreeView
     public function getRootIcon($rec)
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $this->wrapIcon($iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render(), $rec);
+        return $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
     }
 
     /**
@@ -491,11 +387,10 @@ abstract class AbstractTreeView
                 return '';
             }
         }
-        $title = $this->showDefaultTitleAttribute ? htmlspecialchars('UID: ' . $row['uid']) : $this->getTitleAttrib($row);
+        $title = $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
-        $icon = '<span title="' . $title . '">' . $icon->render() . '</span>';
-        return $this->wrapIcon($icon, $row);
+        return '<span title="' . $title . '">' . $icon->render() . '</span>';
     }
 
     /**
@@ -518,22 +413,10 @@ abstract class AbstractTreeView
      *
      * @param array $row The input row array (where the key "title" is used for the title)
      * @return string The attribute value (is htmlspecialchared() already)
-     * @see wrapIcon()
      */
     public function getTitleAttrib($row)
     {
         return htmlspecialchars($row['title']);
-    }
-
-    /**
-     * Returns the id from the record (typ. uid)
-     *
-     * @param array $row Record array
-     * @return int The "uid" field value.
-     */
-    public function getId($row)
-    {
-        return $row['uid'];
     }
 
     /********************************
@@ -645,7 +528,7 @@ abstract class AbstractTreeView
         $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->BE_USER->workspace));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
         $count = $queryBuilder
                 ->count('uid')
                 ->from($this->table)
@@ -701,7 +584,7 @@ abstract class AbstractTreeView
         $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->BE_USER->workspace));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
         $queryBuilder
                 ->select(...$this->fieldArray)
                 ->from($this->table)
@@ -746,7 +629,7 @@ abstract class AbstractTreeView
     public function getDataNext(&$res)
     {
         while ($row = $res->fetch()) {
-            BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, true);
+            BackendUtility::workspaceOL($this->table, $row, $this->getBackendUser()->workspace, true);
             if (is_array($row)) {
                 break;
             }

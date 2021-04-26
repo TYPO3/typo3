@@ -98,7 +98,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         $tree->tree[] = ['row' => $pidToStart];
         $tree->buffer_idH = [];
         if ($depth > 0) {
-            $tree->getTree($pidToStart, $depth, '');
+            $tree->getTree($pidToStart, $depth);
         }
 
         $idH = [];

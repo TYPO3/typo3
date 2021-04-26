@@ -41,40 +41,24 @@ class ExportPageTreeView extends BrowseTreeView
      * Wrapping title from page tree.
      *
      * @param string $title Title to wrap
-     * @param string $row Item record
-     * @param int $bank Bank pointer (which mount point number)
      * @return string Wrapped title
      * @internal
      */
-    public function wrapTitle($title, $row, $bank = 0)
+    public function wrapTitle($title)
     {
         return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : htmlspecialchars($title);
     }
 
     /**
-     * Wrapping Plus/Minus icon
+     * Wrapping Plus/Minus icon, unused in Export Page Tree
      *
-     * @param string $icon Icon HTML
-     * @param mixed $cmd (See parent class)
      * @param mixed $bMark (See parent class)
      * @param bool $isOpen
-     * @return string Icon HTML
+     * @return string
      */
-    public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
+    public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
-        return $icon;
-    }
-
-    /**
-     * Wrapping Icon
-     *
-     * @param string $icon Icon HTML
-     * @param array $row Record row (page)
-     * @return string Icon HTML
-     */
-    public function wrapIcon($icon, $row)
-    {
-        return $icon;
+        return '';
     }
 
     /**
@@ -87,14 +71,14 @@ class ExportPageTreeView extends BrowseTreeView
     public function ext_tree($pid, $clause = '')
     {
         // Initialize:
-        $this->init(' AND ' . $this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW) . $clause);
+        $this->init(' AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW) . $clause);
         // Get stored tree structure:
-        $this->stored = json_decode($this->BE_USER->uc['browseTrees']['browsePages'], true);
+        $this->stored = json_decode($this->getBackendUser()->uc['browseTrees']['browsePages'], true);
         $treeArr = [];
         $idx = 0;
         // Set first:
         $this->bank = $idx;
-        $isOpen = $this->stored[$idx][$pid] || $this->expandFirst;
+        $isOpen = $this->stored[$idx][$pid];
         // save ids
         $curIds = $this->ids;
         $this->reset();
@@ -112,11 +96,7 @@ class ExportPageTreeView extends BrowseTreeView
         }
         $this->tree[] = ['HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen];
         if ($isOpen) {
-            // Set depth:
-            if ($this->addSelfId) {
-                $this->ids[] = $pid;
-            }
-            $this->getTree($pid, 999, '');
+            $this->getTree($pid);
             $idH = [];
             $idH[$pid]['uid'] = $pid;
             if (!empty($this->buffer_idH)) {
@@ -136,7 +116,7 @@ class ExportPageTreeView extends BrowseTreeView
      */
     public function printTree($treeArr = '')
     {
-        $titleLen = (int)$this->BE_USER->uc['titleLen'];
+        $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
         if (!is_array($treeArr)) {
             $treeArr = $this->tree;
         }
@@ -153,12 +133,12 @@ class ExportPageTreeView extends BrowseTreeView
                 $classAttr .= ' list-tree-control-open';
             }
 
-            $idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($treeItem['row']) . '_' . $treeItem['bank']);
+            $idAttr = htmlspecialchars('pages' . $treeItem['row']['uid'] . '_' . $treeItem['bank']);
             $out .= '
 				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
 					<span class="list-tree-group">
 						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
-						<span class="list-tree-title">' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>
+						<span class="list-tree-title">' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen)) . '</span>
 					</span>';
 
             if (!$treeItem['hasSub']) {

@@ -29,19 +29,6 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 class ElementBrowserPageTreeView extends BrowseTreeView
 {
     /**
-     * whether the page ID should be shown next to the title, activate through
-     * userTSconfig (options.pageTree.showPageIdWithTitle)
-     *
-     * @var bool
-     */
-    public $ext_showPageId = false;
-
-    /**
-     * @var bool
-     */
-    public $ext_pArrPages = true;
-
-    /**
      * @var LinkParameterProviderInterface
      */
     protected $linkParameterProvider;
@@ -70,10 +57,9 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      *
      * @param string $title Title, (must be ready for output, that means it must be htmlspecialchars()'ed).
      * @param array $v The record
-     * @param bool $ext_pArrPages (ignored)
      * @return string Wrapping title string.
      */
-    public function wrapTitle($title, $v, $ext_pArrPages = false)
+    public function wrapTitle($title, $v)
     {
         if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
             $url = GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => (int)$v['uid']]);
@@ -90,7 +76,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      */
     public function printTree($treeArr = '')
     {
-        $titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
+        $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
         if (!is_array($treeArr)) {
             $treeArr = $this->tree;
         }
@@ -99,11 +85,6 @@ class ElementBrowserPageTreeView extends BrowseTreeView
         // so we know how many we have to close when all children are done rendering
         $closeDepth = [];
         foreach ($treeArr as $treeItem) {
-            if ($treeItem['isMountPointPath']) {
-                $out .= '<li class="list-tree-path">' . $treeItem['title'] . '</li>';
-                continue;
-            }
-
             $classAttr = $treeItem['row']['_CSSCLASS'];
             if ($treeItem['isFirst']) {
                 $out .= '<ul class="list-tree">';
@@ -126,7 +107,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView
             $out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
 					<span class="list-tree-group' . $selected . '">
-						' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . '
+						' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row']) . '
 					</span>
 				';
             if (!$treeItem['hasSub']) {
@@ -165,33 +146,15 @@ class ElementBrowserPageTreeView extends BrowseTreeView
     /**
      * Wrap the plus/minus icon in a link
      *
-     * @param string $icon HTML string to wrap, probably an image tag.
-     * @param string $cmd Command for 'PM' get var
      * @param string $bMark If set, the link will have a name attribute (=$bMark)
      * @param bool $isOpen
      * @return string Link-wrapped input string
      */
-    public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = false)
+    public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
-        $urlParameters['PM'] = $cmd;
         return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed')
             . '" href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . '"' . htmlspecialchars($name) . '><i class="fa"></i></a>';
-    }
-
-    /**
-     * Wrapping the image tag, $icon, for the row, $row
-     *
-     * @param string $icon The image tag for the icon
-     * @param array $row The row for the current element
-     * @return string The processed icon input value.
-     */
-    public function wrapIcon($icon, $row)
-    {
-        if ($this->ext_showPageId) {
-            $icon .= '[' . $row['uid'] . ']&nbsp;';
-        }
-        return $icon;
     }
 }

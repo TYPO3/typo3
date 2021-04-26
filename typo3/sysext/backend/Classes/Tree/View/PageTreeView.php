@@ -23,43 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageTreeView extends AbstractTreeView
 {
     /**
-     * @var array
-     */
-    public $fieldArray = [
-        'uid',
-        'pid',
-        'is_siteroot',
-        'title',
-        'doktype',
-        'nav_title',
-        'mount_pid',
-        'php_tree_stop',
-        't3ver_state',
-        'hidden',
-        'starttime',
-        'endtime',
-        'fe_group',
-        'module',
-        'extendToSubpages',
-        'nav_hide'
-    ];
-
-    /**
-     * override to use this treeName
-     * @var string
-     */
-    public $treeName = 'pages';
-
-    /**
      * override to use this table
      * @var string
      */
     public $table = 'pages';
-
-    /**
-     * @var bool
-     */
-    public $ext_showNavTitle = false;
 
     /**
      * Init function
@@ -81,7 +48,7 @@ class PageTreeView extends AbstractTreeView
      */
     public function expandNext($id)
     {
-        return 1;
+        return true;
     }
 
     /**
@@ -103,17 +70,6 @@ class PageTreeView extends AbstractTreeView
     }
 
     /**
-     * Get stored tree structure AND updating it if needed according to incoming PM GET var.
-     * - Here we just set it to nothing since we want to just render the tree, nothing more.
-     *
-     * @internal
-     */
-    public function initializePositionSaving()
-    {
-        $this->stored = [];
-    }
-
-    /**
      * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
      * Do NOT htmlspecialchar the string from this function - has already been done.
      *
@@ -124,23 +80,15 @@ class PageTreeView extends AbstractTreeView
     public function getTitleStr($row, $titleLen = 30)
     {
         $lang = $this->getLanguageService();
-        if ($this->ext_showNavTitle && isset($row['nav_title']) && trim($row['nav_title']) !== '') {
-            $title = '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:title')) . ' '
-                        . htmlspecialchars(trim($row['title'])) . '">'
-                        . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen))
+        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+        if (isset($row['nav_title']) && trim($row['nav_title']) !== '') {
+            $title = '<span title="'
+                        . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title'))
+                        . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title
                         . '</span>';
-        } else {
-            $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
-            if (isset($row['nav_title']) && trim($row['nav_title']) !== '') {
-                $title = '<span title="'
-                            . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title'))
-                            . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title
-                            . '</span>';
-            }
-            $title = trim($row['title']) === ''
-                ? '<em>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>'
-                : $title;
         }
-        return $title;
+        return trim($row['title']) === ''
+            ? '<em>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>'
+            : $title;
     }
 }

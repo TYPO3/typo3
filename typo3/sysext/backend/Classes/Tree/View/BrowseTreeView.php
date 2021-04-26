@@ -27,50 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class BrowseTreeView extends AbstractTreeView
 {
     /**
-     * @var array
-     */
-    public $fieldArray = [
-        'uid',
-        'pid',
-        'title',
-        'doktype',
-        'nav_title',
-        'mount_pid',
-        'php_tree_stop',
-        't3ver_state',
-        'hidden',
-        'starttime',
-        'endtime',
-        'fe_group',
-        'module',
-        'extendToSubpages',
-        'nav_hide',
-        't3ver_wsid',
-        'is_siteroot'
-    ];
-
-    /**
-     * override to use this treeName
-     * @var string
-     */
-    public $treeName = 'browsePages';
-
-    /**
      * override to use this table
      * @var string
      */
     public $table = 'pages';
-
-    /**
-     * override to use this domIdPrefix
-     * @var string
-     */
-    public $domIdPrefix = 'pages';
-
-    /**
-     * @var bool
-     */
-    public $ext_showNavTitle = false;
 
     /**
      * Initialize, setting what is necessary for browsing pages.
@@ -123,11 +83,7 @@ class BrowseTreeView extends AbstractTreeView
      */
     public function getTitleStr($row, $titleLen = 30)
     {
-        if ($this->ext_showNavTitle && isset($row['nav_title']) && trim($row['nav_title']) !== '') {
-            $title = parent::getTitleStr(['title' => $row['nav_title']], $titleLen);
-        } else {
-            $title = parent::getTitleStr($row, $titleLen);
-        }
+        $title = parent::getTitleStr($row, $titleLen);
         if (!empty($row['is_siteroot'])
             && $this->getBackendUser()->getTSConfig()['options.']['pageTree.']['showDomainNameWithTitle'] ?? false
         ) {

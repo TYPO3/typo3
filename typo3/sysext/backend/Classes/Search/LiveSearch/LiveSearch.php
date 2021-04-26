@@ -446,7 +446,7 @@ class LiveSearch
         $tree->makeHTML = 0;
         $tree->fieldArray = ['uid', 'php_tree_stop'];
         if ($depth) {
-            $tree->getTree($id, $depth, '');
+            $tree->getTree($id, $depth);
         }
         $tree->ids[] = $id;
         // add workspace pid - workspace permissions are taken into account by where clause later

@@ -356,7 +356,7 @@ class PermissionController extends ActionController
         $tree->makeHTML = 0;
         $tree->setRecs = 1;
         // Make tree:
-        $tree->getTree($this->id, $this->getLevels, '');
+        $tree->getTree($this->id, $this->getLevels);
         $options = [];
         $options[''] = '';
         // If there are a hierarchy of page ids, then...
