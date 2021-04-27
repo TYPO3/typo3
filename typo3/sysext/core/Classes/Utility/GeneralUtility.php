@@ -817,7 +817,7 @@ class GeneralUtility
                 $validators[] = $validator;
             }
         }
-        return (new EmailValidator())->isValid($email, new MultipleValidationWithAnd($validators));
+        return (new EmailValidator())->isValid($email, new MultipleValidationWithAnd($validators, MultipleValidationWithAnd::STOP_ON_ERROR));
     }
 
     /**
