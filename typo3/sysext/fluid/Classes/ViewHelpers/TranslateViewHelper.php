@@ -56,6 +56,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ::
  *
+ *    <f:translate key="key1" extensionName="MyExt"/>
+ *
+ * or
+ *
+ * ::
+ *
  *    <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
  *
  * Value of key ``key1`` in the current website language.
