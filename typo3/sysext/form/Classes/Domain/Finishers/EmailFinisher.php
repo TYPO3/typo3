@@ -213,10 +213,12 @@ class EmailFinisher extends AbstractFinisher
         $standaloneView = $this->objectManager->get(StandaloneView::class);
 
         if (isset($this->options['templatePathAndFilename'])) {
-            $this->options['templatePathAndFilename'] = strtr($this->options['templatePathAndFilename'], [
+            // Use local variable instead of augmenting the options to
+            // keep the format intact when sending multi-format mails
+            $templatePathAndFilename = strtr($this->options['templatePathAndFilename'], [
                 '{@format}' => $format
             ]);
-            $standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
+            $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
         } else {
             if (!isset($this->options['templateName'])) {
                 throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
