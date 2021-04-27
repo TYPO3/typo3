@@ -3150,8 +3150,9 @@ class BackendUtility
             $rr = self::getRecord($table, $uid);
             $thePidValue = null;
             if (is_array($rr)) {
-                // First check if the pid is -1 which means it is a workspaced element. Get the "real" record:
-                if ($rr['pid'] == '-1') {
+                // First check if the t3ver_oid value is greater 0, which means
+                // it is a workspace element. If so, get the "real" record:
+                if ((int)($rr['t3ver_oid'] ?? 0) > 0) {
                     $rr = self::getRecord($table, $rr['t3ver_oid'], 'pid');
                     if (is_array($rr)) {
                         $thePidValue = $rr['pid'];
