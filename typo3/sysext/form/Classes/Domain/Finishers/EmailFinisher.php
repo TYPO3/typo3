@@ -215,11 +215,12 @@ class EmailFinisher extends AbstractFinisher
                 'The option \'templatePathAndFilename\' for EmailFinisher \'' . $this->finisherIdentifier . '\' is deprecated and will be removed in v12. Please use \'templateName\' and \'templateRootPaths\' in the finishers definition instead.',
                 E_USER_DEPRECATED
             );
-
-            $this->options['templatePathAndFilename'] = strtr($this->options['templatePathAndFilename'], [
+            // Use local variable instead of augmenting the options to
+            // keep the format intact when sending multi-format mails
+            $templatePathAndFilename = strtr($this->options['templatePathAndFilename'], [
                 '{@format}' => $format
             ]);
-            $standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
+            $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
         } else {
             if (!isset($this->options['templateName'])) {
                 throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
