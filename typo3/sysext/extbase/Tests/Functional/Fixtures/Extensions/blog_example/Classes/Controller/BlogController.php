@@ -76,7 +76,7 @@ class BlogController extends ActionController
 
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
-     * // needs to be imported entirely, else the annotationChecker script of bamboo will complain
+     * // needs to be imported entirely, else the annotationChecker test script complains
      * @IgnoreValidation("blogPost")
      */
     public function testForwardAction($blogPost)
