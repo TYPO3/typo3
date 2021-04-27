@@ -303,12 +303,18 @@ class PageRenderer implements SingletonInterface
     /**
      * @var array
      */
-    protected $inlineJavascriptWrap = [];
+    protected $inlineJavascriptWrap = [
+        '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
+        '/*]]>*/' . LF . '</script>' . LF
+    ];
 
     /**
      * @var array
      */
-    protected $inlineCssWrap = [];
+    protected $inlineCssWrap = [
+        '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
+        '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
+    ];
 
     /**
      * Saves error messages generated during compression
@@ -349,14 +355,6 @@ class PageRenderer implements SingletonInterface
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
-        $this->inlineJavascriptWrap = [
-            '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
-            '/*]]>*/' . LF . '</script>' . LF
-        ];
-        $this->inlineCssWrap = [
-            '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
-            '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
-        ];
 
         // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
         // @todo: Usually, the PageRenderer does not make sense if there is no Request object ... restrict this?
@@ -459,6 +457,13 @@ class PageRenderer implements SingletonInterface
     public function setRenderXhtml($enable)
     {
         $this->renderXhtml = $enable;
+
+        // Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
+        // since this is not needed and may lead to validation errors in the future.
+        $this->inlineJavascriptWrap = [
+            '<script' . ($enable ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
+            '/*]]>*/' . LF . '</script>' . LF
+        ];
     }
 
     /**
