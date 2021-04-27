@@ -356,10 +356,12 @@ class ClassSchema
                     return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
                 });
 
+                $reflectionType = $reflectionParameter->getType();
+
                 $this->methods[$methodName]['params'][$parameterName] = [];
                 $this->methods[$methodName]['params'][$parameterName]['position'] = $parameterPosition; // compat
                 $this->methods[$methodName]['params'][$parameterName]['byReference'] = $reflectionParameter->isPassedByReference(); // compat
-                $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionParameter->isArray(); // compat
+                $this->methods[$methodName]['params'][$parameterName]['array'] = false; // compat
                 $this->methods[$methodName]['params'][$parameterName]['optional'] = $reflectionParameter->isOptional();
                 $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionParameter->allowsNull();
                 $this->methods[$methodName]['params'][$parameterName]['class'] = null; // compat
@@ -374,14 +376,25 @@ class ClassSchema
                     $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = $reflectionParameter->getDefaultValue();
                 }
 
-                if (($reflectionType = $reflectionParameter->getType()) instanceof \ReflectionNamedType) {
-                    $this->methods[$methodName]['params'][$parameterName]['type'] = $reflectionType->getName();
+                // A ReflectionNamedType means "there is a type specified, and it's not a union type."
+                // (Union types are not handled, currently.)
+                if ($reflectionType instanceof \ReflectionNamedType) {
                     $this->methods[$methodName]['params'][$parameterName]['allowsNull'] = $reflectionType->allowsNull();
-                }
-
-                if (($parameterClass = $reflectionParameter->getClass()) instanceof \ReflectionClass) {
-                    $this->methods[$methodName]['params'][$parameterName]['class'] = $parameterClass->getName();
-                    $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($parameterClass->getName(), '\\');
+                    // A built-in type effectively means "not a class".
+                    if ($reflectionType->isBuiltin()) {
+                        $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionType->getName() === 'array'; // compat
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($reflectionType->getName(), '\\');
+                    } else {
+                        // This is mainly to confirm that the class exists. If it doesn't, a ReflectionException
+                        // will be thrown. It's not the ideal way of doing so, but it maintains the existing API
+                        // so that the exception can get caught and recast to a TYPO3-specific exception.
+                        /** @var class-string<mixed> $classname */
+                        $classname = $reflectionType->getName();
+                        $reflection = new \ReflectionClass($classname);
+                        // There's a single type declaration that is a class.
+                        $this->methods[$methodName]['params'][$parameterName]['class'] = $reflectionType->getName();
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = $reflectionType->getName();
+                    }
                 }
 
                 if ($docComment !== '' && $this->methods[$methodName]['params'][$parameterName]['type'] === null) {
@@ -408,10 +421,10 @@ class ClassSchema
                 }
 
                 // Extbase DI
-                if ($reflectionParameter->getClass() instanceof \ReflectionClass
+                if ($reflectionType instanceof \ReflectionNamedType && !$reflectionType->isBuiltin()
                     && ($reflectionMethod->isConstructor() || $this->hasInjectMethodName($reflectionMethod))
                 ) {
-                    $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionParameter->getClass()->getName();
+                    $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionType->getName();
                 }
 
                 // Extbase Validation

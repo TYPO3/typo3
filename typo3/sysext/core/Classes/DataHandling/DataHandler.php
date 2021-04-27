@@ -4653,7 +4653,7 @@ class DataHandler implements LoggerAwareInterface
         $field = $command['field'];
         $language = $command['language'];
         $action = $command['action'];
-        $ids = $command['ids'];
+        $ids = $command['ids'] ?? [];
 
         if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             return;
@@ -5991,7 +5991,7 @@ class DataHandler implements LoggerAwareInterface
             foreach ($this->registerDBList as $table => $records) {
                 foreach ($records as $uid => $fields) {
                     $newData = [];
-                    $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
+                    $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
                     $theUidToUpdate_saveTo = BackendUtility::wsMapId($table, $theUidToUpdate);
                     foreach ($fields as $fieldName => $value) {
                         $conf = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
@@ -6151,7 +6151,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function remapListedDBRecords_procInline($conf, $value, $uid, $table)
     {
-        $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
+        $theUidToUpdate = $this->copyMappingArray_merged[$table][$uid] ?? null;
         if ($conf['foreign_table']) {
             $inlineType = $this->getInlineFieldType($conf);
             if ($inlineType === 'mm') {
