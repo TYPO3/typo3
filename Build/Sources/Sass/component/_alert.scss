@@ -1,4 +1,3 @@
-//
 .media {
     display: grid;
     grid-template-columns: 2rem auto;
@@ -10,6 +9,7 @@
 
     .media-left + .media-body {
         grid-column: 2 / 3;
+        align-self: center;
     }
 }
 
