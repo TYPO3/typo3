@@ -301,12 +301,18 @@ class PageRenderer implements SingletonInterface
     /**
      * @var array
      */
-    protected $inlineJavascriptWrap = [];
+    protected $inlineJavascriptWrap = [
+        '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
+        '/*]]>*/' . LF . '</script>' . LF
+    ];
 
     /**
      * @var array
      */
-    protected $inlineCssWrap = [];
+    protected $inlineCssWrap = [
+        '<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
+        '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
+    ];
 
     /**
      * Saves error messages generated during compression
@@ -342,14 +348,6 @@ class PageRenderer implements SingletonInterface
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
-        $this->inlineJavascriptWrap = [
-            '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
-            '/*]]>*/' . LF . '</script>' . LF
-        ];
-        $this->inlineCssWrap = [
-            '<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
-            '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
-        ];
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
@@ -448,6 +446,13 @@ class PageRenderer implements SingletonInterface
     public function setRenderXhtml($enable)
     {
         $this->renderXhtml = $enable;
+
+        // Whenever XHTML gets disabled, remove the "text/javascript" type from the wrap
+        // since this is not needed and may lead to validation errors in the future.
+        $this->inlineJavascriptWrap = [
+            '<script' . ($enable ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
+            '/*]]>*/' . LF . '</script>' . LF
+        ];
     }
 
     /**
