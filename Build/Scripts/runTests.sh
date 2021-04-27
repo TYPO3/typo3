@@ -203,7 +203,7 @@ Options:
     -o <number>
         Only with -s unitRandom
         Set specific random seed to replay a random run in this order again. The phpunit randomizer
-        outputs the used seed at the end (in bamboo core testing logs, too). Use that number to
+        outputs the used seed at the end (in gitlab core testing logs, too). Use that number to
         replay the unit tests in that order.
 
     -n
