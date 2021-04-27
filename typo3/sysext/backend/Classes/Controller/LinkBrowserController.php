@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
@@ -118,24 +117,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
             $result = hash_equals(GeneralUtility::hmac(serialize($fieldChangeFunctions), 'backend-link-browser'), $this->parameters['fieldChangeFuncHash']);
         }
         return $result;
-    }
-
-    /**
-     * Get attributes for the body tag
-     *
-     * @return string[] Array of body-tag attributes
-     */
-    protected function getBodyTagAttributes()
-    {
-        $formEngineParameters = [];
-        $parameters = parent::getBodyTagAttributes();
-
-        $formEngineParameters['fieldChangeFunc'] = $this->parameters['fieldChangeFunc'];
-        $formEngineParameters['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->parameters['fieldChangeFunc']), 'backend-link-browser');
-
-        $parameters['data-add-on-params'] .= HttpUtility::buildQueryString(['P' => $formEngineParameters], '&');
-
-        return $parameters;
     }
 
     /**

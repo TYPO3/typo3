@@ -132,7 +132,10 @@ abstract class AbstractElementBrowser
     /**
      * @return array<string, string> Array of body-tag attributes
      */
-    abstract protected function getBodyTagAttributes();
+    protected function getBodyTagAttributes()
+    {
+        return [];
+    }
 
     /**
      * Splits parts of $this->bparams and returns needed data attributes for the Javascript
@@ -144,10 +147,8 @@ abstract class AbstractElementBrowser
         [$fieldRef, $rteParams, $rteConfig, , $irreObjectId] = explode('|', $this->bparams);
 
         return [
-            'data-this-script-url' => strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&',
             'data-form-field-name' => 'data[' . $fieldRef . '][' . $rteParams . '][' . $rteConfig . ']',
             'data-field-reference' => $fieldRef,
-            'data-field-reference-slashed' => addslashes($fieldRef),
             'data-rte-parameters' => $rteParams,
             'data-rte-configuration' => $rteConfig,
             'data-irre-object-id' => $irreObjectId,

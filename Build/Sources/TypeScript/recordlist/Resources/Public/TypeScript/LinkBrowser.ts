@@ -19,14 +19,11 @@ interface LinkAttributes {
 
 /**
  * Module: TYPO3/CMS/Recordlist/LinkBrowser
- * API for tooltip windows powered by Twitter Bootstrap.
- * @exports TYPO3/CMS/Recordlist/Tooltip
+ * @exports TYPO3/CMS/Recordlist/LinkBrowser
  */
 class LinkBrowser {
-  private thisScriptUrl: string = '';
   private urlParameters: Object = {};
   private parameters: Object = {};
-  private addOnParams: string = '';
   private linkAttributeFields: Array<any>;
   private additionalLinkAttributes: LinkAttributes = {};
 
@@ -34,10 +31,8 @@ class LinkBrowser {
     $((): void => {
       const data = $('body').data();
 
-      this.thisScriptUrl = data.thisScriptUrl;
       this.urlParameters = data.urlParameters;
       this.parameters = data.parameters;
-      this.addOnParams = data.addOnParams;
       this.linkAttributeFields = data.linkAttributeFields;
 
       $('.t3js-targetPreselect').on('change', this.loadTarget);

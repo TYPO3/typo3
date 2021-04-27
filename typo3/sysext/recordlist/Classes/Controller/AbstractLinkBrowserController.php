@@ -547,8 +547,7 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * @param array $overrides
-     *
+     * @param array|null $overrides
      * @return array Array of parameters which have to be added to URLs
      */
     public function getUrlParameters(array $overrides = null)
@@ -566,24 +565,12 @@ abstract class AbstractLinkBrowserController
      */
     protected function getBodyTagAttributes()
     {
-        $parameters = [];
-        $parameters['uid'] = $this->parameters['uid'];
-        $parameters['pid'] = $this->parameters['pid'];
-        $parameters['itemName'] = $this->parameters['itemName'];
-        $parameters['formName'] = $this->parameters['formName'];
-        $parameters['params']['allowedExtensions'] = $this->parameters['params']['allowedExtensions'] ?? '';
-        $parameters['params']['blindLinkOptions'] = $this->parameters['params']['blindLinkOptions'] ?? '';
-        $parameters['params']['blindLinkFields'] = $this->parameters['params']['blindLinkFields'] ?? '';
-        $addPassOnParams = HttpUtility::buildQueryString(['P' => $parameters], '&');
-
         $attributes = $this->displayedLinkHandler->getBodyTagAttributes();
         return array_merge(
             $attributes,
             [
-                'data-this-script-url' => strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&',
                 'data-url-parameters' => json_encode($this->getUrlParameters()),
                 'data-parameters' => json_encode($this->parameters),
-                'data-add-on-params' => $addPassOnParams,
                 'data-link-attribute-fields' => json_encode($this->linkAttributeFields)
             ]
         );

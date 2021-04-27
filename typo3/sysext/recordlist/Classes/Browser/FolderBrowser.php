@@ -179,16 +179,6 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
     }
 
     /**
-     * @return string[] Array of body-tag attributes
-     */
-    protected function getBodyTagAttributes()
-    {
-        return [
-            'data-mode' => 'folder'
-        ];
-    }
-
-    /**
      * @param array $values Array of values to include into the parameters
      * @return string[] Array of parameters which have to be added to URLs
      */

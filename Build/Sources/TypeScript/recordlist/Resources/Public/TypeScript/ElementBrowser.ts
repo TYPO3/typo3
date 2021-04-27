@@ -42,11 +42,8 @@ declare global {
  */
 class ElementBrowser {
   private opener: Window = null;
-  private thisScriptUrl: string = '';
-  private mode: string = '';
   private formFieldName: string = '';
   private fieldReference: string = '';
-  private fieldReferenceSlashed: string = '';
   private targetDoc: Window;
   private elRef: Element;
   private rte: RTESettings = {
@@ -60,11 +57,8 @@ class ElementBrowser {
   constructor() {
     DocumentService.ready().then((): void => {
       const data = document.body.dataset;
-      this.thisScriptUrl = data.thisScriptUrl;
-      this.mode = data.mode;
       this.formFieldName = data.formFieldName;
       this.fieldReference = data.fieldReference;
-      this.fieldReferenceSlashed = data.fieldReferenceSlashed;
       this.rte.parameters = data.rteParameters;
       this.rte.configuration = data.rteConfiguration;
       this.irre.objectId = data.irreObjectId;
