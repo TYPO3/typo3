@@ -20,7 +20,6 @@ FILES=`find . -type f \
     ! -path "./.php_cs.cache" \
     ! -path "./typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/*" \
     ! -path "./typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Plugins/*" \
-    ! -path "./Build/bamboo/target/*" \
     ! -path "./Build/JavaScript/*" \
     ! -path "./typo3/sysext/*/Documentation-GENERATED-temp/*" \
     -print0 | xargs -0 -n1 -P8 file {} | grep 'UTF-8 Unicode (with BOM)'`

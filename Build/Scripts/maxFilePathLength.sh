@@ -9,7 +9,7 @@
 # on windows systems.
 #
 # Rule is simple: If this script returns with not 0, for instance by
-# a bamboo pre-merge test, then shorten the offending path / file
+# a gitlab pre-merge test, then shorten the offending path / file
 # combination somehow.
 #
 # This script expects to be run from the core root.

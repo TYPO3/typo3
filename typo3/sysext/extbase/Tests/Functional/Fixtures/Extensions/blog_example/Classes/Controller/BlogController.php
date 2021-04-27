@@ -64,7 +64,7 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     /**
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Post $blogPost
-     * // needs to be imported entirely, else the annotationChecker script of bamboo will complain
+     * // needs to be imported entirely, else the annotationChecker test script complains
      * @IgnoreValidation("blogPost")
      */
     public function testForwardAction($blogPost)
