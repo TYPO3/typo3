@@ -93,8 +93,16 @@ class MailMessageTest extends UnitTestCase
     public function setSenderAddressDataProvider(): array
     {
         return [
-            'address without name' => ['admin@typo3.com', null, 'admin@typo3.com'],
-            'address with name' => ['admin@typo3.com', 'Admin', '"Admin" <admin@typo3.com>'],
+            'address without name' => [
+                'admin@typo3.com', null, [
+                    ['admin@typo3.com']
+                ]
+            ],
+            'address with name' => [
+                'admin@typo3.com', 'Admin', [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
         ];
     }
 
@@ -105,23 +113,66 @@ class MailMessageTest extends UnitTestCase
      * @param string $name
      * @param string $expectedString
      */
-    public function setSenderWorksAsExpected($address, $name, $expectedString): void
+    public function setSenderWorksAsExpected($address, $name, array $expectedAddresses): void
     {
         $this->subject->setSender($address, $name);
         self::assertInstanceOf(Address::class, $this->subject->getSender());
         self::assertSame($address, $this->subject->getSender()->getAddress());
-        self::assertSame($expectedString, $this->subject->getSender()->toString());
+        $this->assertCorrectAddresses([$this->subject->getSender()], $expectedAddresses);
     }
 
     public function globalSetAddressDataProvider(): array
     {
         return [
-            'address without name' => ['admin@typo3.com', null, ['admin@typo3.com']],
-            'address with name' => ['admin@typo3.com', 'Admin', ['"Admin" <admin@typo3.com>']],
-            'multiple addresses without name' => [['admin@typo3.com', 'system@typo3.com'], null, ['admin@typo3.com', 'system@typo3.com']],
-            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['"Admin" <admin@typo3.com>']],
-            'multiple addresses as array' => [['admin@typo3.com' => 'Admin', 'system@typo3.com' => 'System'], null, ['"Admin" <admin@typo3.com>', '"System" <system@typo3.com>']],
-            'multiple addresses as array mixed' => [['admin@typo3.com' => 'Admin', 'it@typo3.com', 'system@typo3.com' => 'System'], null, ['"Admin" <admin@typo3.com>', 'it@typo3.com', '"System" <system@typo3.com>']],
+            'address without name' => [
+                'admin@typo3.com', null, [
+                    ['admin@typo3.com']
+                ]
+            ],
+            'address with name' => [
+                'admin@typo3.com', 'Admin', [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
+            'address with name enclosed in quotes' => [
+                'admin@typo3.com', '"Admin"', [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
+            'multiple addresses without name' => [
+                [
+                    'admin@typo3.com',
+                    'system@typo3.com'
+                ], null, [
+                    ['admin@typo3.com'],
+                    ['system@typo3.com']
+                ]
+            ],
+            'address as array' => [
+                ['admin@typo3.com' => 'Admin'], null, [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
+            'multiple addresses as array' => [
+                [
+                    'admin@typo3.com' => 'Admin',
+                    'system@typo3.com' => 'System'
+                ], null, [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>'],
+                    ['system@typo3.com', 'System', '<system@typo3.com>']
+                ]
+            ],
+            'multiple addresses as array mixed' => [
+                [
+                    'admin@typo3.com' => 'Admin',
+                    'it@typo3.com',
+                    'system@typo3.com' => 'System'
+                ], null, [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>'],
+                    ['it@typo3.com'],
+                    ['system@typo3.com', 'System', '<system@typo3.com>']
+                ]
+            ],
         ];
     }
 
@@ -203,9 +254,21 @@ class MailMessageTest extends UnitTestCase
     public function globalAddAddressDataProvider(): array
     {
         return [
-            'address without name' => ['admin@typo3.com', null, ['admin@typo3.com']],
-            'address with name' => ['admin@typo3.com', 'Admin', ['"Admin" <admin@typo3.com>']],
-            'address as array' => [['admin@typo3.com' => 'Admin'], null, ['"Admin" <admin@typo3.com>']],
+            'address without name' => [
+                'admin@typo3.com', null, [
+                    ['admin@typo3.com']
+                ]
+            ],
+            'address with name' => [
+                'admin@typo3.com', 'Admin', [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
+            'address as array' => [
+                ['admin@typo3.com' => 'Admin'], null, [
+                    ['admin@typo3.com', 'Admin', '<admin@typo3.com>']
+                ]
+            ],
         ];
     }
 
@@ -317,8 +380,12 @@ class MailMessageTest extends UnitTestCase
     {
         self::assertIsArray($dataToCheck);
         self::assertCount(count($expectedAddresses), $dataToCheck);
-        foreach ($dataToCheck as $singleAddress) {
-            self::assertContains($singleAddress->toString(), $expectedAddresses);
+        foreach ($expectedAddresses as $key => $expectedAddress) {
+            self::assertIsArray($expectedAddress);
+            self::assertSame($expectedAddress[0], $dataToCheck[$key]->getAddress());
+            foreach ($expectedAddress as $expectedAddressPart) {
+                self::assertStringContainsString($expectedAddressPart, $dataToCheck[$key]->toString());
+            }
         }
     }
 }
