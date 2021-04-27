@@ -182,8 +182,7 @@ class FileDumpController
                 $file = $this->resourceFactory->getFileObject($parameters['f']);
                 if ($file->isDeleted() || $file->isMissing()) {
                     $file = null;
-                }
-                if (!$this->isFileValid($file)) {
+                } elseif (!$this->isFileValid($file)) {
                     $file = null;
                 }
             } catch (\Exception $e) {

@@ -247,10 +247,6 @@ parameters:
       count: 2
       path: typo3/sysext/core/Classes/Core/ClassLoadingInformationGenerator.php
     -
-      message: "#^Parameter \\#1 \\$file of method TYPO3\\\\CMS\\\\Core\\\\Controller\\\\FileDumpController\\:\\:isFileValid\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|null given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Controller/FileDumpController.php
-    -
       message: "#^Parameter \\#2 \\$callback of function array_walk expects callable\\(\\)\\: mixed, array\\(\\$this\\(TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\AbstractBackend\\), 'flushByTag'\\) given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php
