@@ -247,7 +247,7 @@ class MailMessage extends Email
     protected function convertNamedAddress(...$args): array
     {
         if (isset($args[1])) {
-            return [new Address($args[0], $args[1])];
+            return [Address::create(sprintf('%s <%s>', $args[1], $args[0]))];
         }
         if (is_string($args[0]) || is_array($args[0])) {
             return $this->convertAddresses($args[0]);
@@ -271,7 +271,7 @@ class MailMessage extends Email
             if (is_numeric($email) || ctype_digit($email)) {
                 $newAddresses[] = Address::create($name);
             } else {
-                $newAddresses[] = new Address($email, $name);
+                $newAddresses[] = Address::create(sprintf('%s <%s>', $name, $email));
             }
         }
 
