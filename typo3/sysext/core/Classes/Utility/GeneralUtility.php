@@ -118,13 +118,9 @@ class GeneralUtility
         if (empty($var)) {
             return;
         }
-        if (isset($_POST[$var])) {
-            $value = $_POST[$var];
-        } elseif (isset($_GET[$var])) {
-            $value = $_GET[$var];
-        } else {
-            $value = null;
-        }
+
+        $value = $_POST[$var] ?? $_GET[$var] ?? null;
+
         // This is there for backwards-compatibility, in order to avoid NULL
         if (isset($value) && !is_array($value)) {
             $value = (string)$value;

@@ -152,7 +152,8 @@ class GeneralUtilityTest extends UnitTestCase
                 ['cake' => ['is a' => 'l\\ie']],
                 [],
                 ['is a' => 'l\\ie']
-            ]
+            ],
+            'Empty-ish key' => ['0', ['0' => 'zero'], ['0' => 'zero'], null],
         ];
     }
 
