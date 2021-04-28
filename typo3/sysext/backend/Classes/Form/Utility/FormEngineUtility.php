@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -138,48 +137,6 @@ class FormEngineUtility
     }
 
     /**
-     * Update expanded/collapsed states on new inline records if any.
-     *
-     * @param array $uc The uc array to be processed and saved (by reference)
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of FormEngine that saved data before
-     * @internal
-     */
-    public static function updateInlineView(&$uc, $tce)
-    {
-        $backendUser = static::getBackendUserAuthentication();
-        if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
-            $inlineView = (array)json_decode($backendUser->uc['inlineView'], true);
-            foreach ($uc['inlineView'] as $topTable => $topRecords) {
-                foreach ($topRecords as $topUid => $childElements) {
-                    foreach ($childElements as $childTable => $childRecords) {
-                        $uids = array_keys($tce->substNEWwithIDs_table, $childTable);
-                        if (!empty($uids)) {
-                            $newExpandedChildren = [];
-                            foreach ($childRecords as $childUid => $state) {
-                                if ($state && in_array($childUid, $uids)) {
-                                    $newChildUid = $tce->substNEWwithIDs[$childUid];
-                                    $newExpandedChildren[] = $newChildUid;
-                                }
-                            }
-                            // Add new expanded child records to UC (if any):
-                            if (!empty($newExpandedChildren)) {
-                                $inlineViewCurrent = &$inlineView[$topTable][$topUid][$childTable];
-                                if (is_array($inlineViewCurrent)) {
-                                    $inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
-                                } else {
-                                    $inlineViewCurrent = $newExpandedChildren;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            $backendUser->uc['inlineView'] = json_encode($inlineView);
-            $backendUser->writeUC();
-        }
-    }
-
-    /**
      * Compatibility layer for methods not in FormEngine scope.
      *
      * databaseRow was a flat array with single elements in select and group fields as comma separated list.
@@ -211,13 +168,5 @@ class FormEngineUtility
             }
         }
         return $newRow;
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected static function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

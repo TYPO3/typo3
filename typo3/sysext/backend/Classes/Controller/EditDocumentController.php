@@ -169,14 +169,6 @@ class EditDocumentController
     protected $returnNewPageId = false;
 
     /**
-     * Updated values for backendUser->uc. Used for new inline records to mark them
-     * as expanded: uc[inlineView][...]
-     *
-     * @var array|null
-     */
-    protected $uc;
-
-    /**
      * ID for displaying the page in the frontend, "save and view"
      *
      * @var int
@@ -317,26 +309,12 @@ class EditDocumentController
     protected $errorC;
 
     /**
-     * Counter, used to count the number of new record forms displayed
-     *
-     * @var int
-     */
-    protected $newC;
-
-    /**
      * Is set to the pid value of the last shown record - thus indicating which page to
      * show when clicking the SAVE/VIEW button
      *
      * @var int
      */
     protected $viewId;
-
-    /**
-     * Is set to additional parameters (like "&L=xxx") if the record supports it.
-     *
-     * @var string
-     */
-    protected $viewId_addParams;
 
     /**
      * @var FormResultCompiler
@@ -459,7 +437,6 @@ class EditDocumentController
         $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
         $this->doSave = (bool)($parsedBody['doSave'] ?? $queryParams['doSave'] ?? false);
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
-        $this->uc = $parsedBody['uc'] ?? $queryParams['uc'] ?? null;
 
         // Set overrideVals as default values if defVals does not exist.
         // @todo: Why?
@@ -593,7 +570,7 @@ class EditDocumentController
         // If there was saved any new items, load them:
         if (!empty($tce->substNEWwithIDs_table)) {
             // Save the expanded/collapsed states for new inline records, if any
-            FormEngineUtility::updateInlineView($this->uc, $tce);
+            $this->updateInlineView($request->getParsedBody()['uc'] ?? $request->getQueryParams()['uc'] ?? null, $tce);
             $newEditConf = [];
             foreach ($this->editconf as $tableName => $tableCmds) {
                 $keys = array_keys($tce->substNEWwithIDs_table, $tableName);
@@ -716,7 +693,7 @@ class EditDocumentController
                 $relatedPageId = -$nRec['t3ver_oid'];
             }
 
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $duplicateTce */
+            /** @var DataHandler $duplicateTce */
             $duplicateTce = GeneralUtility::makeInstance(DataHandler::class);
 
             $duplicateCmd = [
@@ -1060,7 +1037,6 @@ class EditDocumentController
         // Initialize variables
         $this->elementsData = [];
         $this->errorC = 0;
-        $this->newC = 0;
         $editForm = '';
         $beUser = $this->getBackendUser();
         // Traverse the GPvar edit array tables
@@ -1085,7 +1061,6 @@ class EditDocumentController
 
                                 // Reset viewId - it should hold data of last entry only
                                 $this->viewId = 0;
-                                $this->viewId_addParams = '';
 
                                 $formDataCompilerInput = [
                                     'tableName' => $table,
@@ -1113,13 +1088,6 @@ class EditDocumentController
                                         $this->viewId = $formData['databaseRow']['uid'];
                                     } elseif (!empty($formData['parentPageRow']['uid'])) {
                                         $this->viewId = $formData['parentPageRow']['uid'];
-                                        // Adding "&L=xx" if the record being edited has a languageField with a value larger than zero!
-                                        if (!empty($formData['processedTca']['ctrl']['languageField'])
-                                            && is_array($formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']])
-                                            && $formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']][0] > 0
-                                        ) {
-                                            $this->viewId_addParams = '&L=' . $formData['databaseRow'][$formData['processedTca']['ctrl']['languageField']][0];
-                                        }
                                     }
                                 }
 
@@ -1202,7 +1170,6 @@ class EditDocumentController
                                         . '<input type="hidden"'
                                         . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($formData['databaseRow']['uid']) . '][pid]"'
                                         . ' value="' . (int)$formData['databaseRow']['pid'] . '" />';
-                                    $this->newC++;
                                 }
 
                                 $editForm .= $html;
@@ -1936,18 +1903,54 @@ class EditDocumentController
             <input type="hidden" name="viewUrl" value="' . htmlspecialchars($this->viewUrl) . '" />
             <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$this->viewId) . '" />
             <input type="hidden" name="closeDoc" value="0" />
-            <input type="hidden" name="doSave" value="0" />
-            <input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-            <input type="hidden" name="_scrollPosition" value="" />';
+            <input type="hidden" name="doSave" value="0" />';
         if ($this->returnNewPageId) {
             $formContent .= '<input type="hidden" name="returnNewPageId" value="1" />';
-        }
-        if ($this->viewId_addParams) {
-            $formContent .= '<input type="hidden" name="popViewId_addParams" value="' . htmlspecialchars($this->viewId_addParams) . '" />';
         }
         return $formContent;
     }
 
+    /**
+     * Update expanded/collapsed states on new inline records if any within backendUser->uc.
+     *
+     * @param array|null $uc The uc array to be processed and saved - uc[inlineView][...]
+     * @param DataHandler $dataHandler Instance of DataHandler that saved data before
+     */
+    protected function updateInlineView($uc, DataHandler $dataHandler)
+    {
+        $backendUser = $this->getBackendUser();
+        if (!isset($uc['inlineView']) || !is_array($uc['inlineView'])) {
+            return;
+        }
+        $inlineView = (array)json_decode(is_string($backendUser->uc['inlineView']) ? $backendUser->uc['inlineView'] : '', true);
+        foreach ($uc['inlineView'] as $topTable => $topRecords) {
+            foreach ($topRecords as $topUid => $childElements) {
+                foreach ($childElements as $childTable => $childRecords) {
+                    $uids = array_keys($dataHandler->substNEWwithIDs_table, $childTable);
+                    if (!empty($uids)) {
+                        $newExpandedChildren = [];
+                        foreach ($childRecords as $childUid => $state) {
+                            if ($state && in_array($childUid, $uids)) {
+                                $newChildUid = $dataHandler->substNEWwithIDs[$childUid];
+                                $newExpandedChildren[] = $newChildUid;
+                            }
+                        }
+                        // Add new expanded child records to UC (if any):
+                        if (!empty($newExpandedChildren)) {
+                            $inlineViewCurrent = &$inlineView[$topTable][$topUid][$childTable];
+                            if (is_array($inlineViewCurrent)) {
+                                $inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
+                            } else {
+                                $inlineViewCurrent = $newExpandedChildren;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $backendUser->uc['inlineView'] = json_encode($inlineView);
+        $backendUser->writeUC();
+    }
     /**
      * Returns if delete for the current table is disabled by configuration.
      * For sys_file_metadata in default language delete is always disabled.
