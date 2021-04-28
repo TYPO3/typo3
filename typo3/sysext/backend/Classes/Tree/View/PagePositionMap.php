@@ -100,7 +100,7 @@ class PagePositionMap
      *
      * @var string
      */
-    protected $pageTreeClassName = ElementBrowserPageTreeView::class;
+    protected $pageTreeClassName = PageTreeView::class;
 
     /**
      * @var IconFactory
