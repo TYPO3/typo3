@@ -61,11 +61,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
         method: 'GET'
       }).done(function(data) {
         if (data.typoLink) {
-          let opener = FormEngineLinkBrowserAdapter.getParent();
-          $('#' + field.id, opener.document).val(data.typoLink);
-          if (typeof field.onchange === 'function') {
-            field.onchange();
-          }
+          field.value = data.typoLink;
+          field.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
 
           if (typeof FormEngineLinkBrowserAdapter.updateFunctions === 'function') {
             FormEngineLinkBrowserAdapter.updateFunctions();
