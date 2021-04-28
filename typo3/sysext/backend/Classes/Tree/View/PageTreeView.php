@@ -23,12 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageTreeView extends AbstractTreeView
 {
     /**
-     * override to use this table
-     * @var string
-     */
-    public $table = 'pages';
-
-    /**
      * Init function
      * REMEMBER to feed a $clause which will filter out non-readable pages!
      *

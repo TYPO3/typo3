@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Impexp\View;
 
-use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
+use TYPO3\CMS\Backend\Tree\View\AbstractTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -26,11 +26,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Extension of the page tree class. Used to get the tree of pages to export.
  * @internal
  */
-class ExportPageTreeView extends BrowseTreeView
+class ExportPageTreeView extends AbstractTreeView
 {
     /**
-     * Initialization
+     * Points to the current mountpoint key
+     * @var int
      */
+    public $bank = 0;
+
+    /**
+     * Holds (session stored) information about which items in the tree are unfolded and which are not.
+     * @var array
+     */
+    public $stored = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -38,25 +47,33 @@ class ExportPageTreeView extends BrowseTreeView
     }
 
     /**
-     * Wrapping title from page tree.
+     * Init function
+     * REMEMBER to feed a $clause which will filter out non-readable pages!
      *
-     * @param string $title Title to wrap
-     * @return string Wrapped title
-     * @internal
+     * @param string $clause Part of where query which will filter out non-readable pages.
+     * @param string $orderByFields Record ORDER BY field
      */
-    public function wrapTitle($title)
+    public function init($clause = '', $orderByFields = '')
     {
-        return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : htmlspecialchars($title);
+        parent::init(' AND deleted=0 AND sys_language_uid=0 ' . $clause, $orderByFields ?: 'sorting');
+    }
+
+    /**
+     * Creates title attribute content for pages.
+     * Uses API function in \TYPO3\CMS\Backend\Utility\BackendUtility which will retrieve lots of useful information for pages.
+     *
+     * @param array $row The table row.
+     * @return string
+     */
+    public function getTitleAttrib($row)
+    {
+        return BackendUtility::titleAttribForPages($row, '1=1 ' . $this->clause, false);
     }
 
     /**
      * Wrapping Plus/Minus icon, unused in Export Page Tree
-     *
-     * @param mixed $bMark (See parent class)
-     * @param bool $isOpen
-     * @return string
      */
-    public function PM_ATagWrap($bMark = '', $isOpen = false)
+    public function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         return '';
     }
@@ -133,12 +150,12 @@ class ExportPageTreeView extends BrowseTreeView
                 $classAttr .= ' list-tree-control-open';
             }
 
-            $idAttr = htmlspecialchars('pages' . $treeItem['row']['uid'] . '_' . $treeItem['bank']);
+            $idAttr = htmlspecialchars('pages' . $treeItem['row']['uid']);
             $out .= '
 				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
 					<span class="list-tree-group">
 						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
-						<span class="list-tree-title">' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen)) . '</span>
+						<span class="list-tree-title">' . $this->getTitleStr($treeItem['row'], $titleLen) . '</span>
 					</span>';
 
             if (!$treeItem['hasSub']) {
@@ -159,7 +176,21 @@ class ExportPageTreeView extends BrowseTreeView
                 }
             }
         }
-        $out = '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
-        return $out;
+        return '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
+    }
+
+    /**
+     * Returns TRUE/FALSE if the next level for $id should be expanded - based on
+     * data in $this->stored[][] and ->expandAll flag.
+     * Extending parent function
+     *
+     * @param int $id Record id/key
+     * @return bool
+     * @internal
+     * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::expandNext()
+     */
+    public function expandNext($id)
+    {
+        return !empty($this->stored[$this->bank][$id]);
     }
 }

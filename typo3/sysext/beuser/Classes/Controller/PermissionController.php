@@ -354,7 +354,6 @@ class PermissionController extends ActionController
         $tree->init();
         $tree->addField('perms_userid', true);
         $tree->makeHTML = 0;
-        $tree->setRecs = 1;
         // Make tree:
         $tree->getTree($this->id, $this->getLevels);
         $options = [];

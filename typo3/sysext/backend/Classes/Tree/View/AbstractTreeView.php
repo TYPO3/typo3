@@ -55,23 +55,12 @@ abstract class AbstractTreeView
     public $BE_USER = '';
 
     /**
-     * Needs to be initialized with e.g. $GLOBALS['BE_USER']->returnWebmounts()
-     * Default setting in init() is 0 => 0
-     * The keys are mount-ids (can be anything basically) and the
-     * values are the ID of the root element (COULD be zero or anything else.
-     * For pages that would be the uid of the page, zero for the pagetree root.)
-     *
-     * @var array|null
-     */
-    public $MOUNTS;
-
-    /**
      * Database table to get the tree data from.
      * Leave blank if data comes from an array.
      *
      * @var string
      */
-    public $table = '';
+    public $table = 'pages';
 
     /**
      * Defines the field of $table which is the parent id field (like pid for table pages).
@@ -82,7 +71,6 @@ abstract class AbstractTreeView
 
     /**
      * WHERE clause used for selecting records for the tree. Is set by function init.
-     * Only makes sense when $this->table is set.
      *
      * @see init()
      * @var string
@@ -91,7 +79,6 @@ abstract class AbstractTreeView
 
     /**
      * Field for ORDER BY. Is set by function init.
-     * Only makes sense when $this->table is set.
      *
      * @see init()
      * @var string
@@ -140,13 +127,6 @@ abstract class AbstractTreeView
      */
     public $makeHTML = 1;
 
-    /**
-     * If TRUE, records as selected will be stored internally in the ->recs array
-     *
-     * @var int
-     */
-    public $setRecs = 0;
-
     // *********
     // Internal
     // *********
@@ -182,29 +162,12 @@ abstract class AbstractTreeView
      */
     public $tree = [];
 
-    // Holds (session stored) information about which items in the tree are unfolded and which are not.
-    /**
-     * @var array
-     */
-    public $stored = [];
-
-    // Points to the current mountpoint key
-    /**
-     * @var int
-     */
-    public $bank = 0;
-
-    // Accumulates the displayed records.
-    /**
-     * @var array
-     */
-    public $recs = [];
-
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $this->determineScriptUrl();
     }
 
@@ -243,10 +206,6 @@ abstract class AbstractTreeView
         if ($orderByFields) {
             $this->orderByFields = $orderByFields;
         }
-        if (!is_array($this->MOUNTS)) {
-            // Dummy
-            $this->MOUNTS = [0 => 0];
-        }
     }
 
     /**
@@ -268,7 +227,6 @@ abstract class AbstractTreeView
     public function reset()
     {
         $this->tree = [];
-        $this->recs = [];
         $this->ids = [];
         $this->ids_hierarchy = [];
         $this->orig_ids_hierarchy = [];
@@ -294,8 +252,7 @@ abstract class AbstractTreeView
     public function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         if ($nextCount) {
-            $bMark = $this->bank . '_' . $row['uid'];
-            return $this->PM_ATagWrap($bMark, $isOpen);
+            return $this->PM_ATagWrap($row['uid'], $isOpen);
         }
         return '';
     }
@@ -310,13 +267,10 @@ abstract class AbstractTreeView
      */
     public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
-        if ($this->thisScript) {
-            $anchor = $bMark ? '#' . $bMark : '';
-            $name = $bMark ? ' name="' . $bMark . '"' : '';
-            $aUrl = $this->getThisScript() . $anchor;
-            return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
-        }
-        return '';
+        $anchor = $bMark ? '#' . $bMark : '';
+        $name = $bMark ? ' name="' . $bMark . '"' : '';
+        $aUrl = $this->getThisScript() . $anchor;
+        return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
     }
 
     /**
@@ -339,7 +293,7 @@ abstract class AbstractTreeView
     /**
      * Returns TRUE/FALSE if the next level for $id should be expanded - based on
      * data in $this->stored[][] and ->expandAll flag.
-     * Extending parent function
+     * Used in subclasses
      *
      * @param int $id Record id/key
      * @return bool
@@ -348,7 +302,7 @@ abstract class AbstractTreeView
      */
     public function expandNext($id)
     {
-        return !empty($this->stored[$this->bank][$id]);
+        return false;
     }
 
     /******************************
@@ -404,8 +358,7 @@ abstract class AbstractTreeView
     public function getTitleStr($row, $titleLen = 30)
     {
         $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
-        $title = trim($row['title']) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
-        return $title;
+        return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
     }
 
     /**
@@ -463,10 +416,6 @@ abstract class AbstractTreeView
             end($this->tree);
             // Get the key for this space
             $treeKey = key($this->tree);
-            // If records should be accumulated, do so
-            if ($this->setRecs) {
-                $this->recs[$row['uid']] = $row;
-            }
             // Accumulate the id of the element in the internal arrays
             $this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
             $this->ids_hierarchy[$depth][] = $row['uid'];
@@ -497,7 +446,6 @@ abstract class AbstractTreeView
                 'HTML' => $HTML,
                 'invertedDepth' => $depth,
                 'depthData' => $depthData,
-                'bank' => $this->bank,
                 'hasSub' => $nextCount && $hasSub,
                 'isFirst' => $a === 1,
                 'isLast' => $a === $c,
@@ -553,19 +501,6 @@ abstract class AbstractTreeView
     public function getRootRecord()
     {
         return ['title' => $this->title, 'uid' => 0];
-    }
-
-    /**
-     * Returns the record for a uid.
-     * For tables: Looks up the record in the database.
-     * For arrays: Returns the fake record for uid id.
-     *
-     * @param int $uid UID to look up
-     * @return array The record
-     */
-    public function getRecord($uid)
-    {
-        return BackendUtility::getRecordWSOL($this->table, $uid);
     }
 
     /**

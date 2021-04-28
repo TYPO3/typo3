@@ -27,12 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class BrowseTreeView extends AbstractTreeView
 {
     /**
-     * override to use this table
-     * @var string
-     */
-    public $table = 'pages';
-
-    /**
      * Initialize, setting what is necessary for browsing pages.
      * Using the current user.
      *
@@ -52,13 +46,6 @@ class BrowseTreeView extends AbstractTreeView
         }
         // This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
         parent::init(' AND deleted=0 AND sys_language_uid=0 AND ' . $backendUser->getPagePermsClause(Permission::PAGE_SHOW) . ' ' . $clause . $clauseExcludePidList, 'sorting');
-        $this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-        $this->MOUNTS = $backendUser->returnWebmounts();
-        if ($pidList) {
-            // Remove mountpoint if explicitly set in options.hideRecords.pages (see above)
-            $hideList = explode(',', $pidList);
-            $this->MOUNTS = array_diff($this->MOUNTS, $hideList);
-        }
     }
 
     /**
