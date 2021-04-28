@@ -36,14 +36,22 @@ class ExtensionRepository extends Repository
      */
     const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
+    protected ?QuerySettingsInterface $querySettings = null;
+
+    /**
+     * @param QuerySettingsInterface $querySettings
+     */
+    public function injectQuerySettings(QuerySettingsInterface $querySettings)
+    {
+        $this->querySettings = $querySettings;
+    }
+
     /**
      * Do not include pid in queries
      */
     public function initializeObject()
     {
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $defaultQuerySettings->setRespectStoragePage(false);
-        $this->setDefaultQuerySettings($defaultQuerySettings);
+        $this->setDefaultQuerySettings($this->querySettings->setRespectStoragePage(false));
     }
 
     /**

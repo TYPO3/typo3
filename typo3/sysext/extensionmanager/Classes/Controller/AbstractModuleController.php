@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * Abstract action controller.
@@ -90,9 +89,6 @@ class AbstractModuleController extends AbstractController
             }
         }
 
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-
         $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('ExtensionManagerModuleMenu');
 
@@ -104,27 +100,12 @@ class AbstractModuleController extends AbstractController
             }
             $menuItem = $menu->makeMenuItem()
                 ->setTitle($menuItemConfig['label'])
-                ->setHref($this->getHref($menuItemConfig['controller'], $menuItemConfig['action']))
+                ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
                 ->setActive($isActive);
             $menu->addMenuItem($menuItem);
         }
 
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
-    }
-
-    /**
-     * Creates te URI for a backend action
-     *
-     * @param string $controller
-     * @param string $action
-     * @param array $parameters
-     * @return string
-     */
-    protected function getHref($controller, $action, $parameters = [])
-    {
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-        return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
     }
 }
