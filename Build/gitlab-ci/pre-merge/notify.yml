@@ -5,6 +5,7 @@ gerrit vote positive:
       - schedules
       - "10.4"
   when: on_success
+  dependencies: []
   script: |
     # When branch is of form 'gerrit-12345-12', vote on gerrit
     if [[ "$CI_COMMIT_REF_NAME" =~ ^gerrit\-[[:digit:]]+\-[[:digit:]]+$ ]]; then
@@ -29,6 +30,7 @@ gerrit vote negative:
       - schedules
       - "10.4"
   when: on_failure
+  dependencies: []
   script: |
     # When branch is of form 'gerrit-12345-12', vote on gerrit
     if [[ "$CI_COMMIT_REF_NAME" =~ ^gerrit\-[[:digit:]]+\-[[:digit:]]+$ ]]; then

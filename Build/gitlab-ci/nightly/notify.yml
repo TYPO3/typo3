@@ -3,6 +3,7 @@ slack notification success:
   only:
     - schedules
   when: on_success
+  dependencies: []
   script: |
     curl -X POST \
       --header "cache-control: no-cache" \
@@ -19,6 +20,7 @@ slack notification failed:
   only:
     - schedules
   when: on_failure
+  dependencies: []
   script: |
     curl -X POST \
       --header "cache-control: no-cache" \
