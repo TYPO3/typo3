@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
@@ -133,8 +132,6 @@ class AdministrationController extends ActionController
                 'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic')
             ]
         ];
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
 
         $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('IndexedSearchModuleMenu');
@@ -143,7 +140,7 @@ class AdministrationController extends ActionController
             $isActive = $this->request->getControllerActionName() === $menuItemConfig['action'];
             $menuItem = $menu->makeMenuItem()
                 ->setTitle($menuItemConfig['label'])
-                ->setHref($this->getHref($menuItemConfig['controller'], $menuItemConfig['action']))
+                ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
                 ->setActive($isActive);
             $menu->addMenuItem($menuItem);
         }
@@ -273,7 +270,7 @@ class AdministrationController extends ActionController
             ->getButtonBar()->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
             ->setIcon($icon)
-            ->setHref($this->getHref('Administration', 'statistic'));
+            ->setHref($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration'));
         $this->view->getModuleTemplate()->getDocHeaderComponent()
             ->getButtonBar()->addButton($backButton);
 
@@ -541,22 +538,6 @@ class AdministrationController extends ActionController
     {
         $this->administrationRepository->removeIndexedPhashRow($id, $this->pageUid, $depth);
         $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
-    }
-
-    /**
-     * Creates te URI for a backend action
-     *
-     * @param string $controller
-     * @param string $action
-     * @param array $parameters
-     *
-     * @return string
-     */
-    protected function getHref($controller, $action, $parameters = [])
-    {
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-        return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
     }
 
     /**
