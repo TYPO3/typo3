@@ -204,8 +204,7 @@ class WorkspaceTest extends FunctionalTestCase
         /** @var Blog $blog */
         $blog = $query->execute()->getFirst();
         self::assertEquals('WorkspaceOverlay Blog1', $blog->getTitle());
-        // @todo: this is wrong and will be fixed with https://review.typo3.org/c/Packages/TYPO3.CMS/+/68913
-        self::assertCount(3, $blog->getCategories());
+        self::assertCount(2, $blog->getCategories());
     }
 
     /**
