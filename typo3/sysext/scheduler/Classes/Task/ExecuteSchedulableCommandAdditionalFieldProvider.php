@@ -42,16 +42,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     protected $schedulableCommands = [];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
      * @var ExecuteSchedulableCommandTask
      */
     protected $task;
@@ -407,6 +397,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * Renders a field for defining an option's value
      *
      * @param InputOption $option
+     * @param bool $enabled
      * @param string $currentValue
      * @return string
      */
