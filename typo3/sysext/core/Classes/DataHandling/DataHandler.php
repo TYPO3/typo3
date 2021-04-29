@@ -1068,6 +1068,11 @@ class DataHandler implements LoggerAwareInterface
                             (int)$this->BE_USER->firstMainGroup
                         );
                     }
+                    // Ensure that the default values, that are stored in the $fieldArray (built from internal default values)
+                    // Are also placed inside the incomingFieldArray, so this is checked in "fillInFieldArray" and
+                    // all default values are also checked for validity
+                    // This allows to set TCAdefaults (for example) without having to use FormEngine to have the fields available first.
+                    $incomingFieldArray = array_replace_recursive($fieldArray, $incomingFieldArray);
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                 $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
