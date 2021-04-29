@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Belog\Module;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 
@@ -38,21 +39,24 @@ class BackendLogModuleBootstrap
      */
     public function main(ServerRequestInterface $request)
     {
-        $options = [];
         $queryParams = $request->getQueryParams();
         $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
         $queryParams['tx_belog_system_beloglog']['layout'] = 'Plain';
         $request = $request->withQueryParams($queryParams);
-        $options['moduleConfiguration'] = [
-            'extensionName' => 'Belog',
-        ];
-        $options['moduleName'] = 'system_BelogLog';
 
-        $route = GeneralUtility::makeInstance(Route::class, '/system/BelogLog/', $options);
-        $request = $request->withAttribute('route', $route);
-        // This can be removed, once https://review.typo3.org/c/Packages/TYPO3.CMS/+/67519 is merged
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $extbaseBootstrap = GeneralUtility::makeInstance(Bootstrap::class);
-        return $extbaseBootstrap->handleBackendRequest($request);
+        $options = [
+            'moduleName' => 'system_BelogLog',
+            'moduleConfiguration' => [
+                'extensionName' => 'Belog'
+            ]
+        ];
+        $routePath = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($options['moduleName'])->getPath();
+
+        return GeneralUtility::makeInstance(Bootstrap::class)->handleBackendRequest(
+            $request->withAttribute(
+                'route',
+                GeneralUtility::makeInstance(Route::class, $routePath, $options)
+            )
+        );
     }
 }
