@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,8 +25,10 @@ use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -33,24 +37,31 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class LogEntryRepository extends Repository
 {
+    public ?QuerySettingsInterface $querySettings = null;
+
+    /**
+     * @param QuerySettingsInterface $querySettings
+     */
+    public function injectQuerySettings(QuerySettingsInterface $querySettings): void
+    {
+        $this->querySettings = $querySettings;
+    }
+
     /**
      * Initialize some local variables to be used during creation of objects
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $defaultQuerySettings->setRespectStoragePage(false);
-        $this->setDefaultQuerySettings($defaultQuerySettings);
+        $this->setDefaultQuerySettings($this->querySettings->setRespectStoragePage(false));
     }
 
     /**
      * Finds all log entries that match all given constraints.
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @param Constraint $constraint
+     * @return QueryResultInterface
      */
-    public function findByConstraint(Constraint $constraint)
+    public function findByConstraint(Constraint $constraint): QueryResultInterface
     {
         $query = $this->createQuery();
         $queryConstraints = $this->createQueryConstraints($query, $constraint);
@@ -65,23 +76,23 @@ class LogEntryRepository extends Repository
     /**
      * Create an array of query constraints from constraint object
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @return array|\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface[]
+     * @param QueryInterface $query
+     * @param Constraint $constraint
+     * @return ConstraintInterface[]
      */
-    protected function createQueryConstraints(QueryInterface $query, Constraint $constraint)
+    protected function createQueryConstraints(QueryInterface $query, Constraint $constraint): array
     {
         $queryConstraints = [];
         // User / group handling
         $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
         // Workspace
-        if ($constraint->getWorkspaceUid() != Workspace::UID_ANY_WORKSPACE) {
+        if ((int)$constraint->getWorkspaceUid() !== Workspace::UID_ANY_WORKSPACE) {
             $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
         }
         // Action (type):
         if ($constraint->getAction() > 0) {
             $queryConstraints[] = $query->equals('type', $constraint->getAction());
-        } elseif ($constraint->getAction() == -1) {
+        } elseif ($constraint->getAction() === -1) {
             $queryConstraints[] = $query->equals('type', 5);
         }
         // Start / endtime handling: The timestamp calculation was already done
@@ -97,12 +108,15 @@ class LogEntryRepository extends Repository
      * Adds constraints for the page(s) to the query; this could be one single page or a whole subtree beneath a given
      * page.
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @param Constraint $constraint
+     * @param QueryInterface $query
      * @param array $queryConstraints the query constraints to add to, will be modified
      */
-    protected function addPageTreeConstraintsToQuery(Constraint $constraint, QueryInterface $query, array &$queryConstraints)
-    {
+    protected function addPageTreeConstraintsToQuery(
+        Constraint $constraint,
+        QueryInterface $query,
+        array &$queryConstraints
+    ): void {
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
@@ -125,12 +139,15 @@ class LogEntryRepository extends Repository
     /**
      * Adds users and groups to the query constraints.
      *
-     * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @param Constraint $constraint
+     * @param QueryInterface $query
      * @param array $queryConstraints the query constraints to add to, will be modified
      */
-    protected function addUsersAndGroupsToQueryConstraints(Constraint $constraint, QueryInterface $query, array &$queryConstraints)
-    {
+    protected function addUsersAndGroupsToQueryConstraints(
+        Constraint $constraint,
+        QueryInterface $query,
+        array &$queryConstraints
+    ): void {
         $userOrGroup = $constraint->getUserOrGroup();
         if ($userOrGroup === '') {
             return;

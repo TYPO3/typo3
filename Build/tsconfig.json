@@ -33,6 +33,10 @@
                 "../typo3/sysext/backend/Resources/Public/JavaScript/*",
                 "backend/Resources/Public/TypeScript/*"
             ],
+            "TYPO3/CMS/Belog/*": [
+                "../typo3/sysext/belog/Resources/Public/JavaScript/*",
+                "belog/Resources/Public/TypeScript/*"
+            ],
             "TYPO3/CMS/Beuser/*": [
                 "../typo3/sysext/beuser/Resources/Public/JavaScript/*",
                 "beuser/Resources/Public/TypeScript/*"

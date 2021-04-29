@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,19 +22,26 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository for workspaces
- * @todo This should be moved to EXT:workspaces if EXT:belog works no matter if workspaces are installed or not
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class WorkspaceRepository extends Repository
 {
+    public ?QuerySettingsInterface $querySettings = null;
+
+    /**
+     * @param QuerySettingsInterface $querySettings
+     */
+    public function injectQuerySettings(QuerySettingsInterface $querySettings): void
+    {
+        $this->querySettings = $querySettings;
+    }
+
     /**
      * Initializes the repository.
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings */
-        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $querySettings->setRespectStoragePage(false);
-        $this->setDefaultQuerySettings($querySettings);
+        $this->setDefaultQuerySettings($this->querySettings->setRespectStoragePage(false));
     }
 }

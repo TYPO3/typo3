@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
@@ -23,7 +24,7 @@
                 property="userOrGroup"
                 options="{userGroups}"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                class="form-select form-select-sm"
+                class="form-select"
                 id="belog-users"
             />
         </div>
@@ -35,7 +36,7 @@
                 options="{settings.selectableNumberOfLogEntries}"
                 optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                class="form-select form-select-sm"
+                class="form-select"
                 id="belog-max"
             />
         </div>
@@ -47,7 +48,7 @@
                     property="workspaceUid"
                     options="{workspaces}"
                     additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                    class="form-select form-select-sm"
+                    class="form-select"
                     id="belog-workspaces"
                 />
             </div>
@@ -60,7 +61,7 @@
                     property="depth"
                     options="{pageDepths}"
                     additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                    class="form-select form-select-sm"
+                    class="form-select"
                     id="belog-depth"
                 />
             </div>
@@ -73,7 +74,7 @@
                 options="{settings.selectableTimeFrames}"
                 optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                class="form-select form-select-sm"
+                class="form-select"
                 id="belog-time"
             />
         </div>
@@ -85,20 +86,25 @@
                 options="{settings.selectableActions}"
                 optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                 additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                class="form-select form-select-sm"
+                class="form-select"
                 id="belog-action"
             />
         </div>
 
         <f:if condition="{constraint.depth} > 0">
             <div class="col-auto">
-                <label for="belog-group" class="form-label"><f:translate key="groupByPage" /></label>
-                <f:form.checkbox
-                    property="groupByPage"
-                    value="1"
-                    additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                    id="belog-group"
-                />
+                <div class="form-check mt-4">
+                    <f:form.checkbox
+                        property="groupByPage"
+                        value="1"
+                        additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                        class="form-check-input"
+                        id="belog-group"
+                    />
+                    <label for="belog-group" class="form-check-label">
+                        <f:translate key="groupByPage" />
+                    </label>
+                </div>
             </div>
         </f:if>
 
@@ -111,21 +117,21 @@
             <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
             <div class="col-auto">
                 <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
-                <div class="input-group input-group-sm">
+                <div class="input-group mt-1">
                     <f:form.textfield
-                            name="manualDateStart"
-                            value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStart}')}\")}"
-                            id="manualDateStart"
-                            class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
-                            data="{date-type: 'datetime'}"
-                            />
+                        name="manualDateStart"
+                        value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStart}')}\")}"
+                        id="manualDateStart"
+                        class="form-control t3js-datetimepicker t3js-clearable"
+                        data="{date-type: 'datetime'}"
+                    />
                     <f:form.hidden
-                            property="manualDateStart"
-                            value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
+                        property="manualDateStart"
+                        value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
                     />
                     <span class="input-group-btn">
                         <label class="btn btn-default" for="manualDateStart">
-                            <span class="fa fa-calendar"></span>
+                            <core:icon identifier="actions-calendar" />
                         </label>
                     </span>
                 </div>
@@ -133,27 +139,28 @@
 
             <div class="col-auto">
                 <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
-                <div class="input-group input-group-sm">
+                <div class="input-group mt-1">
                     <f:form.textfield
-                            name="manualDateStop"
-                            value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '{constraint.manualDateStop}')}"
-                            id="manualDateStop"
-                            class="form-control form-control-sm t3js-datetimepicker t3js-clearable"
-                            data="{date-type: 'datetime'}"
-                            />
-                    <f:form.hidden property="manualDateStop"
-                            value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
+                        name="manualDateStop"
+                        value="{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStop}')}"
+                        id="manualDateStop"
+                        class="form-control t3js-datetimepicker t3js-clearable"
+                        data="{date-type: 'datetime'}"
+                    />
+                    <f:form.hidden
+                        property="manualDateStop"
+                        value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
                     />
                     <span class="input-group-btn">
                         <label class="btn btn-default" for="manualDateStop">
-                            <span class="fa fa-calendar"></span>
+                            <core:icon identifier="actions-calendar" />
                         </label>
                     </span>
                 </div>
             </div>
 
             <div class="col-auto">
-                <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default btn-sm" />
+                <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default mt-4" />
             </div>
         </f:if>
     </div>

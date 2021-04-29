@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,16 +30,15 @@ class WorkspaceRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeObjectSetsRespectStoragePidToFalse()
+    public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
         $querySettings = $this->getMockBuilder(QuerySettingsInterface::class)->getMock();
-        $objectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
-        $objectManager->expects(self::any())->method('get')->with(QuerySettingsInterface::class)->willReturn($querySettings);
-        $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false);
+        $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false)->willReturn($querySettings);
         $subject = $this->getMockBuilder(WorkspaceRepository::class)
             ->setMethods(['setDefaultQuerySettings'])
-            ->setConstructorArgs([$objectManager])
+            ->setConstructorArgs([$this->getMockBuilder(ObjectManagerInterface::class)->getMock()])
             ->getMock();
+        $subject->injectQuerySettings($querySettings);
         $subject->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);
         $subject->initializeObject();
     }

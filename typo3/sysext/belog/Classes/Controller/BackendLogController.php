@@ -76,11 +76,24 @@ class BackendLogController extends ActionController
     protected $logEntryRepository;
 
     /**
+     * @var \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository
+     */
+    protected $workspaceRepository;
+
+    /**
      * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
      */
     public function injectLogEntryRepository(LogEntryRepository $logEntryRepository)
     {
         $this->logEntryRepository = $logEntryRepository;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository $workspaceRepository
+     */
+    public function injectWorkspaceRepository(WorkspaceRepository $workspaceRepository)
+    {
+        $this->workspaceRepository = $workspaceRepository;
     }
 
     /**
@@ -94,10 +107,13 @@ class BackendLogController extends ActionController
         if (!isset($this->settings['timeFormat'])) {
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
+        // Static format needed for date picker (flatpickr), see BackendController::generateJavascript() and #91606
+        $this->settings['dateTimeFormat'] = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'h:m m-d-Y' : 'h:m d-m-Y');
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
-        GeneralUtility::makeInstance(PageRenderer::class)
-            ->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Belog/BackendLog');
     }
 
     /**
@@ -166,7 +182,7 @@ class BackendLogController extends ActionController
         if (is_string($serializedConstraint) && !empty($serializedConstraint)) {
             $constraint = @unserialize($serializedConstraint, ['allowed_classes' => [Constraint::class, \DateTime::class]]);
         }
-        return $constraint ?: $this->objectManager->get(Constraint::class);
+        return $constraint ?: GeneralUtility::makeInstance(Constraint::class);
     }
 
     /**
@@ -191,7 +207,7 @@ class BackendLogController extends ActionController
             $reservedMemory = null; // free the reserved memory
             $error = error_get_last();
             if (strpos($error['message'], 'Allowed memory size of') !== false) {
-                $constraint = $this->objectManager->get(Constraint::class);
+                $constraint = GeneralUtility::makeInstance(Constraint::class);
                 $this->persistConstraintInBeUserData($constraint);
             }
         });
@@ -278,7 +294,7 @@ class BackendLogController extends ActionController
         // Two meta entries: 'all' and 'live'
         $workspaceArray[-99] = LocalizationUtility::translate('any', 'Belog');
         $workspaceArray[0] = LocalizationUtility::translate('live', 'Belog');
-        $workspaces = $this->objectManager->get(WorkspaceRepository::class)->findAll();
+        $workspaces = $this->workspaceRepository->findAll();
         /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
         foreach ($workspaces as $workspace) {
             $workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
