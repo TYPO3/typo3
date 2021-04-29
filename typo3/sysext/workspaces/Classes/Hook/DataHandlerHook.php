@@ -368,7 +368,7 @@ class DataHandlerHook
             $resolvedPid = $movePlaceHolder['pid'];
         }
         $recordWasMoved = true;
-        $moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
+        $moveRecVersionState = VersionState::cast((int)($moveRec['t3ver_state'] ?? VersionState::DEFAULT_STATE));
         // Get workspace version of the source record, if any:
         $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         // Handle move-placeholders if the current record is not one already
