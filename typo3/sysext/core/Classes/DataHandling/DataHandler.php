@@ -1453,15 +1453,16 @@ class DataHandler implements LoggerAwareInterface
             }
             if (!$isCurrentUserSystemMaintainer && $isTargetUserInSystemMaintainerList && $isFieldChanged) {
                 $value = $curValueRec[$field];
-                $message = GeneralUtility::makeInstance(
-                    FlashMessage::class,
-                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer'),
-                    '',
-                    FlashMessage::ERROR,
-                    true
+                $this->log(
+                    $table,
+                    (int)$id,
+                    SystemLogDatabaseAction::UPDATE,
+                    0,
+                    SystemLogErrorClassification::SECURITY_NOTICE,
+                    'Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.',
+                    -1,
+                    [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer')]
                 );
-                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $flashMessageService->getMessageQueueByIdentifier()->enqueue($message);
             }
         }
 
@@ -1721,7 +1722,7 @@ class DataHandler implements LoggerAwareInterface
                 $this->runtimeCache->set($cacheId, $evalCodesArray);
             }
 
-            $res = $this->checkValue_input_Eval((string)$value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '', $table);
+            $res = $this->checkValue_input_Eval((string)$value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '', $table, $id);
             if (isset($tcaFieldConf['dbType']) && isset($res['value']) && !$res['value']) {
                 // set the value to null if we have an empty value for a native field
                 $res['value'] = null;
@@ -2505,10 +2506,11 @@ class DataHandler implements LoggerAwareInterface
      * @param array $evalArray Array of evaluations to traverse.
      * @param string $is_in Is-in string for 'is_in' evaluation
      * @param string $table Table name the eval is evaluated on
+     * @param string|int $id Record ID the eval is evaluated on
      * @return array Modified $value in key 'value' or empty array
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_input_Eval($value, $evalArray, $is_in, string $table = ''): array
+    public function checkValue_input_Eval($value, $evalArray, $is_in, string $table = '', $id = ''): array
     {
         $res = [];
         $set = true;
@@ -2618,7 +2620,7 @@ class DataHandler implements LoggerAwareInterface
                     break;
                 case 'email':
                     if ((string)$value !== '') {
-                        $this->checkValue_input_ValidateEmail($value, $set);
+                        $this->checkValue_input_ValidateEmail($value, $set, $table, $id);
                     }
                     break;
                 case 'saltedPassword':
@@ -2665,24 +2667,23 @@ class DataHandler implements LoggerAwareInterface
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Core\Exception
      */
-    protected function checkValue_input_ValidateEmail($value, &$set)
+    protected function checkValue_input_ValidateEmail($value, &$set, string $table, $id)
     {
         if (GeneralUtility::validEmail($value)) {
             return;
         }
 
         $set = false;
-        /** @var FlashMessage $message */
-        $message = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value),
-            '', // header is optional
-            FlashMessage::ERROR,
-            true // whether message should be stored in session
+        $this->log(
+            $table,
+            $id,
+            SystemLogDatabaseAction::UPDATE,
+            0,
+            SystemLogErrorClassification::SECURITY_NOTICE,
+            '"%s" is not a valid e-mail address.',
+            -1,
+            [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
         );
-        /** @var FlashMessageService $flashMessageService */
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $flashMessageService->getMessageQueueByIdentifier()->enqueue($message);
     }
 
     /**
@@ -4912,12 +4913,16 @@ class DataHandler implements LoggerAwareInterface
                 $this->deleteSpecificPage($deleteId, $forceHardDelete, $deleteRecordsOnPage);
             }
         } else {
-            /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $res, '', FlashMessage::ERROR, true);
-            /** @var FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
-            $this->newlog($res, SystemLogErrorClassification::USER_ERROR);
+            $this->log(
+                'pages',
+                $uid,
+                SystemLogGenericAction::UNDEFINED,
+                0,
+                SystemLogErrorClassification::SYSTEM_ERROR,
+                $res,
+                -1,
+                [$res],
+            );
         }
     }
 
