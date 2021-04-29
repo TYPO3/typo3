@@ -233,7 +233,7 @@ class StyleguideController extends ActionController
      */
     public function flashMessagesAction(): ResponseInterface
     {
-        $loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
+        $loremIpsum = GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum();
         $this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, true);
         $this->addFlashMessage($loremIpsum, 'Notice - Title for Notice message', FlashMessage::NOTICE, true);
         $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);

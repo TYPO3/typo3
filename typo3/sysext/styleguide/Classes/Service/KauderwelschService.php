@@ -125,6 +125,11 @@ class KauderwelschService
         return 'https://typo3.org';
     }
 
+    /**
+     * Get a valid email
+     *
+     * @return string
+     */
     public function getEmail(): string
     {
         return 'foo@example.com';
