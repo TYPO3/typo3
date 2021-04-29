@@ -2506,6 +2506,8 @@ Usage within form definition
          whereClause:
            uid: 1
          databaseColumnMappings:
+           tstamp:
+             value: '{__currentTimestamp}'
            pid:
              value: 1
          elements:
