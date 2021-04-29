@@ -336,7 +336,7 @@ class DataHandlerHook
         }
         $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
         $recordWasMoved = true;
-        $moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
+        $moveRecVersionState = VersionState::cast((int)($moveRec['t3ver_state'] ?? VersionState::DEFAULT_STATE));
         // Get workspace version of the source record, if any:
         $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         if ($tableSupportsVersioning) {
