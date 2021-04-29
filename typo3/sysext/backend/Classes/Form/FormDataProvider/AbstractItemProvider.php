@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Contains methods used by Data providers that handle elements
@@ -346,7 +348,10 @@ abstract class AbstractItemProvider
 
         while ($foreignRow = $queryResult->fetch()) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
-            if (is_array($foreignRow)) {
+            // Only proceed in case the row was not unset and we don't deal with a delete placeholder
+            if (is_array($foreignRow)
+                && !VersionState::cast($foreignRow['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)
+            ) {
                 // If the foreign table sets selicon_field, this field can contain an image
                 // that represents this specific row.
                 $iconFieldName = '';
@@ -596,7 +601,8 @@ abstract class AbstractItemProvider
 
         $queryBuilder->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $fieldList, true))
@@ -664,6 +670,17 @@ abstract class AbstractItemProvider
                         )
                     );
             }
+        }
+
+        // @todo what about PID restriction?
+        if ($this->getBackendUser()->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($foreignTableName)) {
+            $queryBuilder
+                ->andWhere(
+                    $queryBuilder->expr()->neq(
+                        $foreignTableName . '.t3ver_state',
+                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER, \PDO::PARAM_INT)
+                    )
+                );
         }
 
         return $queryBuilder;
