@@ -102,10 +102,20 @@ class PageInformationController
 
         $theOutput .= '
         <div class="row row-cols-auto mb-3 g-3 align-items-center">
-            <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) . '</div>
-            <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']) . '</div>
-            <div class="col-auto">' . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<span class="btn btn-default btn-sm">|</span>') . '</div>
-        </div>'
+            <div class="col">
+                <label class="form-lable">' .
+                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth')) .
+                '</label> ' .
+                BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) .
+            '</div>
+            <div class="col">
+                <label class="form-lable">' .
+                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type')) .
+                '</label> ' .
+                BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']) .
+            '</div>' .
+            BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>') .
+        '</div>'
             . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $request);
 
         // Additional footer content

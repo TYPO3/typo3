@@ -1,11 +1,13 @@
-<f:form action="search" class="form-inline form-inline-spaced">
-    <div class="form-group">
-        <div class="input-group">
-            <input type="hidden" name="cmd" class="form-control" value="search">
-            <f:form.textfield type="text" name="searchWord" class="form-control" value="{searchWord}"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="submit"><f:translate id="search">Search</f:translate></button>
-            </span>
+<f:form action="search">
+    <div class="row row-cols-auto align-items-end g-3 mb-4">
+        <div class="col">
+            <div class="input-group">
+                <input type="hidden" name="cmd" class="form-control" value="search">
+                <div class="input-group">
+                    <f:form.textfield type="text" name="searchWord" class="form-control" value="{searchWord}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                    <button type="submit" class="btn btn-default"><core:icon identifier="actions-search" /></button>
+                </div>
+            </div>
         </div>
     </div>
 </f:form>

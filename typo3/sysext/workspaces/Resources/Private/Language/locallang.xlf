@@ -353,6 +353,12 @@
 			<trans-unit id="iframe.workspacePreview" resname="iframe.workspacePreview">
 				<source>Preview of the record in workspace %s</source>
 			</trans-unit>
+			<trans-unit id="workingTable.depth" resname="iframe.workspacePreview">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="workingTable.languages" resname="iframe.workspacePreview">
+				<source>Languages</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

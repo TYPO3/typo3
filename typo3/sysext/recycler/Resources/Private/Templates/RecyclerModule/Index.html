@@ -2,27 +2,29 @@
 
 <f:section name="content">
     <div id="recycler-index" class="tx_recycler_recycler">
-        <form id="recycler-form" class="form-inline form-inline-spaced">
-            <div class="form-group">
-                <div class="input-group">
-                    <input type="text" name="search-text" class="form-control">
-                    <span class="input-group-btn">
+        <form id="recycler-form">
+            <div class="row row-cols-auto align-items-end g-3 mb-4">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" name="search-text" class="form-control" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                         <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
-                    </span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <select name="depth" class="form-select">
-                    <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
-                    <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
-                    <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
-                    <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
-                    <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
-                    <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
-                </select>
-            </div>
-            <div class="form-group">
-                <select name="pages" class="form-select"></select>
+                <div class="col">
+                    <label for="depth" class="form-label"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:filter.depth" /></label>
+                    <select name="depth" id="depth" class="form-select">
+                        <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+                        <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+                        <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+                        <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+                        <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+                        <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="pages" class="form-label"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:filter.type" /></label>
+                    <select name="pages" id="pages" class="form-select"></select>
+                </div>
             </div>
         </form>
         <f:render section="buttons" arguments="{allowDelete: allowDelete}"/>

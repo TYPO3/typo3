@@ -263,21 +263,6 @@ select {
 }
 
 //
-// Form Inline adjustments
-//
-.form-inline-spaced {
-    margin: 0 -0.5em $line-height-computed;
-
-    .form-group {
-        margin: 0.5em 0.5em 0;
-
-        label {
-            margin-right: 0.5em;
-        }
-    }
-}
-
-//
 // Form group additions
 //
 .form-group-dashed {

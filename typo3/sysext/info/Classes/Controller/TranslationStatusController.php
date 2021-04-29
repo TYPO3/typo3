@@ -93,10 +93,20 @@ class TranslationStatusController
             // Settings: Depth and language selectors
             $theOutput .= '
             <div class="row row-cols-auto mb-3 g-3 align-items-center">
-                <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) . '</div>
-                <div class="col-auto">' . BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']) . '</div>
-                ' . BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col-auto"><span class="btn btn-default btn-sm">|</span></div>') . '
-            </div>';
+                <div class="col">' .
+                    '<label class="form-lable">' .
+                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth')) .
+                    '</label> ' .
+                    BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) .
+                '</div>
+                <div class="col">' .
+                    '<label class="form-lable">' .
+                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.language')) .
+                    '</label> ' .
+                    BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']) .
+                '</div>' .
+                BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>') .
+            '</div>';
             // Showing the tree
             $tree = $this->getTree();
             // Render information table

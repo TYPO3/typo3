@@ -45,6 +45,9 @@
 			<trans-unit id="mod_pagetsconfig" resname="mod_pagetsconfig">
 				<source>Page TSconfig</source>
 			</trans-unit>
+			<trans-unit id="display_mode" resname="display_mode">
+				<source>Mode</source>
+			</trans-unit>
 			<trans-unit id="sort_alphabetic" resname="sort_alphabetic">
 				<source>Sort alphabetically</source>
 			</trans-unit>

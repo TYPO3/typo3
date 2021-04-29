@@ -515,12 +515,20 @@ class QueryGenerator
         }
         $markup = [];
         $markup[] = '<div class="load-queries">';
-        $markup[] = '  <div class="form-group form-inline">';
-        $markup[] = '    <div class="form-group">';
+        $markup[] = '  <div class="row row-cols-auto">';
+        $markup[] = '    <div class="col">';
         $markup[] = '      <select class="form-select" name="storeControl[STORE]" data-assign-store-control-title>' . implode(LF, $opt) . '</select>';
+        $markup[] = '    </div>';
+        $markup[] = '    <div class="col">';
         $markup[] = '      <input class="form-control" name="storeControl[title]" value="" type="text" max="80">';
+        $markup[] = '    </div>';
+        $markup[] = '    <div class="col">';
         $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">';
+        $markup[] = '    </div>';
+        $markup[] = '    <div class="col">';
         $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save">';
+        $markup[] = '    </div>';
+        $markup[] = '    <div class="col">';
         $markup[] = '      <input class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">';
         $markup[] = '    </div>';
         $markup[] = '  </div>';

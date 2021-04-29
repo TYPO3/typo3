@@ -2505,7 +2505,7 @@ class BackendUtility
             return '
 			<div class="input-group">
 				<!-- Function Menu of module -->
-				<select class="form-select form-select-sm" ' . $attributes . '>
+				<select class="form-select" ' . $attributes . '>
 					' . implode(LF, $options) . '
 				</select>
 			</div>

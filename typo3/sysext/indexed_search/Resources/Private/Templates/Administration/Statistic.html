@@ -5,15 +5,21 @@
     <f:if condition="{tree}">
         <f:then>
             <f:form name="statistic" action="statistic" class="form-horizontal" arguments="{id:pageUid}">
-                <div class="row row-cols-auto justify-content-start mb-3">
-                    <div class="col-auto">
-                        <f:form.select class="form-select" name="mode" options="{
+                <div class="row row-cols-auto align-items-center g-3 mb-3">
+                    <div class="col">
+                        <label for="mode" class="form-label">
+                            <f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.moduleFunctions.mode" />
+                        </label>
+                        <f:form.select class="form-select" id="mode" name="mode" options="{
                             overview:'{f:translate(key:\'administration.statistics.view.overview\')}',
                             content:'{f:translate(key:\'administration.statistics.view.content\')}'
                             }" value="{mode}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
                     </div>
-                    <div class="col-auto">
-                        <f:form.select class="form-select" name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
+                    <div class="col">
+                        <label for="depth" class="form-label">
+                            <f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.moduleFunctions.depth" />
+                        </label>
+                        <f:form.select class="form-select" id="depth" name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{data-global-event='change', data-action-submit: '$form'}" />
                     </div>
                 </div>
             </f:form>

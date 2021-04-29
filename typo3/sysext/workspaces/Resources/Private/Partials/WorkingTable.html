@@ -13,29 +13,31 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active">
             <div class="form-section workspace-panel" id="workspace-panel" data-page-uid="{pageUid}">
-                <form id="workspace-settings-form" class="form-inline form-inline-spaced">
-                    <div class="form-group">
-                        <select name="depth" class="form-select" disabled>
-                            <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
-                            <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
-                            <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
-                            <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
-                            <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
-                            <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon input-group-icon"></span>
-                            <select name="languages" class="form-select" disabled></select>
+                <form id="workspace-settings-form">
+                    <div class="row row-cols-auto align-items-end g-3 mb-3">
+                        <div class="col">
+                            <label for="depth" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.depth" /></label>
+                            <select name="depth" id="depth" class="form-select" disabled>
+                                <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+                                <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+                                <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+                                <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+                                <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+                                <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input class="form-control t3js-clearable" type="text" name="search-text">
-                            <span class="input-group-btn">
+                        <div class="col">
+                            <label for="languages" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.languages" /></label>
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-icon"></span>
+                                <select name="languages" id="languages" class="form-select" disabled></select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control t3js-clearable" type="text" name="search-text" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                                 <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -68,21 +70,23 @@
                         </tbody>
                     </table>
                 </div>
-                <form id="workspace-actions-form" class="form-inline form-inline-spaced">
-                    <div class="form-group">
-                        <select name="stage-action" class="form-select" disabled>
-                            <option value=""><f:translate key="chooseAction" /></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select name="selection-action" class="form-select" disabled>
-                            <option value=""><f:translate key="chooseSelectionAction" /></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select name="mass-action" class="form-select" disabled>
-                            <option value=""><f:translate key="chooseMassAction" /></option>
-                        </select>
+                <form id="workspace-actions-form">
+                    <div class="row row-cols-auto align-items-end g-3 mb-3">
+                        <div class="col">
+                            <select name="stage-action" class="form-select" disabled>
+                                <option value=""><f:translate key="chooseAction" /></option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select name="selection-action" class="form-select" disabled>
+                                <option value=""><f:translate key="chooseSelectionAction" /></option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select name="mass-action" class="form-select" disabled>
+                                <option value=""><f:translate key="chooseMassAction" /></option>
+                            </select>
+                        </div>
                     </div>
                 </form>
                 <nav id="workspace-pagination"></nav>

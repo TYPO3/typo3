@@ -87,6 +87,15 @@
 			<trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount">
 				<source>Content Element Count</source>
 			</trans-unit>
+			<trans-unit id="moduleFunctions.depth" resname="moduleFunctions.depth">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="moduleFunctions.type" resname="moduleFunctions.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="moduleFunctions.language" resname="moduleFunctions.language">
+				<source>Language</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

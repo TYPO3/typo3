@@ -12,6 +12,15 @@
 			<trans-unit id="label_allrecordtypes" resname="label_allrecordtypes">
 				<source>All Record Types</source>
 			</trans-unit>
+			<trans-unit id="filter.search">
+				<source>Enter search term</source>
+			</trans-unit>
+			<trans-unit id="filter.depth">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="filter.type">
+				<source>Type</source>
+			</trans-unit>
 			<trans-unit id="button.cancel" resname="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>

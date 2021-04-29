@@ -1609,9 +1609,9 @@ class PageLayoutView implements LoggerAwareInterface
                 $output .= '<option value="' . htmlspecialchars($targetUrl) . '">' . htmlspecialchars($languageTitle) . '</option>';
             }
 
-            return '<div class="row-cols-auto row form-inline-spaced">'
+            return '<div class="row row-cols-auto align-items-end g-3 mb-3">'
                 . '<div class="col">'
-                . '<select class="form-select form-select-sm" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
+                . '<select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">'
                 . $output
                 . '</select></div></div>';
         }

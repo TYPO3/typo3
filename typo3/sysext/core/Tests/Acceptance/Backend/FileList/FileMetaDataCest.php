@@ -44,7 +44,7 @@ class FileMetaDataCest
         $I->canSee('fileadmin');
 
         $I->fillField('tx_filelist_file_filelistlist[searchWord]', 'bus');
-        $I->click('Search');
+        $I->click('button[type="submit"]');
         $I->waitForElementVisible('table.table-striped');
 
         $I->click('bus_lane.jpg');

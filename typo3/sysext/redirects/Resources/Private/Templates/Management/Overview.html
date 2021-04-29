@@ -166,42 +166,40 @@
 </f:section>
 
 <f:section name="filter">
-    <form action="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}"
-        method="post"
-        enctype="multipart/form-data"
-        name="demand"
-        class="form-inline form-inline-spaced">
+    <form action="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}" method="post" enctype="multipart/form-data" name="demand">
         <input type="hidden" name="orderField" value="{demand.orderField}">
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
-        <div class="form-group">
-            <label for="demand-source-host"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
-            <select id="demand-source-host" class="form-select" name="demand[source_host]" data-on-change="submit">
-                <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
-                <f:for each="{hosts}" as="host">
-                    <f:form.select.option value="{host.name}" selected="{host.name} === {demand.firstSourceHost}">{host.name}</f:form.select.option>
-                </f:for>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="demand-source-path"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></label>
-            <input type="text" id="demand-source-path" class="form-control form-control-sm" name="demand[source_path]" value="{demand.sourcePath}"/>
-        </div>
-        <div class="form-group">
-            <label for="demand-target"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
-            <input type="text" id="demand-target" class="form-control form-control-sm" name="demand[target]" value="{demand.target}"/>
-        </div>
-        <div class="form-group">
-            <label for="demand-target-status-code"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
-            <select id="demand-target-status-code" class="form-select" name="demand[target_statuscode]" data-on-change="submit">
-                <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
-                <f:for each="{statusCodes}" as="statusCode">
-                    <f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.firstStatusCode}">{statusCode.code}</f:form.select.option>
-                </f:for>
-            </select>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-success btn-sm" />
-            <a href="{f:be.uri(route:'site_redirects')}" class="btn btn-default btn-sm"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.resetButton"/></a>
+        <div class="row row-cols-auto align-items-end g-3 mb-4">
+            <div class="col">
+                <label for="demand-source-host" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
+                <select id="demand-source-host" class="form-select" name="demand[source_host]" data-on-change="submit">
+                    <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
+                    <f:for each="{hosts}" as="host">
+                        <f:form.select.option value="{host.name}" selected="{host.name} === {demand.firstSourceHost}">{host.name}</f:form.select.option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="col">
+                <label for="demand-source-path" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path"/></label>
+                <input type="text" id="demand-source-path" class="form-control" name="demand[source_path]" value="{demand.sourcePath}"/>
+            </div>
+            <div class="col">
+                <label for="demand-target" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
+                <input type="text" id="demand-target" class="form-control" name="demand[target]" value="{demand.target}"/>
+            </div>
+            <div class="col">
+                <label for="demand-target-status-code" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.targetStatusCode"/></label>
+                <select id="demand-target-status-code" class="form-select" name="demand[target_statuscode]" data-on-change="submit">
+                    <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
+                    <f:for each="{statusCodes}" as="statusCode">
+                        <f:form.select.option value="{statusCode.code}" selected="{statusCode.code} === {demand.firstStatusCode}">{statusCode.code}</f:form.select.option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="col">
+                <input type="submit" value="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.sendButton')}" class="btn btn-default" />
+                <a href="{f:be.uri(route:'site_redirects')}" class="btn btn-outline-light"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.resetButton"/></a>
+            </div>
         </div>
     </form>
 </f:section>

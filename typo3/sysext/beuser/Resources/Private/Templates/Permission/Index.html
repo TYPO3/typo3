@@ -8,10 +8,11 @@
 </f:section>
 
 <f:section name="content">
-    <div class="form-group">
-        <label for="depth"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" />:</label>
-        <f:form.select class="form-select" id="depth" value="{depth}" options="{depthOptions}"
-                        additionalAttributes="{data-global-event: 'change', data-action-navigate: '$data=~s/$value/', data-navigate-value:depthBaseUrl}" />
+    <div class="row row-cols-auto align-items-end g-3">
+        <div class="col">
+            <label for="depth" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
+            <f:form.select class="form-select" id="depth" value="{depth}" options="{depthOptions}" additionalAttributes="{data-global-event: 'change', data-action-navigate: '$data=~s/$value/', data-navigate-value:depthBaseUrl}" />
+        </div>
     </div>
 
     <div class="panel panel-default panel-space">

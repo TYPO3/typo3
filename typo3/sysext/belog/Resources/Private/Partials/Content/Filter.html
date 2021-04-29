@@ -16,9 +16,9 @@
 </f:if>
 
 <f:form object="{constraint}" action="list" name="constraint">
-    <div class="row row-cols-auto align-items-center">
+    <div class="row row-cols-auto align-items-end g-3">
 
-        <div class="col-auto">
+        <div class="col">
             <label for="belog-users" class="form-label"><f:translate key="users" /></label>
             <f:form.select
                 property="userOrGroup"
@@ -29,7 +29,7 @@
             />
         </div>
 
-        <div class="col-auto">
+        <div class="col">
             <label for="belog-max" class="form-label"><f:translate key="max" /></label>
             <belog:form.translateLabelSelect
                 property="number"
@@ -42,7 +42,7 @@
         </div>
 
         <f:if condition="{showWorkspaceSelector}">
-            <div class="col-auto">
+            <div class="col">
                 <label for="belog-workspaces" class="form-label"><f:translate key="workspace" /></label>
                 <f:form.select
                     property="workspaceUid"
@@ -55,7 +55,7 @@
         </f:if>
 
         <f:if condition="{isSubmoduleLayout}">
-            <div class="col-auto">
+            <div class="col">
                 <label for="belog-depth" class="form-label"><f:translate key="chLog_menuDepth" /></label>
                 <f:form.select
                     property="depth"
@@ -67,7 +67,7 @@
             </div>
         </f:if>
 
-        <div class="col-auto">
+        <div class="col">
             <label for="belog-time" class="form-label"><f:translate key="time" /></label>
             <belog:form.translateLabelSelect
                 property="timeFrame"
@@ -79,7 +79,7 @@
             />
         </div>
 
-        <div class="col-auto">
+        <div class="col">
             <label for="belog-action" class="form-label"><f:translate key="action" /></label>
             <belog:form.translateLabelSelect
                 property="action"
@@ -92,7 +92,7 @@
         </div>
 
         <f:if condition="{constraint.depth} > 0">
-            <div class="col-auto">
+            <div class="col">
                 <div class="form-check mt-4">
                     <f:form.checkbox
                         property="groupByPage"
@@ -115,7 +115,7 @@
 
         <f:if condition="{constraint.timeFrame} == 30">
             <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
-            <div class="col-auto">
+            <div class="col">
                 <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
                 <div class="input-group mt-1">
                     <f:form.textfield
@@ -129,15 +129,13 @@
                         property="manualDateStart"
                         value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
                     />
-                    <span class="input-group-btn">
-                        <label class="btn btn-default" for="manualDateStart">
-                            <core:icon identifier="actions-calendar" />
-                        </label>
-                    </span>
+                    <label class="mb-0 btn btn-default" for="manualDateStart">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
                 </div>
             </div>
 
-            <div class="col-auto">
+            <div class="col">
                 <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
                 <div class="input-group mt-1">
                     <f:form.textfield
@@ -151,16 +149,14 @@
                         property="manualDateStop"
                         value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
                     />
-                    <span class="input-group-btn">
-                        <label class="btn btn-default" for="manualDateStop">
-                            <core:icon identifier="actions-calendar" />
-                        </label>
-                    </span>
+                    <label class="mb-0 btn btn-default" for="manualDateStop">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
                 </div>
             </div>
 
-            <div class="col-auto">
-                <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default mt-4" />
+            <div class="col">
+                <f:form.submit id="submit-constraint" value="{f:translate(key: 'set')}" class="btn btn-default" />
             </div>
         </f:if>
     </div>

@@ -1,5 +1,5 @@
 <f:if condition="{existTemplate}">
-    <div class="row row-cols-auto g-3 align-items-center">
+    <div class="row row-cols-auto align-items-center g-3">
         <f:if condition="{manyTemplatesMenu}">
             <div class="col">
                 <f:format.raw>
@@ -20,42 +20,42 @@
         <f:if condition="{existTemplate}">
             <f:then>
                 <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:editProperty"/></h3>
-                <div class="row align-items-baseline g-1">
-                    <div class="col-auto">
+                <div class="row row-cols-auto align-items-end g-1">
+                    <div class="col">
                         <label class="form-label">{typoScriptPath} =</label>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <f:form.textfield class="form-control" name="data[{typoScriptPath}][value]" value="{theSetupValue}"/>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <f:form.submit value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateButton')}" class="btn btn-default" name="update_value"/>
                     </div>
                 </div>
 
                 <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addProperty"/></h3>
-                <div class="row align-items-baseline g-1">
-                    <div class="col-auto">
+                <div class="row row-cols-auto align-items-end g-1">
+                    <div class="col">
                         <label class="visually-hidden">{typoScriptPath}.</label>
                         <div class="input-group">
                             <div class="input-group-addon">{typoScriptPath}.</div>
                             <f:form.textfield class="form-control" name="data[{typoScriptPath}][name]"/>
                         </div>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <label>=</label>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <f:form.textfield class="form-control" name="data[{typoScriptPath}][propertyValue]"/>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <f:form.submit class="btn btn-default" name="add_property" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addButton')}"/>
                     </div>
                 </div>
 
                 <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearObject"/></h3>
 
-                <div class="row align-items-baseline g-3">
-                    <div class="col-auto">
+                <div class="row row-cols-auto align-items-end g-3">
+                    <div class="col">
                         <div class="form-check">
                             <label class="form-check-label" for="clearValue-{typoScriptPath}">
                                 {typoScriptPath}
@@ -63,7 +63,7 @@
                             <f:form.checkbox class="form-check-input" name="data[{typoScriptPath}][clearValue]" id="clearValue-{typoScriptPath}" value="1"/>
                         </div>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <f:form.submit class="btn btn-default" name="clear_object" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearButton')}"/>
                     </div>
                 </div>
@@ -102,33 +102,30 @@
     </f:then>
     <f:else>
         <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser'}"/>
-        <div class="row align-items-end">
+        <div class="row row-cols-auto align-items-end">
             <f:if condition="{hasTsBrowserTypes}">
-                <div class="col-auto">
-                    <label class="col-form-label">
+                <div class="col">
+                    <label class="form-label">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:browse"/>
                     </label>
                     <f:format.raw>{browserTypeDropdownMenu}</f:format.raw>
                 </div>
             </f:if>
             <f:if condition="{hasTopLevelInObjectList}">
-                <div class="col-auto">
-                    <label class="col-form-label" for="ts_browser_toplevel_{tsBrowserType}">
+                <div class="col">
+                    <label class="form-label" for="ts_browser_toplevel_{tsBrowserType}">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:objectList"/>
                     </label>
                     <f:format.raw>{objectListDropdownMenu}</f:format.raw>
                 </div>
             </f:if>
-            <div class="col-auto">
-                <label class="col-form-label" for="search_field">
+            <div class="col">
+                <label class="form-label" for="search_field">
                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:search"/>
                 </label>
-                <div class="input-group">
-                    <input class="form-control form-control-sm" type="text" name="search_field" id="search_field" value="{postSearchField}"/>
-                </div>
+                <input class="form-control" type="text" name="search_field" id="search_field" value="{postSearchField}"/>
             </div>
-            <div class="col-auto">
-                <div class="col-form-label">&nbsp;</div>
+            <div class="col">
                 <div class="form-check form-switch">
                     <f:format.raw>{regexSearchCheckbox}</f:format.raw>
                     <label class="form-check-label" for="checkTs_browser_regexsearch">
@@ -136,12 +133,12 @@
                     </label>
                 </div>
             </div>
-            <div class="col-auto">
+            <div class="col">
                 <input class="btn btn-default" type="submit" name="search" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:search')}"/>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-auto">
+        <div class="row row-cols-auto mt-3">
+            <div class="col">
                 <div class="form-check form-switch">
                     <label class="form-check-label" for="checkTs_browser_showComments">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayComments" />
@@ -156,8 +153,8 @@
                 </div>
             </div>
             <f:if condition="{isSetupAndCropLinesDisabled}">
-                <div class="col-auto">
-                    <label><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstants" /></label>
+                <div class="col">
+                    <label class="form-label"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstants" /></label>
                     <f:format.raw>{dropdownDisplayConstants}</f:format.raw>
                 </div>
             </f:if>

@@ -344,10 +344,10 @@ class DatabaseIntegrityController
         $searchMode = $this->MOD_SETTINGS['search'];
         $fullsearch = GeneralUtility::makeInstance(QueryGenerator::class, $this->MOD_SETTINGS, $this->MOD_MENU, $this->moduleName);
         $fullsearch->setFormName($this->formName);
-        $submenu = '<div class="form-inline form-inline-spaced">';
-        $submenu .= BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']);
+        $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-3">';
+        $submenu .= '<div class="col">' . BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']) . '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= BackendUtility::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '<br />';
+            $submenu .= '<div class="col">' . BackendUtility::getDropdownMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '</div>';
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
