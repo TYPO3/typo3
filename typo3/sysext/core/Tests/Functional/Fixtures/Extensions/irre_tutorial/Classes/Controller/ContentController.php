@@ -16,32 +16,32 @@
 namespace OliverHader\IrreTutorial\Controller;
 
 use OliverHader\IrreTutorial\Domain\Model\Content;
+use OliverHader\IrreTutorial\Domain\Repository\ContentRepository;
+use OliverHader\IrreTutorial\Service\QueueService;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 
 /**
  * ContentController
  */
 class ContentController extends AbstractController
 {
-    /**
-     * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
-     */
-    private $contentRepository;
-
-    public function __construct(
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
-        \OliverHader\IrreTutorial\Domain\Repository\ContentRepository $contentRepository
-    ) {
-        parent::__construct($dataMapFactory);
-
-        $this->contentRepository = $contentRepository;
-    }
+    private ContentRepository $contentRepository;
 
     /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
+
+    public function __construct(
+        DataMapFactory $dataMapFactory,
+        QueueService $queueService,
+        ContentRepository $contentRepository
+    ) {
+        parent::__construct($dataMapFactory, $queueService);
+        $this->contentRepository = $contentRepository;
+    }
 
     public function listAction()
     {

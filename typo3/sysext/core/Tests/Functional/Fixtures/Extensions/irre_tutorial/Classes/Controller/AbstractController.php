@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -29,14 +30,15 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 abstract class AbstractController extends ActionController
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    public $dataMapFactory;
+    protected DataMapFactory $dataMapFactory;
+    protected QueueService $queueService;
 
-    public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory)
-    {
+    public function __construct(
+        DataMapFactory $dataMapFactory,
+        QueueService $queueService
+    ) {
         $this->dataMapFactory = $dataMapFactory;
+        $this->queueService = $queueService;
     }
 
     /**
@@ -97,8 +99,8 @@ abstract class AbstractController extends ActionController
      */
     protected function process($value)
     {
-        if ($this->getQueueService()->isActive()) {
-            $this->getQueueService()->addValue($this->getRuntimeIdentifier(), $value);
+        if ($this->queueService->isActive()) {
+            $this->queueService->addValue($this->getRuntimeIdentifier(), $value);
             return (new ForwardResponse('process'))->withControllerName('Queue');
         }
         $this->view->assign('value', $value);
@@ -115,21 +117,5 @@ abstract class AbstractController extends ActionController
             $arguments[] = $argumentName . '=' . $argumentValue;
         }
         return $this->request->getControllerActionName() . '(' . implode(', ', $arguments) . ')';
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     */
-    protected function getPersistenceManager()
-    {
-        return $this->objectManager->get(PersistenceManagerInterface::class);
-    }
-
-    /**
-     * @return \OliverHader\IrreTutorial\Service\QueueService
-     */
-    protected function getQueueService()
-    {
-        return $this->objectManager->get(QueueService::class);
     }
 }

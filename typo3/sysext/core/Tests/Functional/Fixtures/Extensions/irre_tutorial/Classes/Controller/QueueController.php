@@ -15,35 +15,39 @@
 
 namespace OliverHader\IrreTutorial\Controller;
 
+use OliverHader\IrreTutorial\Domain\Repository\ContentRepository;
+use OliverHader\IrreTutorial\Service\QueueService;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 /**
  * ContentController
  */
 class QueueController extends AbstractController
 {
-    /**
-     * @var \OliverHader\IrreTutorial\Domain\Repository\ContentRepository
-     */
-    private $contentRepository;
-
-    public function __construct(
-        \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
-        \OliverHader\IrreTutorial\Domain\Repository\ContentRepository $contentRepository
-    ) {
-        parent::__construct($dataMapFactory);
-
-        $this->contentRepository = $contentRepository;
-    }
+    private ContentRepository $contentRepository;
+    private PersistenceManagerInterface $persistenceManager;
 
     /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
+
+    public function __construct(
+        DataMapFactory $dataMapFactory,
+        QueueService $queueService,
+        ContentRepository $contentRepository,
+        PersistenceManagerInterface $persistenceManager
+    ) {
+        parent::__construct($dataMapFactory, $queueService);
+        $this->contentRepository = $contentRepository;
+        $this->persistenceManager = $persistenceManager;
+    }
 
     public function indexAction()
     {
@@ -54,18 +58,18 @@ class QueueController extends AbstractController
             $uid = $content->getUid();
             $calls[] = ['Content', 'show', ['content' => (string)$uid]];
         }
-        $this->getQueueService()->set($calls);
+        $this->queueService->set($calls);
         return new ForwardResponse('process');
     }
 
     public function processAction()
     {
-        $call = $this->getQueueService()->shift();
+        $call = $this->queueService->shift();
         if ($call === null) {
             return new ForwardResponse('finish');
         }
         // Clear these states and fetch fresh entities!
-        $this->getPersistenceManager()->clearState();
+        $this->persistenceManager->clearState();
 
         $response = (new ForwardResponse($call[1]))
             ->withControllerName($call[0]);
@@ -81,7 +85,7 @@ class QueueController extends AbstractController
     public function finishAction()
     {
         $this->request->setDispatched(true);
-        $value = $this->getQueueService()->getValues();
+        $value = $this->queueService->getValues();
         $this->view->assign('value', $value);
     }
 
