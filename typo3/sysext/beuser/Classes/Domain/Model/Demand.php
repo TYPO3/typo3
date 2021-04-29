@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,143 +17,97 @@
 
 namespace TYPO3\CMS\Beuser\Domain\Model;
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-
 /**
  * Demand filter for listings
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class Demand extends AbstractEntity
+class Demand
 {
-    /**
-     * @var int
-     */
-    const ALL = 0;
-    /**
-     * @var int
-     */
-    const USERTYPE_ADMINONLY = 1;
-    /**
-     * @var int
-     */
-    const USERTYPE_USERONLY = 2;
-    /**
-     * @var int
-     */
-    const STATUS_ACTIVE = 1;
-    /**
-     * @var int
-     */
-    const STATUS_INACTIVE = 2;
-    /**
-     * @var int
-     */
-    const LOGIN_SOME = 1;
-    /**
-     * @var int
-     */
-    const LOGIN_NONE = 2;
-    /**
-     * @var string
-     */
-    protected $userName = '';
+    public const ALL = 0;
 
-    /**
-     * @var int
-     */
-    protected $userType = self::ALL;
+    public const USERTYPE_ADMINONLY = 1;
+    public const USERTYPE_USERONLY = 2;
 
-    /**
-     * @var int
-     */
-    protected $status = self::ALL;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 2;
 
-    /**
-     * @var int
-     */
-    protected $logins = 0;
+    public const LOGIN_SOME = 1;
+    public const LOGIN_NONE = 2;
 
-    /**
-     * @var int
-     */
-    protected $backendUserGroup = 0;
+    protected string $userName = '';
+    protected int $userType = self::ALL;
+    protected int $status = self::ALL;
+    protected int $logins = 0;
+    protected int $backendUserGroup = 0;
 
-    /**
-     * @param string $userName
-     */
-    public function setUserName($userName)
+    public static function fromUc(array $uc): self
+    {
+        $demand = new self();
+        $demand->userName = (string)($uc['userName'] ?? '');
+        $demand->userType = (int)($uc['userType'] ?? 0);
+        $demand->status = (int)($uc['status'] ?? 0);
+        $demand->logins = (int)($uc['logins'] ?? 0);
+        $demand->backendUserGroup = (int)($uc['backendUserGroup'] ?? 0);
+        return $demand;
+    }
+
+    public function forUc(): array
+    {
+        return [
+            'userName' => $this->getUserName(),
+            'userType' => $this->getUserType(),
+            'status' => $this->getStatus(),
+            'logins' => $this->getLogins(),
+            'backendUserGroup' => $this->getBackendUserGroup(),
+        ];
+    }
+
+    public function setUserName(string $userName): void
     {
         $this->userName = $userName;
     }
 
-    /**
-     * @return string
-     */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
 
-    /**
-     * @param int $userType
-     */
-    public function setUserType($userType)
+    public function setUserType(int $userType): void
     {
         $this->userType = $userType;
     }
 
-    /**
-     * @return int
-     */
-    public function getUserType()
+    public function getUserType(): int
     {
         return $this->userType;
     }
 
-    /**
-     * @param int $status
-     */
-    public function setStatus($status)
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    /**
-     * @param int $logins
-     */
-    public function setLogins($logins)
+    public function setLogins(int $logins): void
     {
         $this->logins = $logins;
     }
 
-    /**
-     * @return int
-     */
-    public function getLogins()
+    public function getLogins(): int
     {
         return $this->logins;
     }
 
-    /**
-     * @param int $backendUserGroup
-     */
-    public function setBackendUserGroup($backendUserGroup)
+    public function setBackendUserGroup(int $backendUserGroup): void
     {
         $this->backendUserGroup = $backendUserGroup;
     }
 
-    /**
-     * @return int
-     */
-    public function getBackendUserGroup()
+    public function getBackendUserGroup(): int
     {
         return $this->backendUserGroup;
     }

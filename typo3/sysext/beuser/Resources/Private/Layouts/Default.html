@@ -14,6 +14,9 @@
 
     <be:moduleLayout.menu identifier="BackendUserModuleMenu">
         <be:moduleLayout.menuItem label="{f:translate(id: 'backendUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'index')}"/>
+        <f:if condition="{shortcutLabel} == 'compareUsers'">
+            <be:moduleLayout.menuItem label="{f:translate(id: 'compareBackendUsers')}" uri="{f:uri.action(controller: 'BackendUser', action: 'compare')}"/>
+        </f:if>
         <be:moduleLayout.menuItem label="{f:translate(id: 'backendUserGroupsMenu')}" uri="{f:uri.action(controller: 'BackendUserGroup', action: 'index')}"/>
         <f:if condition="{shortcutLabel} == 'compareBackendUsersGroups'">
             <be:moduleLayout.menuItem label="{f:translate(id: 'compareBackendUsersGroups')}" uri="{f:uri.action(controller: 'BackendUserGroup', action: 'compare')}"/>

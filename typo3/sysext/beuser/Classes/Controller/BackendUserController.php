@@ -23,10 +23,10 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
+use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
-use TYPO3\CMS\Beuser\Service\ModuleDataStorageService;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -54,44 +53,18 @@ class BackendUserController extends ActionController
      */
     const RECENT_USERS_LIMIT = 3;
 
-    /**
-     * @var \TYPO3\CMS\Beuser\Domain\Model\ModuleData
-     */
-    protected $moduleData;
-
-    /**
-     * @var ModuleDataStorageService
-     */
-    protected $moduleDataStorageService;
-
-    /**
-     * @var BackendUserRepository
-     */
-    protected $backendUserRepository;
-
-    /**
-     * @var BackendUserGroupRepository
-     */
-    protected $backendUserGroupRepository;
-
-    /**
-     * @var BackendUserSessionRepository
-     */
-    protected $backendUserSessionRepository;
-
-    /**
-     * @var UserInformationService
-     */
-    protected $userInformationService;
+    protected ?ModuleData $moduleData = null;
+    protected BackendUserRepository $backendUserRepository;
+    protected BackendUserGroupRepository $backendUserGroupRepository;
+    protected BackendUserSessionRepository $backendUserSessionRepository;
+    protected UserInformationService $userInformationService;
 
     public function __construct(
-        ModuleDataStorageService $moduleDataStorageService,
         BackendUserRepository $backendUserRepository,
         BackendUserGroupRepository $backendUserGroupRepository,
         BackendUserSessionRepository $backendUserSessionRepository,
         UserInformationService $userInformationService
     ) {
-        $this->moduleDataStorageService = $moduleDataStorageService;
         $this->backendUserRepository = $backendUserRepository;
         $this->backendUserGroupRepository = $backendUserGroupRepository;
         $this->backendUserSessionRepository = $backendUserSessionRepository;
@@ -99,31 +72,21 @@ class BackendUserController extends ActionController
     }
 
     /**
-     * Load and persist module data
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @return ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * Init module state.
+     * This isn't done within __construct() since the controller
+     * object is only created once in extbase when multiple actions are called in
+     * one call. When those change module state, the second action would see old state.
      */
-    public function processRequest(RequestInterface $request): ResponseInterface
+    public function initializeAction(): void
     {
-        $this->moduleData = $this->moduleDataStorageService->loadModuleData();
-        // We "finally" persist the module data.
-        try {
-            $response = parent::processRequest($request);
-            $this->moduleDataStorageService->persistModuleData($this->moduleData);
-            return $response;
-        } catch (StopActionException $e) {
-            $this->moduleDataStorageService->persistModuleData($this->moduleData);
-            throw $e;
-        }
+        $this->moduleData = ModuleData::fromUc((array)($this->getBackendUser()->getModuleData('tx_beuser')));
     }
 
     /**
      * Assign default variables to view
      * @param ViewInterface $view
      */
-    protected function initializeView(ViewInterface $view)
+    protected function initializeView(ViewInterface $view): void
     {
         $view->assignMultiple([
             'shortcutLabel' => 'backendUsers',
@@ -139,16 +102,18 @@ class BackendUserController extends ActionController
      * Displays all BackendUsers
      * - Switch session to different user
      *
-     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+     * @param Demand|null $demand
      * @param int $currentPage
      * @param string $operation
+     * @return ResponseInterface
      */
     public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
+        $backendUser = $this->getBackendUser();
+
         if ($operation === 'reset-filters') {
             // Reset the module data demand object
-            $this->moduleData->setDemand(GeneralUtility::makeInstance(Demand::class));
-            $this->moduleDataStorageService->persistModuleData($this->moduleData);
+            $this->moduleData->setDemand(new Demand());
             $demand = null;
         }
         if ($demand === null) {
@@ -156,6 +121,8 @@ class BackendUserController extends ActionController
         } else {
             $this->moduleData->setDemand($demand);
         }
+        $backendUser->pushModuleData('tx_beuser', $this->moduleData->forUc());
+
         // Switch user until logout
         $switchUser = (int)GeneralUtility::_GP('SwitchUser');
         if ($switchUser > 0) {
@@ -175,7 +142,7 @@ class BackendUserController extends ActionController
             'totalAmountOfBackendUsers' => $backendUsers->count(),
             'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
             'compareUserUidList' => array_combine($compareUserList, $compareUserList),
-            'currentUserUid' => $this->getBackendUserAuthentication()->user['uid'],
+            'currentUserUid' => $backendUser->user['uid'],
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
 
@@ -196,7 +163,7 @@ class BackendUserController extends ActionController
             ];
         }
 
-        $currentSessionId = $this->backendUserSessionRepository->getPersistedSessionIdentifier($this->getBackendUserAuthentication());
+        $currentSessionId = $this->backendUserSessionRepository->getPersistedSessionIdentifier($this->getBackendUser());
 
         $this->view->assignMultiple([
             'shortcutLabel' => 'onlineUsers',
@@ -207,9 +174,6 @@ class BackendUserController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    /**
-     * @param int $uid
-     */
     public function showAction(int $uid = 0): ResponseInterface
     {
         $data = $this->userInformationService->getUserInformation($uid);
@@ -287,7 +251,7 @@ class BackendUserController extends ActionController
     public function addToCompareListAction($uid)
     {
         $this->moduleData->attachUidCompareUser($uid);
-        $this->moduleDataStorageService->persistModuleData($this->moduleData);
+        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
         return new ForwardResponse('index');
     }
 
@@ -300,7 +264,7 @@ class BackendUserController extends ActionController
     public function removeFromCompareListAction($uid, int $redirectToCompare = 0)
     {
         $this->moduleData->detachUidCompareUser($uid);
-        $this->moduleDataStorageService->persistModuleData($this->moduleData);
+        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
         if ($redirectToCompare) {
             $this->redirect('compare');
         } else {
@@ -310,13 +274,12 @@ class BackendUserController extends ActionController
 
     /**
      * Removes all backend users from the compare list
+     * @throws StopActionException
      */
     public function removeAllFromCompareListAction(): void
     {
-        foreach ($this->moduleData->getCompareUserList() as $user) {
-            $this->moduleData->detachUidCompareUser($user);
-        }
-        $this->moduleDataStorageService->persistModuleData($this->moduleData);
+        $this->moduleData->resetCompareUserList();
+        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
         $this->redirect('index');
     }
 
@@ -324,7 +287,7 @@ class BackendUserController extends ActionController
      * Terminate BackendUser session and logout corresponding client
      * Redirects to onlineAction with message
      *
-     * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser
+     * @param BackendUser $backendUser
      * @param string $sessionId
      */
     protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
@@ -344,33 +307,34 @@ class BackendUserController extends ActionController
      */
     protected function switchUser($switchUser)
     {
+        $backendUser = $this->getBackendUser();
         $targetUser = BackendUtility::getRecord('be_users', $switchUser);
-        if (is_array($targetUser) && $this->getBackendUserAuthentication()->isAdmin()) {
+        if (is_array($targetUser) && $backendUser->isAdmin()) {
             // Set backend user listing module as starting module for switchback
-            $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
-            $this->getBackendUserAuthentication()->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
-            $this->getBackendUserAuthentication()->writeUC();
+            $backendUser->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+            $backendUser->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
+            $backendUser->writeUC();
 
             // User switch   written to log
-            $this->getBackendUserAuthentication()->writelog(
+            $backendUser->writelog(
                 255,
                 2,
                 0,
                 1,
                 'User %s switched to user %s (be_users:%s)',
                 [
-                    $this->getBackendUserAuthentication()->user['username'],
+                    $backendUser->user['username'],
                     $targetUser['username'],
                     $targetUser['uid'],
                 ]
             );
 
-            $this->backendUserSessionRepository->switchToUser($this->getBackendUserAuthentication(), (int)$targetUser['uid']);
+            $this->backendUserSessionRepository->switchToUser($backendUser, (int)$targetUser['uid']);
 
             $event = new SwitchUserEvent(
-                $this->getBackendUserAuthentication()->getSession()->getIdentifier(),
+                $backendUser->getSession()->getIdentifier(),
                 $targetUser,
-                (array)$this->getBackendUserAuthentication()->user
+                (array)$backendUser->user
             );
             $this->eventDispatcher->dispatch($event);
 
@@ -391,7 +355,7 @@ class BackendUserController extends ActionController
     protected function generateListOfMostRecentSwitchedUsers(int $targetUserUid): array
     {
         $latestUserUids = [];
-        $backendUser = $this->getBackendUserAuthentication();
+        $backendUser = $this->getBackendUser();
 
         if (isset($backendUser->uc['recentSwitchedToUsers']) && is_array($backendUser->uc['recentSwitchedToUsers'])) {
             $latestUserUids = $backendUser->uc['recentSwitchedToUsers'];
@@ -412,7 +376,7 @@ class BackendUserController extends ActionController
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,48 +23,56 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
  */
 class ModuleData
 {
-    /**
-     * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
-     */
-    protected $demand;
+    protected Demand $demand;
+    protected array $compareUserList = [];
 
-    /**
-     * @var array
-     */
-    protected $compareUserList = [];
-
-    /**
-     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-     */
-    public function injectDemand(Demand $demand)
+    public function __construct()
     {
-        $this->demand = $demand;
+        $this->demand = new Demand();
     }
 
-    /**
-     * @return \TYPO3\CMS\Beuser\Domain\Model\Demand
-     */
-    public function getDemand()
+    public static function fromUc(array $uc): self
+    {
+        $moduleData = new self();
+        $moduleData->compareUserList = (array)($uc['compareUserList'] ?? []);
+        $moduleData->demand = Demand::fromUc($uc['demand'] ?? []);
+        return $moduleData;
+    }
+
+    public function forUc(): array
+    {
+        return [
+            'compareUserList' => $this->compareUserList,
+            'demand' => $this->demand->forUc(),
+        ];
+    }
+
+    public function getDemand(): Demand
     {
         return $this->demand;
     }
 
-    /**
-     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-     */
-    public function setDemand(Demand $demand)
+    public function setDemand(Demand $demand): void
     {
         $this->demand = $demand;
     }
 
+    protected function setCompareUserList(array $compareUserList): void
+    {
+        $this->compareUserList = $compareUserList;
+    }
+
     /**
-     * Returns the compare list as array of user uis
-     *
-     * @return array
+     * Returns the compare list as array of user uids
      */
-    public function getCompareUserList()
+    public function getCompareUserList(): array
     {
         return array_keys($this->compareUserList);
+    }
+
+    public function resetCompareUserList(): void
+    {
+        $this->compareUserList = [];
     }
 
     /**
@@ -71,7 +81,7 @@ class ModuleData
      *
      * @param int $uid
      */
-    public function attachUidCompareUser($uid)
+    public function attachUidCompareUser(int $uid): void
     {
         $this->compareUserList[$uid] = true;
     }
@@ -81,7 +91,7 @@ class ModuleData
      *
      * @param int $uid
      */
-    public function detachUidCompareUser($uid)
+    public function detachUidCompareUser(int $uid): void
     {
         unset($this->compareUserList[$uid]);
     }
