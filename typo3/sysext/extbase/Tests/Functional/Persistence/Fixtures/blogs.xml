@@ -76,8 +76,9 @@
 		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<posts>10</posts>
+		<categories>2</categories>
 		<t3ver_oid>1</t3ver_oid>
-		<t3ver_state>-1</t3ver_state>
+		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_blog>
 	<tx_blogexample_domain_model_blog>
@@ -89,9 +90,10 @@
 		<l18n_diffsource></l18n_diffsource>
 		<hidden>0</hidden>
 		<deleted>0</deleted>
+		<categories>1</categories>
 		<posts>1</posts>
 		<t3ver_oid>6</t3ver_oid>
-		<t3ver_state>-1</t3ver_state>
+		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_blog>
 </dataset>

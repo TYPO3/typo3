@@ -91,4 +91,22 @@
 		<sorting>1</sorting>
 		<sorting_foreign>1</sorting_foreign>
 	</sys_category_record_mm>
+
+	<!-- blog 1 (overlaid: 101) has category 3 and 1 in workspace -->
+	<sys_category_record_mm>
+		<uid_local>3</uid_local>
+		<uid_foreign>101</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>101</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
 </dataset>
