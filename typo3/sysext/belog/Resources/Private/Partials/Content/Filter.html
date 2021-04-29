@@ -38,19 +38,17 @@
         />
     </div>
 
-    <f:if condition="{workspacesExtensionLoaded}">
-        <f:if condition="{showWorkspaceSelector}">
-                <div class="form-group">
-                    <label for="belog-workspaces"><f:translate key="workspace" /></label>
-                    <f:form.select
-                        property="workspaceUid"
-                        options="{workspaces}"
-                        additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                        class="form-control input-sm"
-                        id="belog-workspaces"
-                    />
-                </div>
-        </f:if>
+    <f:if condition="{showWorkspaceSelector}">
+        <div class="form-group">
+            <label for="belog-workspaces"><f:translate key="workspace" /></label>
+            <f:form.select
+                property="workspaceUid"
+                options="{workspaces}"
+                additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                class="form-control input-sm"
+                id="belog-workspaces"
+            />
+        </div>
     </f:if>
 
     <f:if condition="{isSubmoduleLayout}">

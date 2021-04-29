@@ -292,7 +292,9 @@ class BackendLogController extends ActionController
      */
     protected function forceWorkspaceSelectionIfInWorkspace(Constraint $constraint)
     {
-        if ($GLOBALS['BE_USER']->workspace !== 0) {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+            $this->view->assign('showWorkspaceSelector', false);
+        } elseif ($GLOBALS['BE_USER']->workspace !== 0) {
             $constraint->setWorkspaceUid($GLOBALS['BE_USER']->workspace);
             $this->view->assign('showWorkspaceSelector', false);
         } else {
