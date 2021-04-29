@@ -12,6 +12,11 @@
 			"position": 0
 		},
 		{
+			"class": "\\Psr\\Container\\ContainerInterface",
+			"method": "get",
+			"position": 0
+		},
+		{
 			"class": "\\PHPUnit\\Framework\\TestCase",
 			"method": "prophesize",
 			"position": 0,
