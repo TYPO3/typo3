@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
@@ -443,13 +445,49 @@ class DataMapper
      */
     protected function getConstraint(QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = [])
     {
-        $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        if ($columnMap->getParentKeyFieldName() !== null) {
-            $constraint = $query->equals($columnMap->getParentKeyFieldName(), $parentObject);
+        $dataMap = $this->getDataMap(get_class($parentObject));
+        $columnMap = $dataMap->getColumnMap($propertyName);
+        $workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
+        if ($columnMap && $workspaceId > 0) {
+            $resolvedRelationIds = $this->resolveRelationValuesOfField($dataMap, $columnMap, $parentObject, $fieldValue, $workspaceId);
+        } else {
+            $resolvedRelationIds = [];
+        }
+        // Work with the UIDs directly in a workspace
+        if (!empty($resolvedRelationIds)) {
+            if ($query->getSource() instanceof Persistence\Generic\Qom\JoinInterface) {
+                $constraint = $query->in($query->getSource()->getJoinCondition()->getProperty1Name(), $resolvedRelationIds);
+                // When querying MM relations directly, Typo3DbQueryParser uses enableFields and thus, filters
+                // out versioned records by default. However, we directly query versioned UIDs here, so we want
+                // to include the versioned records explicitly.
+                if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+                    $query->getQuerySettings()->setEnableFieldsToBeIgnored(['pid']);
+                    $query->getQuerySettings()->setIgnoreEnableFields(true);
+                }
+            } else {
+                $constraint = $query->in('uid', $resolvedRelationIds);
+            }
             if ($columnMap->getParentTableFieldName() !== null) {
                 $constraint = $query->logicalAnd(
                     $constraint,
-                    $query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName())
+                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->getTableName())
+                );
+            }
+        } elseif ($columnMap->getParentKeyFieldName() !== null) {
+            $value = $parentObject;
+            // If this a MM relation, and MM relations do not know about workspaces, the MM relations always point to the
+            // versioned record, so this must be taken into account here and the versioned record's UID must be used.
+            if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+                // The versioned UID is used ideally the version ID of a translated record, so this takes precedence over the localized UID
+                if ($value->_hasProperty('_versionedUid') && $value->_getProperty('_versionedUid') > 0 && $value->_getProperty('_versionedUid') !== $value->getUid()) {
+                    $value = (int)$value->_getProperty('_versionedUid');
+                }
+            }
+            $constraint = $query->equals($columnMap->getParentKeyFieldName(), $value);
+            if ($columnMap->getParentTableFieldName() !== null) {
+                $constraint = $query->logicalAnd(
+                    $constraint,
+                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->getTableName())
                 );
             }
         } else {
@@ -461,6 +499,58 @@ class DataMapper
             }
         }
         return $constraint;
+    }
+
+    /**
+     * This resolves relations via RelationHandler and returns their UIDs respectively, and works for MM/ForeignField/CSV in IRRE + Select + Group.
+     *
+     * Note: This only happens for resolving properties for models. When limiting a parentQuery, the Typo3DbQueryParser is taking care of it.
+     *
+     * By using the RelationHandler, the localized, deleted and moved records turn out to be properly resolved
+     * without having to build intermediate queries.
+     *
+     * This is currently only used in workspaces' context, as it is 1 additional DB query needed.
+     *
+     * @param DataMap $dataMap
+     * @param ColumnMap $columnMap
+     * @param DomainObjectInterface $parentObject
+     * @param string $fieldValue
+     * @param int $workspaceId
+     * @return array|false|mixed
+     */
+    protected function resolveRelationValuesOfField(DataMap $dataMap, ColumnMap $columnMap, DomainObjectInterface $parentObject, $fieldValue, int $workspaceId)
+    {
+        $parentId = $parentObject->getUid();
+        // versionedUid in a multi-language setup is the overlaid versioned AND translated ID
+        if ($parentObject->_hasProperty('_versionedUid') && $parentObject->_getProperty('_versionedUid') > 0 && $parentObject->_getProperty('_versionedUid') !== $parentId) {
+            $parentId = $parentObject->_getProperty('_versionedUid');
+        } elseif ($parentObject->_hasProperty('_languageUid') && $parentObject->_getProperty('_languageUid') > 0) {
+            $parentId = $parentObject->_getProperty('_localizedUid');
+        }
+        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+        $relationHandler->setWorkspaceId($workspaceId);
+        $relationHandler->setUseLiveReferenceIds(true);
+        $relationHandler->setUseLiveParentIds(true);
+        $tableName = $dataMap->getTableName();
+        $fieldName = $columnMap->getColumnName();
+        $fieldConfiguration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? null;
+        if (!is_array($fieldConfiguration)) {
+            return [];
+        }
+        $relationHandler->start(
+            $fieldValue,
+            $fieldConfiguration['allowed'] ?? $fieldConfiguration['foreign_table'] ?? '',
+            $fieldConfiguration['MM'] ?? '',
+            $parentId,
+            $tableName,
+            $fieldConfiguration
+        );
+        $relationHandler->processDeletePlaceholder();
+        $relatedUids = [];
+        if (!empty($relationHandler->tableArray)) {
+            $relatedUids = reset($relationHandler->tableArray);
+        }
+        return $relatedUids;
     }
 
     /**
