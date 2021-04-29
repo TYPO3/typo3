@@ -546,16 +546,6 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
     {
-        if ($source instanceof SelectorInterface) {
-            $tableName = $source->getSelectorName();
-        } elseif ($source instanceof JoinInterface) {
-            $tableName = $source->getRight()->getSelectorName();
-        } else {
-            // No proper source, so we do not have a table name here
-            // we cannot do an overlay and return the original rows instead.
-            return $rows;
-        }
-
         $context = GeneralUtility::makeInstance(Context::class);
         if ($workspaceUid === null) {
             $workspaceUid = (int)$context->getPropertyFromAspect('workspace', 'id');
@@ -564,85 +554,168 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $context = clone $context;
             $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $workspaceUid));
         }
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
-        // Fetches the move-placeholder in case it is supported
-        // by the table and if there's only one row in the result set
-        // (applying this to all rows does not work, since the sorting
-        // order would be destroyed and possible limits not met anymore)
-        if (!empty($workspaceUid)
-            && BackendUtility::isTableWorkspaceEnabled($tableName)
-            && count($rows) === 1
-        ) {
-            $versionId = $workspaceUid;
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            $movePlaceholder = $queryBuilder
-                ->select('*')
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($versionId, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
-                )
-                ->setMaxResults(1)
-                ->execute()
-                ->fetchAll();
-            if (!empty($movePlaceholder)) {
-                $rows = $movePlaceholder;
-            }
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        if ($source instanceof SelectorInterface) {
+            $tableName = $source->getSelectorName();
+            $rows = $this->resolveMovedRecordsInWorkspace($tableName, $rows, $workspaceUid);
+            return $this->overlayLanguageAndWorkspaceForSelect($tableName, $rows, $pageRepository, $query);
         }
+        if ($source instanceof JoinInterface) {
+            $tableName = $source->getRight()->getSelectorName();
+            // Special handling of joined select is only needed when doing workspace overlays, which does not happen
+            // in live workspace
+            if ($workspaceUid === 0) {
+                return $this->overlayLanguageAndWorkspaceForSelect($tableName, $rows, $pageRepository, $query);
+            }
+            return $this->overlayLanguageAndWorkspaceForJoinedSelect($tableName, $rows, $pageRepository, $query);
+        }
+        // No proper source, so we do not have a table name here
+        // we cannot do an overlay and return the original rows instead.
+        return $rows;
+    }
+
+    /**
+     * If the result is a plain SELECT (no JOIN) then the regular overlay process works for tables
+     *  - overlay workspace
+     *  - overlay language of versioned record again
+     */
+    protected function overlayLanguageAndWorkspaceForSelect(string $tableName, array $rows, PageRepository $pageRepository, QueryInterface $query): array
+    {
         $overlaidRows = [];
-        $querySettings = $query->getQuerySettings();
         foreach ($rows as $row) {
-            // If current row is a translation select its parent
-            $languageOfCurrentRecord = 0;
-            if ($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null
-            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? 0) {
-                $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
-            }
-            if ($querySettings->getLanguageOverlayMode()
-                && $languageOfCurrentRecord > 0
-                && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
-                $row = $pageRepository->getRawRecord(
-                    $tableName,
-                    (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]
-                );
-            }
-            // Handle workspace overlays
-            $pageRepository->versionOL($tableName, $row, true);
-            if (is_array($row) && $querySettings->getLanguageOverlayMode()) {
-                if ($tableName === 'pages') {
-                    $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
-                } else {
-                    // todo: remove type cast once getLanguageUid strictly returns an int
-                    $languageUid = (int)$querySettings->getLanguageUid();
-                    if (!$querySettings->getRespectSysLanguage()
-                        && $languageOfCurrentRecord > 0
-                        && (!$query instanceof Query || !$query->getParentQuery())
-                    ) {
-                        //no parent query means we're processing the aggregate root.
-                        //respectSysLanguage is false which means that records returned by the query
-                        //might be from different languages (which is desired).
-                        //So we need to force language used for overlay to the language of the current record.
-                        $languageUid = $languageOfCurrentRecord;
-                    }
-                    if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                        && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
-                        && $languageOfCurrentRecord > 0) {
-                        //force overlay by faking default language record, as getRecordOverlay can only handle default language records
-                        $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
-                        $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
-                    }
-                    $row = $pageRepository->getRecordOverlay($tableName, $row, $languageUid, (string)$querySettings->getLanguageOverlayMode());
-                }
-            }
+            $row = $this->overlayLanguageAndWorkspaceForSingleRecord($tableName, $row, $pageRepository, $query);
             if ($row !== null && is_array($row)) {
                 $overlaidRows[] = $row;
             }
         }
         return $overlaidRows;
+    }
+
+    /**
+     * If the result consists of a JOIN (usually happens if a property is a relation with a MM table) then it is necessary
+     * to only do overlays for the fields that are contained in the main database table, otherwise a SQL error is thrown.
+     * In order to make this happen, a single SQL query is made to fetch all possible field names (= array keys) of
+     * a record (TCA[$tableName][columns] does not contain all needed information), which is then used to compute
+     * a separate subset of the row which can be overlaid properly.
+     */
+    protected function overlayLanguageAndWorkspaceForJoinedSelect(string $tableName, array $rows, PageRepository $pageRepository, QueryInterface $query): array
+    {
+        // No valid rows, so this is skipped
+        if (!isset($rows[0]['uid'])) {
+            return $rows;
+        }
+        // First, find out the fields that belong to the "main" selected table which is defined by TCA, and take the first
+        // record to find out all possible fields in this database table
+        $fieldsOfMainTable = $pageRepository->getRawRecord($tableName, $rows[0]['uid']);
+        $overlaidRows = [];
+        foreach ($rows as $row) {
+            $mainRow = array_intersect_key($row, $fieldsOfMainTable);
+            $joinRow = array_diff_key($row, $mainRow);
+            $mainRow = $this->overlayLanguageAndWorkspaceForSingleRecord($tableName, $mainRow, $pageRepository, $query);
+            if ($mainRow !== null && is_array($mainRow)) {
+                $overlaidRows[] = array_replace($joinRow, $mainRow);
+            }
+        }
+        return $overlaidRows;
+    }
+
+    /**
+     * Takes one specific row, as defined in TCA and does all overlays.
+     *
+     * @param string $tableName
+     * @param array $row
+     * @param PageRepository $pageRepository
+     * @param QueryInterface $query
+     * @return array|int|mixed|null the overlaid row or false or null if overlay failed.
+     */
+    protected function overlayLanguageAndWorkspaceForSingleRecord(string $tableName, array $row, PageRepository $pageRepository, QueryInterface $query)
+    {
+        $querySettings = $query->getQuerySettings();
+        // If current row is a translation select its parent
+        $languageOfCurrentRecord = 0;
+        if ($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null
+            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? 0
+        ) {
+            $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
+        }
+        if ($querySettings->getLanguageOverlayMode()
+            && $languageOfCurrentRecord > 0
+            && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+        ) {
+            $row = $pageRepository->getRawRecord(
+                $tableName,
+                (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]
+            );
+        }
+        // Handle workspace overlays
+        $pageRepository->versionOL($tableName, $row, true);
+        if (is_array($row) && $querySettings->getLanguageOverlayMode()) {
+            if ($tableName === 'pages') {
+                $row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
+            } else {
+                // todo: remove type cast once getLanguageUid strictly returns an int
+                $languageUid = (int)$querySettings->getLanguageUid();
+                if (!$querySettings->getRespectSysLanguage()
+                    && $languageOfCurrentRecord > 0
+                    && (!$query instanceof Query || !$query->getParentQuery())
+                ) {
+                    // No parent query means we're processing the aggregate root.
+                    // respectSysLanguage is false which means that records returned by the query
+                    // might be from different languages (which is desired).
+                    // So we must set the language used for overlay to the language of the current record
+                    $languageUid = $languageOfCurrentRecord;
+                }
+                if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+                    && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+                    && $languageOfCurrentRecord > 0
+                ) {
+                    // Force overlay by faking default language record, as getRecordOverlay can only handle default language records
+                    $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
+                    $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
+                }
+                $row = $pageRepository->getRecordOverlay($tableName, $row, $languageUid, (string)$querySettings->getLanguageOverlayMode());
+            }
+        }
+        return $row;
+    }
+
+    /**
+     * Fetches the moved record in case it is supported
+     * by the table and if there's only one row in the result set
+     * (applying this to all rows does not work, since the sorting
+     * order would be destroyed and possible limits are not met anymore)
+     * The move pointers are later unset (see versionOL() last argument)
+     */
+    protected function resolveMovedRecordsInWorkspace(string $tableName, array $rows, int $workspaceUid): array
+    {
+        if ($workspaceUid === 0) {
+            return $rows;
+        }
+        if (!BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            return $rows;
+        }
+        if (count($rows) !== 1) {
+            return $rows;
+        }
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $movePlaceholder = $queryBuilder
+            ->select('*')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_PLACEHOLDER, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceUid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_move_id', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchAll();
+        if (!empty($movePlaceholder)) {
+            $rows = $movePlaceholder;
+        }
+        return $rows;
     }
 
     /**

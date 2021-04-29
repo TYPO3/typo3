@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -60,6 +61,8 @@ class WorkspaceTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
         $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
+        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
     }
 
     protected function tearDown(): void
@@ -170,13 +173,49 @@ class WorkspaceTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function fetchingBlogReturnsManyToManyRelationsInLiveWorkspace()
+    {
+        // Simulate LIVE workspace -> 3 relations
+        $this->setupSubjectInFrontend(0);
+        $query = $this->blogRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $query->matching($query->equals('uid', 1));
+
+        /** @var Blog $blog */
+        $blog = $query->execute()->getFirst();
+        self::assertEquals('Blog1', $blog->getTitle());
+        self::assertCount(3, $blog->getCategories());
+    }
+
+    /**
+     * @test
+     */
+    public function fetchingBlogReturnsOverlaidWorkspaceVersionForManyToManyRelations()
+    {
+        $this->setupSubjectInFrontend(1);
+        $query = $this->blogRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $query->matching($query->equals('uid', 1));
+
+        /** @var Blog $blog */
+        $blog = $query->execute()->getFirst();
+        self::assertEquals('WorkspaceOverlay Blog1', $blog->getTitle());
+        // @todo: this is wrong and will be fixed with https://review.typo3.org/c/Packages/TYPO3.CMS/+/68913
+        self::assertCount(3, $blog->getCategories());
+    }
+
+    /**
      * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
-    protected function setupSubjectInFrontend()
+    protected function setupSubjectInFrontend(int $workspaceId = 1)
     {
         $context = new Context(
             [
-                'workspace' => new WorkspaceAspect(1),
+                'workspace' => new WorkspaceAspect($workspaceId),
             ]
         );
         GeneralUtility::setSingletonInstance(Context::class, $context);
@@ -189,15 +228,15 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * Minimal backend user configuration to satisfy Extbase Typo3DbBackend
      */
-    protected function setupSubjectInBackend()
+    protected function setupSubjectInBackend(int $workspaceId = 1)
     {
         $backendUser = new BackendUserAuthentication();
-        $backendUser->workspace = 1;
+        $backendUser->workspace = $workspaceId;
         $GLOBALS['BE_USER'] = $backendUser;
         $context = new Context(
             [
                 'backend.user' => new UserAspect($backendUser),
-                'workspace' => new WorkspaceAspect(1),
+                'workspace' => new WorkspaceAspect($workspaceId),
             ]
         );
         GeneralUtility::setSingletonInstance(Context::class, $context);
