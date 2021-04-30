@@ -58,7 +58,7 @@
 }
 
 .btn-primary {
-    @include button-variant($primary, darken($primary, 10%), color-contrast($primary), darken($primary, 10%), darken($primary, 20%), color-contrast($primary));
+    @include button-variant($primary, darken($primary, 10%), color-contrast(darken($primary, 50%)), darken($primary, 10%), darken($primary, 20%), $gray-100);
 }
 
 .btn-info {
@@ -66,11 +66,11 @@
 }
 
 .btn-success {
-    @include button-variant($success, darken($success, 10%), color-contrast($success), darken($success, 10%), darken($success, 20%), color-contrast($success));
+    @include button-variant($success, darken($success, 10%), color-contrast(darken($success, 50%)), darken($success, 10%), darken($success, 20%), $gray-100);
 }
 
 .btn-warning {
-    @include button-variant($warning, darken($warning, 10%), color-contrast($warning), darken($warning, 10%), darken($warning, 20%), color-contrast($warning));
+    @include button-variant($warning, darken($warning, 10%), color-contrast(darken($warning, 50%)), darken($warning, 10%), darken($warning, 20%), $gray-100);
 }
 
 .btn-danger {

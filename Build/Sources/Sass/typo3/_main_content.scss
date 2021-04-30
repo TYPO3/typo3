@@ -57,21 +57,10 @@ pre {
 
 // horizontal ruler
 
-hr,
-div.hr {
+hr {
     background: none;
     border: none;
     height: 1px;
-}
-
-// .uppercase is kept for backwards-compatibility, use .divider
-
-.divider {
-    padding-bottom: 12px;
-}
-
-li.divider {
-    padding: 0;
 }
 
 a span {
@@ -85,10 +74,6 @@ video {
 //
 // Various classes
 //
-
-img.absmiddle {
-    vertical-align: middle;
-}
 
 .nowrap {
     white-space: nowrap;
@@ -194,19 +179,6 @@ div.diff-g {
 // used in the admin tools => DB check
 .t3-overview-list dt {
     font-weight: bold;
-}
-
-//
-// Dimmed span tag color (disabled)
-//
-
-.c-na {
-    color: #666;
-    font-style: italic;
-}
-
-.not-found a {
-    color: #ccc;
 }
 
 .media-gallery__list {

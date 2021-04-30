@@ -347,7 +347,6 @@ class TypoScriptTemplateModuleController
                 ];
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
-                    ->setClasses('typo3-goBack')
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                 $buttonBar->addButton($backButton);

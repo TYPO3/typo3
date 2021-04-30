@@ -14,18 +14,10 @@ div.recordlist {
     }
 }
 
-div#typo3-newRecordLink,
 div.typo3-newRecordLink,
 div.typo3-localizationLink,
 div.typo3-synchronizationLink {
     display: inline;
-}
-
-div.typo3-newRecordLink img,
-div.typo3-localizationLink img,
-div.typo3-synchronizationLink img {
-    margin-right: 5px;
-    vertical-align: middle;
 }
 
 div.typo3-listOptions {
