@@ -376,7 +376,7 @@ class BackendController
             currentBank: "0"
         };
 
-        top.goToModule = function(modName, addGetVars) {
+        var goToModule = function(modName, addGetVars) {
             TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
         }
         ' . $this->handlePageEditing($request),
