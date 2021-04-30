@@ -18,11 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
 
@@ -42,26 +40,29 @@ class XmlSitemapRenderer
      */
     protected $view;
 
-    /**
-     * XmlSitemapRenderer constructor.
-     * @throws Exception
-     */
-    public function __construct()
+    protected TypoScriptService $typoScriptService;
+
+    public function __construct(TypoScriptService $typoScriptService)
     {
-        $this->configuration = $this->getConfiguration();
+        $this->typoScriptService = $typoScriptService;
+    }
+
+    protected function initialize(array $fullConfiguration)
+    {
+        $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($fullConfiguration['plugin.']['tx_seo.'] ?? []);
         $this->view = $this->getStandaloneView();
     }
 
     /**
      * @param string $_ unused, but needed as this is called via userfunc and passes a string as first parameter
      * @param array $typoScriptConfiguration TypoScript configuration specified in USER Content Object
+     * @param ServerRequestInterface $request
      * @return string
      * @throws InvalidConfigurationException
      */
-    public function render(string $_, array $typoScriptConfiguration): string
+    public function render(string $_, array $typoScriptConfiguration, ServerRequestInterface $request): string
     {
-        // Inject request from globals until request will be available to cObj
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        $this->initialize($GLOBALS['TSFE']->tmpl->setup);
         $this->view->assign('type', $GLOBALS['TSFE']->type);
         $sitemapType = $typoScriptConfiguration['sitemapType'] ?? 'xmlSitemap';
         $this->view->assign('xslFile', $this->getXslFilePath($sitemapType));
@@ -148,9 +149,6 @@ class XmlSitemapRenderer
         throw new InvalidConfigurationException('No valid configuration found for sitemap ' . $sitemap, 1535578569);
     }
 
-    /**
-     * @return StandaloneView
-     */
     protected function getStandaloneView(): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -173,21 +171,5 @@ class XmlSitemapRenderer
         $path = ($sitemapType !== null) ? ($this->configuration['config'][$sitemapType]['sitemaps']['xslFile'] ?? $path) : $path;
         $path = ($sitemapType !== null && $sitemap !== null) ? ($this->configuration['config'][$sitemapType]['sitemaps'][$sitemap]['config']['xslFile'] ?? $path) : $path;
         return PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($path));
-    }
-
-    /**
-     * Get the whole typoscript array
-     * @return array
-     * @throws Exception
-     */
-    private function getConfiguration(): array
-    {
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class);
-
-        return $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-            'seo'
-        );
     }
 }

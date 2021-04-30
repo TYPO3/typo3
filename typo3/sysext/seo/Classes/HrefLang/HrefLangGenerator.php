@@ -17,12 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\HrefLang;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -64,13 +63,13 @@ class HrefLangGenerator
 
         $this->cObj->setRequest($event->getRequest());
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
-        /** @var SiteLanguage $siteLanguage */
-        $siteLanguage = $event->getRequest()->getAttribute('language');
+        $site = $this->getTypoScriptFrontendController()->getSite();
+        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
         $pageId = (int)$this->getTypoScriptFrontendController()->id;
 
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
-                $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $event->getRequest());
+                $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $site);
                 if (!empty($page['canonical_link'])) {
                     // do not set hreflang when canonical is set
                     continue;
@@ -117,13 +116,8 @@ class HrefLangGenerator
         return $GLOBALS['TSFE'];
     }
 
-    protected function getTranslatedPageRecord(int $pageId, int $languageId, ServerRequestInterface $request): array
+    protected function getTranslatedPageRecord(int $pageId, int $languageId, Site $site): array
     {
-        $site = $request->getAttribute('site');
-        if (!$site instanceof SiteInterface) {
-            return $this->getTypoScriptFrontendController()->page;
-        }
-
         $targetSiteLanguage = $site->getLanguageById($languageId);
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($targetSiteLanguage);
 

@@ -12,3 +12,7 @@ services:
       - name: event.listener
         identifier: 'typo3-seo/hreflangGenerator'
         event: TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent
+
+  TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRenderer:
+    shared: false
+    public: true
