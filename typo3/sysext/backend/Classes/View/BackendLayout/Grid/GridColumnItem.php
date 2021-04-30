@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -77,7 +79,26 @@ class GridColumnItem extends AbstractGridObject
                 $this->context->getPageId()
             );
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
-        $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
+
+        $drawItem = true;
+        $previewContent = '';
+        // Hook: Render an own preview of a record
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
+            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($this->getContext());
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1582574553);
+                }
+                $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $previewContent, $record);
+            }
+            $this->setRecord($record);
+        }
+
+        if ($drawItem) {
+            $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
+        }
+
         return $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
     }
 
