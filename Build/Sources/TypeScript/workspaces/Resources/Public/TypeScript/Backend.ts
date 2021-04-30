@@ -852,7 +852,7 @@ class Backend extends Workspaces {
       }
 
       // Mark the first tab and pane as active
-      $tabsNav.find('li').first().addClass('active');
+      $tabsNav.find('li > a').first().addClass('active');
       $tabsContent.find('.tab-pane').first().addClass('active');
 
       // Attach tabs
