@@ -408,7 +408,9 @@ class ModuleMenu {
       const moduleData = getRecordFromName(moduleName);
 
       // compatibility
-      top.currentSubScript = moduleData.link;
+      if (moduleData.link) {
+        top.currentSubScript = moduleData.link;
+      }
       top.currentModuleLoaded = moduleName;
 
       // Synchronisze navigation container if module is a standalone module (linked via ModuleMenu).
