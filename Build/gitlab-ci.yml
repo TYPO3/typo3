@@ -4,13 +4,6 @@ default:
   # Any job taking longer than this is considered 'failed'
   timeout: 30m
 
-variables:
-  # When a branch derives from master or 10.4 or something, composer stumbles
-  # if the repo has been 'shallow cloned', can't determine the source branch
-  # and fails with package conflicts. Having a full clone by setting depth 0
-  # prevents this, so we don't need to fiddle with COMPOSER_ROOT_VERSION env var.
-  GIT_DEPTH: 0
-
 cache:
   # Default caching of .cache directory if a job does not override it.
   # General rule: Keep them as small as possibles since that is less unpack work.
@@ -48,8 +41,6 @@ stages:
   - acceptance
   - functional
   - functional2
-  # Notify gerrit-adapter as last pipeline stage
-  - notify
 
 include:
   # Pre-merge tests are triggered by pushing to changes to gerrit.
@@ -61,11 +52,9 @@ include:
   - local: 'Build/gitlab-ci/pre-merge/integrity.yml'
   - local: 'Build/gitlab-ci/pre-merge/functional.yml'
   - local: 'Build/gitlab-ci/pre-merge/unit.yml'
-  - local: 'Build/gitlab-ci/pre-merge/notify.yml'
   # Nightly tests are triggered by gitlab schedules
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
   - local: 'Build/gitlab-ci/nightly/unit.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-backend.yml'
   - local: 'Build/gitlab-ci/nightly/functional.yml'
-  - local: 'Build/gitlab-ci/nightly/notify.yml'
