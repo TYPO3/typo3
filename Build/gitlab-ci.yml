@@ -48,8 +48,6 @@ stages:
   - acceptance
   - functional
   - functional2
-  # Notify gerrit-adapter as last pipeline stage
-  - notify
 
 include:
   # Pre-merge tests are triggered by pushing to changes to gerrit.
@@ -61,11 +59,9 @@ include:
   - local: 'Build/gitlab-ci/pre-merge/integrity.yml'
   - local: 'Build/gitlab-ci/pre-merge/functional.yml'
   - local: 'Build/gitlab-ci/pre-merge/unit.yml'
-  - local: 'Build/gitlab-ci/pre-merge/notify.yml'
   # Nightly tests are triggered by gitlab schedules
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
   - local: 'Build/gitlab-ci/nightly/unit.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-backend.yml'
   - local: 'Build/gitlab-ci/nightly/functional.yml'
-  - local: 'Build/gitlab-ci/nightly/notify.yml'
