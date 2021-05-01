@@ -10,7 +10,12 @@ Description
 ===========
 
 Every language of a site requires at least one locale which is used to format times, dates,
-currencies and other values. Additional locales can be added as fallback locales (comma separated).
+currencies and other locale-dependent values. Additional locales can be added as fallback
+locales (comma separated).
+
+The site configuration form for site languages provides the available locales as a select field,
+enabling easy selection of a value, rather than typing in the expected one, which might or might not
+be available.
 
 
 Impact

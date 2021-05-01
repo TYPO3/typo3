@@ -4792,7 +4792,7 @@ return [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
-            'Deprecation-93837-DeprecatedSpecialPropertyOfTCATypeSelect.rst'
+            'Deprecation-93837-SpecialPropertyOfTCATypeSelect.rst'
         ],
     ],
 ];

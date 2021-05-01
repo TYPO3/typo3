@@ -10,8 +10,8 @@ Description
 ===========
 
 Although it should not be needed to disable the hreflang generation, people might
-have a reason to disable the hreflang generation. If for some reason core does not
-render the proper hreflang tags and also the PSR-14 event called `ModifyHrefLangTagsEvent`
+have a reason to disable it. If for some reason Core does not
+render the proper hreflang tags and also the :php:`ModifyHrefLangTagsEvent` PSR-14 event
 is not enough, you are now able to disable the generation of the hreflang tags
 via TypoScript. This can be done per page or part of your tree depending on where
 you set the configuration.
@@ -27,6 +27,6 @@ TypoScript setup.
 Impact
 ======
 
-Only when you set this option, the hreflang generation will be skipped.
+If the option is set to :typoscript:`1`, hreflang generation will be skipped.
 
 .. index:: Frontend, TypoScript, ext:seo

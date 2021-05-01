@@ -9,7 +9,7 @@ See :issue:`93794`
 Description
 ===========
 
-The TCA description, introduced in #85410, allows to define a description
+The TCA description, introduced in :issue:`85410`, allows to define a description
 for a TCA field, next to its label. Since the purpose of a field may change
 depending on the current page, it is now possible to override the TCA
 description property with page TSconfig.
@@ -39,7 +39,7 @@ Also referencing language labels is supported.
 
 .. note::
 
-   The new option can not only be used to override an exisiting property,
+   The new option can not only be used to override an existing property,
    but also to set a description for a field, that has not yet been
    configured a description in TCA.
 

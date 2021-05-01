@@ -9,9 +9,9 @@ See :issue:`93606`
 Description
 ===========
 
-Although it should not be needed to disable the canonical generation, people might
-have a reason to disable the canonical generation. If for some reason core does not
-render the proper canonical tag and also the PSR-14 event called `ModifyUrlForCanonicalTagEvent`
+Although it should not be needed to disable the generation of :html:`canonical`, people might
+have a reason to disable it. If for some reason Core does not
+render the proper canonical tag and also the :php:`ModifyUrlForCanonicalTagEvent` PSR-14 event
 is not enough, you are now able to disable the generation of the canonical tag
 via TypoScript. This can be done per page or part of your tree depending on where
 you set the configuration.
@@ -27,6 +27,6 @@ TypoScript setup.
 Impact
 ======
 
-Only when you set this option, the canonical generation will be skipped.
+If the option is set to :typoscript:`1`, the canonical generation will be skipped.
 
 .. index:: Frontend, TypoScript, ext:seo

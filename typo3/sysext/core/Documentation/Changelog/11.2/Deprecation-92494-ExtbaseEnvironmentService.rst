@@ -10,24 +10,23 @@ Description
 ===========
 
 The extbase class :php:`TYPO3\CMS\Extbase\Service\EnvironmentService` is an API
-for TYPO3's legacy constant :php:`TYPO3_MODE`. That constant has been
+for TYPO3's legacy constant :php:`TYPO3_MODE`. That constant has been marked as
 deprecated in v11 and superseded by core API class
-:php:`TYPO3\CMS\Core\Http\ApplicationType` which relies on a PSR-7 request
-to determine frontend or backend mode. The EnvironmentService has now been
-deprecated as a logical follow-up to these works.
+:php:`TYPO3\CMS\Core\Http\ApplicationType`, which relies on a PSR-7 request
+to determine frontend or backend mode. The :php:`EnvironmentService` has now
+been marked as deprecated as a logical follow-up to these works.
 
 
 Impact
 ======
 
-Using the class will raise a PHP deprecation log level entry and the class will
-be removed in v12. The class has been marked :php:`@internal` a while ago already.
+Using the class will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
 ======================
 
-Even though EnvironmentService is :php:`@internal`, some extensions
+Even though :php:`TYPO3\CMS\Extbase\Service\EnvironmentService` is :php:`@internal`, some extensions
 may still rely on it. The extension scanner will find usages.
 
 

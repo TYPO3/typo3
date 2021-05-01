@@ -17,9 +17,9 @@ All modal areas with a Page Tree or File-based Folder Tree now
 contain the same feature-set of collapsing / resizing, except
 that the width is not installation-wide but is kept for the
 main navigation area (initially 300 pixels) in a different place (set in the
-Backend Users' "uc" `navigation.width` property) than for the element browser's
-modal areas (initially 250 pixels, set in the Backend Users' "uc"
-`selector.navigation.width` property).
+backend user's :sql:`uc` :php:`navigation.width` property) than for the element browsers
+modal areas (initially 250 pixels, set in the backend user's :sql:`uc`
+:php:`selector.navigation.width` property).
 
 A custom Lit-based web component is added, which is now re-used
 in various places, and uses the same markup in all contexts.
