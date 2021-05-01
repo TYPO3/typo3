@@ -1,7 +1,8 @@
 default:
-  # we always retry a failed job, so it has a chance to recover from
-  # e.g. a faulty machine or a timing issue
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
   retry: 2
+  # Any job taking longer than this is considered 'failed'
+  timeout: 30m
 
 variables:
   # When a branch derives from master or 10.4 or something, composer stumbles
