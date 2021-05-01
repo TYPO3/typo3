@@ -263,7 +263,7 @@ class MultiStepWizard {
 
     // Event fires when the slide transition is invoked
     this.setup.$carousel.on('slide.bs.carousel', (evt: any): void => {
-      if (evt.direction === 'left') {
+      if (evt.direction === 'right') {
         this.nextSlideChanges($modal);
       } else {
         this.prevSlideChanges($modal);
@@ -317,50 +317,31 @@ class MultiStepWizard {
   private nextSlideChanges($modal: JQuery): void {
     this.initializeSlideNextEvent($modal);
 
-    let $modalTitle = $modal.find('.modal-title');
-    let $modalFooter = $modal.find('.modal-footer');
-    let $modalButtonGroup = $modal.find('.modal-btn-group');
-    let $nextButton = $modalFooter.find('button[name="next"]');
-    let nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
-    let currentIndex = this.setup.$carousel.data('currentIndex') + 1;
+    const $modalTitle = $modal.find('.modal-title');
+    const $modalFooter = $modal.find('.modal-footer');
+    const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
+    const currentIndex = this.setup.$carousel.data('currentIndex');
+    const nextIndex = currentIndex + 1;
 
-    $modalTitle.text(this.setup.slides[currentIndex].title);
+    $modalTitle.text(this.setup.slides[nextIndex].title);
 
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
-    this.setup.$carousel.data('currentIndex', currentIndex);
+    this.setup.$carousel.data('currentIndex', nextIndex);
 
-    // Last wizard step
-    if (nextSlideNumber >= this.setup.$carousel.data('realSlideCount')) {
-      $nextButton.text(this.getProgressBarTitle(this.setup.$carousel.data('currentIndex')));
+    const progressBars = $modalFooter.find('.progress-bar');
 
-      $modalFooter.find('.progress-bar.first-step')
-        .width('100%')
-        .text(this.getProgressBarTitle(this.setup.$carousel.data('currentIndex')));
+    // Hide current progress bar section
+    progressBars
+      .eq(currentIndex)
+      .width('0%');
 
-      $modalFooter.find('.progress-bar.last-step')
-        .width('0%')
-        .text('');
+    // Increase size of next progress bar section
+    progressBars
+      .eq(nextIndex)
+      .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
+      .removeClass('inactive');
 
-      this.setup.forceSelection = false;
-    } else {
-      $modalFooter.find('.progress-bar.first-step')
-        .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
-        .text(this.getProgressBarTitle(currentIndex));
-
-      $modalFooter.find('.progress-bar.step')
-        .width('0%')
-        .text('');
-
-      $modalButtonGroup.slideDown();
-    }
-
-    $nextButton
-      .removeClass('btn-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
-      .addClass('btn-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
-
-    $modal
-      .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
-      .addClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
+    this.updateCurrentSeverity($modal, currentIndex, nextIndex);
   }
 
   /**
@@ -372,17 +353,17 @@ class MultiStepWizard {
   private prevSlideChanges($modal: JQuery): void {
     this.initializeSlidePrevEvent($modal);
 
-    let $modalTitle = $modal.find('.modal-title');
-    let $modalFooter = $modal.find('.modal-footer');
-    let $modalButtonGroup = $modal.find('.modal-btn-group');
-    let $nextButton = $modalFooter.find('button[name="next"]');
-    let nextSlideNumber = this.setup.$carousel.data('currentSlide') - 1;
-    let currentIndex = this.setup.$carousel.data('currentIndex') - 1;
+    const $modalTitle = $modal.find('.modal-title');
+    const $modalFooter = $modal.find('.modal-footer');
+    const $nextButton = $modalFooter.find('button[name="next"]');
+    const nextSlideNumber = this.setup.$carousel.data('currentSlide') - 1;
+    const currentIndex = this.setup.$carousel.data('currentIndex');
+    const nextIndex = currentIndex - 1;
 
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
-    this.setup.$carousel.data('currentIndex', currentIndex);
+    this.setup.$carousel.data('currentIndex', nextIndex);
 
-    $modalTitle.text(this.setup.slides[currentIndex].title);
+    $modalTitle.text(this.setup.slides[nextIndex].title);
 
     $modalFooter.find('.progress-bar.last-step')
       .width(this.setup.$carousel.data('initialStep') + '%')
@@ -390,24 +371,42 @@ class MultiStepWizard {
 
     $nextButton.text(top.TYPO3.lang['wizard.button.next']);
 
-    // First wizard step
-    if (nextSlideNumber === 1) {
-      $modalFooter.find('.progress-bar.first-step')
-        .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
-        .text(this.getProgressBarTitle(0));
+    const progressBars = $modalFooter.find('.progress-bar');
 
-      $modalFooter.find('.progress-bar.step')
-        .width(this.setup.$carousel.data('initialStep') + '%')
-        .text(this.getProgressBarTitle(currentIndex + 1));
+    // Reset size of current progress bar
+    progressBars
+      .eq(currentIndex)
+      .width(this.setup.$carousel.data('initialStep') + '%')
+      .addClass('inactive');
 
-      $modalButtonGroup.slideUp();
-    } else {
-      $modalFooter.find('.progress-bar.first-step')
-        .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
-        .text(this.getProgressBarTitle(currentIndex));
+    // Enable next (previous) progress bar again
+    progressBars
+      .eq(nextIndex)
+      .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
+      .removeClass('inactive');
 
-      this.setup.forceSelection = true;
-    }
+    this.updateCurrentSeverity($modal, currentIndex, nextIndex);
+  }
+
+  /**
+   * Update severity of modal and buttons when changing slides.
+   *
+   * @param $modal
+   * @param currentIndex
+   * @param nextIndex
+   * @private
+   */
+  private updateCurrentSeverity($modal: JQuery, currentIndex: number, nextIndex: number): void {
+    const $modalFooter = $modal.find('.modal-footer');
+    const $nextButton = $modalFooter.find('button[name="next"]');
+
+    $nextButton
+      .removeClass('btn-' + Severity.getCssClass(this.setup.slides[currentIndex].severity))
+      .addClass('btn-' + Severity.getCssClass(this.setup.slides[nextIndex].severity));
+
+    $modal
+      .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex].severity))
+      .addClass('modal-severity-' + Severity.getCssClass(this.setup.slides[nextIndex].severity));
   }
 
   /**
@@ -451,7 +450,7 @@ class MultiStepWizard {
    * @private
    */
   private addProgressBar(): void {
-    let realSlideCount = this.setup.$carousel.find('.carousel-item').length - 1;
+    let realSlideCount = this.setup.$carousel.find('.carousel-item').length;
     let slideCount = Math.max(1, realSlideCount);
     let initialStep;
     let $modal = this.setup.$carousel.closest('.modal');

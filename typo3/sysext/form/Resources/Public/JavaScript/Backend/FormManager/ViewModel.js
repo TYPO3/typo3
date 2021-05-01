@@ -88,7 +88,7 @@ define(['jquery',
         /**
          * Wizard step 1
          */
-        MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, null, function(slide) {
+        MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step1.title'], function(slide) {
           Icons.getIcon('actions-document-duplicates-select', Icons.sizes.large).then(function (duplicateIconMarkup) {
             Icons.getIcon('actions-document-new', Icons.sizes.large).then(function (blankIconMarkup) {
               var advancedWizardHasOptions, folders, html, modal, cancelButton, nextButton, prototypes,
@@ -364,7 +364,7 @@ define(['jquery',
         /**
          * Wizard step 3
          */
-        MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, null, function(slide, settings) {
+        MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step3.title'], function(slide, settings) {
           var addOnTemplateChangeEvents, folders, html, modal, nextButton, prototypes, prototypeNameSelect,
             savePathSelect, templates, templateSelect;
 
