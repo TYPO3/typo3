@@ -163,12 +163,7 @@ class ContextHelp {
           content: content,
         };
         Popover.setOptions($trigger, options);
-        $trigger
-          .attr('data-loaded', 'true')
-          .one('hidden.bs.popover', (): void => {
-            Popover.show($trigger);
-          });
-        Popover.hide($trigger);
+        $trigger.attr('data-loaded', 'true');
       });
     }
   }

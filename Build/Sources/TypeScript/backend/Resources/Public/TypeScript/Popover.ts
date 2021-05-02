@@ -88,6 +88,7 @@ class Popover {
   public setOption($element: JQuery, key: string, value: string): void {
     if (key === 'content') {
       $element.attr('data-bs-content', value);
+      $element.data('typo3.bs.popover').setContent(value);
     } else {
       $element.each((i, el) => {
         const popover = $(el).data('typo3.bs.popover');
