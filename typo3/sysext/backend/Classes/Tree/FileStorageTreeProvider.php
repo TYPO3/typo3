@@ -281,7 +281,7 @@ class FileStorageTreeProvider
         $stateIdentifier = $this->getStateIdentifier($folder);
         if (!is_array($this->expandedState)) {
             $this->expandedState = GeneralUtility::makeInstance(BackendUserConfiguration::class)->get($this->userSettingsIdentifier);
-            $this->expandedState = $this->expandedState['stateHash'] ?: [];
+            $this->expandedState = ($this->expandedState['stateHash'] ?? []) ?: [];
         }
         return (bool)($this->expandedState[$stateIdentifier] ?? $fallback);
     }

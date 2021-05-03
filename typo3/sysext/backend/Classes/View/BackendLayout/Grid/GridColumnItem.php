@@ -64,7 +64,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function isVersioned(): bool
     {
-        return $this->record['_ORIG_uid'] > 0 || (int)$this->record['t3ver_state'] !== 0;
+        return ($this->record['_ORIG_uid'] ?? 0) > 0 || (int)($this->record['t3ver_state'] ?? 0) !== 0;
     }
 
     public function getPreview(): string
@@ -292,7 +292,7 @@ class GridColumnItem extends AbstractGridObject
         } else {
             $value = 1;
         }
-        $params = '&data[tt_content][' . ($this->record['_ORIG_uid'] ?: $this->record['uid'])
+        $params = '&data[tt_content][' . (($this->record['_ORIG_uid'] ?? false) ?: ($this->record['uid'] ?? 0))
             . '][' . $hiddenField . ']=' . $value;
         return BackendUtility::getLinkToDataHandlerAction($params) . '#element-tt_content-' . $this->record['uid'];
     }

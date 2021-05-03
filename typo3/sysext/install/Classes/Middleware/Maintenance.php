@@ -287,7 +287,7 @@ class Maintenance implements MiddlewareInterface
      */
     protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
     {
-        $postValues = $request->getParsedBody()['install'];
+        $postValues = $request->getParsedBody()['install'] ?? null;
         // no post data is there, so no token check necessary
         if (empty($postValues)) {
             return true;

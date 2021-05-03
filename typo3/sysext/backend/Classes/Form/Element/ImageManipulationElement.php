@@ -301,9 +301,7 @@ class ImageManipulationElement extends AbstractFormElement
         $config['cropVariants'] = $cropVariants;
 
         // By default we allow all image extensions that can be handled by the GFX functionality
-        if ($config['allowedExtensions'] === null) {
-            $config['allowedExtensions'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-        }
+        $config['allowedExtensions'] ??= $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
         return $config;
     }
 

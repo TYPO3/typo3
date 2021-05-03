@@ -114,7 +114,7 @@ class PageLayoutContext
 
     public function __construct(array $pageRecord, BackendLayout $backendLayout)
     {
-        $this->pageId = (int)$pageRecord['uid'];
+        $this->pageId = (int)($pageRecord['uid'] ?? 0);
         try {
             $this->site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($this->pageId);
         } catch (SiteNotFoundException $e) {
@@ -257,7 +257,7 @@ class PageLayoutContext
     {
         if (empty($this->itemLabels)) {
             foreach ($GLOBALS['TCA']['tt_content']['columns'] as $name => $val) {
-                $this->itemLabels[$name] = $this->getLanguageService()->sL($val['label']);
+                $this->itemLabels[$name] = $this->getLanguageService()->sL($val['label'] ?? '');
             }
         }
         return $this->itemLabels;

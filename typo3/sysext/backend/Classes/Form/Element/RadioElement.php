@@ -64,7 +64,7 @@ class RadioElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
 
         $disabled = '';
-        if ($this->data['parameterArray']['fieldConf']['config']['readOnly']) {
+        if ($this->data['parameterArray']['fieldConf']['config']['readOnly'] ?? false) {
             $disabled = ' disabled';
         }
 

@@ -108,7 +108,7 @@ class ButtonBarHook
             || ($tableConfiguration['readOnly'] ?? false)
             || ($tableConfiguration['hideTable'] ?? false)
             || ($tableConfiguration['is_static'] ?? false)
-            || ($tableConfiguration['adminOnly'] && !$backendUser->isAdmin())
+            || (($tableConfiguration['adminOnly'] ?? false) && !$backendUser->isAdmin())
             || !$backendUser->doesUserHaveAccess($pageRow, Permission::CONTENT_EDIT)
             || !$backendUser->check('tables_modify', self::TABLE_NAME)
             || !$backendUser->workspaceCanCreateNewRecord(self::TABLE_NAME));

@@ -110,7 +110,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             }
             if (MathUtility::canBeInterpretedAsInteger($pid)) {
                 $pageRecord = BackendUtility::getRecord('pages', (int)$pid);
-                if ((int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
+                if (($pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
                     $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                 }
             } elseif (strpos($pid, 'NEW') !== 0) {
@@ -462,12 +462,12 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         }
         /** @var RelationHandler $relationHandler */
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-        $relationHandler->registerNonTableValues = (bool)$parentConfig['allowedIdValues'];
-        $relationHandler->start($parentFieldValue, $parentConfig['foreign_table'], $parentConfig['MM'], $parentUid, $parentTableName, $parentConfig);
+        $relationHandler->registerNonTableValues = (bool)($parentConfig['allowedIdValues'] ?? false);
+        $relationHandler->start($parentFieldValue, $parentConfig['foreign_table'] ?? '', $parentConfig['MM'] ?? '', $parentUid, $parentTableName, $parentConfig);
         $foreignRecordUids = $relationHandler->getValueArray();
         $resolvedForeignRecordUids = [];
         foreach ($foreignRecordUids as $aForeignRecordUid) {
-            if ($parentConfig['MM'] || $parentConfig['foreign_field']) {
+            if ($parentConfig['MM'] ?? $parentConfig['foreign_field'] ?? false) {
                 $resolvedForeignRecordUids[] = (int)$aForeignRecordUid;
             } else {
                 foreach ($directlyConnectedIds as $id) {

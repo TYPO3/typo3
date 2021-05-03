@@ -207,7 +207,7 @@ class ExtendedFileUtility extends BasicFileUtility
         $result = [];
         if (is_array($this->fileCmdMap)) {
             // Check if there were uploads expected, but no one made
-            if ($this->fileCmdMap['upload']) {
+            if ($this->fileCmdMap['upload'] ?? false) {
                 $uploads = $this->fileCmdMap['upload'];
                 foreach ($uploads as $upload) {
                     if (empty($_FILES['upload_' . $upload['data']]['name'])

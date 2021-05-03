@@ -79,7 +79,7 @@ class InputTextElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = (int)$this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
@@ -88,7 +88,7 @@ class InputTextElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             // Early return for read only fields
             if (in_array('password', $evalList, true)) {
                 $itemValue = $itemValue ? '*********' : '';
@@ -99,7 +99,7 @@ class InputTextElement extends AbstractFormElement
                 'data-formengine-input-name' => $parameterArray['itemFormElName'],
                 'type' => 'text',
                 'value' => $itemValue,
-                'placeholder' => trim($config['placeholder']) ?? '',
+                'placeholder' => trim($config['placeholder'] ?? ''),
             ];
 
             $html = [];
@@ -153,7 +153,7 @@ class InputTextElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'])
+                'is_in' => trim($config['is_in'] ?? '')
             ]),
             'data-formengine-input-name' => (string)$parameterArray['itemFormElName'],
         ];

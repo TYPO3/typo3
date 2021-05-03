@@ -88,7 +88,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
-                if (is_array($fieldConfig['search']) && in_array('case', $fieldConfig['search'], true)) {
+                if (in_array('case', (array)($fieldConfig['search'] ?? []), true)) {
                     // case sensitive
                     $searchConstraint = $this->queryBuilder->expr()->andX(
                         $this->queryBuilder->expr()->like(

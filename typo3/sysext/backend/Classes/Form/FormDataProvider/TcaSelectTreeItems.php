@@ -58,7 +58,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 continue;
             }
 
-            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'], 0, 99999);
+            $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'] ?? 0, 0, 99999);
             if ($fieldConfig['config']['maxitems'] === 0) {
                 $fieldConfig['config']['maxitems'] = 99999;
             }
@@ -94,7 +94,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 // Prepare the list of "static" items if there are any.
                 // "static" and "dynamic" is separated since the tree code only copes with "real" existing foreign nodes,
                 // so this "static" stuff allows defining tree items that don't really exist in the tree.
-                $itemsFromTca = $this->sanitizeItemArray($fieldConfig['config']['items'], $table, $fieldName);
+                $itemsFromTca = $this->sanitizeItemArray($fieldConfig['config']['items'] ?? [], $table, $fieldName);
 
                 // List of additional items defined by page ts config "addItems"
                 $itemsFromPageTsConfig = $this->addItemsFromPageTsConfig($result, $fieldName, []);

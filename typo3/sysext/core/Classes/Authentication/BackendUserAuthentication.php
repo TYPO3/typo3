@@ -79,7 +79,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @internal
      */
     public $groupData = [
-        'filemounts' => []
+        'filemounts' => [],
+        'allowed_languages' => ''
     ];
 
     /**
@@ -1227,7 +1228,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Add allowed mfa providers
             $this->groupData['mfa_providers'] = $this->user['mfa_providers'] ?? '';
             // Add Allowed Languages
-            $this->groupData['allowed_languages'] = $this->user['allowed_languages'];
+            $this->groupData['allowed_languages'] = $this->user['allowed_languages'] ?? '';
             // Set user value for workspace permissions.
             $this->groupData['workspace_perms'] = $this->user['workspace_perms'];
             // Database mountpoints
@@ -1242,6 +1243,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
             $resolvedGroups = $groupResolver->resolveGroupsForUser($this->user, $this->usergroup_table);
             foreach ($resolvedGroups as $groupInfo) {
+                $groupInfo += [
+                    'uid' => 0,
+                    'db_mountpoints' => '',
+                    'file_mountpoints' => '',
+                    'groupMods' => '',
+                    'availableWidgets' => '',
+                    'mfa_providers' => '',
+                    'tables_select' => '',
+                    'tables_modify' => '',
+                    'pagetypes_select' => '',
+                    'non_exclude_fields' => '',
+                    'explicit_allowdeny' => '',
+                    'allowed_languages' => '',
+                    'custom_options' => '',
+                    'file_permissions' => '',
+                    'workspace_perms' => 0, // Bitflag.
+                ];
                 // Add the group uid to internal arrays.
                 $this->userGroupsUID[] = (int)$groupInfo['uid'];
                 $this->userGroups[(int)$groupInfo['uid']] = $groupInfo;
@@ -1631,7 +1649,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     public function evaluateUserSpecificFileFilterSettings()
     {
         // Add the option for also displaying the non-hidden files
-        if ($this->uc['showHiddenFilesAndFolders']) {
+        if ($this->uc['showHiddenFilesAndFolders'] ?? false) {
             FileNameFilter::setShowHiddenFilesAndFolders(true);
         }
     }

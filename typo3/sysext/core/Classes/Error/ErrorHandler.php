@@ -174,7 +174,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             // Silently catch in case an error occurs before the DI container is in place
         }
         // Write error message to sys_log table (ext: belog, Tools->Log)
-        if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting'] ?? 0) {
+        if ($errorLevel & ($GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting'] ?? 0)) {
             // Silently catch in case an error occurs before a database connection exists.
             try {
                 $this->writeLog($message, $severity);

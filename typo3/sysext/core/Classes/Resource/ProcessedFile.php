@@ -391,8 +391,8 @@ class ProcessedFile extends AbstractFile
             $properties['processing_url'] = '';
 
             // Use width + height set in processed file
-            $properties['width'] = $this->properties['width'];
-            $properties['height'] = $this->properties['height'];
+            $properties['width'] = $this->properties['width'] ?? 0;
+            $properties['height'] = $this->properties['height'] ?? 0;
         } else {
             $properties = $this->properties;
             $properties['identifier'] = $this->getIdentifier();
@@ -418,7 +418,7 @@ class ProcessedFile extends AbstractFile
      */
     protected function isUnchanged()
     {
-        return !$this->properties['width'] && $this->usesOriginalFile();
+        return !($this->properties['width'] ?? false) && $this->usesOriginalFile();
     }
 
     /**

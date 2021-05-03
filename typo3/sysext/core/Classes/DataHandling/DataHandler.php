@@ -2316,7 +2316,7 @@ class DataHandler implements LoggerAwareInterface
             return $value;
         }
 
-        if ((string)$GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] === 'exclude') {
+        if (($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'] ?? '') === 'exclude') {
             $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
             $l10nParent = (int)$this->checkValue_currentRecord[$transOrigPointerField];
             if ($l10nParent > 0) {
@@ -2830,7 +2830,7 @@ class DataHandler implements LoggerAwareInterface
                             continue;
                         }
 
-                        if (!is_array($dataValues_current[$key]['el'])) {
+                        if (!is_array($dataValues_current[$key]['el'] ?? false)) {
                             $dataValues_current[$key]['el'] = [];
                         }
                         $theKey = key($el);
@@ -2838,7 +2838,16 @@ class DataHandler implements LoggerAwareInterface
                             continue;
                         }
 
-                        $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : [], $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/', $workspaceOptions);
+                        $this->checkValue_flex_procInData_travDS(
+                            $dataValues[$key]['el'][$ik][$theKey]['el'],
+                            $dataValues_current[$key]['el'][$ik][$theKey]['el'] ?? [],
+                            $uploadedFiles[$key]['el'][$ik][$theKey]['el'] ?? [],
+                            $DSelements[$key]['el'][$theKey]['el'] ?? [],
+                            $pParams,
+                            $callBackFunc,
+                            $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/',
+                            $workspaceOptions
+                        );
                     }
                 } else {
                     if (!isset($dataValues[$key]['el'])) {
@@ -4343,6 +4352,8 @@ class DataHandler implements LoggerAwareInterface
         if (!$GLOBALS['TCA'][$table] || !$uid || $this->isNestedElementCallRegistered($table, $uid, 'localize-' . (string)$language) !== false) {
             return false;
         }
+
+        $GLOBALS['TCA'][$table]['ctrl'] += ['languageField' => '', 'transOrigPointerField' => ''];
 
         $this->registerNestedElementCall($table, $uid, 'localize-' . (string)$language);
         if (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
@@ -7415,6 +7426,10 @@ class DataHandler implements LoggerAwareInterface
 
         // There is a previous record
         if (!empty($row)) {
+            $row += [
+                't3ver_state' => 0,
+                'uid' => 0,
+            ];
             // Look if the record UID happens to be a versioned record. If so, find its live version.
             // If this is already a moved record in workspace, this is not needed
             if ((int)$row['t3ver_state'] !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {

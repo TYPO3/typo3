@@ -376,13 +376,14 @@ class NewContentElementController
 
             foreach ($wizards as $groupKey => $wizardGroup) {
                 $groupKey = rtrim($groupKey, '.');
-                $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
+                $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'] ?? '', true);
                 $showAll = in_array('*', $showItems, true);
                 $groupItems = [];
-                if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-                    $wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+                $appendWizardElements = $appendWizards[$groupKey . '.']['elements.'] ?? null;
+                if (is_array($appendWizardElements)) {
+                    $wizardElements = array_merge((array)($wizardGroup['elements.'] ?? []), $appendWizardElements);
                 } else {
-                    $wizardElements = $wizardGroup['elements.'];
+                    $wizardElements = $wizardGroup['elements.'] ?? [];
                 }
                 if (is_array($wizardElements)) {
                     foreach ($wizardElements as $itemKey => $itemConf) {
@@ -412,8 +413,9 @@ class NewContentElementController
      */
     protected function getAppendWizards(array $wizardElements): array
     {
-        if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
-            foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
+        $classes = $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] ?? [];
+        if (is_array($classes)) {
+            foreach ($classes as $class => $path) {
                 if (!class_exists($class) && file_exists($path)) {
                     require_once $path;
                 }
@@ -440,7 +442,7 @@ class NewContentElementController
     {
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
         $itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
-        $itemConf['saveAndClose'] = (bool)$itemConf['saveAndClose'];
+        $itemConf['saveAndClose'] = (bool)($itemConf['saveAndClose'] ?? false);
         $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
         unset($itemConf['tt_content_defValues.']);
         return $itemConf;

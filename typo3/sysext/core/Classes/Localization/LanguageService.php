@@ -221,7 +221,9 @@ class LanguageService
     {
         // First the 'table' cannot already be loaded in [columns]
         // and secondly there must be a references to locallang files available in [refs]
-        if (is_array($GLOBALS['TCA_DESCR'][$table]) && !isset($GLOBALS['TCA_DESCR'][$table]['columns']) && is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
+        if (is_array($GLOBALS['TCA_DESCR'][$table] ?? null)
+            && !isset($GLOBALS['TCA_DESCR'][$table]['columns'])
+            && is_array($GLOBALS['TCA_DESCR'][$table]['refs'] ?? null)) {
             // Init $TCA_DESCR for $table-key
             $GLOBALS['TCA_DESCR'][$table]['columns'] = [];
             // Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
@@ -261,6 +263,9 @@ class LanguageService
                         }
                         // Append label
                         $label = $lVal[0]['target'] ?: $lVal[0]['source'];
+                        if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName])) {
+                            $GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName] = [$type => ''];
+                        }
                         if ($specialInstruction) {
                             $GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $label;
                         } else {
@@ -359,7 +364,7 @@ class LanguageService
 
     public static function createFromUserPreferences(?AbstractUserAuthentication $user): self
     {
-        if ($user && ($user->user['lang'] ?: false)) {
+        if ($user->user['lang'] ?? false) {
             return static::create($user->user['lang']);
         }
         return static::create('default');

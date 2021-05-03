@@ -124,15 +124,19 @@ class Clipboard
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
-        $clipData = $this->getBackendUser()->getModuleData('clipboard', $userTsConfig['options.']['saveClipboard'] ? '' : 'ses');
+        $clipData = $this->getBackendUser()->getModuleData('clipboard', !empty($userTsConfig['options.']['saveClipboard'])  ? '' : 'ses') ?: [];
+        $clipData += ['normal' => []];
         $this->numberTabs = MathUtility::forceIntegerInRange((int)($userTsConfig['options.']['clipboardNumberPads'] ?? 3), 0, 20);
         // Resets/reinstates the clipboard pads
-        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal'] : [];
+        $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal']: [];
         for ($a = 1; $a <= $this->numberTabs; $a++) {
-            $this->clipData['tab_' . $a] = is_array($clipData['tab_' . $a]) ? $clipData['tab_' . $a] : [];
+            $index = 'tab_' . $a;
+            $this->clipData[$index] = is_iterable($clipData[$index] ?? null) ? $clipData[$index] : [];
         }
         // Setting the current pad pointer ($this->current))
-        $this->clipData['current'] = ($this->current = isset($this->clipData[$clipData['current']]) ? $clipData['current'] : 'normal');
+        $current = $clipData['current'] ?? '';
+        $this->current = isset($this->clipData[$current]) ? $current : 'normal';
+        $this->clipData['current'] = $this->current;
     }
 
     /**
@@ -159,35 +163,35 @@ class Clipboard
      */
     public function setCmd($cmd)
     {
-        if (is_array($cmd['el'])) {
-            foreach ($cmd['el'] as $k => $v) {
-                if ($this->current === 'normal') {
-                    unset($this->clipData['normal']);
-                }
-                if ($v) {
-                    $this->clipData[$this->current]['el'][$k] = $v;
-                } else {
-                    $this->removeElement($k);
-                }
-                $this->changed = 1;
+        $cmd['el'] ??= [];
+        $cmd['el'] = is_iterable($cmd['el']) ? $cmd['el'] : [];
+        foreach ($cmd['el'] as $k => $v) {
+            if ($this->current === 'normal') {
+                unset($this->clipData['normal']);
             }
+            if ($v) {
+                $this->clipData[$this->current]['el'][$k] = $v;
+            } else {
+                $this->removeElement($k);
+            }
+            $this->changed = 1;
         }
         // Change clipboard pad (if not locked to normal)
-        if ($cmd['setP']) {
+        if ($cmd['setP'] ?? false) {
             $this->setCurrentPad($cmd['setP']);
         }
         // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[shortmd5 hash of path]'
-        if ($cmd['remove']) {
+        if ($cmd['remove'] ?? false) {
             $this->removeElement($cmd['remove']);
             $this->changed = 1;
         }
         // Remove all on current pad (value = pad-ident)
-        if ($cmd['removeAll']) {
+        if ($cmd['removeAll'] ?? false) {
             $this->clipData[$cmd['removeAll']] = [];
             $this->changed = 1;
         }
         // Set copy mode of the tab
-        if (isset($cmd['setCopyMode'])) {
+        if ($cmd['setCopyMode'] ?? false) {
             $this->clipData[$this->current]['mode'] = $cmd['setCopyMode'] ? 'copy' : '';
             $this->changed = 1;
         }

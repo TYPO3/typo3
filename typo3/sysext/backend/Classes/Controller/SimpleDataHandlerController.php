@@ -186,15 +186,15 @@ class SimpleDataHandlerController
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
         // Configuring based on user prefs.
-        if ($beUser->uc['copyLevels']) {
+        if ($beUser->uc['copyLevels'] ?? false) {
             // Set to number of page-levels to copy.
             $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
         }
-        if ($beUser->uc['neverHideAtCopy']) {
+        if ($beUser->uc['neverHideAtCopy'] ?? false) {
             $this->tce->neverHideAtCopy = 1;
         }
         // Reverse order.
-        if ($this->flags['reverseOrder']) {
+        if ($this->flags['reverseOrder'] ?? false) {
             $this->tce->reverseOrder = 1;
         }
     }

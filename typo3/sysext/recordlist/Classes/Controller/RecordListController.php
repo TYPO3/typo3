@@ -157,13 +157,7 @@ class RecordListController
             $MOD_SETTINGS['bigControlPanel'] = false;
         }
         // Set predefined value for Clipboard:
-        if ($this->modTSconfig['enableClipBoard'] === 'activated') {
-            $MOD_SETTINGS['clipBoard'] = true;
-        } elseif ($this->modTSconfig['enableClipBoard'] === 'deactivated') {
-            $MOD_SETTINGS['clipBoard'] = false;
-        } elseif ($MOD_SETTINGS['clipBoard'] === null) {
-            $MOD_SETTINGS['clipBoard'] = true;
-        }
+        $MOD_SETTINGS['clipBoard'] = ($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated' ? false : true;
         $clipboard = $this->initializeClipboard($request, (bool)($MOD_SETTINGS['clipBoard'] ?? false));
 
         // Initialize the dblist object:
@@ -171,19 +165,19 @@ class RecordListController
         $dblist->setModuleData($MOD_SETTINGS ?? []);
         $dblist->calcPerms = $this->pagePermissions;
         $dblist->returnUrl = $this->returnUrl;
-        $dblist->allFields = (bool)($MOD_SETTINGS['bigControlPanel'] || $table);
+        $dblist->allFields = (bool)($MOD_SETTINGS['bigControlPanel'] ?? $table);
         $dblist->showClipboard = true;
-        $dblist->disableSingleTableView = $this->modTSconfig['disableSingleTableView'];
-        $dblist->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'];
-        $dblist->hideTables = $this->modTSconfig['hideTables'];
-        $dblist->hideTranslations = $this->modTSconfig['hideTranslations'];
-        $dblist->tableTSconfigOverTCA = $this->modTSconfig['table.'];
-        $dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'], true);
-        $dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'], true);
+        $dblist->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
+        $dblist->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
+        $dblist->hideTables = $this->modTSconfig['hideTables'] ?? false;
+        $dblist->hideTranslations = $this->modTSconfig['hideTranslations'] ?? false;
+        $dblist->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? false;
+        $dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
+        $dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
         $dblist->pageRow = $this->pageInfo;
         $dblist->modTSconfig = $this->modTSconfig;
         $dblist->setLanguagesAllowedForUser($this->siteLanguages);
-        $clickTitleMode = trim($this->modTSconfig['clickTitleMode']);
+        $clickTitleMode = trim($this->modTSconfig['clickTitleMode'] ?? '');
         $dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
         if (isset($this->modTSconfig['tableDisplayOrder.'])) {
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -192,7 +186,7 @@ class RecordListController
         $dblist->clipObj = $clipboard;
         // This flag will prevent the clipboard panel in being shown.
         // It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-        $dblist->dontShowClipControlPanels = ($clipboard->current === 'normal' && !$this->modTSconfig['showClipControlPanelsDespiteOfCMlayers']);
+        $dblist->dontShowClipControlPanels = ($clipboard->current === 'normal' && !($this->modTSconfig['showClipControlPanelsDespiteOfCMlayers'] ?? false));
         // If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
         $tableOutput = '';
         if ($access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '')) {
@@ -342,7 +336,7 @@ class RecordListController
             // Add "clipboard" checkbox:
             if ($this->modTSconfig['enableClipBoard'] === 'selectable') {
                 $body .= '<div class="form-check">' .
-                    BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $MOD_SETTINGS['clipBoard'], '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
+                    BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', ($MOD_SETTINGS['clipBoard'] ?? ''), '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
                     '<label class="form-check-label" for="checkShowClipBoard">' .
                     BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
                     '</label>' .

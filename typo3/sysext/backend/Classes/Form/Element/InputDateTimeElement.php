@@ -79,7 +79,7 @@ class InputDateTimeElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $defaultInputWidth = 10;
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
         if (in_array('date', $evalList, true)) {

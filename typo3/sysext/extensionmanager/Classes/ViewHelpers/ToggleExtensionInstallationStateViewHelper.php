@@ -51,6 +51,9 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
     public function render()
     {
         $extension = $this->arguments['extension'];
+        $extension += [
+            'installed' => false,
+        ];
         // Early return if package is protected and can not be unloaded
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         $package = $packageManager->getPackage($extension['key']);

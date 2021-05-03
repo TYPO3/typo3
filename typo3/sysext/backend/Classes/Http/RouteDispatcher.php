@@ -116,7 +116,7 @@ class RouteDispatcher extends Dispatcher
         if ($route->getOption('access') === 'public') {
             return true;
         }
-        $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token']);
+        $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token'] ?? '');
         if ($token) {
             return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
         }
@@ -141,7 +141,8 @@ class RouteDispatcher extends Dispatcher
 
         // Check permissions and exit if the user has no permission for entry
         $backendUserAuthentication->modAccess($moduleConfiguration);
-        $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
+        // '' for "no value found at all" to guarantee that the following if condition fails.
+        $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? '';
         if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
             $permClause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
             // Check page access

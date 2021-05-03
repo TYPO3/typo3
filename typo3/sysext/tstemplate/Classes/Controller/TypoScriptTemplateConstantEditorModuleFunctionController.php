@@ -133,7 +133,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             $assigns['templateRecord'] = $this->templateRow;
             $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
-            $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
+            $saveId = empty($this->templateRow['_ORIG_uid']) ? $this->templateRow['uid'] : $this->templateRow['_ORIG_uid'];
             // Update template ?
             if ($this->request->getParsedBody()['_savedok'] ?? false) {
                 $this->templateService->changed = false;

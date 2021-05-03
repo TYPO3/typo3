@@ -2813,7 +2813,10 @@ class GeneralUtility
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
         }
-        return isset($path[0]) && $path[0] === '/' || Environment::isWindows() && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
+        return
+            (isset($path[0]) && $path[0] === '/')
+            || (Environment::isWindows() && (strpos($path, ':/') === 1))
+            || strpos($path, ':\\') === 1;
     }
 
     /**
@@ -2832,7 +2835,7 @@ class GeneralUtility
             && (
                 static::isFirstPartOfStr($path, Environment::getProjectPath())
                 || static::isFirstPartOfStr($path, Environment::getPublicPath())
-                || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath)
+                || ($lockRootPath && static::isFirstPartOfStr($path, $lockRootPath))
             );
     }
 

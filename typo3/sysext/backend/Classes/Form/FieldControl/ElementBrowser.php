@@ -66,11 +66,13 @@ class ElementBrowser extends AbstractNode
             $elementBrowserOnClickInline = $objectPrefix;
         }
         $elementBrowserType = $internalType;
-        if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserType'])) {
-            $elementBrowserType = $config['appearance']['elementBrowserType'];
-        }
-        if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserAllowed'])) {
-            $allowed = $config['appearance']['elementBrowserAllowed'];
+        if (is_array($config['appearance'] ?? null)) {
+            if (isset($config['appearance']['elementBrowserType'])) {
+                $elementBrowserType = $config['appearance']['elementBrowserType'];
+            }
+            if (isset($config['appearance']['elementBrowserAllowed'])) {
+                $allowed = $config['appearance']['elementBrowserAllowed'];
+            }
         }
         // Remove any white-spaces from the allowed extension lists
         $elementBrowserAllowed = implode(',', GeneralUtility::trimExplode(',', $allowed, true));

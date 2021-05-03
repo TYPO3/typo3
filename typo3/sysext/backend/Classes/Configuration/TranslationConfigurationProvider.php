@@ -188,8 +188,8 @@ class TranslationConfigurationProvider
         return [
             'table' => $table,
             'uid' => $uid,
-            'CType' => $row['CType'],
-            'sys_language_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']],
+            'CType' => $row['CType'] ?? '',
+            'sys_language_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? null,
             'translations' => $translations,
             'excessive_translations' => $translationsErrors
         ];

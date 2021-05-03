@@ -186,7 +186,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
      */
     protected function addForeignSelectorAndUniquePossibleRecords(array $result, string $fieldName): array
     {
-        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'])) {
+        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'] ?? null)) {
             return $result;
         }
 
@@ -305,9 +305,9 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineParentUid' => $result['databaseRow']['uid'],
             'inlineParentTableName' => $result['tableName'],
             'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: $inlineTopMostParent['uid'],
+            'inlineTopMostParentTableName' => ($result['inlineTopMostParentTableName'] ?? false) ?: $inlineTopMostParent['table'],
+            'inlineTopMostParentFieldName' => ($result['inlineTopMostParentFieldName'] ?? false) ?: $inlineTopMostParent['field'],
             // The sys_language uid 0
             'inlineChildChildUid' => 0,
         ];

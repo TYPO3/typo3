@@ -1028,7 +1028,7 @@ abstract class AbstractItemProvider
      * pointing to the live record, the submitted record uid is returned.
      *
      * @param array $result Result array
-     * @return int
+     * @return int|string If the record is new, uid will be a string beginning with "NEW". Otherwise an int.
      * @throws \UnexpectedValueException
      */
     protected function getLiveUid(array $result)

@@ -85,7 +85,7 @@ class BackendUtility
      * $table must be found in $GLOBALS['TCA']
      *
      * @param string $table Table name present in $GLOBALS['TCA']
-     * @param int $uid UID of record
+     * @param int|string $uid UID of record
      * @param string $fields List of fields to select
      * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
@@ -225,45 +225,47 @@ class BackendUtility
      */
     public static function BEenableFields($table, $inv = false)
     {
-        $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($table)
             ->getExpressionBuilder();
         $query = $expressionBuilder->andX();
         $invQuery = $expressionBuilder->orX();
 
+        $ctrl += [
+            'enablecolumns' => [],
+        ];
+
         if (is_array($ctrl)) {
-            if (is_array($ctrl['enablecolumns'])) {
-                if ($ctrl['enablecolumns']['disabled'] ?? false) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
-                    $query->add($expressionBuilder->eq($field, 0));
-                    $invQuery->add($expressionBuilder->neq($field, 0));
-                }
-                if ($ctrl['enablecolumns']['starttime'] ?? false) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                    $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
-                    $invQuery->add(
-                        $expressionBuilder->andX(
-                            $expressionBuilder->neq($field, 0),
-                            $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
-                        )
-                    );
-                }
-                if ($ctrl['enablecolumns']['endtime'] ?? false) {
-                    $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                    $query->add(
-                        $expressionBuilder->orX(
-                            $expressionBuilder->eq($field, 0),
-                            $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
-                        )
-                    );
-                    $invQuery->add(
-                        $expressionBuilder->andX(
-                            $expressionBuilder->neq($field, 0),
-                            $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
-                        )
-                    );
-                }
+            if ($ctrl['enablecolumns']['disabled'] ?? false) {
+                $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
+                $query->add($expressionBuilder->eq($field, 0));
+                $invQuery->add($expressionBuilder->neq($field, 0));
+            }
+            if ($ctrl['enablecolumns']['starttime'] ?? false) {
+                $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
+                $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
+                $invQuery->add(
+                    $expressionBuilder->andX(
+                        $expressionBuilder->neq($field, 0),
+                        $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    )
+                );
+            }
+            if ($ctrl['enablecolumns']['endtime'] ?? false) {
+                $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
+                $query->add(
+                    $expressionBuilder->orX(
+                        $expressionBuilder->eq($field, 0),
+                        $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    )
+                );
+                $invQuery->add(
+                    $expressionBuilder->andX(
+                        $expressionBuilder->neq($field, 0),
+                        $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    )
+                );
             }
         }
 
@@ -1144,7 +1146,7 @@ class BackendUtility
             } else {
                 $row['shortcut'] = (int)$row['shortcut'];
                 $lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
-                $label = $lRec['title'] . ' (id=' . $row['shortcut'] . ')';
+                $label = ($lRec === null ? '' : $lRec['title']) . ' (id=' . $row['shortcut'] . ')';
             }
             if ($row['shortcut_mode'] != PageRepository::SHORTCUT_MODE_NONE) {
                 $label .= ', ' . $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' '
@@ -1228,8 +1230,10 @@ class BackendUtility
         if ($table === 'pages') {
             $out = self::titleAttribForPages($row, '', false);
         } else {
-            $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'])) ? $row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] . ' ' : '';
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
+            $out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? ''))
+                ? ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? '') . ' '
+                : '';
+            $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? [];
             // Uid is added
             $out .= 'id=' . $row['uid'];
             if (static::isTableWorkspaceEnabled($table)) {
@@ -1247,15 +1251,13 @@ class BackendUtility
             }
             // Hidden
             $lang = static::getLanguageService();
-            if ($ctrl['disabled']) {
+            if ($ctrl['disabled'] ?? false) {
                 $out .= $row[$ctrl['disabled']] ? ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
             }
-            if ($ctrl['starttime']) {
-                if ($row[$ctrl['starttime']] > $GLOBALS['EXEC_TIME']) {
-                    $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
-                }
+            if (($ctrl['starttime'] ?? false) && ($row[$ctrl['starttime']] ?? 0) > $GLOBALS['EXEC_TIME']) {
+                $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
             }
-            if ($row[$ctrl['endtime']]) {
+            if (($ctrl['endtime'] ?? false) && ($row[$ctrl['endtime']] ?? false)) {
                 $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
             }
         }
@@ -1383,12 +1385,7 @@ class BackendUtility
      */
     public static function getItemLabel($table, $col)
     {
-        // Check if column exists
-        if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
-            return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
-        }
-
-        return null;
+        return $GLOBALS['TCA'][$table]['columns'][$col]['label'] ?? null;
     }
 
     /**
@@ -2061,17 +2058,19 @@ class BackendUtility
         if (isset($GLOBALS['TCA_DESCR'][$table]['columns'][$field]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
             $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
             // Add alternative title, if defined
-            if ($data['alttitle']) {
+            if ($data['alttitle'] ?? false) {
                 $output['title'] = $data['alttitle'];
             }
             // If we have more information to show and access to the cshmanual
-            if (($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax'])
+            // This is effectively a long list of ORs, but also allows for any to be unset. The first one set and truthy
+            // will evaluate the whole chain to true.
+            if (($data['image_descr'] ?? $data['seeAlso'] ?? $data['details'] ?? $data['syntax'] ?? false)
                 && static::getBackendUserAuthentication()->check('modules', 'help_CshmanualCshmanual')
             ) {
                 $output['moreInfo'] = true;
             }
             // Add description
-            if ($data['description']) {
+            if ($data['description'] ?? null) {
                 $output['description'] = $data['description'];
             }
         }
@@ -2424,7 +2423,7 @@ class BackendUtility
         $menuItems,
         $script = '',
         $addParams = ''
-    ) {
+    ): string {
         if (!is_array($menuItems) || count($menuItems) <= 1) {
             return '';
         }
@@ -2520,7 +2519,7 @@ class BackendUtility
      *
      * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string $currentValue The value to be selected currently.
+     * @param string|bool $currentValue The value to be selected currently.
      * @param string $script The script to send the &id to, if empty it's automatically found
      * @param string $addParams Additional parameters to pass to the script.
      * @param string $tagParams Additional attributes for the checkbox input tag
@@ -2729,7 +2728,11 @@ class BackendUtility
             $changed = 0;
             if (!is_array($settings)) {
                 $changed = 1;
-                $settings = [];
+                $settings = [
+                    'function' => null,
+                    'language' => null,
+                    'constant_editor_cat' => null,
+                ];
             }
             if (is_array($MOD_MENU)) {
                 foreach ($MOD_MENU as $key => $var) {
@@ -2866,6 +2869,15 @@ class BackendUtility
 
             $lang = static::getLanguageService();
             while ($row = $result->fetch()) {
+                $row += [
+                    'userid' => 0,
+                    'record_pid' => 0,
+                    'feuserid' => 0,
+                    'username' => '',
+                    'record_table' => '',
+                    'record_uid' => 0,
+
+                ];
                 // Get the type of the user that locked this record:
                 if ($row['userid']) {
                     $userTypeLabel = 'beUser';
@@ -2876,11 +2888,8 @@ class BackendUtility
                 }
                 $userType = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $userTypeLabel);
                 // Get the username (if available):
-                if ($row['username']) {
-                    $userName = $row['username'];
-                } else {
-                    $userName = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.unknownUser');
-                }
+                $userName = ($row['username'] ?? '') ?: $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.unknownUser');
+
                 $lockedRecords[$row['record_table'] . ':' . $row['record_uid']] = $row;
                 $lockedRecords[$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
                     $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser'),
@@ -2892,7 +2901,7 @@ class BackendUtility
                     )
                 );
                 if ($row['record_pid'] && !isset($lockedRecords[$row['record_table'] . ':' . $row['record_pid']])) {
-                    $lockedRecords['pages:' . $row['record_pid']]['msg'] = sprintf(
+                    $lockedRecords['pages:' . ($row['record_pid'] ?? '')]['msg'] = sprintf(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.lockedRecordUser_content'),
                         $userType,
                         $userName,
@@ -2921,7 +2930,7 @@ class BackendUtility
     {
         $res = [];
         // Get main config for the table
-        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'], $row['pid']);
+        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'] ?? 0, $row['pid'] ?? 0);
         if ($TScID >= 0) {
             $tsConfig = static::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
             $typeVal = self::getTCAtypeValue($table, $row);
@@ -2930,7 +2939,7 @@ class BackendUtility
                     $fieldN = substr($key, 0, -1);
                     $res[$fieldN] = $val;
                     unset($res[$fieldN]['types.']);
-                    if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'])) {
+                    if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'] ?? false)) {
                         ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
                     }
                 }
@@ -3181,8 +3190,8 @@ class BackendUtility
     public static function translationCount($table, $ref, $msg = '')
     {
         $count = 0;
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField']
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null
+            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null
         ) {
             $queryBuilder = static::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
@@ -3507,7 +3516,7 @@ class BackendUtility
      * Returns live version of record
      *
      * @param string $table Table name
-     * @param int $uid Record UID of draft, offline version
+     * @param int|string $uid Record UID of draft, offline version
      * @param string $fields Field list, default is *
      * @return array|null If found, the record, otherwise NULL
      */
@@ -3524,7 +3533,7 @@ class BackendUtility
      * Gets the id of the live version of a record.
      *
      * @param string $table Name of the table
-     * @param int $uid Uid of the offline/draft record
+     * @param int|string $uid Uid of the offline/draft record
      * @return int|null The id of the live version of the record (or NULL if nothing was found)
      * @internal should only be used from within TYPO3 Core
      */

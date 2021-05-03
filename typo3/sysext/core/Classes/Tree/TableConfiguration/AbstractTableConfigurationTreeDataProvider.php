@@ -169,7 +169,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
      */
     public function initializeTreeData()
     {
-        $this->expandedList = $GLOBALS['BE_USER']->uc['tcaTrees'][$this->treeId];
+        $this->expandedList = $GLOBALS['BE_USER']->uc['tcaTrees'][$this->treeId] ?? '';
     }
 
     /**

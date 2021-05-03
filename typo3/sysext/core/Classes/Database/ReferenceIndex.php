@@ -309,7 +309,7 @@ class ReferenceIndex implements LoggerAwareInterface
         // Traverse those relations, compile records to insert in table:
         foreach ($recordRelations as $fieldName => $fieldRelations) {
             // Based on type
-            switch ((string)$fieldRelations['type']) {
+            switch ($fieldRelations['type'] ?? '') {
                 case 'db':
                     $this->createEntryDataForDatabaseRelationsUsingRecord($tableName, $record, $fieldName, '', $fieldRelations['itemArray']);
                     break;
@@ -533,7 +533,7 @@ class ReferenceIndex implements LoggerAwareInterface
             $PA['field']
         ];
         // Add a softref definition for link fields if the TCA does not specify one already
-        if ($dsConf['type'] === 'input' && $dsConf['renderType'] === 'inputLink' && empty($dsConf['softref'])) {
+        if (($dsConf['type'] ?? '') === 'input' && ($dsConf['renderType'] ?? '') === 'inputLink' && empty($dsConf['softref'])) {
             $dsConf['softref'] = 'typolink';
         }
         // Add DB:

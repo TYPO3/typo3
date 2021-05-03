@@ -67,7 +67,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
             $collapseAll = isset($inlineConfig['appearance']['collapseAll']) && $inlineConfig['appearance']['collapseAll'];
             $expandAll = isset($inlineConfig['appearance']['collapseAll']) && !$inlineConfig['appearance']['collapseAll'];
             $expandCollapseStateArray = $result['inlineExpandCollapseStateArray'];
-            $foreignTable = $result['inlineParentConfig']['foreign_table'];
+            $foreignTable = $result['inlineParentConfig']['foreign_table'] ?? null;
             $isExpandedByUcState = isset($expandCollapseStateArray[$foreignTable])
                 && is_array($expandCollapseStateArray[$foreignTable])
                 && in_array($result['databaseRow']['uid'], $expandCollapseStateArray[$foreignTable]) !== false;

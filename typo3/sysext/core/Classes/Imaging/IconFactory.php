@@ -172,14 +172,14 @@ class IconFactory
             // Although it's not a separate doctype
             // and to give root-pages an own icon
             if ($table === 'pages') {
-                if ((int)$row['nav_hide'] > 0) {
+                if (($row['nav_hide'] ?? 0) > 0) {
                     $recordType[2] = $this->getRecordTypeForPageType(
                         $recordType[1],
                         'hideinmenu',
                         $table
                     );
                 }
-                if ((int)$row['is_siteroot'] > 0) {
+                if (($row['is_siteroot'] ?? 0) > 0) {
                     $recordType[3] = $this->getRecordTypeForPageType(
                         $recordType[1],
                         'root',
@@ -189,8 +189,8 @@ class IconFactory
                 if (!empty($row['module'])) {
                     $recordType[4] = 'contains-' . $row['module'];
                 }
-                if ((int)$row['content_from_pid'] > 0) {
-                    if ($row['is_siteroot']) {
+                if (($row['content_from_pid'] ?? 0) > 0) {
+                    if ($row['is_siteroot'] ?? false) {
                         $recordType[4] = $this->getRecordTypeForPageType(
                             $recordType[1],
                             'contentFromPid-root',
@@ -305,12 +305,12 @@ class IconFactory
                 $status['hidden'] = true;
             }
             // If a "starttime" is set and higher than current time:
-            if (!empty($enableColumns['starttime']) && $GLOBALS['EXEC_TIME'] < (int)$row[$enableColumns['starttime']]) {
+            if (!empty($enableColumns['starttime']) && $GLOBALS['EXEC_TIME'] < (int)($row[$enableColumns['starttime']] ?? 0)) {
                 $status['starttime'] = true;
             }
             // If an "endtime" is set
             if (!empty($enableColumns['endtime'])) {
-                if ((int)$row[$enableColumns['endtime']] > 0) {
+                if ((int)($row[$enableColumns['endtime']] ?? 0) > 0) {
                     if ((int)$row[$enableColumns['endtime']] < $GLOBALS['EXEC_TIME']) {
                         // End-timing applies at this point.
                         $status['endtime'] = true;
@@ -321,7 +321,7 @@ class IconFactory
                 }
             }
             // If a user-group field is set
-            if (!empty($enableColumns['fe_group']) && $row[$enableColumns['fe_group']]) {
+            if (!empty($enableColumns['fe_group']) && !empty($row[$enableColumns['fe_group']])) {
                 $status['fe_group'] = true;
             }
         }
@@ -330,7 +330,7 @@ class IconFactory
             $status['deleted'] = true;
         }
         // Detecting extendToSubpages (for pages only)
-        if ($table === 'pages' && (int)$row['extendToSubpages'] > 0) {
+        if ($table === 'pages' && (int)($row['extendToSubpages'] ?? 0) > 0) {
             $status['protectedSection'] = true;
         }
         if (isset($row['t3ver_state'])

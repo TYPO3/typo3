@@ -23,6 +23,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BlobType;
 use Doctrine\DBAL\Types\TextType;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -60,7 +61,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
     public function diffTable(Table $fromTable, Table $toTable)
     {
         $newTableOptions = array_merge($fromTable->getOptions(), $toTable->getOptions());
-        $optionDiff = array_diff_assoc($newTableOptions, $fromTable->getOptions());
+        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $fromTable->getOptions(), true);
         $tableDifferences = parent::diffTable($fromTable, $toTable);
 
         // No changed table options, return parent result

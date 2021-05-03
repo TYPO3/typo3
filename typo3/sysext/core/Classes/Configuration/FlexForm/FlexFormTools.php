@@ -825,7 +825,7 @@ class FlexFormTools
             foreach ($dataStruct as $key => $value) {
                 if (isset($value['type']) && $value['type'] === 'array') {
                     // Array (Section) traversal
-                    if ($value['section']) {
+                    if ($value['section'] ?? false) {
                         if (isset($editData[$key]['el']) && is_array($editData[$key]['el'])) {
                             if ($this->reNumberIndexesOfSectionData) {
                                 $temp = [];

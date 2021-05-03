@@ -135,7 +135,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     ];
                 }
             } else {
-                if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
+                if (!is_array($this->data['processedTca']['columns'][$fieldName] ?? null)) {
                     continue;
                 }
 

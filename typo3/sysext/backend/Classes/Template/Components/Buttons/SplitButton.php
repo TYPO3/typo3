@@ -181,7 +181,7 @@ class SplitButton extends AbstractButton
                 if (!empty($option->getOnClick())) {
                     $optionAttributes['onclick'] = $option->getOnClick();
                 }
-                $optionAttributes['class'] = $optionAttributes['class'] ? $optionAttributes['class'] . ' dropdown-item' : 'dropdown-item';
+                $optionAttributes['class'] = implode(' ', [$optionAttributes['class'] ?? '', 'dropdown-item']);
                 $optionAttributesString = '';
                 foreach ($optionAttributes as $key => $value) {
                     $optionAttributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';

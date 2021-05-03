@@ -270,7 +270,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         }
         $node->setId($basicNode->getId());
         $node->setSelectable(!GeneralUtility::inList($this->getNonSelectableLevelList(), (string)$level) && !in_array($basicNode->getId(), $this->getItemUnselectableList()));
-        $node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
+        $node->setSortValue($this->nodeSortValues[$basicNode->getId()] ?? '');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $node->setIcon($iconFactory->getIconForRecord($this->tableName, $row, Icon::SIZE_SMALL));
         $node->setParentNode($parent);
@@ -410,14 +410,14 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             case 'inline':
 
             case 'select':
-                if ($this->columnConfiguration['MM']) {
+                if ($this->columnConfiguration['MM'] ?? null) {
                     /** @var \TYPO3\CMS\Core\Database\RelationHandler $dbGroup */
                     $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                     // Dummy field for setting "look from other site"
                     $this->columnConfiguration['MM_oppositeField'] = 'children';
                     $dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
                     $relatedUids = $dbGroup->tableArray[$this->getTableName()];
-                } elseif ($this->columnConfiguration['foreign_field']) {
+                } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
                     $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
                 } else {
                     $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);

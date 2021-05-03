@@ -50,12 +50,12 @@ class NoneElement extends AbstractFormElement
             $formatOptions = $config['format.'] ?? [];
             $itemValue = $this->formatValue($config['format'], $itemValue, $formatOptions);
         }
-        if (!$config['pass_content']) {
+        if (!($config['pass_content'] ?? false)) {
             $itemValue = htmlspecialchars($itemValue);
         }
 
-        $cols = $config['cols'] ?: ($config['size'] ?: $this->defaultInputWidth);
-        $size = MathUtility::forceIntegerInRange($cols ?: $this->defaultInputWidth, 5, $this->maxInputWidth);
+        $cols = ($config['cols'] ?? false) ?: ($config['size'] ?? false) ?: $this->defaultInputWidth;
+        $size = MathUtility::forceIntegerInRange($cols, 5, $this->maxInputWidth);
         $width = $this->formMaxWidth($size);
 
         $fieldInformationResult = $this->renderFieldInformation();

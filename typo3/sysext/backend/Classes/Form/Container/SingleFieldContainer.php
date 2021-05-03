@@ -56,7 +56,7 @@ class SingleFieldContainer extends AbstractContainer
         // This field decides whether the current record is an overlay (as opposed to being a standalone record)
         // Based on this decision we need to trigger field exclusion or special rendering (like readOnly)
         if (isset($this->data['processedTca']['ctrl']['transOrigPointerField'])
-            && is_array($this->data['processedTca']['columns'][$this->data['processedTca']['ctrl']['transOrigPointerField']])
+            && is_array($this->data['processedTca']['columns'][$this->data['processedTca']['ctrl']['transOrigPointerField']] ?? null)
         ) {
             $parentValue = $row[$this->data['processedTca']['ctrl']['transOrigPointerField']];
             if (MathUtility::canBeInterpretedAsInteger($parentValue)) {
@@ -74,23 +74,18 @@ class SingleFieldContainer extends AbstractContainer
         }
 
         // A couple of early returns in case the field should not be rendered
-        // Check if this field is configured and editable according to exclude fields and other configuration
-        if (// Return if BE-user has no access rights to this field, @todo: another user access rights check!
-            $parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
-            // Return if field should not be rendered in translated records
-            || $isOverlay && empty($parameterArray['fieldConf']['l10n_display']) && $parameterArray['fieldConf']['l10n_mode'] === 'exclude'
-            || $this->inlineFieldShouldBeSkipped()
-        ) {
+        $fieldIsExcluded = $parameterArray['fieldConf']['exclude'] ?? false;
+        $fieldNotExcludable = $backendUser->check('non_exclude_fields', $table . ':' . $fieldName);
+        $fieldExcludedFromTranslatedRecords = empty($parameterArray['fieldConf']['l10n_display']) && ($parameterArray['fieldConf']['l10n_mode'] ?? '') === 'exclude';
+        // Return if BE-user has no access rights to this field, @todo: another user access rights check!
+        if (($fieldIsExcluded && !$fieldNotExcludable) || ($isOverlay && $fieldExcludedFromTranslatedRecords) || $this->inlineFieldShouldBeSkipped()) {
             return $resultArray;
         }
 
-        $parameterArray['fieldTSConfig'] = [];
-        if (isset($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-            && is_array($this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'])
-        ) {
-            $parameterArray['fieldTSConfig'] = $this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'];
-        }
-        if ($parameterArray['fieldTSConfig']['disabled']) {
+        $tsConfig = $this->data['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.'] ?? [];
+        $parameterArray['fieldTSConfig'] = is_array($tsConfig) ? $tsConfig : [];
+
+        if ($parameterArray['fieldTSConfig']['disabled'] ?? false) {
             return $resultArray;
         }
 
@@ -103,7 +98,7 @@ class SingleFieldContainer extends AbstractContainer
         // The value to show in the form field.
         $parameterArray['itemFormElValue'] = $row[$fieldName];
         // Set field to read-only if configured for translated records to show default language content as readonly
-        if ($parameterArray['fieldConf']['l10n_display']
+        if (($parameterArray['fieldConf']['l10n_display'] ?? false)
             && GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'defaultAsReadonly')
             && $isOverlay
         ) {
@@ -111,11 +106,10 @@ class SingleFieldContainer extends AbstractContainer
             $parameterArray['itemFormElValue'] = $this->data['defaultLanguageRow'][$fieldName];
         }
 
-        if (strpos($this->data['processedTca']['ctrl']['type'], ':') === false) {
-            $typeField = $this->data['processedTca']['ctrl']['type'];
-        } else {
-            $typeField = substr($this->data['processedTca']['ctrl']['type'], 0, strpos($this->data['processedTca']['ctrl']['type'], ':'));
-        }
+        $processedTcaType = $this->data['processedTca']['ctrl']['type'] ?? '';
+        $typeField = strpos($processedTcaType, ':') === false
+            ? $processedTcaType
+            : substr($processedTcaType, 0, strpos($processedTcaType, ':'));
 
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];

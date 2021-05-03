@@ -119,7 +119,7 @@ class GroupElement extends AbstractFormElement
         $selectedItemsCount = count($selectedItems);
 
         $maxItems = $config['maxitems'];
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
+        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
         $size = 5;
         if (isset($config['size'])) {
             $size = (int)$config['size'];

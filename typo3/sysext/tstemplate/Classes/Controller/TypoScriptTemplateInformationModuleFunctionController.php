@@ -147,7 +147,7 @@ class TypoScriptTemplateInformationModuleFunctionController
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
         $saveId = 0;
         if ($existTemplate) {
-            $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
+            $saveId = empty($this->templateRow['_ORIG_uid']) ? $this->templateRow['uid'] : $this->templateRow['_ORIG_uid'];
         }
         // Create extension template
         $newId = $this->pObj->createTemplate($this->id, (int)$saveId);

@@ -106,7 +106,7 @@ class ArrayBrowser
                 $value = (array)$value;
             }
             $isArray = is_iterable($value);
-            $isResult = (bool)$this->searchKeys[$depth];
+            $isResult = (bool)($this->searchKeys[$depth] ?? false);
             $isExpanded = $isArray && (!empty($this->depthKeys[$depth]) || $this->expAll);
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
             $output .= '<span class="list-tree-group">';

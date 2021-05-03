@@ -54,7 +54,7 @@ class RichTextNodeResolver implements NodeResolverInterface
         $parameterArray = $this->data['parameterArray'];
         $backendUser = $this->getBackendUserAuthentication();
         if (// This field is not read only
-            !$parameterArray['fieldConf']['config']['readOnly']
+            !($parameterArray['fieldConf']['config']['readOnly'] ?? false)
             // If RTE is generally enabled by user settings and RTE object registry can return something valid
             && $backendUser->isRTE()
             // If RTE is enabled for field

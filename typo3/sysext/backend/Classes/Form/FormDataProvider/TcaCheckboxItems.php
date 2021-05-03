@@ -39,7 +39,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
                 continue;
             }
 
-            if (!is_array($fieldConfig['config']['items'])) {
+            if (!is_array($fieldConfig['config']['items'] ?? null)) {
                 $fieldConfig['config']['items'] = [];
             }
 
@@ -84,7 +84,7 @@ class TcaCheckboxItems extends AbstractItemProvider implements FormDataProviderI
             $this->basicChecks($fieldName, $tableName, $checkboxEntry, $itemKey);
             $newItems[$itemKey] = [
                 $this->getLanguageService()->sL(trim($checkboxEntry[0])),
-                $checkboxEntry[1]
+                $checkboxEntry[1] ?? ''
             ];
             if (isset($config['renderType']) && $config['renderType'] === 'checkboxToggle') {
                 $newItems = $this->sanitizeToggleCheckbox($checkboxEntry, $itemKey, $newItems);

@@ -185,7 +185,7 @@ class BackendLayoutView implements SingletonInterface
     {
         if (!isset($this->selectedCombinedIdentifier[$pageId])) {
             $page = $this->getPage($pageId);
-            $this->selectedCombinedIdentifier[$pageId] = (string)$page['backend_layout'];
+            $this->selectedCombinedIdentifier[$pageId] = (string)($page['backend_layout'] ?? null);
 
             if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
                 // If it is set to "none" - don't use any
@@ -440,7 +440,7 @@ class BackendLayoutView implements SingletonInterface
      * Gets a page record.
      *
      * @param int $pageId
-     * @return array|null
+     * @return array|false|null
      */
     protected function getPage($pageId)
     {

@@ -112,7 +112,7 @@ class SelectSingleElement extends AbstractFormElement
         // Initialization:
         $selectId = StringUtility::getUniqueId('tceforms-select-');
         $selectedIcon = '';
-        $size = (int)$config['size'];
+        $size = (int)($config['size'] ?? 0);
 
         // Style set on <select/>
         $options = '';
@@ -178,7 +178,7 @@ class SelectSingleElement extends AbstractFormElement
                 continue;
             }
 
-            $optionGroup = is_array($selectItemGroup['header']);
+            $optionGroup = is_array($selectItemGroup['header'] ?? null);
             $options .= ($optionGroup ? '<optgroup label="' . htmlspecialchars($selectItemGroup['header']['title'], ENT_COMPAT, 'UTF-8', false) . '">' : '');
 
             if (is_array($selectItemGroup['items'])) {

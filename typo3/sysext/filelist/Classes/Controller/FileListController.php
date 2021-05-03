@@ -349,7 +349,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->initClipboard();
             $userTsConfig = $this->getBackendUser()->getTSConfig();
             $this->filelist = GeneralUtility::makeInstance(FileList::class);
-            $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
+            $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->MOD_SETTINGS['displayThumbs'] ?? false);
             $CB = GeneralUtility::_GET('CB');
             if ($this->cmd === 'setCB') {
                 $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(
@@ -357,7 +357,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                     (array)GeneralUtility::_POST('CBC')
                 ), '_FILE');
             }
-            if (!$this->MOD_SETTINGS['clipBoard']) {
+            if (!($this->MOD_SETTINGS['clipBoard'] ?? false)) {
                 $CB['setP'] = 'normal';
             }
             $this->filelist->clipObj->setCmd($CB);
@@ -392,9 +392,9 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 $this->folderObject,
                 MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
                 $this->MOD_SETTINGS['sort'],
-                (bool)$this->MOD_SETTINGS['reverse'],
-                (bool)$this->MOD_SETTINGS['clipBoard'],
-                (bool)$this->MOD_SETTINGS['bigControlPanel']
+                (bool)($this->MOD_SETTINGS['reverse'] ?? false),
+                (bool)($this->MOD_SETTINGS['clipBoard'] ?? false),
+                (bool)($this->MOD_SETTINGS['bigControlPanel'] ?? false)
             );
             // Generate the list, if accessible
             if ($this->folderObject->getStorage()->isBrowsable()) {
@@ -472,10 +472,10 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                     ),
                 ]
             ]);
-            $this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
+            $this->view->assign('showClipBoard', (bool)($this->MOD_SETTINGS['clipBoard'] ?? false));
             $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
             $this->view->assign('folderIdentifier', $this->folderObject->getCombinedIdentifier());
-            $this->view->assign('fileDenyPattern', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']);
+            $this->view->assign('fileDenyPattern', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null);
             $this->view->assign('maxFileSize', GeneralUtility::getMaxUploadFileSize() * 1024);
             $this->view->assign('defaultAction', $this->getDefaultAction());
             $this->buildListOptionCheckboxes();
@@ -826,7 +826,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     {
         // Create fileListing object
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
-        $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
+        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->MOD_SETTINGS['displayThumbs'] ?? false);
         // Create clipboard object and initialize that
         $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
         $this->filelist->clipObj->fileMode = true;
@@ -838,7 +838,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 (array)GeneralUtility::_POST('CBC')
             ), '_FILE');
         }
-        if (!$this->MOD_SETTINGS['clipBoard']) {
+        if (!($this->MOD_SETTINGS['clipBoard'] ?? false)) {
             $CB['setP'] = 'normal';
         }
         $this->filelist->clipObj->setCmd($CB);
@@ -846,7 +846,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         // Saves
         $this->filelist->clipObj->endClipboard();
 
-        $this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
+        $this->view->assign('showClipBoard', (bool)($this->MOD_SETTINGS['clipBoard'] ?? false));
         $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
     }
 

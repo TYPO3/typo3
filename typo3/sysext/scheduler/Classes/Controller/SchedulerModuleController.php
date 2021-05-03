@@ -238,7 +238,7 @@ class SchedulerModuleController
         $sectionTitle = '';
         // Get submitted data
         $this->submittedData = GeneralUtility::_GPmerged('tx_scheduler');
-        $this->submittedData['uid'] = (int)$this->submittedData['uid'];
+        $this->submittedData['uid'] = (int)($this->submittedData['uid'] ?? 0);
         // If a save command was submitted, handle saving now
         if (in_array((string)$this->getCurrentAction(), [Action::SAVE, Action::SAVE_CLOSE, Action::SAVE_NEW], true)) {
             // First check the submitted data

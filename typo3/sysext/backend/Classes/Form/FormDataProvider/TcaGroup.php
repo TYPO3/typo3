@@ -80,11 +80,11 @@ class TcaGroup implements FormDataProviderInterface
                 $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
                 $relationHandler->start(
                     $databaseRowFieldContent,
-                    $fieldConfig['config']['allowed'],
-                    $fieldConfig['config']['MM'],
+                    $fieldConfig['config']['allowed'] ?? '',
+                    $fieldConfig['config']['MM'] ?? '',
                     $MMuid,
-                    $result['tableName'],
-                    $fieldConfig['config']
+                    $result['tableName'] ?? '',
+                    $fieldConfig['config'] ?? []
                 );
                 $relationHandler->getFromDB();
                 $relations = $relationHandler->getResolvedItemArray();

@@ -710,7 +710,7 @@ class TypoScriptParser
                     $setup[$subKey] = $value[1];
                 }
                 if ($this->lastComment && $this->regComments) {
-                    $setup[$key . '..'] .= $this->lastComment;
+                    $setup[$key . '..'] = $setup[$key . '..'] ?? '' . $this->lastComment;
                 }
                 if ($this->regLinenumbers && !$lnRegisDone) {
                     $setup[$key . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;

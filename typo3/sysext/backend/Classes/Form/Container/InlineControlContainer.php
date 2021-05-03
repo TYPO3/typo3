@@ -122,7 +122,7 @@ class InlineControlContainer extends AbstractContainer
         $foreign_table = $config['foreign_table'];
         $isReadOnly = isset($config['readOnly']) && $config['readOnly'];
         $language = 0;
-        $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
         if (BackendUtility::isTableLocalizable($table)) {
             $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)$row[$languageFieldName];
         }
@@ -195,10 +195,10 @@ class InlineControlContainer extends AbstractContainer
         $uniqueMax = 0;
         $uniqueIds = [];
 
-        if ($config['foreign_unique']) {
+        if ($config['foreign_unique'] ?? false) {
             // Add inlineData['unique'] with JS unique configuration
             // @todo: Improve validation and throw an exception if type is neither select nor group here
-            $type = $config['selectorOrUniqueConfiguration']['config']['type'] === 'select' ? 'select' : 'groupdb';
+            $type = ($config['selectorOrUniqueConfiguration']['config']['type'] ?? '') === 'select' ? 'select' : 'groupdb';
             foreach ($parameterArray['fieldConf']['children'] as $child) {
                 // Determine used unique ids, skip not localized records
                 if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
@@ -225,20 +225,20 @@ class InlineControlContainer extends AbstractContainer
                     $uniqueIds[$child['databaseRow']['uid']] = $value;
                 }
             }
-            $possibleRecords = $config['selectorOrUniquePossibleRecords'];
+            $possibleRecords = $config['selectorOrUniquePossibleRecords'] ?? [];
             $possibleRecordsUidToTitle = [];
             foreach ($possibleRecords as $possibleRecord) {
                 $possibleRecordsUidToTitle[$possibleRecord[1]] = $possibleRecord[0];
             }
-            $uniqueMax = $config['appearance']['useCombination'] || empty($possibleRecords) ? -1 : count($possibleRecords);
+            $uniqueMax = ($config['appearance']['useCombination'] ?? false) || empty($possibleRecords) ? -1 : count($possibleRecords);
             $this->inlineData['unique'][$nameObject . '-' . $foreign_table] = [
                 'max' => $uniqueMax,
                 'used' => $uniqueIds,
                 'type' => $type,
                 'table' => $foreign_table,
-                'elTable' => $config['selectorOrUniqueConfiguration']['foreignTable'],
-                'field' => $config['foreign_unique'],
-                'selector' => $config['selectorOrUniqueConfiguration']['isSelector'] ? $type : false,
+                'elTable' => $config['selectorOrUniqueConfiguration']['foreignTable'] ?? '',
+                'field' => $config['foreign_unique'] ?? '',
+                'selector' => ($config['selectorOrUniqueConfiguration']['isSelector'] ?? false) ? $type : false,
                 'possible' => $possibleRecordsUidToTitle,
             ];
         }
@@ -246,7 +246,7 @@ class InlineControlContainer extends AbstractContainer
         $resultArray['inlineData'] = $this->inlineData;
 
         // @todo: It might be a good idea to have something like "isLocalizedRecord" or similar set by a data provider
-        $uidOfDefaultRecord = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+        $uidOfDefaultRecord = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0;
         $isLocalizedParent = $language > 0
             && ($uidOfDefaultRecord[0] ?? $uidOfDefaultRecord) > 0
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
@@ -265,17 +265,17 @@ class InlineControlContainer extends AbstractContainer
         $localizationButtons = '';
         if ($numberOfNotYetLocalizedChildren) {
             // Add the "Localize all records" button before all child records:
-            if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
+            if (!empty($config['appearance']['showAllLocalizationLink'])) {
                 $localizationButtons = ' ' . $this->getLevelInteractionButton('localize', $config);
             }
             // Add the "Synchronize with default language" button before all child records:
-            if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
+            if (!empty($config['appearance']['showSynchronizationLink'])) {
                 $localizationButtons .= ' ' . $this->getLevelInteractionButton('synchronize', $config);
             }
         }
 
         // Define how to show the "Create new record" button - if there are more than maxitems, hide it
-        if ($isReadOnly || $numberOfFullLocalizedChildren >= $config['maxitems'] || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
+        if ($isReadOnly || $numberOfFullLocalizedChildren >= ($config['maxitems'] ?? 0) || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
@@ -293,7 +293,7 @@ class InlineControlContainer extends AbstractContainer
             'data-foreign-table' => (string)$foreign_table,
             'data-object-group' => $nameObject . '-' . $foreign_table,
             'data-form-field' => $nameForm,
-            'data-appearance' => (string)json_encode($config['appearance']),
+            'data-appearance' => (string)json_encode($config['appearance'] ?? ''),
         ];
 
         // Wrap all inline fields of a record with a <div> (like a container)
@@ -304,13 +304,13 @@ class InlineControlContainer extends AbstractContainer
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         // Add the level buttons before all child records:
-        if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
+        if (in_array($config['appearance']['levelLinksPosition'] ?? null, ['both', 'top'], true)) {
             $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelButtons . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
-        if (!$isReadOnly && $config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== false) {
-            if ($config['selectorOrUniqueConfiguration']['config']['type'] === 'select') {
+        if (!$isReadOnly && ($config['foreign_selector'] ?? false) && ($config['appearance']['showPossibleRecordsSelector'] ?? true) !== false) {
+            if (($config['selectorOrUniqueConfiguration']['config']['type'] ?? false) === 'select') {
                 $selectorBox = $this->renderPossibleRecordsSelectorTypeSelect($config, $uniqueIds);
             } else {
                 $selectorBox = $this->renderPossibleRecordsSelectorTypeGroupDB($config);
@@ -349,10 +349,10 @@ class InlineControlContainer extends AbstractContainer
         $html .= $fieldWizardHtml;
 
         // Add the level buttons after all child records:
-        if (!$isReadOnly && ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom')) {
+        if (!$isReadOnly && in_array($config['appearance']['levelLinksPosition'] ?? false, ['both', 'bottom'], true)) {
             $html .= $levelButtons . $localizationButtons;
         }
-        if (is_array($config['customControls'])) {
+        if (is_array($config['customControls'] ?? false)) {
             $html .= '<div id="' . $nameObject . '_customControls">';
             foreach ($config['customControls'] as $customControlConfig) {
                 if (!isset($customControlConfig['userFunc'])) {
@@ -380,7 +380,13 @@ class InlineControlContainer extends AbstractContainer
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
-            . ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString(['type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']])) . '"'
+            . ' data-formengine-validation-rules="'
+            . htmlspecialchars($this->getValidationDataAsJsonString([
+                'type' => 'inline',
+                'minitems' => $config['minitems'] ?? null,
+                'maxitems' => $config['maxitems'] ?? null,
+            ]))
+            . '"'
             . ' class="inlineRecord" />';
         // Close the wrap for all inline fields (container)
         $html .= '</div>';

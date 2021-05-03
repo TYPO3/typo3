@@ -157,11 +157,12 @@ class TreeController
         $this->useNavTitle = (bool)($userTsConfig['options.']['pageTree.']['showNavTitle'] ?? false);
         $this->showMountPathAboveMounts = (bool)($userTsConfig['options.']['pageTree.']['showPathAboveMounts'] ?? false);
         $backendUserConfiguration = GeneralUtility::makeInstance(BackendUserConfiguration::class);
-        $this->expandedState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
-        if (is_object($this->expandedState) && is_object($this->expandedState->stateHash)) {
-            $this->expandedState = (array)$this->expandedState->stateHash;
+        $backendUserPageTreeState = $backendUserConfiguration->get('BackendComponents.States.Pagetree');
+        if (is_object($backendUserPageTreeState) && is_object($backendUserPageTreeState->stateHash)) {
+            $this->expandedState = (array)$backendUserPageTreeState->stateHash;
         } else {
-            $this->expandedState = $this->expandedState['stateHash'] ?: [];
+            $stateHash = $backendUserPageTreeState['stateHash'] ?? [];
+            $this->expandedState = is_array($stateHash) ? $stateHash : [];
         }
     }
 
@@ -403,7 +404,7 @@ class TreeController
             'tip' => htmlspecialchars($tooltip),
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
-            'type' => (int)$page['doktype'],
+            'type' => (int)($page['doktype'] ?? 0),
             'nameSourceField' => $nameSourceField,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,

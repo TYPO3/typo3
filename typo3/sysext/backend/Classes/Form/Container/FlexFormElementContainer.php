@@ -56,7 +56,7 @@ class FlexFormElementContainer extends AbstractContainer
                 continue;
             }
 
-            if ($flexFormFieldArray['type'] === 'array') {
+            if (($flexFormFieldArray['type'] ?? null) === 'array') {
                 // Section
                 if (empty($flexFormFieldArray['section'])) {
                     $resultArray['html'] = LF . 'Section expected at ' . $flexFormFieldName . ' but not found';
@@ -76,11 +76,11 @@ class FlexFormElementContainer extends AbstractContainer
                     'fieldConf' => [
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
                         'config' => $flexFormFieldArray['config'],
-                        'children' => $flexFormFieldArray['children'],
-                        'onChange' => $flexFormFieldArray['onChange'],
+                        'children' => $flexFormFieldArray['children'] ?? [],
+                        'onChange' => $flexFormFieldArray['onChange'] ?? '',
                     ],
                     'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                    'label' => $parameterArray['label'],
+                    'label' => $parameterArray['label'] ?? '',
                 ];
 
                 if (isset($flexFormFieldArray['description']) && !empty($flexFormFieldArray['description'])) {

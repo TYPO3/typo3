@@ -90,13 +90,13 @@ class ConfigurationController
         $configurationArray = $configurationProvider->getConfiguration();
 
         // Search string given or regex search enabled?
-        $searchString = (string)($postValues['searchString'] ? trim($postValues['searchString']) : '');
+        $searchString = trim((string)($postValues['searchString'] ?? ''));
         $moduleState['regexSearch'] = (bool)($postValues['regexSearch'] ?? $moduleState['regexSearch'] ?? false);
 
         // Prepare array renderer class, apply search and expand / collapse states
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $request->getAttribute('route'));
         $arrayBrowser->regexMode = $moduleState['regexSearch'];
-        $node = $queryParams['node'];
+        $node = $queryParams['node'] ?? null;
         if ($searchString) {
             $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($configurationArray, '', $searchString, []);
         } elseif (is_array($node)) {

@@ -244,20 +244,18 @@ class SetupModuleController
                     if (!in_array($field, $fieldList, true)) {
                         continue;
                     }
-                    if ($config['table']) {
-                        if ($config['table'] === 'be_users' && !in_array($field, ['password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin', 'avatar'], true)) {
-                            if (!isset($config['access']) || $this->checkAccess($config) && $backendUser->user[$field] !== $d['be_users'][$field]) {
-                                if ($config['type'] === 'check') {
-                                    $fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
-                                } else {
-                                    $fieldValue = $d['be_users'][$field];
-                                }
-                                $storeRec['be_users'][$beUserId][$field] = $fieldValue;
-                                $backendUser->user[$field] = $fieldValue;
+                    if (($config['table']  ?? '') === 'be_users' && !in_array($field, ['password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin', 'avatar'], true)) {
+                        if (!isset($config['access']) || $this->checkAccess($config) && ($backendUser->user[$field] !== $d['be_users'][$field])) {
+                            if (($config['type'] ?? false) === 'check') {
+                                $fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
+                            } else {
+                                $fieldValue = $d['be_users'][$field];
                             }
+                            $storeRec['be_users'][$beUserId][$field] = $fieldValue;
+                            $backendUser->user[$field] = $fieldValue;
                         }
                     }
-                    if ($config['type'] === 'check') {
+                    if (($config['type'] ?? false) === 'check') {
                         $backendUser->uc[$field] = isset($d[$field]) ? 1 : 0;
                     } else {
                         $backendUser->uc[$field] = htmlspecialchars($d[$field]);
@@ -495,7 +493,7 @@ class SetupModuleController
                 $value = $config['default'];
             }
             $dataAdd = '';
-            if ($config['table'] === 'be_users') {
+            if (($config['table'] ?? false) === 'be_users') {
                 $dataAdd = '[be_users]';
             }
 
@@ -539,7 +537,7 @@ class SetupModuleController
                     $html = $this->renderLanguageSelect();
                     break;
                 case 'select':
-                    if ($config['itemsProcFunc']) {
+                    if ($config['itemsProcFunc'] ?? false) {
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
                     } else {
                         $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
@@ -576,7 +574,7 @@ class SetupModuleController
                          * @deprecated Will be removed in TYPO3 v12.0
                          */
                         $onClick = $config['onClick'];
-                        if ($config['onClickLabels']) {
+                        if ($config['onClickLabels'] ?? false) {
                             foreach ($config['onClickLabels'] as $key => $labelclick) {
                                 $config['onClickLabels'][$key] = $this->getLabel($labelclick, '', false);
                             }

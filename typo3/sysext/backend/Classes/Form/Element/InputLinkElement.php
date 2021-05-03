@@ -100,7 +100,7 @@ class InputLinkElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
 
         $itemValue = $parameterArray['itemFormElValue'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = (int)$this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
@@ -109,7 +109,7 @@ class InputLinkElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             // Early return for read only fields
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
@@ -211,7 +211,7 @@ class InputLinkElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $linkExplanation = $this->getLinkExplanation($itemValue ?: '');
-        $explanation = htmlspecialchars($linkExplanation['text']);
+        $explanation = htmlspecialchars($linkExplanation['text'] ?? '');
         $toggleButtonTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
 
         $expansionHtml = [];
@@ -219,7 +219,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
-        $expansionHtml[] =              '<span class="t3js-form-field-inputlink-icon input-group-addon">' . $linkExplanation['icon'] . '</span>';
+        $expansionHtml[] =              '<span class="t3js-form-field-inputlink-icon input-group-addon">' . ($linkExplanation['icon'] ?? '') . '</span>';
         $expansionHtml[] =              '<input class="form-control t3js-form-field-inputlink-explanation" data-bs-toggle="tooltip" title="' . $explanation . '" value="' . $explanation . '" readonly>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
@@ -237,7 +237,7 @@ class InputLinkElement extends AbstractFormElement
             $expansionHtml[] =      '</div>';
         }
         $expansionHtml[] =      '<div class="form-wizards-items-bottom">';
-        $expansionHtml[] =          $linkExplanation['additionalAttributes'];
+        $expansionHtml[] =          $linkExplanation['additionalAttributes'] ?? '';
         $expansionHtml[] =          $fieldWizardHtml;
         $expansionHtml[] =      '</div>';
         $expansionHtml[] =  '</div>';

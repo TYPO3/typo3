@@ -77,8 +77,8 @@ class InputColorPickerElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
-        $size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $size = MathUtility::forceIntegerInRange(($config['size'] ?? false) ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $width = (int)$this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
@@ -86,7 +86,7 @@ class InputColorPickerElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
@@ -143,7 +143,7 @@ class InputColorPickerElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in']),
+                'is_in' => trim($config['is_in'] ?? ''),
             ]),
             'data-formengine-input-name' => $parameterArray['itemFormElName'],
         ];

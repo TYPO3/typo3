@@ -53,13 +53,13 @@ class DatabaseRowDefaultValues implements FormDataProviderInterface
                 ) {
                     $newRow[$fieldName] = null;
                 } else {
-                    $newRow[$fieldName] = (string)$fieldConfig['config']['default'];
+                    $newRow[$fieldName] = (string)($fieldConfig['config']['default'] ?? '');
                 }
             } else {
                 // Fun part: This forces empty string for any field even if no default is set. This is
                 // a useful side effect in flex form section containers where a new field is added to an existing
                 // value array because it was added to a data structure.
-                $newRow[$fieldName] = (string)$fieldConfig['config']['default'];
+                $newRow[$fieldName] = (string)($fieldConfig['config']['default'] ?? '');
             }
         }
 

@@ -919,7 +919,7 @@ class ExtendedTemplateService extends TemplateService
         reset($theConstants);
         $groupedOutput = [];
         $subcat = '';
-        if (is_array($this->categories[$category])) {
+        if (!empty($this->categories[$category]) && is_array($this->categories[$category])) {
             asort($this->categories[$category]);
             /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

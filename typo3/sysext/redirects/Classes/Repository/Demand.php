@@ -121,7 +121,7 @@ class Demand
         $page = (int)($request->getQueryParams()['page'] ?? $request->getParsedBody()['page'] ?? 1);
         $orderField = $request->getQueryParams()['orderField'] ?? $request->getParsedBody()['orderField'] ?? self::DEFAULT_ORDER_FIELD;
         $orderDirection = $request->getQueryParams()['orderDirection'] ?? $request->getParsedBody()['orderDirection'] ?? self::ORDER_ASCENDING;
-        $demand = $request->getQueryParams()['demand'] ?? $request->getParsedBody()['demand'];
+        $demand = $request->getQueryParams()['demand'] ?? $request->getParsedBody()['demand'] ?? [];
         if (empty($demand)) {
             return new self($page, $orderField, $orderDirection);
         }

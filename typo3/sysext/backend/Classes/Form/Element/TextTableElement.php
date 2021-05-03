@@ -92,7 +92,7 @@ class TextTableElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
+        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = $this->formMaxWidth($cols);
 
@@ -115,7 +115,7 @@ class TextTableElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
@@ -160,7 +160,7 @@ class TextTableElement extends AbstractFormElement
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
             'rows' => (string)$rows,
-            'wrap' => (string)($config['wrap'] ?: 'virtual'),
+            'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
             'onChange' => implode('', $parameterArray['fieldChangeFunc']),
         ];
         $classes = [
@@ -168,10 +168,10 @@ class TextTableElement extends AbstractFormElement
             't3js-formengine-textarea',
             'formengine-textarea',
         ];
-        if ($config['fixedFont']) {
+        if ($config['fixedFont'] ?? false) {
             $classes[] = 'text-monospace';
         }
-        if ($config['enableTabulator']) {
+        if ($config['enableTabulator'] ?? false) {
             $classes[] = 't3js-enable-tab';
         }
         $attributes['class'] = implode(' ', $classes);

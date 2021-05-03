@@ -288,7 +288,11 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         if ($entryIdentifier === '') {
             throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756961);
         }
-        return @unlink($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
+        $file = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+        if (file_exists($file)) {
+            return unlink($file);
+        }
+        return false;
     }
 
     /**

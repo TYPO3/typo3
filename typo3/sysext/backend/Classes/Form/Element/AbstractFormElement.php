@@ -334,7 +334,7 @@ abstract class AbstractFormElement extends AbstractNode
     ): string {
         $elementName = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . ']';
         $checkboxPow = 2 ** $checkbox;
-        $checked = $formElementValue & $checkboxPow;
+        $checked = (int)$formElementValue & $checkboxPow;
         if ($invert) {
             $checked = !$checked;
         }

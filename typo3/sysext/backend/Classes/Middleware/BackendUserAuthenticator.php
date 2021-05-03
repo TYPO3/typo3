@@ -86,7 +86,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         }
 
         // Register the backend user as aspect and initializing workspace once for TSconfig conditions
-        $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)$GLOBALS['BE_USER']->user['workspace_id']);
+        $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)($GLOBALS['BE_USER']->user['workspace_id'] ?? 0));
         if ($this->isLoggedInBackendUserRequired($route)) {
             if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
                 $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(

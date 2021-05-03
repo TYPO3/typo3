@@ -452,7 +452,7 @@ class BackendController
                     $startModule = $beUser->uc['startModuleOnFirstLogin'];
                     unset($beUser->uc['startModuleOnFirstLogin']);
                     $beUser->writeUC();
-                } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule']) !== 'notFound') {
+                } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule'] ?? '') !== 'notFound') {
                     $startModule = $beUser->uc['startModule'];
                 } else {
                     $startModule = $this->determineFirstAvailableBackendModule();

@@ -175,7 +175,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 $groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
                 $groupIdCollapsible = $groupId . '-collapse';
                 $html[] = '<div id="' . $groupId . '" class="panel panel-default">';
-                if (is_array($group['header'])) {
+                if (is_array($group['header'] ?? false)) {
                     $html[] = '<div class="panel-heading">';
                     $html[] = '<a data-bs-toggle="collapse" href="#' . $groupIdCollapsible . '" aria-expanded="false" aria-controls="' . $groupIdCollapsible . '">';
                     $html[] = $group['header']['icon'];
@@ -183,7 +183,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] = '</a>';
                     $html[] = '</div>';
                 }
-                if (is_array($group['items']) && !empty($group['items'])) {
+                if (!empty($group['items']) && is_array($group['items'])) {
                     $tableRows = [];
 
                     // Render rows
@@ -220,7 +220,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection') . '</button>';
                     }
 
-                    if (is_array($group['header'])) {
+                    if (is_array($group['header'] ?? false)) {
                         $expandAll = (bool)($config['appearance']['expandAll'] ?? false) ? 'in' : '';
                         $html[] = '<div id="' . $groupIdCollapsible . '" class="panel-collapse collapse ' . $expandAll . '" role="tabpanel">';
                     }

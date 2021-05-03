@@ -357,10 +357,10 @@ class DatabaseIntegrityCheck
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
-                if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'db') {
+                if (($config['config']['type'] ?? '') === 'group' && ($config['config']['internal_type'] ?? false) === 'db') {
                     $result[$table][] = $field;
                 }
-                if ($config['config']['type'] === 'select' && $config['config']['foreign_table']) {
+                if (($config['config']['type'] ?? '') === 'select' && ($config['config']['foreign_table'] ?? false)) {
                     $result[$table][] = $field;
                 }
             }

@@ -85,7 +85,7 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
                     $aPalettesArray = GeneralUtility::trimExplode(';', $aPalettesString);
                     $aPalettesArray = [
                         'fieldName' => $aPalettesArray[0],
-                        'fieldLabel' => $aPalettesArray[1] ?: null,
+                        'fieldLabel' => ($aPalettesArray[1] ?? null) ?: null,
                     ];
                     if (!empty($aPalettesArray['fieldLabel'])
                         && isset($result['processedTca']['columns'][$aPalettesArray['fieldName']])

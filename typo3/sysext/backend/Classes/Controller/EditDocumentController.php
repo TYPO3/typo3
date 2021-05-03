@@ -467,7 +467,7 @@ class EditDocumentController
         $this->compileStoreData();
         // Backend user session data of this module
         $this->docDat = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
-        $this->docHandler = $this->docDat[0];
+        $this->docHandler = $this->docDat[0] ?? [];
 
         // Close document if a request for closing the document has been sent
         if ((int)$this->closeDoc > self::DOCUMENT_CLOSE_MODE_DEFAULT) {
@@ -823,8 +823,8 @@ class EditDocumentController
     protected function getPreviewUrlParameters(int $previewPageId): string
     {
         $linkParameters = [];
-        $table = $this->previewData['table'] ?: $this->firstEl['table'];
-        $recordId = $this->previewData['id'] ?: $this->firstEl['uid'];
+        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
+        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
         $previewConfiguration = BackendUtility::getPagesTSconfig($previewPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
         $recordArray = BackendUtility::getRecord($table, $recordId);
 
@@ -898,8 +898,8 @@ class EditDocumentController
      */
     protected function getPreviewUrlAnchorSection(): string
     {
-        $table = $this->previewData['table'] ?: $this->firstEl['table'];
-        $recordId = $this->previewData['id'] ?: $this->firstEl['uid'];
+        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
+        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
 
         return $table === 'tt_content' ? '#c' . (int)$recordId : '';
     }
@@ -912,8 +912,8 @@ class EditDocumentController
     protected function getPreviewPageId(): int
     {
         $previewPageId = 0;
-        $table = $this->previewData['table'] ?: $this->firstEl['table'];
-        $recordId = $this->previewData['id'] ?: $this->firstEl['uid'];
+        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
+        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
         $pageId = $this->popViewId ?: $this->viewId;
 
         if ($table === 'pages') {
@@ -1258,7 +1258,7 @@ class EditDocumentController
         // Show buttons when table is not read-only
         if (
             !$this->errorC
-            && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']
+            && !($GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] ?? false)
         ) {
             $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
             $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
@@ -1310,7 +1310,7 @@ class EditDocumentController
     {
         $allowInconsistentLanguageHandling = BackendUtility::getPagesTSconfig(
             $this->pageinfo['uid']
-        )['mod']['web_layout']['allowInconsistentLanguageHandling'];
+        )['mod']['web_layout']['allowInconsistentLanguageHandling'] ?? ['value' => '0'];
 
         return $allowInconsistentLanguageHandling['value'] === '1';
     }
@@ -2170,7 +2170,7 @@ class EditDocumentController
      */
     protected function localizationRedirect(ServerRequestInterface $request): ?ResponseInterface
     {
-        $justLocalized = $request->getQueryParams()['justLocalized'];
+        $justLocalized = $request->getQueryParams()['justLocalized'] ?? null;
 
         if (empty($justLocalized)) {
             return null;

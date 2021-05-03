@@ -72,7 +72,7 @@ class FlexFormTabsContainer extends AbstractContainer
 
             // Assemble key for loading the correct CSH file
             // @todo: what is that good for? That is for the title of single elements ... see FlexFormElementContainer!
-            $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'], true);
+            $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'] ?? '', true);
             $parameterArray['_cshKey'] = $table . '.' . $fieldName;
             foreach ($dsPointerFields as $key) {
                 if (is_string($row[$key]) && $row[$key] !== '') {
@@ -101,8 +101,8 @@ class FlexFormTabsContainer extends AbstractContainer
                 $tabElements[] = [
                     'label' => !empty(trim($sheetDataStructure['ROOT']['sheetTitle'])) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
                     'content' => $childReturn['html'],
-                    'description' => trim($sheetDataStructure['ROOT']['sheetDescription']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
-                    'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
+                    'description' => trim($sheetDataStructure['ROOT']['sheetDescription'] ?? '') ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
+                    'linkTitle' => trim($sheetDataStructure['ROOT']['sheetShortDescr'] ?? '') ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
                 ];
             }
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn, false);

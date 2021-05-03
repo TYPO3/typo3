@@ -246,7 +246,7 @@ class RelationHandler
      * @param string $itemlist List of group/select items
      * @param string $tablelist Comma list of tables, first table takes priority if no table is set for an entry in the list.
      * @param string $MMtable Name of a MM table.
-     * @param int $MMuid Local UID for MM lookup
+     * @param int|string $MMuid Local UID for MM lookup. May be a string for newly created elements.
      * @param string $currentTable Current table name
      * @param array $conf TCA configuration for current field
      */
@@ -321,7 +321,7 @@ class RelationHandler
                 $this->readList($itemlist, $conf);
                 $this->purgeItemArray();
             }
-        } elseif ($MMuid && isset($conf['foreign_field']) && (bool)$conf['foreign_field']) {
+        } elseif ($MMuid && ($conf['foreign_field'] ?? false)) {
             // If not MM but foreign_field, the read the records by the foreign_field
             $this->readForeignField($MMuid, $conf);
         } else {
@@ -511,7 +511,7 @@ class RelationHandler
      * Reads the record tablename/id into the internal arrays itemArray and tableArray from MM records.
      *
      * @param string $tableName MM Tablename
-     * @param int $uid Local UID
+     * @param int|string $uid Local UID
      * @param string $mmOppositeTable Opposite table name
      */
     protected function readMM($tableName, $uid, $mmOppositeTable)
@@ -894,7 +894,7 @@ class RelationHandler
      * Reads items from a foreign_table, that has a foreign_field (uid of the parent record) and
      * stores the parts in the internal array itemArray and tableArray.
      *
-     * @param int $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
+     * @param int|string $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
      * @param array $conf TCA configuration for current field
      */
     protected function readForeignField($uid, $conf)
@@ -1043,12 +1043,21 @@ class RelationHandler
             }
         }
 
+        // Ensure all values are set.
+        $conf += [
+            'foreign_table' => '',
+            'foreign_field' => '',
+            'symmetric_field' => '',
+            'foreign_table_field' => '',
+            'foreign_match_fields' => [],
+        ];
+
         $c = 0;
         $foreign_table = $conf['foreign_table'];
         $foreign_field = $conf['foreign_field'];
         $symmetric_field = $conf['symmetric_field'] ?? '';
         $foreign_table_field = $conf['foreign_table_field'];
-        $foreign_match_fields = is_array($conf['foreign_match_fields'] ?? false) ? $conf['foreign_match_fields'] : [];
+        $foreign_match_fields = $conf['foreign_match_fields'];
         // If there are table items and we have a proper $parentUid
         if (MathUtility::canBeInterpretedAsInteger($parentUid) && !empty($this->tableArray)) {
             // If updateToUid is not a positive integer, set it to '0', so it will be ignored
@@ -1624,7 +1633,7 @@ class RelationHandler
      * pointing to the live record, the submitted record uid is returned.
      *
      * @param string $tableName
-     * @param int $id
+     * @param int|string $id
      * @return int
      */
     protected function getLiveDefaultId($tableName, $id)

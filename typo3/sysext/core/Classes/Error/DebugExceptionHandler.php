@@ -419,7 +419,7 @@ STYLESHEET;
                 $content .= '<div class="trace-call">' . sprintf(
                     'at <span class="trace-class">%s</span><span class="trace-type">%s</span><span class="trace-method">%s</span>(<span class="trace-arguments">%s</span>)',
                     $step['class'] ?? '',
-                    $step['type'],
+                    $step['type'] ?? '',
                     $step['function'],
                     $this->formatArgs($args)
                 ) . '</div>';

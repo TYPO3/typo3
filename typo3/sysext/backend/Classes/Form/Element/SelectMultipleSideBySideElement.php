@@ -132,7 +132,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
         $elementName = $parameterArray['itemFormElName'];
 
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             // Early return for the relatively simple read only case
             return $this->renderReadOnly();
         }
@@ -142,7 +142,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $selectedItemsCount = count($selectedItems);
 
         $maxItems = $config['maxitems'];
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
+        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
         $size = 2;
         if (isset($config['size'])) {
             $size = (int)$config['size'];
@@ -322,7 +322,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           implode(LF, $filterHtml);
         $html[] =                           '<select';
         $html[] =                               ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
-        $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '"';
+        $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys'] ?? '') . '"';
         $html[] =                               ' id="' . $availableOptionsFieldId . '"';
         $html[] =                               ' class="form-select t3js-formengine-select-itemstoselect"';
         $html[] =                               ' size="' . $size . '"';
@@ -384,7 +384,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
         $selectedItemsCount = count($selectedItems);
 
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'], 0);
+        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
         $size = 2;
         if (isset($config['size'])) {
             $size = (int)$config['size'];

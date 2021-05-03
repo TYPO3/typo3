@@ -109,6 +109,7 @@ class UserInformationService
                 'inherit' => $user->userGroupsUID,
                 'direct' => GeneralUtility::trimExplode(',', $user->user['usergroup'], true),
             ],
+            'modules' => [],
         ];
         $data['groups']['diff'] = array_diff($data['groups']['inherit'], $data['groups']['direct']);
         foreach ($data['groups'] as $type => $groups) {
@@ -167,7 +168,7 @@ class UserInformationService
         foreach ($modules as $module) {
             $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module];
         }
-        $data['modules'] = array_filter((array)$data['modules']);
+        $data['modules'] = array_filter($data['modules']);
 
         // Categories
         $categories = $user->getCategoryMountPoints();

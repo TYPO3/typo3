@@ -99,7 +99,7 @@ class FileSearchQuery
         }
 
         if ($searchDemand->getOrderings() === null) {
-            $orderBy = $GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['sortby'] ?: $GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['default_sortby'];
+            $orderBy = ($GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['sortby'] ?? '') ?: ($GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['default_sortby'] ?? '');
             foreach (QueryHelper::parseOrderBy((string)$orderBy) as [$fieldName, $order]) {
                 $searchDemand = $searchDemand->addOrdering(self::FILES_TABLE, $fieldName, $order);
             }

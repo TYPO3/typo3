@@ -453,8 +453,8 @@ class TypoScriptTemplateModuleController
         return BackendUtility::getFuncMenu(
             $this->id,
             'SET[templatesOnPage]',
-            $this->MOD_SETTINGS['templatesOnPage'],
-            $this->MOD_MENU['templatesOnPage']
+            $this->MOD_SETTINGS['templatesOnPage'] ?? '',
+            $this->MOD_MENU['templatesOnPage'] ?? []
         );
     }
 
@@ -509,7 +509,7 @@ page.10.value = HELLO WORLD!
             $tce->start($recData, []);
             $tce->process_datamap();
         }
-        return $tce->substNEWwithIDs['NEW'];
+        return $tce->substNEWwithIDs['NEW'] ?? '';
     }
 
     /**

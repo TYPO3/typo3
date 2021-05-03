@@ -87,7 +87,7 @@ class CheckboxToggleElement extends AbstractFormElement
 
         $elementHtml = '';
         $disabled = false;
-        if ($this->data['parameterArray']['fieldConf']['config']['readOnly']) {
+        if ($this->data['parameterArray']['fieldConf']['config']['readOnly'] ?? false) {
             $disabled = true;
         }
         // Traversing the array of items
@@ -98,8 +98,9 @@ class CheckboxToggleElement extends AbstractFormElement
             $items[] = ['', ''];
             $numberOfItems = 1;
         }
-        $formElementValue = (int)$this->data['parameterArray']['itemFormElValue'];
-        $cols = (int)$this->data['parameterArray']['fieldConf']['config']['cols'];
+        // The values in the array may be numeric strings, but we need real ints.
+        $formElementValue = (int)($this->data['parameterArray']['itemFormElValue'] ?? 0);
+        $cols = (int)($this->data['parameterArray']['fieldConf']['config']['cols'] ?? 0);
         if ($cols > 1) {
             [$colClass, $colClear] = $this->calculateColumnMarkup($cols);
             $elementHtml .= '<div class="checkbox-row row">';

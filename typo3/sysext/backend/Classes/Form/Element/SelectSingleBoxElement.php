@@ -171,7 +171,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $size = (int)$config['size'];
         $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 
-        if ($config['autoSizeMax']) {
+        if ($config['autoSizeMax'] ?? false) {
             $size = MathUtility::forceIntegerInRange(
                 count($selectItems) + 1,
                 MathUtility::forceIntegerInRange($size, 1),
@@ -190,7 +190,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         if ($size) {
             $attributes['size'] = (string)$size;
         }
-        if ($config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             $attributes['disabled'] = 'disabled';
         }
 
