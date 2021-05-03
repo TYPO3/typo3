@@ -2776,7 +2776,6 @@ class DatabaseRecordList
         } else {
             $code = htmlspecialchars($code);
         }
-        $this->clickTitleMode = 'info';
         switch ((string)$this->clickTitleMode) {
             case 'edit':
                 // If the listed table is 'pages' we have to request the permission settings for each page:
