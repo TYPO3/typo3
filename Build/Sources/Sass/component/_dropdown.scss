@@ -21,7 +21,7 @@
 
     hr {
         border-top: 1px solid rgba(0, 0, 0, 0.35);
-        margin: 1.25em -15px;
+        margin: 1.25em ($grid-gutter-width / -2);
     }
 
     > *:last-child {
