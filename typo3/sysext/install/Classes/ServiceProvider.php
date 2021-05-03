@@ -320,7 +320,9 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand(
             'language:update',
             Command\LanguagePackCommand::class,
-            'Update the language files of all activated extensions'
+            'Update the language files of all activated extensions',
+            false,
+            true
         );
         $commandRegistry->addLazyCommand(
             'upgrade:run',
