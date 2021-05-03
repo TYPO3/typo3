@@ -148,7 +148,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         // If the type is > 0 but the value could not be resolved,
         // the type is appended as GET argument, which can be resolved already anyway.
         // This happens when the PageTypeDecorator is used, but hasn't been configured for all available types.
-        if ($value === '' && !empty($type)) {
+        if (!empty($type) && ($value === '' || $value === $this->default)) {
             return;
         }
 

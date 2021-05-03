@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\EnhancerSiteRequest;
 
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
@@ -137,5 +140,34 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
 
         $pageArguments = json_decode((string)$response->getBody(), true);
         self::assertEquals($expectation, $pageArguments);
+    }
+
+    /**
+     * @test
+     */
+    public function unmappedPageTypeDecoratorIsAddedAsRegularQueryParam(): void
+    {
+        $this->mergeSiteConfiguration('archive-acme-com', [
+            'routeEnhancers' => [
+                'PageType' => [
+                    'type' => 'PageType',
+                    'default' => '/',
+                    'index' => '',
+                    'map' => [
+                        '/' => 0,
+                        'sitemap.xml' => '1533906435'
+                    ]
+                ]
+            ]
+        ]);
+
+        GeneralUtility::makeInstance(SiteConfiguration::class)->resolveAllExistingSites(false);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('archive-acme-com');
+        $uri = $site->getRouter()->generateUri(3000);
+        self::assertEquals('https://archive.acme.com/', (string)$uri);
+        $uri = $site->getRouter()->generateUri(3000, ['type' => '1533906435']);
+        self::assertEquals('https://archive.acme.com/sitemap.xml', (string)$uri);
+        $uri = $site->getRouter()->generateUri(3000, ['type' => '13']);
+        self::assertEquals('https://archive.acme.com/?type=13', (string)$uri);
     }
 }
