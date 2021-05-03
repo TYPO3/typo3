@@ -1479,6 +1479,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->type = $pageArguments->getPageType() ?: 0;
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
+            // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
+            $this->MP = preg_replace('/[^0-9,-]/', '', $this->MP);
         }
     }
 

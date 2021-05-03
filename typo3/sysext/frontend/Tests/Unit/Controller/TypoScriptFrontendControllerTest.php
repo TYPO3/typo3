@@ -628,6 +628,74 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         self::assertEquals('fr', $languageService->lang);
     }
 
+    /**
+     * @test
+     */
+    public function mountPointParameterContainsOnlyValidMPValues(): void
+    {
+        $nullCacheBackend = new NullBackend('');
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
+        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->create(Argument::any())->will(function ($args) use ($languageService) {
+            $languageService->init($args[0]);
+            return $languageService;
+        });
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr-test',
+        ]);
+
+        // no MP Parameter given
+        $subject = new TypoScriptFrontendController(
+            new Context(),
+            $site,
+            $site->getLanguageById(0),
+            new PageArguments(13, '0', [], [], []),
+            $this->prophesize(FrontendUserAuthentication::class)->reveal()
+        );
+        self::assertEquals('', $subject->MP);
+
+        // single MP parameter given
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $subject = new TypoScriptFrontendController(
+            new Context(),
+            $site,
+            $site->getLanguageById(0),
+            new PageArguments(13, '0', [], [], ['MP' => '592-182']),
+            $this->prophesize(FrontendUserAuthentication::class)->reveal()
+        );
+        self::assertEquals('592-182', $subject->MP);
+
+        // invalid characters included
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $subject = new TypoScriptFrontendController(
+            new Context(),
+            $site,
+            $site->getLanguageById(0),
+            new PageArguments(13, '0', [], [], ['MP' => '12-13,a34-45/']),
+            $this->prophesize(FrontendUserAuthentication::class)->reveal()
+        );
+        self::assertEquals('12-13,34-45', $subject->MP);
+
+        // single MP parameter given but MP feature is turned off
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] = false;
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+        $subject = new TypoScriptFrontendController(
+            new Context(),
+            $site,
+            $site->getLanguageById(0),
+            new PageArguments(13, '0', [], [], ['MP' => '592-182']),
+            $this->prophesize(FrontendUserAuthentication::class)->reveal()
+        );
+        self::assertEquals('', $subject->MP);
+    }
+
     private function createSiteWithDefaultLanguage(array $languageConfiguration): Site
     {
         return new Site('test', 13, [
