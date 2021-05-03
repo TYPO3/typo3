@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
+namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -48,7 +48,7 @@ class AbstractLoginControllerTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider \TYPO3\CMS\Felogin\Tests\Unit\Controller\SettingsDataProvider::storageFoldersDataProvider
+     * @dataProvider \TYPO3\CMS\FrontendLogin\Tests\Unit\Controller\SettingsDataProvider::storageFoldersDataProvider
      * @param string $settingsPages
      * @param int $settingsRecursive
      * @param array $expected

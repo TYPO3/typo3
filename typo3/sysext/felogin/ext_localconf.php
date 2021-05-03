@@ -30,7 +30,7 @@ defined('TYPO3') or die();
 );
 
 // Add migration wizards
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Felogin\Updates\MigrateFeloginPlugins::class]
-    = \TYPO3\CMS\Felogin\Updates\MigrateFeloginPlugins::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TYPO3\\CMS\\Felogin\\Updates\\MigrateFeloginPlugins']
+    = \TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPlugins::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype::class]
     = \TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype::class;
