@@ -56,8 +56,10 @@ class ConfigurationModuleProviderCest
 
         // Tree search can be applied
         $I->fillField('#lowlevel-searchString', '\/authentication$');
+        $I->click('button.dropdown-toggle');
+        $I->waitForElementVisible('.dropdown-menu');
         $I->checkOption('#lowlevel-regexSearch');
-        $I->click('input#search');
+        $I->click('button[type=submit]');
 
         // Correct tree with search options present and active results is loaded
         $I->waitForElementVisible('#ConfigurationView');
