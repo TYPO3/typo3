@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4390a6e57c728319dcaf5e270aade6f5",
+    "content-hash": "6fa07c7c4463e4d50df3b5500fedcad3",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5457,29 +5457,29 @@
         },
         {
             "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.6.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "846a69134de4e251bac7b1fbdf0103621355b780"
+                "reference": "e51a2370ec3ecd44535c066fab90ee775c52e43b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/846a69134de4e251bac7b1fbdf0103621355b780",
-                "reference": "846a69134de4e251bac7b1fbdf0103621355b780",
+                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/e51a2370ec3ecd44535c066fab90ee775c52e43b",
+                "reference": "e51a2370ec3ecd44535c066fab90ee775c52e43b",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
-                "phpstan/phpstan": "^0.12.44",
-                "typo3/cms-core": "^10.4 || 11.*.*@dev",
-                "typo3/cms-extbase": "^10.4 || 11.*.*@dev"
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^0.12.44"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.3",
                 "jangregor/phpstan-prophecy": "^0.6.2",
                 "phpunit/phpunit": "^8.5",
-                "symplify/easy-coding-standard": "^7.2"
+                "symplify/easy-coding-standard": "^7.2",
+                "typo3/cms-core": "^10.4 || 11.*.*@dev",
+                "typo3/cms-extbase": "^10.4 || 11.*.*@dev"
             },
             "type": "phpstan-extension",
             "autoload": {
@@ -5494,9 +5494,9 @@
             "description": "TYPO3 rules for PHPStan",
             "support": {
                 "issues": "https://github.com/FriendsOfTYPO3/phpstan-typo3/issues",
-                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.6.0"
+                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.7.0"
             },
-            "time": "2020-12-22T13:54:40+00:00"
+            "time": "2021-03-01T12:40:52+00:00"
         },
         {
             "name": "mikey179/vfsstream",
