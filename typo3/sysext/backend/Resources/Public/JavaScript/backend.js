@@ -71,3 +71,13 @@ function getModuleUrl(inUrl) {	//
 
 // Used by Frameset Modules
 var currentSubScript = "";
+
+/**
+ * @param {string} modName
+ * @param {string} addGetVars
+ * @deprecated use `data-dispatch-action=TYPO3.ModuleMenu.showModule` instead, will be removed in TYPO3 v12.0
+ */
+function goToModule(modName, addGetVars) {
+  console.warn('Using goToModule is deprecated, use `data-dispatch-action=TYPO3.ModuleMenu.showModule` instead.');
+  TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
+}

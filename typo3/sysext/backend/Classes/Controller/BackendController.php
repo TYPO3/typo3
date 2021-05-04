@@ -375,10 +375,6 @@ class BackendController
             navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
             currentBank: "0"
         };
-
-        var goToModule = function(modName, addGetVars) {
-            TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
-        }
         ' . $this->handlePageEditing($request),
             false
         );

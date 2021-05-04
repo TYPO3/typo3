@@ -23,12 +23,16 @@
                     </f:else>
                     <f:then>
                         <li>
-                            <button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
+                            <button class="btn btn-default distribution-openViewModule"
+                                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                                    data-dispatch-args-list="web_ViewpageView">
                                 <core:icon identifier="actions-document-view" /> <f:translate key="distribution.welcome.openViewModule" />
                             </button>
                         </li>
                         <li>
-                            <button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_layout');">
+                            <button class="btn btn-default distribution-openPageModule"
+                                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                                    data-dispatch-args-list="web_layout">
                                 <core:icon identifier="actions-open" /> <f:translate key="distribution.welcome.openPageModule" />
                             </button>
                         </li>

@@ -4795,4 +4795,18 @@ return [
             'Deprecation-93837-SpecialPropertyOfTCATypeSelect.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Domain\Model\Module\BackendModule->setOnClick' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94058-JavaScriptGoToModule.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Model\Module\BackendModule->getOnClick' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94058-JavaScriptGoToModule.rst'
+        ],
+    ],
 ];

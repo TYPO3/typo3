@@ -260,7 +260,6 @@ class BackendModuleRepository implements SingletonInterface
             $modules[$moduleKey] = [
                 'name' => $moduleName,
                 'title' => $moduleLabels['title'],
-                'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
                 'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                 'link' => $moduleLink,
                 'component' => $moduleComponent,
@@ -272,7 +271,6 @@ class BackendModuleRepository implements SingletonInterface
                 $modules[$moduleKey]['subitems'][$moduleKey] = [
                     'name' => $moduleName,
                     'title' => $moduleLabels['title'],
-                    'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
                     'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                     'link' => $moduleLink,
                     'component' => $moduleComponent,
@@ -298,7 +296,6 @@ class BackendModuleRepository implements SingletonInterface
                     $modules[$moduleKey]['subitems'][$submoduleKey] = [
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $submoduleLabels['title'],
-                        'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
                         'icon' => $this->getModuleIcon($moduleKey, $submoduleData),
                         'link' => $submoduleLink,
                         'component' => $submoduleComponent,

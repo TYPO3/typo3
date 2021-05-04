@@ -55,9 +55,11 @@ class WarningMessagePostProcessor
                     'tx_reports_system_reportstxreportsm1[action]=detail',
                     'tx_reports_system_reportstxreportsm1[controller]=Report',
                 ];
+                $dispatchArgsList = $reportModuleIdentifier . ',' . '&' . implode('&', $reportModuleParameters);
                 $warningMessages['tx_reports_status_notification'] = sprintf(
                     $this->getLanguageService()->getLL('status_problemNotification'),
-                    '<a href="javascript:top.goToModule(' . GeneralUtility::quoteJSvalue($reportModuleIdentifier) . ', ' . GeneralUtility::quoteJSvalue('&' . implode('&', $reportModuleParameters)) . ');">',
+                    '<a href="#" data-dispatch-action="TYPO3.ModuleMenu.showModule" '
+                        . 'data-dispatch-args-list="' . htmlspecialchars($dispatchArgsList) . '">',
                     '</a>'
                 );
             }

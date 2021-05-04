@@ -10,7 +10,8 @@
             <f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
                 <a
                     href="#"
-                    onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                    data-dispatch-args-list="{mainModule.name}_{subModule.name}"
                     title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
                     class="card card-size-medium"
                 >

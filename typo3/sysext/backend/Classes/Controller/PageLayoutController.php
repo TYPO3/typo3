@@ -358,7 +358,8 @@ class PageLayoutController
             if (is_array($modules['web']['sub']['list'])) {
                 $title = $lang->getLL('goToListModule');
                 $message = '<p>' . $lang->getLL('goToListModuleMessage') . '</p>';
-                $message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\');">' . $lang->getLL('goToListModule') . '</a>';
+                $message .= '<a class="btn btn-info" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'
+                    . $lang->getLL('goToListModule') . '</a>';
                 $view->assignMultiple([
                     'title' => $title,
                     'message' => $message,

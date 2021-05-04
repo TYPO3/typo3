@@ -301,9 +301,11 @@ class BackendModule
      * Set onClick
      *
      * @param string $onClick
+     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
      */
     public function setOnClick($onClick)
     {
+        trigger_error('BackendModule::setOnClick() is deprecated and will be removed in v12.', E_USER_DEPRECATED);
         $this->onClick = $onClick;
     }
 
@@ -311,9 +313,11 @@ class BackendModule
      * Get onClick
      *
      * @return string
+     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
      */
     public function getOnClick()
     {
+        trigger_error('BackendModule::getOnClick() is deprecated and will be removed in v12.', E_USER_DEPRECATED);
         return $this->onClick;
     }
 

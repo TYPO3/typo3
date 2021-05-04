@@ -18,15 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ElementAttributesInterface;
 
 /**
  * Provide link for sys log button.
  * Check whether belog is enabled and add link to module.
  * No link is returned if not enabled.
  */
-class SysLogButtonProvider implements ButtonProviderInterface
+class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributesInterface
 {
     /**
      * @var string
@@ -51,17 +51,23 @@ class SysLogButtonProvider implements ButtonProviderInterface
 
     public function getLink(): string
     {
-        if (ExtensionManagementUtility::isLoaded('belog')) {
-            return 'javascript:top.goToModule('
-                . GeneralUtility::quoteJSvalue('system_BelogLog') . ', '
-                . GeneralUtility::quoteJSvalue('&' . http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])) . ');';
-        }
-
         return '';
     }
 
     public function getTarget(): string
     {
         return $this->target;
+    }
+
+    public function getElementAttributes(): array
+    {
+        if (!ExtensionManagementUtility::isLoaded('belog')) {
+            return [];
+        }
+        return [
+            'data-dispatch-action' => 'TYPO3.ModuleMenu.showModule',
+            'data-dispatch-args-list' => 'system_BelogLog,&'
+                . http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]]),
+        ];
     }
 }
