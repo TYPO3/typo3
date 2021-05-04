@@ -96,7 +96,7 @@ class Query implements QueryInterface
     protected $statement;
 
     /**
-     * @var int[]
+     * @var array<string, string>
      */
     protected $orderings = [];
 
@@ -294,7 +294,7 @@ class Query implements QueryInterface
      * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @return int
+     * @return array<string, string>
      */
     public function getOrderings()
     {

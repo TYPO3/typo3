@@ -59,7 +59,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
      * We "abuse" it here to actually check if access is allowed to sys_file_metadata.
      *
      *
-     * @param int $accessAllowed Whether the user has access to modify a table
+     * @param bool $accessAllowed Whether the user has access to modify a table
      * @param string $table The name of the table to be modified
      * @param DataHandler $parent The calling parent object
      * @throws \UnexpectedValueException

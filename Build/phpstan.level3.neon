@@ -15,7 +15,7 @@ rules:
 	- PHPStan\Rules\Variables\VariableCloningRule
 
 parameters:
-	checkPhpDocMethodSignatures: false # todo: set to true
+	checkPhpDocMethodSignatures: true
 
 services:
 	-

@@ -26,7 +26,7 @@ interface LinktypeInterface
      * @param string $url Url to check
      * @param array $softRefEntry The soft reference entry which builds the context of that url
      * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
-     * @return string Validation error message or success code
+     * @return bool TRUE on success or FALSE on error
      */
     public function checkLink($url, $softRefEntry, $reference);
 

@@ -103,6 +103,16 @@ parameters:
       count: 1
       path: typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
 
+    # checkPhpDocMethodSignatures
+    -
+      message: "#^Return type \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\) of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:getExpressionBuilder\\(\\) should be compatible with return type \\(Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\ExpressionBuilder\\) of method Doctrine\\\\DBAL\\\\Connection\\:\\:getExpressionBuilder\\(\\)$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Database/Connection.php
+    -
+      message: "#^Return type \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\) of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:createQueryBuilder\\(\\) should be compatible with return type \\(Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\) of method Doctrine\\\\DBAL\\\\Connection\\:\\:createQueryBuilder\\(\\)$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Database/Connection.php
+
     # Ignored errors for level 4
     -
       message: "#^Ternary operator condition is always false\\.$#"

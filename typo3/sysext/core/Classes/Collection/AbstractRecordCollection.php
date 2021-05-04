@@ -119,12 +119,12 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Return the key of the current element
      *
      * @link https://php.net/manual/en/iterator.key.php
-     * @return int 0 on failure.
+     * @return int|string 0 on failure.
      */
     public function key()
     {
         $currentRecord = $this->storage->current();
-        return $currentRecord['uid'];
+        return $currentRecord['uid'] ?? 0;
     }
 
     /**
