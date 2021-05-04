@@ -81,6 +81,7 @@ class Locales implements SingletonInterface
         'rw' => 'Kinyarwanda',
         'sk' => 'Slovak',
         'sl' => 'Slovenian',
+        'sn' => 'Shona (Bantu)',
         'sq' => 'Albanian',
         'sr' => 'Serbian',
         'sv' => 'Swedish',
