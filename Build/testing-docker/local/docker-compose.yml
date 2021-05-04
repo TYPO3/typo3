@@ -657,13 +657,16 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: "10.4"
+      COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
         composer config --unset platform.php;
-        COMPOSER_CACHE_DIR=".cache/composer" composer update --no-progress --no-interaction;
+        composer update --no-progress --no-interaction;
         composer dumpautoload;
       "
 
@@ -676,13 +679,16 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: "10.4"
+      COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
         composer config platform.php ${PHP_VERSION}.0;
-        COMPOSER_CACHE_DIR=".cache/composer" composer update --prefer-lowest --no-progress --no-interaction;
+        composer update --prefer-lowest --no-progress --no-interaction;
         composer dumpautoload;
       "
 
