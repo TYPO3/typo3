@@ -119,7 +119,7 @@
 			"always-add-alias-loader": true
 		},
 		"branch-alias": {
-			"dev-master": "11.2.x-dev"
+			"dev-master": "11.3.x-dev"
 		}
 	},
 	"scripts": {
