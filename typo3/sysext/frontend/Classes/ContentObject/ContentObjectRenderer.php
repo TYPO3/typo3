@@ -5181,11 +5181,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $callable = [$classObj, $methodName];
                 if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
                     $classObj->cObj = $this;
-                    $content = call_user_func_array($callable, [
-                        $content,
-                        $conf,
-                        $this->getRequest()
-                    ]);
+                    $content = $callable($content, $conf, $this->getRequest());
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
                 }

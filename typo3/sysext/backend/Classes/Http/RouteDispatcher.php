@@ -60,7 +60,7 @@ class RouteDispatcher extends Dispatcher
         $targetIdentifier = $route->getOption('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
         $arguments = [$request];
-        return call_user_func_array($target, $arguments);
+        return $target(...$arguments);
     }
 
     /**

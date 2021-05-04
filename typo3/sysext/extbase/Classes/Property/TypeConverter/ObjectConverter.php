@@ -257,7 +257,7 @@ class ObjectConverter extends AbstractTypeConverter
                     throw new InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
                 }
             }
-            return call_user_func_array([$this->objectManager, 'get'], array_merge([$objectType], $constructorArguments));
+            return $this->objectManager->get(...[$objectType, ...$constructorArguments]);
         }
         return $this->objectManager->get($objectType);
     }

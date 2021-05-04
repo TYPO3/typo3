@@ -74,7 +74,7 @@ class FileTest extends UnitTestCase
         ];
         $fixture = new File($properties, $this->storageMock);
         foreach ($properties as $key => $value) {
-            self::assertEquals($value, call_user_func([$fixture, 'get' . $key]));
+            self::assertEquals($value, $fixture->{'get' . $key}());
         }
     }
 

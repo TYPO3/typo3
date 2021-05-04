@@ -159,7 +159,7 @@ class LoggerTest extends UnitTestCase
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
         $logger->addWriter(LogLevel::DEBUG, $writer);
-        call_user_func([$logger, $shorthandMethod], 'test message');
+        $logger->$shorthandMethod('test message');
         self::assertNotEmpty($writer->getRecords());
     }
 

@@ -698,7 +698,7 @@ class ArrayUtility
                 $keepItems = array_flip($keepItems);
                 foreach ($array as $key => $value) {
                     // Get the value to compare by using the callback function:
-                    $keepValue = isset($getValueFunc) ? call_user_func($getValueFunc, $value) : $value;
+                    $keepValue = isset($getValueFunc) ? $getValueFunc($value) : $value;
                     if (!isset($keepItems[$keepValue])) {
                         unset($array[$key]);
                     }
@@ -862,7 +862,7 @@ class ArrayUtility
                 $array[$key] = self::filterRecursive($value, $callback);
             }
 
-            if (!call_user_func($callback, $value)) {
+            if (!$callback($value)) {
                 unset($array[$key]);
             }
         }

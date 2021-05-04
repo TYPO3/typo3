@@ -144,7 +144,7 @@ class Dispatcher implements SingletonInterface
                 $preparedSlotArguments[] = $signalClassName . '::' . $signalName;
             }
 
-            $slotReturn = call_user_func_array($callable, $preparedSlotArguments);
+            $slotReturn = $callable(...$preparedSlotArguments);
 
             if ($slotReturn) {
                 if (!is_array($slotReturn)) {

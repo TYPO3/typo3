@@ -106,7 +106,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
             array_map(
                 function (array $values) use ($template, $callback) {
                     if ($callback !== null) {
-                        $values = call_user_func($callback, $values);
+                        $values = $callback($values);
                     }
                     return vsprintf($template, $values);
                 },

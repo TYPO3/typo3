@@ -97,7 +97,7 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
                 ServerRequestFactory::fromGlobals()
             );
             if ($execute !== null) {
-                call_user_func($execute);
+                $execute();
             }
         } catch (ImmediateResponseException $exception) {
             $response = $exception->getResponse();

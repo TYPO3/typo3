@@ -50,12 +50,12 @@ class Dispatcher implements DispatcherInterface
         $targetIdentifier = $request->getAttribute('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
         $arguments = [$request];
-        return call_user_func_array($target, $arguments);
+        return $target(...$arguments);
     }
 
     /**
      * Creates a callable out of the given parameter, which can be a string, a callable / closure or an array
-     * which can be handed to call_user_func_array()
+     * which can be invoked as a function.
      *
      * @param array|string|callable $target the target which is being resolved.
      * @return callable

@@ -422,9 +422,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     {
         foreach ($filterMethods as $filter) {
             if (is_callable($filter)) {
-                $result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, [], $this);
-                // We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
-                // If calling the method succeeded and thus we can't use that as a return value.
+                $result = $filter($itemName, $itemIdentifier, $parentIdentifier, [], $this);
+                // We use -1 as the "don't include“ return value, for historic reasons,
+                // as call_user_func() used to return FALSE if calling the method failed.
                 if ($result === -1) {
                     return false;
                 }

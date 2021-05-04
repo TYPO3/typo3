@@ -90,8 +90,8 @@ class FormProtectionFactoryTest extends UnitTestCase
             $this->createMock(Registry::class)
         ];
         self::assertSame(
-            call_user_func_array([FormProtectionFactory::class, 'get'], $arguments),
-            call_user_func_array([FormProtectionFactory::class, 'get'], $arguments)
+            FormProtectionFactory::get(...$arguments),
+            FormProtectionFactory::get(...$arguments)
         );
     }
 

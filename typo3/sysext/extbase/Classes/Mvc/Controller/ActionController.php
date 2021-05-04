@@ -472,10 +472,8 @@ abstract class ActionController implements ControllerInterface
         $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
         /** @var callable $callable */
         $callable = [$this, $actionInitializationMethodName];
-        if (method_exists($this, $actionInitializationMethodName)) {
-            // todo: replace method_exists with is_callable or even both
-            //       method_exists alone does not guarantee that $callable is actually callable
-            call_user_func($callable);
+        if (is_callable($callable)) {
+            $callable();
         }
         $this->mapRequestArgumentsToControllerArguments();
         $this->controllerContext = $this->buildControllerContext();

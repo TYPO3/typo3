@@ -32,8 +32,8 @@ class FileNameFilter
     /**
      * Filter method that checks if a file/folder name starts with a dot (e.g. .htaccess)
      *
-     * We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
-     * If calling the method succeeded and thus we can't use that as a return value.
+     * We use -1 as the "don't include“ return value, for historic reasons,
+     * as call_user_func() used to return FALSE if calling the method failed.
      *
      * @param string $itemName
      * @param string $itemIdentifier

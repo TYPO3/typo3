@@ -623,15 +623,12 @@ class GeneralUtility
             $ipad = str_repeat(chr(54), $hashBlocksize);
             if (strlen($secret) > $hashBlocksize) {
                 // Keys longer than block size are shorten
-                $key = str_pad(pack('H*', call_user_func($hashAlgorithm, $secret)), $hashBlocksize, "\0");
+                $key = str_pad(pack('H*', $hashAlgorithm($secret)), $hashBlocksize, "\0");
             } else {
                 // Keys shorter than block size are zero-padded
                 $key = str_pad($secret, $hashBlocksize, "\0");
             }
-            $hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func(
-                $hashAlgorithm,
-                ($key ^ $ipad) . $input
-            )));
+            $hmac = $hashAlgorithm(($key ^ $opad) . pack('H*', $hashAlgorithm(($key ^ $ipad) . $input)));
         }
         return $hmac;
     }

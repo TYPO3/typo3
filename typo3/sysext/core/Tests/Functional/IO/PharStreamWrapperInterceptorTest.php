@@ -213,7 +213,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
 
         self::assertSame(
             $expectation,
-            call_user_func($functionName, 'phar://' . $path)
+            $functionName('phar://' . $path)
         );
     }
 
@@ -282,7 +282,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         self::expectExceptionCode(1539625084);
 
         $path = $this->instancePath . '/' . $path;
-        call_user_func($functionName, 'phar://' . $path);
+        $functionName('phar://' . $path);
     }
 
     /**

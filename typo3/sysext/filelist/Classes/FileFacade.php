@@ -98,7 +98,7 @@ class FileFacade
         $uid = 0;
         $method = 'getMetadata';
         if (is_callable([$this->resource, $method])) {
-            $metadata = call_user_func([$this->resource, $method]);
+            $metadata = $this->resource->$method();
 
             if (isset($metadata['uid'])) {
                 $uid = (int)$metadata['uid'];
@@ -123,7 +123,7 @@ class FileFacade
     {
         $method = 'getReadablePath';
         if (is_callable([$this->resource->getParentFolder(), $method])) {
-            return call_user_func([$this->resource->getParentFolder(), $method]);
+            return $this->resource->getParentFolder()->$method();
         }
 
         return '';
@@ -176,7 +176,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['read']);
+            return $this->resource->$method('read');
         }
 
         return false;
@@ -189,7 +189,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['write']);
+            return $this->resource->$method('write');
         }
 
         return false;
@@ -202,7 +202,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['replace']);
+            return $this->resource->$method('replace');
         }
 
         return false;
@@ -215,7 +215,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['rename']);
+            return $this->resource->$method('rename');
         }
 
         return false;
@@ -228,7 +228,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['copy']);
+            return $this->resource->$method('copy');
         }
 
         return false;
@@ -241,7 +241,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['move']);
+            return $this->resource->$method('move');
         }
 
         return false;
@@ -254,7 +254,7 @@ class FileFacade
     {
         $method = 'checkActionPermission';
         if (is_callable([$this->resource, $method])) {
-            return call_user_func_array([$this->resource, $method], ['delete']);
+            return $this->resource->$method('delete');
         }
 
         return false;

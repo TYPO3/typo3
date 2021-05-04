@@ -1409,7 +1409,7 @@ class RelationHandler
             $purgedItemIds = [];
             $callable =[$this, $purgeCallback];
             if (is_callable($callable)) {
-                $purgedItemIds = call_user_func($callable, $itemTableName, $itemIds);
+                $purgedItemIds = $callable($itemTableName, $itemIds);
             }
 
             $removedItemIds = array_diff($itemIds, $purgedItemIds);

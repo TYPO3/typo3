@@ -147,7 +147,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         }
         /** @var callable $callable */
         $callable = [$realInstance, $methodName];
-        return call_user_func_array($callable, $arguments);
+        return $callable(...$arguments);
     }
 
     /**

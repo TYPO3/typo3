@@ -6182,7 +6182,7 @@ class DataHandler implements LoggerAwareInterface
                 if (!empty($remapAction['func'])) {
                     $callable = [$this, $remapAction['func']];
                     if (is_callable($callable)) {
-                        $newValue = call_user_func_array($callable, $remapAction['args']);
+                        $newValue = $callable(...$remapAction['args']);
                     }
                 }
                 // If array is returned, check for maxitems condition, if string is returned this was already done:
@@ -6252,7 +6252,7 @@ class DataHandler implements LoggerAwareInterface
         if ($this->remapStackActions) {
             foreach ($this->remapStackActions as $action) {
                 if (isset($action['callback'], $action['arguments'])) {
-                    call_user_func_array($action['callback'], $action['arguments']);
+                    $action['callback'](...$action['arguments']);
                 }
             }
         }

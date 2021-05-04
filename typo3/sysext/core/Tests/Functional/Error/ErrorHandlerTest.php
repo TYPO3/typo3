@@ -113,7 +113,7 @@ class ErrorHandlerTest extends FunctionalTestCase
             {
                 // process errors
                 if ($this->existingHandler !== null) {
-                    return call_user_func($this->existingHandler, $code, $message, $file, $line, $context);
+                    return ($this->existingHandler)($code, $message, $file, $line, $context);
                 }
 
                 return false;

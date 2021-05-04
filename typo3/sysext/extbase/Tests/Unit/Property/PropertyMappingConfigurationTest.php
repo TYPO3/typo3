@@ -223,7 +223,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
     {
-        $actualResult = call_user_func_array([$this->propertyMappingConfiguration, $methodToTestForFluentInterface], $argumentsForMethod);
+        $actualResult = $this->propertyMappingConfiguration->$methodToTestForFluentInterface(...$argumentsForMethod);
         self::assertSame($this->propertyMappingConfiguration, $actualResult);
     }
 

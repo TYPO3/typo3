@@ -882,7 +882,7 @@ class FlexFormTools
      */
     protected function executeCallBackMethod($methodName, array $parameterArray)
     {
-        return call_user_func_array([$this->callBackObj, $methodName], $parameterArray);
+        return $this->callBackObj->$methodName(...$parameterArray);
     }
 
     /***********************************

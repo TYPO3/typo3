@@ -382,7 +382,7 @@ class SlugHelper
         $newValue = $slug;
         $counter = 0;
         while (
-            !call_user_func($isUnique, $newValue, $state)
+            !$isUnique($newValue, $state)
             && ++$counter < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);

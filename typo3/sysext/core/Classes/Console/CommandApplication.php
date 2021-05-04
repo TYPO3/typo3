@@ -110,7 +110,7 @@ class CommandApplication implements ApplicationInterface
         $exitCode = $this->application->run($input, $output);
 
         if ($execute !== null) {
-            call_user_func($execute);
+            $execute();
         }
 
         exit($exitCode);
