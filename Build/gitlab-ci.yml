@@ -47,7 +47,6 @@ stages:
   - unit
   - acceptance
   - functional
-  - functional2
 
 include:
   # Pre-merge tests are triggered by pushing to changes to gerrit.
