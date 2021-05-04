@@ -413,7 +413,7 @@ services:
           set -x
         fi
         php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection \
-          --config=Build/.php_cs typo3/
+          --config=Build/php-cs-fixer.php typo3/
       "
 
   check_annotations:
