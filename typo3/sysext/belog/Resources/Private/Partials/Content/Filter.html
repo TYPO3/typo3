@@ -117,7 +117,7 @@
             <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/DateTimePicker'}" />
             <div class="col">
                 <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
-                <div class="input-group mt-1">
+                <div class="input-group">
                     <f:form.textfield
                         name="manualDateStart"
                         value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStart}')}\")}"
@@ -137,7 +137,7 @@
 
             <div class="col">
                 <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
-                <div class="input-group mt-1">
+                <div class="input-group">
                     <f:form.textfield
                         name="manualDateStop"
                         value="{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStop}')}"
