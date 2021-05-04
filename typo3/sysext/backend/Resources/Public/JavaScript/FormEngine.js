@@ -115,20 +115,6 @@ define(['jquery',
       isList = true;
     }
 
-    // clear field before adding value, if configured so (maxitems==1)
-    // @todo: clean this code
-    if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName] !== 'undefined') {
-      var clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fieldName];
-      $fieldEl.empty();
-
-      // Clear the upload field
-      // @todo: Investigate whether we either need to fix this code or we can drop it.
-      var filesContainer = document.getElementById(clearSettings.itemFormElID_file);
-      if (filesContainer) {
-        filesContainer.innerHTML = filesContainer.innerHTML;
-      }
-    }
-
     if (isMultiple || isList) {
       var $availableFieldEl = FormEngine.getFieldElement(fieldName, '_avail');
 
