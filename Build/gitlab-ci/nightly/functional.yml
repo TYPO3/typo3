@@ -32,7 +32,7 @@ functional mariadb 10.3 php 7.3 min:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 functional mssql php 7.4 locked:
-  stage: functional2
+  stage: functional
   only:
     - schedules
   parallel: 12
@@ -40,7 +40,7 @@ functional mssql php 7.4 locked:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mssql php 7.3 max:
-  stage: functional2
+  stage: functional
   only:
     - schedules
   cache:
@@ -52,7 +52,7 @@ functional mssql php 7.3 max:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.3
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional min mssql php 7.2 min pdo_sqlsrv:
-  stage: functional2
+  stage: functional
   only:
     - schedules
   cache:
@@ -123,7 +123,7 @@ functional postgres 10 php 7.4 min:
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 functional sqlite php 7.4:
-  stage: functional2
+  stage: functional
   only:
     - schedules
   parallel: 6
