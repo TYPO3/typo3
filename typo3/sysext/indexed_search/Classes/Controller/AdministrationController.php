@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -153,7 +154,7 @@ class AdministrationController extends ActionController
      */
     public function initializeAction()
     {
-        $this->pageUid = (int)GeneralUtility::_GET('id');
+        $this->pageUid = (int)($this->getServerRequest()->getQueryParams()['id'] ?? 0);
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->indexer = GeneralUtility::makeInstance(Indexer::class);
@@ -169,11 +170,11 @@ class AdministrationController extends ActionController
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
-        $vars = GeneralUtility::_GET('tx_indexedsearch_web_indexedsearchisearch');
-
+        $arguments = $request->getArguments();
         $beUser = $this->getBackendUserAuthentication();
-        if (is_array($vars) && isset($vars['action']) && method_exists($this, $vars['action'] . 'Action')) {
-            $action = $vars['action'];
+
+        if (is_array($arguments) && isset($arguments['action']) && method_exists($this, $arguments['action'] . 'Action')) {
+            $action = $arguments['action'];
 
             switch ($action) {
                 case 'saveStopwordsKeywords':
@@ -185,7 +186,7 @@ class AdministrationController extends ActionController
             }
 
             $beUser->uc['indexed_search']['action'] = $action;
-            $beUser->uc['indexed_search']['arguments'] = $request->getArguments();
+            $beUser->uc['indexed_search']['arguments'] = $arguments;
             $beUser->writeUC();
         } elseif (isset($beUser->uc['indexed_search']['action'])) {
             if ($request instanceof Request) {
@@ -554,5 +555,19 @@ class AdministrationController extends ActionController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * We currently rely on the PSR-7 request next to the extbase specific
+     * implementation, since we have to access non-prefixed query arguments.
+     * See initializeAction(), which fetches the `id` (UID of the selected
+     * page in the page tree).
+     *
+     * @return ServerRequestInterface
+     * @todo Remove as soon as extbase uses the PSR-7 request
+     */
+    protected function getServerRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
