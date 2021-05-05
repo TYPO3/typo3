@@ -871,6 +871,24 @@ mod.web_layout.BackendLayouts {
             ],
         ],
 
+        'text_21' => [
+            'label' => 'text_21',
+            'description' => 'renderType=textTable',
+            'config' => [
+                'type' => 'text',
+                'renderType' => 'textTable',
+                'cols' => 40,
+                'rows' => 5,
+                'fieldControl' => [
+                    'tableWizard' => [
+                        'options' => [
+                            'numNewRows' => 3,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+
         'checkbox_1' => [
             'exclude' => 1,
             'label' => 'checkbox_1',
@@ -1739,7 +1757,7 @@ mod.web_layout.BackendLayouts {
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
-                    text_20,
+                    text_21, text_20,
                 --div--;check,
                     checkbox_1, checkbox_9, checkbox_2, checkbox_17, checkbox_25, checkbox_18, checkbox_24, checkbox_19, checkbox_26,
                     checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8,
