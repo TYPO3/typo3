@@ -91,6 +91,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeGroupDbAllowedBeUsers::class,
         FieldGenerator\TypeGroupDbAllowedStaticdata::class,
         FieldGenerator\TypeGroupDbAllowedPages::class,
+        FieldGenerator\TypeGroupDbAllowedSysFiles::class,
         FieldGenerator\TypeGroupFolder::class,
 
         // type=select
@@ -104,6 +105,10 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInlineFal::class,
         FieldGenerator\TypeInlineExpandsingle::class,
         FieldGenerator\TypeInlineUsecombination::class,
+
+        // type=imageManipulation
+        FieldGenerator\TypeImageManipulation::class,
+
         // General type=inline for simple 1:n parent child relations
         FieldGenerator\TypeInline1n::class,
 
