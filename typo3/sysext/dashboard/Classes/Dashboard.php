@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Dashboard;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
 /**
  * @internal
@@ -38,7 +37,7 @@ class Dashboard
     protected $title;
 
     /**
-     * @var array
+     * @var array<string,array<string,string>>
      */
     protected $widgetConfig;
 
@@ -53,7 +52,7 @@ class Dashboard
     protected $container;
 
     /**
-     * @var WidgetInterface[]
+     * @var array<string,WidgetConfigurationInterface>
      */
     protected $widgets = [];
 
@@ -96,7 +95,7 @@ class Dashboard
     }
 
     /**
-     * @return WidgetInterface[]
+     * @return array<string,WidgetConfigurationInterface>
      */
     public function getWidgets(): array
     {
@@ -111,7 +110,6 @@ class Dashboard
     {
         $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
-            /* @var WidgetConfigurationInterface $widgetConfig */
             if (array_key_exists($widgetConfig['identifier'], $availableWidgets)) {
                 $this->widgets[$hash] = $availableWidgets[$widgetConfig['identifier']];
             }

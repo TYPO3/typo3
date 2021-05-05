@@ -33,14 +33,14 @@ class ResourceMutex
     /**
      * Access lock
      *
-     * @var LockingStrategyInterface[]
+     * @var array<string,LockingStrategyInterface|null>
      */
     private $accessLocks = [];
 
     /**
      * Image processing lock
      *
-     * @var LockingStrategyInterface[]
+     * @var array<string,LockingStrategyInterface|null>
      */
     private $workerLocks = [];
 

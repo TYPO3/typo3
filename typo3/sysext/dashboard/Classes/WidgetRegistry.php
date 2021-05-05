@@ -35,7 +35,7 @@ class WidgetRegistry implements SingletonInterface
     protected $container;
 
     /**
-     * @var WidgetConfigurationInterface[]
+     * @var array<string,WidgetConfigurationInterface>
      */
     private $widgets = [];
 

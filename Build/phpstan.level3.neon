@@ -1,5 +1,5 @@
 rules:
-#	- PHPStan\Rules\Arrays\AppendedArrayItemTypeRule
+	- PHPStan\Rules\Arrays\AppendedArrayItemTypeRule
 	- PHPStan\Rules\Arrays\IterableInForeachRule
 	- PHPStan\Rules\Arrays\OffsetAccessAssignmentRule
 	- PHPStan\Rules\Arrays\OffsetAccessAssignOpRule

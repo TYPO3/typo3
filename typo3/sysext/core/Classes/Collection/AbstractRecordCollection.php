@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * for output in frontend
  *
  * The AbstractRecordCollection uses SplDoublyLinkedList for internal storage
+ *
+ * @template T
+ * @implements RecordCollectionInterface<T>
  */
 abstract class AbstractRecordCollection implements RecordCollectionInterface, PersistableCollectionInterface, SortableCollectionInterface
 {

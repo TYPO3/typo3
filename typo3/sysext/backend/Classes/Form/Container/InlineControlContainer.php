@@ -59,7 +59,7 @@ class InlineControlContainer extends AbstractContainer
     protected $iconFactory;
 
     /**
-     * @var string[]
+     * @var array<int,string|array<string,string>>
      */
     protected $requireJsModules = [];
 

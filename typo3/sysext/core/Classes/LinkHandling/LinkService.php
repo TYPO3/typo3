@@ -52,10 +52,16 @@ class LinkService implements SingletonInterface
      */
     public function __construct()
     {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] as $type => $handler) {
+        $registeredLinkHandlers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] ?? [];
+        $registeredLinkHandlers = is_array($registeredLinkHandlers) ? $registeredLinkHandlers : [];
+        /** @var array<string,class-string> $registeredLinkHandlers */
+        if ($registeredLinkHandlers !== []) {
+            foreach ($registeredLinkHandlers as $type => $handlerClassName) {
                 if (!isset($this->handlers[$type]) || !is_object($this->handlers[$type])) {
-                    $this->handlers[$type] = GeneralUtility::makeInstance($handler);
+                    $handler = GeneralUtility::makeInstance($handlerClassName);
+                    if ($handler instanceof LinkHandlingInterface) {
+                        $this->handlers[$type] = $handler;
+                    }
                 }
             }
         }

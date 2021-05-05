@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
  * Abstract collection.
+ * @extends AbstractRecordCollection<FileInterface>
  */
 abstract class AbstractFileCollection extends AbstractRecordCollection
 {

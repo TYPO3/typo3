@@ -135,6 +135,7 @@ class Avatar
      */
     protected function validateSortAndInitiateAvatarProviders()
     {
+        /** @var array<string,array<mixed>> $providers */
         $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'] ?? [];
         if (empty($providers)) {
             return;
@@ -161,7 +162,9 @@ class Avatar
 
         // Initializes providers
         foreach ($orderedProviders as $configuration) {
-            $this->avatarProviders[] = GeneralUtility::makeInstance($configuration['provider']);
+            /** @var AvatarProviderInterface $avatarProvider */
+            $avatarProvider = GeneralUtility::makeInstance($configuration['provider']);
+            $this->avatarProviders[] = $avatarProvider;
         }
     }
 

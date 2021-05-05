@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
-use TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype;
+use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
 /**
@@ -66,7 +66,7 @@ class LinkAnalyzer
     /**
      * Array for hooks for own checks
      *
-     * @var Linktype\AbstractLinktype[]
+     * @var LinktypeInterface[]
      */
     protected $hookObjectsArr = [];
 
@@ -109,7 +109,11 @@ class LinkAnalyzer
 
         // Hook to handle own checks
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $key => $className) {
-            $this->hookObjectsArr[$key] = GeneralUtility::makeInstance($className);
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof LinktypeInterface) {
+                continue;
+            }
+            $this->hookObjectsArr[$key] = $hookObject;
             $options = $tsConfig['linktypesConfig.'][$key . '.'] ?? [];
             // setAdditionalConfig might use global configuration, so still call it, even if options are empty
             $this->hookObjectsArr[$key]->setAdditionalConfig($options);
@@ -378,7 +382,6 @@ class LinkAnalyzer
                 continue;
             }
 
-            /** @var AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($r, $type, $keyArr);
                 // Store the type that was found
@@ -436,7 +439,6 @@ class LinkAnalyzer
                 }
                 $title = strip_tags($linkTags[$i]);
             }
-            /** @var AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found

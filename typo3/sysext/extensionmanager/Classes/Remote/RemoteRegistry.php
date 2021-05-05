@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Extensionmanager\Remote;
 class RemoteRegistry
 {
     /**
-     * @var ExtensionDownloaderRemoteInterface[]
+     * @var array<string,array>
      */
     protected $remotes = [];
 

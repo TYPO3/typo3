@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ResourceFactory implements SingletonInterface
 {
     /**
-     * @var Collection\AbstractFileCollection[]
+     * @var array<int,CollectionInterface<File>>
      */
     protected $collectionInstances = [];
 
@@ -158,7 +158,7 @@ class ResourceFactory implements SingletonInterface
      * Creates a collection object.
      *
      * @param array $collectionData The database row of the sys_file_collection record.
-     * @return Collection\AbstractFileCollection|CollectionInterface
+     * @return CollectionInterface<File>
      */
     public function createCollectionObject(array $collectionData)
     {

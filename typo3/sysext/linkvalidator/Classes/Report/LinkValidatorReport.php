@@ -345,7 +345,11 @@ class LinkValidatorReport
     protected function initialize()
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $className) {
-            $this->hookObjectsArr[$linkType] = GeneralUtility::makeInstance($className);
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof LinktypeInterface) {
+                continue;
+            }
+            $this->hookObjectsArr[$linkType] = $hookObject;
         }
 
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));

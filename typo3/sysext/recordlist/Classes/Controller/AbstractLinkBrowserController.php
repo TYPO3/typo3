@@ -56,7 +56,7 @@ abstract class AbstractLinkBrowserController
     protected $thisScript = '';
 
     /**
-     * @var LinkHandlerInterface[]
+     * @var array<string,array>
      */
     protected $linkHandlers = [];
 
@@ -65,7 +65,7 @@ abstract class AbstractLinkBrowserController
      *
      * Comprised of url information and additional link parameters.
      *
-     * @var string[]
+     * @var array<string,mixed>
      */
     protected $currentLinkParts = [];
 
