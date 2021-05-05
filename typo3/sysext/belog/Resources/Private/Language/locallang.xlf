@@ -27,35 +27,11 @@
 			<trans-unit id="userGroup" resname="userGroup">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="thisWeek" resname="thisWeek">
-				<source>This week</source>
-			</trans-unit>
-			<trans-unit id="lastWeek" resname="lastWeek">
-				<source>Last week</source>
-			</trans-unit>
-			<trans-unit id="last7Days" resname="last7Days">
-				<source>Last 7 days</source>
-			</trans-unit>
-			<trans-unit id="thisMonth" resname="thisMonth">
-				<source>This month</source>
-			</trans-unit>
-			<trans-unit id="lastMonth" resname="lastMonth">
-				<source>Last month</source>
-			</trans-unit>
-			<trans-unit id="last31Days" resname="last31Days">
-				<source>Last 31 days</source>
-			</trans-unit>
-			<trans-unit id="noLimit" resname="noLimit">
-				<source>No limit</source>
-			</trans-unit>
-			<trans-unit id="userDefined" resname="userDefined">
-				<source>User defined</source>
-			</trans-unit>
 			<trans-unit id="set" resname="set">
-				<source>Set</source>
+				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="20" resname="20" translate="no">
-				<source>20</source>
+			<trans-unit id="reset" resname="reset">
+				<source>Reset</source>
 			</trans-unit>
 			<trans-unit id="50" resname="50" translate="no">
 				<source>50</source>
@@ -108,9 +84,6 @@
 			<trans-unit id="max" resname="max">
 				<source>Max</source>
 			</trans-unit>
-			<trans-unit id="changesInFields" resname="changesInFields">
-				<source>Changes in fields: %s.</source>
-			</trans-unit>
 			<trans-unit id="showHistory" resname="showHistory">
 				<source>Show History</source>
 			</trans-unit>
@@ -120,26 +93,8 @@
 			<trans-unit id="workspace" resname="workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="groupByPage" resname="groupByPage">
-				<source>Group by page</source>
-			</trans-unit>
-			<trans-unit id="pagenameWithUID" resname="pagenameWithUID">
-				<source>%s" [UID: %s]</source>
-			</trans-unit>
 			<trans-unit id="overview" resname="overview">
 				<source>Overview</source>
-			</trans-unit>
-			<trans-unit id="timeInfo" resname="timeInfo">
-				<source>These pages have log messages from %s to %s</source>
-			</trans-unit>
-			<trans-unit id="forNonPageRelatedActions" resname="forNonPageRelatedActions">
-				<source>for NON-PAGE related actions</source>
-			</trans-unit>
-			<trans-unit id="forRootLevel" resname="forRootLevel">
-				<source>for ROOT LEVEL</source>
-			</trans-unit>
-			<trans-unit id="forPage" resname="forPage">
-				<source>for PAGE "%s" (UID: %s)</source>
 			</trans-unit>
 			<trans-unit id="logForNonPageRelatedActionsOrRootLevelOrPage" resname="logForNonPageRelatedActionsOrRootLevelOrPage">
 				<source>Log %s from %s to %s</source>

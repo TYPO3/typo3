@@ -43,25 +43,11 @@ class Constraint
     protected $workspaceUid = Workspace::UID_ANY_WORKSPACE;
 
     /**
-     * Selected time frame
-     *
-     * @var int
-     */
-    protected $timeFrame = 0;
-
-    /**
      * Selected action
      *
      * @var int
      */
     protected $action = 0;
-
-    /**
-     * Whether rows should be grouped by page
-     *
-     * @var bool
-     */
-    protected $groupByPage = false;
 
     /**
      * Calculated start timestamp
@@ -164,26 +150,6 @@ class Constraint
     }
 
     /**
-     * Set time frame
-     *
-     * @param int $timeFrame
-     */
-    public function setTimeFrame($timeFrame)
-    {
-        $this->timeFrame = $timeFrame;
-    }
-
-    /**
-     * Get time frame
-     *
-     * @return int
-     */
-    public function getTimeFrame()
-    {
-        return (int)$this->timeFrame;
-    }
-
-    /**
      * Set action
      *
      * @param int $action
@@ -201,26 +167,6 @@ class Constraint
     public function getAction()
     {
         return (int)$this->action;
-    }
-
-    /**
-     * Set group by page
-     *
-     * @param bool $groupByPage
-     */
-    public function setGroupByPage($groupByPage)
-    {
-        $this->groupByPage = $groupByPage;
-    }
-
-    /**
-     * Get group by page
-     *
-     * @return bool
-     */
-    public function getGroupByPage()
-    {
-        return (bool)$this->groupByPage;
     }
 
     /**

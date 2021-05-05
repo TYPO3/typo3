@@ -1,24 +1,12 @@
 module.tx_belog {
 	settings {
 		selectableNumberOfLogEntries {
-			20 = 20
 			50 = 50
 			100 = 100
 			200 = 200
 			500 = 500
 			1000 = 1000
 			1000000 = any
-		}
-
-		selectableTimeFrames {
-			0 = thisWeek
-			1 = lastWeek
-			2 = last7Days
-			10 = thisMonth
-			11 = lastMonth
-			12 = last31Days
-			20 = noLimit
-			30 = userDefined
 		}
 
 		selectableActions {

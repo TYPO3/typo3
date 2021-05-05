@@ -30,46 +30,12 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Abstract class to show log entries from sys_log
+ * Show log entries from sys_log
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendLogController extends ActionController
 {
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_THISWEEK = 0;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_LASTWEEK = 1;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_LASTSEVENDAYS = 2;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_THISMONTH = 10;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_LASTMONTH = 11;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_LAST31DAYS = 12;
-
-    /**
-     * @var int
-     */
-    private const TIMEFRAME_CUSTOM = 30;
-
     /**
      * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
      */
@@ -113,31 +79,32 @@ class BackendLogController extends ActionController
         $constraintConfiguration->allowAllProperties();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Belog/BackendLog');
     }
 
     /**
      * Show general information and the installed modules
      *
-     * @param Constraint $constraint
-     * @param int $pageId
+     * @param Constraint|null $constraint
+     * @param int|null $pageId
      * @param string $layout
+     * @param string $operation
      */
-    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default'): ResponseInterface
+    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default', string $operation = ''): ResponseInterface
     {
-        // Constraint object handling:
-        // If there is none from GET, try to get it from BE user data, else create new
-        if ($constraint === null) {
+        if ($operation === 'reset-filters') {
+            $constraint = new Constraint();
+        } elseif ($constraint === null) {
             $constraint = $this->getConstraintFromBeUserData();
-        } else {
-            $this->persistConstraintInBeUserData($constraint);
         }
+        $this->persistConstraintInBeUserData($constraint);
         $constraint->setPageId($pageId);
         $this->resetConstraintsOnMemoryExhaustionError();
         $this->setStartAndEndTimeFromTimeSelector($constraint);
         $this->forceWorkspaceSelectionIfInWorkspace($constraint);
         $logEntries = $this->logEntryRepository->findByConstraint($constraint);
-        $groupedLogEntries = $this->groupLogEntriesByPageAndDay($logEntries, $constraint->getGroupByPage());
+        $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
         $this->view->assignMultiple([
             'pageId' => $pageId,
             'layout' => $layout,
@@ -214,33 +181,25 @@ class BackendLogController extends ActionController
     }
 
     /**
-     * Create a sorted array for day and page view from
-     * the query result of the sys log repository.
+     * Create a sorted array for day from the query result of the sys log repository.
      *
-     * If group by page is FALSE, pid is always -1 (will render a flat list),
-     * otherwise the output is split by pages.
+     * pid is always -1 to render a flat list.
      * '12345' is a sub array to split entries by day, number is first second of day
      *
      * [pid][dayTimestamp][items]
      *
      * @param QueryResultInterface $logEntries
-     * @param bool $groupByPage Whether or not log entries should be grouped by page
      * @return array
      */
-    protected function groupLogEntriesByPageAndDay(QueryResultInterface $logEntries, $groupByPage = false)
+    protected function groupLogEntriesDay(QueryResultInterface $logEntries): array
     {
         $targetStructure = [];
         /** @var LogEntry $entry */
         foreach ($logEntries as $entry) {
-            // Create page split list or flat list
-            if ($groupByPage) {
-                $pid = $entry->getEventPid();
-            } else {
-                $pid = -1;
-            }
+            $pid = -1;
             // Create array if it is not defined yet
             if (!is_array($targetStructure[$pid])) {
-                $targetStructure[$pid] = [];
+                $targetStructure[-1] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
             $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()) ?: '');
@@ -341,52 +300,16 @@ class BackendLogController extends ActionController
     }
 
     /**
-     * Calculate the start- and end timestamp from the different time selector options
+     * Calculate the start- and end timestamp
      *
      * @param Constraint $constraint
      */
     protected function setStartAndEndTimeFromTimeSelector(Constraint $constraint)
     {
-        $startTime = 0;
-        $endTime = $GLOBALS['EXEC_TIME'];
-        // @TODO: Refactor this construct
-        switch ($constraint->getTimeFrame()) {
-            case self::TIMEFRAME_THISWEEK:
-                // This week
-                $week = (date('w') ?: 7) - 1;
-                $startTime = mktime(0, 0, 0) - $week * 3600 * 24;
-                break;
-            case self::TIMEFRAME_LASTWEEK:
-                // Last week
-                $week = (date('w') ?: 7) - 1;
-                $startTime = mktime(0, 0, 0) - ($week + 7) * 3600 * 24;
-                $endTime = mktime(0, 0, 0) - $week * 3600 * 24;
-                break;
-            case self::TIMEFRAME_LASTSEVENDAYS:
-                // Last 7 days
-                $startTime = mktime(0, 0, 0) - 7 * 3600 * 24;
-                break;
-            case self::TIMEFRAME_THISMONTH:
-                // This month
-                $startTime = mktime(0, 0, 0, (int)date('m'), 1);
-                break;
-            case self::TIMEFRAME_LASTMONTH:
-                // Last month
-                $startTime = mktime(0, 0, 0, (int)date('m') - 1, 1);
-                $endTime = mktime(0, 0, 0, (int)date('m'), 1);
-                break;
-            case self::TIMEFRAME_LAST31DAYS:
-                // Last 31 days
-                $startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
-                break;
-            case self::TIMEFRAME_CUSTOM:
-                $startTime = $constraint->getManualDateStart() ? $constraint->getManualDateStart()->getTimestamp() : 0;
-                $endTime = $constraint->getManualDateStop() ? $constraint->getManualDateStop()->getTimestamp() : 0;
-                if ($endTime <= $startTime) {
-                    $endTime = $GLOBALS['EXEC_TIME'];
-                }
-                break;
-            default:
+        $startTime = $constraint->getManualDateStart() ? $constraint->getManualDateStart()->getTimestamp() : 0;
+        $endTime = $constraint->getManualDateStop() ? $constraint->getManualDateStop()->getTimestamp() : 0;
+        if ($endTime <= $startTime) {
+            $endTime = $GLOBALS['EXEC_TIME'];
         }
         $constraint->setStartTimestamp($startTime);
         $constraint->setEndTimestamp($endTime);

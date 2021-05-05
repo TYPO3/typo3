@@ -5,98 +5,17 @@
     xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
-<f:if condition="{constraint.groupByPage}">
-    <div>
-        <h2>
-            <f:translate key="overview" />
-        </h2>
-        <f:translate
-            key="timeInfo"
-            arguments="{
-                0: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-            }"
-        />
-        <p>
-            <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
-                <f:if condition="{pid} > 0">
-                    <br />
-                    <f:translate
-                        key="pagenameWithUID"
-                        arguments="{
-                            0: '{belog:be.pagePath(pid:\'{pid}\')}',
-                            1: '{pid}'
-                        }"
-                    />
-                </f:if>
-            </f:for>
-        </p>
-    </div>
-</f:if>
-
 <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
     <div>
         <h2>
-            <f:if condition="{constraint.groupByPage}">
-                <f:then>
-                    <f:if condition="{pid} < 1">
-                        <f:then>
-                            <f:if condition="{pid} == -1">
-                                <f:translate
-                                    key="logForNonPageRelatedActionsOrRootLevelOrPage"
-                                    arguments="{
-                                        0: '{f:translate(key:\'forNonPageRelatedActions\')}',
-                                        1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                                        2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-                                    }"
-                                />
-                            </f:if>
-                            <f:if condition="{pid} == 0">
-                                <f:translate
-                                    key="logForNonPageRelatedActionsOrRootLevelOrPage"
-                                    arguments="{
-                                        0: '{f:translate(key:\'forRootLevel\')}',
-                                        1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                                        2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-                                    }"
-                                />
-                            </f:if>
-                        </f:then>
-                        <f:else>
-                            <f:comment>
-                                Nest view helpers three times:
-                                1. Feed pid as argument to be.pagePath
-                                2. Use this as argument for 'forPage' translate
-                                3. Use this as argument for 'logForNonPageRelatedActionsOrRootLevelOrPage' translate
-                            </f:comment>
-                            <f:translate
-                                key="logForNonPageRelatedActionsOrRootLevelOrPage"
-                                arguments="{
-                                    0: '{f:translate(
-                                        key:\'forPage\',
-                                        arguments:\'{
-                                            0:\\\'{belog:be.pagePath(pid:\\\\\\\'{pid}\\\\\\\')}\\\',
-                                            1:\\\'{pid}\\\'
-                                        }\'
-                                    )}',
-                                    1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                                    2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-                                }"
-                            />
-                        </f:else>
-                    </f:if>
-                </f:then>
-                <f:else>
-                    <f:translate
-                        key="logForNonPageRelatedActionsOrRootLevelOrPage"
-                        arguments="{
-                            0: '',
-                            1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
-                            2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
-                        }"
-                    />
-                </f:else>
-            </f:if>
+            <f:translate
+                key="logForNonPageRelatedActionsOrRootLevelOrPage"
+                arguments="{
+                    0: '',
+                    1: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.startTimestamp}\')}',
+                    2: '{f:format.date(format:\'{settings.dateFormat} {settings.timeFormat}\', date:\'@{constraint.endTimestamp}\')}'
+                }"
+            />
         </h2>
         <f:for each="{pidEntry}" as="day" key="dayTimestamp">
             <h3>
