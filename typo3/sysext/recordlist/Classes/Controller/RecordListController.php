@@ -180,7 +180,7 @@ class RecordListController
         $dblist->tableTSconfigOverTCA = $this->modTSconfig['table.'];
         $dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'], true);
         $dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'], true);
-        $dblist->pageRow = $pageinfo;
+        $dblist->pageRow = $this->pageInfo;
         $dblist->modTSconfig = $this->modTSconfig;
         $dblist->setLanguagesAllowedForUser($this->siteLanguages);
         $clickTitleMode = trim($this->modTSconfig['clickTitleMode']);

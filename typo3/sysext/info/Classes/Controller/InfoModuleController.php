@@ -46,7 +46,7 @@ class InfoModuleController
     /**
      * @var array Used by client classes.
      */
-    public $pageinfo;
+    public $pageinfo = [];
 
     /**
      * The name of the module
@@ -194,11 +194,11 @@ class InfoModuleController
 
         // The page will show only if there is a valid page and if this page
         // may be viewed by the user
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        if ($this->pageinfo) {
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
+        if ($this->pageinfo !== []) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
-        $access = is_array($this->pageinfo);
+        $access = $this->pageinfo !== [];
         if ($this->id && $access || $backendUser->isAdmin() && !$this->id) {
             if ($backendUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];

@@ -352,8 +352,8 @@ class LinkValidatorReport
             $this->hookObjectsArr[$linkType] = $hookObject;
         }
 
-        $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        if (($this->id && is_array($this->pageRecord)) || (!$this->id && $this->getBackendUser()->isAdmin())) {
+        $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        if (($this->id && $this->pageRecord !== []) || (!$this->id && $this->getBackendUser()->isAdmin())) {
             $this->isAccessibleForCurrentUser = true;
         }
         // Don't access in workspace

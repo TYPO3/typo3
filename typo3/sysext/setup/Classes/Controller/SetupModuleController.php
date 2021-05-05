@@ -129,7 +129,7 @@ class SetupModuleController
     /**
      * Form protection instance
      *
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+     * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
      */
     protected $formProtection;
 

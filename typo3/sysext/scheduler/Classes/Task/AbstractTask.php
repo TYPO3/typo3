@@ -41,7 +41,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     /**
      * Reference to a scheduler object
      *
-     * @var \TYPO3\CMS\Scheduler\Scheduler
+     * @var \TYPO3\CMS\Scheduler\Scheduler|null
      */
     protected $scheduler;
 
@@ -301,7 +301,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     public function unsetScheduler()
     {
         $this->scheduler = null;
-        $this->logger = null;
+        unset($this->logger);
     }
 
     /**

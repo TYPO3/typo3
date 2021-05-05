@@ -43,7 +43,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
 
     /**
      * The currently selected sys_template record
-     * @var array
+     * @var array|null
      */
     protected $templateRow;
 

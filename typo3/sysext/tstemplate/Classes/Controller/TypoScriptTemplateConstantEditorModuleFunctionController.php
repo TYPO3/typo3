@@ -39,7 +39,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
 
     /**
      * The currently selected sys_template record
-     * @var array
+     * @var array|null
      */
     protected $templateRow;
 
@@ -136,7 +136,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
             // Update template ?
             if ($this->request->getParsedBody()['_savedok'] ?? false) {
-                $this->templateService->changed = 0;
+                $this->templateService->changed = false;
                 $this->templateService->ext_procesInput($this->request->getParsedBody(), [], $this->constants, $this->templateRow);
                 if ($this->templateService->changed) {
                     // Set the data to be saved

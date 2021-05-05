@@ -76,7 +76,7 @@ class ElementEntity
     protected $traversingParents = false;
 
     /**
-     * @var ElementEntity
+     * @var ElementEntity|false
      */
     protected $outerMostParent;
 

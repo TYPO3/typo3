@@ -878,10 +878,9 @@ class DatabaseRecordList
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
         $languageService = $this->getLanguageService();
         $rowOutput = '';
-        $id_orig = null;
+        $id_orig = $this->id;
         // If in search mode, make sure the preview will show the correct page
         if ((string)$this->searchString !== '') {
-            $id_orig = $this->id;
             $this->id = $row['pid'];
         }
 

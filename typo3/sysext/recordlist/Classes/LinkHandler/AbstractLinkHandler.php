@@ -55,7 +55,7 @@ abstract class AbstractLinkHandler
     protected $iconFactory;
 
     /**
-     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     * @var ViewInterface
      */
     protected $view;
 

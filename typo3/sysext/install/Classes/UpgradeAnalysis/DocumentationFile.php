@@ -56,10 +56,10 @@ class DocumentationFile
      */
     public function __construct(Registry $registry = null, $changelogDir = '')
     {
-        $this->registry = $registry;
-        if ($this->registry === null) {
-            $this->registry = new Registry();
+        if ($registry === null) {
+            $registry = new Registry();
         }
+        $this->registry = $registry;
         $this->changelogPath = $changelogDir !== '' ? $changelogDir : (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog');
         $this->changelogPath = str_replace('\\', '/', $this->changelogPath);
     }

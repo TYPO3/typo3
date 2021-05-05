@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -47,7 +48,7 @@ class SchedulerCommand extends Command
     /**
      * Array of tasks UIDs that should be executed. Null if task option is not provided.
      *
-     * @var int[]|array|null
+     * @var int[]|null
      */
     protected $overwrittenTaskList;
 
@@ -112,6 +113,9 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
         Bootstrap::initializeBackendAuthentication();
 
         $overwrittenTaskList = $input->getOption('task');
+        $overwrittenTaskList = is_array($overwrittenTaskList) ? $overwrittenTaskList : [];
+        $overwrittenTaskList = array_filter($overwrittenTaskList, fn ($value) => MathUtility::canBeInterpretedAsInteger($value));
+        $overwrittenTaskList = array_map('intval', $overwrittenTaskList);
         if ($overwrittenTaskList !== []) {
             $this->overwrittenTaskList = $overwrittenTaskList;
         }

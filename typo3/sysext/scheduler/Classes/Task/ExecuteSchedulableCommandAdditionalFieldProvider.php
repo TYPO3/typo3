@@ -42,7 +42,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     protected $schedulableCommands = [];
 
     /**
-     * @var ExecuteSchedulableCommandTask
+     * @var ExecuteSchedulableCommandTask|null
      */
     protected $task;
 

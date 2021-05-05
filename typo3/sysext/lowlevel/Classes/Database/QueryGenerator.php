@@ -354,7 +354,7 @@ class QueryGenerator
         if ($this->table && is_array($GLOBALS['TCA'][$this->table])) {
             if ($mQ) {
                 // Show query
-                $this->enablePrefix = 1;
+                $this->enablePrefix = true;
                 $queryString = $this->getQuery($this->queryConfig);
                 $selectQueryString = $this->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
@@ -608,7 +608,7 @@ class QueryGenerator
             if ($saveArr['queryTable']) {
                 $this->init('queryConfig', $saveArr['queryTable'], '', $this->settings);
                 $this->makeSelectorTable($saveArr);
-                $this->enablePrefix = 1;
+                $this->enablePrefix = true;
                 $queryString = $this->getQuery($this->queryConfig);
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1576,9 +1576,9 @@ class QueryGenerator
     /**
      * Process data
      *
-     * @param string $qC Query config
+     * @param array $qC Query config
      */
-    protected function procesData($qC = '')
+    protected function procesData($qC = [])
     {
         $this->queryConfig = $qC;
         $POST = GeneralUtility::_POST();
@@ -2570,7 +2570,7 @@ class QueryGenerator
                 $this->extFieldLists['queryOrder_SQL'] = implode(',', $reList);
             }
             // Query Generator:
-            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : '');
+            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
             $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
             $codeArr = $this->getFormElements();

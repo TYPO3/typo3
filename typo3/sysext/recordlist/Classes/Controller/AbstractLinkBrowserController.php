@@ -72,7 +72,7 @@ abstract class AbstractLinkBrowserController
     /**
      * Link handler responsible for the current active link
      *
-     * @var LinkHandlerInterface $currentLinkHandler
+     * @var LinkHandlerInterface|null
      */
     protected $currentLinkHandler;
 
@@ -400,10 +400,8 @@ abstract class AbstractLinkBrowserController
             // empty the current link
             $this->currentLinkParts = [];
             $this->currentLinkHandler = null;
-            $this->currentLinkHandler = '';
             // select first tab
-            reset($menuDef);
-            $this->displayedLinkHandlerId = key($menuDef);
+            $this->displayedLinkHandlerId = (string)array_key_first($menuDef);
             $this->displayedLinkHandler = $this->linkHandlers[$this->displayedLinkHandlerId]['handlerInstance'];
             $menuDef[$this->displayedLinkHandlerId]['isActive'] = true;
         }

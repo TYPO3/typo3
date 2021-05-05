@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -50,7 +51,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $expandFolder;
 
     /**
-     * @var Folder
+     * @var FolderInterface
      */
     protected $selectedFolder;
 
@@ -157,7 +158,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         if (!$this->selectedFolder) {
             try {
                 [, $pid, $table,, $field] = explode('-', explode('|', $this->bparams)[4]);
-                $this->selectedFolder = $backendUser->getDefaultUploadFolder($pid, $table, $field);
+                if (($defaultUploadFolder = $backendUser->getDefaultUploadFolder($pid, $table, $field)) instanceof FolderInterface) {
+                    $this->selectedFolder = $defaultUploadFolder;
+                }
             } catch (\Exception $e) {
                 // The configured default user folder does not exist
             }
@@ -209,12 +212,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * For TYPO3 Element Browser: Expand folder of files.
      *
-     * @param Folder $folder The folder path to expand
+     * @param FolderInterface $folder The folder path to expand
      * @param array $extensionList List of fileextensions to show
      * @param bool $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
      * @return string HTML output
      */
-    public function renderFilesInFolder(Folder $folder, array $extensionList = [], $noThumbs = false)
+    public function renderFilesInFolder(FolderInterface $folder, array $extensionList = [], $noThumbs = false)
     {
         if (!$folder->checkActionPermission('read')) {
             return '';
@@ -330,11 +333,11 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Get a list of Files in a folder filtered by extension
      *
-     * @param Folder $folder
+     * @param FolderInterface $folder
      * @param array $extensionList
      * @return File[]
      */
-    protected function getFilesInFolder(Folder $folder, array $extensionList)
+    protected function getFilesInFolder(FolderInterface $folder, array $extensionList)
     {
         if (!empty($extensionList)) {
             /** @var FileExtensionFilter $filter */

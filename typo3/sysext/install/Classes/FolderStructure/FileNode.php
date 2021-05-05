@@ -81,7 +81,14 @@ class FileNode extends AbstractNode implements NodeInterface
                     1380364362
                 );
             }
-            $this->targetContent = file_get_contents($structure['targetContentFile']);
+            $fileContent = file_get_contents($structure['targetContentFile']);
+            if ($fileContent === false) {
+                throw new InvalidArgumentException(
+                    'Error while reading targetContentFile ' . $structure['targetContentFile'],
+                    1380364363
+                );
+            }
+            $this->targetContent = $fileContent;
         }
     }
 

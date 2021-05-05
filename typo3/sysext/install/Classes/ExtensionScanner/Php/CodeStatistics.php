@@ -29,9 +29,9 @@ use PhpParser\NodeVisitorAbstract;
 class CodeStatistics extends NodeVisitorAbstract
 {
     /**
-     * @var int True if a class statement has @extensionScannerIgnoreFile
+     * @var bool True if a class statement has @extensionScannerIgnoreFile
      */
-    protected $isCurrentFileIgnored = 0;
+    protected $isCurrentFileIgnored = false;
 
     /**
      * @var int Counts @extensionScannerIgnoreLine statements

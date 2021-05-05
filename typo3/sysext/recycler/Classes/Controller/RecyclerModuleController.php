@@ -99,8 +99,8 @@ class RecyclerModuleController
     {
         $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $backendUser = $this->getBackendUser();
-        $this->pageRecord = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
-        $this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->getBackendUser()->isAdmin();
+        $this->pageRecord = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $this->isAccessibleForCurrentUser = ($this->id && $this->pageRecord !== []) || (!$this->id && $this->getBackendUser()->isAdmin());
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         // don't access in workspace

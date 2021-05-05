@@ -34,7 +34,7 @@ class DatabaseRecord
     protected $uid;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $row;
 
