@@ -274,11 +274,11 @@ class SetupModuleController
                 $this->passwordIsSubmitted = (string)$be_user_data['password'] !== '';
                 $passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
                 // Update the real name:
-                if ($be_user_data['realName'] !== $backendUser->user['realName']) {
+                if (isset($be_user_data['realName']) && $be_user_data['realName'] !== $backendUser->user['realName']) {
                     $backendUser->user['realName'] = ($storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80));
                 }
                 // Update the email address:
-                if ($be_user_data['email'] !== $backendUser->user['email']) {
+                if (isset($be_user_data['email']) && $be_user_data['email'] !== $backendUser->user['email']) {
                     $backendUser->user['email'] = ($storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 255));
                 }
                 // Update the password:
