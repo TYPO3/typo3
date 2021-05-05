@@ -873,7 +873,7 @@ mod.web_layout.BackendLayouts {
 
         'text_21' => [
             'label' => 'text_21',
-            'description' => 'renderType=textTable',
+            'description' => 'renderType=textTable tableWizard numNewRows=3',
             'config' => [
                 'type' => 'text',
                 'renderType' => 'textTable',
