@@ -204,7 +204,10 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3
+                --div--;slug,
+                    input_1, input_2, slug_1, slug_2, slug_4, slug_5, input_3, slug_3,
+                --div--;meta,
+                    disable, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],
     ],
