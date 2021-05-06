@@ -891,7 +891,7 @@ mod.web_layout.BackendLayouts {
 
         'text_22' => [
             'label' => 'text_22',
-            'description' => 'rows=auto',
+            'description' => 'rows=auto, readOnly=true',
             'config' => [
                 'type' => 'text',
                 'readOnly' => true,
@@ -900,7 +900,7 @@ mod.web_layout.BackendLayouts {
         ],
         'text_23' => [
             'label' => 'text_23',
-            'description' => 'rows=auto readOnly=true minHeight=2 maxHeight=2',
+            'description' => 'rows=auto, readOnly=true, minHeight=2, maxHeight=4',
             'config' => [
                 'type' => 'text',
                 'rows' => 'auto',
