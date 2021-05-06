@@ -351,6 +351,11 @@ CREATE TABLE tx_styleguide_elements_special (
 
 CREATE TABLE tx_styleguide_elements_t3editor (
     t3editor_1 text,
+    t3editor_2 text,
+    t3editor_3 text,
+    t3editor_4 text,
+    t3editor_5 text,
+    t3editor_6 text,
     t3editor_reload_1 int(11) DEFAULT '0' NOT NULL,
     t3editor_inline_1 text,
     t3editor_flex_1 text

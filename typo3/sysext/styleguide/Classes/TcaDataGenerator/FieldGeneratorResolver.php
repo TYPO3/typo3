@@ -64,6 +64,7 @@ class FieldGeneratorResolver
 
         FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,
+        FieldGenerator\TypeTextFormatT3editorMultiLine::class,
         FieldGenerator\TypeTextFormatT3editor::class,
         FieldGenerator\TypeTextMax30::class,
         FieldGenerator\TypeTextWizardSelect::class,

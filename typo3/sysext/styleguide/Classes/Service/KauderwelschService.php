@@ -63,6 +63,29 @@ class KauderwelschService
     }
 
     /**
+     * Lorem ipsum test with fixed length and HTML in it.
+     *
+     * @return string
+     */
+    public function getLoremIpsumHtmlMultiLine(): string
+    {
+        return "<table>\n"
+            . "    <tr>\n"
+            . "        <th>Entry Header 1</th>\n"
+            . "        <th>Entry Header 2</th>\n"
+            . "        <th>Entry Header 3</th>\n"
+            . "        <th>Entry Header 4</th>\n"
+            . "    </tr>\n"
+            . "    <tr>\n"
+            . "        <td>Entry Header 1</td>\n"
+            . "        <td>Entry Header 2</td>\n"
+            . "        <td>Entry Header 3</td>\n"
+            . "        <td>Entry Header 4</td>\n"
+            . "    </tr>\n"
+            . "</table>\n";
+    }
+
+    /**
      * Get a single word
      *
      * @return string
