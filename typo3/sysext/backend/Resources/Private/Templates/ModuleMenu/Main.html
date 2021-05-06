@@ -47,14 +47,14 @@
 </f:section>
 
 <f:section name="Button">
-    <button
+    <{f:if(condition: module.link, then: 'a', else: 'button')}
         role="menuitem"
         title="{module.description}"
         class="modulemenu-action t3js-modulemenu-action {f:if(condition: showChildren, then: 't3js-modulemenu-collapsible')}"
         tabindex="{tabIndex}"
         id="{module.name}"
         data-modulename="{module.name}"
-        {f:if(condition: module.link, then: 'data-link="{module.link}"')}
+        {f:if(condition: module.link, then: 'href="{module.link}"')}
         {f:if(condition: module.component, then: 'data-component="{module.component}"')}
         {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
         {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
@@ -64,7 +64,7 @@
         <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
         <span class="modulemenu-name">{module.title}</span>
         <span class="modulemenu-indicator" aria-hidden="true"></span>
-    </button>
+    </{f:if(condition: module.link, then: 'a', else: 'button')}>
 </f:section>
 
 </html>

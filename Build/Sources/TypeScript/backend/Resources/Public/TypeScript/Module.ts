@@ -59,6 +59,6 @@ export function getRecordFromName(name: string): Module {
     navigationComponentId: moduleElement.dataset.navigationcomponentid,
     navigationFrameScript: moduleElement.dataset.navigationframescript,
     navigationFrameScriptParam: moduleElement.dataset.navigationframescriptparameters,
-    link: moduleElement.dataset.link
+    link: moduleElement.getAttribute('href')
   };
 }

@@ -63,32 +63,32 @@
                     <f:render partial="Layout/MenuModuleLink" arguments="{controller: 'environment', label: 'Environment'}" />
                     <li class="modulemenu-group-spacer"></li>
                     <li data-level="1">
-                        <button
+                        <a
                             title="Switch to Backend"
                             class="modulemenu-action t3js-modulemenu-action"
                             role="menuitem"
                             id="backend"
                             data-modulename="backend"
-                            data-link="index.php"
+                            href="index.php"
                         >
                             <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-web" size="default" alternativeMarkupIdentifier="inline"/></span>
                             <span class="modulemenu-name">Switch to Backend</span>
                             <span class="modulemenu-indicator" aria-hidden="true"></span>
-                        </button>
+                        </a>
                     </li>
                     <li data-level="1">
-                        <button
+                        <a
                             title="Switch to Frontend"
                             class="modulemenu-action t3js-modulemenu-action"
                             role="menuitem"
                             id="frontend"
                             data-modulename="frontend"
-                            data-link="../index.php"
+                            href="../index.php"
                         >
                             <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="modulegroup-site" size="default" alternativeMarkupIdentifier="inline"/></span>
                             <span class="modulemenu-name">Switch to Frontend</span>
                             <span class="modulemenu-indicator" aria-hidden="true"></span>
-                        </button>
+                        </a>
                     </li>
                 </ul>
             </div>

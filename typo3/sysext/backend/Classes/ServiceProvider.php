@@ -93,7 +93,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
     {
-        return self::new($container, RouteDispatcher::class, [$container]);
+        return self::new($container, RouteDispatcher::class, [
+            $container,
+            $container->get(UriBuilder::class)
+        ]);
     }
 
     public static function getUriBuilder(ContainerInterface $container): UriBuilder

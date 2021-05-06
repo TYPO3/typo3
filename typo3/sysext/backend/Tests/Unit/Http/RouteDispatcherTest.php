@@ -23,6 +23,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassInvokeFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassWithoutInvokeFixture;
@@ -60,10 +61,11 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425381442);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -84,11 +86,12 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -109,11 +112,12 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756466);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -132,11 +136,12 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -156,11 +161,12 @@ class RouteDispatcherTest extends UnitTestCase
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has($target)->willReturn(true);
         $containerProphecy->get($target)->willReturn(new RouteDispatcherClassInvokeFixture());
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -180,11 +186,12 @@ class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getAttribute('route')->willReturn($route);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1442431631);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -203,11 +210,12 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 
@@ -226,11 +234,12 @@ class RouteDispatcherTest extends UnitTestCase
         $requestProphecy->getAttribute('route')->willReturn($route);
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
+        $uriBuilderProphecy = $this->prophesize(UriBuilder::class);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520757000);
 
-        $subject = new RouteDispatcher($containerProphecy->reveal());
+        $subject = new RouteDispatcher($containerProphecy->reveal(), $uriBuilderProphecy->reveal());
         $subject->dispatch($requestProphecy->reveal());
     }
 }
