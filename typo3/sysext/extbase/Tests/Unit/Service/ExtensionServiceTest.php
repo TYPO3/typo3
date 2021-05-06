@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
-use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
@@ -265,83 +264,6 @@ class ExtensionServiceTest extends UnitTestCase
         $expectedResult = 123;
         $actualResult = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
         self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     * @todo This should rather be a functional test since it needs a connection / querybuilder
-     */
-    public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto()
-    {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
-            ['view' => ['defaultPid' => 'auto']]
-        );
-        $expectedResult = 321;
-
-        $statement = $this->prophesize(Statement::class);
-        $statement->fetchAll()->shouldBeCalled()->willReturn([['pid' => (string)$expectedResult]]);
-
-        $connection = $this->getMockDatabaseConnection();
-        $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
-            Argument::cetera()
-        )->shouldBeCalled()->willReturn($statement->reveal());
-
-        $actualResult = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     * @todo This should rather be a functional test since it needs a connection / querybuilder
-     */
-    public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined()
-    {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
-            ['view' => ['defaultPid' => 'auto']]
-        );
-
-        $statement = $this->prophesize(Statement::class);
-        $statement->fetchAll()->shouldBeCalled()->willReturn([]);
-
-        $connection = $this->getMockDatabaseConnection();
-        $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
-            Argument::cetera()
-        )->shouldBeCalled()->willReturn($statement->reveal());
-
-        self::assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin'));
-    }
-
-    /**
-     * @test
-     * @todo This should rather be a functional test since it needs a connection / querybuilder
-     */
-    public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1280773643);
-
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
-            ['view' => ['defaultPid' => 'auto']]
-        );
-
-        $statement = $this->prophesize(Statement::class);
-        $statement->fetchAll()->shouldBeCalled()->willReturn([['pid' => 123], ['pid' => 124]]);
-
-        $connection = $this->getMockDatabaseConnection();
-        $connection->executeQuery(
-            'SELECT pid FROM tt_content WHERE (list_type = :dcValue1) AND (CType = :dcValue2) AND (sys_language_uid = :dcValue3) LIMIT 2',
-            ['dcValue1' => 'extensionname_someplugin', 'dcValue2' => 'list', 'dcValue3' => 0],
-            Argument::cetera()
-        )->shouldBeCalled()->willReturn($statement->reveal());
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1280773643);
-
-        $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
     }
 
     /**

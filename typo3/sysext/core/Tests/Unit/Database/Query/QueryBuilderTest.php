@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
@@ -972,8 +973,13 @@ class QueryBuilderTest extends UnitTestCase
             ->where('uid=1');
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
-        $this->connection->executeQuery($expectedSQL, Argument::cetera())
-            ->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1019,8 +1025,14 @@ class QueryBuilderTest extends UnitTestCase
             ->where('uid=1');
 
         $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
-        $this->connection->executeQuery($expectedSQL, Argument::cetera())
-            ->shouldBeCalled();
+
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1113,16 +1125,27 @@ class QueryBuilderTest extends UnitTestCase
         $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
-        $this->connection->executeQuery($expectedSQL, Argument::cetera())
-            ->shouldBeCalled();
+
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->shouldBeCalled();
+        }
 
         $subject->execute();
 
         $subject->resetRestrictions();
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND ((pages.deleted = 0) AND (pages.hidden = 0))';
-        $this->connection->executeQuery($expectedSQL, Argument::cetera())
-            ->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery($expectedSQL, Argument::cetera())
+                ->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1497,10 +1520,18 @@ class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->executeQuery(
-            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
-            Argument::cetera()
-        )->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )
+            ->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1548,10 +1579,17 @@ class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->executeQuery(
-            'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
-            Argument::cetera()
-        )->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
+                Argument::cetera()
+            )->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
+                Argument::cetera()
+            )->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1597,10 +1635,17 @@ class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->executeQuery(
-            'SELECT * FROM pages LEFT JOIN tt_content content ON (pages.uid = content.pid) AND ((content.deleted = 0) AND (content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
-            Argument::cetera()
-        )->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON (pages.uid = content.pid) AND ((content.deleted = 0) AND (content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery(
+                'SELECT * FROM pages LEFT JOIN tt_content content ON (pages.uid = content.pid) AND ((content.deleted = 0) AND (content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )->shouldBeCalled();
+        }
 
         $subject->execute();
     }
@@ -1646,10 +1691,17 @@ class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->executeQuery(
-            'SELECT * FROM tt_content RIGHT JOIN pages pages ON (pages.uid = tt_content.pid) AND ((tt_content.deleted = 0) AND (tt_content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
-            Argument::cetera()
-        )->shouldBeCalled();
+        if (class_exists(Result::class)) {
+            $this->connection->executeQuery(
+                'SELECT * FROM tt_content RIGHT JOIN pages pages ON (pages.uid = tt_content.pid) AND ((tt_content.deleted = 0) AND (tt_content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )->willReturn($this->prophesize(Result::class)->reveal());
+        } else {
+            $this->connection->executeQuery(
+                'SELECT * FROM tt_content RIGHT JOIN pages pages ON (pages.uid = tt_content.pid) AND ((tt_content.deleted = 0) AND (tt_content.hidden = 0)) WHERE (uid = 1) AND ((pages.deleted = 0) AND (pages.hidden = 0))',
+                Argument::cetera()
+            )->shouldBeCalled();
+        }
 
         $subject->execute();
     }
