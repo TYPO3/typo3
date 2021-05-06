@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Class CodeViewHelper
+ * First two chars of a string
  */
 class InitialsViewHelper extends AbstractViewHelper
 {

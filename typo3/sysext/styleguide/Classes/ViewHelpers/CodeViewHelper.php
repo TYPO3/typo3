@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Class CodeViewHelper
+ * Render code snippets in a usable way
  */
 class CodeViewHelper extends AbstractViewHelper
 {
