@@ -68,6 +68,7 @@ class FieldGeneratorResolver
         FieldGenerator\TypeTextMax30::class,
         FieldGenerator\TypeTextWizardSelect::class,
         FieldGenerator\TypeTextWizardTable::class,
+        FieldGenerator\TypeTextMultiLine::class,
         // General type=text generator
         FieldGenerator\TypeText::class,
 

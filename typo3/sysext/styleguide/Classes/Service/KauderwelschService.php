@@ -32,6 +32,27 @@ class KauderwelschService
     }
 
     /**
+     * Lorem ipsum test with fixed length.
+     *
+     * @return string
+     */
+    public function getLoremIpsumMultiLine(): string
+    {
+        return "Bacon\n"
+            . "ipsum\n"
+            . "dolor\n"
+            . "sit\n"
+            . "strong\n"
+            . "amet\n"
+            . "capicola jerky pork chop rump\n"
+            . "shoulder shank. Shankle strip steak pig salami link.\n"
+            . "Leberkas shoulder ham hock cow salami bacon em pork pork chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork\n"
+            . "tongue short ribs jowl cow hamburger\n"
+            . "strip steak.\n"
+            . "Doner turducken jerky short loin chuck filet mignon.\n";
+    }
+
+    /**
      * Lorem ipsum test with fixed length and HTML in it.
      *
      * @return string
