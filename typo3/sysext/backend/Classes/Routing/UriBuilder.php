@@ -58,11 +58,11 @@ class UriBuilder implements SingletonInterface
 
     /**
      * Loads the router to fetch the available routes from the Router to be used for generating routes
-     * @param Router|null $router
+     * @param Router $router
      */
-    public function __construct(Router $router = null)
+    public function __construct(Router $router)
     {
-        $this->router = $router ?? GeneralUtility::makeInstance(Router::class);
+        $this->router = $router;
     }
 
     /**

@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Http\RequestHandler;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -50,6 +51,7 @@ class ServiceProvider extends AbstractServiceProvider
             Application::class => [ static::class, 'getApplication' ],
             RequestHandler::class => [ static::class, 'getRequestHandler' ],
             RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
+            UriBuilder::class => [ static::class, 'getUriBuilder' ],
             'backend.middlewares' => [ static::class, 'getBackendMiddlewares' ],
             'backend.routes' => [ static::class, 'getBackendRoutes' ],
         ];
@@ -78,12 +80,22 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRequestHandler(ContainerInterface $container): RequestHandler
     {
-        return new RequestHandler($container->get(RouteDispatcher::class));
+        return new RequestHandler(
+            $container->get(RouteDispatcher::class),
+            $container->get(UriBuilder::class)
+        );
     }
 
     public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
     {
         return self::new($container, RouteDispatcher::class, [$container]);
+    }
+
+    public static function getUriBuilder(ContainerInterface $container): UriBuilder
+    {
+        return self::new($container, UriBuilder::class, [
+            $container->get(Router::class)
+        ]);
     }
 
     /**

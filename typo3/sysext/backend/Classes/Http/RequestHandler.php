@@ -23,7 +23,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests, including AJAX routes.
@@ -37,17 +36,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var RouteDispatcher
-     */
-    protected $dispatcher;
+    protected RouteDispatcher $dispatcher;
+
+    protected UriBuilder $uriBuilder;
 
     /**
      * @param RouteDispatcher $dispatcher
      */
-    public function __construct(RouteDispatcher $dispatcher)
-    {
+    public function __construct(
+        RouteDispatcher $dispatcher,
+        UriBuilder $uriBuilder
+    ) {
         $this->dispatcher = $dispatcher;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /**
@@ -94,7 +95,7 @@ class RequestHandler implements RequestHandlerInterface
             return $this->dispatcher->dispatch($request);
         } catch (InvalidRequestTokenException $e) {
             // When token was invalid redirect to login, but keep the current route as redirect after login
-            $loginForm = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(
+            $loginForm = $this->uriBuilder->buildUriWithRedirect(
                 'login',
                 [],
                 $request->getAttribute('route')->getOption('_identifier'),

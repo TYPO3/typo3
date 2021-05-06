@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be;
 
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\LinkViewHelper;
@@ -48,7 +49,8 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper = $this->getAccessibleMock(LinkViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
-        $this->uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->getMock();
+        $router = new Router();
+        $this->uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([$router])->getMock();
 
         $this->tagBuilder = $this->getMockBuilder(TagBuilder::class)->setMethods([
             'addAttribute',

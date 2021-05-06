@@ -83,6 +83,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function headerAndFooterMarkersAreReplacedDuringIntProcessing()
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $GLOBALS['TSFE'] = $this->setupTsfeMockForHeaderFooterReplacementCheck();
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
