@@ -388,6 +388,11 @@ class ClassSchema
                     if ($reflectionType->isBuiltin()) {
                         $this->methods[$methodName]['params'][$parameterName]['array'] = $reflectionType->getName() === 'array'; // compat
                         $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($reflectionType->getName(), '\\');
+                    } elseif ($reflectionType->getName() === 'self') {
+                        // In addition, self cannot be resolved by "new \ReflectionClass('self')",
+                        // so treat this as a reference to the current class
+                        $this->methods[$methodName]['params'][$parameterName]['class'] = $reflectionClass->getName();
+                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim($reflectionClass->getName(), '\\');
                     } else {
                         // This is mainly to confirm that the class exists. If it doesn't, a ReflectionException
                         // will be thrown. It's not the ideal way of doing so, but it maintains the existing API

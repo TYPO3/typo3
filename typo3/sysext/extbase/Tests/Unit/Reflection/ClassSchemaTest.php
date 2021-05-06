@@ -277,6 +277,31 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
+    public function classSchemaCanHandleSelfMethodReturnTypes(): void
+    {
+        $class = new class() {
+            public function __construct(self $copy = null)
+            {
+            }
+            public function injectCopy(self $copy): void
+            {
+            }
+            public function foo($copy): self
+            {
+            }
+            public function bar(self $copy): void
+            {
+            }
+        };
+
+        $classSchema = new ClassSchema(get_class($class));
+        self::assertSame(get_class($class), $classSchema->getMethod('injectCopy')->getParameter('copy')->getType());
+        self::assertSame(get_class($class), $classSchema->getMethod('bar')->getParameter('copy')->getType());
+    }
+
+    /**
+     * @test
+     */
     public function classSchemaDetectsMethodParameterTypeDetectionViaDocBlocksIfNoTypeHintIsGiven(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
