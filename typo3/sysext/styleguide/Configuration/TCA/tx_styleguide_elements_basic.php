@@ -894,6 +894,7 @@ mod.web_layout.BackendLayouts {
             'description' => 'rows=auto',
             'config' => [
                 'type' => 'text',
+                'readOnly' => true,
                 'rows' => 'auto',
             ],
         ],
