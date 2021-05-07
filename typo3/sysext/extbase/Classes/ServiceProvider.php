@@ -69,16 +69,13 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getBackendConfigurationManager(ContainerInterface $container): Configuration\BackendConfigurationManager
     {
         return self::new($container, Configuration\BackendConfigurationManager::class, [
-            $container->get(Object\ObjectManager::class),
             $container->get(TypoScriptService::class),
         ]);
     }
 
     public static function getConfigurationManager(ContainerInterface $container): Configuration\ConfigurationManager
     {
-        return self::new($container, Configuration\ConfigurationManager::class, [
-            $container->get(Object\ObjectManager::class),
-        ]);
+        return self::new($container, Configuration\ConfigurationManager::class, [$container]);
     }
 
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService

@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -203,12 +202,10 @@ class CObjectViewHelper extends AbstractViewHelper
         return $content;
     }
 
-    /**
-     * @return ConfigurationManagerInterface
-     */
-    protected static function getConfigurationManager()
+    protected static function getConfigurationManager(): ConfigurationManagerInterface
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+        // @todo: this should be replaced by DI once Fluid can handle DI properly
+        return GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
     }
 
     /**

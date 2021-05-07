@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
@@ -103,7 +104,10 @@ class QueryFactoryTest extends UnitTestCase
         $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);
 
         $query = $this->createMock(QueryInterface::class);
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $this->objectManager->expects(self::exactly(2))->method('get')
             ->withConsecutive([QueryInterface::class], [QuerySettingsInterface::class])
             ->willReturnOnConsecutiveCalls($query, $querySettings);

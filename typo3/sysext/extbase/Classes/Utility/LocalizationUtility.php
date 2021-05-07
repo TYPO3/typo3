@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Localization helper which should be used to fetch localized labels.
@@ -299,10 +298,8 @@ class LocalizationUtility
         if (static::$configurationManager !== null) {
             return static::$configurationManager;
         }
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
-        static::$configurationManager = $configurationManager;
-        return $configurationManager;
+        static::$configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        return static::$configurationManager;
     }
 
     /**

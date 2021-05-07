@@ -21,13 +21,15 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Query settings, reflects the settings unique to TYPO3 CMS.
  */
 class Typo3QuerySettings implements QuerySettingsInterface
 {
+    protected ConfigurationManagerInterface $configurationManager;
+    protected Context $context;
+
     /**
      * Flag if the storage page should be respected for the query.
      *
@@ -87,23 +89,21 @@ class Typo3QuerySettings implements QuerySettingsInterface
      */
     protected $languageUid = 0;
 
-    /**
-     * As long as we use a feature flag ignoreAllEnableFieldsInBe to determine the default behavior, the
-     * initializeObject is responsible for handling that.
-     */
-    public function initializeObject()
-    {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+    public function __construct(
+        Context $context,
+        ConfigurationManagerInterface $configurationManager
+    ) {
+        // QuerySettings should always keep its own Context, as they can differ
+        // Currently this is only used for reading, but might be improved in the future
+        $this->context = clone $context;
+        $this->configurationManager = $configurationManager;
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
+            && $this->configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
             $this->setIgnoreEnableFields(true);
         }
         /** @var LanguageAspect $languageAspect */
-        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        $languageAspect = $this->context->getAspect('language');
         $this->setLanguageUid($languageAspect->getContentId());
         $this->setLanguageOverlayMode(false);
 

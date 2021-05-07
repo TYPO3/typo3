@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -291,8 +292,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit\Framework\MockObject\MockObject $querySettings */
-        $querySettings = $this->createMock(Typo3QuerySettings::class);
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -310,10 +313,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\PHPUnit\Framework\MockObject\MockObject $querySettings */
-        $querySettings = $this->getMockBuilder(Typo3QuerySettings::class)
-            ->setMethods(['dummy'])
-            ->getMock();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $querySettings->setLanguageUid('1');
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
@@ -332,7 +335,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -351,7 +357,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'delete' => 'deleted'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $querySettings->setLanguageUid(0);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
@@ -370,7 +379,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
@@ -390,7 +402,13 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
+        $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setIncludeDeleted(true);
+        $querySettings->setLanguageOverlayMode(true);
         $querySettings->setLanguageUid(2);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
@@ -414,8 +432,14 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'transOrigPointerField' => 'l10n_parent',
             'delete' => 'deleted'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $querySettings->setLanguageUid(2);
+        $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setIncludeDeleted(true);
+        $querySettings->setLanguageOverlayMode(true);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
@@ -435,8 +459,14 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'transOrigPointerField' => 'l10n_parent',
             'delete' => 'deleted'
         ];
-        $querySettings = new Typo3QuerySettings();
+        $querySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
         $querySettings->setLanguageUid(2);
+        $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setIncludeDeleted(true);
+        $querySettings->setLanguageOverlayMode(true);
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
 
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();

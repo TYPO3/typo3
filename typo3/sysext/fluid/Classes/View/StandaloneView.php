@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Fluid\View;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -32,11 +32,6 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 class StandaloneView extends AbstractTemplateView
 {
     /**
-     * @var ObjectManager|null
-     */
-    protected $objectManager;
-
-    /**
      * Constructor
      *
      * @param ContentObjectRenderer $contentObject The current cObject. If NULL a new instance will be created
@@ -45,10 +40,10 @@ class StandaloneView extends AbstractTemplateView
      */
     public function __construct(ContentObjectRenderer $contentObject = null)
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
+        // @todo: this needs to be removed in the future
+        $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
         if ($contentObject === null) {
             /** @var ContentObjectRenderer $contentObject */
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -62,10 +57,10 @@ class StandaloneView extends AbstractTemplateView
             $baseUri .= TYPO3_mainDir;
         }
 
-        $request = $this->objectManager->get(Request::class);
+        $request = $objectManager->get(Request::class);
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $request->setBaseUri($baseUri);
-        $renderingContext = $this->objectManager->get(RenderingContext::class, $this);
+        $renderingContext = $objectManager->get(RenderingContext::class, $this);
         $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
     }

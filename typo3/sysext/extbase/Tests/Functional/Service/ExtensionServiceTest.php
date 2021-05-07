@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Service;
 
 use Prophecy\Argument;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -48,9 +48,9 @@ class ExtensionServiceTest extends FunctionalTestCase
     protected $frontendConfigurationManager;
 
     /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|ObjectManagerInterface
+     * @var \Prophecy\Prophecy\ObjectProphecy|ContainerInterface
      */
-    protected $objectManager;
+    protected $containerProphecy;
 
     protected function setUp(): void
     {
@@ -62,7 +62,7 @@ class ExtensionServiceTest extends FunctionalTestCase
         $this->frontendConfigurationManager = $this->prophesize(FrontendConfigurationManager::class);
         $this->backendConfigurationManager = $this->prophesize(BackendConfigurationManager::class);
 
-        $this->objectManager = $this->prophesize(ObjectManagerInterface::class);
+        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
 
         $this->extensionService = new ExtensionService();
     }
@@ -73,8 +73,8 @@ class ExtensionServiceTest extends FunctionalTestCase
     public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray()
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn([]);
-        $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
+        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
+        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $pluginName = $this->extensionService->getPluginNameByAction('BlogExample', 'Blog', 'testForm');
@@ -90,8 +90,8 @@ class ExtensionServiceTest extends FunctionalTestCase
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_single_plugin.xml');
 
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
+        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
+        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $expectedResult = 321;
@@ -105,8 +105,8 @@ class ExtensionServiceTest extends FunctionalTestCase
     public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined()
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
+        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
+        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $result = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
@@ -120,8 +120,8 @@ class ExtensionServiceTest extends FunctionalTestCase
     {
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_two_plugins.xml');
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
-        $this->objectManager->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
-        $configurationManager = new ConfigurationManager($this->objectManager->reveal());
+        $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
+        $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());
         $this->extensionService->injectConfigurationManager($configurationManager);
 
         $this->expectException(Exception::class);

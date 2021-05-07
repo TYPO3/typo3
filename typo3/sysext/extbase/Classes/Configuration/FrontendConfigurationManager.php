@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * A general purpose configuration manager used in frontend mode.
@@ -32,23 +31,13 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  */
 class FrontendConfigurationManager extends AbstractConfigurationManager
 {
-    /**
-     * @var \TYPO3\CMS\Core\Service\FlexFormService
-     */
-    protected $flexFormService;
+    protected FlexFormService $flexFormService;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     * @param \TYPO3\CMS\Core\Service\FlexFormService $flexFormService
-     */
     public function __construct(
-        ObjectManagerInterface $objectManager,
         TypoScriptService $typoScriptService,
         FlexFormService $flexFormService
     ) {
-        parent::__construct($objectManager, $typoScriptService);
-
+        parent::__construct($typoScriptService);
         $this->flexFormService = $flexFormService;
     }
 

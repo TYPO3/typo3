@@ -25,12 +25,18 @@ services:
     alias: TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend
   TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface:
     alias: TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
+  TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface:
+    alias: TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+    public: true
 
   # Set incompatible classes to null, these require (runtime) parametrized
   # prototype instantiation
   TYPO3\CMS\Extbase\Persistence\Generic\Query: ~
   TYPO3\CMS\Extbase\Persistence\Generic\QueryResult: ~
-  TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings: ~
+
+  TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings:
+    public: true
+    shared: false
 
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper:
     public: true

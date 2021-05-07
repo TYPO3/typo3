@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -32,22 +32,16 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class ConfigurationManager implements ConfigurationManagerInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
+    private ContainerInterface $container;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
+     * @var AbstractConfigurationManager
      */
     protected $concreteConfigurationManager;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function __construct(ObjectManagerInterface $objectManager)
+    public function __construct(ContainerInterface $container)
     {
-        $this->objectManager = $objectManager;
+        $this->container = $container;
         $this->initializeConcreteConfigurationManager();
     }
 
@@ -56,9 +50,9 @@ class ConfigurationManager implements ConfigurationManagerInterface
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
-            $this->concreteConfigurationManager = $this->objectManager->get(FrontendConfigurationManager::class);
+            $this->concreteConfigurationManager = $this->container->get(FrontendConfigurationManager::class);
         } else {
-            $this->concreteConfigurationManager = $this->objectManager->get(BackendConfigurationManager::class);
+            $this->concreteConfigurationManager = $this->container->get(BackendConfigurationManager::class);
         }
     }
 
@@ -101,8 +95,8 @@ class ConfigurationManager implements ConfigurationManagerInterface
      * Note that this is a low level method and only makes sense to be used by Extbase internally.
      *
      * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
-     * @param string $extensionName if specified, the configuration for the given extension will be returned.
-     * @param string $pluginName if specified, the configuration for the given plugin will be returned.
+     * @param string|null $extensionName if specified, the configuration for the given extension will be returned.
+     * @param string|null $pluginName if specified, the configuration for the given plugin will be returned.
      * @throws Exception\InvalidConfigurationTypeException
      * @return array The configuration
      */

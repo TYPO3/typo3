@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -35,7 +37,10 @@ class Typo3QuerySettingsTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->typo3QuerySettings = $this->getAccessibleMock(Typo3QuerySettings::class, ['dummy']);
+        $this->typo3QuerySettings = new Typo3QuerySettings(
+            new Context(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+        );
     }
 
     /**

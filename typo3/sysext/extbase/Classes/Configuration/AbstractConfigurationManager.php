@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -46,19 +45,11 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     protected $configuration = [];
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer
      */
     protected $contentObject;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
-     */
-    protected $typoScriptService;
+    protected TypoScriptService $typoScriptService;
 
     /**
      * name of the extension this Configuration Manager instance belongs to
@@ -81,20 +72,13 @@ abstract class AbstractConfigurationManager implements SingletonInterface
      */
     protected $configurationCache = [];
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     */
-    public function __construct(
-        ObjectManagerInterface $objectManager,
-        TypoScriptService $typoScriptService
-    ) {
-        $this->objectManager = $objectManager;
+    public function __construct(TypoScriptService $typoScriptService)
+    {
         $this->typoScriptService = $typoScriptService;
     }
 
     /**
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
+     * @param ContentObjectRenderer $contentObject
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
@@ -102,7 +86,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null
+     * @return ContentObjectRenderer|null
      */
     public function getContentObject(): ?ContentObjectRenderer
     {
