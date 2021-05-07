@@ -488,3 +488,23 @@ textarea {
         resize: none;
     }
 }
+
+//
+// This is needed for input links, because the input is wrapped dynamically
+// with a clearable div. If the field is unlocked for explanation view, the
+// wrap should grow to 100%, else it should shrink to 0%.
+//
+.input-group > .form-control-clearable {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+}
+
+.form-control:not(.hidden) + .form-control-clearable {
+    flex-grow: 0;
+    width: auto;
+}
+
+.form-control.hidden + .close {
+    display: none;
+}

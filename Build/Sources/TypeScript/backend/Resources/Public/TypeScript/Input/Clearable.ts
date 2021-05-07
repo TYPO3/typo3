@@ -69,7 +69,7 @@ class Clearable {
       }
 
       const wrap = document.createElement('div');
-      wrap.classList.add('form-control-clearable', 'form-control');
+      wrap.classList.add('form-control-clearable');
       this.parentNode.insertBefore(wrap, this);
       wrap.appendChild(this);
 

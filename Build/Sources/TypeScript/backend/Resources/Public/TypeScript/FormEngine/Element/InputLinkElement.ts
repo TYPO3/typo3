@@ -30,10 +30,6 @@ class InputLinkElement {
   constructor(elementId: string) {
     DocumentService.ready().then((document: Document): void => {
       this.element = <HTMLSelectElement>document.getElementById(elementId);
-      if (this.element.classList.contains('hidden')) {
-        this.element.classList.remove('hidden');
-        this.element.parentElement.classList.add('hidden');
-      }
       this.container = <HTMLElement>this.element.closest('.t3js-form-field-inputlink');
       this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);
       this.explanationField = <HTMLInputElement>this.container.querySelector(Selectors.explanationSelector);
@@ -48,11 +44,7 @@ class InputLinkElement {
    */
   private toggleVisibility(explanationShown: boolean): void {
     this.explanationField.classList.toggle('hidden', explanationShown);
-    this.element.parentElement.classList.toggle('hidden', !explanationShown);
-    const clearable = this.container.querySelector('.form-control-clearable button.close');
-    if (clearable !== null) {
-      clearable.classList.toggle('hidden', !explanationShown);
-    }
+    this.element.classList.toggle('hidden', !explanationShown);
   }
 
   private registerEventHandler(): void {
