@@ -3180,7 +3180,7 @@ class BackendUtility
      */
     public static function translationCount($table, $ref, $msg = '')
     {
-        $count = null;
+        $count = 0;
         if ($GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
         ) {
@@ -3206,14 +3206,10 @@ class BackendUtility
                 ->fetchColumn(0);
         }
 
-        if ($count !== null && $msg !== '') {
-            return sprintf($msg, $count);
+        if ($count > 0) {
+            return $msg ? sprintf($msg, $count) : (string)$count;
         }
-
-        if ($count !== null) {
-            return (string)$count;
-        }
-        return $msg !== '' ? '' : '0';
+        return $msg ? '' : '0';
     }
 
     /*******************************************
