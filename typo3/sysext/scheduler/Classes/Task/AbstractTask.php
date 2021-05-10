@@ -92,7 +92,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      *
      * @var int
      */
-    protected $taskGroup;
+    protected $taskGroup = 0;
 
     /**
      * Constructor
