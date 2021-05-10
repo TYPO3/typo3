@@ -93,7 +93,7 @@
 			<trans-unit id="moduleFunctions.type" resname="moduleFunctions.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="moduleFunctions.language" resname="moduleFunctions.language">
+			<trans-unit id="moduleFunctions.lang" resname="moduleFunctions.lang">
 				<source>Language</source>
 			</trans-unit>
 		</body>

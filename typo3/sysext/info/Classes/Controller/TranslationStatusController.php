@@ -90,23 +90,28 @@ class TranslationStatusController
         if ($this->id) {
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
 
-            // Settings: Depth and language selectors
-            $theOutput .= '
-            <div class="row row-cols-auto mb-3 g-3 align-items-center">
-                <div class="col">' .
-                    '<label class="form-lable">' .
-                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth')) .
-                    '</label> ' .
-                    BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) .
-                '</div>
-                <div class="col">' .
-                    '<label class="form-lable">' .
-                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.language')) .
-                    '</label> ' .
-                    BackendUtility::getDropdownMenu($this->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']) .
-                '</div>' .
-                BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>') .
-            '</div>';
+            $moduleMenu = '';
+
+            foreach (['depth' => false, 'lang' => true] as $name => $addCsh) {
+                $menu = BackendUtility::getDropdownMenu($this->id, 'SET[' . $name . ']', $this->pObj->MOD_SETTINGS[$name], $this->pObj->MOD_MENU[$name]);
+                if ($menu !== '') {
+                    $moduleMenu .= '
+                        <div class="col">
+                           <label class="form-label">' .
+                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.' . $name)) .
+                           '</label>' .
+                           $menu .
+                        '</div>';
+                    if ($addCsh) {
+                        $moduleMenu .= BackendUtility::cshItem('_MOD_web_info', $name, '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>');
+                    }
+                }
+            }
+
+            if ($moduleMenu !== '') {
+                $theOutput .= '<div class="row row-cols-auto mb-3 g-3 align-items-center">' . $moduleMenu . '</div>';
+            }
+
             // Showing the tree
             $tree = $this->getTree();
             // Render information table
