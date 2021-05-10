@@ -280,6 +280,78 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
+     * Data provider for inputValuesRangeDoubleDataProvider
+     *
+     * @return array
+     */
+    public function inputValuesRangeDoubleDataProvider()
+    {
+        return [
+            '"0" returns zero as string' => [
+                '0',
+                '0'
+            ],
+            '"-0.5" is interpreted correctly as -0.5 but is lower than 0 and set to 0' => [
+                '-0.5',
+                0
+            ],
+            '"0.5" is interpreted correctly as 0.5 and is equal to 0.5' => [
+                '0.5',
+                '0.5'
+            ],
+            '"39.9" is interpreted correctly as 39.9 and is equal to 39.9' => [
+                '39.9',
+                '39.9'
+            ],
+            '"42.3" is interpreted correctly as 42.3 but is greater then 42 and set to 42' => [
+                '42.3',
+                42
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider inputValuesRangeDoubleDataProvider
+     * @param string $value
+     * @param int $expectedReturnValue
+     */
+    public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble($value, $expectedReturnValue)
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'eval' => 'double',
+            'range' => [
+                'lower' => '0',
+                'upper' => '42'
+            ]
+        ];
+        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        self::assertSame($returnValue['value'], $expectedReturnValue);
+    }
+
+    /**
+     * @test
+     * @dataProvider inputValuesRangeDoubleDataProvider
+     * @param string $value
+     * @param int $expectedReturnValue
+     */
+    public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble($value, $expectedReturnValue)
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'eval' => 'double',
+            'range' => [
+                'lower' => '0',
+                'upper' => '42'
+            ],
+            'default' => 0
+        ];
+        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        self::assertSame($returnValue['value'], $expectedReturnValue);
+    }
+
+    /**
      * @return array
      */
     public function inputValuesDataTimeDataProvider()
