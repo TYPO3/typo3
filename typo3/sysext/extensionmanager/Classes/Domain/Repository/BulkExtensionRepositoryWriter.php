@@ -77,7 +77,8 @@ class BulkExtensionRepositoryWriter implements \SplObserver
         'description',
         'serialized_dependencies',
         'update_comment',
-        'documentation_link'
+        'documentation_link',
+        'distribution_image'
     ];
 
     /**
@@ -236,6 +237,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             $subject->getDependencies() ?: '',
             $subject->getUploadcomment() ?: '',
             $subject->getDocumentationLink() ?: '',
+            $subject->getDistributionImage() ?: '',
         ];
         ++$this->sumRecords;
     }

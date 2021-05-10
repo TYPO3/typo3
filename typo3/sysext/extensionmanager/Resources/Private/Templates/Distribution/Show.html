@@ -4,7 +4,11 @@
 
     <div class="distribution-detail">
         <div class="distribution-detail-previewpane">
-            <em:distributionImage extensionkey="{extension.extensionKey}" alt="" height="225" width="300" />
+            <typo3-extensionmanager-distribution-image
+                image="{extension.distributionImage}"
+                fallback="{f:uri.image(src: 'EXT:extensionmanager/Resources/Public/Images/Distribution.svg')}"
+                alt="{extension.title}"
+                title="{extension.title}"/>
         </div>
         <div class="distribution-detail-body">
             <div class="distribution-detail-header">

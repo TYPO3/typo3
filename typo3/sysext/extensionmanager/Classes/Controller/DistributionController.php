@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
@@ -29,17 +30,13 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
  */
 class DistributionController extends AbstractModuleController
 {
-    /**
-     * @var PackageManager
-     */
-    protected $packageManager;
+    protected PackageManager $packageManager;
+    protected PageRenderer $pageRenderer;
 
-    /**
-     * @param PackageManager $packageManager
-     */
-    public function injectPackageManager(PackageManager $packageManager)
+    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer)
     {
         $this->packageManager = $packageManager;
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -54,6 +51,7 @@ class DistributionController extends AbstractModuleController
             parent::initializeView($view);
             $this->generateMenu();
             $this->registerDocHeaderButtons();
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
         }
     }
 

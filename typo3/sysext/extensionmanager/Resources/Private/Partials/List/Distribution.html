@@ -1,8 +1,12 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="card card-size-fixed-small">
     <div class="card-image">
-        <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
-            <em:distributionImage extensionkey="{distribution.extensionKey}" alt="{distribution.title}" height="225" width="300" />
+        <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="distribution-image">
+            <typo3-extensionmanager-distribution-image
+                image="{distribution.distributionImage}"
+                fallback="{f:uri.image(src: 'EXT:extensionmanager/Resources/Public/Images/Distribution.svg')}"
+                alt="{distribution.title}"
+                title="{distribution.title}"/>
         </f:link.action>
         <f:if condition="{distribution.dependencies}">
             <div class="card-image-badge">

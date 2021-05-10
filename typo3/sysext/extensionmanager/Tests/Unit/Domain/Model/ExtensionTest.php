@@ -207,4 +207,20 @@ class ExtensionTest extends UnitTestCase
         $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
         self::assertSame(0, $dependencyObjects->count());
     }
+
+    /**
+     * @test
+     */
+    public function getDistributionImageTest(): void
+    {
+        $distributionImage = 'https://example.org/path/to/image.png';
+
+        $extension = new Extension();
+        $extension->setDistributionImage($distributionImage);
+
+        self::assertEquals(
+            $distributionImage,
+            $extension->getDistributionImage()
+        );
+    }
 }

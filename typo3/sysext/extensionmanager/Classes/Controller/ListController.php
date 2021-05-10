@@ -242,6 +242,7 @@ class ListController extends AbstractModuleController
      */
     public function distributionsAction($showUnsuitableDistributions = false): ResponseInterface
     {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
         $this->addComposerModeNotification();
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
         if ($importExportInstalled) {

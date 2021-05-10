@@ -109,16 +109,16 @@
     }
 }
 
+.distribution-image {
+    display: block;
+    max-height: 225px;
+    overflow: hidden;
+}
+
 // Distribution Detail
 .distribution-detail-previewpane {
     margin-bottom: 2em;
     max-width: 100%;
-
-    img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-    }
 
     @media (min-width: $screen-sm-min) {
         float: left;
