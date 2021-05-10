@@ -52,15 +52,18 @@
         background-color: #e1e1aa;
     }
 
-    .insecure {
+    .insecure,
+    .insecure td {
         background-color: #ffd9d9;
     }
 
-    .outdated {
+    .outdated,
+    .outdated td {
         background-color: #d1d0ff;
     }
 
-    .inactive {
+    .inactive,
+    .inactive td {
         color: #aaa;
     }
 }
