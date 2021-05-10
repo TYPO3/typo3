@@ -1915,12 +1915,16 @@ class DataHandler implements LoggerAwareInterface
         if (
             isset($tcaFieldConf['range']) && $tcaFieldConf['range']
             && (!isset($tcaFieldConf['checkbox']) || $res['value'] != $tcaFieldConf['checkbox'])
-            && (!isset($tcaFieldConf['default']) || (int)$res['value'] !== (int)$tcaFieldConf['default'])
+            && (
+                !isset($tcaFieldConf['default'])
+                || floor($res['value']) !== (int)$tcaFieldConf['default']
+                || ceil($res['value']) !== (int)$tcaFieldConf['default']
+            )
         ) {
-            if (isset($tcaFieldConf['range']['upper']) && (int)$res['value'] > (int)$tcaFieldConf['range']['upper']) {
+            if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
                 $res['value'] = (int)$tcaFieldConf['range']['upper'];
             }
-            if (isset($tcaFieldConf['range']['lower']) && (int)$res['value'] < (int)$tcaFieldConf['range']['lower']) {
+            if (isset($tcaFieldConf['range']['lower']) && floor($res['value']) < (int)$tcaFieldConf['range']['lower']) {
                 $res['value'] = (int)$tcaFieldConf['range']['lower'];
             }
         }
