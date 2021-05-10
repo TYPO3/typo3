@@ -346,6 +346,10 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
         }
         /** @var Task\AbstractTask $task */
         $task = unserialize($row['serialized_task_object']);
+        if ($task->getTaskGroup() === null) {
+            // Fix invalid task_group=NULL settings in order to avoid exceptions when saving on PostgreSQL
+            $task->setTaskGroup(0);
+        }
         if ($this->isValidTaskObject($task)) {
             // The task is valid, return it
             $task->setScheduler();
