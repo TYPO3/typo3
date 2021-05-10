@@ -26,9 +26,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException;
@@ -61,10 +59,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class Typo3DbQueryParser
 {
-    /**
-     * @var DataMapper
-     */
-    protected $dataMapper;
+    protected DataMapper $dataMapper;
 
     /**
      * The TYPO3 page repository. Used for language and workspace overlay
@@ -72,11 +67,6 @@ class Typo3DbQueryParser
      * @var PageRepository
      */
     protected $pageRepository;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
 
     /**
      * Instance of the Doctrine query builder
@@ -120,33 +110,9 @@ class Typo3DbQueryParser
      */
     protected $suggestDistinctQuery = false;
 
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function __construct(DataMapper $dataMapper)
     {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Object initialization called when object is created with ObjectManager, after constructor
-     */
-    public function initializeObject()
-    {
-        $this->dataMapper = $this->objectManager->get(DataMapper::class);
-    }
-
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
+        $this->dataMapper = $dataMapper;
     }
 
     /**

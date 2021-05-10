@@ -27,13 +27,14 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -120,23 +121,13 @@ class Typo3DbBackendTest extends UnitTestCase
                 ->shouldBeCalled();
         }
 
-        $mockTypo3DbBackend = $this->getAccessibleMock(
-            Typo3DbBackend::class,
-            ['dummy'],
-            [],
-            '',
-            false
+        GeneralUtility::addInstance(DataMapper::class, $mockDataMapper);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
+        $subject = new Typo3DbBackend(
+            $this->prophesize(CacheService::class)->reveal(),
+            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $mockObjectManager = $this->createMock(ObjectManager::class);
-        $mockObjectManager->expects(self::any())
-            ->method('get')
-            ->with(DataMapper::class)
-            ->willReturn($mockDataMapper);
-
-        $mockTypo3DbBackend->_set('objectManager', $mockObjectManager);
-        $mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
-        $mockTypo3DbBackend->_set('connectionPool', $connectionPoolProphet->reveal());
-        $result = $mockTypo3DbBackend->getUidOfAlreadyPersistedValueObject($mockValueObject);
+        $result = $subject->getUidOfAlreadyPersistedValueObject($mockValueObject);
         self::assertSame($expectedUid, $result);
     }
 

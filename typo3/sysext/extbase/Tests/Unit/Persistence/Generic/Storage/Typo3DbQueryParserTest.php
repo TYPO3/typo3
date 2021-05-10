@@ -63,7 +63,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
@@ -90,7 +93,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
@@ -119,7 +125,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
@@ -148,7 +157,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
@@ -178,7 +190,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());
@@ -216,7 +231,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             Typo3DbQueryParser::class,
             // Shut down some methods not important for this test
-            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison']
+            ['initializeQueryBuilder', 'parseOrderings', 'addTypo3Constraints', 'parseComparison'],
+            [],
+            '',
+            false
         );
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $subject->_set('queryBuilder', $queryBuilderProphecy->reveal());

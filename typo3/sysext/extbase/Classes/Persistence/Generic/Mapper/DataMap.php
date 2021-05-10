@@ -230,7 +230,7 @@ class DataMap
     /**
      * Adds a given column map to the data map.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
+     * @param ColumnMap $columnMap The column map
      */
     public function addColumnMap(ColumnMap $columnMap)
     {
@@ -241,7 +241,7 @@ class DataMap
      * Returns the column map corresponding to the given property name.
      *
      * @param string $propertyName
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|null The column map or NULL if no corresponding column map was found.
+     * @return ColumnMap|null The column map or NULL if no corresponding column map was found.
      */
     public function getColumnMap($propertyName)
     {

@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
@@ -54,63 +53,21 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
-    /**
-     * @var ConnectionPool
-     */
-    protected $connectionPool;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @var CacheService
-     */
-    protected $cacheService;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
+    protected ConnectionPool $connectionPool;
+    protected ConfigurationManagerInterface $configurationManager;
+    protected CacheService $cacheService;
 
     /**
      * As determining the table columns is a costly operation this is done only once per table during runtime and cached then
      *
-     * @var array
      * @see clearPageCache()
      */
-    protected $hasPidColumn = [];
+    protected array $hasPidColumn = [];
 
-    /**
-     * @param ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
-    }
-
-    /**
-     * @param CacheService $cacheService
-     */
-    public function injectCacheService(CacheService $cacheService): void
+    public function __construct(CacheService $cacheService, ConfigurationManagerInterface $configurationManager)
     {
         $this->cacheService = $cacheService;
-    }
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
+        $this->configurationManager = $configurationManager;
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
@@ -273,8 +230,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         ) {
             $rows = $this->getObjectDataByRawQuery($statement);
         } else {
-            /** @var Typo3DbQueryParser $queryParser */
-            $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+            $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
             if ($statement instanceof Statement
                 && $statement->getStatement() instanceof QueryBuilder
             ) {
@@ -373,8 +329,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $rows = $this->getObjectDataByQuery($query);
             $count = count($rows);
         } else {
-            /** @var Typo3DbQueryParser $queryParser */
-            $queryParser  = $this->objectManager->get(Typo3DbQueryParser::class);
+            $queryParser  = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
             $queryBuilder = $queryParser
                 ->convertQueryToDoctrineQueryBuilder($query)
                 ->resetQueryPart('orderBy');
@@ -414,8 +369,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object): ?int
     {
-        /** @var DataMapper $dataMapper */
-        $dataMapper = $this->objectManager->get(DataMapper::class);
+        $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         $dataMap = $dataMapper->getDataMap(get_class($object));
         $tableName = $dataMap->getTableName();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);

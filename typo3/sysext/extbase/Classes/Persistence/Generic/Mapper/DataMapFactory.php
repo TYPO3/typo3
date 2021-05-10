@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
@@ -51,11 +50,6 @@ class DataMapFactory implements SingletonInterface
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3\CMS\Core\Cache\CacheManager
      */
     protected $cacheManager;
@@ -77,24 +71,15 @@ class DataMapFactory implements SingletonInterface
      */
     private $classesConfiguration;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
-     */
     public function __construct(
         ReflectionService $reflectionService,
         ConfigurationManagerInterface $configurationManager,
-        ObjectManagerInterface $objectManager,
         CacheManager $cacheManager,
         ClassesConfigurationFactory $classesConfigurationFactory
     ) {
         $this->reflectionService = $reflectionService;
         $this->configurationManager = $configurationManager;
-        $this->objectManager = $objectManager;
         $this->cacheManager = $cacheManager;
-
         $this->dataMapCache = $this->cacheManager->getCache('extbase');
         $this->classesConfiguration = $classesConfigurationFactory->createClassesConfiguration();
     }
@@ -158,8 +143,7 @@ class DataMapFactory implements SingletonInterface
                 $fieldNameToPropertyNameMapping[$propertyDefinition['fieldName']] = $propertyName;
             }
         }
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap */
-        $dataMap = $this->objectManager->get(DataMap::class, $className, $tableName, $recordType, $subclasses);
+        $dataMap = GeneralUtility::makeInstance(DataMap::class, $className, $tableName, $recordType, $subclasses);
         $dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
         foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
@@ -477,6 +461,6 @@ class DataMapFactory implements SingletonInterface
      */
     protected function createColumnMap(string $columnName, string $propertyName): ColumnMap
     {
-        return $this->objectManager->get(ColumnMap::class, $columnName, $propertyName);
+        return GeneralUtility::makeInstance(ColumnMap::class, $columnName, $propertyName);
     }
 }

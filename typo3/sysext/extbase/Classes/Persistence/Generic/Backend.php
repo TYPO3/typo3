@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -291,7 +290,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Persists the given object.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be inserted
+     * @param DomainObjectInterface $object The object to be inserted
      */
     protected function persistObject(DomainObjectInterface $object)
     {
@@ -371,15 +370,14 @@ class Backend implements BackendInterface, SingletonInterface
      * with '@TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")' if you want them to be deleted as well.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The object storage to be persisted.
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
+     * @param DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
      * @param string $propertyName The name of the property holding the object storage.
      * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
      */
     protected function persistObjectStorage(ObjectStorage $objectStorage, DomainObjectInterface $parentObject, $propertyName, array &$row)
     {
         $className = get_class($parentObject);
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $dataMapper = $objectManager->get(DataMapper::class);
+        $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         $columnMap = $this->dataMapFactory->buildDataMap($className)->getColumnMap($propertyName);
         $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
@@ -435,7 +433,7 @@ class Backend implements BackendInterface, SingletonInterface
      * Returns the removed objects determined by a comparison of the clean property value
      * with the actual property value.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object
+     * @param DomainObjectInterface $object The object
      * @param string $propertyName
      * @return array An array of removed objects
      */
@@ -457,8 +455,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+     * @param DomainObjectInterface $object
+     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      */
@@ -477,8 +475,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+     * @param DomainObjectInterface $object
+     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      */
@@ -496,8 +494,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates fields defining the relation between the object and the parent object in relation has-many.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+     * @param DomainObjectInterface $object
+     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      * @param int $sortingPosition
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
@@ -538,8 +536,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates the fields defining the relation between the object and the parent object.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+     * @param DomainObjectInterface $object
+     * @param DomainObjectInterface $parentObject
      * @param string $parentPropertyName
      */
     protected function detachObjectFromParentObject(DomainObjectInterface $object, DomainObjectInterface $parentObject, $parentPropertyName)
@@ -575,8 +573,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Inserts an object in the storage backend
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be inserted in the storage
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parentobject.
+     * @param DomainObjectInterface $object The object to be inserted in the storage
+     * @param DomainObjectInterface $parentObject The parentobject.
      * @param string $parentPropertyName
      */
     protected function insertObject(DomainObjectInterface $object, DomainObjectInterface $parentObject = null, $parentPropertyName = '')
@@ -661,8 +659,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Inserts mm-relation into a relation table
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+     * @param DomainObjectInterface $object The related object
+     * @param DomainObjectInterface $parentObject The parent object
      * @param string $propertyName The name of the parent object's property where the related objects are stored in
      * @param int $sortingPosition Defaults to NULL
      * @return int The uid of the inserted row
@@ -699,8 +697,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates mm-relation in a relation table
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+     * @param DomainObjectInterface $object The related object
+     * @param DomainObjectInterface $parentObject The parent object
      * @param string $propertyName The name of the parent object's property where the related objects are stored in
      * @param int $sortingPosition Defaults to NULL
      * @return bool TRUE if update was successfully
@@ -729,7 +727,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Delete all mm-relations of a parent from a relation table
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+     * @param DomainObjectInterface $parentObject The parent object
      * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
      * @return bool TRUE if delete was successfully
      */
@@ -752,8 +750,8 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Delete an mm-relation from a relation table
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $relatedObject The related object
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+     * @param DomainObjectInterface $relatedObject The related object
+     * @param DomainObjectInterface $parentObject The parent object
      * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
      * @return bool
      */
@@ -777,7 +775,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates a given object in the storage
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be updated
+     * @param DomainObjectInterface $object The object to be updated
      * @param array $row Row to be stored
      * @return bool
      */
@@ -805,7 +803,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Adds common database fields to a row
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+     * @param DomainObjectInterface $object
      * @param array $row
      */
     protected function addCommonFieldsToRow(DomainObjectInterface $object, array &$row)
@@ -823,7 +821,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Adjusts the common date fields of the given row to the current time
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+     * @param DomainObjectInterface $object
      * @param array $row The row to be updated
      */
     protected function addCommonDateFieldsToRow(DomainObjectInterface $object, array &$row)
@@ -855,7 +853,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Deletes an object
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be removed from the storage
+     * @param DomainObjectInterface $object The object to be removed from the storage
      * @param bool $markAsDeleted Whether to just flag the row deleted (default) or really delete it
      */
     protected function removeEntity(DomainObjectInterface $object, $markAsDeleted = true)
@@ -885,7 +883,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Remove related objects
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to scanned for related objects
+     * @param DomainObjectInterface $object The object to scanned for related objects
      */
     protected function removeRelatedObjects(DomainObjectInterface $object)
     {
@@ -923,7 +921,7 @@ class Backend implements BackendInterface, SingletonInterface
      * - If there is a TypoScript configuration "classes.CLASSNAME.newRecordStoragePid", that is used to store new records.
      * - If there is no such TypoScript configuration, it uses the first value of The "storagePid" taken for reading records.
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+     * @param DomainObjectInterface|null $object
      * @return int the storage Page ID where the object should be stored
      */
     protected function determineStoragePageIdForNewRecord(DomainObjectInterface $object = null)
@@ -953,15 +951,13 @@ class Backend implements BackendInterface, SingletonInterface
      * Checks explicitly for null values as DataMapper's getPlainValue would convert this to 'NULL'
      *
      * @param mixed $input The value that will be converted
-     * @param ColumnMap $columnMap Optional column map for retrieving the date storage format
+     * @param ColumnMap|null $columnMap Optional column map for retrieving the date storage format
      * @return int|string|null
      */
     protected function getPlainValue($input, ColumnMap $columnMap = null)
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $dataMapper = $objectManager->get(DataMapper::class);
         return $input !== null
-            ? $dataMapper->getPlainValue($input, $columnMap)
+            ? GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap)
             : null;
     }
 }
