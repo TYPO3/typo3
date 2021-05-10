@@ -471,6 +471,33 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function pageIsRenderedWithTrailingSlash()
+    {
+        $uri = 'https://website.us/features/frontend-editing/';
+
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
+                $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+
+        $responseStructure = ResponseContent::fromString((string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
+    }
+
+    /**
      * @return array
      */
     public function restrictedPageIsRenderedDataProvider(): array

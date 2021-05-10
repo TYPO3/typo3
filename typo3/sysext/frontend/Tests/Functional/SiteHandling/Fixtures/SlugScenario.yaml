@@ -68,7 +68,8 @@ entities:
               - self: {title: 'EN: Content Element #2', type: *contentText}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
           children:
-            - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing'}
+            # This page has a trailing slash as "slug" which is explicitly covered in tests as well
+            - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing/'}
         - self: {id: 1300, title: 'EN: Products', root: true, slug: '/products'}
           children:
             - self: {id: 1310, title: 'EN: Planets', slug: '/products/planets'}

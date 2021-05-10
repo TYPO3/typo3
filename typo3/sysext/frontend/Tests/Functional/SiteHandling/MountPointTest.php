@@ -206,7 +206,7 @@ class MountPointTest extends AbstractTestCase
                 'children' => [
                     [
                         'title' => 'EN: Frontend Editing',
-                        'link' => '/features/frontend-editing',
+                        'link' => '/features/frontend-editing/',
                     ],
                 ],
             ],
