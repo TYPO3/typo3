@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -75,8 +74,7 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
         } else {
             // @deprecated since v11, will be removed in v12. Use 'variables' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
             $extensionName = $currentRequest->getControllerExtensionName();
-            $argumentPrefix = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(ExtensionService::class)
+            $argumentPrefix = GeneralUtility::makeInstance(ExtensionService::class)
                 ->getPluginNamespace($extensionName, $moduleName);
             $getVars = $arguments['getVars'];
             $getVars[] = $argumentPrefix;

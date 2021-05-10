@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
@@ -88,10 +87,8 @@ class BackendLayoutRenderer
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->initializeClipboard();
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $request = $objectManager->get(Request::class);
         $this->view = GeneralUtility::makeInstance(TemplateView::class);
-        $this->view->getRenderingContext()->setRequest($request);
+        $this->view->getRenderingContext()->setRequest(GeneralUtility::makeInstance(Request::class));
         $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('backend');
         $this->view->getRenderingContext()->setControllerName('PageLayout');
         $this->view->assign('context', $context);
