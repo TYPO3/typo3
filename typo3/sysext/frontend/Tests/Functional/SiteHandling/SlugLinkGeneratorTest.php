@@ -149,7 +149,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1000, '/'],
             ['https://acme.us/', 1100, 1100, '/welcome'],
             ['https://acme.us/', 1100, 1200, '/features'],
-            ['https://acme.us/', 1100, 1210, '/features/frontend-editing'],
+            ['https://acme.us/', 1100, 1210, '/features/frontend-editing/'],
             ['https://acme.us/', 1100, 404, '/404'],
             // acme.com -> products.acme.com (nested sub-site)
             ['https://acme.us/', 1100, 1300, 'https://products.acme.com/products'],
@@ -163,7 +163,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/'],
             ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/features'],
-            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing'],
+            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing/'],
             ['https://blog.acme.com/', 2100, 404, 'https://acme.us/404'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', 2100, 1300, 'https://products.acme.com/products'],
@@ -211,7 +211,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', [7100, 1700], 7110, 1000, '/'],
             ['https://acme.us/', [7100, 1700], 7110, 1100, '/welcome'],
             ['https://acme.us/', [7100, 1700], 7110, 1200, '/features'],
-            ['https://acme.us/', [7100, 1700], 7110, 1210, '/features/frontend-editing'],
+            ['https://acme.us/', [7100, 1700], 7110, 1210, '/features/frontend-editing/'],
             ['https://acme.us/', [7100, 1700], 7110, 404, '/404'],
             // acme.com -> products.acme.com (nested sub-site)
             ['https://acme.us/', [7100, 1700], 7110, 1300, 'https://products.acme.com/products'],
@@ -225,7 +225,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', [7100, 2700], 7110, 1000, 'https://acme.us/'],
             ['https://blog.acme.com/', [7100, 2700], 7110, 1100, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', [7100, 2700], 7110, 1200, 'https://acme.us/features'],
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1210, 'https://acme.us/features/frontend-editing'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1210, 'https://acme.us/features/frontend-editing/'],
             ['https://blog.acme.com/', [7100, 2700], 7110, 404, 'https://acme.us/404'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', [7100, 2700], 7110, 1300, 'https://products.acme.com/products'],
@@ -361,7 +361,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1000, '/?testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
             ['https://acme.us/', 1100, 1100, '/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             ['https://acme.us/', 1100, 1200, '/features?testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
-            ['https://acme.us/', 1100, 1210, '/features/frontend-editing?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
+            ['https://acme.us/', 1100, 1210, '/features/frontend-editing/?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
             ['https://acme.us/', 1100, 404, '/404?testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // acme.com -> products.acme.com (nested sub-site)
             ['https://acme.us/', 1100, 1300, 'https://products.acme.com/products?testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
@@ -375,7 +375,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/?testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
             ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/features?testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
-            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
+            ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing/?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
             ['https://blog.acme.com/', 2100, 404, 'https://acme.us/404?testing%5Bvalue%5D=1&cHash=864e96f586a78a53452f3bf0f4d24591'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', 2100, 1300, 'https://products.acme.com/products?testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
@@ -710,7 +710,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'EN: Frontend Editing',
-                                'link' => '/features/frontend-editing',
+                                'link' => '/features/frontend-editing/',
                             ],
                         ],
                     ],

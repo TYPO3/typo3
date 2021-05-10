@@ -153,7 +153,13 @@ class PageRouter implements RouterInterface
         }
 
         $language = $previousResult->getLanguage();
-        $prefixedUrlPath = '/' . trim($urlPath, '/');
+        // Keep possible existing "/" at the end (no trim, just ltrim), even though the page slug might not
+        // contain a "/" at the end. This way we find page candidates where pages MIGHT have a trailing slash
+        // and pages with slugs that do not have a trailing slash
+        // $pageCandidates will contain more records than expected, which is important here, as the ->match() method
+        // will handle this then.
+        // The prepended slash will ensure that the root page of the site tree will also be fetched
+        $prefixedUrlPath = '/' . ltrim($urlPath, '/');
 
         $pageCandidates = $candidateProvider->getCandidatesForPath($prefixedUrlPath, $language);
 
@@ -206,7 +212,18 @@ class PageRouter implements RouterInterface
             $matchedRoute = $fullCollection->get($result['_route']);
             return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
         } catch (ResourceNotFoundException $e) {
-            // Do nothing
+            // Second try, look for /my-page even though the request was called via /my-page/ and the slash
+            // was not part of the slug, but let's then check again
+            if (substr($prefixedUrlPath, -1) === '/') {
+                try {
+                    $result = $matcher->match(rtrim($prefixedUrlPath, '/'));
+                    /** @var Route $matchedRoute */
+                    $matchedRoute = $fullCollection->get($result['_route']);
+                    return $this->buildPageArguments($matchedRoute, $result, $request->getQueryParams());
+                } catch (ResourceNotFoundException $e) {
+                    // Do nothing
+                }
+            }
         }
         throw new RouteNotFoundException('No route found for path "' . $urlPath . '"', 1538389998);
     }
