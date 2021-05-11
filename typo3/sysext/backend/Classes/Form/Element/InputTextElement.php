@@ -171,28 +171,25 @@ class InputTextElement extends AbstractFormElement
 
         $valuePickerHtml = [];
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
-            $mode = $config['valuePicker']['mode'] ?? '';
-            $itemName = $parameterArray['itemFormElName'];
-            $fieldChangeFunc = $parameterArray['fieldChangeFunc'];
-            if ($mode === 'append') {
-                $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
-                    . '.value+=\'\'+this.options[this.selectedIndex].value';
-            } elseif ($mode === 'prepend') {
-                $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
-                    . '.value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
-            } else {
-                $assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0]'
-                    . '.value=this.options[this.selectedIndex].value';
-            }
-            $valuePickerHtml[] = '<select';
-            $valuePickerHtml[] =  ' class="form-select form-control-adapt"';
-            $valuePickerHtml[] =  ' onchange="' . htmlspecialchars($assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc)) . '"';
-            $valuePickerHtml[] = '>';
+            $valuePickerConfiguration = [
+                'mode' => $config['valuePicker']['mode'] ?? 'replace',
+                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
+            ];
+            $valuePickerAttributes = [
+                'class' => 'form-select form-control-adapt',
+                'onchange' => implode('', $parameterArray['fieldChangeFunc']),
+            ];
+
+            $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
+            $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
                 $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
             }
             $valuePickerHtml[] = '</select>';
+            $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
+
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/FieldWizard/ValuePicker' => null];
         }
 
         $valueSliderHtml = [];
