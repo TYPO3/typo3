@@ -182,6 +182,18 @@ class Bootstrap
         // Dispatch the extbase request
         $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
         $response = $requestHandler->handleRequest($extbaseRequest);
+        if ($response->getStatusCode() >= 300) {
+            // Avoid caching the plugin when we issue a redirect or error response
+            // This means that even when an action is configured as cachable
+            // we avoid the plugin to be cached, but keep the page cache untouched
+            if ($this->cObj->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
+                $this->cObj->convertToUserIntObject();
+            }
+        }
+        // Usually coming from an error action, ensure all caches are cleared
+        if ($response->getStatusCode() === 400) {
+            $this->clearCacheOnError();
+        }
         if (headers_sent() === false) {
             foreach ($response->getHeaders() as $name => $values) {
                 foreach ($values as $value) {
@@ -223,6 +235,19 @@ class Bootstrap
         $this->resetSingletons();
         $this->cacheService->clearCachesOfRegisteredPageIds();
         return $response;
+    }
+
+    /**
+     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
+     */
+    protected function clearCacheOnError(): void
+    {
+        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
+            if (isset($GLOBALS['TSFE'])) {
+                $this->cacheService->clearPageCache([$GLOBALS['TSFE']->id]);
+            }
+        }
     }
 
     /**

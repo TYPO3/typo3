@@ -36,7 +36,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -50,13 +49,11 @@ use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
-use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -75,12 +72,6 @@ abstract class ActionController implements ControllerInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $reflectionService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\CacheService
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    protected $cacheService;
 
     /**
      * @var HashService
@@ -265,15 +256,6 @@ abstract class ActionController implements ControllerInterface
     public function injectReflectionService(ReflectionService $reflectionService)
     {
         $this->reflectionService = $reflectionService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function injectCacheService(CacheService $cacheService)
-    {
-        $this->cacheService = $cacheService;
     }
 
     /**
@@ -583,7 +565,7 @@ abstract class ActionController implements ControllerInterface
             E_USER_DEPRECATED
         );
 
-        $response = new \TYPO3\CMS\Core\Http\Response();
+        $response = new Response();
         $body = new Stream('php://temp', 'rw');
         if ($actionResult === null && $this->view instanceof ViewInterface) {
             if ($this->view instanceof JsonView) {
@@ -751,30 +733,13 @@ abstract class ActionController implements ControllerInterface
      */
     protected function errorAction()
     {
-        $this->clearCacheOnError();
         $this->addErrorFlashMessage();
         if (($response = $this->forwardToReferringRequest()) !== null) {
-            return $response;
+            return $response->withStatus(400);
         }
 
-        return $this->htmlResponse($this->getFlattenedValidationErrorMessage());
-    }
-
-    /**
-     * Clear cache of current page on error. Needed because we want a re-evaluation of the data.
-     * Better would be just do delete the cache for the error action, but that is not possible right now.
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    protected function clearCacheOnError()
-    {
-        $extbaseSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
-            if (isset($GLOBALS['TSFE'])) {
-                $pageUid = $GLOBALS['TSFE']->id;
-                $this->cacheService->clearPageCache([$pageUid]);
-            }
-        }
+        $response = $this->htmlResponse($this->getFlattenedValidationErrorMessage());
+        return $response->withStatus(400);
     }
 
     /**
@@ -1021,8 +986,6 @@ abstract class ActionController implements ControllerInterface
      */
     protected function redirectToUri($uri, $delay = 0, $statusCode = 303)
     {
-        $this->objectManager->get(CacheService::class)->clearCachesOfRegisteredPageIds();
-
         $uri = $this->addBaseUriIfNecessary($uri);
         $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 
@@ -1033,14 +996,6 @@ abstract class ActionController implements ControllerInterface
                 'Location' => (string)$uri
             ]
         );
-
-        // Avoid caching the plugin when we issue a redirect response
-        // This means that even when an action is configured as cachable
-        // we avoid the plugin to be cached, but keep the page cache untouched
-        $contentObject = $this->configurationManager->getContentObject();
-        if ($contentObject->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
-            $contentObject->convertToUserIntObject();
-        }
 
         throw new StopActionException('redirectToUri', 1476045828, null, $response);
     }
