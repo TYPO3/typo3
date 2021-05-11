@@ -9,11 +9,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '10.4.16',
+    'version' => '10.4.17',
     'constraints' => [
         'depends' => [
-            'core' => '10.4.16',
-            'extbase' => '10.4.16',
+            'core' => '10.4.17',
+            'extbase' => '10.4.17',
         ],
         'conflicts' => [],
         'suggests' => [],
