@@ -119,6 +119,12 @@ class SingleFieldContainer extends AbstractContainer
 
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];
+        $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
+            . GeneralUtility::quoteJSvalue($table) . ','
+            . GeneralUtility::quoteJSvalue($row['uid']) . ','
+            . GeneralUtility::quoteJSvalue($fieldName) . ','
+            . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
+            . ');';
 
         // Based on the type of the item, call a render function on a child element
         $options = $this->data;
