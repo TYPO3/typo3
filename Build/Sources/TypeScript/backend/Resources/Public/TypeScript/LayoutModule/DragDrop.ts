@@ -200,30 +200,24 @@ class DragDrop {
       if (targetPid !== 0) {
         colPos = newColumn;
       }
-      parameters.cmd = {tt_content: {}};
-      parameters.data = {tt_content: {}};
+      const isCopyAction = (evt && (<JQueryInputEventObject>evt.originalEvent).ctrlKey || $droppableElement.hasClass('t3js-paste-copy'));
+      const datahandlerCommand = isCopyAction ? 'copy' : 'move';
+      parameters.cmd = {
+        tt_content: {
+          [contentElementUid]: {
+            [datahandlerCommand]: {
+              action: 'paste',
+              target: targetPid,
+              update: {
+                colPos: colPos,
+                sys_language_uid: language,
+              },
+            }
+          }
+        }
+      };
 
-      const copyAction = (evt && (<JQueryInputEventObject>evt.originalEvent).ctrlKey || $droppableElement.hasClass('t3js-paste-copy'));
-      if (copyAction) {
-        parameters.cmd.tt_content[contentElementUid] = {
-          copy: {
-            action: 'paste',
-            target: targetPid,
-            update: {
-              colPos: colPos,
-              sys_language_uid: language,
-            },
-          },
-        };
-      } else {
-        parameters.data.tt_content[contentElementUid] = {
-          colPos: colPos,
-          sys_language_uid: language,
-        };
-        parameters.cmd.tt_content[contentElementUid] = {move: targetPid};
-      }
-
-      DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, copyAction).then((): void => {
+      DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, isCopyAction).then((): void => {
         const $languageDescriber = $(`.t3-page-column-lang-name[data-language-uid="${language}"]`);
         if ($languageDescriber.length === 0) {
           return;
@@ -248,10 +242,10 @@ class DragDrop {
    * @param {JQuery} $droppableElement
    * @param {JQuery} $draggableElement
    * @param {Parameters} parameters
-   * @param {boolean} copyAction
+   * @param {boolean} isCopyAction
    * @private
    */
-  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, copyAction: boolean): Promise<any> {
+  public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, isCopyAction: boolean): Promise<any> {
     return DataHandler.process(parameters).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
         throw result.messages;
@@ -265,7 +259,7 @@ class DragDrop {
         $draggableElement.detach().css({top: 0, left: 0})
           .insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
       }
-      if (copyAction) {
+      if (isCopyAction) {
         self.location.reload();
       }
     });
