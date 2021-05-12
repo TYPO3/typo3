@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -1058,24 +1059,22 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * Sends the specified HTTP status immediately.
-     *
-     * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
+     * Sends the specified HTTP status immediately and only stops to run back through the middleware stack.
+     * Note: If any other plugin or content or hook is used within a frontend request, this is skipped by design.
      *
      * @param int $statusCode The HTTP status code
      * @param string $statusMessage A custom HTTP status message
      * @param string $content Body content which further explains the status
-     * @throws StopActionException
+     * @throws PropagateResponseException
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
     {
         if ($content === null) {
             $content = $statusCode . ' ' . $statusMessage;
         }
-
-        $response = new \TYPO3\CMS\Core\Http\Response($content);
-
-        throw new StopActionException('throwStatus', 1476045871, null, $response);
+        $response = $this->responseFactory->createResponse((int)$statusCode, $statusMessage);
+        $response->getBody()->write($content);
+        throw new PropagateResponseException($response, 1476045871);
     }
 
     /**
