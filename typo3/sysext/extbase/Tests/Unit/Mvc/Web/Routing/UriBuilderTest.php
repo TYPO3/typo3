@@ -87,9 +87,10 @@ class UriBuilderTest extends UnitTestCase
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['build']);
         $this->uriBuilder->setRequest($this->mockRequest);
+        $this->uriBuilder->injectConfigurationManager($this->mockConfigurationManager);
+        $this->uriBuilder->injectExtensionService($this->mockExtensionService);
+        $this->uriBuilder->initializeObject();
         $this->uriBuilder->_set('contentObject', $this->mockContentObject);
-        $this->uriBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->uriBuilder->_set('extensionService', $this->mockExtensionService);
         $router = GeneralUtility::makeInstance(Router::class);
         $router->addRoute('module_key', new Route('/test/Path', []));
         $router->addRoute('module_key2', new Route('/test/Path2', []));
@@ -577,7 +578,7 @@ class UriBuilderTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')
             ->willReturn(['formatToPageTypeMapping' => ['txt' => 2]]);
-        $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
+        $this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
 
         $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
             ->with('SomeExtensionNameFromRequest', 'txt')
