@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -115,9 +116,8 @@ class Bootstrap
      */
     public function initializeConfiguration(array $configuration): void
     {
-        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-        $contentObject = $this->cObj ?? $this->container->get(ContentObjectRenderer::class);
-        $this->configurationManager->setContentObject($contentObject);
+        $this->cObj ??= $this->container->get(ContentObjectRenderer::class);
+        $this->configurationManager->setContentObject($this->cObj);
         $this->configurationManager->setConfiguration($configuration);
         // todo: Shouldn't the configuration manager object – which is a singleton – be stateless?
         // todo: At this point we give the configuration manager a state, while we could directly pass the
@@ -161,38 +161,39 @@ class Bootstrap
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->initialize($configuration);
-        return $this->handleRequest($request);
+        return $this->handleFrontendRequest($request);
     }
 
-    /**
-     * @return string
-     */
-    protected function handleRequest(ServerRequestInterface $request): string
+    protected function handleFrontendRequest(ServerRequestInterface $request): string
     {
         $extbaseRequest = $this->extbaseRequestBuilder->build($request);
-        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
-        $response = $requestHandler->handleRequest($extbaseRequest);
-        // If response is NULL after handling the request we need to stop
-        // This happens for instance, when a USER object was converted to a USER_INT
-        // @see TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::handleRequest()
-        if ($response === null) {
-            $content = '';
-        } else {
-            if (headers_sent() === false) {
-                foreach ($response->getHeaders() as $name => $values) {
-                    foreach ($values as $value) {
-                        header(sprintf('%s: %s', $name, $value));
-                    }
-                }
+        if (!$this->isExtbaseRequestCacheable($extbaseRequest)) {
+            if ($this->cObj->getUserObjectType() === ContentObjectRenderer::OBJECTTYPE_USER) {
+                // ContentObjectRenderer::convertToUserIntObject() will recreate the object,
+                // so we have to stop the request here before the action is actually called
+                $this->cObj->convertToUserIntObject();
+                return '';
             }
-
-            $body = $response->getBody();
-            $body->rewind();
-            $content = $body->getContents();
-            $this->resetSingletons();
-            $this->cacheService->clearCachesOfRegisteredPageIds();
+            $extbaseRequest->setIsCached(false);
+        } else {
+            $extbaseRequest->setIsCached(true);
         }
 
+        // Dispatch the extbase request
+        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
+        $response = $requestHandler->handleRequest($extbaseRequest);
+        if (headers_sent() === false) {
+            foreach ($response->getHeaders() as $name => $values) {
+                foreach ($values as $value) {
+                    header(sprintf('%s: %s', $name, $value));
+                }
+            }
+        }
+        $body = $response->getBody();
+        $body->rewind();
+        $content = $body->getContents();
+        $this->resetSingletons();
+        $this->cacheService->clearCachesOfRegisteredPageIds();
         return $content;
     }
 
@@ -230,5 +231,17 @@ class Bootstrap
     protected function resetSingletons(): void
     {
         $this->persistenceManager->persistAll();
+    }
+
+    protected function isExtbaseRequestCacheable(RequestInterface $extbaseRequest): bool
+    {
+        $controllerClassName = $extbaseRequest->getControllerObjectName();
+        $actionName = $extbaseRequest->getControllerActionName();
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
+        if (!is_array($nonCacheableActions)) {
+            return true;
+        }
+        return !in_array($actionName, $nonCacheableActions, true);
     }
 }
