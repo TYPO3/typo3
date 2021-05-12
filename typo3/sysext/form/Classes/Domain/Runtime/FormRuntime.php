@@ -544,6 +544,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * we assume a cached request for safety which means that an empty form
      * will be rendered.
      *
+     * @todo: this should be checked against https://forge.typo3.org/issues/91625 as this was fixed differently for UriBuilder
      * @return bool
      */
     protected function isRenderedCached(): bool

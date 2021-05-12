@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * An URI Builder
@@ -173,7 +174,8 @@ class UriBuilder
      */
     public function initializeObject(): void
     {
-        $this->contentObject = $this->configurationManager->getContentObject();
+        $this->contentObject = $this->configurationManager->getContentObject()
+            ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }
 
     /**
