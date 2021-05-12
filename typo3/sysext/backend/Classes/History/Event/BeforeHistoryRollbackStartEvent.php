@@ -36,7 +36,7 @@ final class BeforeHistoryRollbackStartEvent
     private $diff;
 
     /**
-     * @var BackendUserAuthentication
+     * @var BackendUserAuthentication|null
      */
     private $backendUserAuthentication;
 
@@ -76,7 +76,7 @@ final class BeforeHistoryRollbackStartEvent
         return $this->diff;
     }
 
-    public function getBackendUserAuthentication(): BackendUserAuthentication
+    public function getBackendUserAuthentication(): ?BackendUserAuthentication
     {
         return $this->backendUserAuthentication;
     }

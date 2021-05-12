@@ -102,7 +102,7 @@ class ModuleTemplate
     /**
      * Fluid Standalone View
      *
-     * @var StandaloneView
+     * @var ViewInterface
      */
     protected $view;
 

@@ -240,7 +240,7 @@ class NewRecordController
             . '</h1>';
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
-            $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+            $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         }
         // If a page-record was returned, the user had read-access to the page.
         if ($this->pageinfo['uid']) {
@@ -280,12 +280,7 @@ class NewRecordController
     {
         // If there was a page - or if the user is admin (admins has access to the root) we proceed:
         if (!empty($this->pageinfo['uid']) || $this->getBackendUserAuthentication()->isAdmin()) {
-            if (empty($this->pageinfo)) {
-                // Explicitly pass an empty array to the docHeader
-                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
-            } else {
-                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-            }
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
             // Acquiring TSconfig for this module/current page:
             $this->web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'])['mod.']['web_list.'] ?? [];
             $this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['allowedNewTables'] ?? '', true);
@@ -302,7 +297,7 @@ class NewRecordController
                 $this->newPagesAfter = 0;
             }
             // Set header-HTML and return_url
-            if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
+            if ($this->pageinfo['uid'] ?? false) {
                 $title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
             } else {
                 $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];

@@ -105,7 +105,7 @@ class PermissionController extends ActionController
 
         $this->returnUrl = GeneralUtility::_GP('returnUrl');
         if ($this->request->hasArgument('returnUrl')) {
-            $this->returnUrl = $this->request->getArgument('returnUrl');
+            $this->returnUrl = (string)$this->request->getArgument('returnUrl');
         }
 
         $this->setPageInfo();
@@ -389,7 +389,7 @@ class PermissionController extends ActionController
      */
     protected function setPageInfo(): void
     {
-        $this->pageInfo = BackendUtility::readPageAccess(BackendUtility::getRecord('pages', $this->id) ? $this->id : 0, ' 1=1');
+        $this->pageInfo = BackendUtility::readPageAccess(BackendUtility::getRecord('pages', $this->id) ? $this->id : 0, ' 1=1') ?: [];
     }
 
     /**

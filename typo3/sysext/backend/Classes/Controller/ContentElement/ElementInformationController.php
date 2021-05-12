@@ -179,8 +179,8 @@ class ElementInformationController
         // Check permissions and uid value:
         if ($this->uid && $this->getBackendUser()->check('tables_select', $this->table)) {
             if ((string)$this->table === 'pages') {
-                $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause);
-                $this->access = is_array($this->pageInfo);
+                $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause) ?: [];
+                $this->access = $this->pageInfo !== [];
                 $this->row = $this->pageInfo;
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
@@ -189,8 +189,8 @@ class ElementInformationController
                         // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
                         $this->uid = (int)$this->row['_ORIG_uid'];
                     }
-                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause);
-                    $this->access = is_array($this->pageInfo);
+                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause) ?: [];
+                    $this->access = $this->pageInfo !== [];
                 }
             }
         }

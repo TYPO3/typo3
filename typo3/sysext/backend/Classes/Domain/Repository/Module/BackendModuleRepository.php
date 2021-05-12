@@ -93,7 +93,7 @@ class BackendModuleRepository implements SingletonInterface
      * Finds a module menu entry by name
      *
      * @param string $name
-     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|bool
+     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|false
      */
     public function findByModuleName($name)
     {
@@ -107,7 +107,7 @@ class BackendModuleRepository implements SingletonInterface
      *
      * @param string $name
      * @param \SplObjectStorage $entries
-     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|bool
+     * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|false
      */
     public function findByModuleNameInGivenEntries($name, \SplObjectStorage $entries)
     {

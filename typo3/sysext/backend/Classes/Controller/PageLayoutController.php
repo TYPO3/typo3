@@ -565,22 +565,22 @@ class PageLayoutController
                     $this->colPosList = implode(',', $backendLayout->getColumnPositionNumbers());
                 }
                 // Removing duplicates, if any
-                $this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
+                $colPosArray = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
                 // Accessible columns
                 if (isset($this->modSharedTSconfig['properties']['colPos_list']) && trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
-                    $this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
+                    $activeColPosArray = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
                     // Match with the list which is present in the colPosList for the current page
-                    if (!empty($this->colPosList) && !empty($this->activeColPosList)) {
-                        $this->activeColPosList = array_unique(array_intersect(
-                            $this->activeColPosList,
-                            $this->colPosList
+                    if (!empty($colPosArray) && !empty($activeColPosArray)) {
+                        $activeColPosArray = array_unique(array_intersect(
+                            $activeColPosArray,
+                            $colPosArray
                         ));
                     }
                 } else {
-                    $this->activeColPosList = $this->colPosList;
+                    $activeColPosArray = $colPosArray;
                 }
-                $this->activeColPosList = implode(',', $this->activeColPosList);
-                $this->colPosList = implode(',', $this->colPosList);
+                $this->activeColPosList = implode(',', $activeColPosArray);
+                $this->colPosList = implode(',', $colPosArray);
             }
 
             $content .= $this->getHeaderFlashMessagesForCurrentPid();

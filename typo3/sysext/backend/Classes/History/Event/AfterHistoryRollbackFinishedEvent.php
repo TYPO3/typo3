@@ -41,7 +41,7 @@ final class AfterHistoryRollbackFinishedEvent
     private $dataHandlerInput;
 
     /**
-     * @var BackendUserAuthentication
+     * @var BackendUserAuthentication|null
      */
     private $backendUserAuthentication;
 
@@ -88,7 +88,7 @@ final class AfterHistoryRollbackFinishedEvent
         return $this->dataHandlerInput;
     }
 
-    public function getBackendUserAuthentication(): BackendUserAuthentication
+    public function getBackendUserAuthentication(): ?BackendUserAuthentication
     {
         return $this->backendUserAuthentication;
     }

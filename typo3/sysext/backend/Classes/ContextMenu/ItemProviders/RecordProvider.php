@@ -269,7 +269,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function initPermissions()
     {
-        $this->pageRecord = BackendUtility::getRecord('pages', $this->record['pid']);
+        $this->pageRecord = BackendUtility::getRecord('pages', $this->record['pid']) ?? [];
         $this->pagePermissions = new Permission($this->backendUser->calcPerms($this->pageRecord));
     }
 

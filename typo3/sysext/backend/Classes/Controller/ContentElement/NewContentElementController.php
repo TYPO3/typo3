@@ -152,7 +152,7 @@ class NewContentElementController
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         // Getting the current page and receiving access information (used in main())
-        $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+        $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
     }
 
     /**
@@ -214,7 +214,7 @@ class NewContentElementController
     {
         // Setting up the buttons for docheader
         $this->getButtons();
-        $hasAccess = $this->id && is_array($this->pageInfo);
+        $hasAccess = $this->id && $this->pageInfo !== [];
         if ($hasAccess) {
             // If a column is pre-set
             if (isset($this->colPos)) {

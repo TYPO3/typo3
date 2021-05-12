@@ -69,15 +69,15 @@ class PagePositionMap
 
     // Element id.
     /**
-     * @var string
+     * @var int
      */
-    public $elUid = '';
+    public $elUid;
 
     // tt_content element uid to move.
     /**
-     * @var string
+     * @var int
      */
-    public $moveUid = '';
+    public $moveUid;
 
     /**
      * @var array

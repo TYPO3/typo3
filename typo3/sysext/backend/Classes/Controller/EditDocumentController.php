@@ -459,7 +459,7 @@ class EditDocumentController
         $this->fixWSversioningInEditConf();
 
         // Prepare R_URL (request url)
-        $this->R_URL_parts = parse_url($request->getAttribute('normalizedParams')->getRequestUri());
+        $this->R_URL_parts = parse_url($request->getAttribute('normalizedParams')->getRequestUri()) ?: [];
         $this->R_URL_getvars = $queryParams;
         $this->R_URL_getvars['edit'] = $this->editconf;
 
@@ -1015,8 +1015,8 @@ class EditDocumentController
         }
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
-        $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause);
-        if ($this->pageinfo) {
+        $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
+        if ($this->pageinfo !== []) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the buttons and markers for doc header

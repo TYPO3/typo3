@@ -34,7 +34,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
     protected $io;
 
     /**
-     * @var ProgressBar
+     * @var ProgressBar|null
      */
     protected $progressBar;
 

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Model for backend user
@@ -48,7 +49,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     protected $fileMountPoints = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
+     * @var ObjectStorage<BackendUserGroup>
      */
     protected $backendUserGroups;
 
@@ -115,7 +116,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $backendUserGroups
+     * @param ObjectStorage<BackendUserGroup> $backendUserGroups
      */
     public function setBackendUserGroups($backendUserGroups)
     {
@@ -123,7 +124,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage<BackendUserGroup>
      */
     public function getBackendUserGroups()
     {

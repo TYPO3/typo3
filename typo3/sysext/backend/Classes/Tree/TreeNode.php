@@ -33,14 +33,14 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     /**
      * Parent Node
      *
-     * @var \TYPO3\CMS\Backend\Tree\TreeNode
+     * @var \TYPO3\CMS\Backend\Tree\TreeNode|null
      */
     protected $parentNode;
 
     /**
      * Child Nodes
      *
-     * @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection
+     * @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection|null
      */
     protected $childNodes;
 

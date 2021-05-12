@@ -220,7 +220,7 @@ class PageLayoutView implements LoggerAwareInterface
         /** @var PageLayoutView $pageLayoutView */
         $pageLayoutView = GeneralUtility::makeInstance(self::class);
         $pageLayoutView->id = $context->getPageId();
-        $pageLayoutView->pageinfo = BackendUtility::readPageAccess($pageLayoutView->id, '');
+        $pageLayoutView->pageinfo = BackendUtility::readPageAccess($pageLayoutView->id, '') ?: [];
         $pageLayoutView->pageRecord = $context->getPageRecord();
         $pageLayoutView->option_newWizard = $drawingConfiguration->getShowNewContentWizard();
         $pageLayoutView->defLangBinding = $drawingConfiguration->getDefaultLanguageBinding();
@@ -244,7 +244,7 @@ class PageLayoutView implements LoggerAwareInterface
         $this->resolveSiteLanguages($this->id);
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
         $this->initializeClipboard();
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, '');
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, '') ?: [];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageActionsCallback = null;
         if ($this->isPageEditable()) {

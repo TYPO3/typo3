@@ -191,11 +191,11 @@ class SimpleDataHandlerController
             $this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
         }
         if ($beUser->uc['neverHideAtCopy'] ?? false) {
-            $this->tce->neverHideAtCopy = 1;
+            $this->tce->neverHideAtCopy = true;
         }
         // Reverse order.
         if ($this->flags['reverseOrder'] ?? false) {
-            $this->tce->reverseOrder = 1;
+            $this->tce->reverseOrder = true;
         }
     }
 

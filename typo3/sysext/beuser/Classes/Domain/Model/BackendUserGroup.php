@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * Model for backend user group
@@ -40,7 +41,7 @@ class BackendUserGroup extends AbstractEntity
     protected $hidden;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
+     * @var ObjectStorage<BackendUserGroup>
      * @Extbase\ORM\Lazy
      */
     protected $subGroups;
@@ -94,7 +95,7 @@ class BackendUserGroup extends AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subGroups
+     * @param ObjectStorage<BackendUserGroup> $subGroups
      */
     public function setSubGroups($subGroups)
     {
@@ -102,7 +103,7 @@ class BackendUserGroup extends AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage<BackendUserGroup>
      */
     public function getSubGroups()
     {

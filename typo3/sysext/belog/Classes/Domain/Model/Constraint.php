@@ -132,7 +132,7 @@ class Constraint
     /**
      * Set workspace
      *
-     * @param string $workspace
+     * @param int $workspace
      */
     public function setWorkspaceUid($workspace)
     {
@@ -142,7 +142,7 @@ class Constraint
     /**
      * Get workspace
      *
-     * @return string
+     * @return int
      */
     public function getWorkspaceUid()
     {
