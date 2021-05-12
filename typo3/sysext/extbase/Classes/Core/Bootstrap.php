@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
+use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
@@ -54,35 +55,13 @@ class Bootstrap
      */
     public $cObj;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $persistenceManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver
-     */
-    protected $requestHandlerResolver;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\CacheService
-     */
-    protected $cacheService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
-     */
-    protected $extbaseRequestBuilder;
+    protected ContainerInterface $container;
+    protected ConfigurationManagerInterface $configurationManager;
+    protected PersistenceManagerInterface $persistenceManager;
+    protected RequestHandlerResolver $requestHandlerResolver;
+    protected CacheService $cacheService;
+    protected Dispatcher $dispatcher;
+    protected RequestBuilder $extbaseRequestBuilder;
 
     public function __construct(
         ContainerInterface $container,
@@ -90,6 +69,7 @@ class Bootstrap
         PersistenceManagerInterface $persistenceManager,
         RequestHandlerResolver $requestHandlerResolver,
         CacheService $cacheService,
+        Dispatcher $dispatcher,
         RequestBuilder $extbaseRequestBuilder
     ) {
         $this->container = $container;
@@ -97,6 +77,7 @@ class Bootstrap
         $this->persistenceManager = $persistenceManager;
         $this->requestHandlerResolver = $requestHandlerResolver;
         $this->cacheService = $cacheService;
+        $this->dispatcher = $dispatcher;
         $this->extbaseRequestBuilder = $extbaseRequestBuilder;
     }
 
@@ -170,6 +151,8 @@ class Bootstrap
      * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
      * If the Framework is not initialized yet, it will be initialized.
      *
+     * This is usually used in Frontend plugins.
+     *
      * @param string $content The content. Not used
      * @param array $configuration The TS configuration array
      * @return string $content The processed content
@@ -214,7 +197,9 @@ class Bootstrap
     }
 
     /**
-     * Entrypoint for backend modules, handling PSR-7 requests/responses
+     * Entrypoint for backend modules, handling PSR-7 requests/responses.
+     *
+     * Creates an Extbase Request, dispatches it and then returns the Response
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -232,11 +217,8 @@ class Bootstrap
         ];
 
         $this->initialize($configuration);
-
         $extbaseRequest = $this->extbaseRequestBuilder->build($request);
-        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
-        $response = $requestHandler->handleRequest($extbaseRequest);
-
+        $response = $this->dispatcher->dispatch($extbaseRequest);
         $this->resetSingletons();
         $this->cacheService->clearCachesOfRegisteredPageIds();
         return $response;

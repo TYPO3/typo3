@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
-use TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler;
 use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -40,7 +39,6 @@ class RequestHandlerConfigurationFactoryTest extends FunctionalTestCase
         self::assertSame(
             [
                 FrontendRequestHandler::class,
-                BackendRequestHandler::class,
             ],
             $configuration->getRegisteredRequestHandlers()
         );
