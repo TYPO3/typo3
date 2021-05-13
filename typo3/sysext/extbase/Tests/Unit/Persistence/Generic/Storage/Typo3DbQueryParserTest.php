@@ -632,7 +632,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
         // simulate time for frontend (PageRepository) enable fields
-        $dateAspect = new DateTimeAspect(new \DateTimeImmutable('3.1.2016'));
+        $dateAspect = new DateTimeAspect(new \DateTimeImmutable('@1451779200'));
         $context = new Context(['date' => $dateAspect]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
@@ -702,7 +702,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
         // simulate time for frontend (PageRepository) enable fields
-        $dateAspect = new DateTimeAspect(new \DateTimeImmutable('3.1.2016'));
+        $dateAspect = new DateTimeAspect(new \DateTimeImmutable('@1451779200'));
         $context = new Context(['date' => $dateAspect]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
