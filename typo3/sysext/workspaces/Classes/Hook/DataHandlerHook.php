@@ -302,7 +302,7 @@ class DataHandlerHook
             $dataHandler->versionizeRecord($table, $id, 'DELETED!', true);
             // Determine newly created versions:
             // (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-            $versionizedElements = ArrayUtility::arrayDiffAssocRecursive($dataHandler->copyMappingArray, $copyMappingArray);
+            $versionizedElements = ArrayUtility::arrayDiffKeyRecursive($dataHandler->copyMappingArray, $copyMappingArray);
             // Delete localization overlays:
             foreach ($versionizedElements as $versionizedTableName => $versionizedOriginalIds) {
                 foreach ($versionizedOriginalIds as $versionizedOriginalId => $_) {

@@ -697,7 +697,7 @@ class UriBuilder
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
                 parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
-                $arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentArrayToBeExcluded);
+                $arguments = ArrayUtility::arrayDiffKeyRecursive($arguments, $argumentArrayToBeExcluded);
             }
         } else {
             $id = GeneralUtility::_GP('id');

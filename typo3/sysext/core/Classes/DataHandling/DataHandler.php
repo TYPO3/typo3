@@ -9183,7 +9183,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function unsetElementsToBeDeleted(array $elements)
     {
-        $elements = ArrayUtility::arrayDiffAssocRecursive($elements, $this->getCommandMapElements('delete'));
+        $elements = ArrayUtility::arrayDiffKeyRecursive($elements, $this->getCommandMapElements('delete'));
         foreach ($elements as $key => $value) {
             if (empty($value)) {
                 unset($elements[$key]);

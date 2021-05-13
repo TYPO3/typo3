@@ -5557,7 +5557,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             parse_str($excludeString, $excludedQueryParts);
             // never repeat id
             $exclude['id'] = 0;
-            $newQueryArray = ArrayUtility::arrayDiffAssocRecursive($currentQueryArray, $excludedQueryParts);
+            $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
         } else {
             $newQueryArray = $currentQueryArray;
         }

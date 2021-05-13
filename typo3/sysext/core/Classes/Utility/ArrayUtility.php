@@ -732,7 +732,7 @@ class ArrayUtility
      * @param array $array2 Reduce source array by this array
      * @return array Source array reduced by keys also present in second array
      */
-    public static function arrayDiffAssocRecursive(array $array1, array $array2)
+    public static function arrayDiffKeyRecursive(array $array1, array $array2): array
     {
         $differenceArray = [];
         foreach ($array1 as $key => $value) {
@@ -740,7 +740,38 @@ class ArrayUtility
                 $differenceArray[$key] = $value;
             } elseif (is_array($value)) {
                 if (is_array($array2[$key])) {
-                    $recursiveResult = self::arrayDiffAssocRecursive($value, $array2[$key]);
+                    $recursiveResult = self::arrayDiffKeyRecursive($value, $array2[$key]);
+                    if (!empty($recursiveResult)) {
+                        $differenceArray[$key] = $recursiveResult;
+                    }
+                }
+            }
+        }
+        return $differenceArray;
+    }
+
+    /**
+     * Filters values off from first array that also exist in second array. Comparison is done by keys.
+     * This method is a recursive version of php array_diff_assoc()
+     *
+     * @param array $array1 Source array
+     * @param array $array2 Reduce source array by this array
+     * @param bool $useArrayDiffAssocBehavior If false, the old array_diff_key() behavior is kept
+     * @return array Source array reduced by values also present in second array, indexed by key
+     */
+    public static function arrayDiffAssocRecursive(array $array1, array $array2, bool $useArrayDiffAssocBehavior = false): array
+    {
+        if (!$useArrayDiffAssocBehavior) {
+            return self::arrayDiffKeyRecursive($array1, $array2);
+        }
+
+        $differenceArray = [];
+        foreach ($array1 as $key => $value) {
+            if (!array_key_exists($key, $array2) || (!is_array($value) && $value !== $array2[$key])) {
+                $differenceArray[$key] = $value;
+            } elseif (is_array($value)) {
+                if (is_array($array2[$key])) {
+                    $recursiveResult = self::arrayDiffAssocRecursive($value, $array2[$key], $useArrayDiffAssocBehavior);
                     if (!empty($recursiveResult)) {
                         $differenceArray[$key] = $recursiveResult;
                     }
