@@ -112,10 +112,10 @@ class SlugHelper
 
         // Convert some special tokens (space, "_" and "-") to the space character
         $fallbackCharacter = (string)($this->configuration['fallbackCharacter'] ?? '-');
-        $slug = preg_replace('/[ \t\x{00A0}\-+_]+/u', $fallbackCharacter, $slug);
+        $slug = (string)preg_replace('/[ \t\x{00A0}\-+_]+/u', $fallbackCharacter, $slug);
 
-        if (!\Normalizer::isNormalized((string)$slug)) {
-            $slug = \Normalizer::normalize((string)$slug);
+        if (!\Normalizer::isNormalized($slug)) {
+            $slug = \Normalizer::normalize($slug) ?: $slug;
         }
 
         // Convert extended letters to ascii equivalents

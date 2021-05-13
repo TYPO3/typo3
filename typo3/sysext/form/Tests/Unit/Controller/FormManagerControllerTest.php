@@ -414,6 +414,20 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
+    public function convertFormNameToIdentifierConvertAccentedCharactersNotInNFC(): void
+    {
+        $mockController = $this->getAccessibleMock(FormManagerController::class, [
+            'dummy'
+        ], [], '', false);
+
+        $input = 'test form ' . hex2bin('667275cc88686e65757a6569746c696368656e');
+        $expected = 'testformfruehneuzeitlichen';
+        self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
+    }
+
+    /**
+     * @test
+     */
     public function convertFormNameToIdentifierRemoveSpecialChars(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [

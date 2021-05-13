@@ -316,6 +316,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     public function sanitizeFileName($fileName, $charset = 'utf-8')
     {
+        if ($charset === 'utf-8') {
+            $fileName = \Normalizer::normalize((string)$fileName) ?: $fileName;
+        }
+
         // Handle UTF-8 characters
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)

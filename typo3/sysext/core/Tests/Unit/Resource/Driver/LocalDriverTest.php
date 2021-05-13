@@ -1610,6 +1610,10 @@ class LocalDriverTest extends BaseTestCase
                 $this->utf8Latin1Supplement,
                 '________________________________ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'
             ],
+            'utf-8 but not in NFC (Canonical Composition)' => [
+                hex2bin('667275cc88686e65757a6569746c696368656e'),
+                'frühneuzeitlichen'
+            ],
             'trim leading and tailing spaces utf-8' => [
                 ' test.txt  ',
                 'test.txt'
@@ -1691,6 +1695,11 @@ class LocalDriverTest extends BaseTestCase
                 $this->utf8Latin1ExtendedA,
                 'utf-8',
                 'AaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKk__LlLlLlL_l_LlNnNnNn_n____OOooOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs'
+            ],
+            'utf-8 but not in NFC (Canonical Composition)' => [
+                hex2bin('667275cc88686e65757a6569746c696368656e'),
+                'utf-8',
+                'fruehneuzeitlichen'
             ],
             'trim leading and tailing spaces iso-8859-1' => [
                 ' test.txt  ',

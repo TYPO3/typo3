@@ -532,6 +532,7 @@ class FormManagerController extends AbstractBackendController
     {
         $csConverter = GeneralUtility::makeInstance(CharsetConverter::class);
 
+        $formName = \Normalizer::normalize($formName) ?: $formName;
         $formIdentifier = $csConverter->specCharsToASCII('utf-8', $formName);
         $formIdentifier = (string)preg_replace('/[^a-zA-Z0-9-_]/', '', $formIdentifier);
         $formIdentifier = lcfirst($formIdentifier);
