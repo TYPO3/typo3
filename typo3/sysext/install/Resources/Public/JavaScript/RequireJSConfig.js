@@ -1,6 +1,8 @@
+var TYPO3 = TYPO3 || {};
+
 var require = {
   baseUrl: '',
-  urlArgs: 'bust=' + (typeof __bust !== 'undefined' ? __bust : (new Date()).getTime()),
+  urlArgs: 'bust=' + (typeof document.currentScript.dataset.bust !== undefined ? document.currentScript.dataset.bust : (new Date()).getTime()),
   paths: {
     'TYPO3/CMS/Core': 'sysext/core/Resources/Public/JavaScript',
     'TYPO3/CMS/Backend': 'sysext/backend/Resources/Public/JavaScript',
@@ -42,3 +44,7 @@ var require = {
     }
   }
 };
+
+if (typeof document.currentScript.dataset.init !== undefined) {
+  require.deps = [document.currentScript.dataset.init];
+}

@@ -6,15 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="{f:uri.resource(path: 'Css/backend.css', extensionName: 'backend')}?{bust}" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="{f:uri.resource(path: 'Icons/favicon.ico')}?{bust}" />
-    <script>
-        var TYPO3 = TYPO3 || {};
-        var __bust = '{bust}';
-    </script>
-    <script src="{f:uri.resource(path: 'JavaScript/RequireJSConfig.js')}?{bust}"></script>
+    <script src="{f:uri.resource(path: 'JavaScript/RequireJSConfig.js')}?{bust}" data-bust="{bust}" data-init="TYPO3/CMS/Install/Install"></script>
     <script src="{f:uri.resource(path: 'JavaScript/Contrib/require.js', extensionName: 'Core')}?{bust}"></script>
-    <script>
-        require(['TYPO3/CMS/Install/Install']);
-    </script>
 </head>
 <body class="backend install-tool-init t3js-body scaffold t3js-scaffold scaffold-modulemenu-expanded" data-controller="{controller}" data-context="{context}">
 <div>
