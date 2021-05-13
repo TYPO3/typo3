@@ -232,7 +232,7 @@ class PageArguments implements RouteResultInterface
      */
     protected function diff(array $first, array $second): array
     {
-        return ArrayUtility::arrayDiffAssocRecursive($first, $second);
+        return ArrayUtility::arrayDiffKeyRecursive($first, $second);
     }
 
     /**

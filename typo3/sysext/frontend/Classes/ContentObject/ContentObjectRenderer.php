@@ -5100,7 +5100,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $excludeString = str_replace(',', '&', $conf['exclude']);
             $excludedQueryParts = [];
             parse_str($excludeString, $excludedQueryParts);
-            $newQueryArray = ArrayUtility::arrayDiffAssocRecursive($currentQueryArray, $excludedQueryParts);
+            $newQueryArray = ArrayUtility::arrayDiffKeyRecursive($currentQueryArray, $excludedQueryParts);
         } else {
             $newQueryArray = $currentQueryArray;
         }

@@ -81,7 +81,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $dynamicArguments = $variableProcessor
             ->inflateNamespaceParameters($dynamicCandidates, $this->namespace);
         // static arguments, that don't appear in dynamic arguments
-        $staticArguments = ArrayUtility::arrayDiffAssocRecursive($routeArguments, $dynamicArguments);
+        $staticArguments = ArrayUtility::arrayDiffKeyRecursive($routeArguments, $dynamicArguments);
 
         $page = $route->getOption('_page');
         $pageId = (int)(isset($page['t3ver_oid']) && $page['t3ver_oid'] > 0 ? $page['t3ver_oid'] : $page['uid']);
