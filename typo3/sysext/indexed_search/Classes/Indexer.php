@@ -1080,7 +1080,7 @@ class Indexer
     public function analyzeHeaderinfo(&$retArr, $content, $key, $offset)
     {
         foreach ($content[$key] as $val) {
-            $val = substr($val, 0, 60);
+            $val = mb_substr($val, 0, 60);
             // Cut after 60 chars because the index_words.baseword varchar field has this length. This MUST be the same.
             if (!isset($retArr[$val])) {
                 // Word ID (wid)
