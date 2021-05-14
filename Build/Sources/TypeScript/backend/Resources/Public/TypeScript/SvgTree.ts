@@ -43,7 +43,7 @@ interface SvgTreeDataLink {
 
 interface SvgTreeDataIcon {
   identifier: string;
-  icon: string;
+  icon: string|null|SVGElement;
 }
 
 export interface SvgTreeSettings {
@@ -416,12 +416,13 @@ export class SvgTree extends LitElement {
     if (!(iconName in this.icons)) {
       this.icons[iconName] = {
         identifier: iconName,
-        icon: ''
-      };
+        icon: null
+      } as SvgTreeDataIcon;
       Icons.getIcon(iconName, Icons.sizes.small, null, null, MarkupIdentifiers.inline).then((icon: string) => {
         let result = icon.match(/<svg[\s\S]*<\/svg>/i);
         if (result) {
-          this.icons[iconName].icon = result[0];
+          let iconEl = document.createRange().createContextualFragment(result[0]);
+          this.icons[iconName].icon = iconEl.firstElementChild as SVGElement;
         }
         if (update) {
           this.updateVisibleNodes();
@@ -973,7 +974,7 @@ export class SvgTree extends LitElement {
   protected enterSvgElements(nodes: TreeNodeSelection): TreeNodeSelection {
     if (this.settings.showIcons) {
       const iconsArray = Object.values(this.icons)
-        .filter((icon: SvgTreeDataIcon): boolean => icon.icon !== '');
+        .filter((icon: SvgTreeDataIcon): boolean => icon.icon !== '' && icon.icon !== null);
       const icons = this.iconsContainer
         .selectAll('.icon-def')
         .data(iconsArray, (icon: SvgTreeDataIcon) => icon.identifier);
@@ -985,10 +986,12 @@ export class SvgTree extends LitElement {
         .attr('class', 'icon-def')
         .attr('id', (node: TreeNode) => 'icon-' + node.identifier)
         .append((node: TreeNode): SVGElement => {
-          // workaround for IE11 where you can't simply call .html(content) on svg
+          if (node.icon instanceof SVGElement) {
+            return node.icon;
+          }
+          // Once all icons are real SVG Elements, this part can safely be removed
+          const markup = '<svg>' + node.icon + '</svg>';
           const parser = new DOMParser();
-          const markupText = node.icon.replace('<svg', '<g').replace('/svg>', '/g>');
-          const markup = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + markupText + '</svg>';
           const dom = parser.parseFromString(markup, 'image/svg+xml');
           return dom.documentElement.firstChild as SVGElement;
         });
@@ -1018,9 +1021,13 @@ export class SvgTree extends LitElement {
     // append the icon element
     if (this.settings.showIcons) {
       const nodeContainer = nodeEnter
-        .append('g')
+        .append('svg')
         .attr('class', 'node-icon-container')
         .attr('title', this.getNodeTitle)
+        .attr('height', '20')
+        .attr('width', '20')
+        .attr('x', '6')
+        .attr('y', '-10')
         .attr('data-bs-toggle', 'tooltip')
         .on('click', (evt: MouseEvent, node: TreeNode) => {
           evt.preventDefault();
@@ -1033,24 +1040,43 @@ export class SvgTree extends LitElement {
         .style('opacity', 0)
         .attr('width', '20')
         .attr('height', '20')
-        .attr('x', '6')
-        .attr('y', '-10');
+        .attr('y', '0')
+        .attr('x', '0')
+        .attr('class', 'node-icon-click');
 
-      nodeContainer
+      const nodeInner = nodeContainer
+        .append('svg')
+        .attr('height', '16')
+        .attr('width', '16')
+        .attr('y', '2')
+        .attr('x', '2')
+        .attr('class', 'node-icon-inner');
+
+      nodeInner
         .append('use')
         .attr('class', 'node-icon')
-        .attr('data-uid', this.getNodeIdentifier)
-        .attr('transform', 'translate(8, -8)');
+        .attr('data-uid', this.getNodeIdentifier);
 
-      nodeContainer
+      const nodeIconOverlay = nodeInner
+        .append('svg')
+        .attr('height', '11')
+        .attr('width', '11')
+        .attr('y', '5')
+        .attr('x', '5');
+
+      nodeIconOverlay
         .append('use')
-        .attr('transform', 'translate(8, -3)')
         .attr('class', 'node-icon-overlay');
 
-      nodeContainer
+      const nodeIconLocked = nodeInner
+        .append('svg')
+        .attr('height', '11')
+        .attr('width', '11')
+        .attr('y', '5')
+        .attr('x', '5');
+
+      nodeIconLocked
         .append('use')
-        .attr('x', 27)
-        .attr('y', -7)
         .attr('class', 'node-icon-locked');
     }
 
