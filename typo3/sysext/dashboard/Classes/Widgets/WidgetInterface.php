@@ -32,4 +32,15 @@ interface WidgetInterface
      * @return string
      */
     public function renderWidgetContent(): string;
+
+    /**
+     * This method returns the options of the widget as set in the registration.
+     *
+     * As we won't add new breaking changes to v11 at this moment, this method is commented for now. In v12 this will
+     * be part of the interface.
+     * @return array
+     */
+    /**
+     * public function getOptions(): array;
+     */
 }

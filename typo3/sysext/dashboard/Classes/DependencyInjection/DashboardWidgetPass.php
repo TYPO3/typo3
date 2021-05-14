@@ -81,7 +81,7 @@ final class DashboardWidgetPass implements CompilerPassInterface
         $attributes = array_merge([
             'iconIdentifier' => 'content-dashboard',
             'height' => 'small',
-            'width' => 'small',
+            'width' => 'small'
         ], $attributes);
 
         if (isset($attributes['groupNames'])) {

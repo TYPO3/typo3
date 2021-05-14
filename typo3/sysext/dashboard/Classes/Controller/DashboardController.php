@@ -282,6 +282,7 @@ class DashboardController extends AbstractController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/Grid');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetContentCollector');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetSelector');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRefresh');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRemover');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');

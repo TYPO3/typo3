@@ -56,6 +56,11 @@ class Dashboard
      */
     protected $widgets = [];
 
+    /**
+     * @var array<string,array>
+     */
+    protected $widgetOptions = [];
+
     public function __construct(
         string $identifier,
         string $title,
@@ -112,6 +117,11 @@ class Dashboard
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
             if (array_key_exists($widgetConfig['identifier'], $availableWidgets)) {
                 $this->widgets[$hash] = $availableWidgets[$widgetConfig['identifier']];
+
+                $widgetObject = $this->widgetRegistry->getAvailableWidget($widgetConfig['identifier']);
+                if (method_exists($widgetObject, 'getOptions')) {
+                    $this->widgetOptions[$hash] = $widgetObject->getOptions();
+                }
             }
         }
     }
@@ -122,5 +132,13 @@ class Dashboard
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return array<string,array>
+     */
+    public function getWidgetOptions(): array
+    {
+        return $this->widgetOptions;
     }
 }

@@ -13,6 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 class WidgetContentCollector {
 
@@ -23,48 +24,69 @@ class WidgetContentCollector {
   }
 
   public initialize(): void {
+    this.registerEvents();
     const items = document.querySelectorAll(this.selector);
     items.forEach((triggerElement: HTMLElement): void => {
-      const widgetWaitingElement = triggerElement.querySelector('.widget-waiting');
-      const widgetContentElement = triggerElement.querySelector('.widget-content');
-      const widgetErrorElement = triggerElement.querySelector('.widget-error');
+      let event: Event;
+      const eventInitDict: EventInit = {
+        bubbles: true,
+      };
+      event = new Event('widgetRefresh', eventInitDict);
+      triggerElement.dispatchEvent(event);
+    });
+  }
 
-      const sentRequest = (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_get_widget_content))
-        .withQueryArguments({
-          widget: triggerElement.dataset.widgetKey,
-        })
-        .get()
-        .then(async (response: AjaxResponse): Promise<any> => {
-          const data = await response.resolve();
-          if (widgetContentElement !== null) {
-            widgetContentElement.innerHTML = data.content;
-            widgetContentElement.classList.remove('hide');
-          }
-          if (widgetWaitingElement !== null) {
-            widgetWaitingElement.classList.add('hide');
-          }
+  private registerEvents(): void {
+    new RegularEvent('widgetRefresh', (e: Event, target: HTMLElement): void => {
+      e.preventDefault();
+      this.getContentForWidget(target);
+    }).delegateTo(document, this.selector);
+  }
 
-          let event: Event;
-          const eventInitDict: EventInit = {
-            bubbles: true,
-          };
-          if (Object.keys(data.eventdata).length > 0) {
-            event = new CustomEvent('widgetContentRendered', {...eventInitDict, detail: data.eventdata});
-          } else {
-            event = new Event('widgetContentRendered', eventInitDict);
-          }
-          triggerElement.dispatchEvent(event);
-        });
+  private getContentForWidget(element: HTMLElement): void {
+    const widgetWaitingElement = element.querySelector('.widget-waiting');
+    const widgetContentElement = element.querySelector('.widget-content');
+    const widgetErrorElement = element.querySelector('.widget-error');
 
-      sentRequest.catch((reason: Error): void => {
-        if (widgetErrorElement !== null) {
-          widgetErrorElement.classList.remove('hide');
+    widgetWaitingElement.classList.remove('hide');
+    widgetContentElement.classList.add('hide');
+    widgetErrorElement.classList.add('hide');
+
+    const sentRequest = (new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_get_widget_content))
+      .withQueryArguments({
+        widget: element.dataset.widgetKey,
+      })
+      .get()
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
+        if (widgetContentElement !== null) {
+          widgetContentElement.innerHTML = data.content;
+          widgetContentElement.classList.remove('hide');
         }
         if (widgetWaitingElement !== null) {
           widgetWaitingElement.classList.add('hide');
         }
-        console.warn(`Error while retrieving widget [${triggerElement.dataset.widgetKey}] content: ${reason.message}`);
+
+        let event: Event;
+        const eventInitDict: EventInit = {
+          bubbles: true,
+        };
+        if (Object.keys(data.eventdata).length > 0) {
+          event = new CustomEvent('widgetContentRendered', {...eventInitDict, detail: data.eventdata});
+        } else {
+          event = new Event('widgetContentRendered', eventInitDict);
+        }
+        element.dispatchEvent(event);
       });
+
+    sentRequest.catch((reason: Error): void => {
+      if (widgetErrorElement !== null) {
+        widgetErrorElement.classList.remove('hide');
+      }
+      if (widgetWaitingElement !== null) {
+        widgetWaitingElement.classList.add('hide');
+      }
+      console.warn(`Error while retrieving widget [${element.dataset.widgetKey}] content: ${reason.message}`);
     });
   }
 }

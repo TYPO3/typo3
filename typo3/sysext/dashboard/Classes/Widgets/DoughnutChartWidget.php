@@ -112,4 +112,12 @@ class DoughnutChartWidget implements WidgetInterface, EventDataInterface, Additi
             'TYPO3/CMS/Dashboard/ChartInitializer',
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }

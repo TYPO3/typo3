@@ -131,4 +131,12 @@ class RssWidget implements WidgetInterface
 
         return $items;
     }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }

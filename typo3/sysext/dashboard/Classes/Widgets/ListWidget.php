@@ -86,4 +86,12 @@ class ListWidget implements WidgetInterface
     {
         return $this->dataProvider->getItems();
     }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }

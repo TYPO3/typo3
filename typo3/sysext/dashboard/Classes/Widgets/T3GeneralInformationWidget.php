@@ -72,4 +72,12 @@ class T3GeneralInformationWidget implements WidgetInterface
         ]);
         return $this->view->render();
     }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }
