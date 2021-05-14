@@ -157,7 +157,7 @@ export class SvgTree extends LitElement {
       delay: 50,
       trigger: 'hover',
       placement: 'right',
-      container: '#' + this.id,
+      container: typeof this.settings.id !== 'undefined' ? '#' + this.settings.id : 'body',
     }
 
     this.updateScrollPosition();

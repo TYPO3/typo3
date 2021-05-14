@@ -37,6 +37,7 @@ export class SelectTreeElement {
     this.tree.addEventListener('typo3:svg-tree:node-selected', () => { callback(); } );
 
     const settings = {
+      id: treeWrapperId,
       dataUrl: this.generateRequestUrl(),
       readOnlyMode: parseInt(this.recordField.dataset.readOnly, 10) === 1,
       input: this.recordField,

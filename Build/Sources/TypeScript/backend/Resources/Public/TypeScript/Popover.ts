@@ -93,7 +93,7 @@ class Popover {
       $element.each((i, el) => {
         const popover = $(el).data('typo3.bs.popover');
         if (popover) {
-          popover.config[key] = value;
+          popover._config[key] = value;
         }
       });
     }
