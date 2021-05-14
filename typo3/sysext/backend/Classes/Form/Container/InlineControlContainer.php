@@ -180,7 +180,7 @@ class InlineControlContainer extends AbstractContainer
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
             'min' => $config['minitems'],
             'max' => $config['maxitems'],
-            'sortable' => $config['appearance']['useSortable'],
+            'sortable' => $config['appearance']['useSortable'] ?? false,
             'top' => [
                 'table' => $top['table'],
                 'uid' => $top['uid']
@@ -207,7 +207,7 @@ class InlineControlContainer extends AbstractContainer
                     if ($type === 'select') {
                         // A select field is an array of uids. See TcaSelectItems data provider for details.
                         // Pick first entry, ends up as eg. $value = 42.
-                        $value = $value['0'];
+                        $value = $value['0'] ?? [];
                     } else {
                         // A group field is an array of arrays containing uid + table + title + row.
                         // See TcaGroup data provider for details.
@@ -535,7 +535,7 @@ class InlineControlContainer extends AbstractContainer
         }
         if (($showUpload || $showByUrl) && $isDirectFileUploadEnabled) {
             $folder = $backendUser->getDefaultUploadFolder(
-                $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : $this->data['parentPageRow']['uid'],
+                $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),
                 $this->data['tableName'],
                 $this->data['fieldName']
             );
@@ -611,6 +611,10 @@ class InlineControlContainer extends AbstractContainer
      */
     protected function renderPossibleRecordsSelectorTypeSelect(array $config, array $uniqueIds)
     {
+        $config += [
+            'autoSizeMax' => 0,
+            'foreign_table' => '',
+        ];
         $possibleRecords = $config['selectorOrUniquePossibleRecords'];
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         // Create option tags:

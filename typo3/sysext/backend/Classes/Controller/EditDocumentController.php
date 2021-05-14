@@ -583,7 +583,7 @@ class EditDocumentController
                     foreach ($keys as $key) {
                         $editId = $tce->substNEWwithIDs[$key];
                         // Check if the $editId isn't a child record of an IRRE action
-                        if (!(is_array($tce->newRelatedIDs[$tableName])
+                        if (!(is_array($tce->newRelatedIDs[$tableName] ?? null)
                             && in_array($editId, $tce->newRelatedIDs[$tableName]))
                         ) {
                             // Translate new id to the workspace version
@@ -994,7 +994,7 @@ class EditDocumentController
             if ($editForm) {
                 $this->firstEl = reset($this->elementsData);
                 // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
-                if (($this->docDat[1] !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
+                if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
                     && !$this->dontStoreDocumentRef
                 ) {
                     $this->docHandler[$this->storeUrlMd5] = [
@@ -1306,7 +1306,7 @@ class EditDocumentController
     protected function isInconsistentLanguageHandlingAllowed(): bool
     {
         $allowInconsistentLanguageHandling = BackendUtility::getPagesTSconfig(
-            $this->pageinfo['uid']
+            $this->pageinfo['uid'] ?? 0
         )['mod']['web_layout']['allowInconsistentLanguageHandling'] ?? ['value' => '0'];
 
         return $allowInconsistentLanguageHandling['value'] === '1';
@@ -1323,14 +1323,14 @@ class EditDocumentController
         if ($this->firstEl['table'] === 'tt_content') {
             if (!$this->isSavedRecord) {
                 $this->isPageInFreeTranslationMode = $this->getFreeTranslationMode(
-                    (int)$this->pageinfo['uid'],
-                    (int)$this->defVals['colPos'],
+                    (int)($this->pageinfo['uid'] ?? 0),
+                    (int)($this->defVals['colPos'] ?? 0),
                     $sysLanguageUid
                 );
             } else {
                 $this->isPageInFreeTranslationMode = $this->getFreeTranslationMode(
-                    (int)$this->pageinfo['uid'],
-                    (int)$record['colPos'],
+                    (int)($this->pageinfo['uid'] ?? 0),
+                    (int)($record['colPos'] ?? 0),
                     $sysLanguageUid
                 );
             }
@@ -2003,8 +2003,8 @@ class EditDocumentController
     protected function languageSwitch(string $table, int $uid, $pid = null)
     {
         $backendUser = $this->getBackendUser();
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
         // Table editable and activated for languages?
         if ($backendUser->check('tables_modify', $table)
             && $languageField

@@ -139,7 +139,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             if (!empty($GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField'])
                 && isset($result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']])
             ) {
-                $relatedFormData['currentSysLanguage'] = $result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField']][0];
+                $relatedFormData['currentSysLanguage'] = $result['databaseRow'][$GLOBALS['TCA'][$result['tableName']]['ctrl']['languageField'] ?? null][0] ?? '';
             }
             $value = $this->getPlaceholderValue($fieldNameArray, $relatedFormData, $recursionLevel + 1);
         }

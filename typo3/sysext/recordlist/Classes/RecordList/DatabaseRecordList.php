@@ -1529,7 +1529,7 @@ class DatabaseRecordList
 
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
             // or if default values can depend on previous record):
-            if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
+            if ((($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) || ($GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'] ?? false)) && $permsEdit) {
                 $neededPermission = $table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT;
                 if ($this->calcPerms->isGranted($neededPermission)) {
                     if ($isL10nOverlay || $isDeletePlaceHolder) {
@@ -1545,7 +1545,7 @@ class DatabaseRecordList
                         ];
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
-                        if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+                        if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
                             $titleLabel .= ($table === 'pages' ? 'Page' : 'Record');
                         }
                         $newLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);

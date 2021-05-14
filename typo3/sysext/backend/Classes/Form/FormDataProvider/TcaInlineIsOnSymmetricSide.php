@@ -39,7 +39,7 @@ class TcaInlineIsOnSymmetricSide implements FormDataProviderInterface
         }
 
         $result['isOnSymmetricSide'] = MathUtility::canBeInterpretedAsInteger($result['databaseRow']['uid'])
-            && $result['inlineParentConfig']['symmetric_field']
+            && ($result['inlineParentConfig']['symmetric_field'] ?? false)
             // non-strict comparison by intention
             && $result['inlineParentUid'] == $result['databaseRow'][$result['inlineParentConfig']['symmetric_field']][0];
 

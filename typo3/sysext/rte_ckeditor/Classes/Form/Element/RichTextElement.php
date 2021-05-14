@@ -187,7 +187,7 @@ class RichTextElement extends AbstractFormElement
             $contentLanguage = $this->rteConfiguration['config']['defaultContentLanguage'] ?? 'en_US';
         }
         $languageCodeParts = explode('_', $contentLanguage);
-        $contentLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
+        $contentLanguage = strtolower($languageCodeParts[0]) . (!empty($languageCodeParts[1]) ? '_' . strtoupper($languageCodeParts[1]) : '');
         // Find the configured language in the list of localization locales
         $locales = GeneralUtility::makeInstance(Locales::class);
         // If not found, default to 'en'
@@ -311,7 +311,7 @@ class RichTextElement extends AbstractFormElement
             unset($configuration['configName']);
             unset($configuration['resource']);
 
-            if ($configuration['route']) {
+            if ($configuration['route'] ?? null) {
                 $configuration['routeUrl'] = (string)$uriBuilder->buildUriFromRoute($configuration['route'], $urlParameters);
             }
 

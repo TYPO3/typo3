@@ -87,7 +87,7 @@ class SelectSingleElement extends AbstractFormElement
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $uniqueIds = null;
-        if ($this->data['isInlineChild'] && $this->data['inlineParentUid']) {
+        if (($this->data['isInlineChild'] ?? false) && ($this->data['inlineParentUid'] ?? false)) {
             // @todo: At least parts of this if is dead and/or broken: $uniqueIds is filled but never used.
             // See InlineControlContainer where 'inlineData' 'unique' 'used' is set. What exactly is
             // this if supposed to do and when should it kick in and what for?
@@ -101,8 +101,8 @@ class SelectSingleElement extends AbstractFormElement
             // hide uid of parent record for symmetric relations
             if ($this->data['inlineParentConfig']['foreign_table'] === $table
                 && (
-                    $this->data['inlineParentConfig']['foreign_field'] === $field
-                    || $this->data['inlineParentConfig']['symmetric_field'] === $field
+                    ($this->data['inlineParentConfig']['foreign_field'] ?? false) === $field
+                    || ($this->data['inlineParentConfig']['symmetric_field'] ?? false) === $field
                 )
             ) {
                 $uniqueIds[] = $this->data['inlineParentUid'];

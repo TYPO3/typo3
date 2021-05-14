@@ -262,7 +262,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      */
     protected function addForeignSelectorAndUniquePossibleRecords(array $result, $fieldName)
     {
-        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'])) {
+        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'] ?? null)) {
             return $result;
         }
 
@@ -320,7 +320,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
 
         /** @var TcaDatabaseRecord $formDataGroup */
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
@@ -347,16 +347,16 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             'inlineParentFieldName' => $parentFieldName,
 
             // values of the top most parent element set on first level and not overridden on following levels
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'] ?? '',
+            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'] ?? '',
+            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'] ?? '',
         ];
 
         // For foreign_selector with useCombination $mainChild is the mm record
         // and $combinationChild is the child-child. For 1:n "normal" relations,
         // $mainChild is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             try {
                 $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig);
             } catch (DatabaseRecordException $e) {

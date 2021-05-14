@@ -262,7 +262,6 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formInstanceName = 'bar';
         $token = $subject->generateToken($formName, $action, $formInstanceName);
         $subject->validateToken($token, $formName, $action, $formInstanceName);
-        $subject->__destruct();
     }
 
     /**
@@ -280,7 +279,6 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formInstanceName = 'bar';
         $subject->generateToken($formName, $action, $formInstanceName);
         $subject->validateToken('an invalid token ...', $formName, $action, $formInstanceName);
-        $subject->__destruct();
     }
 
     /**
@@ -298,6 +296,5 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formInstanceName = 'bar';
         $token = $subject->generateToken($formName, $action, $formInstanceName);
         $subject->validateToken($token, 'another form name', $action, $formInstanceName);
-        $subject->__destruct();
     }
 }

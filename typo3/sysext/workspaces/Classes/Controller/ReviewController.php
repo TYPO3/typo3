@@ -104,7 +104,7 @@ class ReviewController
             'depth_infi' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
         ]);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
-        $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'];
+        $states = $this->getBackendUser()->uc['moduleData']['Workspaces']['States'] ?? [];
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');

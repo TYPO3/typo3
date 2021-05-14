@@ -600,11 +600,11 @@ class ShortcutRepository
                         $selectFields[] = 'doktype';
                     }
 
-                    if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+                    if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? null)) {
                         $selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
                     }
 
-                    if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
+                    if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'] ?? null) {
                         $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
                     }
 
@@ -642,9 +642,9 @@ class ShortcutRepository
 
                 if (strpos($moduleName, '_') !== false) {
                     [$mainModule, $subModule] = explode('_', $moduleName, 2);
-                    $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
+                    $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
                 } elseif ($moduleName !== '') {
-                    $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'];
+                    $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'] ?? '';
                 }
 
                 if (!$iconIdentifier) {

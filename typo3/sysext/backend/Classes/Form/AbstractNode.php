@@ -41,7 +41,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * A list of default field information added to the element / container.

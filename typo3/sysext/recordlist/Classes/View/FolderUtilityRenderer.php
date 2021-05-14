@@ -61,8 +61,8 @@ class FolderUtilityRenderer
         $lang = $this->getLanguageService();
 
         if (!$folderObject->checkActionPermission('write')
-            || !$backendUser->isAdmin() && !($userTsConfig['options.']['createFoldersInEB'] ?? false)
-            || $userTsConfig['options.']['folderTree.']['hideCreateFolder'] ?? false
+            || (!$backendUser->isAdmin() && !($userTsConfig['options.']['createFoldersInEB'] ?? false))
+            || ($userTsConfig['options.']['folderTree.']['hideCreateFolder'] ?? false)
         ) {
             // Do not show create folder form if it is denied
             return '';

@@ -168,7 +168,7 @@ class InlineRecordContainer extends AbstractContainer
         }
         $hiddenFieldHtml = implode(LF, $resultArray['additionalHiddenFields'] ?? []);
 
-        if ($inlineConfig['renderFieldsOnly']) {
+        if ($inlineConfig['renderFieldsOnly'] ?? false) {
             // Render "body" part only
             $html .= $combinationHtml;
         } else {
@@ -206,12 +206,12 @@ class InlineRecordContainer extends AbstractContainer
                 'data-placeholder-record' => $data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ? '1' : '0'
             ];
 
-            $ariaExpanded = $data['isInlineChildExpanded'] ? 'true' : 'false';
+            $ariaExpanded = ($data['isInlineChildExpanded'] ?? false) ? 'true' : 'false';
             $ariaControls = htmlspecialchars($objectId . '_fields', ENT_QUOTES | ENT_HTML5);
             $ariaAttributesString = 'aria-expanded="' . $ariaExpanded . '" aria-controls="' . $ariaControls . '"';
             $html = '
 				<div ' . GeneralUtility::implodeAttributes($containerAttributes, true) . '>
-					<div class="panel-heading" data-bs-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
+					<div class="panel-heading" data-bs-toggle="formengine-inline" id="' . htmlspecialchars($hashedObjectId, ENT_QUOTES | ENT_HTML5) . '_header" data-expandSingle="' . (($inlineConfig['appearance']['expandSingle'] ?? false) ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
@@ -416,6 +416,11 @@ class InlineRecordContainer extends AbstractContainer
     protected function renderForeignRecordHeaderControl(array $data)
     {
         $rec = $data['databaseRow'];
+        $rec += [
+            'uid' => 0,
+            'table_local' => '',
+            'sys_language_uid' => '',
+        ];
         $inlineConfig = $data['inlineParentConfig'];
         $foreignTable = $inlineConfig['foreign_table'];
         $languageService = $this->getLanguageService();
@@ -440,8 +445,10 @@ class InlineRecordContainer extends AbstractContainer
         $tcaTableCols = $GLOBALS['TCA'][$foreignTable]['columns'];
         $isPagesTable = $foreignTable === 'pages';
         $isSysFileReferenceTable = $foreignTable === 'sys_file_reference';
-        $enableManualSorting = $tcaTableCtrl['sortby'] || $inlineConfig['MM'] || !$data['isOnSymmetricSide']
-            && $inlineConfig['foreign_sortby'] || $data['isOnSymmetricSide'] && $inlineConfig['symmetric_sortby'];
+        $enableManualSorting = ($tcaTableCtrl['sortby'] ?? false)
+            || ($inlineConfig['MM'] ?? false)
+            || (!($data['isOnSymmetricSide'] ?? false) && ($inlineConfig['foreign_sortby'] ?? false))
+            || (($data['isOnSymmetricSide'] ?? false) && ($inlineConfig['symmetric_sortby'] ?? false));
         $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess((int)($data['parentPageRow']['uid'] ?? 0), $backendUser->getPagePermsClause(Permission::PAGE_SHOW))));
         // If the listed table is 'pages' we have to request the permission settings for each page:
         $localCalcPerms = new Permission(Permission::NOTHING);
@@ -482,12 +489,12 @@ class InlineRecordContainer extends AbstractContainer
             }
         }
         // If the table is NOT a read-only table, then show these links:
-        if (!$isParentReadOnly && !$tcaTableCtrl['readOnly'] && !$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
+        if (!$isParentReadOnly && !($tcaTableCtrl['readOnly'] ?? false) && !($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
             if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
-                if (!$isPagesTable && $calcPerms->editContentPermissionIsGranted() || $isPagesTable && $calcPerms->createPagePermissionIsGranted()) {
+                if ((!$isPagesTable && $calcPerms->editContentPermissionIsGranted()) || ($isPagesTable && $calcPerms->createPagePermissionIsGranted())) {
                     $style = '';
-                    if ($inlineConfig['inline']['inlineNewButtonStyle']) {
+                    if ($inlineConfig['inline']['inlineNewButtonStyle'] ?? false) {
                         $style = ' style="' . $inlineConfig['inline']['inlineNewButtonStyle'] . '"';
                     }
                     $cells['new'] = '
@@ -560,9 +567,9 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // "Delete" link:
-            if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms->deletePagePermissionIsGranted()
-                    || !$isPagesTable && $calcPerms->editContentPermissionIsGranted()
-                    || $isSysFileReferenceTable && $calcPerms->editPagePermissionIsGranted())
+            if ($enabledControls['delete'] && (($isPagesTable && $localCalcPerms->deletePagePermissionIsGranted())
+                    || (!$isPagesTable && $calcPerms->editContentPermissionIsGranted())
+                    || ($isSysFileReferenceTable && $calcPerms->editPagePermissionIsGranted()))
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
                 $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
@@ -570,8 +577,13 @@ class InlineRecordContainer extends AbstractContainer
             }
 
             // "Hide/Unhide" links:
-            $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
-            if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))) {
+            $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'] ?? '';
+            if (($enabledControls['hide'] ?? false)
+                && $permsEdit
+                && $hiddenField
+                && $tcaTableCols[$hiddenField]
+                && (!($tcaTableCols[$hiddenField]['exclude'] ?? false) || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))
+            ) {
                 if ($rec[$hiddenField]) {
                     $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')));
                     $cells['hide'] = '
@@ -587,14 +599,14 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // Drag&Drop Sorting: Sortable handler for script.aculo.us
-            if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $inlineConfig['appearance']['useSortable']) {
+            if (($enabledControls['dragdrop'] ?? false) && $permsEdit && $enableManualSorting && ($inlineConfig['appearance']['useSortable'] ?? false)) {
                 $cells['dragdrop'] = '
                     <span class="btn btn-default sortableHandle" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')) . '">
                         ' . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '
                     </span>';
             }
-        } elseif ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] && $isParentExisting) {
-            if ($enabledControls['localize'] && $data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
+        } elseif (($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false) && $isParentExisting) {
+            if (($enabledControls['localize'] ?? false) && ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
                 $cells['localize'] = '
                     <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '

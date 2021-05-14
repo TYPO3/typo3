@@ -327,9 +327,9 @@ class ExtendedTemplateService extends TemplateService
                 $key = preg_replace('/\\.$/', '', $key) ?? '';
                 if (substr($key, -1) !== '.') {
                     if (MathUtility::canBeInterpretedAsInteger($key)) {
-                        $keyArr_num[$key] = $arr[$key];
+                        $keyArr_num[$key] = $arr[$key] ?? '';
                     } else {
-                        $keyArr_alpha[$key] = $arr[$key];
+                        $keyArr_alpha[$key] = $arr[$key] ?? '';
                     }
                 }
             }
@@ -344,8 +344,8 @@ class ExtendedTemplateService extends TemplateService
             // This excludes all constants starting with '_' from being shown.
             if ($this->bType !== 'const' || $depth[0] !== '_') {
                 $goto = substr(md5($depth), 0, 6);
-                $deeper = is_array($arr[$key . '.']) && ($this->tsbrowser_depthKeys[$depth] || $this->ext_expandAllNotes);
-                $PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
+                $deeper = is_array($arr[$key . '.'] ?? null) && (($this->tsbrowser_depthKeys[$depth] ?? false) || $this->ext_expandAllNotes);
+                $PM = is_array($arr[$key . '.'] ?? null) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
                 $HTML .= $depthData . '<li><span class="list-tree-group">';
                 if ($PM !== 'join') {
                     $urlParameters = [
@@ -367,11 +367,11 @@ class ExtendedTemplateService extends TemplateService
                         ];
                         $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                         if ($this->bType !== 'const') {
-                            $ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
+                            $ln = is_array($arr[$key . '.ln..'] ?? null) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
                         } else {
                             $ln = '';
                         }
-                        if ($this->tsbrowser_searchKeys[$depth] & 4) {
+                        if (($this->tsbrowser_searchKeys[$depth] ?? 0) & 4) {
                             // The key has matched the search string
                             $label = '<strong class="text-danger">' . $label . '</strong>';
                         }
@@ -382,7 +382,7 @@ class ExtendedTemplateService extends TemplateService
                 if (isset($arr[$key])) {
                     $theValue = $arr[$key];
                     // The value has matched the search string
-                    if ($this->tsbrowser_searchKeys[$depth] & 2) {
+                    if (($this->tsbrowser_searchKeys[$depth] ?? 0) & 2) {
                         $HTML .= ' = <span class="list-tree-value text-danger">' . htmlspecialchars($theValue) . '</span>';
                     } else {
                         $HTML .= ' = <span class="list-tree-value">' . htmlspecialchars($theValue) . '</span>';
@@ -405,7 +405,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $HTML .= '</span>';
                 if ($deeper) {
-                    $HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData, '', $arr[$key], $alphaSort);
+                    $HTML .= $this->ext_getObjTree($arr[$key . '.'] ?? [], $depth, $depthData, '', $arr[$key] ?? '', $alphaSort);
                 }
             }
         }

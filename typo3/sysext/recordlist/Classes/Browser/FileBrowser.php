@@ -105,7 +105,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $data['expandFolder'] = $this->expandFolder;
             $store = true;
         } else {
-            $this->expandFolder = $data['expandFolder'];
+            $this->expandFolder = $data['expandFolder'] ?? null;
             $store = false;
         }
         return [$data, $store];
@@ -372,7 +372,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 . BackendUtility::getFuncCheck(
                     '',
                     'SET[displayThumbs]',
-                    $_MOD_SETTINGS['displayThumbs'],
+                    $_MOD_SETTINGS['displayThumbs'] ?? false,
                     $this->thisScript,
                     $addParams,
                     'id="checkDisplayThumbs"'

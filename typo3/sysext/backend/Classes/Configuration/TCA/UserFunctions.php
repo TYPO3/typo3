@@ -39,7 +39,7 @@ class UserFunctions
             '%s %s [%d] (%s) Base: %s',
             $record['enabled'] ? '' : '[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disabled') . ']',
             $record['title'],
-            $record['languageId'][0],
+            (int)($record['languageId'][0] ?? 0),
             $record['locale'],
             $record['base']
         );

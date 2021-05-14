@@ -214,12 +214,12 @@ class ViewModuleController
         $icons['mobile'] = $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render('inline');
         $icons['unidentified'] = $this->iconFactory->getIcon('actions-device-unidentified', Icon::SIZE_SMALL)->render('inline');
 
-        $current = ($backendUser->uc['moduleData']['web_view']['States']['current'] ?: []);
+        $current = $backendUser->uc['moduleData']['web_view']['States']['current'] ?? [];
         $current['label'] = ($current['label'] ?? $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
         $current['width'] = (isset($current['width']) && (int)$current['width'] >= 300 ? (int)$current['width'] : 320);
         $current['height'] = (isset($current['height']) && (int)$current['height'] >= 300 ? (int)$current['height'] : 480);
 
-        $custom = ($backendUser->uc['moduleData']['web_view']['States']['custom'] ?: []);
+        $custom = $backendUser->uc['moduleData']['web_view']['States']['custom'] ?? [];
         $custom['width'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 320);
         $custom['height'] = (isset($current['custom']) && (int)$current['custom'] >= 300 ? (int)$current['custom'] : 480);
 
@@ -314,7 +314,7 @@ class ViewModuleController
     {
         $languages = [];
         $modSharedTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.'] ?? [];
-        if ($modSharedTSconfig['view.']['disableLanguageSelector'] === '1') {
+        if (($modSharedTSconfig['view.']['disableLanguageSelector'] ?? false) === '1') {
             return $languages;
         }
 
@@ -347,7 +347,7 @@ class ViewModuleController
     {
         $languageId = (int)$languageParam;
         if ($languageParam === null) {
-            $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'];
+            $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'] ?? [];
             $languages = $this->getPreviewLanguages($pageId);
             if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
                 $languageId = (int)$states['languageSelectorValue'];

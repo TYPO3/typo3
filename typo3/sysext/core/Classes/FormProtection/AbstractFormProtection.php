@@ -52,21 +52,13 @@ abstract class AbstractFormProtection
     }
 
     /**
-     * Frees as much memory as possible.
-     */
-    public function __destruct()
-    {
-        unset($this->sessionToken);
-    }
-
-    /**
      * Deletes the session token and persists the (empty) token.
      *
      * This function is intended to be called when a user logs on or off.
      */
     public function clean()
     {
-        unset($this->sessionToken);
+        $this->sessionToken = '';
         $this->persistSessionToken();
     }
 

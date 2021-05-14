@@ -1168,7 +1168,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $aTagParams = ' ' . $this->stdWrapValue('ATagParams', $conf ?? []);
         if ($addGlobal) {
-            $aTagParams = ' ' . trim($this->getTypoScriptFrontendController()->ATagParams . $aTagParams);
+            $globalParams = $this->getTypoScriptFrontendController()->ATagParams ?? '';
+            $aTagParams = ' ' . trim($globalParams . $aTagParams);
         }
         // Extend params
         $_params = [
@@ -6585,7 +6586,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getTypoScriptFrontendController()
     {
-        return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'];
+        return $this->typoScriptFrontendController ?: $GLOBALS['TSFE'] ?? null;
     }
 
     /**

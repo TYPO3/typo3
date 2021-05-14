@@ -64,7 +64,7 @@ class RichTextNodeResolver implements NodeResolverInterface
             && isset($parameterArray['fieldConf']['config']['richtextConfiguration'])
             && is_array($parameterArray['fieldConf']['config']['richtextConfiguration'])
             // If RTE is not disabled on configuration level
-            && !$parameterArray['fieldConf']['config']['richtextConfiguration']['disabled']
+            && !($parameterArray['fieldConf']['config']['richtextConfiguration']['disabled'] ?? false)
         ) {
             return RichTextElement::class;
         }

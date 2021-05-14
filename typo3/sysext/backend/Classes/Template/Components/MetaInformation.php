@@ -59,13 +59,13 @@ class MetaInformation
         $title = '';
         // Is this a real page
         if (is_array($pageRecord) && !empty($pageRecord['uid'])) {
-            $title = substr($pageRecord['_thePathFull'], 0, -1);
+            $title = substr($pageRecord['_thePathFull'] ?? '', 0, -1);
             // Remove current page title
             $pos = strrpos($title, $pageRecord['title']);
             if ($pos !== false) {
                 $title = substr($title, 0, $pos);
             }
-        } elseif (!empty($pageRecord['combined_identifier'])) {
+        } elseif (!empty($pageRecord['combined_identifier'] ?? '')) {
             try {
                 $resourceObject = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $title = $resourceObject->getStorage()->getName() . ':';

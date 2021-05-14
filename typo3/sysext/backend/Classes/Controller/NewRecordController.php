@@ -568,10 +568,11 @@ class NewRecordController
                                 . '</ul>';
                         } else {
                             // Get the title
-                            if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
-                                continue;
-                            }
-                            if ($v['ctrl']['adminOnly'] && !$isAdmin) {
+                            if (($v['ctrl']['readOnly'] ?? false)
+                                || ($v['ctrl']['hideTable'] ?? false)
+                                || ($v['ctrl']['is_static'] ?? false)
+                                || (($v['ctrl']['adminOnly'] ?? false) && !$isAdmin)
+                            ) {
                                 continue;
                             }
                             $nameParts = explode('_', $table);
@@ -725,15 +726,10 @@ class NewRecordController
         }
         // Checking doktype:
         $doktype = (int)$page['doktype'];
-        if (!($allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])) {
-            $allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
-        }
+        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'] ?? '';
         // If all tables or the table is listed as an allowed type, return TRUE
-        if (strpos($allowedTableList, '*') !== false || GeneralUtility::inList($allowedTableList, $table)) {
-            return true;
-        }
 
-        return false;
+        return strpos($allowedTableList, '*') !== false || GeneralUtility::inList($allowedTableList, $table);
     }
 
     /**

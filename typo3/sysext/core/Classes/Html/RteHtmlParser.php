@@ -271,7 +271,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected function resolveAppliedTransformationModes(string $direction): array
     {
         // Setting modes / transformations to be called
-        if ((string)$this->procOptions['overruleMode'] !== '') {
+        if ((string)($this->procOptions['overruleMode'] ?? '') !== '') {
             $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
         } else {
             $modes = [$this->procOptions['mode']];

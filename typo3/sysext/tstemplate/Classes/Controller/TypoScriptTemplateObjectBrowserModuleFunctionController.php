@@ -180,7 +180,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], ($bType === 'setup' ? 'config' : 'constants'));
             $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
-            if ($POST['add_property'] || $POST['update_value'] || $POST['clear_object']) {
+            if (($POST['add_property'] ?? false) || ($POST['update_value'] ?? false) || ($POST['clear_object'] ?? false)) {
                 // add property
                 $line = '';
                 if (is_array($POST['data'])) {
@@ -239,7 +239,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
             $update = 1;
         }
-        if ($POST['Submit']) {
+        if ($POST['Submit'] ?? false) {
             // If any POST-vars are send, update the condition array
             $this->pObj->MOD_SETTINGS['tsbrowser_conditions'] = $POST['conditions'];
             $update = 1;
@@ -247,7 +247,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         if ($update) {
             $this->getBackendUserAuthentication()->pushModuleData('web_ts', $this->pObj->MOD_SETTINGS);
         }
-        $this->templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
+        $this->templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'] ?? [];
         $this->templateService->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
         // This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
         $this->templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
@@ -256,7 +256,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         if (!empty($sObj) && $this->templateService->constantMode) {
             $this->templateService->constantMode = 'untouched';
         }
-        $this->templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
+        $this->templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'] ?? '';
         $this->templateService->linkObjects = true;
         $this->templateService->ext_regLinenumbers = true;
         $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
@@ -322,12 +322,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             }
 
             $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"');
-            $assigns['postSearchField'] = $POST['search_field'];
-            $theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType];
+            $assigns['postSearchField'] = $POST['search_field'] ?? null;
+            $theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '';
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            [$theSetup, $theSetupValue] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?: '');
+            [$theSetup, $theSetupValue] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
             $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [

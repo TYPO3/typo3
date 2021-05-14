@@ -1209,7 +1209,7 @@ class RelationHandler
                             // Title
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
                         }
-                        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {
+                        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? false) {
                             // Alternative Title-Fields
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label_alt'];
                         }
@@ -1222,7 +1222,7 @@ class RelationHandler
                             'uid',
                             $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                         ));
-                    if ($this->additionalWhere[$table]) {
+                    if ($this->additionalWhere[$table] ?? false) {
                         $queryBuilder->andWhere(
                             QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table])
                         );

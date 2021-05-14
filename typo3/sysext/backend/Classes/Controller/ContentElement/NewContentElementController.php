@@ -477,7 +477,7 @@ class NewContentElementController
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
             // Exploding parameter string, if any (old style)
-            if ($wizardItems[$key]['params']) {
+            if ($wizardItems[$key]['params'] ?? false) {
                 // Explode GET vars recursively
                 $tempGetVars = [];
                 parse_str($wizardItems[$key]['params'], $tempGetVars);
@@ -494,9 +494,10 @@ class NewContentElementController
                 }
             }
             // If tt_content_defValues are defined...:
-            if (is_array($wizardItems[$key]['tt_content_defValues'])) {
+            if (is_array($wizardItems[$key]['tt_content_defValues'] ?? false)) {
                 $backendUser = $this->getBackendUser();
                 // Traverse field values:
+                $wizardItems[$key]['params'] ??= '';
                 foreach ($wizardItems[$key]['tt_content_defValues'] as $fN => $fV) {
                     if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
                         // Get information about if the field value is OK:
@@ -535,7 +536,7 @@ class NewContentElementController
         // remove headers without elements
         foreach ($wizardItems as $key => $cfg) {
             $tmp = explode('_', $key);
-            if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed)) {
+            if (($tmp[0] ?? null) && !($tmp[1] ?? null) && !in_array($tmp[0], $headersUsed)) {
                 unset($wizardItems[$key]);
             }
         }

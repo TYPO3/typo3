@@ -188,7 +188,8 @@ class FormResultCompiler
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
         // load the main module for FormEngine with all important JS functions
-        if (!is_array($this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] ?? null)) {
+        $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] ??= [];
+        if (!is_array($this->requireJsModules['TYPO3/CMS/Backend/FormEngine'])) {
             $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = [$this->requireJsModules['TYPO3/CMS/Backend/FormEngine']];
         }
         $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'][] = 'function(FormEngine) {

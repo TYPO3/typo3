@@ -73,7 +73,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
-        if (MathUtility::canBeInterpretedAsInteger($child['uid'])) {
+        if (isset($child['uid']) && MathUtility::canBeInterpretedAsInteger($child['uid'])) {
             // If uid comes in, it is the id of the record neighbor record "create after"
             $childVanillaUid = -1 * abs((int)$child['uid']);
         } else {
@@ -107,7 +107,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         }
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             // We have a foreign_selector. So, we just created a new record on an intermediate table in $childData.
             // Now, if a valid id is given as second ajax parameter, the intermediate row should be connected to an
             // existing record of the child-child table specified by the given uid. If there is no such id, user

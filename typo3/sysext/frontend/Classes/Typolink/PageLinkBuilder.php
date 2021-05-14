@@ -60,7 +60,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Link to page even if access is missing?
         if (isset($conf['linkAccessRestrictedPages'])) {
-            $disableGroupAccessCheck = (bool)$conf['linkAccessRestrictedPages'];
+            $disableGroupAccessCheck = (bool)($conf['linkAccessRestrictedPages'] ?? false);
         } else {
             $disableGroupAccessCheck = (bool)($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false);
         }
@@ -113,9 +113,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $MPvarAcc['re-map'] = $mount_info['MPvar'];
         }
         // Query Params:
-        $addQueryParams = $conf['addQueryString'] ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
+        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.']) : '';
         $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
-        if ($addQueryParams === '&' || $addQueryParams[0] !== '&') {
+        if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
         }
         // Mount pages are always local and never link to another domain
@@ -127,8 +127,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             // menu. Mount points always work in the content of the current domain and we must not change
             // domain if MP variables exist.
             // If we link across domains and page is free type shortcut, we must resolve the shortcut first!
-            if ((int)$page['doktype'] === PageRepository::DOKTYPE_SHORTCUT
-                && (int)$page['shortcut_mode'] === PageRepository::SHORTCUT_MODE_NONE
+            if ((int)($page['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT
+                && (int)($page['shortcut_mode'] ?? 0) === PageRepository::SHORTCUT_MODE_NONE
             ) {
                 // Save in case of broken destination or endless loop
                 $page2 = $page;
@@ -136,8 +136,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $maxLoopCount = 20;
                 while ($maxLoopCount
                     && is_array($page)
-                    && (int)$page['doktype'] === PageRepository::DOKTYPE_SHORTCUT
-                    && (int)$page['shortcut_mode'] === PageRepository::SHORTCUT_MODE_NONE
+                    && (int)($page['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT
+                    && (int)($page['shortcut_mode'] ?? 0) === PageRepository::SHORTCUT_MODE_NONE
                 ) {
                     $page = $tsfe->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
                     $maxLoopCount--;

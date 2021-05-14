@@ -46,7 +46,7 @@ class LogoutController
     {
         $this->processLogout();
 
-        $redirectUrl = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'];
+        $redirectUrl = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'] ?? '';
         $redirectUrl = GeneralUtility::sanitizeLocalUrl($redirectUrl);
         if (empty($redirectUrl)) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

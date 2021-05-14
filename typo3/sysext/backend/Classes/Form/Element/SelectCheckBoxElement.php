@@ -172,6 +172,10 @@ class SelectCheckBoxElement extends AbstractFormElement
 
             // Building the checkboxes
             foreach ($groups as $groupKey => $group) {
+                $group += [
+                    'items' => [],
+                    'header' => false,
+                ];
                 $groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
                 $groupIdCollapsible = $groupId . '-collapse';
                 $html[] = '<div id="' . $groupId . '" class="panel panel-default">';

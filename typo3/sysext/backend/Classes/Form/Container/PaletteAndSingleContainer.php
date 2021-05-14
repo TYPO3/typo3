@@ -214,7 +214,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                     'type' => 'linebreak',
                 ];
             } else {
-                if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
+                if (!is_array($this->data['processedTca']['columns'][$fieldName] ?? null)) {
                     continue;
                 }
                 $options = $this->data;

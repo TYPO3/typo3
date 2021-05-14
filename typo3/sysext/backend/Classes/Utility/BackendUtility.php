@@ -1702,7 +1702,7 @@ class BackendUtility
                                 $rVal = (int)$rVal;
                                 $r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
                                 if (is_array($r)) {
-                                    $lA[] = $lang->sL($theColConf['foreign_table_prefix'])
+                                    $lA[] = $lang->sL($theColConf['foreign_table_prefix'] ?? '')
                                         . self::getRecordTitle($theColConf['foreign_table'], $r, false, $forceResult);
                                 } else {
                                     $lA[] = $rVal ? '[' . $rVal . '!]' : '';
@@ -1819,7 +1819,7 @@ class BackendUtility
                 }
                 break;
             case 'check':
-                if (!is_array($theColConf['items'])) {
+                if (!is_array($theColConf['items'] ?? null)) {
                     $l = $value ? $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
                 } elseif (count($theColConf['items']) === 1) {
                     reset($theColConf['items']);
@@ -2754,7 +2754,7 @@ class BackendUtility
                     // If the $var is an array, which denotes the existence of a menu, we check if the value is permitted
                     if (is_array($var) && (!$dontValidateList || !GeneralUtility::inList($dontValidateList, $key))) {
                         // If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
-                        if (is_array($settings[$key]) || !isset($MOD_MENU[$key][$settings[$key]])) {
+                        if (is_array($settings[$key] ?? null) || !isset($MOD_MENU[$key][$settings[$key] ?? null])) {
                             $settings[$key] = (string)key($var);
                             $changed = 1;
                         }
@@ -2946,7 +2946,7 @@ class BackendUtility
             }
         }
         $res['_CURRENT_PID'] = $cPid;
-        $res['_THIS_UID'] = $row['uid'];
+        $res['_THIS_UID'] = $row['uid'] ?? 0;
         // So the row will be passed to foreign_table_where_query()
         $res['_THIS_ROW'] = $row;
         return $res;

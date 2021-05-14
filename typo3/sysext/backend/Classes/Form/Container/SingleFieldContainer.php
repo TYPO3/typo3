@@ -180,6 +180,13 @@ class SingleFieldContainer extends AbstractContainer
         $fieldName = $this->data['fieldName'];
         $fieldConfig = $this->data['processedTca']['columns'][$fieldName]['config'];
 
+        $fieldConfig += [
+            'MM' => '',
+            'foreign_table' => '',
+            'foreign_selector' => '',
+            'foreign_field' => '',
+        ];
+
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
@@ -198,7 +205,7 @@ class SingleFieldContainer extends AbstractContainer
                                         'appearance' => ['useCombination' => true],
                                         'foreign_selector' => $fieldName
                                     ],
-                                    'MM' => $fieldConfig['MM']
+                                    'MM' => $fieldConfig['MM'],
                                 ]
                             ]
                         ],

@@ -1036,7 +1036,7 @@ abstract class AbstractItemProvider
         $table = $result['tableName'];
         $row = $result['databaseRow'];
         $uid = $row['uid'];
-        if (BackendUtility::isTableWorkspaceEnabled($table) && (int)$row['t3ver_oid'] > 0) {
+        if (BackendUtility::isTableWorkspaceEnabled($table) && (int)($row['t3ver_oid'] ?? 0) > 0) {
             $uid = $row['t3ver_oid'];
         }
         return $uid;

@@ -305,9 +305,9 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineParentUid' => $result['databaseRow']['uid'],
             'inlineParentTableName' => $result['tableName'],
             'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => ($result['inlineTopMostParentTableName'] ?? false) ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => ($result['inlineTopMostParentFieldName'] ?? false) ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: ($inlineTopMostParent['uid'] ?? 0),
+            'inlineTopMostParentTableName' => ($result['inlineTopMostParentTableName'] ?? false) ?: ($inlineTopMostParent['table'] ?? ''),
+            'inlineTopMostParentFieldName' => ($result['inlineTopMostParentFieldName'] ?? false) ?: ($inlineTopMostParent['field'] ?? ''),
             // The sys_language uid 0
             'inlineChildChildUid' => 0,
         ];

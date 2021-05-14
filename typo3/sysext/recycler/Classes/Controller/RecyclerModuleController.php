@@ -203,7 +203,7 @@ class RecyclerModuleController
             'deleteDisable' => !$this->allowDelete,
             'depthSelection' => $this->getDataFromSession('depthSelection', '0'),
             'tableSelection' => $this->getDataFromSession('tableSelection', ''),
-            'States' => $this->getBackendUser()->uc['moduleData']['web_recycler']['States']
+            'States' => $this->getBackendUser()->uc['moduleData']['web_recycler']['States'] ?? []
         ];
     }
 

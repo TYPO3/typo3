@@ -49,7 +49,7 @@ class SelectIcons extends AbstractNode
                 $fieldValue = $this->data['databaseRow'][$this->data['fieldName']];
                 $selectIcons[] = [
                         'title' => $item[0],
-                        'active' => ($fieldValue[0] === (string)$item[1]) ? true : false,
+                        'active' => ($fieldValue[0] ?? false) === (string)($item[1] ?? ''),
                         'icon' => $icon,
                         'index' => $selectItemCounter,
                     ];
