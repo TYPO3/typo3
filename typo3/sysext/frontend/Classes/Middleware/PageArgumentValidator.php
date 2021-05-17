@@ -96,11 +96,11 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
         // Evaluate the cache hash parameter or dynamic arguments when coming from a Site-based routing
-        $cHash = $pageArguments->getArguments()['cHash'] ?? '';
+        $cHash = (string)($pageArguments->getArguments()['cHash'] ?? '');
         $queryParams = $pageArguments->getDynamicArguments();
-        if ($cHash || !empty($queryParams)) {
+        if ($cHash !== '' || !empty($queryParams)) {
             $relevantParametersForCacheHashArgument = $this->getRelevantParametersForCacheHashCalculation($pageArguments);
-            if ($cHash) {
+            if ($cHash !== '') {
                 if (empty($relevantParametersForCacheHashArgument)) {
                     // cHash was given, but nothing to be calculated, so let's do a redirect to the current page
                     // but without the cHash
@@ -135,7 +135,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      * Filters out the arguments that are necessary for calculating cHash
      *
      * @param PageArguments $pageArguments
-     * @return array
+     * @return array<string, string>
      */
     protected function getRelevantParametersForCacheHashCalculation(PageArguments $pageArguments): array
     {
@@ -149,7 +149,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      * This is used to cache pages with more parameters than just id and type.
      *
      * @param string $cHash the chash to check
-     * @param array $relevantParameters GET parameters necessary for cHash calculation
+     * @param array<string, string> $relevantParameters GET parameters necessary for cHash calculation
      * @param bool $pageNotFoundOnCacheHashError see $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']
      * @return bool if false, then a PageNotFound response is triggered
      */
@@ -174,7 +174,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      *
      * Should only be called if NO cHash parameter is given.
      *
-     * @param array $dynamicArguments
+     * @param array<string, string|array> $dynamicArguments
      * @param bool $pageNotFoundOnCacheHashError
      * @return bool
      */

@@ -23,7 +23,7 @@ was used to enable the cHash validation for non-cacheable plugins.
 Both plugin systems triggered the method :php:`TypoScriptFrontendController->reqCHash` which
 validated relevant GET parameters. However, the :php:`PageArgumentValidator` PSR-15 middleware now
 always validates the cHash, so a plugin does not need to know about cHash validation anymore and
-therefor does not need to set the option.
+therefore does not need to set the option.
 
 This means the options are not needed anymore, as the validation already happens during the Frontend
 request handling process. The options are removed.

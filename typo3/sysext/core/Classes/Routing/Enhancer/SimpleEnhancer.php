@@ -64,11 +64,11 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $dynamicCandidates = array_diff_key($parameters, $staticMappers);
 
         // all route arguments
-        $routeArguments = $this->getVariableProcessor()->inflateParameters($parameters, $route->getArguments());
+        $routeArguments = $variableProcessor->inflateParameters($parameters, $route->getArguments());
         // dynamic arguments, that don't have a static mapper
         $dynamicArguments = $variableProcessor
             ->inflateNamespaceParameters($dynamicCandidates, '');
-        // static arguments, that don't appear in dynamic arguments
+        // route arguments, that don't appear in dynamic arguments
         $staticArguments = ArrayUtility::arrayDiffKeyRecursive($routeArguments, $dynamicArguments);
 
         $page = $route->getOption('_page');
