@@ -40,17 +40,17 @@
                 </f:if>
             </ul>
 
-            <dl class="dl-horizontal dl-horizontal-wide distribution-detail-summary">
-                <dt><f:translate key="extensionList.distribution.title" /></dt>
-                <dd>{extension.title}</dd>
-                <dt><f:translate key="extensionList.distribution.key" /></dt>
-                <dd>{extension.extensionKey}</dd>
-                <dt><f:translate key="extensionList.distribution.version" /></dt>
-                <dd>{extension.version} (<f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date>)<br><span class="{extension.stateString}">{extension.stateString}</span></dd>
-                <dt><f:translate key="extensionList.distribution.author" /></dt>
-                <dd>{extension.authorName}</dd>
-                <dt><f:translate key="extensionList.distribution.downloads" /></dt>
-                <dd>{extension.alldownloadcounter}</dd>
+            <dl class="row mt-4 mb-4">
+                <dt class="col-sm-2"><f:translate key="extensionList.distribution.title" /></dt>
+                <dd class="col-sm-10">{extension.title}</dd>
+                <dt class="col-sm-2"><f:translate key="extensionList.distribution.key" /></dt>
+                <dd class="col-sm-10">{extension.extensionKey}</dd>
+                <dt class="col-sm-2"><f:translate key="extensionList.distribution.version" /></dt>
+                <dd class="col-sm-10">{extension.version} (<f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date>)<br><span class="{extension.stateString}">{extension.stateString}</span></dd>
+                <dt class="col-sm-2"><f:translate key="extensionList.distribution.author" /></dt>
+                <dd class="col-sm-10">{extension.authorName}</dd>
+                <dt class="col-sm-2"><f:translate key="extensionList.distribution.downloads" /></dt>
+                <dd class="col-sm-10">{extension.alldownloadcounter}</dd>
             </dl>
 
             <f:if condition="{extension.dependencies}">
