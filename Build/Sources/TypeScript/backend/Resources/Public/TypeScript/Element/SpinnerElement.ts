@@ -15,52 +15,79 @@ import {html, css, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {Sizes} from '../Enum/IconTypes';
 
+enum Variant {
+  light = 'light',
+  dark = 'dark'
+}
+
 /**
  * Module: TYPO3/CMS/Backend/Element/SpinnerElement
  *
  * @example
- * <typo3-backend-spinner size="small"></typo3-backend-spinner>
- * + attribute size can be one of small, medium, large
+ * <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
+ * + attribute size can be one of small, default, large or mega
  */
 @customElement('typo3-backend-spinner')
 export class SpinnerElement extends LitElement {
   @property({type: String}) size: Sizes = Sizes.default;
+  @property({type: String}) variant: Variant = Variant.dark;
 
   static styles = css`
     :host {
-      font-size: 32px;
+      display: flex;
       width: 1em;
       height: 1em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      line-height: 0;
     }
-    .spinner {
+    .icon {
+      position: relative;
       display: block;
-      border-style: solid;
-      border-color: #212121 #bababa #bababa;
-      border-radius: 50%;
-      width: 0.625em;
-      height: 0.625em;
-      border-width: 0.0625em;
-      animation: spin 1s linear infinite;
+      height: 1em;
+      width: 1em;
+      line-height: 1;
     }
-    :host([size=small]) .spinner {
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: block;
+      height: 1em;
+      width: 1em;
+      transform: translate3d(0, 0, 0);
+      fill: currentColor;
+    }
+    :host([variant=dark]) svg {
+      fill: #212121;
+    }
+    :host([variant=light]) svg {
+      fill: #fff;
+    }
+    :host([size=small]) {
       font-size: 16px;
     }
-    :host([size=large]) .spinner {
+    :host([size=default]) {
+      font-size: 32px;
+    }
+    :host([size=large]) {
       font-size: 48px;
     }
-    :host([size=mega]) .spinner {
+    :host([size=mega]) {
       font-size: 64px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
   `;
 
   public render(): TemplateResult {
-    return html`<div class="spinner"></div>`
+    return html`
+      <div class="icon">
+        <svg viewBox="0 0 16 16">
+          <path d="M8 15c-3.86 0-7-3.141-7-7 0-3.86 3.14-7 7-7 3.859 0 7 3.14 7 7 0 3.859-3.141 7-7 7zM8 3C5.243 3 3 5.243 3 8s2.243 5 5 5 5-2.243 5-5 -2.243-5-5-5z" opacity=".3"/>
+          <path d="M14 9a1 1 0 0 1-1-1c0-2.757-2.243-5-5-5a1 1 0 0 1 0-2c3.859 0 7 3.14 7 7a1 1 0 0 1-1 1z" transform-origin="center center">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="360" begin="0s" dur="1s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
+    `;
   }
 }

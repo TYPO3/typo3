@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import module = require('module');
 import {html, css, unsafeCSS, LitElement, TemplateResult, CSSResult} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
@@ -37,7 +36,7 @@ const iconSize = (identifier: CSSResult, size: number) => css`
 @customElement('typo3-backend-icon')
 export class IconElement extends LitElement {
   @property({type: String}) identifier: string;
-  @property({type: String, reflect: true}) size: Sizes = Sizes.default;
+  @property({type: String}) size: Sizes = Sizes.default;
   @property({type: String}) state: States = States.default;
   @property({type: String}) overlay: string = null;
   @property({type: String}) markup: MarkupIdentifiers = MarkupIdentifiers.inline;
@@ -58,15 +57,11 @@ export class IconElement extends LitElement {
     css`
       :host {
         display: flex;
-        font-size: 1em;
         width: 1em;
         height: 1em;
         line-height: 0;
       }
 
-      typo3-backend-spinner {
-        font-size: 1em;
-      }
       .icon {
         position: relative;
         display: block;

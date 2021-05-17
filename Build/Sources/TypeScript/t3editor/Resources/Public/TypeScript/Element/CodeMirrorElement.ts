@@ -47,7 +47,7 @@ export class CodeMirrorElement extends LitElement {
     return html`
       <slot></slot>
       <slot name="codemirror"></slot>
-      ${this.loaded ? '' : html`<typo3-backend-spinner size="large"></typo3-backend-spinner>`}
+      ${this.loaded ? '' : html`<typo3-backend-spinner size="large" variant="dark"></typo3-backend-spinner>`}
     `;
   }
 
