@@ -106,13 +106,13 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      * This is used to cache pages with more parameters than just id and type.
      *
      * @see TypoScriptFrontendController::reqCHash()
-     * @param array $queryParams GET parameters
+     * @param array<string, string> $queryParams GET parameters
      * @param bool $pageNotFoundOnCacheHashError see $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']
      * @return bool if false, then a PageNotFound response is triggered
      */
     protected function evaluateCacheHashParameter(array $queryParams, bool $pageNotFoundOnCacheHashError): bool
     {
-        if ($this->controller->cHash) {
+        if ($this->controller->cHash !== '') {
             // Make sure we use the page uid and not the page alias
             $queryParams['id'] = $this->controller->id;
             $relevantParameters = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));

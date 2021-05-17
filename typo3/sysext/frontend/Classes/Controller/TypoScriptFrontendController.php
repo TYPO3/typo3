@@ -883,7 +883,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning($warning);
             }
         }
-        $this->cHash = $cHash;
+        $this->cHash = (string)$cHash;
         $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? (string)$MP : '';
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
@@ -2248,7 +2248,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->type = (int)$GET_VARS['type'];
             }
             if (isset($GET_VARS['cHash'])) {
-                $this->cHash = $GET_VARS['cHash'];
+                $this->cHash = (string)$GET_VARS['cHash'];
             }
             if (isset($GET_VARS['MP'])) {
                 $this->MP = $GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
@@ -2281,7 +2281,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return;
         }
         $GET = GeneralUtility::_GET();
-        if ($this->cHash && is_array($GET)) {
+        if ($this->cHash !== '' && is_array($GET)) {
             // Make sure we use the page uid and not the page alias
             $GET['id'] = $this->id;
             $this->cHash_array = $this->cacheHash->getRelevantParameters(HttpUtility::buildQueryString($GET));
@@ -2315,7 +2315,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function reqCHash()
     {
         $skip = $this->pageArguments !== null && empty($this->pageArguments->getDynamicArguments());
-        if ($this->cHash || $skip) {
+        if ($this->cHash !== '' || $skip) {
             return;
         }
         if ($this->pageArguments) {
