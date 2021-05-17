@@ -162,4 +162,31 @@ class FileReferenceTest extends UnitTestCase
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         $fixture->getReferenceProperty('file_only_property');
     }
+
+    /**
+     * @test
+     */
+    public function getTitleReturnsEmptyStringWhenPropertyValueIsNull(): void
+    {
+        $fixture = $this->prepareFixture(['title' => null], []);
+        self::assertSame('', $fixture->getTitle());
+    }
+
+    /**
+     * @test
+     */
+    public function getAlternativeReturnsEmptyStringWhenPropertyValueIsNull(): void
+    {
+        $fixture = $this->prepareFixture(['alternative' => null], []);
+        self::assertSame('', $fixture->getAlternative());
+    }
+
+    /**
+     * @test
+     */
+    public function getDescriptionReturnsEmptyStringWhenPropertyValueIsNull(): void
+    {
+        $fixture = $this->prepareFixture(['description' => null], []);
+        self::assertSame('', $fixture->getDescription());
+    }
 }

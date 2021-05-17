@@ -198,7 +198,7 @@ class FileReference implements FileInterface
      */
     public function getTitle()
     {
-        return $this->getProperty('title');
+        return (string)$this->getProperty('title');
     }
 
     /**
@@ -210,7 +210,7 @@ class FileReference implements FileInterface
      */
     public function getAlternative()
     {
-        return $this->getProperty('alternative');
+        return (string)$this->getProperty('alternative');
     }
 
     /**
@@ -222,7 +222,7 @@ class FileReference implements FileInterface
      */
     public function getDescription()
     {
-        return $this->getProperty('description');
+        return (string)$this->getProperty('description');
     }
 
     /**
