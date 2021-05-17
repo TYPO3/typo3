@@ -35,27 +35,40 @@ class PageArguments implements RouteResultInterface
     protected $pageType;
 
     /**
-     * @var array
+     * All (merged) arguments of this URI (routeArguments + dynamicArguments)
+     *
+     * @var array<string, string|array>
      */
     protected $arguments;
 
     /**
-     * @var array
+     * Route arguments mapped by static mappers
+     * "static" means the provided values in a URI maps to a finite number of values
+     * (routeArguments - "arguments mapped by non static mapper")
+     *
+     * @var array<string, string|array>
      */
     protected $staticArguments;
 
     /**
-     * @var array
+     * Route arguments, that have an infinite number of possible values
+     * AND query string arguments. These arguments require a cHash.
+     *
+     * @var array<string, string|array>
      */
     protected $dynamicArguments;
 
     /**
-     * @var array
+     * Arguments defined in and mapped by a route enhancer
+     *
+     * @var array<string, string|array>
      */
     protected $routeArguments;
 
     /**
-     * @var array
+     * Query arguments in the generated URI
+     *
+     * @var array<string, string|array>
      */
     protected $queryArguments = [];
 
@@ -93,7 +106,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string|array>
      */
     public function getRouteArguments(): array
     {
@@ -118,7 +131,7 @@ class PageArguments implements RouteResultInterface
 
     /**
      * @param string $name
-     * @return mixed|null
+     * @return string|array<string, string|array>|null
      */
     public function get(string $name)
     {
@@ -126,7 +139,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string|array>
      */
     public function getArguments(): array
     {
@@ -134,7 +147,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string|array>
      */
     public function getStaticArguments(): array
     {
@@ -142,7 +155,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string|array>
      */
     public function getDynamicArguments(): array
     {
@@ -150,7 +163,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string|array>
      */
     public function getQueryArguments(): array
     {
@@ -158,7 +171,7 @@ class PageArguments implements RouteResultInterface
     }
 
     /**
-     * @param array $queryArguments
+     * @param array<string, string|array> $queryArguments
      */
     protected function updateQueryArguments(array $queryArguments)
     {
@@ -191,7 +204,7 @@ class PageArguments implements RouteResultInterface
     /**
      * Cleans empty array recursively.
      *
-     * @param array $array
+     * @param array<string, string|array> $array
      * @return array
      */
     protected function clean(array $array): array
@@ -213,7 +226,7 @@ class PageArguments implements RouteResultInterface
     /**
      * Sorts array keys recursively.
      *
-     * @param array $array
+     * @param array<string, string|array> $array
      * @return array
      */
     protected function sort(array $array): array
@@ -226,8 +239,8 @@ class PageArguments implements RouteResultInterface
     /**
      * Removes keys that are defined in $second from $first recursively.
      *
-     * @param array $first
-     * @param array $second
+     * @param array<string, string|array> $first
+     * @param array<string, string|array> $second
      * @return array
      */
     protected function diff(array $first, array $second): array
@@ -246,7 +259,7 @@ class PageArguments implements RouteResultInterface
 
     /**
      * @param mixed $offset
-     * @return mixed
+     * @return string|array<string, string|array>|null
      */
     public function offsetGet($offset)
     {

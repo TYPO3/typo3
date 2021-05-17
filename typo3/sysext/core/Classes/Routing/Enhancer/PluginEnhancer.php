@@ -80,7 +80,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         // dynamic arguments, that don't have a static mapper
         $dynamicArguments = $variableProcessor
             ->inflateNamespaceParameters($dynamicCandidates, $this->namespace);
-        // static arguments, that don't appear in dynamic arguments
+        // route arguments, that don't appear in dynamic arguments
         $staticArguments = ArrayUtility::arrayDiffKeyRecursive($routeArguments, $dynamicArguments);
 
         $page = $route->getOption('_page');
