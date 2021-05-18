@@ -148,6 +148,10 @@ class ReportController
      */
     protected function indexAction()
     {
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview')
+        );
         $this->view->assign('reports', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']);
         $this->saveState();
     }
@@ -186,6 +190,12 @@ class ReportController
         } else {
             $error = $reportClass . ' does not implement the Report Interface which is necessary to be displayed here.';
         }
+
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['title']),
+            true
+        );
 
         $this->view->assignMultiple([
             'content' => $content,

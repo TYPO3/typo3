@@ -385,6 +385,8 @@ class EditDocumentController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->setUiBlock(true);
+        $this->moduleTemplate->setTitle($this->getShortcutTitle($request));
+
         $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
         // Unlock all locked records

@@ -223,6 +223,11 @@ class InfoModuleController
             // If no access or if ID == zero
             $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'));
         }
+
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL($this->extClassConf['title']),
+            $this->id !== 0 && isset($this->pageinfo['title']) ? $this->pageinfo['title'] : ''
+        );
     }
 
     /**

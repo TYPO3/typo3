@@ -213,6 +213,8 @@ class BackendController
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         $moduleTemplate->setTitle($title);
+        $view->assign('sitename', $title);
+        $view->assign('sitenameFirstInBackendTitle', ($this->getBackendUser()->uc['backendTitleFormat'] ?? '') === 'sitenameFirst');
 
         // Renders the backend scaffolding
         $content = $moduleTemplate->renderContent();

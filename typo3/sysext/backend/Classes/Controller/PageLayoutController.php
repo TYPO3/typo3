@@ -210,6 +210,11 @@ class PageLayoutController
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
 
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->pageinfo['title'] ?? ''
+        );
+
         $this->main($request);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }

@@ -269,7 +269,10 @@ class RecordListController
         /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
         $body .= $additionalRecordListEvent->getAdditionalContentAbove();
-        $this->moduleTemplate->setTitle($title);
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'),
+            $title
+        );
 
         $beforeOutput = '';
         $output = '';

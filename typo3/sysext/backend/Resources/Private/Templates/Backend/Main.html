@@ -19,7 +19,7 @@
         persistence-identifier="navigation.width"
     ></typo3-backend-navigation-switcher>
     <div class="scaffold-content-module t3js-scaffold-content-module">
-        <typo3-backend-module-router module="{startupModule.0}" endpoint="{startupModule.1}" state-tracker="{stateTracker}"></typo3-backend-module-router>
+        <typo3-backend-module-router module="{startupModule.0}" endpoint="{startupModule.1}" state-tracker="{stateTracker}" sitename="{sitename}"{f:if(condition: sitenameFirstInBackendTitle, then: ' sitename-first')}></typo3-backend-module-router>
     </div>
     <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
 </div>

@@ -160,6 +160,11 @@ class RecyclerModuleController
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
 
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->pageRecord['title'] ?? ''
+        );
+
         $this->view->assign('allowDelete', $this->allowDelete);
     }
 

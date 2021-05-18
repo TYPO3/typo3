@@ -105,6 +105,9 @@ class ManagementController
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $this->preparePagination($demand),
         ]);
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
+        );
     }
 
     /**

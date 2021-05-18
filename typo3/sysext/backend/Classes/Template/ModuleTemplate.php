@@ -201,11 +201,18 @@ class ModuleTemplate
      * Set title tag
      *
      * @param string $title
+     * @param string $context
      * @return self
      */
-    public function setTitle($title): self
+    public function setTitle($title, $context = ''): self
     {
-        $this->title = $title;
+        $titleComponents = [
+            $title
+        ];
+        if ($context !== '') {
+            $titleComponents[] = $context;
+        }
+        $this->title = implode(' · ', $titleComponents);
         return $this;
     }
 

@@ -246,6 +246,11 @@ class PermissionController extends ActionController
         }
         $tree->getTree($this->id, $this->depth);
         $this->view->assign('viewTree', $tree->tree);
+
+        $this->view->getModuleTemplate()->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions'),
+            $this->id !== 0 && isset($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
+        );
     }
 
     /**

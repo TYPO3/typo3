@@ -111,6 +111,7 @@ class HelpController
 
         $this->registerDocheaderButtons($request);
 
+        $this->moduleTemplate->setTitle($this->getShortcutTitle($request));
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }

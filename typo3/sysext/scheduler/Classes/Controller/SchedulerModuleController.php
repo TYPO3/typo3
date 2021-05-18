@@ -182,6 +182,10 @@ class SchedulerModuleController
         $this->getModuleMenu();
 
         $this->moduleTemplate->setContent($content);
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function'])
+        );
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 

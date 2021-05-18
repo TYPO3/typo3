@@ -83,6 +83,10 @@ class FormManagerController extends AbstractBackendController
         $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
+        $this->view->getModuleTemplate()->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab')
+        );
+
         $forms = $this->getAvailableFormDefinitions();
         $arrayPaginator = new ArrayPaginator($forms, $page, $this->limit);
         $pagination = new SimplePagination($arrayPaginator);

@@ -91,6 +91,11 @@ class DashboardController extends AbstractController
      */
     public function mainAction(): void
     {
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $this->currentDashboard->getTitle()
+        );
+
         $this->view->assignMultiple([
             'availableDashboards' => $this->dashboardInitializationService->getDashboardsForUser(),
             'dashboardPresets' => $this->dashboardPresetRepository->getDashboardPresets(),

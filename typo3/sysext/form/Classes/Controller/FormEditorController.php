@@ -137,6 +137,12 @@ class FormEditorController extends AbstractBackendController
             $addInlineSettings,
             $this->prototypeConfiguration['formEditor']['addInlineSettings']
         );
+
+        $this->view->getModuleTemplate()->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab'),
+            $formDefinition['label']
+        );
+
         $this->view->assign('addInlineSettings', $addInlineSettings);
     }
 

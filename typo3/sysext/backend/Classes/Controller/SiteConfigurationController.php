@@ -108,7 +108,6 @@ class SiteConfigurationController
         $this->siteFinder->getAllSites(false);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_labels_tablabel'));
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
 
         if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
@@ -147,6 +146,9 @@ class SiteConfigurationController
             }
         }
 
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
+        );
         $this->view->assignMultiple([
             'pages' => $pages,
             'unassignedSites' => $unassignedSites,
@@ -214,6 +216,11 @@ class SiteConfigurationController
         $this->view->assign('returnUrl', $returnUrl);
         $this->view->assign('formEngineHtml', $formResult['html']);
         $this->view->assign('formEngineFooter', $formResultCompiler->printNeededJSFunctions());
+
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
+            $siteIdentifier ?? ''
+        );
     }
 
     /**

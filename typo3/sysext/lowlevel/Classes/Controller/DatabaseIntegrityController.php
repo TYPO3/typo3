@@ -124,22 +124,27 @@ class DatabaseIntegrityController
 
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
+                $title = $this->getLanguageService()->getLL('fullSearch');
                 $templateFilename = 'CustomSearch.html';
                 $this->func_search();
                 break;
             case 'records':
+                $title = $this->getLanguageService()->getLL('recordStatistics');
                 $templateFilename = 'RecordStatistics.html';
                 $this->func_records();
                 break;
             case 'relations':
+                $title = $this->getLanguageService()->getLL('databaseRelations');
                 $templateFilename = 'Relations.html';
                 $this->func_relations();
                 break;
             case 'refindex':
+                $title = $this->getLanguageService()->getLL('manageRefIndex');
                 $templateFilename = 'ReferenceIndex.html';
                 $this->func_refindex();
                 break;
             default:
+                $title = $this->getLanguageService()->getLL('menuTitle');
                 $templateFilename = 'IntegrityOverview.html';
                 $this->func_default();
         }
@@ -166,6 +171,10 @@ class DatabaseIntegrityController
         $this->getModuleMenu();
 
         $this->moduleTemplate->setContent($content);
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $title
+        );
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 

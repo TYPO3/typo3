@@ -479,6 +479,10 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->assign('maxFileSize', GeneralUtility::getMaxUploadFileSize() * 1024);
             $this->view->assign('defaultAction', $this->getDefaultAction());
             $this->buildListOptionCheckboxes();
+            $this->view->getModuleTemplate()->setTitle(
+                $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'),
+                $this->getModuleHeadline()
+            );
         } else {
             return new ForwardResponse('missingFolder');
         }

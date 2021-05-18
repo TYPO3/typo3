@@ -291,6 +291,12 @@ class TypoScriptTemplateModuleController
             $this->getButtons();
         }
         $this->moduleTemplate->setContent($view->render());
+
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL($this->extClassConf['title']),
+            $this->pageinfo['title'] ?? ''
+        );
+
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 

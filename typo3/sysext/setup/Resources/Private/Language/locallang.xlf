@@ -390,6 +390,15 @@
 			<trans-unit id="avatar.openFileBrowser" resname="avatar.openFileBrowser">
 				<source>Open file browser to select avatar image</source>
 			</trans-unit>
+			<trans-unit id="backendTitleFormat" resname="backendTitleFormat">
+				<source>Format of window title in backend</source>
+			</trans-unit>
+			<trans-unit id="backendTitleFormat.sitenameFirst" resname="backendTitleFormat.sitenameFirst">
+				<source>[sitename] · [title]</source>
+			</trans-unit>
+			<trans-unit id="backendTitleFormat.titleFirst" resname="backendTitleFormat.titleFirst">
+				<source>[title] · [sitename]</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

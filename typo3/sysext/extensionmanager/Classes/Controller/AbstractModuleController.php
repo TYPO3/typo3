@@ -108,6 +108,12 @@ class AbstractModuleController extends AbstractController
                 ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
                 ->setActive($isActive);
             $menu->addMenuItem($menuItem);
+            if ($isActive) {
+                $this->view->getModuleTemplate()->setTitle(
+                    $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+                    $menuItemConfig['label']
+                );
+            }
         }
 
         $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);

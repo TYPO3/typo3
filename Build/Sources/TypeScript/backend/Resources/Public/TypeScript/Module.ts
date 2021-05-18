@@ -17,7 +17,7 @@
 
 export interface ModuleState {
   url: string;
-  title?: string;
+  title?: string|null;
   module?: string;
 }
 

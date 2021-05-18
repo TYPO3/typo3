@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -140,6 +141,7 @@ class ConfigurationController
         $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('tree');
 
+        $context = '';
         foreach ($this->configurationProviderRegistry->getProviders() as $provider) {
             $menuItem = $menu->makeMenuItem();
             $menuItem
@@ -147,11 +149,16 @@ class ConfigurationController
                 ->setTitle($provider->getLabel());
             if ($configurationProvider === $provider) {
                 $menuItem->setActive(true);
+                $context = $menuItem->getTitle();
             }
             $menu->addMenuItem($menuItem);
         }
 
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf:mlang_tabs_tab'),
+            $context
+        );
 
         return new HtmlResponse($moduleTemplate->renderContent());
     }
@@ -163,5 +170,14 @@ class ConfigurationController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns the Language Service
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

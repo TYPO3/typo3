@@ -41,6 +41,12 @@ export class ModuleRouter extends LitElement {
   @property({type: String, attribute: 'state-tracker'})
   stateTrackerUrl: string;
 
+  @property({type: String, attribute: 'sitename'})
+  sitename: string;
+
+  @property({type: Boolean, attribute: 'sitename-first'})
+  sitenameFirst: boolean;
+
   @query('slot', true)
   slotElement: HTMLSlotElement;
 
@@ -187,6 +193,20 @@ export class ModuleRouter extends LitElement {
     const url = new URL(state.url || '', window.location.origin);
     const params = new URLSearchParams(url.search);
 
+    const title = 'title' in state ? state.title : '';
+    // update/reset document.title if state.title is not null
+    // (state.title === null indicates "keep current title")
+    if (title !== null) {
+      const titleComponents = [ this.sitename ];
+      if (title !== '') {
+        titleComponents.unshift(title);
+      }
+      if (this.sitenameFirst) {
+        titleComponents.reverse();
+      }
+      document.title = titleComponents.join(' · ');
+    }
+
     if (!params.has('token')) {
       // non token-urls (e.g. backend install tool) cannot be mapped by
       // the main backend controller right now
@@ -198,11 +218,6 @@ export class ModuleRouter extends LitElement {
 
     const niceUrl = url.toString();
     window.history.replaceState(state, '', niceUrl);
-
-    const title = state.title || null;
-    if (title) {
-      document.title = title;
-    }
   }
 
 }

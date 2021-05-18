@@ -64,6 +64,7 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of the module, defaults to the current plugin name, if available', false);
+        $this->registerArgument('title', 'string', 'Title of the module.', false);
     }
 
     public static function renderStatic(
@@ -89,6 +90,9 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
         $moduleTemplate->setFlashMessageQueue($flashMessageQueue);
         if (($arguments['name'] ?? null) !== null) {
             $moduleTemplate->setModuleName($arguments['name']);
+        }
+        if (($arguments['title'] ?? null) !== null) {
+            $moduleTemplate->setTitle($arguments['title']);
         }
 
         $viewHelperVariableContainer->add(self::class, ModuleTemplate::class, $moduleTemplate);

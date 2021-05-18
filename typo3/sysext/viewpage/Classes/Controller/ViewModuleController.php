@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -171,6 +172,13 @@ class ViewModuleController
         $this->initializeView('show');
         $this->moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
         $this->moduleTemplate->setModuleId('typo3-module-viewpage');
+
+        $pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+
+        $this->moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+            $pageinfo['title'] ?? ''
+        );
 
         if (!$this->isValidDoktype($pageId)) {
             $flashMessage = GeneralUtility::makeInstance(

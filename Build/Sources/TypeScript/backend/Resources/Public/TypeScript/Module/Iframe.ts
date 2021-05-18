@@ -67,7 +67,7 @@ export class IframeModuleElement extends LitElement {
   public connectedCallback(): void {
     super.connectedCallback();
     if (this.endpoint) {
-      this.dispatch('typo3-iframe-load', { url: this.endpoint });
+      this.dispatch('typo3-iframe-load', { url: this.endpoint, title: null });
     }
   }
 
@@ -89,7 +89,7 @@ export class IframeModuleElement extends LitElement {
       };
     } catch (e) {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');
-      return { url: this.endpoint };
+      return { url: this.endpoint, title: null };
     }
   }
 
@@ -109,7 +109,7 @@ export class IframeModuleElement extends LitElement {
     // the `unload` event is dispatched, but has not been changed right now.
     new Promise((resolve) => window.setTimeout(resolve, 0)).then(() => {
       if (iframe.contentWindow !== null) {
-        this.dispatch('typo3-iframe-load', { url: iframe.contentWindow.location.href });
+        this.dispatch('typo3-iframe-load', { url: iframe.contentWindow.location.href, title: null });
       }
     });
   }
