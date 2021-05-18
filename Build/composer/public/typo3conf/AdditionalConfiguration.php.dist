@@ -1,0 +1,7 @@
+<?php
+
+//$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['dbname'] = '';
+$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] = 'mysqli';
+$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'] = '127.0.0.1';
+$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['password'] = 'root';
+$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'] = 'root';

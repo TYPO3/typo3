@@ -57,6 +57,7 @@ class CommandCest
             'cleanup:previewlinks' => 0,
             'cleanup:versions' => 0,
             'extension:list' => 0,
+            'extension:setup' => 0,
             'extension:deactivate workspaces' => 0,
             'extension:activate workspaces' => 0,
             'language:update' => 0,

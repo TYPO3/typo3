@@ -1,0 +1,51 @@
+{
+    "name": "typo3/test-distribution",
+    "type": "typo3-cms-distribution",
+    "version": "4.13.4",
+    "description": "For testing Composer installation",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../typo3/sysext/*"
+        }
+    ],
+    "require": {
+        "typo3/cms-backend": "@dev",
+        "typo3/cms-core": "@dev",
+        "typo3/cms-extbase": "@dev",
+        "typo3/cms-extensionmanager": "@dev",
+        "typo3/cms-filelist": "@dev",
+        "typo3/cms-fluid": "@dev",
+        "typo3/cms-frontend": "@dev",
+        "typo3/cms-install": "@dev",
+        "typo3/cms-recordlist": "@dev",
+        "typo3/cms-adminpanel": "@dev",
+        "typo3/cms-belog": "@dev",
+        "typo3/cms-beuser": "@dev",
+        "typo3/cms-dashboard": "@dev",
+        "typo3/cms-felogin": "@dev",
+        "typo3/cms-filemetadata": "@dev",
+        "typo3/cms-fluid-styled-content": "@dev",
+        "typo3/cms-form": "@dev",
+        "typo3/cms-impexp": "@dev",
+        "typo3/cms-indexed-search": "@dev",
+        "typo3/cms-info": "@dev",
+        "typo3/cms-linkvalidator": "@dev",
+        "typo3/cms-lowlevel": "@dev",
+        "typo3/cms-opendocs": "@dev",
+        "typo3/cms-recycler": "@dev",
+        "typo3/cms-redirects": "@dev",
+        "typo3/cms-reports": "@dev",
+        "typo3/cms-rte-ckeditor": "@dev",
+        "typo3/cms-scheduler": "@dev",
+        "typo3/cms-seo": "@dev",
+        "typo3/cms-setup": "@dev",
+        "typo3/cms-sys-note": "@dev",
+        "typo3/cms-t3editor": "@dev",
+        "typo3/cms-tstemplate": "@dev",
+        "typo3/cms-viewpage": "@dev"
+    },
+    "require-dev": {
+        "typo3/cms-styleguide": "~11.4.0"
+    }
+}

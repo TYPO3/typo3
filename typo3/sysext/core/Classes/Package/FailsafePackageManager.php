@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 
 /**
@@ -39,8 +40,18 @@ class FailsafePackageManager extends PackageManager
             parent::loadPackageStates();
         } catch (PackageStatesUnavailableException $exception) {
             $this->inFailsafeMode = true;
-            $this->packageStatesConfiguration = [];
             $this->scanAvailablePackages();
+        }
+    }
+
+    /**
+     * Never try to access the cache in failsafe mode
+     */
+    protected function saveToPackageCache(): void
+    {
+        // Do not save cache if in rescue mode
+        if (!$this->inFailsafeMode) {
+            parent::saveToPackageCache();
         }
     }
 
@@ -75,7 +86,7 @@ class FailsafePackageManager extends PackageManager
      */
     public function recreatePackageStatesFileIfMissing(bool $useFactoryDefault = false): void
     {
-        if (!file_exists($this->packageStatesPathAndFilename)) {
+        if (!Environment::isComposerMode() && !file_exists($this->packageStatesPathAndFilename)) {
             $packages = $this->getAvailablePackages();
             foreach ($packages as $package) {
                 if ($package instanceof PackageInterface && ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem())) {

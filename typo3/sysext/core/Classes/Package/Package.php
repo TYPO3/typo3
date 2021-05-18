@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use Composer\Util\Filesystem;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A Package representing the details of an extension and/or a composer package
@@ -67,6 +69,11 @@ class Package implements PackageInterface
     protected $packagePath;
 
     /**
+     * @var bool
+     */
+    protected $isRelativePackagePath = false;
+
+    /**
      * If this package is protected and therefore cannot be deactivated or deleted
      * @var bool
      */
@@ -89,11 +96,12 @@ class Package implements PackageInterface
      * @param PackageManager $packageManager the package manager which knows this package
      * @param string $packageKey Key of this package
      * @param string $packagePath Absolute path to the location of the package's composer manifest
-     * @throws Exception\InvalidPackageKeyException if an invalid package key was passed
-     * @throws Exception\InvalidPackagePathException if an invalid package path was passed
+     * @param bool $ignoreExtEmConf When set ext_emconf.php is ignored when building composer manifest
      * @throws Exception\InvalidPackageManifestException if no composer manifest file could be found
+     * @throws InvalidPackageKeyException if an invalid package key was passed
+     * @throws InvalidPackagePathException if an invalid package path was passed
      */
-    public function __construct(PackageManager $packageManager, $packageKey, $packagePath)
+    public function __construct(PackageManager $packageManager, string $packageKey, string $packagePath, bool $ignoreExtEmConf = false)
     {
         if (!$packageManager->isPackageKeyValid($packageKey)) {
             throw new InvalidPackageKeyException('"' . $packageKey . '" is not a valid package key.', 1217959511);
@@ -106,7 +114,7 @@ class Package implements PackageInterface
         }
         $this->packageKey = $packageKey;
         $this->packagePath = $packagePath;
-        $this->composerManifest = $packageManager->getComposerManifest($this->packagePath);
+        $this->composerManifest = $packageManager->getComposerManifest($this->packagePath, $ignoreExtEmConf);
         $this->loadFlagsFromComposerManifest();
         $this->createPackageMetaData($packageManager);
     }
@@ -221,7 +229,18 @@ class Package implements PackageInterface
      */
     public function getPackagePath()
     {
-        return $this->packagePath;
+        if (!$this->isRelativePackagePath) {
+            return $this->packagePath;
+        }
+        $this->isRelativePackagePath = false;
+
+        return $this->packagePath = PathUtility::getCanonicalPath(getenv('TYPO3_PATH_COMPOSER_ROOT') . '/' . $this->packagePath) . '/';
+    }
+
+    public function makePathRelative(Filesystem $filesystem)
+    {
+        $this->isRelativePackagePath = true;
+        $this->packagePath = $filesystem->findShortestPath(getenv('TYPO3_PATH_COMPOSER_ROOT'), $this->packagePath, true);
     }
 
     /**

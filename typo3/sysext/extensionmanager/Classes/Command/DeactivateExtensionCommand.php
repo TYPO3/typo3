@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
@@ -38,6 +39,16 @@ class DeactivateExtensionCommand extends Command
     {
         $this->installUtility = $installUtility;
         parent::__construct();
+    }
+
+    /**
+     * This command is not needed in composer mode.
+     *
+     * @inheritdoc
+     */
+    public function isEnabled()
+    {
+        return !Environment::isComposerMode();
     }
 
     /**

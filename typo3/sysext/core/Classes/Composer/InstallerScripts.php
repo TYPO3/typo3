@@ -35,7 +35,11 @@ class InstallerScripts implements InstallerScriptsRegistration
     {
         $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
         $target = 'typo3/sysext/core/bin/typo3';
-
         $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
+
+        // We don't need package artifact creation for our dev package
+        if ($event->getComposer()->getPackage()->getName() !== 'typo3/cms') {
+            $scriptDispatcher->addInstallerScript(new PackageArtifactBuilder());
+        }
     }
 }

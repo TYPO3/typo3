@@ -37,6 +37,9 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
+use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
+use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -101,9 +104,10 @@ class Bootstrap
 
         $disableCaching = $failsafe ? true : false;
         $coreCache = static::createCache('core', $disableCaching);
+        $packageCache = static::createPackageCache($coreCache);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
-            $coreCache
+            $packageCache
         );
 
         static::setDefaultTimezone();
@@ -225,7 +229,7 @@ class Bootstrap
     public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
     {
         return file_exists($configurationManager->getLocalConfigurationFileLocation())
-            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
+            && (Environment::isComposerMode() || file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php'));
     }
 
     /**
@@ -233,19 +237,34 @@ class Bootstrap
      * provided by the packages.
      *
      * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
-     * @param FrontendInterface $coreCache
+     * @param PackageCacheInterface $packageCache
      * @return PackageManager
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function createPackageManager($packageManagerClassName, FrontendInterface $coreCache): PackageManager
+    public static function createPackageManager($packageManagerClassName, PackageCacheInterface $packageCache): PackageManager
     {
         $dependencyOrderingService = GeneralUtility::makeInstance(DependencyOrderingService::class);
         /** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
         $packageManager = new $packageManagerClassName($dependencyOrderingService);
-        $packageManager->injectCoreCache($coreCache);
+        $packageManager->setPackageCache($packageCache);
         $packageManager->initialize();
 
         return $packageManager;
+    }
+
+    /**
+     * @internal
+     *
+     * @param FrontendInterface $coreCache
+     * @return PackageCacheInterface
+     */
+    public static function createPackageCache(FrontendInterface $coreCache): PackageCacheInterface
+    {
+        if (!Environment::isComposerMode()) {
+            return new PackageStatesPackageCache(Environment::getLegacyConfigPath() . '/PackageStates.php', $coreCache);
+        }
+
+        return new ComposerPackageArtifact(Environment::getVarPath());
     }
 
     /**

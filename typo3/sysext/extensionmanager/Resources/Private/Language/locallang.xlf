@@ -15,8 +15,8 @@
 			<trans-unit id="composerMode.title" resname="composerMode.title">
 				<source>Composer mode</source>
 			</trans-unit>
-			<trans-unit id="composerMode.message" resname="composerMode.message">
-				<source>The system is set to composer mode. Please notice that it is not possible to add an extension with the Extension Manager. You have to use composer to add further extensions to your system.</source>
+			<trans-unit id="composerStrictMode.message" resname="composerMode.message">
+				<source>The system is set to composer mode. Please notice that it is this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
 			</trans-unit>
 			<trans-unit id="installedExtensions" resname="installedExtensions">
 				<source>Installed Extensions</source>

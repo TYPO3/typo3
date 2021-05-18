@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
@@ -76,7 +77,7 @@ class PackageManagerTest extends UnitTestCase
             'typo3/flow' => 'TYPO3.Flow'
         ];
 
-        $this->packageManager->injectCoreCache($mockCache);
+        $this->packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         $this->packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
         $this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $this->packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
@@ -183,6 +184,8 @@ class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
+        $packageManager->_set('packageCache', new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
 
         $packageKey = $expectedPackageKeys[0];
         $packageManager->_set('packageStatesConfiguration', [

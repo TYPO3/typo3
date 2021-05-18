@@ -189,11 +189,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function processExtensionSetup(string $extensionKey): void
     {
-        $extension = $this->enrichExtensionWithDetails($extensionKey, false);
-        $this->importInitialFiles($extension['packagePath'], $extensionKey);
-        $this->importStaticSqlFile($extensionKey, $extension['packagePath']);
-        $import = $this->importT3DFile($extensionKey, $extension['packagePath']);
-        $this->importSiteConfiguration($extensionKey, $extension['packagePath'], $import);
+        $packagePath = $this->packageManager->getPackage($extensionKey)->getPackagePath();
+        $this->importInitialFiles($packagePath, $extensionKey);
+        $this->importStaticSqlFile($extensionKey, $packagePath);
+        $import = $this->importT3DFile($extensionKey, $packagePath);
+        $this->importSiteConfiguration($extensionKey, $packagePath, $import);
     }
 
     /**
@@ -362,8 +362,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Executes all safe database statements.
      * Tables and fields are created and altered. Nothing gets deleted or renamed here.
+     * @internal
      */
-    protected function updateDatabase()
+    public function updateDatabase()
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $schemaMigrator = GeneralUtility::makeInstance(SchemaMigrator::class);
