@@ -1,3 +1,15 @@
+config.tx_extbase {
+  persistence {
+    classes {
+      TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFileReference {
+        mapping {
+          tableName = sys_file_reference
+        }
+      }
+    }
+  }
+}
+
 plugin.tx_form {
     view {
         # Note that this configuration only affects the EXT:Form plugin
