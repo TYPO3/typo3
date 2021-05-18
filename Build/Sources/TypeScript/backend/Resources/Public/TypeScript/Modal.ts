@@ -495,6 +495,15 @@ class Modal {
 
     currentModal.on('shown.bs.modal', (e: JQueryEventObject): void => {
       const $me = $(e.currentTarget);
+      const $backdrop = $me.prev('.modal-backdrop');
+
+      // We use 1000 as the overall base to circumvent a stuttering UI as Bootstrap uses a z-index of 1040 for backdrops
+      // on initial rendering - this will clash again when at least four modals are open, which is fine and should never happen
+      const baseZIndex = 1000 + (10 * this.instances.length);
+      const backdropZIndex = baseZIndex - 10;
+      $me.css('z-index', baseZIndex);
+      $backdrop.css('z-index', backdropZIndex);
+
       // focus the button which was configured as active button
       $me.find(Identifiers.footer).find('.t3js-active').first().focus();
       // Get Icons
