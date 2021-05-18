@@ -32,4 +32,13 @@
 		<description></description>
 		<deleted>0</deleted>
 	</sys_category>
+	<sys_category>
+		<uid>5</uid>
+		<pid>0</pid>
+		<title>Category 5</title>
+		<l10n_diffsource></l10n_diffsource>
+		<description></description>
+		<deleted>0</deleted>
+		<hidden>1</hidden>
+	</sys_category>
 </dataset>

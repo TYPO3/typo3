@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
-	<!-- post 1 gets categories 1,2,3 -->
+	<!-- post 1 gets categories 1,2,3,5 (5 is hidden) -->
 	<sys_category_record_mm>
 		<uid_local>1</uid_local>
 		<uid_foreign>1</uid_foreign>
@@ -24,6 +24,14 @@
 		<fieldname>categories</fieldname>
 		<sorting>1</sorting>
 		<sorting_foreign>3</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>5</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_post</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>4</sorting_foreign>
 	</sys_category_record_mm>
 
 	<!-- post 2 gets category 1 -->

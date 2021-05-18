@@ -863,7 +863,7 @@ class RelationTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
-        self::assertEquals(3, $countCategories);
+        self::assertEquals(4, $countCategories);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -911,7 +911,7 @@ class RelationTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
-        self::assertEquals(3, $countCategories);
+        self::assertEquals(4, $countCategories);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -943,7 +943,7 @@ class RelationTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
-        self::assertEquals(4, $countCategories);
+        self::assertEquals(5, $countCategories);
     }
 
     /**
@@ -989,6 +989,9 @@ class RelationTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
+
+        // one category is hidden, so the expected count has to be one less
+        $newBlogCategoryCount--;
 
         self::assertEquals($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }
