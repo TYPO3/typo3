@@ -3190,8 +3190,8 @@ class BackendUtility
     public static function translationCount($table, $ref, $msg = '')
     {
         $count = 0;
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null
+        if (($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null)
+            && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null)
         ) {
             $queryBuilder = static::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
