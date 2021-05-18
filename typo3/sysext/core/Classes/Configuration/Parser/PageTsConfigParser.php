@@ -62,6 +62,31 @@ class PageTsConfigParser
      */
     public function parse(string $content, ConditionMatcherInterface $matcher, ?Site $site = null): array
     {
+        if ($site) {
+            $siteSettings = $site->getConfiguration()['settings'] ?? [];
+            if (!empty($siteSettings)) {
+                $siteSettings = ArrayUtility::flatten($siteSettings);
+            }
+            if (!empty($siteSettings)) {
+                // Recursive substitution of site settings (up to 10 nested levels)
+                // note: this code is more or less a duplicate of \TYPO3\CMS\Core\TypoScript\TemplateService::substituteConstants
+                for ($i = 0; $i < 10; $i++) {
+                    $beforeSubstitution = $content;
+                    $content = preg_replace_callback(
+                        '/\\{\\$(.[^}]*)\\}/',
+                        function (array $matches) use ($siteSettings): string {
+                            return isset($siteSettings[$matches[1]]) && !is_array($siteSettings[$matches[1]])
+                                ? (string)$siteSettings[$matches[1]] : $matches[0];
+                        },
+                        $content
+                    );
+                    if ($beforeSubstitution === $content) {
+                        break;
+                    }
+                }
+            }
+        }
+
         $hashOfContent = md5('PAGES:' . $content);
         $cachedContent = $this->cache->get($hashOfContent);
         // Something about this content has been cached before, lets verify the matchings, if they also apply
@@ -89,31 +114,6 @@ class PageTsConfigParser
                 }
             }
             return $result;
-        }
-
-        if ($site) {
-            $siteSettings = $site->getConfiguration()['settings'] ?? [];
-            if (!empty($siteSettings)) {
-                $siteSettings = ArrayUtility::flatten($siteSettings);
-            }
-            if (!empty($siteSettings)) {
-                // Recursive substitution of site settings (up to 10 nested levels)
-                // note: this code is more or less a duplicate of \TYPO3\CMS\Core\TypoScript\TemplateService::substituteConstants
-                for ($i = 0; $i < 10; $i++) {
-                    $beforeSubstitution = $content;
-                    $content = preg_replace_callback(
-                        '/\\{\\$(.[^}]*)\\}/',
-                        function (array $matches) use ($siteSettings): string {
-                            return isset($siteSettings[$matches[1]]) && !is_array($siteSettings[$matches[1]])
-                                ? (string)$siteSettings[$matches[1]] : $matches[0];
-                        },
-                        $content
-                    );
-                    if ($beforeSubstitution === $content) {
-                        break;
-                    }
-                }
-            }
         }
 
         // Nothing found in cache for this content string, let's do everything.
