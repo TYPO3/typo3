@@ -28,11 +28,12 @@ class YouTubeHelper extends AbstractOEmbedHelper
      * Get public url
      *
      * @param File $file
-     * @param bool $relativeToCurrentScript
+     * @param bool $relativeToCurrentScript Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      * @return string|null
      */
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
     {
+        // @deprecated $relativeToCurrentScript since v11, will be removed in TYPO3 v12.0
         $videoId = $this->getOnlineMediaId($file);
         return sprintf('https://www.youtube.com/watch?v=%s', rawurlencode($videoId));
     }

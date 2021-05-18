@@ -312,7 +312,7 @@ class File extends AbstractFile
      * WARNING: Access to the file may be restricted by further means, e.g. some
      * web-based authentication. You have to take care of this yourself.
      *
-     * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+     * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver). Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      *
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
@@ -321,6 +321,7 @@ class File extends AbstractFile
         if ($this->isMissing() || $this->deleted) {
             return null;
         }
+        // @deprecated $relativeToCurrentScript since v11, will be removed in TYPO3 v12.0
         return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
     }
 

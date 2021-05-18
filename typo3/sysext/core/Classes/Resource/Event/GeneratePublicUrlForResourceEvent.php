@@ -46,6 +46,7 @@ final class GeneratePublicUrlForResourceEvent
 
     /**
      * @var bool
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     private $relativeToCurrentScript;
 
@@ -78,8 +79,12 @@ final class GeneratePublicUrlForResourceEvent
         return $this->driver;
     }
 
+    /**
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
+     */
     public function isRelativeToCurrentScript(): bool
     {
+        trigger_error('isRelativeToCurrentScript() is deprecated since TYPO3 v11, will be removed in TYPO3 v12.0', E_USER_DEPRECATED);
         return $this->relativeToCurrentScript;
     }
 

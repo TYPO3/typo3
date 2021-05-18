@@ -261,4 +261,40 @@ return [
             'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\FileReference->getPublicUrl' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Folder->getPublicUrl' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\ResourceStorage->getPublicUrl' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper->getPublicUrl' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper->getPublicUrl' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
 ];

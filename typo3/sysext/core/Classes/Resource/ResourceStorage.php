@@ -1361,11 +1361,14 @@ class ResourceStorage implements ResourceStorageInterface
      * some web-based authentication. You have to take care of this yourself.
      *
      * @param ResourceInterface $resourceObject The file or folder object
-     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver). Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
     public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = false)
     {
+        if ($relativeToCurrentScript !== false) {
+            trigger_error('FAL API usage with "getPublicUrl" returning a relative path will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
+        }
         $publicUrl = null;
         if ($this->isOnline()) {
             // Pre-process the public URL by an accordant event

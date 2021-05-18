@@ -4809,4 +4809,11 @@ return [
             'Deprecation-94058-JavaScriptGoToModule.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent->isRelativeToCurrentScript' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+        ],
+    ],
 ];

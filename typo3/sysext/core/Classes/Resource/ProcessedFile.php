@@ -593,7 +593,7 @@ class ProcessedFile extends AbstractFile
     /**
      * Returns a publicly accessible URL for this file
      *
-     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all
+     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all. Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      * @return string|null NULL if file is deleted, the generated URL otherwise
      */
     public function getPublicUrl($relativeToCurrentScript = false)
@@ -604,6 +604,7 @@ class ProcessedFile extends AbstractFile
         if ($this->deleted) {
             return null;
         }
+        // @deprecated $relativeToCurrentScript since v11, will be removed in TYPO3 v12.0
         if ($this->usesOriginalFile()) {
             return $this->getOriginalFile()->getPublicUrl($relativeToCurrentScript);
         }
