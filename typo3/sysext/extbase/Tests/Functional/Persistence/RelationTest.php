@@ -877,7 +877,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(3, $countCategories);
+        $this->assertEquals(4, $countCategories);
 
         /** @var PostRepository $postRepository */
         $postRepository = $this->objectManager->get(PostRepository::class);
@@ -927,7 +927,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(3, $countCategories);
+        $this->assertEquals(4, $countCategories);
 
         /** @var PostRepository $postRepository */
         $postRepository = $this->objectManager->get(PostRepository::class);
@@ -961,7 +961,7 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(4, $countCategories);
+        $this->assertEquals(5, $countCategories);
     }
 
     /**
@@ -1010,6 +1010,8 @@ class RelationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             ->execute()
             ->fetchColumn(0);
 
+        // one category is hidden, so the expected count has to be one less
+        $newBlogCategoryCount--;
         $this->assertEquals($this->blog->getCategories()->count(), $newBlogCategoryCount);
     }
 
