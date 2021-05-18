@@ -950,7 +950,6 @@ class Typo3DbQueryParser
         $rightTableAlias = $this->getUniqueAlias($rightTableName);
         $joinCondition = $join->getJoinCondition();
         $joinConditionExpression = null;
-        $this->unionTableAliasCache[] = $rightTableAlias;
         if ($joinCondition instanceof EquiJoinCondition) {
             $column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
             $column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
