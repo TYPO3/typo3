@@ -123,4 +123,55 @@ class PageTsConfigParserTest extends UnitTestCase
         $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal(), $site);
         self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
     }
+
+    /**
+     * @test
+     */
+    public function parseReplacesSiteSettingsWithMultipleSitesAndCache(): void
+    {
+        $input = 'mod.web_layout = {$numberedThings.1}';
+        $expectedParsedTsConfig = [
+            'mod.' => [
+                'web_layout' => 'foo'
+            ]
+        ];
+        $expectedParsedTsConfig2 = [
+            'mod.' => [
+                'web_layout' => 'bar'
+            ]
+        ];
+
+        $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
+        $cache = new VariableFrontend('runtime', new TransientMemoryBackend('nothing', ['logger' => new NullLogger()]));
+
+        $site = new Site('dummy', 13, [
+            'base' => 'https://example.com',
+            'settings' => [
+                'numberedThings' => [
+                    1 => 'foo'
+                ]
+            ]
+        ]);
+        $subject = new PageTsConfigParser(
+            new TypoScriptParser(),
+            $cache
+        );
+        $parsedTsConfig = $subject->parse($input, $matcherProphecy->reveal(), $site);
+        self::assertEquals($expectedParsedTsConfig, $parsedTsConfig);
+
+        $site2 = new Site('dummy2', 14, [
+            'base' => 'https://example2.com',
+            'settings' => [
+                'numberedThings' => [
+                    1 => 'bar'
+                ]
+            ]
+        ]);
+        $subject2 = new PageTsConfigParser(
+            new TypoScriptParser(),
+            $cache
+        );
+        $parsedTsConfig2 = $subject2->parse($input, $matcherProphecy->reveal(), $site2);
+        self::assertEquals($expectedParsedTsConfig2, $parsedTsConfig2);
+    }
 }
