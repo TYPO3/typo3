@@ -8,7 +8,7 @@
         <div class="form-field-item">
             <div class="form-control-wrap">
                 <div class="form-control-holder">
-                    <input type="text" id="totp" class="form-control input-login" name="totp" value="" autofocus="autofocus" required="required" maxlength="6" minlength="6" pattern="[0-9]+" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.totp.inputLabel')}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.totp.inputLabel')}"/>
+                    <input type="text" inputmode="numeric" id="totp" class="form-control input-login" name="totp" value="" autofocus="autofocus" autocomplete="one-time-code" required="required" maxlength="6" minlength="6" pattern="[0-9]+" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.totp.inputLabel')}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.totp.inputLabel')}"/>
                 </div>
             </div>
         </div>
