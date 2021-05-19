@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
-use TYPO3\CMS\Core\Package\Exception\MissingPackageManifestException;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
@@ -281,18 +280,7 @@ class PackageManager implements SingletonInterface
         $packagePaths = $this->scanPackagePathsForExtensions();
         $packages = [];
         foreach ($packagePaths as $packageKey => $packagePath) {
-            try {
-                $composerManifest = $this->getComposerManifest($packagePath);
-                $packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath);
-                $this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
-                $packages[$packageKey] = ['packagePath' => str_replace($this->packagesBasePath, '', $packagePath)];
-            } catch (MissingPackageManifestException $exception) {
-                if (!$this->isPackageKeyValid($packageKey)) {
-                    continue;
-                }
-            } catch (InvalidPackageKeyException $exception) {
-                continue;
-            }
+            $packages[$packageKey] = ['packagePath' => str_replace($this->packagesBasePath, '', $packagePath)];
         }
 
         $this->availablePackagesScanned = true;
@@ -398,11 +386,12 @@ class PackageManager implements SingletonInterface
             throw new InvalidPackageStateException('Package "' . $packageKey . '" is already registered.', 1338996122);
         }
 
+        $this->composerNameToPackageKeyMap[$package->getValueFromComposerManifest('name')] = $packageKey;
         $this->packages[$packageKey] = $package;
 
         if ($package instanceof PackageInterface) {
             foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
-                $this->packageAliasMap[strtolower($packageToReplace)] = $package->getPackageKey();
+                $this->packageAliasMap[$packageToReplace] = $package->getPackageKey();
             }
         }
         return $package;
@@ -419,11 +408,17 @@ class PackageManager implements SingletonInterface
             $package = $this->getPackage($packageKey);
             if ($package instanceof PackageInterface) {
                 foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
-                    unset($this->packageAliasMap[strtolower($packageToReplace)]);
+                    unset($this->packageAliasMap[$packageToReplace]);
                 }
             }
         } catch (UnknownPackageException $e) {
         }
+        $this->composerNameToPackageKeyMap = array_filter(
+            $this->composerNameToPackageKeyMap,
+            static function ($aliasedKey) use ($packageKey) {
+                return $aliasedKey !== $packageKey;
+            }
+        );
         unset($this->packages[$packageKey]);
         unset($this->packageStatesConfiguration['packages'][$packageKey]);
     }
@@ -437,12 +432,11 @@ class PackageManager implements SingletonInterface
      */
     public function getPackageKeyFromComposerName($composerName)
     {
-        $lowercasedComposerName = strtolower($composerName);
-        if (isset($this->packageAliasMap[$lowercasedComposerName])) {
-            return $this->packageAliasMap[$lowercasedComposerName];
+        if (isset($this->packageAliasMap[$composerName])) {
+            return $this->packageAliasMap[$composerName];
         }
-        if (isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
-            return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
+        if (isset($this->composerNameToPackageKeyMap[$composerName])) {
+            return $this->composerNameToPackageKeyMap[$composerName];
         }
         return $composerName;
     }
@@ -814,7 +808,7 @@ class PackageManager implements SingletonInterface
      */
     public function getComposerManifest($manifestPath)
     {
-        $composerManifest = null;
+        $composerManifest = new \stdClass();
         if (file_exists($manifestPath . 'composer.json')) {
             $json = file_get_contents($manifestPath . 'composer.json');
             if ($json !== false) {
@@ -825,12 +819,15 @@ class PackageManager implements SingletonInterface
             }
         }
 
-        $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
-        $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
-            PathUtility::basename($manifestPath),
-            $extensionManagerConfiguration,
-            $composerManifest ?: new \stdClass()
-        );
+        $packageKey = $this->getPackageKeyFromManifest($composerManifest, $manifestPath);
+        $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath, $packageKey);
+        if ($extensionManagerConfiguration !== null) {
+            $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
+                $packageKey,
+                $extensionManagerConfiguration,
+                $composerManifest
+            );
+        }
 
         return $composerManifest;
     }
@@ -840,12 +837,12 @@ class PackageManager implements SingletonInterface
      * resolving dependencies as well.
      *
      * @param string $packagePath
-     * @return array
+     * @param string $packageKey
+     * @return array|null if no ext_emconf.php was found, or the contents of the ext_emconf.php file.
      * @throws Exception\InvalidPackageManifestException
      */
-    protected function getExtensionEmConf($packagePath)
+    protected function getExtensionEmConf(string $packagePath, string $packageKey): ?array
     {
-        $packageKey = PathUtility::basename($packagePath);
         $_EXTKEY = $packageKey;
         $path = $packagePath . 'ext_emconf.php';
         $EM_CONF = null;
@@ -854,8 +851,9 @@ class PackageManager implements SingletonInterface
             if (is_array($EM_CONF[$_EXTKEY])) {
                 return $EM_CONF[$_EXTKEY];
             }
+            throw new InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
         }
-        throw new InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
+        return null;
     }
 
     /**
@@ -874,8 +872,10 @@ class PackageManager implements SingletonInterface
         $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['title'] ?? '');
         $this->setComposerManifestValueIfEmpty($composerManifest, 'authors', [['name' => $extensionManagerConfiguration['author'] ?? '', 'email' => $extensionManagerConfiguration['author_email'] ?? '']]);
         $composerManifest->version = $extensionManagerConfiguration['version'] ?? '';
+        $composerManifest->require = new \stdClass();
+        $composerManifest->conflict = new \stdClass();
+        $composerManifest->suggest = new \stdClass();
         if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {
-            $composerManifest->require = new \stdClass();
             foreach ($extensionManagerConfiguration['constraints']['depends'] as $requiredPackageKey => $requiredPackageVersion) {
                 if (!empty($requiredPackageKey)) {
                     if ($requiredPackageKey === 'typo3') {
@@ -891,7 +891,6 @@ class PackageManager implements SingletonInterface
             }
         }
         if (isset($extensionManagerConfiguration['constraints']['conflicts']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
-            $composerManifest->conflict = new \stdClass();
             foreach ($extensionManagerConfiguration['constraints']['conflicts'] as $conflictingPackageKey => $conflictingPackageVersion) {
                 if (!empty($conflictingPackageKey)) {
                     $composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
@@ -901,7 +900,6 @@ class PackageManager implements SingletonInterface
             }
         }
         if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['suggests'])) {
-            $composerManifest->suggest = new \stdClass();
             foreach ($extensionManagerConfiguration['constraints']['suggests'] as $suggestedPackageKey => $suggestedPackageVersion) {
                 if (!empty($suggestedPackageKey)) {
                     $composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
@@ -996,12 +994,14 @@ class PackageManager implements SingletonInterface
         if (!is_object($manifest)) {
             throw new InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
         }
-        if (isset($manifest->type) && strpos($manifest->type, 'typo3-cms-') === 0) {
-            $packageKey = PathUtility::basename($packagePath);
-            return preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
+        if (!empty($manifest->extra->{'typo3/cms'}->{'extension-key'})) {
+            return $manifest->extra->{'typo3/cms'}->{'extension-key'};
         }
-        $packageKey = str_replace('/', '.', $manifest->name);
-        return preg_replace('/[^A-Za-z0-9.]/', '', $packageKey);
+        if (empty($manifest->name) || (isset($manifest->type) && strpos($manifest->type, 'typo3-cms-') === 0)) {
+            return PathUtility::basename($packagePath);
+        }
+
+        return $manifest->name;
     }
 
     /**

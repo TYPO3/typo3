@@ -141,12 +141,6 @@ class Package implements PackageInterface
         if ($requirements !== null) {
             foreach ($requirements as $requirement => $version) {
                 $packageKey = $packageManager->getPackageKeyFromComposerName($requirement);
-                // dynamically migrate 'cms' dependency to 'core' dependency
-                // see also \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::convertDependenciesToObjects
-                if ($packageKey === 'cms') {
-                    trigger_error('Extension "' . $this->packageKey . '" defines a dependency on ext:cms, which has been removed. Please remove the dependency.', E_USER_DEPRECATED);
-                    $packageKey = 'core';
-                }
                 $constraint = new PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
                 $this->packageMetaData->addConstraint($constraint);
             }
