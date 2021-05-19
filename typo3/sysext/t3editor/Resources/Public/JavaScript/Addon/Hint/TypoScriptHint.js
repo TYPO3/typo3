@@ -11,10 +11,10 @@
 })(function(CodeMirror, TsCodeCompletion) {
   var Pos = CodeMirror.Pos;
 
-  CodeMirror.registerHelper('hint', 'typoscript', function(editor, options) {
+  CodeMirror.registerHelper('hint', 'typoscript', function(editor) {
     return typoScriptHint(editor, function(e, cur) {
       return e.getTokenAt(cur);
-    }, options);
+    });
   });
 
   function arrayContains(arr, item) {

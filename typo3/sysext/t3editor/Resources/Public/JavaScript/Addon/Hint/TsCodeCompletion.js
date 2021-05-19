@@ -45,7 +45,7 @@ define([
   TsCodeCompletion.loadExtTemplatesAsync = function(id) {
     // Ensure id is an integer
     id *= 1;
-    if (isNaN(id) || id === 0) {
+    if (Number.isNaN(id) || id === 0) {
       return null;
     }
     $.ajax({

@@ -369,7 +369,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
 
       it('works for current date', function() {
         var date = new Date();
-        expect(FormEngineValidation.getYear(date)).toBe(date.getYear() + 1900);
+        expect(FormEngineValidation.getYear(date)).toBe(date.getFullYear());
       });
       it('works for year 2013', function() {
         var baseTime = new Date(2013, 9, 23);

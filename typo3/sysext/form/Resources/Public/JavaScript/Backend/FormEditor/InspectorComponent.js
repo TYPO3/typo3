@@ -1185,25 +1185,14 @@ define(['jquery',
       };
 
       collectionElementConfiguration = getFormEditorApp().getFormEditorDefinition(collectionName, collectionElementIdentifier);
-      if (collectionName === 'validators') {
-        Icons.getIcon(
-          collectionElementConfiguration['iconIdentifier'],
-          Icons.sizes.small,
-          null,
-          Icons.states.default
-        ).then(function(icon) {
-          setData(icon);
-        });
-      } else {
-        Icons.getIcon(
-          collectionElementConfiguration['iconIdentifier'],
-          Icons.sizes.small,
-          null,
-          Icons.states.default
-        ).then(function(icon) {
-          setData(icon);
-        });
-      }
+      Icons.getIcon(
+        collectionElementConfiguration['iconIdentifier'],
+        Icons.sizes.small,
+        null,
+        Icons.states.default
+      ).then(function(icon) {
+        setData(icon);
+      });
 
       if (editorConfiguration['label']) {
         getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration['label']);
