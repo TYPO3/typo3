@@ -115,74 +115,12 @@ return [
         ],
         't3editor_2' => [
             'label' => 't3editor_2',
-            'description' => 'rows=auto, readOnly=true',
+            'description' => 'readOnly=true',
             'config' => [
                 'type' => 'text',
                 'renderType' => 't3editor',
                 'format' => 'html',
                 'readOnly' => true,
-                'rows' => 'auto',
-            ],
-        ],
-        't3editor_3' => [
-            'label' => 't3editor_3',
-            'description' => 'rows=auto, readOnly=true, minHeight=2, maxHeight=4',
-            'config' => [
-                'type' => 'text',
-                'renderType' => 't3editor',
-                'format' => 'html',
-                'rows' => 'auto',
-                'readOnly' => true,
-                'minHeight' => 2,
-                'maxHeight' => 4,
-            ],
-        ],
-        't3editor_4' => [
-            'label' => 't3editor_4',
-            'description' => 'rows=auto, codeMirrorMarkText',
-            'config' => [
-                'type' => 'text',
-                'renderType' => 't3editor',
-                'format' => 'html',
-                'rows' => 'auto',
-                'readOnly' => true,
-                'codeMirrorMarkText' => [
-                    [
-                        'from' => [
-                            'line' => 3,
-                            'ch' => 6,
-                        ],
-                        'to' => [
-                            'line' => 5,
-                            'ch' => PHP_INT_MAX,
-                        ],
-                    ]
-                ],
-            ],
-        ],
-        't3editor_5' => [
-            'label' => 't3editor_5',
-            'description' => 'rows=auto, codeMirrorScrollTo',
-            'config' => [
-                'type' => 'text',
-                'renderType' => 't3editor',
-                'format' => 'html',
-                'rows' => 'auto',
-                'readOnly' => true,
-                'codeMirrorScrollTo' => 8,
-                'maxHeight' => 4,
-            ],
-        ],
-        't3editor_6' => [
-            'label' => 't3editor_6',
-            'description' => 'rows=auto, codeMirrorFirstLineNumber',
-            'config' => [
-                'type' => 'text',
-                'renderType' => 't3editor',
-                'format' => 'html',
-                'rows' => 'auto',
-                'readOnly' => true,
-                'codeMirrorFirstLineNumber' => 42,
             ],
         ],
         't3editor_inline_1' => [
@@ -296,10 +234,6 @@ return [
                     t3editor_reload_1,
                     t3editor_1,
                     t3editor_2,
-                    t3editor_3,
-                    t3editor_4,
-                    t3editor_5,
-                    t3editor_6,
                 --div--;in inline,
                     t3editor_inline_1,
                 --div--;in flex,

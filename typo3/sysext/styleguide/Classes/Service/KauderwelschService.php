@@ -32,27 +32,6 @@ class KauderwelschService
     }
 
     /**
-     * Lorem ipsum test with fixed length.
-     *
-     * @return string
-     */
-    public function getLoremIpsumMultiLine(): string
-    {
-        return "Bacon\n"
-            . "ipsum\n"
-            . "dolor\n"
-            . "sit\n"
-            . "strong\n"
-            . "amet\n"
-            . "capicola jerky pork chop rump\n"
-            . "shoulder shank. Shankle strip steak pig salami link.\n"
-            . "Leberkas shoulder ham hock cow salami bacon em pork pork chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork\n"
-            . "tongue short ribs jowl cow hamburger\n"
-            . "strip steak.\n"
-            . "Doner turducken jerky short loin chuck filet mignon.\n";
-    }
-
-    /**
      * Lorem ipsum test with fixed length and HTML in it.
      *
      * @return string
@@ -60,29 +39,6 @@ class KauderwelschService
     public function getLoremIpsumHtml(): string
     {
         return 'Bacon ipsum dolor sit <strong>strong amet capicola</strong> jerky pork chop rump shoulder shank. Shankle strip <a href="#">steak pig salami link</a>. Leberkas shoulder ham hock cow salami bacon <em>em pork pork</em> chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
-    }
-
-    /**
-     * Lorem ipsum test with fixed length and HTML in it.
-     *
-     * @return string
-     */
-    public function getLoremIpsumHtmlMultiLine(): string
-    {
-        return "<table>\n"
-            . "    <tr>\n"
-            . "        <th>Entry Header 1</th>\n"
-            . "        <th>Entry Header 2</th>\n"
-            . "        <th>Entry Header 3</th>\n"
-            . "        <th>Entry Header 4</th>\n"
-            . "    </tr>\n"
-            . "    <tr>\n"
-            . "        <td>Entry Header 1</td>\n"
-            . "        <td>Entry Header 2</td>\n"
-            . "        <td>Entry Header 3</td>\n"
-            . "        <td>Entry Header 4</td>\n"
-            . "    </tr>\n"
-            . "</table>\n";
     }
 
     /**
