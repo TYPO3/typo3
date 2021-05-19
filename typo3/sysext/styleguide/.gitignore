@@ -1,4 +1,5 @@
 node_modules
+package-lock.json
 .Build/
 .idea/
 Build/testing-docker/.env
