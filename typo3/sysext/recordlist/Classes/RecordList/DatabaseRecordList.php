@@ -128,13 +128,6 @@ class DatabaseRecordList
     public $pageRow = [];
 
     /**
-     * Contains sys language icons and titles
-     *
-     * @var array
-     */
-    protected array $languageIconTitles = [];
-
-    /**
      * Tables which should not list their translations
      *
      * @var string
@@ -1934,6 +1927,9 @@ class DatabaseRecordList
         }
 
         // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
+        $pageId = (int)($table === 'pages' ? $row['uid'] : $row['pid']);
+        $languageInformation = $this->translateTools->getSystemLanguages($pageId);
+
         foreach ($possibleTranslations as $lUid_OnPage) {
             if ($this->isEditable($table)
                 && !$this->isRecordDeletePlaceholder($row)
@@ -1951,15 +1947,14 @@ class DatabaseRecordList
                 $params['redirect'] = $redirectUrl;
                 $params['cmd'][$table][$row['uid']]['localize'] = $lUid_OnPage;
                 $href = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $params);
-                $language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
-                $lC = ($this->languageIconTitles[$lUid_OnPage]['flagIcon'] ?? false)
-                    ? $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render()
-                    : ($this->languageIconTitles[$lUid_OnPage]['title'] ?? '')
-                ;
+
+                $lC = ($languageInformation[$lUid_OnPage]['flagIcon'] ?? false)
+                    ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render()
+                    : ($languageInformation[$lUid_OnPage]['title'] ?? '');
 
                 $lC = '<a href="' . htmlspecialchars($href) . '"'
                     . '" class="btn btn-default t3js-action-localize"'
-                    . ' title="' . htmlspecialchars($language['title']) . '">'
+                    . ' title="' . htmlspecialchars($languageInformation[$lUid_OnPage]['title']) . '">'
                     . $lC . '</a> ';
                 $out .= $lC;
             }
@@ -2374,7 +2369,6 @@ class DatabaseRecordList
         $this->perms_clause = (string)$permsClause;
 
         $this->possibleTranslations = $this->getPossibleTranslations($this->id);
-        $this->languageIconTitles = $this->translateTools->getSystemLanguages($this->id);
     }
 
     /**
@@ -3264,17 +3258,18 @@ class DatabaseRecordList
      */
     protected function languageFlag(string $table, array $row): string
     {
-        $out = '';
-        $languageUid = $row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0;
-        $title = htmlspecialchars($this->languageIconTitles[$languageUid]['title'] ?? '');
+        $pageId = (int)($table === 'pages' ? ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] ?: $row['uid']) : $row['pid']);
+        $languageUid = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0);
+        $languageInformation = $this->translateTools->getSystemLanguages($pageId);
+        $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
         $indent = ($table !== 'pages' && $this->isLocalized($table, $row)) ? ' style="margin-left: 16px;"' : '';
-        if ($this->languageIconTitles[$languageUid]['flagIcon']) {
-            $out .= '<span title="' . $title . '"' . $indent . '>' . $this->iconFactory->getIcon(
-                $this->languageIconTitles[$languageUid]['flagIcon'],
+        if ($languageInformation[$languageUid]['flagIcon']) {
+            return '<span title="' . $title . '"' . $indent . '>' . $this->iconFactory->getIcon(
+                $languageInformation[$languageUid]['flagIcon'],
                 Icon::SIZE_SMALL
-            )->render() . '</span>&nbsp;';
+            )->render() . '</span>&nbsp;' . $title;
         }
-        return $out . $title;
+        return $title;
     }
 
     /**
