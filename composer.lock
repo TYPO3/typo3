@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dc2c8cb2e24d2bd5a60678b0e5f48ad",
+    "content-hash": "6f11a2c93ad6fec94d41cbd9f2623839",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7472,16 +7472,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.1.0",
+            "version": "11.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "6f20217458bc06753a74e40b11c1f5ec22fb53c9"
+                "reference": "03201d947c6677ccf1cf76b2c42f1470c49df60c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/6f20217458bc06753a74e40b11c1f5ec22fb53c9",
-                "reference": "6f20217458bc06753a74e40b11c1f5ec22fb53c9",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/03201d947c6677ccf1cf76b2c42f1470c49df60c",
+                "reference": "03201d947c6677ccf1cf76b2c42f1470c49df60c",
                 "shasum": ""
             },
             "require-dev": {
@@ -7535,9 +7535,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.1.0"
+                "source": "https://github.com/TYPO3/styleguide/tree/11.2.2"
             },
-            "time": "2021-03-07T16:10:47+00:00"
+            "time": "2021-05-19T15:42:07+00:00"
         },
         {
             "name": "typo3/testing-framework",
