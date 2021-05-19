@@ -18,12 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,12 +48,14 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 continue;
             }
             $childTableName = $fieldConfig['config']['foreign_table'] ?? '';
-            if (!in_array($childTableName, ['site_errorhandling', 'site_language', 'site_route', 'site_base_variant'], true)) {
+            if (!in_array($childTableName, ['site_errorhandling', 'site_route', 'site_base_variant'], true)) {
                 throw new \RuntimeException('Inline relation to other tables not implemented', 1522494737);
             }
             $result['processedTca']['columns'][$fieldName]['children'] = [];
             $result = $this->resolveSiteRelatedChildren($result, $fieldName);
-            $result = $this->addForeignSelectorAndUniquePossibleRecords($result, $fieldName);
+            if (!empty($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'])) {
+                throw new \RuntimeException('selectorOrUniqueConfiguration not implemented in sites module', 1624313533);
+            }
         }
 
         return $result;
@@ -136,92 +136,15 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             }
         }
 
-        // If we are dealing with site_language, we *always* force a relation to sys_language "0"
-        $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'] ?? '';
-        if ($foreignTable === 'site_language' && $result['command'] === 'new') {
-            // If new, just add a new default child
-            $child = $this->compileDefaultSysSiteLanguageChild($result, $fieldName);
-            $connectedUids[] = $child['databaseRow']['uid'];
-            $result['processedTca']['columns'][$fieldName]['children'][] = $child;
-        }
-
         $result['databaseRow'][$fieldName] = implode(',', $connectedUids);
         if ($result['inlineCompileExistingChildren']) {
             foreach ($connectedUids as $uid) {
                 if (strpos((string)$uid, 'NEW') !== 0) {
-                    $compiledChild = $this->compileChild($result, $fieldName, $uid);
+                    $compiledChild = $this->compileChild($result, $fieldName, (int)$uid);
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
             }
         }
-
-        // If we are dealing with site_language, we *always* force a relation to sys_language "0"
-        if ($foreignTable === 'site_language' && $result['command'] === 'edit') {
-            // If edit, find out if a child using sys_language "0" exists, else add it on top
-            $defaultSysSiteLanguageChildFound = false;
-            foreach ($result['processedTca']['columns'][$fieldName]['children'] as $child) {
-                if (isset($child['databaseRow']['languageId']) && ($child['databaseRow']['languageId'][0] ?? 0) == 0) {
-                    $defaultSysSiteLanguageChildFound = true;
-                }
-            }
-            if (!$defaultSysSiteLanguageChildFound) {
-                // Compile and add child as first child
-                $child = $this->compileDefaultSysSiteLanguageChild($result, $fieldName);
-                $result['databaseRow'][$fieldName] = $child['databaseRow']['uid'] . ',' . $result['databaseRow'][$fieldName];
-                array_unshift($result['processedTca']['columns'][$fieldName]['children'], $child);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * If there is a foreign_selector or foreign_unique configuration, fetch
-     * the list of possible records that can be connected and attach them to the
-     * inline configuration.
-     *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @return array Modified item array
-     */
-    protected function addForeignSelectorAndUniquePossibleRecords(array $result, string $fieldName): array
-    {
-        if (!is_array($result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'] ?? null)) {
-            return $result;
-        }
-
-        $selectorOrUniqueConfiguration = $result['processedTca']['columns'][$fieldName]['config']['selectorOrUniqueConfiguration'];
-        $foreignFieldName = $selectorOrUniqueConfiguration['fieldName'];
-        $selectorOrUniquePossibleRecords = [];
-
-        if ($selectorOrUniqueConfiguration['config']['type'] === 'select') {
-            // Compile child table data for this field only
-            $selectDataInput = [
-                'tableName' => $result['processedTca']['columns'][$fieldName]['config']['foreign_table'],
-                'command' => 'new',
-                // Since there is no existing record that may have a type, it does not make sense to
-                // do extra handling of pageTsConfig merged here. Just provide "parent" pageTS as is
-                'pageTsConfig' => $result['pageTsConfig'],
-                'userTsConfig' => $result['userTsConfig'],
-                'databaseRow' => $result['databaseRow'],
-                'processedTca' => [
-                    'ctrl' => [],
-                    'columns' => [
-                        $foreignFieldName => [
-                            'config' => $selectorOrUniqueConfiguration['config'],
-                        ],
-                    ],
-                ],
-                'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-            ];
-            $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
-            $formDataGroup->setProviderList([TcaSelectItems::class]);
-            $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-            $compilerResult = $formDataCompiler->compile($selectDataInput);
-            $selectorOrUniquePossibleRecords = $compilerResult['processedTca']['columns'][$foreignFieldName]['config']['items'];
-        }
-
-        $result['processedTca']['columns'][$fieldName]['config']['selectorOrUniquePossibleRecords'] = $selectorOrUniquePossibleRecords;
 
         return $result;
     }
@@ -272,54 +195,9 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
         ];
 
-        if ($parentConfig['foreign_selector'] && ($parentConfig['appearance']['useCombination'] ?? false)) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493097);
         }
         return $formDataCompiler->compile($formDataCompilerInput);
-    }
-
-    /**
-     * Compile default site_language child using sys_language uid "0"
-     *
-     * @param array $result
-     * @param string $parentFieldName
-     * @return array
-     */
-    protected function compileDefaultSysSiteLanguageChild(array $result, string $parentFieldName): array
-    {
-        $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
-        $formDataGroup = GeneralUtility::makeInstance(SiteConfigurationDataGroup::class);
-        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-        $formDataCompilerInput = [
-            'command' => 'new',
-            'tableName' => 'site_language',
-            'vanillaUid' => $result['inlineFirstPid'],
-            'returnUrl' => $result['returnUrl'],
-            'isInlineChild' => true,
-            'inlineStructure' => [],
-            'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
-            'inlineFirstPid' => $result['inlineFirstPid'],
-            'inlineParentConfig' => $parentConfig,
-            'inlineParentUid' => $result['databaseRow']['uid'],
-            'inlineParentTableName' => $result['tableName'],
-            'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: ($inlineTopMostParent['uid'] ?? null),
-            'inlineTopMostParentTableName' => ($result['inlineTopMostParentTableName'] ?? false) ?: ($inlineTopMostParent['table'] ?? ''),
-            'inlineTopMostParentFieldName' => ($result['inlineTopMostParentFieldName'] ?? false) ?: ($inlineTopMostParent['field'] ?? ''),
-            // The sys_language uid 0
-            'inlineChildChildUid' => 0,
-        ];
-        return $formDataCompiler->compile($formDataCompilerInput);
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

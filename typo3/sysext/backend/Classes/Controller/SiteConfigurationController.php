@@ -334,6 +334,62 @@ class SiteConfigurationController
                         }
                         break;
 
+                    case 'siteLanguage':
+                        if (!isset($siteTca['site_language'])) {
+                            throw new \RuntimeException('Required foreign table site_language does not exist', 1624286811);
+                        }
+                        if (!isset($siteTca['site_language']['columns']['languageId'])
+                            || ($siteTca['site_language']['columns']['languageId']['config']['type'] ?? '') !== 'select'
+                        ) {
+                            throw new \RuntimeException(
+                                'Required foreign field languageId does not exist or is not of type select',
+                                1624286812
+                            );
+                        }
+                        $newSysSiteData[$fieldName] = [];
+                        $lastLanguageId = $this->getLastLanguageId();
+                        foreach (GeneralUtility::trimExplode(',', $fieldValue, true) as $childRowId) {
+                            if (!isset($data['site_language'][$childRowId])) {
+                                if (!empty($currentSiteConfiguration[$fieldName][$childRowId])) {
+                                    $newSysSiteData[$fieldName][] = $currentSiteConfiguration[$fieldName][$childRowId];
+                                    continue;
+                                }
+                                throw new \RuntimeException('No data found for table site_language with id ' . $childRowId, 1624286813);
+                            }
+                            $childRowData = [];
+                            foreach ($data['site_language'][$childRowId] ?? [] as $childFieldName => $childFieldValue) {
+                                if ($childFieldName === 'pid') {
+                                    // pid is added by default, but not relevant for yml storage
+                                    continue;
+                                }
+                                if ($childFieldName === 'languageId'
+                                    && (int)$childFieldValue === PHP_INT_MAX
+                                    && StringUtility::beginsWith($childRowId, 'NEW')
+                                ) {
+                                    // In case we deal with a new site language, whose "languageID" field is
+                                    // set to the PHP_INT_MAX placeholder, the next available language ID has
+                                    // to be used (auto-increment).
+                                    $childRowData[$childFieldName] = ++$lastLanguageId;
+                                    continue;
+                                }
+                                $type = $siteTca['site_language']['columns'][$childFieldName]['config']['type'];
+                                switch ($type) {
+                                    case 'input':
+                                    case 'select':
+                                    case 'text':
+                                        $childRowData[$childFieldName] = $childFieldValue;
+                                        break;
+                                    case 'check':
+                                        $childRowData[$childFieldName] = (bool)$childFieldValue;
+                                        break;
+                                    default:
+                                        throw new \RuntimeException('TCA type ' . $type . ' not implemented in site handling', 1624286814);
+                                }
+                            }
+                            $newSysSiteData[$fieldName][] = $childRowData;
+                        }
+                        break;
+
                     case 'select':
                         if (MathUtility::canBeInterpretedAsInteger($fieldValue)) {
                             $fieldValue = (int)$fieldValue;
@@ -734,6 +790,24 @@ class SiteConfigurationController
         return array_filter($duplicatedEntryPoints, static function (array $variants): bool {
             return count($variants) > 1 || reset($variants) > 1;
         }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * Returns the last (highest) language id from all sites
+     *
+     * @return int
+     */
+    protected function getLastLanguageId(): int
+    {
+        $lastLanguageId = 0;
+        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+            foreach ($site->getAllLanguages() as $language) {
+                if ($language->getLanguageId() > $lastLanguageId) {
+                    $lastLanguageId = $language->getLanguageId();
+                }
+            }
+        }
+        return $lastLanguageId;
     }
 
     /**

@@ -93,7 +93,7 @@ class TemplateCest
         $I->wantTo('change the title and save the template');
         $I->waitForElement('#EditDocumentController');
         // fill title input field
-        $I->fillField('//input[@data-formengine-input-name="data[sys_template][1][title]"]', 'Acceptance Test Site');
+        $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Acceptance Test Site');
         $I->click("//button[@name='_savedok']");
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
@@ -101,9 +101,9 @@ class TemplateCest
 
         $I->wantTo('change the setup, save the template and close the form');
         // grab and fill setup textarea
-        $config = $I->grabTextFrom('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]');
+        $config = $I->grabTextFrom('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]');
         $config = str_replace('HELLO WORLD!', 'Hello Acceptance Test!', $config);
-        $I->fillField('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]', $config);
+        $I->fillField('//textarea[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[config]")]', $config);
 
         $I->click('//*/button[@name="_savedok"][1]');
         $I->waitForElement('a.t3js-editform-close');

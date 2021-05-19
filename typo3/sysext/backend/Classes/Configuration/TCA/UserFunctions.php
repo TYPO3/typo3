@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Configuration\TCA;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class provides user functions for the usage in TCA definition
@@ -35,11 +36,20 @@ class UserFunctions
     public function getSiteLanguageTitle(array &$parameters): void
     {
         $record = $parameters['row'];
+        $languageId = (int)($record['languageId'][0] ?? 0);
+
+        if ($languageId === PHP_INT_MAX && StringUtility::beginsWith((string)($record['uid'] ?? ''), 'NEW')) {
+            // If we deal with a new record, created via "Create new" (indicated by the PHP_INT_MAX placeholder),
+            // we use a label as record title, until the real values, especially the language ID, are calculated.
+            $parameters['title'] = '[' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.new') . ']';
+            return;
+        }
+
         $parameters['title'] = sprintf(
             '%s %s [%d] (%s) Base: %s',
             $record['enabled'] ? '' : '[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disabled') . ']',
             $record['title'],
-            (int)($record['languageId'][0] ?? 0),
+            $languageId,
             $record['locale'],
             $record['base']
         );

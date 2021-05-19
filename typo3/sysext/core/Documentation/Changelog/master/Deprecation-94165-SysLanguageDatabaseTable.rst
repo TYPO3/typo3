@@ -17,9 +17,28 @@ now deprecated.
 
 The Core internally does not longer rely on this table but fetches
 necessary information from the site languages instead. This means, there
-won't be any relation to the :sql:``sys_language` table, which allows to
+won't be any relation to the :sql:`sys_language` table, which allows to
 define any kind of "ID" for the :php:`languageField` field of records, which
 is usually :sql:`sys_language_uid`.
+
+Also the site languages, used in site configurations, are now completely
+independent of any :sql:`sys_language` record. Previously, when using the
+site module to create or edit a site configuration, site languages could
+only be added when a corresponding :sql:`sys_language` record existed.
+This has now changed. The site configurations' `languages` field now
+features a "Create new language" button, which allows to create a new
+site language for this site configuration. Such newly created site
+language will then also be available in the selector box of all other
+site configurations. The ID for a new site language is always created
+automatically (auto-increment). When selecting this site language in
+another site configuration, most of the fields will now be prefilled.
+
+.. note::
+
+   When creating the first site configuration of a new installation, the
+   languages selector box is empty, as new languages must be created via
+   the "Create new language" button first. However, a default language
+   (ID=0) record will always be added automatically.
 
 Impact
 ======

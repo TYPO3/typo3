@@ -15,13 +15,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['Default Language', 0],
-                ],
-                'foreign_table' => 'sys_language',
-                'size' => 1,
-                'min' => 1,
-                'max' => 1,
+                'itemsProcFunc' => \TYPO3\CMS\Backend\Configuration\TCA\ItemsProcessorFunctions::class . '->populateAvailableLanguagesFromSites'
             ],
         ],
         'title' => [
@@ -431,10 +425,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'items' => [
-                    ['Default Language', 0],
-                ],
-                'foreign_table' => 'sys_language',
+                'itemsProcFunc' => \TYPO3\CMS\Backend\Configuration\TCA\ItemsProcessorFunctions::class . '->populateFallbackLanguages',
                 'size' => 5,
                 'min' => 0,
             ],

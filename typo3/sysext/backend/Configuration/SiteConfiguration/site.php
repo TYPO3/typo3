@@ -64,20 +64,10 @@ return [
         ],
         'languages' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.description',
             'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'site_language',
-                'foreign_selector' => 'languageId',
-                'foreign_unique' => 'languageId',
-                'size' => 4,
-                'minitems' => 1,
-                'appearance' => [
-                    'collapseAll' => true,
-                    'enabledControls' => [
-                        'info' => false,
-                    ],
-                ],
-            ],
+                'type' => 'siteLanguage',
+            ]
         ],
         'errorHandling' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.errorHandling',

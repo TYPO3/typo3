@@ -58,6 +58,7 @@ class NodeFactory
         'flexFormTabsContainer' => Container\FlexFormTabsContainer::class,
         'fullRecordContainer' => Container\FullRecordContainer::class,
         'inline' => Container\InlineControlContainer::class,
+        'siteLanguage' => Container\SiteLanguageContainer::class,
         'inlineRecordContainer' => Container\InlineRecordContainer::class,
         'listOfFieldsContainer' => Container\ListOfFieldsContainer::class,
         'noTabsContainer' => Container\NoTabsContainer::class,

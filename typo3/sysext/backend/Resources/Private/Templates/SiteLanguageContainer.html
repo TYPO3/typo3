@@ -1,0 +1,24 @@
+<typo3-formengine-container-sitelanguage identifier="{nameObject}">
+    <div {formGroupAttributes -> f:format.raw()}>
+        <f:format.raw>{fieldInformation}</f:format.raw>
+        <div class="form-group t3js-formengine-validation-marker">
+            <div class="typo3-newRecordLink" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.createNew')}">
+                <button type="button" class="btn btn-default t3js-create-new-button">
+                    <core:icon identifier="actions-add" size="small" />
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.createNew" />
+                </button>
+            </div>
+        </div>
+        <div class="input-group form-group t3js-formengine-validation-marker">
+            <select id="{selectorConfigutation.identifier}" class="form-select t3js-create-new-selector" size="{selectorConfigutation.size}">
+                <f:for each="{selectorConfigutation.options}" as="option">
+                    <option value="{option.value}">{option.label}</option>
+                </f:for>
+            </select>
+        </div>
+        <div class="panel-group panel-hover" id="{inlineRecords.identifier}" data-title="{inlineRecords.title}">
+            <f:format.raw>{inlineRecords.records}</f:format.raw>
+        </div>
+        <input type="hidden" class="inlineRecord" name="{nameForm}" value="{childRecordUids}" data-formengine-validation-rules="{validationRules}" />
+    </div>
+</typo3-formengine-container-sitelanguage>

@@ -24,10 +24,10 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -83,37 +83,56 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             $childVanillaUid = (int)$inlineFirstPid;
         }
         $childTableName = $parentConfig['foreign_table'];
-
         $defaultDatabaseRow = [];
-        if ($childTableName === 'site_language') {
-            // Feed new site_language row with data from sys_language record if possible
-            if ($childChildUid > 0) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-                $row = $queryBuilder->select('*')->from('sys_language')
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($childChildUid, \PDO::PARAM_INT)))
-                    ->execute()->fetch();
-                if (empty($row)) {
-                    throw new \RuntimeException('Referenced sys_language row not found', 1521783937);
-                }
-                if (!empty($row['language_isocode'])) {
-                    $defaultDatabaseRow['iso-639-1'] = $row['language_isocode'];
-                    $defaultDatabaseRow['base'] = '/' . $row['language_isocode'] . '/';
 
-                    $locales = GeneralUtility::makeInstance(Locales::class);
-                    $allLanguages = $locales->getLanguages();
-                    if (isset($allLanguages[$row['language_isocode']])) {
-                        $defaultDatabaseRow['typo3Language'] = $row['language_isocode'];
+        if ($childTableName === 'site_language') {
+            if ($childChildUid !== null) {
+                $language = $this->getLanguageById($childChildUid);
+                if ($language !== null) {
+                    $defaultDatabaseRow['languageId'] = $language->getLanguageId();
+                    $defaultDatabaseRow['locale'] = $language->getLocale();
+                    if ($language->getTitle() !== '') {
+                        $defaultDatabaseRow['title'] = $language->getTitle();
                     }
+                    if ($language->getTypo3Language() !== '') {
+                        $locales = GeneralUtility::makeInstance(Locales::class);
+                        $allLanguages = $locales->getLanguages();
+                        if (isset($allLanguages[$language->getTypo3Language()])) {
+                            $defaultDatabaseRow['typo3Language'] = $language->getTypo3Language();
+                        }
+                    }
+                    if ($language->getTwoLetterIsoCode() !== '') {
+                        $defaultDatabaseRow['iso-639-1'] = $language->getTwoLetterIsoCode();
+                        if ($language->getBase()->getPath() !== '/') {
+                            $defaultDatabaseRow['base'] = '/' . $language->getTwoLetterIsoCode() . '/';
+                        }
+                    }
+                    if ($language->getNavigationTitle() !== '') {
+                        $defaultDatabaseRow['navigationTitle'] = $language->getNavigationTitle();
+                    }
+                    if ($language->getHreflang() !== '') {
+                        $defaultDatabaseRow['hreflang'] = $language->getHreflang();
+                    }
+                    if ($language->getDirection() !== '') {
+                        $defaultDatabaseRow['direction'] = $language->getDirection();
+                    }
+                    if (strpos($language->getFlagIdentifier(), 'flags-') === 0) {
+                        $flagIdentifier = str_replace('flags-', '', $language->getFlagIdentifier());
+                        $defaultDatabaseRow['flag'] = ($flagIdentifier === 'multiple') ? 'global' : $flagIdentifier;
+                    }
+                } elseif ($childChildUid !== 0) {
+                    // In case no language could be found for $childChildUid and
+                    // its value is not "0", which is a special case as the default
+                    // language is added automatically, throw a custom exception.
+                    throw new \RuntimeException('Referenced language not found', 1521783937);
                 }
-                if (!empty($row['flag']) && $row['flag'] === 'multiple') {
-                    $defaultDatabaseRow['flag'] = 'global';
-                } elseif (!empty($row)) {
-                    $defaultDatabaseRow['flag'] = $row['flag'];
-                }
-                if (!empty($row['title'])) {
-                    $defaultDatabaseRow['title'] = $row['title'];
-                }
+            } else {
+                // Set new childs' UID to PHP_INT_MAX, as this is the placeholder UID for
+                // new records, created with the "Create new" button. This is necessary
+                // as we use the "inline selector" mode which usually does not allow
+                // to create new records besides the ones, defined in the selector.
+                // The correct UID will then be calculated by the controller.
+                $childChildUid = PHP_INT_MAX;
             }
         }
 
@@ -140,7 +159,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         }
         $childData = $formDataCompiler->compile($formDataCompilerInput);
 
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493094);
         }
 
@@ -201,6 +220,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     ],
                 ],
             ],
+            'uid' => $parent['uid'],
             'tableName' => $parent['table'],
             'inlineFirstPid' => $inlineFirstPid,
             // Hand over given original return url to compile stack. Needed if inline children compile links to
@@ -271,7 +291,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 
             // values of the current parent element
             // it is always a string either an id or new...
-            'inlineParentUid' => $parentData['databaseRow']['uid'],
+            'inlineParentUid' => $parentData['uid'],
             'inlineParentTableName' => $parentData['tableName'],
             'inlineParentFieldName' => $parentFieldName,
 
@@ -280,7 +300,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
             'inlineTopMostParentFieldName' => $inlineTopMostParent['field'],
         ];
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493095);
         }
         return $formDataCompiler->compile($formDataCompilerInput);
@@ -373,6 +393,26 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         if (preg_match($pattern, $domObjectId, $match)) {
             return (int)$match[1];
         }
+        return null;
+    }
+
+    /**
+     * Find a site language by id. This will return the first occurrence of a
+     * language, even if the same language is used in other site configurations.
+     *
+     * @param int $languageId
+     * @return SiteLanguage|null
+     */
+    protected function getLanguageById(int $languageId): ?SiteLanguage
+    {
+        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+            foreach ($site->getAllLanguages() as $language) {
+                if ($languageId === $language->getLanguageId()) {
+                    return $language;
+                }
+            }
+        }
+
         return null;
     }
 }

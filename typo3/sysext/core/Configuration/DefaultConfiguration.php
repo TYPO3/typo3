@@ -1131,9 +1131,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSiteLanguage::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaInline::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSiteLanguage::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class,
                         ],
                     ],
