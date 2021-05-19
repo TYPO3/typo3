@@ -63,7 +63,7 @@ label {
 }
 
 .form-control-wrap {
-    margin: 0 0 0.5rem;
+    margin: 0.5rem 0;
 }
 
 .form-control-holder {
@@ -92,7 +92,7 @@ label {
     > label,
     > .form-label {
         font-weight: 600;
-        margin: 0.25rem 0 0.5rem;
+        margin: 0 0 $form-label-margin-bottom;
         word-break: break-all;
     }
 }
