@@ -71,13 +71,6 @@ define(['jquery'], function($) {
       };
 
       /**
-       * @private
-       *
-       * @var bool
-       */
-      var _isRunning = false;
-
-      /**
        * @public
        *
        * @return object
