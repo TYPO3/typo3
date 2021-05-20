@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Exception\InvalidFileException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -168,7 +169,7 @@ class UploadExtensionFileController extends AbstractController
             }
         } catch (StopActionException $exception) {
             throw $exception;
-        } catch (DependencyConfigurationNotFoundException $exception) {
+        } catch (InvalidFileException|DependencyConfigurationNotFoundException $exception) {
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         } catch (\Exception $exception) {
             $this->removeExtensionAndRestoreFromBackup($fileName);
@@ -184,16 +185,16 @@ class UploadExtensionFileController extends AbstractController
      * Validate the filename of an uploaded file
      *
      * @param string $fileName
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @throws InvalidFileException
      */
     public function checkFileName($fileName)
     {
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
         if (empty($fileName)) {
-            throw new ExtensionManagerException('No file given.', 1342858852);
+            throw new InvalidFileException('No file given.', 1342858852);
         }
         if ($extension !== 't3x' && $extension !== 'zip') {
-            throw new ExtensionManagerException('Wrong file format "' . $extension . '" given. Allowed formats are t3x and zip.', 1342858853);
+            throw new InvalidFileException('Wrong file format "' . $extension . '" given. Allowed formats are t3x and zip.', 1342858853);
         }
     }
 
