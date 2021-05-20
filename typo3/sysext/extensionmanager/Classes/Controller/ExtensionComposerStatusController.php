@@ -144,6 +144,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
             'parameterArray' => [
                 'itemFormElName' => 'composerManifest-' . $extensionKey,
                 'itemFormElValue' => $composerManifest,
+                'fieldChangeFunc' => [],
                 'fieldConf' => [
                     'config' => [
                         'rows' => ++$rows,
