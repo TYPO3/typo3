@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -146,7 +147,7 @@ class ListController extends AbstractModuleController
     /**
      * Shows list of extensions present in the system
      */
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         if ($this->request->hasArgument('filter') && is_string($this->request->getArgument('filter'))) {
             $filter = $this->request->getArgument('filter');
@@ -166,15 +167,17 @@ class ListController extends AbstractModuleController
             ]
         );
         $this->handleTriggerArguments();
+
+        return $this->htmlResponse();
     }
 
     /**
      * Shows a list of unresolved dependency errors with the possibility to bypass the dependency check
      *
      * @param string $extensionKey
-     * @throws ExtensionManagerException
+     * @return ResponseInterface
      */
-    public function unresolvedDependenciesAction($extensionKey)
+    public function unresolvedDependenciesAction($extensionKey): ResponseInterface
     {
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
@@ -190,6 +193,8 @@ class ListController extends AbstractModuleController
         $this->dependencyUtility->checkDependencies($extension);
         $this->view->assign('extension', $extension);
         $this->view->assign('unresolvedDependencies', $this->dependencyUtility->getDependencyErrors());
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -198,8 +203,9 @@ class ListController extends AbstractModuleController
      *
      * @param string $search
      * @param int $currentPage
+     * @return ResponseInterface
      */
-    public function terAction($search = '', int $currentPage = 1)
+    public function terAction($search = '', int $currentPage = 1): ResponseInterface
     {
         $this->addComposerModeNotification();
         $search = trim($search);
@@ -215,22 +221,26 @@ class ListController extends AbstractModuleController
         }
         $pagination = new SimplePagination($paginator);
         $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($this->listUtility->getAvailableExtensions());
-        $this->view->assign('extensions', $extensions)
-                ->assign('paginator', $paginator)
-                ->assign('pagination', $pagination)
-                ->assign('search', $search)
-                ->assign('availableAndInstalled', $availableAndInstalledExtensions)
-                ->assign('actionName', 'ter')
-                ->assign('tableId', $tableId)
-        ;
+        $this->view->assignMultiple([
+            'extensions' => $extensions,
+            'paginator' => $paginator,
+            'pagination' => $pagination,
+            'search' => $search,
+            'availableAndInstalled' => $availableAndInstalledExtensions,
+            'actionName' => 'ter',
+            'tableId' => $tableId,
+        ]);
+
+        return $this->htmlResponse();
     }
 
     /**
      * Action for listing all possible distributions
      *
      * @param bool $showUnsuitableDistributions
+     * @return ResponseInterface
      */
-    public function distributionsAction($showUnsuitableDistributions = false)
+    public function distributionsAction($showUnsuitableDistributions = false): ResponseInterface
     {
         $this->addComposerModeNotification();
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
@@ -252,14 +262,17 @@ class ListController extends AbstractModuleController
         }
         $this->view->assign('enableDistributionsView', $importExportInstalled);
         $this->view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
+
+        return $this->htmlResponse();
     }
 
     /**
      * Shows all versions of a specific extension
      *
      * @param string $extensionKey
+     * @return ResponseInterface
      */
-    public function showAllVersionsAction($extensionKey)
+    public function showAllVersionsAction($extensionKey): ResponseInterface
     {
         $currentVersion = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
         $extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
@@ -271,6 +284,8 @@ class ListController extends AbstractModuleController
                 'extensions' => $extensions
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**

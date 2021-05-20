@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -78,7 +79,7 @@ class UpdateFromTerController extends AbstractController
      *
      * @param bool $forceUpdateCheck
      */
-    public function updateExtensionListFromTerAction($forceUpdateCheck = false)
+    public function updateExtensionListFromTerAction($forceUpdateCheck = false): ResponseInterface
     {
         $updated = false;
         $errorMessage = '';
@@ -116,6 +117,13 @@ class UpdateFromTerController extends AbstractController
             'timeSinceLastUpdate' => $lastUpdatedSince,
             'errorMessage' => $errorMessage
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**

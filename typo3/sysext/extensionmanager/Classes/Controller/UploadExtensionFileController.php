@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -81,7 +82,7 @@ class UploadExtensionFileController extends AbstractController
     /**
      * Render upload extension form
      */
-    public function formAction()
+    public function formAction(): ResponseInterface
     {
         if (Environment::isComposerMode()) {
             throw new ExtensionManagerException(
@@ -89,6 +90,8 @@ class UploadExtensionFileController extends AbstractController
                 1444725828
             );
         }
+
+        return $this->htmlResponse();
     }
 
     /**

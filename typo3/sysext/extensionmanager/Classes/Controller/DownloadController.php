@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -83,9 +84,9 @@ class DownloadController extends AbstractController
      * Check extension dependencies
      *
      * @param Extension $extension
-     * @throws \Exception
+     * @return ResponseInterface
      */
-    public function checkDependenciesAction(Extension $extension)
+    public function checkDependenciesAction(Extension $extension): ResponseInterface
     {
         $message = '';
         $title = '';
@@ -157,6 +158,13 @@ class DownloadController extends AbstractController
             'hasDependencies' => $hasDependencies,
             'title' => $title
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**
@@ -164,25 +172,29 @@ class DownloadController extends AbstractController
      *
      * @param Extension $extension
      * @param string $downloadPath
+     * @return ResponseInterface
      */
-    public function installFromTerAction(Extension $extension, $downloadPath = 'Local')
+    public function installFromTerAction(Extension $extension, $downloadPath = 'Local'): ResponseInterface
     {
         [$result, $errorMessages] = $this->installFromTer($extension, $downloadPath);
         $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
-        $this->view
-            ->assign('result', $result)
-            ->assign('extension', $extension)
-            ->assign('installationTypeLanguageKey', $isAutomaticInstallationEnabled ? '' : '.downloadOnly')
-            ->assign('unresolvedDependencies', $errorMessages);
+        $this->view->assignMultiple([
+            'result'  => $result,
+            'extension' => $extension,
+            'installationTypeLanguageKey' => $isAutomaticInstallationEnabled ? '' : '.downloadOnly',
+            'unresolvedDependencies' => $errorMessages
+        ]);
+
+        return $this->htmlResponse();
     }
 
     /**
      * Check extension dependencies with special dependencies
      *
      * @param Extension $extension
-     * @throws \Exception
+     * @return ResponseInterface
      */
-    public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension)
+    public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
     {
         $this->managementService->setSkipDependencyCheck(true);
         return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension, 'downloadPath' => 'Local']);
@@ -248,9 +260,9 @@ class DownloadController extends AbstractController
      * already. This method should only be called if we are sure that there is
      * an update.
      *
-     * @return string
+     * @return ResponseInterface
      */
-    protected function updateExtensionAction()
+    protected function updateExtensionAction(): ResponseInterface
     {
         $extensionKey = $this->request->getArgument('extension');
         $version = $this->request->getArgument('version');
@@ -274,7 +286,12 @@ class DownloadController extends AbstractController
             $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
 
-        return '';
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write('');
+
+        return $response;
     }
 
     /**
@@ -282,7 +299,7 @@ class DownloadController extends AbstractController
      * Fetches update comments for all versions between the current
      * installed and the highest version.
      */
-    protected function updateCommentForUpdatableVersionsAction()
+    protected function updateCommentForUpdatableVersionsAction(): ResponseInterface
     {
         $extensionKey = $this->request->getArgument('extension');
         $versionStart = $this->request->getArgument('integerVersionStart');
@@ -311,6 +328,13 @@ class DownloadController extends AbstractController
                 ['extension' => $extensionKey, 'version' => $highestPossibleVersion]
             )
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Package\ComposerDeficitDetector;
@@ -89,7 +90,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
         $this->registerDocHeaderButtons();
     }
 
-    public function listAction(): void
+    public function listAction(): ResponseInterface
     {
         $extensions = [];
         $basePackagePath = Environment::getExtensionsPath() . '/';
@@ -109,9 +110,11 @@ class ExtensionComposerStatusController extends AbstractModuleController
         ksort($extensions);
         $this->view->assign('extensions', $this->listUtility->enrichExtensionsWithEmConfInformation($extensions));
         $this->generateMenu();
+
+        return $this->htmlResponse();
     }
 
-    public function detailAction(string $extensionKey): void
+    public function detailAction(string $extensionKey): ResponseInterface
     {
         if ($extensionKey === '') {
             $this->redirect('list');
@@ -126,6 +129,8 @@ class ExtensionComposerStatusController extends AbstractModuleController
         if ($deficit !== ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_VALID) {
             $this->view->assign('composerManifestMarkup', $this->getComposerManifestMarkup($extensionKey));
         }
+
+        return $this->htmlResponse();
     }
 
     protected function getComposerManifestMarkup(string $extensionKey): string

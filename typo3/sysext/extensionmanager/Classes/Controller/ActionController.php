@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
@@ -98,7 +100,7 @@ class ActionController extends AbstractController
      *
      * @param string $extensionKey
      */
-    public function installExtensionWithoutSystemDependencyCheckAction($extensionKey)
+    public function installExtensionWithoutSystemDependencyCheckAction($extensionKey): ResponseInterface
     {
         $this->managementService->setSkipDependencyCheck(true);
         return (new ForwardResponse('toggleExtensionInstallationState'))->withArguments(['extensionKey' => $extensionKey]);
@@ -108,9 +110,9 @@ class ActionController extends AbstractController
      * Remove an extension (if it is still installed, uninstall it first)
      *
      * @param string $extension
-     * @return string
+     * @return ResponseInterface
      */
-    protected function removeExtensionAction($extension)
+    protected function removeExtensionAction($extension): ResponseInterface
     {
         try {
             if (Environment::isComposerMode()) {
@@ -134,33 +136,31 @@ class ActionController extends AbstractController
             $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
 
-        return '';
+        return $this->htmlResponse('');
     }
 
     /**
      * Download an extension as a zip file
      *
      * @param string $extension
+     * @return ResponseInterface
      */
-    protected function downloadExtensionZipAction($extension)
+    protected function downloadExtensionZipAction($extension): ResponseInterface
     {
         $fileName = $this->createZipFileFromExtension($extension);
-        $this->sendZipFileToBrowserAndDelete($fileName);
-    }
+        $body = new Stream('php://temp', 'rw');
+        $body->write(file_get_contents($fileName));
 
-    /**
-     * Sends a zip file to the browser and deletes it afterwards
-     *
-     * @param string $fileName
-     */
-    protected function sendZipFileToBrowserAndDelete(string $fileName): void
-    {
-        header('Content-Type: application/zip');
-        header('Content-Length: ' . filesize($fileName));
-        header('Content-Disposition: attachment; filename="' . PathUtility::basename($fileName) . '"');
-        readfile($fileName);
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/zip')
+            ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
+            ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
+            ->withBody($body);
+
         unlink($fileName);
-        die;
+
+        return $response;
     }
 
     /**

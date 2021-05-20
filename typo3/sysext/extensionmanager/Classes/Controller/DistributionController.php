@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -60,8 +61,9 @@ class DistributionController extends AbstractModuleController
      * Shows information about the distribution
      *
      * @param Extension $extension
+     * @return ResponseInterface
      */
-    public function showAction(Extension $extension)
+    public function showAction(Extension $extension): ResponseInterface
     {
         $extensionKey = $extension->getExtensionKey();
         // Check if extension/package is installed
@@ -69,6 +71,8 @@ class DistributionController extends AbstractModuleController
 
         $this->view->assign('distributionActive', $active);
         $this->view->assign('extension', $extension);
+
+        return $this->htmlResponse();
     }
 
     /**
