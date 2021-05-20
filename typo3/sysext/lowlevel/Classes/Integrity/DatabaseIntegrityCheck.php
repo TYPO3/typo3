@@ -150,9 +150,6 @@ class DatabaseIntegrityCheck
             if ($versions && $row['t3ver_count'] >= 1) {
                 $this->recStats['published_versions']['pages'][$newID] = $newID;
             }
-            if ($row['deleted']) {
-                $this->recStats['deleted']++;
-            }
             if ($row['hidden']) {
                 $this->recStats['hidden']++;
             }
