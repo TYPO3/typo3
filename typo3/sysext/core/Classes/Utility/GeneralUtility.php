@@ -1046,7 +1046,7 @@ class GeneralUtility
     /**
      * Explodes a string and removes whitespace-only values.
      *
-     * If $onlyNonEmptyValues is set, then all values that contain only whitespace are removed.
+     * If $removeEmptyValues is set, then all values that contain only whitespace are removed.
      *
      * Each item will have leading and trailing whitespace removed. However, if the tail items are
      * returned as a single array item, their internal whitespace will not be modified.
