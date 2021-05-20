@@ -114,7 +114,7 @@ class T3editorElement extends AbstractFormElement
 
         $settings = [];
         if ($parameterArray['fieldConf']['config']['readOnly'] ?? false) {
-            $settings['readOnly'] = 'nocursor';
+            $settings['readOnly'] = true;
         }
 
         $editorHtml = $this->getHTMLCodeForEditor(
