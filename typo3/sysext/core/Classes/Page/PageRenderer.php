@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -1333,7 +1334,7 @@ class PageRenderer implements SingletonInterface
 
         $packages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
         $isDevelopment = Environment::getContext()->isDevelopment();
-        $cacheIdentifier = 'requireJS_' . md5(implode(',', array_keys($packages)) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
+        $cacheIdentifier = 'requireJS_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . implode(',', array_keys($packages)) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
         /** @var FrontendInterface $cache */
         $cache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $requireJsConfig = $cache->get($cacheIdentifier);
