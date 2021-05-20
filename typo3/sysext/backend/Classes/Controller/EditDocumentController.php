@@ -1158,9 +1158,7 @@ class EditDocumentController
 
                                 // Record title
                                 if (!$this->storeTitle) {
-                                    $this->storeTitle = $this->recTitle
-                                        ? htmlspecialchars($this->recTitle)
-                                        : BackendUtility::getRecordTitle($table, FormEngineUtility::databaseRowCompatibility($formData['databaseRow']), true);
+                                    $this->storeTitle = htmlspecialchars($this->recTitle ?: ($formData['recordTitle'] ?? ''));
                                 }
 
                                 $this->elementsData[] = [
