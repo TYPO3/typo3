@@ -51,7 +51,6 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
     public function getStatus(ServerRequestInterface $request = null): array
     {
         $status = [];
-        $request = $request ?? $this->getRequest();
         $extensionsWithComposerDeficit = $this->composerDeficitDetector->getExtensionsWithComposerDeficit();
         $languageService = $this->getLanguageService();
         $languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
@@ -60,16 +59,23 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
             ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_MISSING => 'composerJsonMissing',
             ComposerDeficitDetector::EXTENSION_KEY_MISSING => 'extensionKeyMissing'
         ];
+
+        $queryParameters = [
+            'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
+                'action' => 'list',
+                'controller' => 'ExtensionComposerStatus',
+            ]
+        ];
+
+        if ($request !== null) {
+            $queryParameters['tx_extensionmanager_tools_extensionmanagerextensionmanager']['returnUrl'] =
+                $request->getAttribute('normalizedParams')->getRequestUri();
+        }
+
         $dispatchAction = 'TYPO3.ModuleMenu.showModule';
         $dispatchArgs = [
             'tools_ExtensionmanagerExtensionmanager',
-            '&' . http_build_query([
-                'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                    'action' => 'list',
-                    'controller' => 'ExtensionComposerStatus',
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
-                ]
-            ])
+            '&' . http_build_query($queryParameters)
         ];
 
         foreach ($deficits as $key => $deficit) {
@@ -107,10 +113,5 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
