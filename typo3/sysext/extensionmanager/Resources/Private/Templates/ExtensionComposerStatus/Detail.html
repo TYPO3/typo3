@@ -9,11 +9,13 @@
             <f:if condition="{composerManifestMarkup}">
                 <f:then>
                     <div class="row">
-                        <p>
-                            <strong><f:translate key="extensionComposerStatus.manifest.title" /></strong>
-                            <f:translate key="extensionComposerStatus.manifest.description" arguments="{0: extensionKey}" />
-                        </p>
-                        {composerManifestMarkup -> f:format.raw()}
+                        <div class="col">
+                            <p>
+                                <strong><f:translate key="extensionComposerStatus.manifest.title" /></strong>
+                                <f:translate key="extensionComposerStatus.manifest.description" arguments="{0: extensionKey}" />
+                            </p>
+                            {composerManifestMarkup -> f:format.raw()}
+                        </div>
                     </div>
                 </f:then>
                 <f:else>
