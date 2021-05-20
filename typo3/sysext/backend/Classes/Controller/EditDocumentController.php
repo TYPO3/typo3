@@ -29,7 +29,6 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -1129,9 +1128,7 @@ class EditDocumentController
 
                                 // Record title
                                 if (!$this->storeTitle) {
-                                    $this->storeTitle = $this->recTitle
-                                        ? htmlspecialchars($this->recTitle)
-                                        : BackendUtility::getRecordTitle($table, FormEngineUtility::databaseRowCompatibility($formData['databaseRow']), true);
+                                    $this->storeTitle = htmlspecialchars($this->recTitle ?: ($formData['recordTitle'] ?? ''));
                                 }
 
                                 $this->elementsData[] = [

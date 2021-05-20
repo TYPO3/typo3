@@ -135,38 +135,4 @@ class FormEngineUtility
             . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
             . '</span>';
     }
-
-    /**
-     * Compatibility layer for methods not in FormEngine scope.
-     *
-     * databaseRow was a flat array with single elements in select and group fields as comma separated list.
-     * With new data handling in FormEngine, this is now an array of element values. There are however "old"
-     * methods that still expect the flat array.
-     * This method implodes the array again to fake the old behavior of a database row before it is given
-     * to those methods.
-     *
-     * @param array $row Incoming array
-     * @return array Flat array
-     * @internal
-     */
-    public static function databaseRowCompatibility(array $row)
-    {
-        $newRow = [];
-        foreach ($row as $fieldName => $fieldValue) {
-            if (!is_array($fieldValue)) {
-                $newRow[$fieldName] = $fieldValue;
-            } else {
-                $newElementValue = [];
-                foreach ($fieldValue as $itemNumber => $itemValue) {
-                    if (is_array($itemValue) && array_key_exists(1, $itemValue)) {
-                        $newElementValue[] = $itemValue[1];
-                    } else {
-                        $newElementValue[] = $itemValue;
-                    }
-                }
-                $newRow[$fieldName] = implode(',', $newElementValue);
-            }
-        }
-        return $newRow;
-    }
 }
