@@ -112,17 +112,6 @@ class InlineRecordContainer extends AbstractContainer
 
         $resultArray['inlineData'] = $this->inlineData;
 
-        // If there is a selector field, normalize it:
-        if (!empty($inlineConfig['foreign_selector'])) {
-            $foreign_selector = $inlineConfig['foreign_selector'];
-            $valueToNormalize = $record[$foreign_selector];
-            if (is_array($record[$foreign_selector])) {
-                // @todo: this can be kicked again if always prepared rows are handled here
-                $valueToNormalize = implode(',', $record[$foreign_selector]);
-            }
-            $record[$foreign_selector] = $this->normalizeUid($valueToNormalize);
-        }
-
         // Get the current naming scheme for DOM name/id attributes:
         $appendFormFieldNames = '[' . $foreignTable . '][' . $record['uid'] . ']';
         $objectId = $domObjectId . '-' . $foreignTable . '-' . $record['uid'];
@@ -641,18 +630,6 @@ class InlineRecordContainer extends AbstractContainer
             $out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $cells) . '</div>';
         }
         return $out;
-    }
-
-    /**
-     * Normalize a relation "uid" published by transferData, like "1|Company%201"
-     *
-     * @param string $string A transferData reference string, containing the uid
-     * @return string The normalized uid
-     */
-    protected function normalizeUid($string)
-    {
-        $parts = explode('|', $string);
-        return $parts[0];
     }
 
     /**
