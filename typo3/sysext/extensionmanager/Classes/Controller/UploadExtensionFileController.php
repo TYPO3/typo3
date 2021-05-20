@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Exception\InvalidFileException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 
@@ -146,6 +147,8 @@ class UploadExtensionFileController extends AbstractController
             }
         } catch (StopActionException $exception) {
             throw $exception;
+        } catch (InvalidFileException $exception) {
+            $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         } catch (\Exception $exception) {
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
@@ -160,16 +163,16 @@ class UploadExtensionFileController extends AbstractController
      * Validate the filename of an uploaded file
      *
      * @param string $fileName
-     * @throws ExtensionManagerException
+     * @throws InvalidFileException
      */
     protected function checkFileName($fileName)
     {
         if (empty($fileName)) {
-            throw new ExtensionManagerException('No file given.', 1342858852);
+            throw new InvalidFileException('No file given.', 1342858852);
         }
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
         if ($fileExtension !== 'zip') {
-            throw new ExtensionManagerException('Wrong file format "' . $fileExtension . '" given. Only .zip files are allowed.', 1342858853);
+            throw new InvalidFileException('Wrong file format "' . $fileExtension . '" given. Only .zip files are allowed.', 1342858853);
         }
     }
 
