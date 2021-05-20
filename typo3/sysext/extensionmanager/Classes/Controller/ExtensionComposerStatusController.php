@@ -17,11 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
-use TYPO3\CMS\Backend\Form\FormResultCompiler;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Package\ComposerDeficitDetector;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -48,9 +47,9 @@ class ExtensionComposerStatusController extends AbstractModuleController
     protected $composerManifestProposalGenerator;
 
     /**
-     * @var NodeFactory
+     * @var PageRenderer
      */
-    protected $nodeFactory;
+    protected $pageRenderer;
 
     /**
      * @var ListUtility
@@ -65,12 +64,12 @@ class ExtensionComposerStatusController extends AbstractModuleController
     public function __construct(
         ComposerDeficitDetector $composerDeficitDetector,
         ComposerManifestProposalGenerator $composerManifestProposalGenerator,
-        NodeFactory $nodeFactory,
+        PageRenderer $pageRenderer,
         ListUtility $listUtility
     ) {
         $this->composerDeficitDetector = $composerDeficitDetector;
         $this->composerManifestProposalGenerator = $composerManifestProposalGenerator;
-        $this->nodeFactory = $nodeFactory;
+        $this->pageRenderer = $pageRenderer;
         $this->listUtility = $listUtility;
     }
 
@@ -131,34 +130,36 @@ class ExtensionComposerStatusController extends AbstractModuleController
 
     protected function getComposerManifestMarkup(string $extensionKey): string
     {
-        $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
         $composerManifest = $this->composerManifestProposalGenerator->getComposerManifestProposal($extensionKey);
         if ($composerManifest === '') {
             return '';
         }
         $rows = MathUtility::forceIntegerInRange(count(explode(LF, $composerManifest)), 1, PHP_INT_MAX);
-        $fakeFieldTca = [
-            'renderType' => 't3editor',
-            'tableName' => $extensionKey,
-            'fieldName' => 'composer.json',
-            'effectivePid' => 0,
-            'parameterArray' => [
-                'itemFormElName' => 'composerManifest-' . $extensionKey,
-                'itemFormElValue' => $composerManifest,
-                'fieldChangeFunc' => [],
-                'fieldConf' => [
-                    'config' => [
-                        'rows' => ++$rows,
-                        'codeMirrorFirstLineNumber' => 1,
-                    ]
-                ]
-            ]
-        ];
-        $resultArray = $this->nodeFactory->create($fakeFieldTca)->render();
-        $formResultCompiler->mergeResult($resultArray);
-        $formResultCompiler->addCssFiles();
-        $formResultCompiler->printNeededJSFunctions();
-        return $resultArray['html'];
+
+        if (ExtensionManagementUtility::isLoaded('t3editor')) {
+            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+
+            $codeMirrorConfig = [
+                'label' => $extensionKey . ' > composer.json',
+                'panel' => 'bottom',
+                'mode' => 'codemirror/mode/javascript/javascript',
+                'nolazyload' => 'true',
+                'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                    'rows' => 'auto',
+                    'format' => 'json'
+                ], false),
+            ];
+
+            return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
+                . '<textarea ' . GeneralUtility::implodeAttributes(['rows' => (string)++$rows], true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
+                . '</typo3-t3editor-codemirror>';
+        }
+
+        return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'
+            . htmlspecialchars($composerManifest)
+            . '</textarea>';
     }
 
     protected function registerDocHeaderButtons(): void
