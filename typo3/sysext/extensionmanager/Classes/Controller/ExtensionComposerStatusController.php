@@ -146,7 +146,6 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 'itemFormElValue' => $composerManifest,
                 'fieldConf' => [
                     'config' => [
-                        'readOnly' => true,
                         'rows' => ++$rows,
                         'codeMirrorFirstLineNumber' => 1,
                     ]
