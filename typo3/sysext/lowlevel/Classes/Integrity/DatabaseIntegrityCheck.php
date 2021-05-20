@@ -147,9 +147,6 @@ class DatabaseIntegrityCheck
             if ($row['deleted']) {
                 $this->recStats['deleted']['pages'][$newID] = $newID;
             }
-            if ($row['deleted']) {
-                $this->recStats['deleted']++;
-            }
             if ($row['hidden']) {
                 $this->recStats['hidden']++;
             }
