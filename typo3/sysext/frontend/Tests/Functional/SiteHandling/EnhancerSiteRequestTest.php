@@ -40,6 +40,8 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 class EnhancerSiteRequestTest extends AbstractTestCase
 {
+    use TestSetDataProviderTrait;
+
     /**
      * @var string
      */
@@ -1192,5 +1194,15 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         if ($exceptionDeclaration->getMessage() !== null) {
             $this->expectExceptionMessage($exceptionDeclaration->getMessage());
         }
+    }
+
+    /**
+     * @param TestSet $testSet
+     * @test
+     * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
+     */
+    public function nestedRouteArgumentsAreConsidered(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
     }
 }

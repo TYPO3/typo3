@@ -40,6 +40,8 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 class EnhancerLinkGeneratorTest extends AbstractTestCase
 {
+    use TestSetDataProviderTrait;
+
     /**
      * @var string
      */
@@ -1208,5 +1210,15 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         self::assertEquals('https://archive.acme.com/sitemap.xml', (string)$uri);
         $uri = $site->getRouter()->generateUri(3000, ['type' => '13']);
         self::assertEquals('https://archive.acme.com/?type=13', (string)$uri);
+    }
+
+    /**
+     * @param TestSet $testSet
+     * @test
+     * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
+     */
+    public function nestedRouteArgumentsAreConsidered(TestSet $testSet): void
+    {
+        $this->assertGeneratedUriEquals($testSet);
     }
 }
