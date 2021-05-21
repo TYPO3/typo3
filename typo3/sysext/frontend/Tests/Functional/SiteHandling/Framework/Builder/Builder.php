@@ -230,6 +230,11 @@ class Builder
         $resolveArguments['staticArguments'] = $resolveArguments['staticArguments'] ?? [];
         $resolveArguments['dynamicArguments'] = $resolveArguments['dynamicArguments'] ?? [];
         $resolveArguments['queryArguments'] = $resolveArguments['queryArguments'] ?? [];
+        // generate ("assume") `routeArguments` from expected static and dynamic arguments if not declared
+        $resolveArguments['routeArguments'] = $resolveArguments['routeArguments'] ?? array_replace_recursive(
+            $resolveArguments['staticArguments'],
+            $resolveArguments['dynamicArguments']
+        );
         if (preg_match('#\?cHash=([a-z0-9]+)#i', $this->compileUrl($testSet), $matches)) {
             $resolveArguments['dynamicArguments']['cHash'] = $matches[1];
             $resolveArguments['queryArguments']['cHash'] = $matches[1];
