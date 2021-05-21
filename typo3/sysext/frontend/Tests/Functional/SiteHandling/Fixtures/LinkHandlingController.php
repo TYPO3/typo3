@@ -46,9 +46,11 @@ class LinkHandlingController
     }
 
     /**
+     * @param string|null $content
+     * @param array|null $configuration
      * @return string
      */
-    public function dumpPageArgumentsAction(): string
+    public function dumpPageArgumentsAction(?string $content, array $configuration = null): string
     {
         /** @var ServerRequestInterface $request */
         $request = $GLOBALS['TYPO3_REQUEST'];
@@ -56,15 +58,20 @@ class LinkHandlingController
         $pageArguments = $request->getAttribute('routing');
         /** @var SiteLanguage $language */
         $language = $request->getAttribute('language');
+        $flags = 0;
+        if ($configuration['userFunc.']['prettyPrint'] ?? true) {
+            $flags += JSON_PRETTY_PRINT;
+        }
         return json_encode([
             'pageId' => $pageArguments->getPageId(),
             'pageType' => $pageArguments->getPageType(),
             'languageId' => $language->getLanguageId(),
-            'dynamicArguments' => $pageArguments->getDynamicArguments(),
             'staticArguments' => $pageArguments->getStaticArguments(),
+            'routeArguments' => $pageArguments->getRouteArguments(),
+            'dynamicArguments' => $pageArguments->getDynamicArguments(),
             'queryArguments' => $pageArguments->getQueryArguments(),
             'requestQueryParams' => $request->getQueryParams(),
             '_GET' => $_GET,
-        ]);
+        ], $flags);
     }
 }
