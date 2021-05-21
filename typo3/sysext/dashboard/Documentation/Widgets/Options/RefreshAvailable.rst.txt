@@ -1,0 +1,6 @@
+.. option:: refreshAvailable
+
+   Boolean value, either :yaml:`false` or :yaml:`true`.
+
+   Provides a refresh button to backend users to refresh the widget.
+   If the option is omitted :yaml:`false` is assumed.

@@ -30,6 +30,8 @@ Example
          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogErrorsDataProvider'
          $view: '@dashboard.views.widget'
          $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
+         $options:
+            refreshAvailable: true
        tags:
          - name: dashboard.widget
            identifier: 'sysLogErrors'
@@ -43,7 +45,7 @@ Example
 Options
 -------
 
-For this widget, there are no options available.
+.. include:: Options/RefreshAvailable.rst.txt
 
 Dependencies
 ------------

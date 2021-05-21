@@ -21,7 +21,7 @@ Example
 
    services:
 
-      dashboard.widget.failedLogins:
+     dashboard.widget.failedLogins:
        class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
        arguments:
          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
@@ -30,6 +30,7 @@ Example
            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
            subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'
            icon: 'content-elements-login'
+           refreshAvailable: true
        tags:
          - name: dashboard.widget
            identifier: 'failedLogins'
@@ -40,6 +41,8 @@ Example
 
 Options
 -------
+
+.. include:: Options/RefreshAvailable.rst.txt
 
 .. option:: title
 

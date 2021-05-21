@@ -43,6 +43,7 @@ Example
            feedUrl: 'https://www.typo3.org/rss'
            # 12 hours cache
            lifeTime: 43200
+           refreshAvailable: true
        tags:
          - name: dashboard.widget
            identifier: 't3news'
@@ -55,6 +56,8 @@ Example
 
 Options
 -------
+
+.. include:: Options/RefreshAvailable.rst.txt
 
 The following options are available via :yaml:`services.dashboard.widget.t3news.arguments.$options`:
 

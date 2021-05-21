@@ -42,6 +42,8 @@ Example
 Options
 -------
 
+.. include:: Options/RefreshAvailable.rst.txt
+
 .. option:: text
 
    Adds an optional text to the widget to give some more background information

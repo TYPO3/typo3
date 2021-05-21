@@ -24,6 +24,8 @@ Example
        arguments:
          $dataProvider: '@Vendor\Ext\Widgets\Provider\TestListWidgetDataProvider'
          $view: '@dashboard.views.widget'
+         $options:
+            refreshAvailable: true
        tags:
          - name: dashboard.widget
            identifier: 'testList'
@@ -37,7 +39,7 @@ Example
 Options
 -------
 
-For this widget, there are no options available.
+.. include:: Options/RefreshAvailable.rst.txt
 
 Dependencies
 ------------

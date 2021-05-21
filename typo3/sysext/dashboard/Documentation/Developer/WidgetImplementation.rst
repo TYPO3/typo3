@@ -126,6 +126,8 @@ the following service can be used in :file:`Services.yaml` to provide the instan
 The instance will be pre configured with paths, see :ref:`adjust-template-of-widget`,
 and can be used as shown in RSS widget example above.
 
+.. _implement-new-widget-custom-js:
+
 Providing custom JS
 -------------------
 

@@ -18,6 +18,7 @@ We will explain how to create widget groups and implement widgets.
    :titlesonly:
 
    WidgetImplementation
+   MakeRefreshable
    AddingButtons
    GraphWidgetImplementation
    Interfaces

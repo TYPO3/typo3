@@ -26,6 +26,8 @@ Example
        arguments:
          $view: '@dashboard.views.widget'
          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\TypeOfUsersChartDataProvider'
+         $options:
+            refreshAvailable: true
        tags:
          - name: dashboard.widget
            identifier: 'typeOfUsers'
@@ -38,7 +40,7 @@ Example
 Options
 -------
 
-For this widget, there are no options available.
+.. include:: Options/RefreshAvailable.rst.txt
 
 Dependencies
 ------------
