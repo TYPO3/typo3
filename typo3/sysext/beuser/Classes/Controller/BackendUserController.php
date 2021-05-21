@@ -146,7 +146,7 @@ class BackendUserController extends ActionController
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -171,7 +171,7 @@ class BackendUserController extends ActionController
             'currentSessionId' => $currentSessionId,
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     public function showAction(int $uid = 0): ResponseInterface
@@ -182,7 +182,7 @@ class BackendUserController extends ActionController
             'data' => $data
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -208,7 +208,7 @@ class BackendUserController extends ActionController
             'onlineBackendUsers' => $this->getOnlineBackendUsers()
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**

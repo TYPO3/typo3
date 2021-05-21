@@ -487,7 +487,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             return new ForwardResponse('missingFolder');
         }
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     protected function getDefaultAction(): string
@@ -520,7 +520,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
         }
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -574,7 +574,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
         $this->initClipboard();
         $this->buildListOptionCheckboxes($searchWord);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**

@@ -242,7 +242,7 @@ class AdministrationController extends ActionController
             ]);
         }
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -252,7 +252,7 @@ class AdministrationController extends ActionController
     {
         $this->view->assign('records', $this->administrationRepository->getPageStatistic());
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -262,7 +262,7 @@ class AdministrationController extends ActionController
     {
         $this->view->assign('records', $this->administrationRepository->getExternalDocumentsStatistic());
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -441,7 +441,7 @@ class AdministrationController extends ActionController
             'keywords' => $keywords
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -503,7 +503,7 @@ class AdministrationController extends ActionController
             'phash' => $pageHash
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -533,7 +533,7 @@ class AdministrationController extends ActionController
             'depth' => $depth
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**

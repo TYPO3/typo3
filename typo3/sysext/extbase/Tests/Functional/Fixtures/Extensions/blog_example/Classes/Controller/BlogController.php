@@ -61,7 +61,7 @@ class BlogController extends ActionController
 
         $this->view->assign('value', $value);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     public function detailsAction(Blog $blog=null): ResponseInterface

@@ -325,7 +325,7 @@ class SearchController extends ActionController
         $this->view->assign('searchParams', $searchData);
         $this->view->assign('searchWords', $this->searchWords);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /****************************************
@@ -989,7 +989,7 @@ class SearchController extends ActionController
         }
         $this->view->assign('searchParams', $searchData);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
@@ -997,7 +997,7 @@ class SearchController extends ActionController
      */
     public function noTypoScriptAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /****************************************

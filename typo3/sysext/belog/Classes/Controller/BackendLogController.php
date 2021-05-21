@@ -115,7 +115,7 @@ class BackendLogController extends ActionController
             'pageDepths' => $this->createPageDepthOptions(),
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**

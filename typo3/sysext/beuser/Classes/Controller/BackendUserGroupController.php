@@ -83,7 +83,7 @@ class BackendUserGroupController extends ActionController
             ]
         );
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     public function compareAction(): ResponseInterface
@@ -108,7 +108,7 @@ class BackendUserGroupController extends ActionController
             'compareGroupList' => $compareData,
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**

@@ -77,7 +77,7 @@ class FormFrontendController extends ActionController
         }
         $this->view->assign('formConfiguration', $formDefinition);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse();
     }
 
     /**
