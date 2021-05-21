@@ -97,7 +97,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             }
             if (MathUtility::canBeInterpretedAsInteger($pid)) {
                 $pageRecord = BackendUtility::getRecord('pages', (int)$pid);
-                if ((int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0) {
+                if (($pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) > 0) {
                     $pid = (int)$pageRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
                 }
             } elseif (strpos($pid, 'NEW') !== 0) {
@@ -131,13 +131,13 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
                 $site = null;
             }
             $siteConfiguration = $site ? $site->getConfiguration() : [];
-            if (is_array($siteConfiguration[$fieldName])) {
+            if (is_array($siteConfiguration[$fieldName] ?? false)) {
                 $connectedUids = array_keys($siteConfiguration[$fieldName]);
             }
         }
 
         // If we are dealing with site_language, we *always* force a relation to sys_language "0"
-        $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
+        $foreignTable = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'] ?? '';
         if ($foreignTable === 'site_language' && $result['command'] === 'new') {
             // If new, just add a new default child
             $child = $this->compileDefaultSysSiteLanguageChild($result, $fieldName);
@@ -160,7 +160,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             // If edit, find out if a child using sys_language "0" exists, else add it on top
             $defaultSysSiteLanguageChildFound = false;
             foreach ($result['processedTca']['columns'][$fieldName]['children'] as $child) {
-                if (isset($child['databaseRow']['languageId']) && (int)$child['databaseRow']['languageId'][0] == 0) {
+                if (isset($child['databaseRow']['languageId']) && ($child['databaseRow']['languageId'][0] ?? 0) == 0) {
                     $defaultSysSiteLanguageChildFound = true;
                 }
             }
@@ -239,6 +239,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
 
+        /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
         $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
@@ -266,9 +267,9 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineParentFieldName' => $parentFieldName,
 
             // values of the top most parent element set on first level and not overridden on following levels
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: $inlineTopMostParent['uid'],
-            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: $inlineTopMostParent['table'],
-            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: $inlineTopMostParent['field'],
+            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? 0),
+            'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
+            'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
         ];
 
         if ($parentConfig['foreign_selector'] && ($parentConfig['appearance']['useCombination'] ?? false)) {

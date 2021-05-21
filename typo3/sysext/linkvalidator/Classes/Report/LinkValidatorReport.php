@@ -217,10 +217,10 @@ class LinkValidatorReport
         if (isset($this->searchLevel[$prefix])) {
             $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] = $this->searchLevel[$prefix];
         } else {
-            $this->searchLevel[$prefix] = $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'];
+            $this->searchLevel[$prefix] = $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] ?? 0;
         }
         if (isset($this->pObj->MOD_SETTINGS[$other . '_searchlevel'])) {
-            $this->searchLevel[$other] = $this->pObj->MOD_SETTINGS[$other . '_searchlevel'];
+            $this->searchLevel[$other] = $this->pObj->MOD_SETTINGS[$other . '_searchlevel'] ?? 0;
         }
 
         // which linkTypes to check (internal, file, external, ...)
@@ -379,7 +379,7 @@ class LinkValidatorReport
         foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
             foreach ($fields as $field) {
-                if (!$this->searchFields || !is_array($this->searchFields[$table]) || !in_array(
+                if (!$this->searchFields || !is_array($this->searchFields[$table] ?? null) || !in_array(
                     $field,
                     $this->searchFields[$table],
                     true
@@ -390,7 +390,7 @@ class LinkValidatorReport
         }
 
         $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($this->pObj->pageinfo);
-        if (!$rootLineHidden || $this->modTS['checkhidden'] == 1) {
+        if (!$rootLineHidden || ($this->modTS['checkhidden'] ?? 0) == 1) {
             $this->linkAnalyzer->init(
                 $this->searchFields,
                 $this->getPageList(),
@@ -406,7 +406,7 @@ class LinkValidatorReport
     {
         // convert ['external' => 1, 'db' => 0, ...] into ['external']
         $linkTypes = [];
-        foreach ($this->checkOpt['check'] as $linkType => $value) {
+        foreach ($this->checkOpt['check'] ?? [] as $linkType => $value) {
             if ($value) {
                 $linkTypes[] = $linkType;
             }
@@ -624,11 +624,11 @@ class LinkValidatorReport
             }
             $label = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
             $variables['optionsByType'][$type] = [
-                'count' => $brokenLinkOverView[$type] ?: '0',
+                'count' => (!empty($brokenLinkOverView[$type]) ? $brokenLinkOverView[$type] : '0'),
                 'checkbox' => '<input type="checkbox" class="' . $prefix . '"'
                     . ' id="' . $prefix . '_SET_' . $type
                     . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
-                    . ' ' . ($this->checkOpt[$prefix][$type] ? 'checked="checked"' : '') . '/>',
+                    . ' ' . (!empty($this->checkOpt[$prefix][$type]) ? 'checked="checked"' : '') . '/>',
                 'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>'
             ];
         }

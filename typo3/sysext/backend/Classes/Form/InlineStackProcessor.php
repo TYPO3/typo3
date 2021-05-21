@@ -180,7 +180,7 @@ class InlineStackProcessor
      * Hint: If -1 is given, the "current" - most bottom "stable" item is returned
      *
      * @param int $level Which level to return
-     * @return array The item of the stack at the requested level
+     * @return array|false The item of the stack at the requested level, or false if not found.
      */
     public function getStructureLevel($level)
     {
@@ -241,7 +241,7 @@ class InlineStackProcessor
             $structureDepth = $structureCount;
         }
         for ($i = 1; $i <= $structureDepth; $i++) {
-            array_unshift($structureLevels, $this->getStructureItemName($this->getStructureLevel(-$i), 'Disposal_AttributeId'));
+            array_unshift($structureLevels, ($this->getStructureItemName($this->getStructureLevel(-$i) ?: [], 'Disposal_AttributeId') ?: []));
         }
         return implode('-', $structureLevels);
     }

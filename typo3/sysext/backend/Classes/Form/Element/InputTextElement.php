@@ -292,7 +292,7 @@ class InputTextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         } elseif ($this->hasNullCheckboxWithPlaceholder()) {
             $checked = $itemValue !== null ? ' checked="checked"' : '';
-            $placeholder = $shortenedPlaceholder = trim($config['placeholder']) ?? '';
+            $placeholder = $shortenedPlaceholder = trim($config['placeholder'] ?? '');
             $disabled = '';
             $fallbackValue = 0;
             if (strlen($placeholder) > 0) {

@@ -296,8 +296,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     {
         parent::initializeTreeData();
         $this->nodeSortValues = array_flip($this->itemWhiteList);
-        $this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'];
-        if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] != $this->getTableName()) {
+        $this->columnConfiguration = $GLOBALS['TCA'][$this->getTableName()]['columns'][$this->getLookupField()]['config'] ?? [];
+        if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] !== $this->getTableName()) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
         }
         $this->treeData = GeneralUtility::makeInstance(TreeNode::class);
@@ -406,7 +406,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenUidsFromParentRelation(array $row)
     {
         $uid = $row['uid'];
-        switch ((string)$this->columnConfiguration['type']) {
+        switch ($this->columnConfiguration['type'] ?? '') {
             case 'inline':
 
             case 'select':

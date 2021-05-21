@@ -632,16 +632,16 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 }
             }
             // If field was not removed and if it is a flex field, add to list of flex fields to scan
-            if ($conditionResult && $columnConfiguration['config']['type'] === 'flex') {
+            if ($conditionResult && ($columnConfiguration['config']['type'] ?? false) === 'flex') {
                 $listOfFlexFieldNames[] = $columnName;
             }
         }
 
         // Search for flex fields and evaluate sheet conditions throwing them away if needed
         foreach ($listOfFlexFieldNames as $columnName) {
-            $columnConfiguration = $result['processedTca']['columns'][$columnName];
+            $columnConfiguration = $result['processedTca']['columns'][$columnName] ?? [];
             foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-                if (isset($sheetConfiguration['ROOT']['displayCond']) && is_array($sheetConfiguration['ROOT']['displayCond'])) {
+                if (is_array($sheetConfiguration['ROOT']['displayCond'] ?? false)) {
                     if (!$this->evaluateConditionRecursive($sheetConfiguration['ROOT']['displayCond'])) {
                         unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
                     } else {

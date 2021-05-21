@@ -278,7 +278,7 @@ class InfoModuleController
         ];
         foreach (array_keys($this->MOD_MENU) as $key) {
             if (!empty($this->MOD_SETTINGS[$key])) {
-                if (!is_array($shortcutArguments['SET'])) {
+                if (!is_array($shortcutArguments['SET'] ?? null)) {
                     $shortcutArguments['SET'] = [];
                 }
                 $shortcutArguments['SET'][$key] = $this->MOD_SETTINGS[$key];

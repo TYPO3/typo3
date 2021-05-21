@@ -397,7 +397,7 @@ class PageTreeRepository
                     $pageRecord['sorting'] = (int)$movedPages[$pageRecord['t3ver_oid']]['sorting'];
                 } else {
                     // Just a record in a workspace (not moved etc)
-                    $parentPageId = (int)$livePagePids[$pageRecord['t3ver_oid']];
+                    $parentPageId = (int)($livePagePids[$pageRecord['t3ver_oid']] ?? $pageRecord['pid']);
                 }
                 // this is necessary so the links to the modules are still pointing to the live IDs
                 $pageRecord['uid'] = (int)$pageRecord['t3ver_oid'];

@@ -185,12 +185,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 $line = '';
                 if (is_array($POST['data'])) {
                     $name = key($POST['data']);
-                    if ($POST['data'][$name]['name'] !== '') {
+                    if (($POST['data'][$name]['name'] ?? null) !== '') {
                         // Workaround for this special case: User adds a key and submits by pressing the return key. The form however will use "add_property" which is the name of the first submit button in this form.
                         unset($POST['update_value']);
                         $POST['add_property'] = 'Add';
                     }
-                    if ($POST['add_property']) {
+                    if ($POST['add_property'] ?? false) {
                         $property = trim($POST['data'][$name]['name']);
                         if (preg_replace('/[^a-zA-Z0-9_\\.]*/', '', $property) != $property) {
                             $badPropertyMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noSpaces') . $lang->getLL('nothingUpdated'), $lang->getLL('badProperty'), FlashMessage::ERROR);
@@ -201,13 +201,13 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                             $this->addFlashMessage($propertyAddedMessage);
                             $line .= LF . $pline;
                         }
-                    } elseif ($POST['update_value']) {
+                    } elseif ($POST['update_value'] ?? false) {
                         $pline = $name . ' = ' . trim($POST['data'][$name]['value']);
                         $updatedMessage = GeneralUtility::makeInstance(FlashMessage::class, $pline, $lang->getLL('valueUpdated'));
                         $this->addFlashMessage($updatedMessage);
                         $line .= LF . $pline;
-                    } elseif ($POST['clear_object']) {
-                        if ($POST['data'][$name]['clearValue']) {
+                    } elseif ($POST['clear_object'] ?? false) {
+                        if ($POST['data'][$name]['clearValue'] ?? false) {
                             $pline = $name . ' >';
                             $objectClearedMessage = GeneralUtility::makeInstance(FlashMessage::class, $pline, $lang->getLL('objectCleared'));
                             $this->addFlashMessage($objectClearedMessage);
@@ -216,7 +216,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                     }
                 }
                 if ($line) {
-                    $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
+                    $saveId = ($this->templateRow['_ORIG_uid'] ?? false) ?: $this->templateRow['uid'] ?? 0;
                     // Set the data to be saved
                     $recData = [];
                     $field = $bType === 'setup' ? 'config' : 'constants';
@@ -236,7 +236,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $update = 0;
         if (is_array($tsbr)) {
             // If any plus-signs were clicked, it's registered.
-            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
+            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? []);
             $update = 1;
         }
         if ($POST['Submit'] ?? false) {
@@ -286,15 +286,15 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $assigns['moduleUrl'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $assigns['isNotInTopLevelKeyList'] = !isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj]);
             $assigns['hasProperties'] = !empty($theSetup);
-            if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj]) {
+            if ($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj] ?? false) {
+                $assigns['moduleUrlObjectListAction'] = $aHref . '&addKey[' . rawurlencode($sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0';
+            } else {
                 if (!empty($theSetup)) {
                     $assigns['moduleUrlObjectListAction'] = $aHref . '&addKey[' . rawurlencode($sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($sObj);
                 }
-            } else {
-                $assigns['moduleUrlObjectListAction'] = $aHref . '&addKey[' . rawurlencode($sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0';
             }
         } else {
-            $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
+            $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? null;
             if ($this->request->getParsedBody()['search_field'] ?? false) {
                 // If any POST-vars are send, update the condition array
                 $searchString = $this->request->getParsedBody()['search_field'];
@@ -312,23 +312,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                     );
                 }
             }
-            $assigns['hasTsBrowserTypes'] = is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1;
+            $assigns['hasTsBrowserTypes'] = is_array($this->pObj->MOD_MENU['ts_browser_type'] ?? false) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1;
             if (is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1) {
                 $assigns['browserTypeDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
             }
-            $assigns['hasTopLevelInObjectList'] = is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1;
+            $assigns['hasTopLevelInObjectList'] = is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType] ?? false) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1;
             if (is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1) {
                 $assigns['objectListDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
             }
 
-            $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"');
+            $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'] ?? false, '', '', 'id="checkTs_browser_regexsearch"');
             $assigns['postSearchField'] = $POST['search_field'] ?? null;
             $theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '';
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
             [$theSetup, $theSetupValue] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
-            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
+            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? '');
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
                 'id' => $this->id
@@ -359,10 +359,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
 
             // second row options
             $assigns['isSetupAndCropLinesDisabled'] = $bType === 'setup';
-            $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
-            $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
+            $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'] ?? '', '', '', 'id="checkTs_browser_showComments"');
+            $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? '', '', '', 'id="checkTs_browser_alphaSort"');
             if ($bType === 'setup') {
-                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
+                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'] ?? '', $this->pObj->MOD_MENU['ts_browser_const']);
             }
 
             // Conditions:
@@ -371,7 +371,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (is_array($this->templateService->sections) && !empty($this->templateService->sections)) {
                 $tsConditions = [];
                 foreach ($this->templateService->sections as $key => $val) {
-                    $isSet = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? true : false;
+                    $isSet = (bool)($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ?? false);
                     if ($isSet) {
                         $activeConditions++;
                     }

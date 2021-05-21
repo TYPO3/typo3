@@ -266,16 +266,16 @@ class BackendModuleRepository implements SingletonInterface
                 'description' => $moduleLabels['shortdescription'],
                 'standalone' => (bool)($moduleData['standalone'] ?? false)
             ];
-            if ((($moduleData['standalone'] ?? false) === false) && !is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
+            if ((($moduleData['standalone'] ?? false) === false) && !is_array($moduleData['sub'] ?? null) && ($moduleData['script'] ?? null) !== $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
                 $modules[$moduleKey]['subitems'][$moduleKey] = [
                     'name' => $moduleName,
-                    'title' => $moduleLabels['title'],
+                    'title' => $moduleLabels['title'] ?? '',
                     'icon' => $this->getModuleIcon($moduleKey, $moduleData),
                     'link' => $moduleLink,
                     'component' => $moduleComponent,
                     'originalLink' => $moduleLink,
-                    'description' => $moduleLabels['shortdescription'],
+                    'description' => $moduleLabels['shortdescription'] ?? '',
                     'navigationFrameScript' => null,
                     'navigationFrameScriptParam' => null,
                     'navigationComponentId' => null

@@ -216,7 +216,7 @@ abstract class AbstractTreeView
      */
     public function addField($field, $noCheck = false)
     {
-        if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || GeneralUtility::inList($this->defaultList, $field)) {
+        if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field] ?? null) || GeneralUtility::inList($this->defaultList, $field)) {
             $this->fieldArray[] = $field;
         }
     }
@@ -419,11 +419,11 @@ abstract class AbstractTreeView
             // Accumulate the id of the element in the internal arrays
             $this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
             $this->ids_hierarchy[$depth][] = $row['uid'];
-            $this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ?: $row['uid'];
+            $this->orig_ids_hierarchy[$depth][] = (isset($row['_ORIG_uid']) && !empty($row['_ORIG_uid'])) ? $row['_ORIG_uid'] : $row['uid'];
 
             // Make a recursive call to the next level
             $nextLevelDepthData = $depthData . '<span class="treeline-icon treeline-icon-' . ($a === $c ? 'clear' : 'line') . '"></span>';
-            $hasSub = $this->expandNext($newID) && !$row['php_tree_stop'];
+            $hasSub = $this->expandNext($newID) && !($row['php_tree_stop'] ?? false);
             if ($depth > 1 && $hasSub) {
                 $nextCount = $this->getTree($newID, $depth - 1, $nextLevelDepthData);
                 if (!empty($this->buffer_idH)) {

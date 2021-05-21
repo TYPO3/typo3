@@ -176,7 +176,7 @@ class PageInformationController
         // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
         if (is_array($tableNames)) {
             foreach ($tableNames as $k => $v) {
-                if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
+                if (!($GLOBALS['TCA'][$k]['ctrl']['hideTable'] ?? false) && $this->getBackendUser()->check('tables_select', $k)) {
                     $allowedTableNames['table_' . $k] = $k;
                 }
             }
@@ -395,7 +395,7 @@ class PageInformationController
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
                     $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-                    $theData[$field] = $row['treeIcons'] . $theIcon . ($showPageId ? '[' . $row['uid'] . '] ' : '') . $pTitle;
+                    $theData[$field] = ($row['treeIcons'] ?? '') . $theIcon . ($showPageId ? '[' . $row['uid'] . '] ' : '') . $pTitle;
                     break;
                 case 'php_tree_stop':
                     // Intended fall through
@@ -549,7 +549,7 @@ class PageInformationController
         foreach ($fields as $vKey) {
             if (isset($data[$vKey])) {
                 if ($lastKey) {
-                    $cssClass = $this->addElement_tdCssClass[$lastKey];
+                    $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
                     $out .= '
 						<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
                 }
@@ -568,7 +568,7 @@ class PageInformationController
             }
         }
         if ($lastKey) {
-            $cssClass = $this->addElement_tdCssClass[$lastKey];
+            $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
             $out .= '
 				<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
         }

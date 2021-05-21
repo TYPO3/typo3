@@ -113,8 +113,8 @@ class InlineRecordContainer extends AbstractContainer
         $resultArray['inlineData'] = $this->inlineData;
 
         // Get the current naming scheme for DOM name/id attributes:
-        $appendFormFieldNames = '[' . $foreignTable . '][' . $record['uid'] . ']';
-        $objectId = $domObjectId . '-' . $foreignTable . '-' . $record['uid'];
+        $appendFormFieldNames = '[' . $foreignTable . '][' . ($record['uid'] ?? 0) . ']';
+        $objectId = $domObjectId . '-' . $foreignTable . '-' . ($record['uid'] ?? 0);
         $classes = [];
         $html = '';
         $combinationHtml = '';
@@ -184,10 +184,17 @@ class InlineRecordContainer extends AbstractContainer
             }
 
             $originalUniqueValue = '';
-            if (isset($data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']])) {
+            if (isset($record['uid'], $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']])) {
                 $uniqueValueValues = $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']];
                 // in case of site_language we don't have the full form engine options, so fallbacks need to be taken into account
-                $originalUniqueValue = ($uniqueValueValues['table'] ?? $foreignTable) . '_' . ($uniqueValueValues['uid'] ?? $uniqueValueValues);
+                $originalUniqueValue = ($uniqueValueValues['table'] ?? $foreignTable) . '_';
+                // @todo In what circumstance would $uniqueValueValues be an array that lacks a 'uid' key? Unclear, but
+                // it breaks the string concatenation. This is a hacky workaround for type safety only.
+                $uVV = ($uniqueValueValues['uid'] ?? $uniqueValueValues);
+                if (is_array($uVV)) {
+                    $uVV = implode(',', $uVV);
+                }
+                $originalUniqueValue .= $uVV;
             }
 
             // The hashed object id needs a non-numeric prefix, the value is used as ID selector in JavaScript
@@ -195,7 +202,7 @@ class InlineRecordContainer extends AbstractContainer
             $containerAttributes = [
                 'id' => $objectId . '_div',
                 'class' => 'form-irre-object panel panel-default panel-condensed ' . trim(implode(' ', $classes)),
-                'data-object-uid' => $record['uid'],
+                'data-object-uid' => $record['uid'] ?? 0,
                 'data-object-id' => $objectId,
                 'data-object-id-hash' => $hashedObjectId,
                 'data-object-parent-group' => $domObjectId . '-' . $foreignTable,
@@ -330,7 +337,7 @@ class InlineRecordContainer extends AbstractContainer
         $rec = $data['databaseRow'];
         // Init:
         $domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
-        $objectId = $domObjectId . '-' . $foreignTable . '-' . $rec['uid'];
+        $objectId = $domObjectId . '-' . $foreignTable . '-' . ($rec['uid'] ?? 0);
 
         $recordTitle = $data['recordTitle'];
         if (!empty($recordTitle)) {
@@ -350,7 +357,7 @@ class InlineRecordContainer extends AbstractContainer
         $thumbnail = false;
 
         // Renders a thumbnail for the header
-        if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && !empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
+        if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && !empty($inlineConfig['appearance']['headerThumbnail']['field'])) {
             $fieldValue = $rec[$inlineConfig['appearance']['headerThumbnail']['field']];
             $fileUid = $fieldValue[0]['uid'];
 
@@ -365,7 +372,7 @@ class InlineRecordContainer extends AbstractContainer
                         . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                 } elseif ($fileObject) {
-                    $imageSetup = $inlineConfig['appearance']['headerThumbnail'];
+                    $imageSetup = $inlineConfig['appearance']['headerThumbnail'] ?? [];
                     unset($imageSetup['field']);
                     $cropVariantCollection = CropVariantCollection::create($rec['crop'] ?? '');
                     if (!$cropVariantCollection->getCropArea()->isEmpty()) {
@@ -373,7 +380,7 @@ class InlineRecordContainer extends AbstractContainer
                     }
                     $imageSetup = array_merge(['maxWidth' => '145', 'maxHeight' => '45'], $imageSetup);
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $fileObject->isImage()) {
+                    if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $fileObject->isImage()) {
                         $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
@@ -491,7 +498,7 @@ class InlineRecordContainer extends AbstractContainer
         // If the table is NOT a read-only table, then show these links:
         if (!$isParentReadOnly && !($tcaTableCtrl['readOnly'] ?? false) && !($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
-            if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
+            if (($enabledControls['new'] ?? false) && ($enableManualSorting || ($tcaTableCtrl['useColumnsForDefaultValues'] ?? false))) {
                 if ((!$isPagesTable && $calcPerms->editContentPermissionIsGranted()) || ($isPagesTable && $calcPerms->createPagePermissionIsGranted())) {
                     $style = '';
                     if ($inlineConfig['inline']['inlineNewButtonStyle'] ?? false) {

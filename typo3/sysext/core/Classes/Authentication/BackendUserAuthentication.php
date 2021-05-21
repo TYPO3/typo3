@@ -79,7 +79,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @internal
      */
     public $groupData = [
-        'allowed_languages' => ''
+        'allowed_languages' => '',
+        'tables_select' => '',
+        'tables_modify' => '',
+        'pagetypes_select' => '',
+        'non_exclude_fields' => '',
+        'explicit_allowdeny' => '',
+        'custom_options' => '',
+        'file_permissions' => '',
     ];
 
     /**

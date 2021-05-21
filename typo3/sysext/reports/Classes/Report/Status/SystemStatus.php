@@ -46,8 +46,8 @@ class SystemStatus implements StatusProviderInterface
     protected function getMissingPhpModulesOfExtensions()
     {
         $modules = [];
-        if (is_array(${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']})) {
-            foreach (${$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules']} as $className) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'] ?? null)) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'] as $className) {
                 $hookObject = GeneralUtility::makeInstance($className);
                 $modules = $hookObject->setRequiredPhpModules($modules, $this);
             }

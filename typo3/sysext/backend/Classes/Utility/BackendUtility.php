@@ -1139,16 +1139,16 @@ class BackendUtility
                 break;
         }
         if ($row['doktype'] == PageRepository::DOKTYPE_LINK) {
-            $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['url']['label']) . ' ' . $row['url'];
+            $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['url']['label'] ?? '') . ' ' . ($row['url'] ?? '');
         } elseif ($row['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
             if ($perms_clause) {
                 $label = self::getRecordPath((int)$row['shortcut'], $perms_clause, 20);
             } else {
-                $row['shortcut'] = (int)$row['shortcut'];
+                $row['shortcut'] = (int)($row['shortcut'] ?? 0);
                 $lRec = self::getRecordWSOL('pages', $row['shortcut'], 'title');
                 $label = ($lRec === null ? '' : $lRec['title']) . ' (id=' . $row['shortcut'] . ')';
             }
-            if ($row['shortcut_mode'] != PageRepository::SHORTCUT_MODE_NONE) {
+            if (($row['shortcut_mode'] ?? 0) != PageRepository::SHORTCUT_MODE_NONE) {
                 $label .= ', ' . $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' '
                     . $lang->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
             }
@@ -1162,7 +1162,7 @@ class BackendUtility
                     $label = $lRec['title'] . ' (id=' . $row['mount_pid'] . ')';
                 }
                 $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
-                if ($row['mount_pid_ol']) {
+                if ($row['mount_pid_ol'] ?? 0) {
                     $parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
                 }
             } else {
@@ -1235,9 +1235,9 @@ class BackendUtility
                 : '';
             $ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? [];
             // Uid is added
-            $out .= 'id=' . $row['uid'];
+            $out .= 'id=' . ($row['uid'] ?? 0);
             if (static::isTableWorkspaceEnabled($table)) {
-                switch (VersionState::cast($row['t3ver_state'])) {
+                switch (VersionState::cast($row['t3ver_state'] ?? null)) {
                     case new VersionState(VersionState::DELETE_PLACEHOLDER):
                         $out .= ' - Deleted element!';
                         break;
@@ -2168,8 +2168,8 @@ class BackendUtility
     public static function cshItem($table, $field, $_ = '', $wrap = '')
     {
         static::getLanguageService()->loadSingleTableDescription($table);
-        if (is_array($GLOBALS['TCA_DESCR'][$table])
-            && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])
+        if (is_array($GLOBALS['TCA_DESCR'][$table] ?? null)
+            && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field] ?? null)
         ) {
             // Creating short description
             $output = self::wrapInHelp($table, $field);

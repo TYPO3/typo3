@@ -224,8 +224,8 @@ class ReportController
         $menu->addMenuItem($menuItem);
         $this->shortcutName = $lang->getLL('reports_overview');
 
-        $extensionParam = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
-        $reportParam = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'];
+        $extensionParam = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'] ?? '';
+        $reportParam = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'] ?? '';
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $reports) {
             foreach ($reports as $reportName => $report) {

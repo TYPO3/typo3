@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -53,6 +54,7 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
         }
 
         $tableName = $result['tableName'];
+        /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class, $this->siteConfiguration);
         if ($tableName === 'site') {
             $rootPageId = (int)$result['vanillaUid'];
@@ -61,13 +63,17 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
             $result['databaseRow']['identifier'] = $result['customData']['siteIdentifier'];
         } elseif (in_array($tableName, ['site_errorhandling', 'site_language', 'site_route', 'site_base_variant'], true)) {
             $rootPageId = (int)($result['inlineTopMostParentUid'] ?? $result['inlineParentUid']);
-            $rowData = $this->getRawConfigurationForSiteWithRootPageId($siteFinder, $rootPageId);
-            $parentFieldName = $result['inlineParentFieldName'];
-            if (!isset($rowData[$parentFieldName])) {
-                throw new \RuntimeException('Field "' . $parentFieldName . '" not found', 1520886092);
+            try {
+                $rowData = $this->getRawConfigurationForSiteWithRootPageId($siteFinder, $rootPageId);
+                $parentFieldName = $result['inlineParentFieldName'];
+                if (!isset($rowData[$parentFieldName])) {
+                    throw new \RuntimeException('Field "' . $parentFieldName . '" not found', 1520886092);
+                }
+                $rowData = $rowData[$parentFieldName][$result['vanillaUid']];
+                $result['databaseRow']['uid'] = $result['vanillaUid'];
+            } catch (SiteNotFoundException $e) {
+                $rowData = [];
             }
-            $rowData = $rowData[$parentFieldName][$result['vanillaUid']];
-            $result['databaseRow']['uid'] = $result['vanillaUid'];
         } else {
             throw new \RuntimeException('Other tables not implemented', 1520886234);
         }

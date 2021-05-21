@@ -92,14 +92,14 @@ class SelectSingleElement extends AbstractFormElement
             // See InlineControlContainer where 'inlineData' 'unique' 'used' is set. What exactly is
             // this if supposed to do and when should it kick in and what for?
             $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-            if ($this->data['inlineParentConfig']['foreign_table'] === $table
-                && $this->data['inlineParentConfig']['foreign_unique'] === $field
+            if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
+                && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $field
             ) {
                 $classList[] = 't3js-inline-unique';
                 $uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
             }
             // hide uid of parent record for symmetric relations
-            if ($this->data['inlineParentConfig']['foreign_table'] === $table
+            if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
                 && (
                     ($this->data['inlineParentConfig']['foreign_field'] ?? false) === $field
                     || ($this->data['inlineParentConfig']['symmetric_field'] ?? false) === $field

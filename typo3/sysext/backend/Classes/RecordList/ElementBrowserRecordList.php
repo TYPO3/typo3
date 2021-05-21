@@ -78,8 +78,8 @@ class ElementBrowserRecordList extends DatabaseRecordList
     {
         $returnValue = true;
         if ($this->relatingField && $this->relatingTable) {
-            $tcaFieldConfig = $GLOBALS['TCA'][$this->relatingTable]['columns'][$this->relatingField]['config'];
-            if (is_array($tcaFieldConfig['filter'])) {
+            $tcaFieldConfig = $GLOBALS['TCA'][$this->relatingTable]['columns'][$this->relatingField]['config'] ?? [];
+            if (is_array($tcaFieldConfig['filter'] ?? false)) {
                 foreach ($tcaFieldConfig['filter'] as $filter) {
                     if (!$filter['userFunc']) {
                         continue;

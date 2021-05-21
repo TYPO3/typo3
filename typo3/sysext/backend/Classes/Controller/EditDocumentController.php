@@ -1927,7 +1927,7 @@ class EditDocumentController
         if (!isset($uc['inlineView']) || !is_array($uc['inlineView'])) {
             return;
         }
-        $inlineView = (array)json_decode(is_string($backendUser->uc['inlineView']) ? $backendUser->uc['inlineView'] : '', true);
+        $inlineView = (array)json_decode(is_string($backendUser->uc['inlineView'] ?? false) ? $backendUser->uc['inlineView'] : '', true);
         foreach ($uc['inlineView'] as $topTable => $topRecords) {
             foreach ($topRecords as $topUid => $childElements) {
                 foreach ($childElements as $childTable => $childRecords) {

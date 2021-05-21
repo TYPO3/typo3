@@ -2577,13 +2577,13 @@ class DatabaseRecordList
                         'LOWER(' . $like . ')'
                     )
                 );
-                if (is_array($fieldConfig['search'])) {
+                if (is_array($fieldConfig['search'] ?? null)) {
                     $searchConfig = $fieldConfig['search'];
-                    if (in_array('case', $searchConfig)) {
+                    if (in_array('case', $searchConfig, true)) {
                         // Replace case insensitive default constraint
                         $searchConstraint = $expressionBuilder->andX($expressionBuilder->like($fieldName, $like));
                     }
-                    if (in_array('pidonly', $searchConfig) && $currentPid > 0) {
+                    if (in_array('pidonly', $searchConfig, true) && $currentPid > 0) {
                         $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
                     }
                     if ($searchConfig['andWhere']) {
@@ -2814,12 +2814,12 @@ class DatabaseRecordList
         if (is_array($GLOBALS['TCA'][$table]['columns'] ?? null)) {
             // Traverse configured columns and add them to field array, if available for user.
             foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                if ($fieldValue['config']['type'] === 'none') {
+                if (($fieldValue['config']['type'] ?? '') === 'none') {
                     // Never render or fetch type=none fields from db
                     continue;
                 }
                 if ($dontCheckUser
-                    || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] !== 'passthrough'
+                    || (!($fieldValue['exclude'] ?? null) || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && ($fieldValue['config']['type'] ?? '') !== 'passthrough'
                 ) {
                     $fieldListArr[] = $fN;
                 }
@@ -3068,7 +3068,7 @@ class DatabaseRecordList
         foreach ($fields as $vKey) {
             if (isset($data[$vKey])) {
                 if ($lastKey) {
-                    $cssClass = $this->addElement_tdCssClass[$lastKey];
+                    $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
                     $out .= '
 						<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }

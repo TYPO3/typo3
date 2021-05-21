@@ -117,7 +117,7 @@ class PresetRepository
         // Save preset
         $beUser = $this->getBackendUser();
         // cast public checkbox to int, since this is an int field and NULL is not allowed
-        $inData['preset']['public'] = (int)$inData['preset']['public'];
+        $inData['preset']['public'] = (int)($inData['preset']['public'] ?? 0);
         if (isset($presetData['save'])) {
             $preset = $this->getPreset($presetData['select']);
             // Update existing

@@ -40,7 +40,7 @@ class ElementBrowser extends AbstractNode
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
         $internalType = (string)$config['internal_type'];
-        $allowed = $config['allowed'];
+        $allowed = $config['allowed'] ?? '';
 
         if (isset($config['readOnly']) && $config['readOnly']) {
             return [];
@@ -57,10 +57,10 @@ class ElementBrowser extends AbstractNode
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $elementBrowserOnClickInline = '';
-        if ($this->data['isInlineChild']
-            && $this->data['inlineParentUid']
-            && $this->data['inlineParentConfig']['foreign_table'] === $table
-            && $this->data['inlineParentConfig']['foreign_unique'] === $fieldName
+        if (($this->data['isInlineChild'] ?? false)
+            && ($this->data['inlineParentUid'] ?? false)
+            && ($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
+            && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $fieldName
         ) {
             $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
             $elementBrowserOnClickInline = $objectPrefix;

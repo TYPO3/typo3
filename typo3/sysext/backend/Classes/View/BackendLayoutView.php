@@ -262,7 +262,7 @@ class BackendLayoutView implements SingletonInterface
     protected function addColPosListLayoutItems($pageId, $items)
     {
         $layout = $this->getSelectedBackendLayout($pageId);
-        if ($layout && $layout['__items']) {
+        if ($layout && !empty($layout['__items'])) {
             $items = $layout['__items'];
         }
         return $items;
@@ -277,9 +277,9 @@ class BackendLayoutView implements SingletonInterface
     public function getColPosListItemsParsed($id)
     {
         $tsConfig = BackendUtility::getPagesTSconfig($id)['TCEFORM.']['tt_content.']['colPos.'] ?? [];
-        $tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
+        $tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'] ?? [];
         $tcaItems = $tcaConfig['items'];
-        $tcaItems = $this->addItems($tcaItems, $tsConfig['addItems.']);
+        $tcaItems = $this->addItems($tcaItems, $tsConfig['addItems.'] ?? []);
         if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
             $tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
         }

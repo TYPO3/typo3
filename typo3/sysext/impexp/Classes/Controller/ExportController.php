@@ -150,33 +150,31 @@ class ExportController extends ImportExportController
     {
         // BUILDING EXPORT DATA:
         // Processing of InData array values:
-        $inData['filename'] = trim((string)preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
+        $inData['filename'] = trim((string)preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'] ?? '')));
         if ($inData['filename'] !== '') {
             $inData['filename'] .= $inData['filetype'] === 'xml' ? '.xml' : '.t3d';
         }
         // Set exclude fields in export object:
-        if (!is_array($inData['exclude'])) {
-            $inData['exclude'] = [];
-        }
+        $inData['exclude'] ??= [];
         // Saving/Loading/Deleting presets:
         $this->presetRepository->processPresets($inData);
         // Create export object and configure it:
         $this->export = GeneralUtility::makeInstance(Export::class);
         $this->export->init(0);
-        $this->export->excludeMap = (array)$inData['exclude'];
-        $this->export->softrefCfg = (array)$inData['softrefCfg'];
-        $this->export->extensionDependencies = ($inData['extension_dep'] === '') ? [] : (array)$inData['extension_dep'];
-        $this->export->showStaticRelations = $inData['showStaticRelations'];
-        $this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
-        $this->excludeDisabledRecords = (bool)$inData['excludeDisabled'];
+        $this->export->excludeMap = (array)($inData['exclude'] ?? []);
+        $this->export->softrefCfg = (array)($inData['softrefCfg'] ?? []);
+        $this->export->extensionDependencies = (($inData['extension_dep'] ?? '') === '') ? [] : (array)$inData['extension_dep'];
+        $this->export->showStaticRelations = $inData['showStaticRelations'] ?? false;
+        $this->export->includeExtFileResources = !($inData['excludeHTMLfileResources'] ?? false);
+        $this->excludeDisabledRecords = (bool)($inData['excludeDisabled'] ?? false);
         $this->export->setExcludeDisabledRecords($this->excludeDisabledRecords);
 
         // Static tables:
-        if (is_array($inData['external_static']['tables'])) {
+        if (is_array($inData['external_static']['tables'] ?? null)) {
             $this->export->relStaticTables = $inData['external_static']['tables'];
         }
         // Configure which tables external relations are included for:
-        if (is_array($inData['external_ref']['tables'])) {
+        if (is_array($inData['external_ref']['tables'] ?? null)) {
             $this->export->relOnlyTables = $inData['external_ref']['tables'];
         }
         $saveFilesOutsideExportFile = false;
@@ -189,22 +187,22 @@ class ExportController extends ImportExportController
 
         $beUser = $this->getBackendUser();
         $this->export->setMetaData(
-            $inData['meta']['title'],
-            $inData['meta']['description'],
-            $inData['meta']['notes'],
+            $inData['meta']['title'] ?? '',
+            $inData['meta']['description'] ?? '',
+            $inData['meta']['notes'] ?? '',
             $beUser->user['username'],
             $beUser->user['realName'],
             $beUser->user['email']
         );
         // Configure which records to export
-        if (is_array($inData['record'])) {
+        if (is_array($inData['record'] ?? null)) {
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
                 $this->export->export_addRecord($rParts[0], BackendUtility::getRecord($rParts[0], (int)$rParts[1]));
             }
         }
         // Configure which tables to export
-        if (is_array($inData['list'])) {
+        if (is_array($inData['list'] ?? null)) {
             foreach ($inData['list'] as $ref) {
                 $rParts = explode(':', $ref);
                 if ($beUser->check('tables_select', $rParts[0])) {
@@ -216,7 +214,7 @@ class ExportController extends ImportExportController
             }
         }
         // Pagetree
-        if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'])) {
+        if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'] ?? null)) {
             // Based on click-expandable tree
             $idH = null;
             $pid = (int)$inData['pagetree']['id'];
@@ -291,8 +289,8 @@ class ExportController extends ImportExportController
         $this->export->export_addFilesFromSysFilesRecords();
 
         // If the download button is clicked, return file
-        if ($inData['download_export'] || $inData['save_export']) {
-            switch ($inData['filetype']) {
+        if (($inData['download_export'] ?? null) || ($inData['save_export'] ?? null)) {
+            switch ($inData['filetype'] ?? '') {
                 case 'xml':
                     $out = $this->export->compileMemoryToFileContent('xml');
                     $fExt = '.xml';

@@ -51,7 +51,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
                 // Default case for a single record
                 if ($result['command'] !== 'new') {
                     $table = $result['tableName'];
-                    $uid = $result['databaseRow']['uid'];
+                    $uid = $result['databaseRow']['uid'] ?? 0;
                     if (!empty($fullInlineState[$table][$uid])) {
                         $inlineStateForTable = $fullInlineState[$table][$uid];
                     }

@@ -196,8 +196,8 @@ class TranslationStatusController
             $langRecUids[0][] = $data['row']['uid'];
             $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen);
             // Page icons / titles etc.
-            $tCells[] = '<td' . ($data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
-                ($data['depthData'] ?: '') .
+            $tCells[] = '<td' . (!empty($data['row']['_CSSCLASS']) ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
+                (!empty($data['depthData']) ? $data['depthData'] : '') .
                 BackendUtility::wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
                 '<a href="#" onclick="' . htmlspecialchars(
                     'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;'

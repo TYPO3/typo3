@@ -486,7 +486,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         // and $combinationChild is the child-child. For "normal" relations, $mainChild
         // is just the normal child record and $combinationChild is empty.
         $mainChild = $formDataCompiler->compile($formDataCompilerInput);
-        if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+        if (($parentConfig['foreign_selector'] ?? false) && ($parentConfig['appearance']['useCombination'] ?? false)) {
             // This kicks in if opening an existing mainChild that has a child-child set
             $mainChild['combinationChild'] = $this->compileChildChild($mainChild, $parentConfig, $inlineStructure);
         }

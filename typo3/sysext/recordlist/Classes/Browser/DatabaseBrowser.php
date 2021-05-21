@@ -65,7 +65,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $data['expandPage'] = $this->expandPage;
             $store = true;
         } else {
-            $this->expandPage = (int)$data['expandPage'];
+            $this->expandPage = (int)($data['expandPage'] ?? 0);
             $store = false;
         }
         return [$data, $store];

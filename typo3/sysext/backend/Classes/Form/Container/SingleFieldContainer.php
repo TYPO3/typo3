@@ -219,7 +219,7 @@ class SingleFieldContainer extends AbstractContainer
                 ]
             ];
             // Get the parent record from structure stack
-            $level = $inlineStackProcessor->getStructureLevel(-1);
+            $level = $inlineStackProcessor->getStructureLevel(-1) ?: [];
             // If we have symmetric fields, check on which side we are and hide fields, that are set automatically:
             if ($this->data['isOnSymmetricSide']) {
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['symmetric_field'] = $fieldName;

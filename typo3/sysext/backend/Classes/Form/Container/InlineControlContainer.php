@@ -222,7 +222,9 @@ class InlineControlContainer extends AbstractContainer
                     }
                     // Note structure of $value is different in select vs. group: It's a uid for select, but an
                     // array with uid + table for group.
-                    $uniqueIds[$child['databaseRow']['uid']] = $value;
+                    if (isset($child['databaseRow']['uid'])) {
+                        $uniqueIds[$child['databaseRow']['uid']] = $value;
+                    }
                 }
             }
             $possibleRecords = $config['selectorOrUniquePossibleRecords'] ?? [];
@@ -334,7 +336,7 @@ class InlineControlContainer extends AbstractContainer
             $childResult = $this->nodeFactory->create($options)->render();
             $html .= $childResult['html'];
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult, false);
-            if (!$options['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
+            if (!$options['isInlineDefaultLanguageRecordInLocalizedParentContext'] && isset($options['databaseRow']['uid'])) {
                 // Don't add record to list of "valid" uids if it is only the default
                 // language record of a not yet localized child
                 $sortableRecordUids[] = $options['databaseRow']['uid'];

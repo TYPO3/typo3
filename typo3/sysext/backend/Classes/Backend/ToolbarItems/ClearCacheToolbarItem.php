@@ -52,7 +52,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // Clear all page-related caches
-        if ($isAdmin || $userTsConfig['options.']['clearCache.']['pages'] ?? false) {
+        if ($isAdmin || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
             $this->cacheActions[] = [
                 'id' => 'pages',
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
