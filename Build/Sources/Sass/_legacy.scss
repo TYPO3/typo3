@@ -235,6 +235,11 @@ label {
 // provide bootstrap v3 fallback for <tr class="{themeColor}"> markup
 // bootstrap v5 uses new class syntax -> .table-{themeColor}
 @mixin table-variant($state, $background) {
+    // Remove accent background to keep striped table and its hover state
+    &.table-hover {
+        --bs-table-accent-bg: unset;
+    }
+
     .#{$state} {
         /* stylelint-disable custom-property-empty-line-before */
         // todo: check why 'grunt formatsass' task is adding new empty lines
