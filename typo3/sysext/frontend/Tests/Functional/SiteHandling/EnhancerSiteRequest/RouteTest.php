@@ -31,6 +31,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableI
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariablesContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\TestSetDataProviderTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**
@@ -38,6 +39,8 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 class RouteTest extends AbstractEnhancerSiteRequestTest
 {
+    use TestSetDataProviderTrait;
+
     public function routeDefaultsAreConsideredDataProvider($parentSet = null): array
     {
         $builder = Builder::create();
@@ -500,5 +503,15 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
         } else {
             self::assertStringContainsString($failureReason, $body);
         }
+    }
+
+    /**
+     * @param TestSet $testSet
+     * @test
+     * @dataProvider nestedRouteArgumentsAreConsideredDataProvider
+     */
+    public function nestedRouteArgumentsAreConsidered(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
     }
 }
