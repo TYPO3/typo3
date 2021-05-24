@@ -134,7 +134,7 @@ class SystemEnvironmentBuilder
         /**
          * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
          */
-        define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
+        define('TYPO3_URL_LICENSE', 'https://typo3.org/project/licenses/');
         /**
          * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
          */
