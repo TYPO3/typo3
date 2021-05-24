@@ -129,7 +129,7 @@ class SystemEnvironmentBuilder
 
         // TYPO3 external links
         define('TYPO3_URL_GENERAL', 'https://typo3.org/');
-        define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
+        define('TYPO3_URL_LICENSE', 'https://typo3.org/project/licenses/');
         define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
         define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
         define('TYPO3_URL_WIKI_OPCODECACHE', 'https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Troubleshooting/Index.html#opcode-cache-messages');
