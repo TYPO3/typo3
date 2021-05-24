@@ -93,9 +93,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         php -dxdebug.mode=off $${COMMAND}
@@ -140,9 +140,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         php -dxdebug.mode=off $${COMMAND}
@@ -190,9 +190,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         php -dxdebug.mode=off $${COMMAND}
@@ -275,7 +275,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_postgres:
@@ -315,7 +315,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=postgresql --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=postgresql --xml reports.xml --html reports.html
       "
 
   prepare_acceptance_install_sqlite:
@@ -342,7 +342,7 @@ services:
           set -x
         fi
         mkdir -p typo3temp/var/tests/ \
-          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml --env=sqlite --xml reports.xml --html reports.html
+          && php -dxdebug.mode=off bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=sqlite --xml reports.xml --html reports.html
       "
 
   build_css:
