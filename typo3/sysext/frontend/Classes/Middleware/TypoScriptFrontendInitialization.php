@@ -91,7 +91,7 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
         }
         // Usually only set by the PageArgumentValidator
         if ($request->getAttribute('noCache', false)) {
-            $controller->no_cache = 1;
+            $controller->no_cache = true;
         }
 
         $controller->determineId($request);

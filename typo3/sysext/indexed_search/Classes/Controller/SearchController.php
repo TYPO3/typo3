@@ -949,7 +949,9 @@ class SearchController extends ActionController
         $newSearchWords = [];
         // Init lexer (used to post-processing of search words)
         $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
-        $this->lexerObj = GeneralUtility::makeInstance($lexerObjectClassName);
+        /** @var Lexer $lexer */
+        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
+        $this->lexerObj = $lexer;
         // Traverse the search word array
         foreach ($searchWords as $wordDef) {
             // No space in word (otherwise it might be a sentence in quotes like "there is").

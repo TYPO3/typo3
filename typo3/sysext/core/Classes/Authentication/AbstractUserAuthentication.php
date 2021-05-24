@@ -165,8 +165,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $checkPid = true;
 
     /**
-     * The page id the user record must be stored at
-     * @var int
+     * The page id the user record must be stored at, can also hold a comma separated list of pids
+     * @var int|string
      */
     public $checkPid_value = 0;
 

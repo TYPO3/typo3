@@ -19,7 +19,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -51,12 +53,12 @@ class ShowImageController
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\File
+     * @var File|Folder|null
      */
     protected $file;
 
     /**
-     * @var int
+     * @var string
      */
     protected $width;
 
@@ -186,7 +188,7 @@ EOF;
     {
         $max = strpos($this->width . $this->height, 'm') !== false ? 'm' : '';
         $this->height = MathUtility::forceIntegerInRange($this->height, 0);
-        $this->width = MathUtility::forceIntegerInRange($this->width, 0) . $max;
+        $this->width = MathUtility::forceIntegerInRange((int)$this->width, 0) . $max;
 
         $processingConfiguration = [
             'width' => $this->width,

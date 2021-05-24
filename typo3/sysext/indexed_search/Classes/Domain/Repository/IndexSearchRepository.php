@@ -186,7 +186,7 @@ class IndexSearchRepository
         $this->frontendUserGroupList = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
         // Should we use joinPagesForQuery instead of long lists of uids?
         if ($settings['searchSkipExtendToSubpagesChecking']) {
-            $this->joinPagesForQuery = 1;
+            $this->joinPagesForQuery = true;
         }
         if ($settings['exactCount']) {
             $this->useExactCount = true;

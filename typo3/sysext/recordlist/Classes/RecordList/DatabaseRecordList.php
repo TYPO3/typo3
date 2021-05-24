@@ -236,7 +236,7 @@ class DatabaseRecordList
     /**
      * Containing which fields to display in extended mode
      *
-     * @var string[]
+     * @var string[]|null
      */
     public $displayFields;
 

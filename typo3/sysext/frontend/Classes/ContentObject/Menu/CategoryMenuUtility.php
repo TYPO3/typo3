@@ -79,7 +79,7 @@ class CategoryMenuUtility
         }
 
         // Sort the pages according to the sorting property
-        self::$sortingField = $parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration ?? []);
+        self::$sortingField = (string)$parentObject->getParentContentObject()->stdWrapValue('sorting', $configuration ?? []);
         $order = (string)$parentObject->getParentContentObject()->stdWrapValue('order', $configuration ?? []);
         $selectedPages = $this->sortPages($selectedPages, $order);
 

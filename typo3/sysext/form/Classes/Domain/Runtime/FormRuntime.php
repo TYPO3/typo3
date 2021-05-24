@@ -145,7 +145,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * finishing actions need to take place. You should use $this->isAfterLastPage()
      * instead of explicitly checking for NULL.
      *
-     * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page
+     * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page|null
      */
     protected $currentPage;
 
@@ -407,6 +407,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     {
         $renderingOptions = $this->formDefinition->getRenderingOptions();
         if (!isset($renderingOptions['honeypot']['enable'])
+            || $this->currentPage === null
             || $renderingOptions['honeypot']['enable'] === false
             || (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())

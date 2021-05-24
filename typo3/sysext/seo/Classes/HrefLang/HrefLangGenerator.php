@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -116,7 +116,7 @@ class HrefLangGenerator
         return $GLOBALS['TSFE'];
     }
 
-    protected function getTranslatedPageRecord(int $pageId, int $languageId, Site $site): array
+    protected function getTranslatedPageRecord(int $pageId, int $languageId, SiteInterface $site): array
     {
         $targetSiteLanguage = $site->getLanguageById($languageId);
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($targetSiteLanguage);

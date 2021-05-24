@@ -325,7 +325,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
 
         $this->identifier = $identifier;
         $this->type = $type;
-        $this->persistenceIdentifier = $persistenceIdentifier;
+        $this->persistenceIdentifier = (string)$persistenceIdentifier;
 
         if ($prototypeConfiguration !== []) {
             $this->initializeFromFormDefaults();

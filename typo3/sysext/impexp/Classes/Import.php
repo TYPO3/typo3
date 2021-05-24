@@ -124,7 +124,7 @@ class Import extends ImportExport
     protected function initializeImport()
     {
         // Set this flag to indicate that an import is being/has been done.
-        $this->doesImport = 1;
+        $this->doesImport = true;
         // Initialize:
         // These vars MUST last for the whole section not being cleared. They are used by the method setRelations() which are called at the end of the import session.
         $this->import_mapId = [];
@@ -212,7 +212,7 @@ class Import extends ImportExport
         // Importing the added ones
         $tce = $this->getNewTCE();
         // Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
-        $tce->reverseOrder = 1;
+        $tce->reverseOrder = true;
         $tce->isImporting = true;
         $tce->start($this->import_data, []);
         $tce->process_datamap();
@@ -730,7 +730,7 @@ class Import extends ImportExport
         ]);
         $tce->suggestedInsertUids = $this->suggestedInsertUids;
         // Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
-        $tce->reverseOrder = 1;
+        $tce->reverseOrder = true;
         $tce->isImporting = true;
         $tce->start($this->import_data, []);
         $tce->process_datamap();
@@ -946,7 +946,7 @@ class Import extends ImportExport
     public function getNewTCE()
     {
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->dontProcessTransformations = 1;
+        $tce->dontProcessTransformations = true;
         $tce->enableLogging = $this->enableLogging;
         return $tce;
     }

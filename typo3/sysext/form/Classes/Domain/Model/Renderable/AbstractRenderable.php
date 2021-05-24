@@ -60,7 +60,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     /**
      * The parent renderable
      *
-     * @var CompositeRenderableInterface
+     * @var CompositeRenderableInterface|null
      */
     protected $parentRenderable;
 

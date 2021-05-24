@@ -57,7 +57,6 @@ use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -100,7 +99,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * The page id (int)
-     * @var string
+     * @var string|int
      */
     public $id = '';
 
@@ -111,7 +110,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $type = '';
 
     /**
-     * @var Site
+     * @var SiteInterface
      */
     protected $site;
 
@@ -3566,7 +3565,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $this->language;
     }
 
-    public function getSite(): Site
+    public function getSite(): SiteInterface
     {
         return $this->site;
     }

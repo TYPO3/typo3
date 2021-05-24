@@ -105,8 +105,8 @@ class ExportController extends ImportExportController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
 
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        if (is_array($this->pageinfo)) {
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
+        if ($this->pageinfo !== []) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
@@ -298,7 +298,7 @@ class ExportController extends ImportExportController
                     $fExt = '.xml';
                     break;
                 case 't3d':
-                    $this->export->dontCompress = 1;
+                    $this->export->dontCompress = true;
                     // intentional fall-through
                     // no break
                 default:

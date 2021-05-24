@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
@@ -158,9 +159,9 @@ class Indexer
     /**
      * Content of TYPO3 page
      *
-     * @var string
+     * @var int
      */
-    public $content_md5h = '';
+    public $content_md5h;
 
     /**
      * @var array
@@ -214,7 +215,7 @@ class Indexer
     public $lexerObj;
 
     /**
-     * @var bool
+     * @var int
      */
     public $flagBitMask;
 
@@ -264,12 +265,16 @@ class Indexer
         }
         // Initialize lexer (class that deconstructs the text into words):
         $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
-        $this->lexerObj = GeneralUtility::makeInstance($lexerObjectClassName);
+        /** @var Lexer $lexer */
+        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
+        $this->lexerObj = $lexer;
         $this->lexerObj->debug = $this->indexerConfig['debugMode'];
         // Initialize metaphone hook:
         // Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
         if ($this->enableMetaphoneSearch && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']) {
-            $this->metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
+            /** @var DoubleMetaPhoneUtility $metaphoneObj */
+            $metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
+            $this->metaphoneObj = $metaphoneObj;
             $this->metaphoneObj->pObj = $this;
         }
     }

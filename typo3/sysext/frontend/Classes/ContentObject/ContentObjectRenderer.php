@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -90,7 +91,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
     protected $container;
 
@@ -395,7 +396,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $getImgResourceHookObjects;
 
     /**
-     * @var File|FileReference|Folder|null Current file objects (during iterations over files)
+     * @var File|FileReference|Folder|string|null Current file objects (during iterations over files)
      */
     protected $currentFile;
 

@@ -178,9 +178,9 @@ abstract class AbstractMenuContentObject
     /**
      * Can be set to contain menu item arrays for sub-levels.
      *
-     * @var string
+     * @var array
      */
-    protected $alternativeMenuTempArray = '';
+    protected $alternativeMenuTempArray = [];
 
     /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
@@ -545,7 +545,7 @@ abstract class AbstractMenuContentObject
                 }
                 $menuItems = $sectionIndexes;
             }
-        } elseif (is_array($this->alternativeMenuTempArray)) {
+        } elseif ($this->alternativeMenuTempArray !== []) {
             // Setting $menuItems array if not level 1.
             $menuItems = $this->alternativeMenuTempArray;
         } elseif ($this->mconf['sectionIndex']) {
@@ -1522,8 +1522,8 @@ abstract class AbstractMenuContentObject
                 // Especially scripts that build the submenu needs the parent data
                 $submenu->parent_cObj = $this->parent_cObj;
                 $submenu->setParentMenu($this->menuArr, $this->I['key']);
-                // Setting alternativeMenuTempArray (will be effective only if an array)
-                if (is_array($altArray)) {
+                // Setting alternativeMenuTempArray (will be effective only if an array and not empty)
+                if (is_array($altArray) && !empty($altArray)) {
                     $submenu->alternativeMenuTempArray = $altArray;
                 }
                 if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix)) {

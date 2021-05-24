@@ -1164,7 +1164,7 @@ class AbstractPlugin
     public function pi_getPidList($pid_list, $recursive = 0)
     {
         if (!strcmp($pid_list, '')) {
-            $pid_list = $this->frontendController->id;
+            $pid_list = (string)$this->frontendController->id;
         }
         $recursive = MathUtility::forceIntegerInRange($recursive, 0);
         $pid_list_arr = array_unique(GeneralUtility::intExplode(',', $pid_list, true));

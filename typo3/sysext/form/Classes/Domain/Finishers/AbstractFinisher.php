@@ -97,7 +97,7 @@ abstract class AbstractFinisher implements FinisherInterface
             $this->finisherIdentifier = $finisherIdentifier;
         }
 
-        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier);
+        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
     }
 
     /**

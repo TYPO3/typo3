@@ -65,7 +65,7 @@ class FileContentParser
     protected $langObject;
 
     /**
-     * @var string Backup for setLocaleForServerFileSystem()
+     * @var string|null Backup for setLocaleForServerFileSystem()
      */
     protected $lastLocale;
 
@@ -733,7 +733,7 @@ class FileContentParser
             if ($this->lastLocale !== null) {
                 throw new \RuntimeException('Cannot set new locale as locale has already been changed before.', 1357064437);
             }
-            $this->lastLocale = setlocale(LC_CTYPE, '0');
+            $this->lastLocale = setlocale(LC_CTYPE, '0') ?: null;
             setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
         }
     }

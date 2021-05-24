@@ -77,8 +77,8 @@ class ImportController extends ImportExportController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
 
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        if (is_array($this->pageinfo)) {
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
+        if ($this->pageinfo !== []) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         // Setting up the context sensitive menu:
@@ -150,7 +150,7 @@ class ImportController extends ImportExportController
      */
     protected function importData(array $inData): void
     {
-        $access = is_array($this->pageinfo);
+        $access = $this->pageinfo !== [];
         $beUser = $this->getBackendUser();
         if ($this->id && $access || $beUser->isAdmin() && !$this->id) {
             if ($beUser->isAdmin() && !$this->id) {
@@ -159,7 +159,6 @@ class ImportController extends ImportExportController
             if ($inData['new_import']) {
                 unset($inData['import_mode']);
             }
-            /** @var Import $import */
             $import = GeneralUtility::makeInstance(Import::class);
             $import->init();
             $import->update = $inData['do_update'];
@@ -251,19 +250,17 @@ class ImportController extends ImportExportController
         parent::getButtons();
 
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->isAdmin() && !$this->id) {
-            if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
-                // View
-                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
-                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-                    ->buildDispatcherDataAttributes();
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                    ->setHref('#')
-                    ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-                    ->setDataAttributes($previewDataAttributes ?? []);
-                $buttonBar->addButton($viewButton);
-            }
+        if ($this->id && $this->pageinfo['uid'] ?? false || $this->getBackendUser()->isAdmin() && !$this->id) {
+            // View
+            $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+                ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+                ->buildDispatcherDataAttributes();
+            $viewButton = $buttonBar->makeLinkButton()
+                ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                ->setHref('#')
+                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+                ->setDataAttributes($previewDataAttributes ?? []);
+            $buttonBar->addButton($viewButton);
         }
     }
 

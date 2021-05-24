@@ -131,7 +131,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         }
 
-        $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;
@@ -149,7 +149,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
         $dblist->allFields = true;
         $dblist->dontShowClipControlPanels = true;
-        $dblist->displayFields = false;
+        $dblist->displayFields = null;
         $dblist->setFields = [$tableName => $fieldList];
         $dblist->noControlPanels = !$enableControlPanels;
         $dblist->sortField = $sortField;
