@@ -19,13 +19,14 @@ namespace TYPO3\CMS\Core\Core;
  * The base ApplicationInterface which
  * is used for all Entry Points for TYPO3, may it be
  * Frontend, Backend, Install Tool or Command Line.
+ * @internal only to be meant for internal Application-level purposes, not part of TYPO3 Core API.
  */
 interface ApplicationInterface
 {
     /**
      * Starting point
      *
-     * @param callable $execute
+     * @param callable $execute Deprecated, will be removed in TYPO3 v12.0
      */
     public function run(callable $execute = null);
 }

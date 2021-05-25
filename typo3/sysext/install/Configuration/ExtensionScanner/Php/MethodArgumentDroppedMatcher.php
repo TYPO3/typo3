@@ -297,4 +297,10 @@ return [
             'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Core\ApplicationInterface->run' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94272-DeprecatedApplication-runCallback.rst',
+        ],
+    ],
 ];

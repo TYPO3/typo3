@@ -88,7 +88,7 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
     /**
      * Set up the application and shut it down afterwards
      *
-     * @param callable $execute
+     * @param callable $execute Deprecated, will be removed in TYPO3 v12.0
      */
     final public function run(callable $execute = null)
     {
@@ -97,6 +97,7 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
                 ServerRequestFactory::fromGlobals()
             );
             if ($execute !== null) {
+                trigger_error('Custom execution of Application code will be removed in TYPO3 v12.0, use PSR-15 Middlewares instead.', E_USER_DEPRECATED);
                 $execute();
             }
         } catch (ImmediateResponseException $exception) {
