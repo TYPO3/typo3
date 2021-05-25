@@ -34,6 +34,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TranslationConfigurationProvider
 {
     /**
+     * @var array
+     */
+    protected $systemLanguageCache = [];
+
+    /**
      * Returns array of languages given for a specific site (or "nullSite" if on page=0)
      * The property flagIcon returns a string <flags-xx>.
      *
@@ -42,6 +47,9 @@ class TranslationConfigurationProvider
      */
     public function getSystemLanguages($pageId = 0)
     {
+        if (isset($this->systemLanguageCache[$pageId])) {
+            return $this->systemLanguageCache[$pageId];
+        }
         $allSystemLanguages = [];
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         if ($pageId === 0) {
@@ -52,7 +60,8 @@ class TranslationConfigurationProvider
                 $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
                     $allSystemLanguages,
                     $site->getAvailableLanguages($this->getBackendUserAuthentication()),
-                    $site
+                    $site,
+                    true
                 );
             }
         } else {
@@ -68,14 +77,16 @@ class TranslationConfigurationProvider
             $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
                 $allSystemLanguages,
                 $siteLanguages,
-                $site
+                $site,
+                false
             );
         }
         ksort($allSystemLanguages);
+        $this->systemLanguageCache[$pageId] = $allSystemLanguages;
         return $allSystemLanguages;
     }
 
-    protected function addSiteLanguagesToConsolidatedList(array $allSystemLanguages, array $languagesOfSpecificSite, SiteInterface $site): array
+    protected function addSiteLanguagesToConsolidatedList(array $allSystemLanguages, array $languagesOfSpecificSite, SiteInterface $site, bool $includeSiteSuffix): array
     {
         foreach ($languagesOfSpecificSite as $language) {
             $languageId = $language->getLanguageId();
@@ -85,7 +96,7 @@ class TranslationConfigurationProvider
             } else {
                 $allSystemLanguages[$languageId] = [
                     'uid' => $languageId,
-                    'title' => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
+                    'title' => $language->getTitle() . ($includeSiteSuffix ? ' [Site: ' . $site->getIdentifier() . ']' : ''),
                     'ISOcode' => $language->getTwoLetterIsoCode(),
                     'flagIcon' => $language->getFlagIdentifier(),
                 ];

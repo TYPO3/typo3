@@ -2322,6 +2322,8 @@ class DatabaseRecordList
             return $out;
         }
         $translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
+        $pageId = (int)($table === 'pages' ? $row['uid'] : $row['pid']);
+        $languageInformation = $this->translateTools->getSystemLanguages($pageId);
         if (is_array($translations)) {
             $this->translations = $translations['translations'];
             // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
@@ -2344,14 +2346,13 @@ class DatabaseRecordList
                         '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
                         $redirectUrl
                     );
-                    $language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
-                    if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
-                        $lC = $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render();
+                    if ($languageInformation[$lUid_OnPage]['flagIcon']) {
+                        $lC = $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render();
                     } else {
-                        $lC = $this->languageIconTitles[$lUid_OnPage]['title'];
+                        $lC = htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '');
                     }
                     $lC = '<a href="' . htmlspecialchars($href) . '" title="'
-                        . htmlspecialchars($language['title']) . '" class="btn btn-default t3js-action-localize">'
+                        . htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '') . '" class="btn btn-default t3js-action-localize">'
                         . $lC . '</a> ';
                     $lNew .= $lC;
                 }
@@ -3978,10 +3979,11 @@ class DatabaseRecordList
     public function languageFlag($sys_language_uid, $addAsAdditionalText = true)
     {
         $out = '';
-        $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
-        if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
+        $languageInformation = $this->getTranslateTools()->getSystemLanguages($this->id);
+        $title = htmlspecialchars($languageInformation[$sys_language_uid]['title']);
+        if ($languageInformation[$sys_language_uid]['flagIcon']) {
             $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
-                $this->languageIconTitles[$sys_language_uid]['flagIcon'],
+                $languageInformation[$sys_language_uid]['flagIcon'],
                 Icon::SIZE_SMALL
             )->render() . '</span>';
             if (!$addAsAdditionalText) {
