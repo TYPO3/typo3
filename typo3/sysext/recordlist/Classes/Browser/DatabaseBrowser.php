@@ -171,7 +171,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->noControlPanels = true;
         $dbList->clickMenuEnabled = false;
         $dbList->tableList = implode(',', $tablesArr);
-        $dbList->allFields = true;
 
         // a string like "data[pages][79][storage_pid]"
         [$fieldPointerString] = explode('|', $this->bparams);
@@ -194,19 +193,13 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $searchLevels
         );
 
-        $dbList->setDispFields();
+        $dbList->setDispFields($this->getRequest()->getParsedBody()['displayFields'] ?? null);
         $tableList = $dbList->generateList();
 
         $out .= $this->renderSearchBox($dbList, $searchWord, $searchLevels);
 
         // Add the HTML for the record list to output variable:
         $out .= $tableList;
-
-        // Add support for fieldselectbox in singleTableMode
-        if ($dbList->table) {
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
-            $out .= $dbList->fieldSelectBox($dbList->table);
-        }
 
         return $out;
     }

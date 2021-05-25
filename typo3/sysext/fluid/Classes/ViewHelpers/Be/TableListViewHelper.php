@@ -147,9 +147,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
             $storagePid = $frameworkConfiguration['persistence']['storagePid'];
         }
         $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
-        $dblist->allFields = true;
         $dblist->dontShowClipControlPanels = true;
-        $dblist->displayFields = null;
         $dblist->setFields = [$tableName => $fieldList];
         $dblist->noControlPanels = !$enableControlPanels;
         $dblist->sortField = $sortField;

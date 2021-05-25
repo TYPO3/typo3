@@ -42,7 +42,6 @@ class CsvExportRecordListTest extends FunctionalTestCase
     {
         $recordList = new DatabaseRecordList();
         $recordList->start(0, 'be_users', 0);
-        $recordList->allFields = true;
         $recordList->setFields['be_users'] = [
             'username',
             'realName',
@@ -80,7 +79,6 @@ class CsvExportRecordListTest extends FunctionalTestCase
         $this->importDataSet('EXT:recordlist/Tests/Functional/RecordList/Fixtures/pages.xml');
         $recordList = new DatabaseRecordList();
         $recordList->start(1, 'pages', 0);
-        $recordList->allFields = true;
         $recordList->setFields['pages'] = [
             'uid',
             'pid',

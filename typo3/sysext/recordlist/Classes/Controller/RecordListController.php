@@ -111,7 +111,6 @@ class RecordListController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
@@ -174,7 +173,6 @@ class RecordListController
         $dblist->setModuleData($MOD_SETTINGS ?? []);
         $dblist->calcPerms = $this->pagePermissions;
         $dblist->returnUrl = $this->returnUrl;
-        $dblist->allFields = (bool)($MOD_SETTINGS['bigControlPanel'] ?? $table);
         $dblist->showClipboard = true;
         $dblist->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
         $dblist->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
@@ -227,7 +225,7 @@ class RecordListController
             }
             // Initialize the listing object, dblist, for rendering the list:
             $dblist->start($this->id, $table, $pointer, $search_field, $search_levels);
-            $dblist->setDispFields();
+            $dblist->setDispFields($request->getParsedBody()['displayFields'] ?? null);
             // Render the list of tables:
             $tableOutput = $dblist->generateList();
 
@@ -329,10 +327,6 @@ class RecordListController
         $body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
         // If a listing was produced, create the page footer with search form etc:
         if ($tableOutput) {
-            // Making field select box (when extended view for a single table is enabled):
-            if ($dblist->table) {
-                $body .= $dblist->fieldSelectBox($dblist->table);
-            }
             // Adding checkbox options for extended listing and clipboard display:
             $body .= '
 

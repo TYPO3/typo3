@@ -3,6 +3,12 @@
 	<file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang.xlf" date="2017-02-03T21:13:02Z" product-name="recordlist">
 		<header/>
 		<body>
+			<trans-unit id="showColumns" resname="showColumns">
+				<source>Show Columns</source>
+			</trans-unit>
+			<trans-unit id="updateColumnView" resname="updateColumnView">
+				<source>Update</source>
+			</trans-unit>
 			<trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>
 			</trans-unit>

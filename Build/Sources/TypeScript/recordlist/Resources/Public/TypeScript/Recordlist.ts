@@ -65,6 +65,9 @@ class Recordlist {
       Tooltip.initialize('.table-fit a[title]');
       this.registerPaginationEvents();
     });
+    DocumentService.ready().then((): void => {
+      this.registerColumnSelectorEvents();
+    });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
   }
 
@@ -246,6 +249,24 @@ class Recordlist {
       });
     });
   }
+
+  /**
+   * Show columns dropdown: If "Toggle all" is changed, then all other checkboxes are flipped
+   */
+  private registerColumnSelectorEvents = (): void => {
+    // Fill out initially if the other checkboxes are set.
+    document.querySelectorAll('.recordlist-select-allcolumns').forEach((allFieldsCheckbox: HTMLInputElement) => {
+      allFieldsCheckbox.addEventListener('change', (e: InputEvent) => {
+        allFieldsCheckbox.closest('form').querySelectorAll('.recordlist-select-column').forEach((checkbox: HTMLInputElement) => {
+          if (!checkbox.disabled) {
+            checkbox.checked = !checkbox.checked;
+          }
+        });
+      });
+
+    });
+  }
+
 }
 
 export = new Recordlist();
