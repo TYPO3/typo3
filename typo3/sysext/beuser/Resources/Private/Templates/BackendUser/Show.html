@@ -1,29 +1,9 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
 <f:layout name="Default"/>
-
-<f:section name="Buttons">
-    <be:moduleLayout.button.linkButton
-        icon="actions-view-go-back"
-        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
-        link="{be:moduleLink(route: 'system_BeuserTxBeuser')}"
-    />
-    <be:moduleLayout.button.linkButton
-        icon="actions-open"
-        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
-        link="{be:uri.editRecord(uid: data.user.uid, table: 'be_users')}"
-    />
-    <be:moduleLayout.button.linkButton
-        icon="actions-add"
-        title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
-        link="{be:uri.newRecord(table: 'be_users')}"
-    />
-</f:section>
 
 <f:section name="Content">
     <h1><f:translate key="backendUser" />: {data.user.username} [{data.user.uid}]</h1>

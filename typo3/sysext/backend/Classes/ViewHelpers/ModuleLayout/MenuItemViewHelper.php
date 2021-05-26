@@ -39,6 +39,8 @@ use TYPO3Fluid\Fluid\View\Exception;
  *            <be:moduleLayout.menuItem label="Menu item 1" uri="{f:uri.action(action: 'index')}"/>
  *        </be:moduleLayout.menu>
  *    </be:moduleLayout>
+ *
+ * @deprecated since TYPO3 v11.3, will be removed in TYPO3 v12.0.
  */
 class MenuItemViewHelper extends AbstractViewHelper
 {
@@ -68,6 +70,7 @@ class MenuItemViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         self::ensureProperNesting($viewHelperVariableContainer);
 

@@ -25,9 +25,6 @@
 			<trans-unit id="confirmUnlockInstallToolButton" resname="confirmUnlockInstallToolButton">
 				<source>Unlock the Install&amp;#160;Tool</source>
 			</trans-unit>
-			<trans-unit id="cancel" resname="cancel">
-				<source>Cancel</source>
-			</trans-unit>
 			<trans-unit id="confirm" resname="confirm">
 				<source>Confirm</source>
 			</trans-unit>

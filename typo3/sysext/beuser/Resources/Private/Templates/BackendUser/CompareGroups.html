@@ -6,14 +6,6 @@
 
 <f:layout name="Default" />
 
-<f:section name="Buttons">
-    <be:moduleLayout.button.linkButton
-        icon="actions-view-go-back"
-        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
-        link="{be:moduleLink(route: 'system_BeuserTxBeuser', query: 'tx_beuser_system_beusertxbeuser[controller]=BackendUserGroup')}"
-    />
-</f:section>
-
 <f:section name="Content">
     <h1>{f:translate(key:'compareBackendUsersGroups')}</h1>
     <div class="table-fit">
@@ -31,7 +23,7 @@
                 <f:for each="{compareGroupList}" as="compareData">
                     <th class="nowrap">
                         {compareData.group.title} [{compareData.group.uid}]
-                        <f:link.action action="removeFromCompareList" arguments="{uid: compareData.group.uid, redirectToCompare:1}" class="btn btn-default pull-right">
+                        <f:link.action action="removeGroupFromCompareList" arguments="{uid: compareData.group.uid, redirectToCompare:1}" class="btn btn-default pull-right">
                             <core:icon identifier="actions-remove" size="small"/>
                         </f:link.action>
                         <be:link.editRecord class="btn btn-default pull-right" table="be_groups" uid="{compareData.group.uid}">

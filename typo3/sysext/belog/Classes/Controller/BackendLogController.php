@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Belog\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
@@ -36,29 +37,17 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendLogController extends ActionController
 {
-    /**
-     * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
-     */
-    protected $logEntryRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected LogEntryRepository $logEntryRepository;
+    protected WorkspaceRepository $workspaceRepository;
 
-    /**
-     * @var \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository
-     */
-    protected $workspaceRepository;
-
-    /**
-     * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
-     */
-    public function injectLogEntryRepository(LogEntryRepository $logEntryRepository)
-    {
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        LogEntryRepository $logEntryRepository,
+        WorkspaceRepository $workspaceRepository
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->logEntryRepository = $logEntryRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository $workspaceRepository
-     */
-    public function injectWorkspaceRepository(WorkspaceRepository $workspaceRepository)
-    {
         $this->workspaceRepository = $workspaceRepository;
     }
 
@@ -90,6 +79,7 @@ class BackendLogController extends ActionController
      * @param int|null $pageId
      * @param string $layout
      * @param string $operation
+     * @return ResponseInterface
      */
     public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default', string $operation = ''): ResponseInterface
     {
@@ -115,6 +105,12 @@ class BackendLogController extends ActionController
             'pageDepths' => $this->createPageDepthOptions(),
         ]);
 
+        if ($layout === 'Default') {
+            $moduleTemplate = $this->moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+            $moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
+            $moduleTemplate->setContent($this->view->render());
+            return $this->htmlResponse($moduleTemplate->renderContent());
+        }
         return $this->htmlResponse();
     }
 

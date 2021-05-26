@@ -1,17 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
 
 <f:layout name="Default" />
-
-<f:section name="Buttons">
-    <be:moduleLayout.button.linkButton
-        icon="actions-view-go-back"
-        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
-        link="{be:moduleLink(route: 'system_BeuserTxBeuser')}"
-    />
-</f:section>
 
 <f:section name="Content">
     <h1>{f:translate(key:'compareBackendUsers')}</h1>

@@ -39,6 +39,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *    <be:moduleLayout>
  *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" arguments="{parameter: '{someValue}'}"/>
  *    </be:moduleLayout>
+ *
+ * @deprecated since TYPO3 v11.3, will be removed in TYPO3 v12.0. Deprecation logged AbstractButtonViewHelper.
  */
 class ShortcutButtonViewHelper extends AbstractButtonViewHelper
 {

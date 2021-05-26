@@ -237,6 +237,9 @@
 			<trans-unit id="backendUser" resname="backendUser">
 				<source>Backend User</source>
 			</trans-unit>
+			<trans-unit id="backendUserDetails" resname="backendUserDetails">
+				<source>Backend user details</source>
+			</trans-unit>
 			<trans-unit id="flashMessage.resetPassword.error.title" resname="flashMessage.resetPassword.error.title">
 				<source>Password reset not triggered</source>
 			</trans-unit>

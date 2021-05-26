@@ -45,6 +45,8 @@ use TYPO3Fluid\Fluid\View\Exception;
  * Output::
  *
  *    <!-- HTML of the backend module -->
+ *
+ * @deprecated since TYPO3 v11.3, will be removed in TYPO3 v12.0.
  */
 class ModuleLayoutViewHelper extends AbstractViewHelper
 {
@@ -72,6 +74,7 @@ class ModuleLayoutViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(self::class, ModuleTemplate::class)) {
             throw new Exception('ModuleLayoutViewHelper can only be used once per module.', 1483292643);

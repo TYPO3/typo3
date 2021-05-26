@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -55,14 +56,15 @@ class BackendModuleController
      */
     protected $sessionService;
 
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
+    protected UriBuilder $uriBuilder;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    public function __construct()
-    {
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+    public function __construct(
+        UriBuilder $uriBuilder,
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->uriBuilder = $uriBuilder;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -118,10 +120,12 @@ class BackendModuleController
                 // current flags, add FLAG_CONFIRMATION_REQUEST
                 'flags' => $flags | self::FLAG_CONFIRMATION_REQUEST,
             ]),
-            'cancelUri' => '',
-            'targetController' => $targetController,
         ]);
-        return new HtmlResponse($view->render());
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setModuleName('tools_tools' . $targetController);
+        $moduleTemplate->setContent($view->render());
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**

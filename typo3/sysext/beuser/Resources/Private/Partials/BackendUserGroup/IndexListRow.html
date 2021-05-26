@@ -46,13 +46,13 @@
         <div class="btn-group" role="group">
             <f:if condition="{compareGroupUidList.{backendUserGroup.uid}}">
                 <f:then>
-                    <f:link.action action="removeFromCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                    <f:link.action action="removeGroupFromCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
                         <core:icon identifier="actions-remove" size="small"/>
                         <f:translate key="compare" />
                     </f:link.action>
                 </f:then>
                 <f:else>
-                    <f:link.action action="addToCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                    <f:link.action action="addGroupToCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
                         <core:icon identifier="actions-add" size="small"/> <f:translate key="compare" />
                     </f:link.action>
                 </f:else>

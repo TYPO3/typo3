@@ -1624,4 +1624,34 @@ return [
             'Deprecation-92494-ExtbaseEnvironmentService.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayoutViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\MenuViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\MenuItemViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\AbstractButtonViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\LinkButtonViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\ShortcutButtonViewHelper' => [
+        'restFiles' => [
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+        ],
+    ],
 ];

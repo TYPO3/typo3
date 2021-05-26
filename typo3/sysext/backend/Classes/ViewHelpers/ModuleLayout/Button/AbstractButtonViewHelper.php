@@ -29,6 +29,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\Exception;
 
+/**
+ * @deprecated since TYPO3 v11.3, will be removed in TYPO3 v12.0.
+ */
 abstract class AbstractButtonViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
@@ -60,6 +63,7 @@ abstract class AbstractButtonViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ): void {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         self::ensureProperNesting($viewHelperVariableContainer);
 

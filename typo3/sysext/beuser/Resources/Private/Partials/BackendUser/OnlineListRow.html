@@ -33,7 +33,7 @@
                             class="btn btn-default t3js-modal-trigger"
                             action="terminateBackendUserSession"
                             controller="BackendUser"
-                            arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
+                            arguments="{sessionId: session.id}"
                             data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', bs-content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
                         >
                             <core:icon identifier="actions-close" />

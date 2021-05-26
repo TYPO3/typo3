@@ -19,7 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
@@ -32,18 +35,24 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Backend module user administration controller
+ * Backend module user and user group administration controller
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUserController extends ActionController
@@ -54,21 +63,59 @@ class BackendUserController extends ActionController
     const RECENT_USERS_LIMIT = 3;
 
     protected ?ModuleData $moduleData = null;
+    protected ?ModuleTemplate $moduleTemplate = null;
     protected BackendUserRepository $backendUserRepository;
     protected BackendUserGroupRepository $backendUserGroupRepository;
     protected BackendUserSessionRepository $backendUserSessionRepository;
     protected UserInformationService $userInformationService;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected BackendUriBuilder $backendUriBuilder;
+    protected IconFactory $iconFactory;
+    protected PageRenderer $pageRenderer;
 
     public function __construct(
         BackendUserRepository $backendUserRepository,
         BackendUserGroupRepository $backendUserGroupRepository,
         BackendUserSessionRepository $backendUserSessionRepository,
-        UserInformationService $userInformationService
+        UserInformationService $userInformationService,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        BackendUriBuilder $backendUriBuilder,
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer
     ) {
         $this->backendUserRepository = $backendUserRepository;
         $this->backendUserGroupRepository = $backendUserGroupRepository;
         $this->backendUserSessionRepository = $backendUserSessionRepository;
         $this->userInformationService = $userInformationService;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->backendUriBuilder = $backendUriBuilder;
+        $this->iconFactory = $iconFactory;
+        $this->pageRenderer = $pageRenderer;
+    }
+
+    /**
+     * Override the default action if found in user uc
+     *
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     */
+    public function processRequest(RequestInterface $request): ResponseInterface
+    {
+        $arguments = $request->getArguments();
+        $backendUser = $this->getBackendUser();
+        if (is_array($arguments) && isset($arguments['action']) && in_array((string)$arguments['action'], ['index', 'groups', 'online'])
+            && (string)($backendUser->uc['beuser']['defaultAction'] ?? '') !== (string)$arguments['action']
+        ) {
+            $backendUser->uc['beuser']['defaultAction'] = (string)$arguments['action'];
+            $backendUser->writeUC();
+        } elseif (!isset($arguments['action']) && isset($backendUser->uc['beuser']['defaultAction'])
+            && in_array((string)$backendUser->uc['beuser']['defaultAction'], ['index', 'groups', 'online'])
+        ) {
+            if ($request instanceof Request) {
+                $request->setControllerActionName((string)$backendUser->uc['beuser']['defaultAction']);
+            }
+        }
+        return parent::processRequest($request);
     }
 
     /**
@@ -80,6 +127,8 @@ class BackendUserController extends ActionController
     public function initializeAction(): void
     {
         $this->moduleData = ModuleData::fromUc((array)($this->getBackendUser()->getModuleData('tx_beuser')));
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->getRequest());
+        $this->moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
     }
 
     /**
@@ -89,13 +138,14 @@ class BackendUserController extends ActionController
     protected function initializeView(ViewInterface $view): void
     {
         $view->assignMultiple([
-            'shortcutLabel' => 'backendUsers',
-            'route' => $this->getRequest()->getAttribute('route')->getPath(),
-            'action' => $this->request->getControllerActionName(),
-            'controller' => $this->request->getControllerName(),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
+
+        // Load requireJS modules
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Beuser/BackendUserListing');
     }
 
     /**
@@ -146,7 +196,24 @@ class BackendUserController extends ActionController
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
 
-        return $this->htmlResponse();
+        $this->addMainMenu('index');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $addUserButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_users' => [0 => 'new']],
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+            ]));
+        $buttonBar->addButton($addUserButton);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'index']])
+            ->setDisplayName(LocalizationUtility::translate('backendUsers', 'beuser'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -166,23 +233,58 @@ class BackendUserController extends ActionController
         $currentSessionId = $this->backendUserSessionRepository->getPersistedSessionIdentifier($this->getBackendUser());
 
         $this->view->assignMultiple([
-            'shortcutLabel' => 'onlineUsers',
             'onlineUsersAndSessions' => $onlineUsersAndSessions,
             'currentSessionId' => $currentSessionId,
         ]);
 
-        return $this->htmlResponse();
+        $this->addMainMenu('online');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'online']])
+            ->setDisplayName(LocalizationUtility::translate('onlineUsers', 'beuser'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     public function showAction(int $uid = 0): ResponseInterface
     {
         $data = $this->userInformationService->getUserInformation($uid);
-        $this->view->assignMultiple([
-            'shortcutLabel' => 'showUser',
-            'data' => $data
-        ]);
+        $this->view->assign('data', $data);
 
-        return $this->htmlResponse();
+        $this->addMainMenu('show');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $backButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+        $buttonBar->addButton($backButton);
+        $editButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_users' => [$uid => 'edit']],
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+            ]));
+        $buttonBar->addButton($editButton);
+        $addUserButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_users' => [0 => 'new']],
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+            ]));
+        $buttonBar->addButton($addUserButton);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'show', 'uid' => $uid]])
+            ->setDisplayName(LocalizationUtility::translate('backendUser', 'beuser') . ': ' . (string)$data['user']['username']);
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -203,12 +305,25 @@ class BackendUserController extends ActionController
         }
 
         $this->view->assignMultiple([
-            'shortcutLabel' => 'compareUsers',
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers()
         ]);
 
-        return $this->htmlResponse();
+        $this->addMainMenu('compare');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $backButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+        $buttonBar->addButton($backButton);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'compare']])
+            ->setDisplayName(LocalizationUtility::translate('compareUsers', 'beuser'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -248,7 +363,7 @@ class BackendUserController extends ActionController
      *
      * @param int $uid
      */
-    public function addToCompareListAction($uid)
+    public function addToCompareListAction($uid): ResponseInterface
     {
         $this->moduleData->attachUidCompareUser($uid);
         $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
@@ -261,7 +376,7 @@ class BackendUserController extends ActionController
      * @param int $uid
      * @param int $redirectToCompare
      */
-    public function removeFromCompareListAction($uid, int $redirectToCompare = 0)
+    public function removeFromCompareListAction($uid, int $redirectToCompare = 0): void
     {
         $this->moduleData->detachUidCompareUser($uid);
         $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
@@ -287,10 +402,9 @@ class BackendUserController extends ActionController
      * Terminate BackendUser session and logout corresponding client
      * Redirects to onlineAction with message
      *
-     * @param BackendUser $backendUser
      * @param string $sessionId
      */
-    protected function terminateBackendUserSessionAction(BackendUser $backendUser, $sessionId)
+    protected function terminateBackendUserSessionAction($sessionId): ResponseInterface
     {
         // terminating value of persisted session ID
         $success = $this->backendUserSessionRepository->terminateSessionByIdentifier($sessionId);
@@ -298,6 +412,131 @@ class BackendUserController extends ActionController
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
         }
         return new ForwardResponse('online');
+    }
+
+    /**
+     * Displays all BackendUserGroups
+     *
+     * @param int $currentPage
+     * @return ResponseInterface
+     */
+    public function groupsAction(int $currentPage = 1): ResponseInterface
+    {
+        /** @var QueryResultInterface $backendUsers */
+        $backendUsers = $this->backendUserGroupRepository->findAll();
+        $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
+        $pagination = new SimplePagination($paginator);
+        $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
+        $this->view->assignMultiple(
+            [
+                'paginator' => $paginator,
+                'pagination' => $pagination,
+                'totalAmountOfBackendUserGroups' => $backendUsers->count(),
+                'compareGroupUidList' => array_map(static function ($value) { // uid as key and force value to 1
+                    return 1;
+                }, array_flip($compareGroupUidList)),
+                'compareGroupList' => !empty($compareGroupUidList) ? $this->backendUserGroupRepository->findByUidList($compareGroupUidList) : [],
+            ]
+        );
+
+        $this->addMainMenu('groups');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $addGroupButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
+            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_groups' => [0 => 'new']],
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+            ]));
+        $buttonBar->addButton($addGroupButton);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'groups']])
+            ->setDisplayName(LocalizationUtility::translate('backendUserGroupsMenu', 'beuser'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    public function compareGroupsAction(): ResponseInterface
+    {
+        $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
+
+        $compareData = [];
+        foreach ($compareGroupUidList as $uid) {
+            if ($compareInformation = $this->userInformationService->getGroupInformation($uid)) {
+                $compareData[] = $compareInformation;
+            }
+        }
+        if (empty($compareData)) {
+            $this->redirect('groups');
+        }
+
+        $this->view->assign('compareGroupList', $compareData);
+
+        $this->addMainMenu('compareGroups');
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $backButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setHref($this->uriBuilder->uriFor('groups'));
+        $buttonBar->addButton($backButton);
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_BeuserTxBeuser')
+            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'compareGroups']])
+            ->setDisplayName(LocalizationUtility::translate('compareBackendUsersGroups', 'beuser'));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Attaches one backend user group to the compare list
+     *
+     * @param int $uid
+     */
+    public function addGroupToCompareListAction(int $uid): void
+    {
+        $backendUser = $this->getBackendUser();
+        $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
+        $list[$uid] = true;
+        $backendUser->uc['beuser']['compareGroupUidList'] = $list;
+        $backendUser->writeUC();
+        $this->redirect('groups');
+    }
+
+    /**
+     * Removes given backend user group to the compare list
+     *
+     * @param int $uid
+     * @param int $redirectToCompare
+     */
+    public function removeGroupFromCompareListAction(int $uid, int $redirectToCompare = 0): void
+    {
+        $backendUser = $this->getBackendUser();
+        $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
+        unset($list[$uid]);
+        $backendUser->uc['beuser']['compareGroupUidList'] = $list;
+        $backendUser->writeUC();
+
+        if ($redirectToCompare) {
+            $this->redirect('compareGroups');
+        } else {
+            $this->redirect('groups');
+        }
+    }
+
+    /**
+     * Removes all backend user groups from the compare list
+     */
+    public function removeAllGroupsFromCompareListAction(): void
+    {
+        $backendUser = $this->getBackendUser();
+        $backendUser->uc['beuser']['compareGroupUidList'] = [];
+        $backendUser->writeUC();
+        $this->redirect('groups');
     }
 
     /**
@@ -338,7 +577,7 @@ class BackendUserController extends ActionController
             );
             $this->eventDispatcher->dispatch($event);
 
-            $redirectUri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            $redirectUri = $this->backendUriBuilder->buildUriFromRoute(
                 'main',
                 $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? [] : ['commandLI' => '1']
             );
@@ -374,22 +613,6 @@ class BackendUserController extends ActionController
     }
 
     /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return ServerRequestInterface
-     */
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
-    }
-
-    /**
      * Create an array with the uids of online users as the keys
      * [
      *   1 => true,
@@ -405,5 +628,79 @@ class BackendUserController extends ActionController
             $onlineBackendUsers[$onlineUser['ses_userid']] = true;
         }
         return $onlineBackendUsers;
+    }
+
+    /**
+     * Doc header main drop down
+     *
+     * @param string $currentAction
+     */
+    protected function addMainMenu(string $currentAction): void
+    {
+        $this->uriBuilder->setRequest($this->request);
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('BackendUserModuleMenu');
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+            ->setTitle(LocalizationUtility::translate('backendUsers', 'beuser'))
+            ->setHref($this->uriBuilder->uriFor('index'))
+            ->setActive($currentAction === 'index')
+        );
+        if ($currentAction === 'show') {
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                ->setTitle(LocalizationUtility::translate('backendUserDetails', 'beuser'))
+                ->setHref($this->uriBuilder->uriFor('show'))
+                ->setActive(true)
+            );
+        }
+        if ($currentAction === 'compare') {
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                ->setTitle(LocalizationUtility::translate('compareBackendUsers', 'beuser'))
+                ->setHref($this->uriBuilder->uriFor('index'))
+                ->setActive(true)
+            );
+        }
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+            ->setTitle(LocalizationUtility::translate('backendUserGroupsMenu', 'beuser'))
+            ->setHref($this->uriBuilder->uriFor('groups'))
+            ->setActive($currentAction === 'groups')
+        );
+        if ($currentAction === 'compareGroups') {
+            $menu->addMenuItem(
+                $menu->makeMenuItem()
+                ->setTitle(LocalizationUtility::translate('compareBackendUsersGroups', 'beuser'))
+                ->setHref($this->uriBuilder->uriFor('compareGroups'))
+                ->setActive(true)
+            );
+        }
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+            ->setTitle(LocalizationUtility::translate('onlineUsers', 'beuser'))
+            ->setHref($this->uriBuilder->uriFor('online'))
+            ->setActive($currentAction === 'online')
+        );
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * This is a temporary hack to receive the PSR-7 request until extbase
+     * provides a PSR-7 compatible request in actions.
+     *
+     * @return ServerRequestInterface
+     */
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

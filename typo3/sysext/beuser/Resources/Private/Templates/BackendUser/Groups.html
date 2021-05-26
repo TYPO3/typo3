@@ -5,14 +5,6 @@
 
 <f:layout name="Default" />
 
-<f:section name="Buttons">
-    <be:moduleLayout.button.linkButton
-        icon="actions-add"
-        title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
-        link="{be:uri.newRecord(table: 'be_groups')}"
-    />
-</f:section>
-
 <f:section name="Content">
     <h1><f:translate key="backendUserGroupListing" /></h1>
 
@@ -38,7 +30,7 @@
                                 </be:link.editRecord>
                             </div>
                             <div class="btn-group" role="group">
-                                <f:link.action action="removeFromCompareList" arguments="{uid: compareGroup.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
+                                <f:link.action action="removeGroupFromCompareList" arguments="{uid: compareGroup.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
                                     <core:icon identifier="actions-remove" />
                                 </f:link.action>
                             </div>
@@ -48,8 +40,8 @@
                 </tbody>
             </table>
         </div>
-        <f:link.action action="compare" class="btn btn-default">{f:translate(key: 'compareBackendUsersGroups')}</f:link.action>
-        <f:link.action action="removeAllFromCompareList" class="btn btn-default"><core:icon identifier="actions-selection-delete" /> {f:translate(key: 'clearCompareList')}</f:link.action>
+        <f:link.action action="compareGroups" class="btn btn-default">{f:translate(key: 'compareBackendUsersGroups')}</f:link.action>
+        <f:link.action action="removeAllGroupsFromCompareList" class="btn btn-default"><core:icon identifier="actions-selection-delete" /> {f:translate(key: 'clearCompareList')}</f:link.action>
         <hr>
         <h3>{f:translate(key: 'section.allUserGroups', default: 'All User Groups')}</h3>
     </f:if>

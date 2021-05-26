@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\Controller;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Controller\BackendModuleController;
@@ -32,7 +34,10 @@ class BackendModuleControllerTest extends FunctionalTestCase
      */
     public function environmentContextIsRespectedTest(string $module): void
     {
-        $subject = new BackendModuleController();
+        $subject = new BackendModuleController(
+            $this->getContainer()->get(UriBuilder::class),
+            $this->getContainer()->get(ModuleTemplateFactory::class)
+        );
         $action = $module . 'Action';
 
         self::assertIsCallable([$subject, $action]);

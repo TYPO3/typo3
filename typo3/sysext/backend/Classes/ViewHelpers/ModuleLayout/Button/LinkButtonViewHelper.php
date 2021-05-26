@@ -37,6 +37,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *            link="{be:uri.newRecord(table: 'tx_my_table')}"
  *        />
  *    </be:moduleLayout>
+ *
+ * @deprecated since TYPO3 v11.3, will be removed in TYPO3 v12.0. Deprecation logged AbstractButtonViewHelper.
  */
 class LinkButtonViewHelper extends AbstractButtonViewHelper
 {
