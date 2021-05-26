@@ -82,7 +82,7 @@ class ResetPasswordCommand extends Command
         $request = $this->createFakeWebRequest($backendUrl);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $reset->initiateReset($request, $context, $email);
-        $io->success('Sent out an email to "' . $email . '" requesting to set a new password.');
+        $io->success('Password reset for email address "' . $email . '" initiated.');
         return 0;
     }
 
