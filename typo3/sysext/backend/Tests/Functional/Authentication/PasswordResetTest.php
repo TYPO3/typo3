@@ -73,6 +73,36 @@ class PasswordResetTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function isEnabledForUserTest(): void
+    {
+        $subject = new PasswordReset();
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
+
+        // False since no users exist
+        self::assertFalse($subject->isEnabledForUser(3));
+
+        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+
+        // False since reset for admins is not enabled
+        self::assertFalse($subject->isEnabledForUser(1));
+        // False since user has no email set
+        self::assertFalse($subject->isEnabledForUser(2));
+        // False since user has no password set
+        self::assertFalse($subject->isEnabledForUser(4));
+        // False since user is disabled
+        self::assertFalse($subject->isEnabledForUser(7));
+
+        // Now true since user with email+password exist
+        self::assertTrue($subject->isEnabledForUser(3));
+
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
+        // True since "passwordResetForAdmins" is now set
+        self::assertTrue($subject->isEnabledForUser(1));
+    }
+
+    /**
+     * @test
+     */
     public function noEmailIsFound(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');

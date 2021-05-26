@@ -80,18 +80,13 @@ class PasswordReset implements LoggerAwareInterface
     }
 
     /**
-     * Check if a specific backend user can be used to trigger an email reset. Basically checks if the functionality
-     * is enabled in general, and if the user has email + password set.
+     * Check if a specific backend user can be used to trigger an email reset for (email + password set)
      *
      * @param int $userId
      * @return bool
      */
     public function isEnabledForUser(int $userId): bool
     {
-        // Option not explicitly enabled
-        if (!($GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] ?? false)) {
-            return false;
-        }
         $queryBuilder = $this->getPreparedQueryBuilder();
         $statement = $queryBuilder
             ->select('uid')

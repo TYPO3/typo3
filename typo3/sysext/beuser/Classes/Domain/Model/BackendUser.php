@@ -142,13 +142,20 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
     }
 
     /**
-     * Check if the user (not the currently logged in user) is allowed to trigger a password reset
+     * Check if the user is allowed to trigger a password reset
+     *
+     * Requirements:
+     * 1. The user for which the password reset should be triggered is not the currently logged in user
+     * 2. Password reset is enabled for the user (Email+Password are set)
+     * 3. The currently logged in user is allowed to reset passwords in the backend (Enabled in user TSconfig)
      *
      * @return bool
      */
     public function isPasswordResetEnabled(): bool
     {
-        return !$this->isCurrentlyLoggedIn() && GeneralUtility::makeInstance(PasswordReset::class)->isEnabledForUser((int)$this->getUid());
+        return !$this->isCurrentlyLoggedIn()
+            && GeneralUtility::makeInstance(PasswordReset::class)->isEnabledForUser((int)$this->getUid())
+            && ($this->getBackendUser()->getTSConfig()['options.']['passwordReset'] ?? true);
     }
 
     /**

@@ -260,10 +260,10 @@ BE:
             description: 'Send emails to <code>warning_email_addr</code> upon backend-login'
         passwordReset:
           type: bool
-          description: 'Enable password reset functionality for TYPO3 Backend users. Can be disabled for systems where only e.g. LDAP / OAuth login is allowed.'
+          description: 'Enable password reset functionality on the backend login for TYPO3 Backend users. Can be disabled for systems where only e.g. LDAP / OAuth login is allowed. Password reset will then still work on CLI and for admins in the backend.'
         passwordResetForAdmins:
           type: bool
-          description: 'Enable password reset functionality on the backend login for TYPO3 Administrators as well. Disable this option for increased security.'
+          description: 'Enable password reset functionality for TYPO3 Administrators. This will affect all places such as backend login or CLI. Disable this option for increased security.'
         requireMfa:
           type: int
           allowedValues:

@@ -90,10 +90,6 @@ class ResetPasswordCommand extends Command
             $io->error('The given backend URL "' . $backendUrl . '" is not a valid URL.');
             return 1;
         }
-        if (!$this->passwordReset->isEnabled()) {
-            $io->error('Password reset functionality is disabled');
-            return 1;
-        }
         $request = $this->createFakeWebRequest($backendUrl);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->passwordReset->initiateReset($request, $this->context, $email);
