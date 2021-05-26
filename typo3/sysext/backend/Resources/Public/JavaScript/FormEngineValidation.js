@@ -515,9 +515,11 @@ define([
    * Validate the complete form
    */
   FormEngineValidation.validate = function(section) {
-    $(document).find(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item')
-      .removeClass(FormEngineValidation.errorClass)
-      .removeClass('has-validation-error');
+    if (typeof section === 'undefined' || section instanceof Document) {
+      $(document).find(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item')
+        .removeClass(FormEngineValidation.errorClass)
+        .removeClass('has-validation-error');
+    }
 
     const sectionElement = section || document;
     $(sectionElement).find(FormEngineValidation.rulesSelector).each(function() {
