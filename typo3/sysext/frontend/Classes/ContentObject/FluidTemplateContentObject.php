@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
@@ -264,7 +263,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             && $requestControllerName
             && $requestControllerActionName
         ) {
-            $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManager::class);
+            $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->setConfiguration([
                 'extensionName' => $requestControllerExtensionName,
                 'pluginName' => $requestPluginName,
@@ -280,7 +279,7 @@ class FluidTemplateContentObject extends AbstractContentObject
                 ];
             }
 
-            $requestBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(RequestBuilder::class);
+            $requestBuilder = GeneralUtility::makeInstance(RequestBuilder::class);
             $this->view->getRenderingContext()->setRequest($requestBuilder->build($this->request));
         }
     }
