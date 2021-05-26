@@ -79,7 +79,7 @@
                         action="initiatePasswordReset"
                         arguments="{user: backendUser.uid}"
                         title="{f:translate(key: 'resetPassword.label')}"
-                        data="{severity: 'warning', title: '{f:translate(key: \'resetPassword.confirmation.header\')}', content: '{f:translate(key: \'resetPassword.confirmation.text\', arguments: {0: \'{backendUser.email}\'})}', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}">
+                        data="{severity: 'warning', title: '{f:translate(key: \'resetPassword.confirmation.header\')}', bs-content: '{f:translate(key: \'resetPassword.confirmation.text\', arguments: {0: \'{backendUser.email}\'})}', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}">
                         <core:icon identifier="actions-edit-undo" />
                     </f:link.action>
                 </f:then>

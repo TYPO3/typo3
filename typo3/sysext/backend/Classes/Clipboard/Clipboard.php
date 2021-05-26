@@ -325,7 +325,7 @@ class Clipboard
                     'severity' => 'warning',
                     'button-close-text' => htmlspecialchars($btnCancelText),
                     'button-ok-text' => htmlspecialchars($btnOkText),
-                    'content' => htmlspecialchars($confirmationMessage),
+                    'bs-content' => htmlspecialchars($confirmationMessage),
                     'title' => htmlspecialchars($title)
                 ]
             ];

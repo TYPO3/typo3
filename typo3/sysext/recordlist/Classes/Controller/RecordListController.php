@@ -527,7 +527,7 @@ class RecordListController
                     ->setClasses('t3js-modal-trigger')
                     ->setDataAttributes([
                         'severity' => 'warning',
-                        'content' => $confirmMessage,
+                        'bs-content' => $confirmMessage,
                         'title' => $lang->getLL('clip_paste')
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));

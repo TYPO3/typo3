@@ -1366,7 +1366,7 @@ class SchedulerModuleController
                     'severity' => 'warning',
                     'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'),
                     'button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
-                    'content' => $this->getLanguageService()->getLL('msg.delete'),
+                    'bs-content' => $this->getLanguageService()->getLL('msg.delete'),
                 ])
                 ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));

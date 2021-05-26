@@ -738,7 +738,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                         ->setClasses('t3js-modal-trigger')
                         ->setDataAttributes([
                             'severity' => 'warning',
-                            'content' => $confirmText,
+                            'bs-content' => $confirmText,
                             'title' => $lang->getLL('clip_paste')
                         ])
                         ->setTitle($lang->getLL('clip_paste'))
