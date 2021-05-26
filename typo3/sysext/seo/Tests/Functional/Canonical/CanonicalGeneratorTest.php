@@ -125,7 +125,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             ],
             'uid: 3 with canonical_link AND content_from_pid = 2' => [
                 'http://localhost/dummy-1-3',
-                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-3"/>' . chr(10),
             ],
             'uid: 4 without canonical_link AND content_from_pid = 2' => [
                 'http://localhost/dummy-1-4',

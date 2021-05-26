@@ -68,12 +68,12 @@ class CanonicalGenerator
         }
 
         if (empty($href)) {
-            // 1) Check if page show content from other page
-            $href = $this->checkContentFromPid();
+            // 1) Check if page has canonical URL set
+            $href = $this->checkForCanonicalLink();
         }
         if (empty($href)) {
-            // 2) Check if page has canonical URL set
-            $href = $this->checkForCanonicalLink();
+            // 2) Check if page show content from other page
+            $href = $this->checkContentFromPid();
         }
         if (empty($href)) {
             // 3) Fallback, create canonical URL
