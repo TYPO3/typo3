@@ -2524,7 +2524,7 @@ define(['jquery',
               Icons.states.default
             ).then(function(icon) {
               itemTemplate = $('<li data-no-sorting>'
-                + '<a href="#" data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '">'
+                + '<a href="#" class="dropdown-item" data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '">'
                 + '</a>'
                 + '</li>');
 

@@ -179,17 +179,17 @@ class Preview extends Workspaces {
    * Adjusts the width of the preview mode selector to avoid jumping around due to different widths of the labels
    */
   private adjustPreviewModeSelectorWidth(): void {
-    const $btnGroup = this.elements.$previewModeContainer.find('.btn-group');
+    const $dropDown = this.elements.$previewModeContainer.find('.dropdown-menu');
     let maximumWidth = 0;
 
-    $btnGroup.addClass('open');
+    $dropDown.addClass('show');
     this.elements.$previewModeContainer.find('li > a > span').each((_: number, el: Element): void => {
       const width = $(el).width();
       if (maximumWidth < width) {
         maximumWidth = width;
       }
     });
-    $btnGroup.removeClass('open');
+    $dropDown.removeClass('show');
     this.elements.$activePreviewMode.width(maximumWidth);
   }
 

@@ -283,6 +283,10 @@ $dropdown-link-disabled-color: $gray-300;
 $dropdown-header-color: $gray-300;
 $dropdown-caret-color: #000;
 
+// CSS Caret
+$caret-width: 0.4em;
+$caret-vertical-align: $caret-width * 0.38;
+
 // Card
 $card-cap-bg: transparent;
 
