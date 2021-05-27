@@ -24,6 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
-use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -91,13 +91,13 @@ class InstallUtilityTest extends UnitTestCase
         );
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $this->installMock->injectEventDispatcher($eventDispatcherProphecy->reveal());
-        $this->installMock->injectLateBootService($this->prophesize(LateBootService::class)->reveal());
+        $this->installMock->injectBootService($this->prophesize(BootService::class)->reveal());
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->get(EventDispatcherInterface::class)->willReturn($eventDispatcherProphecy->reveal());
-        $lateBootServiceProphecy = $this->prophesize(LateBootService::class);
-        $lateBootServiceProphecy->getContainer()->willReturn($containerProphecy->reveal());
-        $lateBootServiceProphecy->makeCurrent(Argument::cetera())->willReturn([]);
-        $this->installMock->injectLateBootService($lateBootServiceProphecy->reveal());
+        $bootServiceProphecy = $this->prophesize(BootService::class);
+        $bootServiceProphecy->getContainer(false)->willReturn($containerProphecy->reveal());
+        $bootServiceProphecy->makeCurrent(Argument::cetera())->willReturn([]);
+        $this->installMock->injectBootService($bootServiceProphecy->reveal());
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
         $this->installMock->expects(self::any())

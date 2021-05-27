@@ -22,6 +22,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -45,7 +46,6 @@ use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenI
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
-use TYPO3\CMS\Install\Service\LateBootService;
 
 /**
  * Extension Manager Install Utility
@@ -86,9 +86,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     protected $eventDispatcher;
 
     /**
-     * @var LateBootService
+     * @var BootService
      */
-    protected $lateBootService;
+    protected $bootService;
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -136,11 +136,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param  LateBootService $lateBootService
+     * @param  BootService $bootService
      */
-    public function injectLateBootService(LateBootService $lateBootService)
+    public function injectBootService(BootService $bootService)
     {
-        $this->lateBootService = $lateBootService;
+        $this->bootService = $bootService;
     }
 
     /**
@@ -169,8 +169,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         }
 
         // Load a new container as reloadCaches will load ext_localconf
-        $container = $this->lateBootService->getContainer();
-        $backup = $this->lateBootService->makeCurrent($container);
+        $container = $this->bootService->getContainer(false);
+        $backup = $this->bootService->makeCurrent($container);
 
         $this->reloadCaches();
         $this->updateDatabase();
@@ -181,7 +181,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         }
 
         // Reset to the original container instance
-        $this->lateBootService->makeCurrent(null, $backup);
+        $this->bootService->makeCurrent(null, $backup);
     }
 
     /**
