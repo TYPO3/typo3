@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SqlReaderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

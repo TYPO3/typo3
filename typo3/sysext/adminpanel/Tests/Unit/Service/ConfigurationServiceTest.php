@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConfigurationServiceTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy
      */

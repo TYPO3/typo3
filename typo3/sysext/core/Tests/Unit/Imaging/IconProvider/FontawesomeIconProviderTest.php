@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FontawesomeIconProviderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider
      */

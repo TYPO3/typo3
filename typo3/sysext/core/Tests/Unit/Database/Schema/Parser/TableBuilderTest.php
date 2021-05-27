@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TableBuilderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

@@ -126,7 +126,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         self::assertEquals(200, $response->getStatusCode());
         $responseContent = $response->getBody()->getContents();
         self::assertStringContainsString('Multi-factor authentication required', $responseContent);
-        self::assertRegExp('/<div.*class="card card-size-fixed-small border-success shadow".*id="totp-provider"/s', $responseContent);
+        self::assertMatchesRegularExpression('/<div.*class="card card-size-fixed-small border-success shadow".*id="totp-provider"/s', $responseContent);
     }
 
     /**
@@ -142,7 +142,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         );
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertRegExp('/<span.*title="Default provider">/s', $response->getBody()->getContents());
+        self::assertMatchesRegularExpression('/<span.*title="Default provider">/s', $response->getBody()->getContents());
     }
 
     /**
@@ -382,12 +382,12 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $responseContent = $response->getBody()->getContents();
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertRegExp('/<a.*href="\/typo3\/mfa.*title="Close">/s', $responseContent);
-        self::assertRegExp('/<button.*name="save".*form="mfaConfigurationController">/s', $responseContent);
-        self::assertRegExp('/<form.*name="' . $action . '".*id="mfaConfigurationController">/s', $responseContent);
+        self::assertMatchesRegularExpression('/<a.*href="\/typo3\/mfa.*title="Close">/s', $responseContent);
+        self::assertMatchesRegularExpression('/<button.*name="save".*form="mfaConfigurationController">/s', $responseContent);
+        self::assertMatchesRegularExpression('/<form.*name="' . $action . '".*id="mfaConfigurationController">/s', $responseContent);
 
         // Ensure provider specific content is added as well
-        self::assertRegExp($providerContent, $responseContent);
+        self::assertMatchesRegularExpression($providerContent, $responseContent);
     }
 
     public function handleRequestAddsFormOnInteractionViewsTestTestDataProvider(): \Generator

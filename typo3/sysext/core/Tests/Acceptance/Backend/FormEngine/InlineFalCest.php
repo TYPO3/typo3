@@ -64,7 +64,7 @@ class InlineFalCest
         $modalDialog->canSeeDialog();
         $I->switchToIFrame('.modal-iframe');
         $modalTitle = $I->grabTextFrom('.card-title');
-        $I->assertContains($filename, $modalTitle);
+        $I->assertStringContainsString($filename, $modalTitle);
     }
 
     /**

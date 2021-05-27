@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EnumTypeTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Set up the test subject
      */

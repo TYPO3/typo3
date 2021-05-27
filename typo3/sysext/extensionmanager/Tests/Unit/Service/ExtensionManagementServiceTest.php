@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionManagementServiceTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $managementService;
     protected $dependencyUtilityProphecy;
     protected $installUtilityProphecy;

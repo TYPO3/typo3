@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationFactoryTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

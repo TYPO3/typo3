@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormDataCompilerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var FormDataCompiler
      */

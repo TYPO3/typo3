@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3QuerySettingsTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected ?Typo3QuerySettings $subject = null;
 
     /**

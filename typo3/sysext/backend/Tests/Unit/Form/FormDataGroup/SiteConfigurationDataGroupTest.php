@@ -30,6 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteConfigurationDataGroupTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var SiteConfigurationDataGroup
      */

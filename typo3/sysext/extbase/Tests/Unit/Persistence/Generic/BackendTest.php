@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();

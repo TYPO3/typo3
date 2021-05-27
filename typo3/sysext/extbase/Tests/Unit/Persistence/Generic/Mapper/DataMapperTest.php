@@ -46,6 +46,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DataMapperTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * This test does not actually test anything rather than map calls both mocked methods getTargetType and mapSingleRow
      * while completely ignoring the result of the method.

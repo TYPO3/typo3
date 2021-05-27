@@ -30,6 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function getBaseReturnsProperUriDataProvider()
     {
         return [

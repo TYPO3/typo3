@@ -30,6 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SoftReferenceIndexTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     public function findRefReturnsParsedElementsDataProvider(): array

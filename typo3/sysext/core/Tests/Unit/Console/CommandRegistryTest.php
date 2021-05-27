@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CommandRegistryTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ContainerInterface|\Prophecy\Prophecy\ObjectProphecy
      */

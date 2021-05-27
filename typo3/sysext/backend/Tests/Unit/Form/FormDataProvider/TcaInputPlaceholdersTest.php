@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInputPlaceholdersTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

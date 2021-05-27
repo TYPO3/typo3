@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormFrontendControllerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function setUp(): void
     {
         parent::setUp();

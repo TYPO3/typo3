@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StateUtilityTest extends UnitTestCase
 {
-
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

@@ -31,6 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PageLayoutViewTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var PageLayoutView|AccessibleObjectInterface
      */

@@ -40,6 +40,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ResetPasswordControllerTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected ResetPasswordController $subject;
     protected ServerRequestInterface $request;
 
@@ -101,7 +102,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     {
         $response = $this->subject->forgetPasswordFormAction($this->request)->getBody()->getContents();
         self::assertStringContainsString('/*loginHighlightColor*/', $response);
-        self::assertRegExp('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
+        self::assertMatchesRegularExpression('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
     }
 
     /**

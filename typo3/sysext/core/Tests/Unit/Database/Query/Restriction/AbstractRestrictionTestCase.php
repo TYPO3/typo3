@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractRestrictionTestCase extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder
      */

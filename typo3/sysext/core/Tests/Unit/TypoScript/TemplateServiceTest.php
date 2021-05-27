@@ -38,6 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TemplateServiceTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var TemplateService
      */

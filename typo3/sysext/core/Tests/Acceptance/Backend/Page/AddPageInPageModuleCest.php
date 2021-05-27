@@ -85,7 +85,7 @@ class AddPageInPageModuleCest
         ) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($generalTab))->getAttribute('class');
         });
-        $I->assertContains('has-validation-error', $classString);
+        $I->assertStringContainsString('has-validation-error', $classString);
 
         // Add page
         $pageTitleFieldset = $editControllerDiv . ' > div:nth-of-type(1) > div > div.tab-pane:nth-child(1) > fieldset:nth-child(2)';

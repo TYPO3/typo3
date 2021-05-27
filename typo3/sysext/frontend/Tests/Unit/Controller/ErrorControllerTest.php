@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ErrorControllerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     /**

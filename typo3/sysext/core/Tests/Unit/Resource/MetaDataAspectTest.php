@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MetaDataAspectTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject
      */

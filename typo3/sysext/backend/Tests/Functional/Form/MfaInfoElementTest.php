@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaInfoElementTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected function setUp(): void
     {
         parent::setUp();
@@ -71,10 +72,10 @@ class MfaInfoElementTest extends FunctionalTestCase
         ]);
 
         // MFA is disabled
-        self::assertRegExp('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
-        self::assertNotRegExp('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // MFA can NOT be deactivated
-        self::assertRegExp('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
         // JavaScript is NOT added
         self::assertEmpty($result['requireJsModules']);
     }
@@ -95,10 +96,10 @@ class MfaInfoElementTest extends FunctionalTestCase
         ]);
 
         // MFA is disabled
-        self::assertRegExp('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
-        self::assertNotRegExp('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // MFA can NOT be deactivated
-        self::assertRegExp('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger disabled".*disabled="disabled"/s', $result['html']);
         // JavaScript is NOT added
         self::assertEmpty($result['requireJsModules']);
     }
@@ -119,18 +120,18 @@ class MfaInfoElementTest extends FunctionalTestCase
         ]);
 
         // Mfa is enabled
-        self::assertNotRegExp('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
-        self::assertRegExp('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exist
-        self::assertRegExp('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
         // Recovery codes item does NOT exist
         self::assertStringNotContainsString('id="provider-recovery-codes"', $result['html']);
         // No item is locked
-        self::assertNotRegExp('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Item can be deactivated
-        self::assertRegExp('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
-        self::assertRegExp('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
         self::assertArrayHasKey('TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement', $result['requireJsModules'][0]);
     }
@@ -151,18 +152,18 @@ class MfaInfoElementTest extends FunctionalTestCase
         ]);
 
         // Mfa is enabled
-        self::assertNotRegExp('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
-        self::assertRegExp('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exists
-        self::assertRegExp('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
         // Recovery codes item exists
-        self::assertRegExp('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
         // Item is locked
-        self::assertRegExp('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Items can be deactivated
-        self::assertRegExp('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="btn btn-default btn-sm pull-right t3js-deactivate-provider-button"/s', $result['html']);
         // MFA can be deactivated
-        self::assertRegExp('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
+        self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
         self::assertArrayHasKey('TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement', $result['requireJsModules'][0]);
     }
@@ -187,14 +188,14 @@ class MfaInfoElementTest extends FunctionalTestCase
         ]);
 
         // Mfa is enabled
-        self::assertNotRegExp('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
-        self::assertRegExp('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
+        self::assertDoesNotMatchRegularExpression('/<span.*class="label label-danger.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.disabled/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-success.*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.mfa.enabled/s', $result['html']);
         // Totp item exists
-        self::assertRegExp('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-totp"/s', $result['html']);
         // Recovery codes item exists
-        self::assertRegExp('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
+        self::assertMatchesRegularExpression('/<li.*class="list-group-item".*id="provider-recovery-codes"/s', $result['html']);
         // Item (recovery codes) is locked
-        self::assertRegExp('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
+        self::assertMatchesRegularExpression('/<span.*class="label label-danger".*>LLL:EXT:core\/Resources\/Private\/Language\/locallang_core.xlf:labels.locked/s', $result['html']);
         // Items deactivation button is not shown
         self::assertStringNotContainsString('t3js-deactivate-provider-button', $result['html']);
         // MFA deactivation button is not shown

@@ -24,6 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ValuePickerItemDataProviderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $sysRedirectResultSet = [
         'tableName' => 'sys_redirect',
         'processedTca' => [

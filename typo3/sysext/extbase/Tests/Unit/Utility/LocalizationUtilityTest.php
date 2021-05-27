@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationUtilityTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Instance of configurationManagerInterface, injected to subject
      *

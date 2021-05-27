@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class ResourceStorageTest extends BaseTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

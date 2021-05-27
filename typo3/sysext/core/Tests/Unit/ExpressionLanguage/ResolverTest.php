@@ -35,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResolverTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function setUp(): void
     {
         parent::setUp();

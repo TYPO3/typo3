@@ -42,6 +42,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUserAuthenticationTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var array
      */

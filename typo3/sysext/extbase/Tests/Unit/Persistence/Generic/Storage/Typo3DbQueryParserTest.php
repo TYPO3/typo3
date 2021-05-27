@@ -45,6 +45,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3DbQueryParserTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Clean up after tests
      */

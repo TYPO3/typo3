@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInlineTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */

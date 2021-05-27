@@ -35,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConnectionMigratorTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform|\Prophecy\Prophecy\ObjectProphecy
      */

@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InputHiddenElementTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

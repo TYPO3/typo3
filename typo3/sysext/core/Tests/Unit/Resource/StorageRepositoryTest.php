@@ -29,6 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class StorageRepositoryTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**********************************
      * Drivers
      **********************************/

@@ -29,6 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseRecordListTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     protected DatabaseRecordList $subject;

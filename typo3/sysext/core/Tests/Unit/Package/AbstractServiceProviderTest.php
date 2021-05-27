@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractServiceProviderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

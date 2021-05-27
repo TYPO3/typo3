@@ -36,6 +36,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RedirectFinisherTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     /**

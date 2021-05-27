@@ -41,6 +41,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConditionMatcherTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $backupEnvironment = true;
 
     /**

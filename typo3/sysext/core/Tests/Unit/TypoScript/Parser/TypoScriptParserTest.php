@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TypoScriptParserTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var TypoScriptParser|AccessibleObjectInterface
      */

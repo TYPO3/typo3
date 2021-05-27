@@ -24,6 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UserTsConfigTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var UserTsConfig
      */

@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageTsConfigParserTest extends UnitTestCase
 {
-
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

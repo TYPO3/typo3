@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaStatusViewHelperTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected StandaloneView $view;
 
     protected function setUp(): void

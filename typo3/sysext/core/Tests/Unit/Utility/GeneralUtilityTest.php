@@ -47,6 +47,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class GeneralUtilityTest extends UnitTestCase
 {
     const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
+    use \Prophecy\PhpUnit\ProphecyTrait;
 
     /**
      * @var bool Reset singletons created by subject
@@ -1317,7 +1318,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithDrive()
     {
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        self::assertRegExp('/^[a-z]:\//i', $result);
+        self::assertMatchesRegularExpression('/^[a-z]:\//i', $result);
     }
 
     /**

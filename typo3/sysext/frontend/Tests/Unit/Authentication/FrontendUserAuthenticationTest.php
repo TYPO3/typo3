@@ -45,6 +45,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
     private const NOT_CHECKED_INDICATOR = '--not-checked--';
+    use \Prophecy\PhpUnit\ProphecyTrait;
 
     /**
      * @var bool Reset singletons created by subject

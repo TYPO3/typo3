@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseTreeDataProviderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|DatabaseTreeDataProvider|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */

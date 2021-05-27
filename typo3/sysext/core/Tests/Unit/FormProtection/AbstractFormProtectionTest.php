@@ -135,7 +135,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         if (method_exists($this, 'assertMatchesRegularExpression')) {
             self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
         } else {
-            self::assertRegExp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
+            self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
         }
     }
 

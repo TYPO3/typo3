@@ -35,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageArgumentValidatorTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     /**

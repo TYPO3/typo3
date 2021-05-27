@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DashboardWidgetPassTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var DashboardWidgetPass
      */

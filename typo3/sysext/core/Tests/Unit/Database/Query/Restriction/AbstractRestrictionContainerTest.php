@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionCo
 
 class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

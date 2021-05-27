@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileBackendTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     /**
@@ -500,7 +501,7 @@ class FileBackendTest extends UnitTestCase
         if (method_exists($this, 'assertFileDoesNotExist')) {
             self::assertFileDoesNotExist($pathAndFilename);
         } else {
-            self::assertFileNotExists($pathAndFilename);
+            self::assertFileDoesNotExist($pathAndFilename);
         }
     }
 
@@ -859,8 +860,8 @@ class FileBackendTest extends UnitTestCase
             self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
             self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
         } else {
-            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
-            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');
         }
     }
 
@@ -937,7 +938,7 @@ class FileBackendTest extends UnitTestCase
         if (method_exists($this, 'assertFileDoesNotExist')) {
             self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
         } else {
-            self::assertFileNotExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
+            self::assertFileDoesNotExist('vfs://Foo/cache/data/UnitTestCache/BackendFileTest1');
         }
 
         self::assertFileExists('vfs://Foo/cache/data/UnitTestCache/BackendFileTest2');

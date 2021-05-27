@@ -45,6 +45,7 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
  */
 class ActionControllerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

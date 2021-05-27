@@ -38,6 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConnectionTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var Connection|\PHPUnit\Framework\MockObject\MockObject
      */

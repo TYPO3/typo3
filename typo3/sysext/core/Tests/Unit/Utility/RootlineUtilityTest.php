@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RootlineUtilityTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var RootlineUtility|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject
      */

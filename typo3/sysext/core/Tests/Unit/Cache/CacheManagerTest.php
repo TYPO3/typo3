@@ -40,6 +40,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheManagerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

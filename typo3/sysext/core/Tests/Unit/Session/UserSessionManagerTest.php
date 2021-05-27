@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UserSessionManagerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function willExpireDataProvider()
     {
         return [

@@ -23,6 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected TcaColumnsProcessFieldDescriptions $subject;
 
     protected function setUp(): void

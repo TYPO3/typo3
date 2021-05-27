@@ -34,6 +34,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  */
 class FluidTemplateContentObjectTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

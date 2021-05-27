@@ -37,6 +37,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClientTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function testImplementsPsr18ClientInterface(): void
     {
         $client = new Client();

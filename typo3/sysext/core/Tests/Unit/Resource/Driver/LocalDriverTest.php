@@ -1219,7 +1219,7 @@ class LocalDriverTest extends BaseTestCase
         if (method_exists($this, 'assertFileDoesNotExist')) {
             self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
         } else {
-            self::assertFileNotExists($this->getUrlInMount('/someFile'));
+            self::assertFileDoesNotExist($this->getUrlInMount('/someFile'));
         }
 
         self::assertEquals('/targetFolder/file', $newIdentifier);
@@ -1459,7 +1459,7 @@ class LocalDriverTest extends BaseTestCase
         if (method_exists($this, 'assertFileDoesNotExist')) {
             self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
         } else {
-            self::assertFileNotExists($this->getUrlInMount('/sourceFolder'));
+            self::assertFileDoesNotExist($this->getUrlInMount('/sourceFolder'));
         }
     }
 

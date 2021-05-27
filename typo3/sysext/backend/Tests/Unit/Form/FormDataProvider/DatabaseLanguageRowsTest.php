@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseLanguageRowsTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var DatabaseLanguageRows|\PHPUnit\Framework\MockObject\MockObject
      */

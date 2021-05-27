@@ -35,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteResolverTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RecoveryConfigurationTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy|Context
      */

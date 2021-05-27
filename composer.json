@@ -97,8 +97,9 @@
 		"friendsoftypo3/phpstan-typo3": "^0.8.1",
 		"php-webdriver/webdriver": "^1.9.0",
 		"phpspec/prophecy": "^1.12.2",
+		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/phpstan": "^0.12.64",
-		"phpunit/phpunit": "^8.5.13",
+		"phpunit/phpunit": "^9.5",
 		"typo3/cms-styleguide": "~11.4.0",
 		"typo3/testing-framework": "^6.8.4"
 	},

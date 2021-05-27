@@ -29,6 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FlexFormProcessorTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ContentObjectRenderer
      */

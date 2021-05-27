@@ -92,7 +92,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         if (method_exists($this, 'assertFileDoesNotExist')) {
             self::assertFileDoesNotExist($htaccessPath);
         } else {
-            self::assertFileNotExists($htaccessPath);
+            self::assertFileDoesNotExist($htaccessPath);
         }
     }
 

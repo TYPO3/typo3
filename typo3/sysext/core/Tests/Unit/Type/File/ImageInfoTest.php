@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ImageInfoTest extends UnitTestCase
 {
-
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

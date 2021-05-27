@@ -146,12 +146,27 @@ options:
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
         $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
-        $subject->expects(self::at(0))->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
-        $subject->expects(self::at(1))->method('getFileContents')->with($fileName)->willReturn($fileContents);
-        $subject->expects(self::at(2))->method('getStreamlinedFileName')->with($importFileName2, $fileName)->willReturn($importFileName2);
-        $subject->expects(self::at(3))->method('getFileContents')->with($importFileName2)->willReturn($importFileContents2);
-        $subject->expects(self::at(4))->method('getStreamlinedFileName')->with($importFileName, $fileName)->willReturn($importFileName);
-        $subject->expects(self::at(5))->method('getFileContents')->with($importFileName)->willReturn($importFileContents);
+
+        $subject
+            ->expects(self::exactly(3))
+            ->method('getStreamlinedFileName')
+            ->withConsecutive([$fileName, null], [$importFileName2, $fileName], [$importFileName, $fileName])
+            ->willReturnOnConsecutiveCalls(
+                $fileName,
+                $importFileName2,
+                $importFileName
+            );
+
+        $subject
+            ->expects(self::exactly(3))
+            ->method('getFileContents')
+            ->withConsecutive([$fileName], [$importFileName2], [$importFileName])
+            ->willReturnOnConsecutiveCalls(
+                $fileContents,
+                $importFileContents2,
+                $importFileContents
+            );
+
         $output = $subject->load($fileName);
         self::assertSame($expected, $output);
     }

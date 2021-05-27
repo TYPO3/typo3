@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ConditionMatcherTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Sets up this test case.
      */

@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ServiceProviderCompilationPassTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected function getServiceProviderRegistry(array $serviceProviders)
     {
         $serviceProviderRegistryProphecy = $this->prophesize(ServiceProviderRegistry::class);

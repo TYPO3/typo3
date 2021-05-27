@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseRecordLinkBuilderTest extends UnitTestCase
 {
-
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Dataprovider with different parameter configurations
      *

@@ -31,6 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FileBrowserTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

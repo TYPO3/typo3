@@ -46,6 +46,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaSelectItemsTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Set up
      */

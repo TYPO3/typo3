@@ -41,6 +41,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryBuilderTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var Connection|\Prophecy\Prophecy\ObjectProphecy
      */

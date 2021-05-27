@@ -32,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RedirectHandlerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * If set to true, tearDown() will purge singleton instances created by the test.
      *

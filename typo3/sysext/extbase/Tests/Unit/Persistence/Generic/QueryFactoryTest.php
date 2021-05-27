@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryFactoryTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var string
      */

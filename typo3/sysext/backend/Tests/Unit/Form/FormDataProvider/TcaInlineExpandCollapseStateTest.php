@@ -24,6 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MiddlewareDispatcherTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

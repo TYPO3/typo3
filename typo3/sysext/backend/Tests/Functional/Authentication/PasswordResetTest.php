@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PasswordResetTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected LoggerInterface $logger;
 
     public function setUp(): void

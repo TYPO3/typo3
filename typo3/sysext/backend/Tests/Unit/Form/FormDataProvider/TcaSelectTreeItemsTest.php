@@ -42,6 +42,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaSelectTreeItemsTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

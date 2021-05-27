@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3tempFileServiceTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

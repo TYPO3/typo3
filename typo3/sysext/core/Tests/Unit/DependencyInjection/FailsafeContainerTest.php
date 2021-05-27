@@ -31,6 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FailsafeContainerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy
      */

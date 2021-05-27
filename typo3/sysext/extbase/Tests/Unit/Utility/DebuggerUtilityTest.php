@@ -68,7 +68,7 @@ class DebuggerUtilityTest extends UnitTestCase
         if (method_exists($this, 'assertMatchesRegularExpression')) {
             self::assertMatchesRegularExpression('/foo.*bar/', $result);
         } else {
-            self::assertRegExp('/foo.*bar/', $result);
+            self::assertMatchesRegularExpression('/foo.*bar/', $result);
         }
     }
 

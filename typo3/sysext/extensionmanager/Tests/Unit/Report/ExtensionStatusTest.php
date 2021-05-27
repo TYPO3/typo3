@@ -35,6 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionStatusTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var LanguageService
      */

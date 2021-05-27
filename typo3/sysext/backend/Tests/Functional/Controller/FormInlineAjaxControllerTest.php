@@ -142,7 +142,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
-        self::assertRegExp('/<option value="1"[^>]* selected="selected">Dansk<\/option>/', $jsonArray['data']);
+        self::assertMatchesRegularExpression('/<option value="1"[^>]* selected="selected">Dansk<\/option>/', $jsonArray['data']);
     }
 
     /**
@@ -169,7 +169,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
-        self::assertNotRegExp('/<select[^>]* name="data\[tx_irretutorial_1ncsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
+        self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_irretutorial_1ncsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
     }
 
     /**

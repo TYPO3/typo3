@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaControllerTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected MfaController $subject;
     protected ServerRequest $request;
 
@@ -117,10 +118,10 @@ class MfaControllerTest extends FunctionalTestCase
 
         // Auth view for provider is renderer
         self::assertStringContainsString('Time-based one-time password', $responseContent);
-        self::assertRegExp('/<form.*name="verify".*id="mfaController">/s', $responseContent);
+        self::assertMatchesRegularExpression('/<form.*name="verify".*id="mfaController">/s', $responseContent);
 
         // Ensure provider specific content is added as well
-        self::assertRegExp('/<input.*id="totp"/s', $responseContent);
+        self::assertMatchesRegularExpression('/<input.*id="totp"/s', $responseContent);
     }
 
     /**
@@ -164,7 +165,7 @@ class MfaControllerTest extends FunctionalTestCase
 
         $responseContent = $response->getBody()->getContents();
         self::assertStringContainsString('Alternative providers', $responseContent);
-        self::assertRegExp('/<a.*title="Use Recovery codes"/s', $responseContent);
+        self::assertMatchesRegularExpression('/<a.*title="Use Recovery codes"/s', $responseContent);
     }
 
     /**

@@ -31,6 +31,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StaticRouteResolverTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $requestHandler;
 
     /**

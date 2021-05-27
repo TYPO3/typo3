@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 
 class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

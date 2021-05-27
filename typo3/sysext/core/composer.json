@@ -79,7 +79,9 @@
 		"friendsofphp/php-cs-fixer": "^2.19 || ^3.0",
 		"php-webdriver/webdriver": "^1.9.0",
 		"phpspec/prophecy": "^1.12.2",
+		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/phpstan": "^0.12.64",
+		"phpunit/phpunit": "^9.5",
 		"typo3/cms-styleguide": "~11.4.0",
 		"typo3/testing-framework": "^6.8.4"
 	},

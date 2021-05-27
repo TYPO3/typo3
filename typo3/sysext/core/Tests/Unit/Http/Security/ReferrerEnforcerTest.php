@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ReferrerEnforcerTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     private static function buildRefreshContentPattern(string $uri): string
     {
         return sprintf(
@@ -129,7 +130,7 @@ class ReferrerEnforcerTest extends UnitTestCase
             if (method_exists($this, 'assertMatchesRegularExpression')) {
                 self::assertMatchesRegularExpression($expectedResponse, (string)$response->getBody());
             } else {
-                self::assertRegExp($expectedResponse, (string)$response->getBody());
+                self::assertMatchesRegularExpression($expectedResponse, (string)$response->getBody());
             }
         }
     }

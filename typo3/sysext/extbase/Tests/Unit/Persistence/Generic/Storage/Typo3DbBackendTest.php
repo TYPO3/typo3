@@ -45,6 +45,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3DbBackendTest extends UnitTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
      * @var bool
