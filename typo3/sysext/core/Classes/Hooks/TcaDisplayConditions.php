@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Hooks;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
@@ -39,5 +40,25 @@ class TcaDisplayConditions
             return ExtensionManagementUtility::isLoaded($extension);
         }
         return false;
+    }
+
+    /**
+     * Check if the current record is the current backend user
+     *
+     * IMPORTANT: This only works for the be_users table.
+     *
+     * @param array $parameters
+     * @return bool
+     */
+    public function isRecordCurrentUser(array $parameters): bool
+    {
+        $backendUser = $this->getBackendUser();
+        $isCurrentUser = (int)($parameters['record']['uid'] ?? 0) === (int)$backendUser->user[$backendUser->userid_column];
+        return strtolower($parameters['conditionParameters'][0] ?? 'true') !== 'true' ? !$isCurrentUser : $isCurrentUser;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
