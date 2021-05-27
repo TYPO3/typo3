@@ -69,27 +69,32 @@ if (PHP_MAJOR_VERSION === 7) {
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parse expects resource, XMLParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
+            'count' => 1
+        ],
+        [
+            'message' => '#^Parameter \\#1 \\$parser of function xml_set_object expects resource, XMLParser given\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parser_free expects resource, XMLParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parser_set_option expects resource, XMLParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 3
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_set_character_data_handler expects resource, XMLParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_set_element_handler expects resource, XMLParser given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Utility/Parser/ExtensionXmlPushParser.php',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
     ];

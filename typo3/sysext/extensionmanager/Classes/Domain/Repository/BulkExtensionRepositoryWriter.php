@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-use TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser;
-use TYPO3\CMS\Extensionmanager\Utility\Parser\XmlParserFactory;
+use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 
 /**
  * Importer object for extension list, which handles the XML parser and writes directly into the database.
@@ -37,12 +35,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
      */
     private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
-    /**
-     * Keeps instance of a XML parser.
-     *
-     * @var AbstractExtensionXmlParser
-     */
-    protected $parser;
+    protected ExtensionXmlParser $parser;
 
     /**
      * Keeps number of processed version records.
@@ -131,24 +124,20 @@ class BulkExtensionRepositoryWriter implements \SplObserver
      * @param ExtensionRepository $repository
      * @param Extension $extension
      * @param ConnectionPool $connectionPool
-     *
-     * @throws ExtensionManagerException
+     * @param ExtensionXmlParser $parser
      * @throws DBALException
      */
-    public function __construct(ExtensionRepository $repository, Extension $extension, ConnectionPool $connectionPool)
-    {
+    public function __construct(
+        ExtensionRepository $repository,
+        Extension $extension,
+        ConnectionPool $connectionPool,
+        ExtensionXmlParser $parser
+    ) {
         $this->extensionRepository = $repository;
         $this->extensionModel = $extension;
         $this->connectionPool = $connectionPool;
-        $this->parser = XmlParserFactory::getParserInstance();
-        if (is_object($this->parser)) {
-            $this->parser->attach($this);
-        } else {
-            throw new ExtensionManagerException(
-                static::class . ': No XML parser available.',
-                1476108717
-            );
-        }
+        $this->parser = $parser;
+        $this->parser->attach($this);
 
         $connection = $this->connectionPool->getConnectionForTable(self::TABLE_NAME);
         $maxBindParameters = PlatformInformation::getMaxBindParameters(
@@ -208,9 +197,9 @@ class BulkExtensionRepositoryWriter implements \SplObserver
     /**
      * Method collects and stores extension version details into the database.
      *
-     * @param AbstractExtensionXmlParser $subject a subject notifying this observer
+     * @param ExtensionXmlParser $subject a subject notifying this observer
      */
-    protected function loadIntoDatabase(AbstractExtensionXmlParser $subject): void
+    protected function loadIntoDatabase(ExtensionXmlParser $subject): void
     {
         if ($this->sumRecords !== 0 && $this->sumRecords % $this->maxRowsPerChunk === 0) {
             $this->connectionPool
@@ -230,18 +219,18 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             $versionRepresentations['version_int'],
             // initialize current_version, correct value computed later:
             0,
-            (int)$subject->getAlldownloadcounter(),
-            (int)$subject->getDownloadcounter(),
+            $subject->getAlldownloadcounter(),
+            $subject->getDownloadcounter(),
             $subject->getTitle() ?? '',
             $subject->getOwnerusername(),
             $subject->getAuthorname() ?? '',
             $subject->getAuthoremail() ?? '',
             $subject->getAuthorcompany() ?? '',
-            (int)$subject->getLastuploaddate(),
+            $subject->getLastuploaddate(),
             $subject->getT3xfilemd5(),
             $this->remoteIdentifier,
             $this->extensionModel->getDefaultState($subject->getState() ?: ''),
-            (int)$subject->getReviewstate(),
+            $subject->getReviewstate(),
             $this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ?: ''),
             $subject->getDescription() ?: '',
             $subject->getDependencies() ?: '',
@@ -258,7 +247,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
      */
     public function update(\SplSubject $subject): void
     {
-        if (is_subclass_of($subject, AbstractExtensionXmlParser::class)) {
+        if ($subject instanceof ExtensionXmlParser) {
             if ((int)$subject->getLastuploaddate() > $this->minimumDateToImport) {
                 $this->loadIntoDatabase($subject);
             }
