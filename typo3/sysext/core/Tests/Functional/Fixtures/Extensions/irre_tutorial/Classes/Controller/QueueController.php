@@ -18,9 +18,6 @@ namespace OliverHader\IrreTutorial\Controller;
 use OliverHader\IrreTutorial\Domain\Repository\ContentRepository;
 use OliverHader\IrreTutorial\Service\QueueService;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -87,23 +84,5 @@ class QueueController extends AbstractController
         $this->request->setDispatched(true);
         $value = $this->queueService->getValues();
         $this->view->assign('value', $value);
-    }
-
-    /**
-     * Finds and instantiates a controller that matches the current request.
-     * If no controller can be found, an instance of NotFoundControllerInterface is returned.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
-     */
-    protected function resolveController(RequestInterface $request)
-    {
-        $controllerObjectName = $request->getControllerObjectName();
-        $controller = $this->objectManager->get($controllerObjectName);
-        if (!$controller instanceof ControllerInterface) {
-            throw new InvalidControllerException('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
-        }
-        return $controller;
     }
 }
