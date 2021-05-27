@@ -31,13 +31,13 @@ class User1Element extends AbstractFormElement
         $result = $this->initializeResultArray();
         $parameters = $this->data['parameterArray'];
         $html = [];
-        $html[] = '<div style="border: 1px dashed ' . $parameters['fieldConf']['config']['parameters']['color'] . '" >';
+        $html[] = '<div style="border: 1px dashed ' . htmlspecialchars($parameters['fieldConf']['config']['parameters']['color'] ?? '') . '" >';
         $html[] = '<h2>Own form field using a parameter</h2>';
         $html[] = '<input'
             . ' type="input"'
             . ' name="' . htmlspecialchars($parameters['itemFormElName']) . '"'
             . ' value="' . htmlspecialchars($parameters['itemFormElValue']) . '"'
-            . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"' . $parameters['onFocus']
+            . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"'
             . ' />';
         $html[] = '</div>';
         $result['html'] = implode(chr(10), $html);
