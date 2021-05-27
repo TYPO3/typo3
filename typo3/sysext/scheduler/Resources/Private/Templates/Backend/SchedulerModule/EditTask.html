@@ -77,7 +77,9 @@
                 <div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">
                     <input name="tx_scheduler[start]_hr" value="{start_value_hr}" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="datetime" data-date-offset="0" type="text" id="tceforms-datetimefield-task_start_row">
                     <input name="tx_scheduler[start]" value="{start_value}" type="hidden">
-                    <span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_start_row"><core:icon identifier="actions-edit-pick-date" /></label></span>
+                    <label class="mb-0 btn btn-default" for="tceforms-datetimefield-task_start_row">
+                        <core:icon identifier="actions-edit-pick-date" />
+                    </label>
                 </div>
             </div>
         </div>
@@ -85,9 +87,11 @@
             <f:be.labels.csh table="{csh}" field="task_end" label="{lang}label.end"/>
             <div class="form-control-wrap">
                 <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
-                    <input name="tx_scheduler[end]_hr" value="{end_value_hr}" class="form-control  t3js-datetimepicker t3js-clearable" data-date-type="datetime" data-date-offset="0" type="text" id="tceforms-datetimefield-task_end_row">
+                    <input name="tx_scheduler[end]_hr" value="{end_value_hr}" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="datetime" data-date-offset="0" type="text" id="tceforms-datetimefield-task_end_row">
                     <input name="tx_scheduler[end]" value="{end_value}" type="hidden">
-                    <span class="input-group-btn"><label class="btn btn-default" for="tceforms-datetimefield-task_end_row"><core:icon identifier="actions-edit-pick-date" /></label></span>
+                    <label class="mb-0 btn btn-default" for="tceforms-datetimefield-task_end_row">
+                        <core:icon identifier="actions-edit-pick-date" />
+                    </label>
                 </div>
             </div>
         </div>
