@@ -1293,6 +1293,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed" resname="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed">
 				<source>This user is a system maintainer. Changing the admin flag and changing password is denied.</source>
 			</trans-unit>
+			<trans-unit id="formEngine.pages.backendLayout.information.inheritFromParentPage" resname="formEngine.pages.backendLayout.information.inheritedFromParentPage">
+				<source>This page will most likely use backend layout "%s", inherited from a parent page.</source>
+			</trans-unit>
+			<trans-unit id="formEngine.pages.backendLayout.information.inheritedFromParentPage" resname="formEngine.pages.backendLayout.information.inheritFromParentPage">
+				<source>This page is currently using backend layout "%s", inherited from a parent page.</source>
+			</trans-unit>
 			<trans-unit id="error.backendUserGroupListTypeError.header" resname="error.backendUserGroupListTypeError.header">
 				<source>Possible misconfiguration detected</source>
 			</trans-unit>

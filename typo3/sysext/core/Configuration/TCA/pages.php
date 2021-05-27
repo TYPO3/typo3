@@ -867,6 +867,11 @@ return [
                         'disabled' => false,
                     ],
                 ],
+                'fieldInformation' => [
+                    'backendLayoutFromParentPage' => [
+                        'renderType' => 'backendLayoutFromParentPage',
+                    ],
+                ],
                 'size' => 1,
                 'maxitems' => 1
             ]
