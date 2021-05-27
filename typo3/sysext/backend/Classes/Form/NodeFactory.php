@@ -97,6 +97,7 @@ class NodeFactory
         'slug' => Element\InputSlugElement::class,
         'language' => Element\SelectSingleElement::class,
         'passthrough' => Element\PassThroughElement::class,
+        'belayoutwizard' => Element\BackendLayoutWizardElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

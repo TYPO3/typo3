@@ -20,12 +20,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAva
     'provider' => \TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider::class
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1460321142] = [
-    'nodeName' => 'belayoutwizard',
-    'priority' => 40,
-    'class' => \TYPO3\CMS\Backend\View\Wizard\Element\BackendLayoutWizardElement::class,
-];
-
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 

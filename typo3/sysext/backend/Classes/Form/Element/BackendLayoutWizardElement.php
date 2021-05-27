@@ -13,9 +13,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\View\Wizard\Element;
+namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
