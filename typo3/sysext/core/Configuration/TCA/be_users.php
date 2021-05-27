@@ -173,6 +173,7 @@ return [
         'disable' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'displayCond' => 'USER:' . \TYPO3\CMS\Core\Hooks\TcaDisplayConditions::class . '->isRecordCurrentUser:false',
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',

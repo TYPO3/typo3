@@ -549,13 +549,15 @@ class RecordProvider extends AbstractProvider
     }
 
     /**
-     * Checks if the user has the right to delete the page
+     * Checks if the user has the right to delete the record
      *
      * @return bool
      */
     protected function canBeDeleted(): bool
     {
-        return !$this->isDeletionDisabledInTS() && $this->canBeEdited();
+        return !$this->isDeletionDisabledInTS()
+            && !$this->isRecordCurrentBackendUser()
+            && $this->canBeEdited();
     }
 
     /**
@@ -575,7 +577,9 @@ class RecordProvider extends AbstractProvider
      */
     protected function canBeDisabled(): bool
     {
-        return $this->hasDisableColumnWithValue(0) && $this->canBeEdited();
+        return $this->hasDisableColumnWithValue(0)
+            && !$this->isRecordCurrentBackendUser()
+            && $this->canBeEdited();
     }
 
     /**
@@ -703,6 +707,17 @@ class RecordProvider extends AbstractProvider
     protected function isRecordATranslation(): bool
     {
         return BackendUtility::isTableLocalizable($this->table) && (int)$this->record[$GLOBALS['TCA'][$this->table]['ctrl']['transOrigPointerField']] !== 0;
+    }
+
+    /**
+     * Return true in case the current record is the current backend user
+     *
+     * @return bool
+     */
+    protected function isRecordCurrentBackendUser(): bool
+    {
+        return $this->table === 'be_users'
+            && (int)($this->record['uid'] ?? 0) === (int)$this->backendUser->user[$this->backendUser->userid_column];
     }
 
     /**

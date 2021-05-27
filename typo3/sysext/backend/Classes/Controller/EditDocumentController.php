@@ -1646,6 +1646,7 @@ class EditDocumentController
         if (
             $this->firstEl['deleteAccess']
             && !$this->getDisableDelete()
+            && !$this->isRecordCurrentBackendUser()
             && $this->isSavedRecord
             && count($this->elementsData) === 1
         ) {
@@ -1979,6 +1980,19 @@ class EditDocumentController
             $disableDelete = (bool)$this->getTsConfigOption($this->firstEl['table'] ?? '', 'disableDelete');
         }
         return $disableDelete;
+    }
+
+    /**
+     * Return true in case the current record is the current backend user
+     *
+     * @return bool
+     */
+    protected function isRecordCurrentBackendUser(): bool
+    {
+        $backendUser = $this->getBackendUser();
+
+        return $this->firstEl['table'] === 'be_users'
+            && (int)($this->firstEl['uid'] ?? 0) === (int)$backendUser->user[$backendUser->userid_column];
     }
 
     /**
