@@ -32,11 +32,9 @@
     <div class="dropdown-table">
         <f:for each="{recentUsers}" as="user">
             <div class="dropdown-table-row">
-                <div class="dropdown-table-column dropdown-table-icon">
-                    <be:avatar backendUser="{user.uid}" size="32" />
-                </div>
                 <div class="dropdown-table-column dropdown-table-title">
                     <a href="{user.switchUserLink}" title="{f:translate(key: 'usermodule.su.tooltip', arguments: '{0: user.username}')}">
+                        <be:avatar backendUser="{user.uid}" size="32" />
                         <f:if condition="{user.realName}">
                             <f:then>
                                 {user.realName}

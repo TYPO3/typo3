@@ -24,11 +24,9 @@
             <div class="dropdown-table">
                 <f:for each="{openDocuments}" as="openDocument">
                     <div class="dropdown-table-row t3js-topbar-opendocs-item">
-                        <div class="dropdown-table-column dropdown-table-icon">
-                            <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
-                        </div>
                         <div class="dropdown-table-column dropdown-table-title">
                             <a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{openDocument.pid}" href="{openDocument.uri}">
+                                <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
                                 {openDocument.label}
                             </a>
                         </div>
@@ -51,11 +49,9 @@
             <div class="dropdown-table">
                 <f:for each="{recentDocuments}" as="recentDocument">
                     <div class="dropdown-table-row t3js-topbar-recentdoc">
-                        <div class="dropdown-table-column dropdown-table-icon">
-                            <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
-                        </div>
                         <div class="dropdown-table-column dropdown-table-title">
                             <a class="dropdown-table-title-ellipsis t3js-open-doc" data-pid="{recentDocument.pid}" href="{recentDocument.uri}" >
+                                <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
                                 {recentDocument.label}
                             </a>
                         </div>

@@ -1,11 +1,11 @@
 <div class="dropdown-table-row t3js-topbar-shortcut" data-shortcutid="{shortcut.raw.uid}" data-shortcutgroup="{group.id}">
-    <div class="dropdown-table-column dropdown-table-icon">
-        <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.shortcut')}">
-            <f:format.raw>{shortcut.icon}</f:format.raw>
-        </span>
-    </div>
     <div class="dropdown-table-column dropdown-table-title">
-        <f:link.external uri="#" class="dropdown-table-title-ellipsis" onclick="{shortcut.action} return false;" defaultScheme="">{shortcut.label}</f:link.external>
+        <f:link.external uri="#" class="dropdown-table-title-ellipsis" onclick="{shortcut.action} return false;" defaultScheme="">
+            <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.shortcut')}">
+                <f:format.raw>{shortcut.icon}</f:format.raw>
+            </span>
+            {shortcut.label}
+        </f:link.external>
     </div>
     <div class="dropdown-table-column dropdown-table-actions">
         <f:render section="Edit"/>
