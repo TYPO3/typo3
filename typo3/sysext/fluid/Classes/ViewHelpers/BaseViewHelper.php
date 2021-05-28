@@ -40,8 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Depending on your domain.
  *
- * @todo Deprecate this VH: In FE a base tag is set via TS config.baseURL to head, this
- *       VH would most likely add it as useless body tag, and BE does not need this VH.
+ * @deprecated since v11, will be removed in v12.
  */
 class BaseViewHelper extends AbstractViewHelper
 {
@@ -68,6 +67,7 @@ class BaseViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $request = static::getRequest();
         /** @var NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');

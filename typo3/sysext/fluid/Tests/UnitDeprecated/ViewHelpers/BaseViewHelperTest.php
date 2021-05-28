@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+namespace TYPO3\CMS\Fluid\Tests\UnitDeprecated\ViewHelpers;
 
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
