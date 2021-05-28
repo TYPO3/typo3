@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -36,6 +39,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    <base href="http://yourdomain.tld/" />
  *
  * Depending on your domain.
+ *
+ * @todo Deprecate this VH: In FE a base tag is set via TS config.baseURL to head, this
+ *       VH would most likely add it as useless body tag, and BE does not need this VH.
  */
 class BaseViewHelper extends AbstractViewHelper
 {
@@ -49,7 +55,7 @@ class BaseViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * Render the "Base" tag by outputting $request->getBaseUri()
+     * Render the "Base" tag by outputting site URL
      *
      * Note: renders as <base></base>, because IE6 will else refuse to display
      * the page...
@@ -62,6 +68,21 @@ class BaseViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return '<base href="' . htmlspecialchars($renderingContext->getRequest()->getBaseUri()) . '" />';
+        $request = static::getRequest();
+        /** @var NormalizedParams $normalizedParams */
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $baseUri = $normalizedParams->getSiteUrl();
+        if (ApplicationType::fromRequest($request)->isBackend()) {
+            $baseUri .= TYPO3_mainDir;
+        }
+        return '<base href="' . htmlspecialchars($baseUri) . '" />';
+    }
+
+    /**
+     * @todo Drop this when $renderingContext->getRequest() returns an implementation of ServerRequestInterface
+     */
+    protected static function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -88,9 +91,24 @@ class ResourceViewHelper extends AbstractViewHelper
             $uri = PathUtility::getAbsoluteWebPath($uri);
         }
         if ($absolute === true) {
+            $request = static::getRequest();
+            /** @var NormalizedParams $normalizedParams */
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $baseUri = $normalizedParams->getSiteUrl();
+            if (ApplicationType::fromRequest($request)->isBackend()) {
+                $baseUri .= TYPO3_mainDir;
+            }
             $uri = PathUtility::stripPathSitePrefix($uri);
-            $uri = $renderingContext->getRequest()->getBaseUri() . $uri;
+            $uri = $baseUri . $uri;
         }
         return $uri;
+    }
+
+    /**
+     * @todo Drop this when $renderingContext->getRequest() returns an implementation of ServerRequestInterface
+     */
+    protected static function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

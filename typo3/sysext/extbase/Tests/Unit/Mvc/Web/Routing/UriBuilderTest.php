@@ -375,7 +375,6 @@ class UriBuilderTest extends UnitTestCase
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
         $this->uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'test/Path?token=dummyToken';
         $actualResult = $this->uriBuilder->buildBackendUri();

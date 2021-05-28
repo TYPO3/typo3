@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -23,14 +27,22 @@ class BaseViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function renderTakesBaseUriFromControllerContext()
+    public function renderTakesBaseUriFromServerRequest()
     {
         $baseUri = 'http://typo3.org/';
-        $this->request->getBaseUri()->willReturn($baseUri);
+
+        /** @var NormalizedParams|ObjectProphecy $normalizedParams */
+        $normalizedParams = $this->prophesize(NormalizedParams::class);
+        $normalizedParams->getSiteUrl()->willReturn($baseUri);
+        /** @var ServerRequestInterface|ObjectProphecy $request */
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getAttribute('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request->getAttribute('normalizedParams')->willReturn($normalizedParams->reveal());
+        $GLOBALS['TYPO3_REQUEST'] = $request->reveal();
+
         $viewHelper = new BaseViewHelper();
         $this->injectDependenciesIntoViewHelper($viewHelper);
-        $expectedResult = '<base href="' . $baseUri . '" />';
-        $actualResult = $viewHelper->render();
-        self::assertSame($expectedResult, $actualResult);
+
+        self::assertSame('<base href="' . $baseUri . '" />', $viewHelper->render());
     }
 }

@@ -4816,4 +4816,11 @@ return [
             'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Request->getBaseUri' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94223-ExtbaseRequest-getBaseUri.rst'
+        ],
+    ],
 ];

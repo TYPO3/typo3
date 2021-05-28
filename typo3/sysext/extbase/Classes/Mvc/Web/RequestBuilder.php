@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -185,11 +184,6 @@ class RequestBuilder implements SingletonInterface
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
 
-        $baseUri = $normalizedParams->getSiteUrl();
-        if (ApplicationType::fromRequest($mainRequest)->isBackend()) {
-            $baseUri .= TYPO3_mainDir;
-        }
-
         $request = GeneralUtility::makeInstance(Request::class);
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
@@ -197,7 +191,6 @@ class RequestBuilder implements SingletonInterface
         $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
         $request->setRequestUri($normalizedParams->getRequestUrl());
-        $request->setBaseUri($baseUri);
         $request->setMethod($mainRequest->getMethod());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));

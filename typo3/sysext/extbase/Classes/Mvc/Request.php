@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Mvc;
 
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -111,11 +113,6 @@ class Request implements RequestInterface
      * @var string
      */
     protected $requestUri;
-
-    /**
-     * @var string The base URI for this request - ie. the host and path leading to the index.php
-     */
-    protected $baseUri;
 
     /**
      * @var bool TRUE if the current request is cached, false otherwise.
@@ -563,24 +560,24 @@ class Request implements RequestInterface
     }
 
     /**
-     * Sets the base URI for this request.
-     *
-     * @param string $baseUri New base URI
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setBaseUri($baseUri)
-    {
-        $this->baseUri = $baseUri;
-    }
-
-    /**
      * Returns the base URI
      *
      * @return string Base URI of this web request
+     * @deprecated since v11, will be removed in v12
      */
     public function getBaseUri()
     {
-        return $this->baseUri;
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
+
+        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
+        $mainRequest = $GLOBALS['TYPO3_REQUEST'];
+        /** @var NormalizedParams $normalizedParams */
+        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
+        $baseUri = $normalizedParams->getSiteUrl();
+        if (ApplicationType::fromRequest($mainRequest)->isBackend()) {
+            $baseUri .= TYPO3_mainDir;
+        }
+        return $baseUri;
     }
 
     /**

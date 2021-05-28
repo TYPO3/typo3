@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\View;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -50,16 +48,8 @@ class StandaloneView extends AbstractTemplateView
         }
         $configurationManager->setContentObject($contentObject);
 
-        $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
-            $baseUri .= TYPO3_mainDir;
-        }
-
         $request = $objectManager->get(Request::class);
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseUri($baseUri);
         $renderingContext = $objectManager->get(RenderingContext::class, $this);
         $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
