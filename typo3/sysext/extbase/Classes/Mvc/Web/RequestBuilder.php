@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -161,8 +160,6 @@ class RequestBuilder implements SingletonInterface
     {
         $this->loadDefaultValues();
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
-        /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
         $queryArguments = $mainRequest->getAttribute('routing');
         if ($queryArguments instanceof PageArguments) {
             $parameters = $queryArguments->get($pluginNamespace) ?? [];
@@ -190,7 +187,6 @@ class RequestBuilder implements SingletonInterface
         $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
         $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
-        $request->setRequestUri($normalizedParams->getRequestUrl());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {

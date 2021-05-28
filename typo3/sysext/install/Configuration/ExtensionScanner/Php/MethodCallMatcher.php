@@ -4823,4 +4823,11 @@ return [
             'Deprecation-94223-ExtbaseRequest-getBaseUri.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Request->getRequestUri' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94228-DeprecateExtbaseRequestGetRequestUri.rst'
+        ],
+    ],
 ];

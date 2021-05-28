@@ -104,11 +104,6 @@ class Request implements RequestInterface
     protected $originalRequestMappingResults;
 
     /**
-     * @var string
-     */
-    protected $requestUri;
-
-    /**
      * @var bool TRUE if the current request is cached, false otherwise.
      */
     protected $isCached = false;
@@ -520,24 +515,20 @@ class Request implements RequestInterface
     }
 
     /**
-     * Sets the request URI
-     *
-     * @param string $requestUri URI of this web request
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setRequestUri($requestUri)
-    {
-        $this->requestUri = $requestUri;
-    }
-
-    /**
      * Returns the request URI
      *
      * @return string URI of this web request
+     * @deprecated since v11, will be removed in v12
      */
     public function getRequestUri()
     {
-        return $this->requestUri;
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
+
+        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
+        $mainRequest = $GLOBALS['TYPO3_REQUEST'];
+        /** @var NormalizedParams $normalizedParams */
+        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
+        return $normalizedParams->getRequestUrl();
     }
 
     /**

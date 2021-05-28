@@ -49,7 +49,6 @@ class StandaloneView extends AbstractTemplateView
         $configurationManager->setContentObject($contentObject);
 
         $request = $objectManager->get(Request::class);
-        $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         $renderingContext = $objectManager->get(RenderingContext::class, $this);
         $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
