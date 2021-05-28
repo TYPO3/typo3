@@ -72,7 +72,7 @@ class StyleguideController extends ActionController
         }
 
         // Hand over flash message queue to module template
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
             'infobox', 'flashMessages', 'icons', 'debug', 'helpers', 'modal']);
         $this->view->assign('currentAction', $this->request->getControllerActionName());
