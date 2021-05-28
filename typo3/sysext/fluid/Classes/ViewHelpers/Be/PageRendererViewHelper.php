@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * ViewHelper which allows you to create extbase based modules in the style of TYPO3 default modules.
+ * ViewHelper to register backend module resources like CSS and JavaScript using the PageRenderer.
  *
  * Examples
  * ========
@@ -109,10 +109,7 @@ class PageRendererViewHelper extends AbstractViewHelper
         }
     }
 
-    /**
-     * @return PageRenderer
-     */
-    protected static function getPageRenderer()
+    protected static function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
     }

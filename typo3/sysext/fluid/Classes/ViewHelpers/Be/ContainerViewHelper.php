@@ -45,6 +45,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * JavaScript files :file:`EXT:your_extension/Resources/Public/JavaScript/Library1.js` and
  * :file:`EXT:your_extension/Resources/Public/JavaScript/Library2.js`
  * will be loaded, plus some inline labels for usage in JS code.
+ *
+ * @deprecated since v11, will be removed in v12.
  */
 class ContainerViewHelper extends AbstractBackendViewHelper
 {
@@ -77,6 +79,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
      */
     public function render()
     {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $pageTitle = $this->arguments['pageTitle'];
         $includeCssFiles = $this->arguments['includeCssFiles'];
         $includeJsFiles = $this->arguments['includeJsFiles'];
