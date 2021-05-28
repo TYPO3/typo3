@@ -135,6 +135,9 @@
 			<trans-unit id="buttons.reviewFailedValidationFields" resname="buttons.reviewFailedValidationFields">
 				<source>Review fields with failed validations</source>
 			</trans-unit>
+			<trans-unit id="buttons.pageTsConfig" resname="buttons.pageTsConfig">
+				<source>PageTS Config</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -65,7 +65,8 @@ export class GridEditor {
   protected selectorDocHeaderSave: string = '.t3js-grideditor-savedok';
   protected selectorDocHeaderSaveClose: string = '.t3js-grideditor-savedokclose';
   protected selectorConfigPreview: string = '.t3js-grideditor-preview-config';
-  protected selectorConfigPreviewButton: string = '.t3js-grideditor-preview-button';
+  protected selectorPreviewArea: string = '.t3js-tsconfig-preview-area';
+  protected selectorCodeMirror: string = '.t3js-grideditor-preview-config .CodeMirror';
 
   /**
    * Remove all markup
@@ -91,9 +92,6 @@ export class GridEditor {
     this.nameLabel = config !== null ? config.nameLabel : 'Name';
     this.columnLabel = config !== null ? config.columnLabel : 'Column';
     this.targetElement = $(this.selectorEditor);
-    $(this.selectorConfigPreview).hide();
-
-    $(this.selectorConfigPreviewButton).empty().append(TYPO3.lang['button.showPageTsConfig']);
 
     this.initializeEvents();
     this.drawTable();
@@ -115,7 +113,6 @@ export class GridEditor {
     $(document).on('click', this.selectorLinkShrinkLeft, this.linkShrinkLeftHandler);
     $(document).on('click', this.selectorLinkExpandDown, this.linkExpandDownHandler);
     $(document).on('click', this.selectorLinkShrinkUp, this.linkShrinkUpHandler);
-    $(document).on('click', this.selectorConfigPreviewButton, this.configPreviewButtonHandler);
   }
 
   /**
@@ -268,23 +265,6 @@ export class GridEditor {
   }
 
   /**
-   *
-   * @param {Event} e
-   */
-  protected configPreviewButtonHandler = (e: Event) => {
-    e.preventDefault();
-    const $preview = $(this.selectorConfigPreview);
-    const $button = $(this.selectorConfigPreviewButton);
-    if ($preview.is(':visible')) {
-      $button.empty().append(TYPO3.lang['button.showPageTsConfig']);
-      $(this.selectorConfigPreview).slideUp();
-    } else {
-      $button.empty().append(TYPO3.lang['button.hidePageTsConfig']);
-      $(this.selectorConfigPreview).slideDown();
-    }
-  }
-
-  /**
    * Create a new cell from defaultCell
    * @returns {Object}
    */
@@ -306,8 +286,8 @@ export class GridEditor {
         config += '\t\t\t' + line + '\n';
       }
     }
-    $(this.selectorConfigPreview).find('code').empty().append(
-      'mod.web_layout.BackendLayouts {\n' +
+
+    let content = 'mod.web_layout.BackendLayouts {\n' +
       '  exampleKey {\n' +
       '    title = Example\n' +
       '    icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif\n' +
@@ -315,8 +295,17 @@ export class GridEditor {
       config.replace(new RegExp('\t', 'g'), '  ') +
       '    }\n' +
       '  }\n' +
-      '}\n',
+      '}\n';
+
+    $(this.selectorConfigPreview).find(this.selectorPreviewArea).empty().append(
+      content
     );
+
+    // Update CodeMirror content if instantiated
+    const codemirror: any = document.querySelector(this.selectorCodeMirror);
+    if (codemirror) {
+      codemirror.CodeMirror.setValue(content)
+    }
   }
 
   /**

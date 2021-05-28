@@ -127,12 +127,6 @@ Have a nice day.</source>
 			<trans-unit id="login.donate" resname="login.donate">
 				<source>Donate</source>
 			</trans-unit>
-			<trans-unit id="button.showPageTsConfig" resname="button.showPageTsConfig">
-				<source>Show PageTS-Config</source>
-			</trans-unit>
-			<trans-unit id="button.hidePageTsConfig" resname="button.hidePageTsConfig">
-				<source>Hide PageTS-Config</source>
-			</trans-unit>
 			<trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild">
 				<source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
 				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix

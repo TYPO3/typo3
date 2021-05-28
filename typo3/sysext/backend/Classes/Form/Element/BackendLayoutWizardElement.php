@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -66,6 +67,34 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $fieldWizardResult = $this->renderFieldWizard();
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
+
+        // Use CodeMirror if available
+        if (ExtensionManagementUtility::isLoaded('t3editor')) {
+            $codeMirrorConfig = [
+                'label' => $lang->getLL('buttons.pageTsConfig'),
+                'panel' => 'top',
+                'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
+                'nolazyload' => 'true',
+                'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                    'height' => 'auto',
+                    'readOnly' => 'true'
+                ], false),
+            ];
+            $editor = '
+                <typo3-t3editor-codemirror class="t3js-grideditor-preview-config grideditor-preview" ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>
+                    <textarea class="t3js-tsconfig-preview-area"></textarea>
+                </typo3-t3editor-codemirror>';
+
+            $resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
+            $resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null];
+        } else {
+            $editor = '
+                <label>' . htmlspecialchars($lang->getLL('buttons.pageTsConfig')) . '</label>
+                <div class="t3js-grideditor-preview-config grideditor-preview">
+                    <textarea class="t3js-tsconfig-preview-area form-control" rows="25"></textarea>
+                </div>';
+        }
 
         $json = (string)json_encode($this->rows, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS);
         $html = [];
@@ -135,8 +164,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   '</tr>';
         $html[] =                   '<tr>';
         $html[] =                       '<td colspan="2">';
-        $html[] =                           '<a href="#" class="btn btn-default btn-sm t3js-grideditor-preview-button"></a>';
-        $html[] =                           '<pre class="t3js-grideditor-preview-config grideditor-preview"><code></code></pre>';
+        $html[] =                           $editor;
         $html[] =                       '</td>';
         $html[] =                   '</tr>';
         $html[] =               '</table>';
