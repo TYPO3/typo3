@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,6 +17,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -28,30 +31,30 @@ class BackendUserRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeObjectSetsRespectStoragePidToFalse()
+    public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $fixture = new BackendUserGroupRepository($objectManager);
+        $subject = new BackendUserGroupRepository($objectManager);
         $querySettings = $this->createMock(Typo3QuerySettings::class);
         $querySettings->expects(self::once())->method('setRespectStoragePage')->with(false);
-        $objectManager->expects(self::once())->method('get')->with(Typo3QuerySettings::class)->willReturn($querySettings);
-        $fixture->initializeObject();
+        GeneralUtility::addInstance(Typo3QuerySettings::class, $querySettings);
+        $subject->initializeObject();
     }
 
     /**
      * @test
      */
-    public function initializeObjectSetsDefaultQuerySettings()
+    public function initializeObjectSetsDefaultQuerySettings(): void
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        /** @var $fixture \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
-        $fixture = $this->getMockBuilder(BackendUserGroupRepository::class)
+        /** @var $subject \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
+        $subject = $this->getMockBuilder(BackendUserGroupRepository::class)
             ->setMethods(['setDefaultQuerySettings'])
             ->setConstructorArgs([$objectManager])
             ->getMock();
         $querySettings = $this->createMock(Typo3QuerySettings::class);
-        $objectManager->expects(self::once())->method('get')->with(Typo3QuerySettings::class)->willReturn($querySettings);
-        $fixture->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);
-        $fixture->initializeObject();
+        GeneralUtility::addInstance(Typo3QuerySettings::class, $querySettings);
+        $subject->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);
+        $subject->initializeObject();
     }
 }

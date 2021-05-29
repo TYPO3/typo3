@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3QuerySettingsTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
-     */
-    protected $typo3QuerySettings;
+    protected ?Typo3QuerySettings $subject = null;
 
     /**
      * setup test environment
@@ -37,16 +36,13 @@ class Typo3QuerySettingsTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->typo3QuerySettings = new Typo3QuerySettings(
+        $this->subject = new Typo3QuerySettings(
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
     }
 
-    /**
-     * @return array
-     */
-    public function booleanValueProvider()
+    public function booleanValueProvider(): array
     {
         return [
             'TRUE setting' => [true],
@@ -54,10 +50,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function arrayValueProvider()
+    public function arrayValueProvider(): array
     {
         return [
             'empty array' => [[]],
@@ -82,125 +75,120 @@ class Typo3QuerySettingsTest extends UnitTestCase
      * @dataProvider booleanValueProvider
      * @param bool $input
      */
-    public function setRespectStoragePageSetsRespectStoragePageCorrectly($input)
+    public function setRespectStoragePageSetsRespectStoragePageCorrectly(bool $input): void
     {
-        $this->typo3QuerySettings->setRespectStoragePage($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getRespectStoragePage());
+        $this->subject->setRespectStoragePage($input);
+        self::assertEquals($input, $this->subject->getRespectStoragePage());
     }
 
     /**
      * @test
      */
-    public function setRespectStoragePageAllowsChaining()
+    public function setRespectStoragePageAllowsChaining(): void
     {
-        self::assertTrue($this->typo3QuerySettings->setRespectStoragePage(true) instanceof QuerySettingsInterface);
-    }
-
-    /**
-     * @test
-     * @dataProvider arrayValueProvider
-     *
-     * @param array $input
-     */
-    public function setStoragePageIdsSetsStoragePageIdsCorrectly($input)
-    {
-        $this->typo3QuerySettings->setStoragePageIds($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getStoragePageIds());
-    }
-
-    /**
-     * @test
-     */
-    public function setStoragePageIdsAllowsChaining()
-    {
-        self::assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof QuerySettingsInterface);
-    }
-
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     *
-     * @param bool $input
-     */
-    public function setRespectSysLanguageSetsRespectSysLanguageCorrectly($input)
-    {
-        $this->typo3QuerySettings->setRespectSysLanguage($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getRespectSysLanguage());
-    }
-
-    /**
-     * @test
-     */
-    public function setRespectSysLanguageAllowsChaining()
-    {
-        self::assertTrue($this->typo3QuerySettings->setRespectSysLanguage(true) instanceof QuerySettingsInterface);
-    }
-
-    /**
-     * @test
-     */
-    public function setLanguageUidAllowsChaining()
-    {
-        self::assertTrue($this->typo3QuerySettings->setLanguageUid(42) instanceof QuerySettingsInterface);
-    }
-
-    /**
-     * @test
-     * @dataProvider booleanValueProvider
-     *
-     * @param bool $input
-     */
-    public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly($input)
-    {
-        $this->typo3QuerySettings->setIgnoreEnableFields($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getIgnoreEnableFields());
-    }
-
-    /**
-     * @test
-     */
-    public function setIgnoreEnableFieldsAllowsChaining()
-    {
-        self::assertTrue($this->typo3QuerySettings->setIgnoreEnableFields(true) instanceof QuerySettingsInterface);
+        self::assertTrue($this->subject->setRespectStoragePage(true) instanceof QuerySettingsInterface);
     }
 
     /**
      * @test
      * @dataProvider arrayValueProvider
-     *
      * @param array $input
      */
-    public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly($input)
+    public function setStoragePageIdsSetsStoragePageIdsCorrectly(array $input): void
     {
-        $this->typo3QuerySettings->setEnableFieldsToBeIgnored($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getEnableFieldsToBeIgnored());
+        $this->subject->setStoragePageIds($input);
+        self::assertEquals($input, $this->subject->getStoragePageIds());
     }
 
     /**
      * @test
      */
-    public function setEnableFieldsToBeIgnoredAllowsChaining()
+    public function setStoragePageIdsAllowsChaining(): void
     {
-        self::assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof QuerySettingsInterface);
+        self::assertTrue($this->subject->setStoragePageIds([1, 2, 3]) instanceof QuerySettingsInterface);
     }
 
     /**
      * @test
      * @dataProvider booleanValueProvider
-     *
      * @param bool $input
      */
-    public function setIncludeDeletedSetsIncludeDeletedCorrectly($input)
+    public function setRespectSysLanguageSetsRespectSysLanguageCorrectly(bool $input): void
     {
-        $this->typo3QuerySettings->setIncludeDeleted($input);
-        self::assertEquals($input, $this->typo3QuerySettings->getIncludeDeleted());
+        $this->subject->setRespectSysLanguage($input);
+        self::assertEquals($input, $this->subject->getRespectSysLanguage());
     }
 
     /**
      * @test
      */
-    public function setIncludeDeletedAllowsChaining()
+    public function setRespectSysLanguageAllowsChaining(): void
     {
-        self::assertTrue($this->typo3QuerySettings->setIncludeDeleted(true) instanceof QuerySettingsInterface);
+        self::assertTrue($this->subject->setRespectSysLanguage(true) instanceof QuerySettingsInterface);
+    }
+
+    /**
+     * @test
+     */
+    public function setLanguageUidAllowsChaining(): void
+    {
+        self::assertTrue($this->subject->setLanguageUid(42) instanceof QuerySettingsInterface);
+    }
+
+    /**
+     * @test
+     * @dataProvider booleanValueProvider
+     * @param bool $input
+     */
+    public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly(bool $input): void
+    {
+        $this->subject->setIgnoreEnableFields($input);
+        self::assertEquals($input, $this->subject->getIgnoreEnableFields());
+    }
+
+    /**
+     * @test
+     */
+    public function setIgnoreEnableFieldsAllowsChaining(): void
+    {
+        self::assertTrue($this->subject->setIgnoreEnableFields(true) instanceof QuerySettingsInterface);
+    }
+
+    /**
+     * @test
+     * @dataProvider arrayValueProvider
+     * @param array $input
+     */
+    public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly(array $input): void
+    {
+        $this->subject->setEnableFieldsToBeIgnored($input);
+        self::assertEquals($input, $this->subject->getEnableFieldsToBeIgnored());
+    }
+
+    /**
+     * @test
+     */
+    public function setEnableFieldsToBeIgnoredAllowsChaining(): void
+    {
+        self::assertTrue($this->subject->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof QuerySettingsInterface);
+    }
+
+    /**
+     * @test
+     * @dataProvider booleanValueProvider
+     * @param bool $input
+     */
+    public function setIncludeDeletedSetsIncludeDeletedCorrectly(bool $input): void
+    {
+        $this->subject->setIncludeDeleted($input);
+        self::assertEquals($input, $this->subject->getIncludeDeleted());
+    }
+
+    /**
+     * @test
+     */
+    public function setIncludeDeletedAllowsChaining(): void
+    {
+        self::assertTrue($this->subject->setIncludeDeleted(true) instanceof QuerySettingsInterface);
     }
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Domain\Repository;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -27,8 +28,7 @@ class BackendUserGroupRepository extends Repository
 {
     public function initializeObject()
     {
-        /** @var Typo3QuerySettings $querySettings */
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }

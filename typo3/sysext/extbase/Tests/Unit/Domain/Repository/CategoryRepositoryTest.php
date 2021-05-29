@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,6 +17,7 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -28,14 +31,14 @@ class CategoryRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeObjectSetsRespectStoragePidToFalse()
+    public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
         /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $fixture = new CategoryRepository($objectManager);
+        $subject = new CategoryRepository($objectManager);
         $querySettings = $this->createMock(Typo3QuerySettings::class);
         $querySettings->expects(self::once())->method('setRespectStoragePage')->with(false);
-        $objectManager->expects(self::once())->method('get')->with(Typo3QuerySettings::class)->willReturn($querySettings);
-        $fixture->initializeObject();
+        GeneralUtility::addInstance(Typo3QuerySettings::class, $querySettings);
+        $subject->initializeObject();
     }
 }
