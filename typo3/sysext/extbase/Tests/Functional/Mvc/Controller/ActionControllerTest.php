@@ -61,7 +61,6 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setPluginName('Pi1');
         $this->request->setControllerExtensionName('ActionControllerTest');
         $this->request->setControllerName('Test');
-        $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
         $this->subject = $this->getContainer()->get(TestController::class);

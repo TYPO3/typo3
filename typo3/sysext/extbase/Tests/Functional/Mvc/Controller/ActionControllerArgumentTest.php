@@ -222,7 +222,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         $request->setPluginName($this->pluginName);
         $request->setControllerExtensionName($this->extensionName);
         $request->setControllerName('ArgumentTest');
-        $request->setMethod('GET');
         $request->setFormat('html');
         $request->setControllerActionName($actionName);
         if ($arguments !== null) {

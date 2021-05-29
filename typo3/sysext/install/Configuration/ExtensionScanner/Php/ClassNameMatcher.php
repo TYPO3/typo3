@@ -1654,4 +1654,9 @@ return [
             'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException' => [
+        'restFiles' => [
+            'Deprecation-94231-DeprecateExtbaseInvalidRequestMethodException.rst'
+        ],
+    ],
 ];

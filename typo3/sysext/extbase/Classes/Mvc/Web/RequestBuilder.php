@@ -191,7 +191,6 @@ class RequestBuilder implements SingletonInterface
         $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $request->setControllerActionName($actionName);
         $request->setRequestUri($normalizedParams->getRequestUrl());
-        $request->setMethod($mainRequest->getMethod());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {

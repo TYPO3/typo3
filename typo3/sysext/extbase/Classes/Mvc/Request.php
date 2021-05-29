@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
 /**
@@ -103,11 +102,6 @@ class Request implements RequestInterface
      * @var \TYPO3\CMS\Extbase\Error\Result|null
      */
     protected $originalRequestMappingResults;
-
-    /**
-     * @var string Contains the request method
-     */
-    protected $method = 'GET';
 
     /**
      * @var string
@@ -514,28 +508,15 @@ class Request implements RequestInterface
     }
 
     /**
-     * Sets the request method
-     *
-     * @param string $method Name of the request method
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException if the request method is not supported
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setMethod($method)
-    {
-        if ($method === '' || strtoupper($method) !== $method) {
-            throw new InvalidRequestMethodException('The request method "' . $method . '" is not supported.', 1217778382);
-        }
-        $this->method = $method;
-    }
-
-    /**
      * Returns the name of the request method
      *
      * @return string Name of the request method
      */
     public function getMethod()
     {
-        return $this->method;
+        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        return $request->getMethod();
     }
 
     /**

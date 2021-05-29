@@ -78,7 +78,6 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->request->setPluginName('Pi1');
         $this->request->setControllerExtensionName(BlogController::class);
         $this->request->setControllerName('Blog');
-        $this->request->setMethod('GET');
         $this->request->setFormat('html');
 
         $this->controller = $this->getContainer()->get(BlogController::class);
