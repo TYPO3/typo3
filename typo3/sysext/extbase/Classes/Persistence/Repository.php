@@ -48,6 +48,9 @@ class Repository implements RepositoryInterface, SingletonInterface
     protected $defaultOrderings = [];
 
     /**
+     * Override query settings created by extbase natively.
+     * Be careful if using this, see the comment on setDefaultQuerySettings() for more insights.
+     *
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
      */
     protected $defaultQuerySettings;
@@ -183,9 +186,15 @@ class Repository implements RepositoryInterface, SingletonInterface
     }
 
     /**
-     * Sets the default query settings to be used in this repository
+     * Sets the default query settings to be used in this repository.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+     * A typical use case is an initializeObject() method that creates a QuerySettingsInterface
+     * object, configures it and sets it to be used for all queries created by the repository.
+     *
+     * Warning: Using this setter *fully overrides* native query settings created by
+     * QueryFactory->create(). This especially means that storagePid settings from
+     * configuration are not applied anymore, if not explicitly set. Make sure to apply these
+     * to your own QuerySettingsInterface object if needed, when using this method.
      */
     public function setDefaultQuerySettings(QuerySettingsInterface $defaultQuerySettings)
     {
