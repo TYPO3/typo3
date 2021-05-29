@@ -109,7 +109,7 @@ class HelpController
             return $result;
         }
 
-        $this->registerDocheaderButtons($request);
+        $this->registerDocHeaderButtons($request);
 
         $this->moduleTemplate->setTitle($this->getShortcutTitle($request));
         $this->moduleTemplate->setContent($this->view->render());
@@ -169,7 +169,7 @@ class HelpController
      *
      * @param ServerRequestInterface $request
      */
-    protected function registerDocheaderButtons(ServerRequestInterface $request)
+    protected function registerDocHeaderButtons(ServerRequestInterface $request)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 

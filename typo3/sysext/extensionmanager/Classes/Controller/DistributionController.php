@@ -53,7 +53,7 @@ class DistributionController extends AbstractModuleController
             /** @var BackendTemplateView $view */
             parent::initializeView($view);
             $this->generateMenu();
-            $this->registerDocheaderButtons();
+            $this->registerDocHeaderButtons();
         }
     }
 
@@ -80,7 +80,7 @@ class DistributionController extends AbstractModuleController
      *
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocHeaderButtons()
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();

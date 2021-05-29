@@ -128,7 +128,7 @@ class RecyclerModuleController
             return $result;
         }
 
-        $this->registerDocheaderButtons($request->getQueryParams()['route']);
+        $this->registerDocHeaderButtons($request->getQueryParams()['route']);
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -174,7 +174,7 @@ class RecyclerModuleController
      * @param string $route
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons(string $route)
+    protected function registerDocHeaderButtons(string $route)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 

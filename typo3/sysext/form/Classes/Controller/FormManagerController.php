@@ -79,7 +79,7 @@ class FormManagerController extends AbstractBackendController
      */
     public function indexAction(int $page = 1)
     {
-        $this->registerDocheaderButtons();
+        $this->registerDocHeaderButtons();
         $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
@@ -495,7 +495,7 @@ class FormManagerController extends AbstractBackendController
      *
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocHeaderButtons()
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
