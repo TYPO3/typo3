@@ -84,7 +84,7 @@ class UriBuilder
     protected $createAbsoluteUri = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $absoluteUriScheme;
 
@@ -114,7 +114,7 @@ class UriBuilder
     protected $targetPageType = 0;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $language;
 

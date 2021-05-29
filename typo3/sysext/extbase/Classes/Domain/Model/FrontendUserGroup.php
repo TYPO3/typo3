@@ -34,7 +34,7 @@ class FrontendUserGroup extends AbstractEntity
     protected $description = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
+     * @var ObjectStorage<FrontendUserGroup>
      */
     protected $subgroup;
 
@@ -93,7 +93,7 @@ class FrontendUserGroup extends AbstractEntity
      * Sets the subgroups. Keep in mind that the property is called "subgroup"
      * although it can hold several subgroups.
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subgroup An object storage containing the subgroups to add
+     * @param ObjectStorage<FrontendUserGroup> $subgroup An object storage containing the subgroups to add
      */
     public function setSubgroup(ObjectStorage $subgroup)
     {
@@ -103,9 +103,9 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Adds a subgroup to the frontend user
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $subgroup
+     * @param FrontendUserGroup $subgroup
      */
-    public function addSubgroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $subgroup)
+    public function addSubgroup(FrontendUserGroup $subgroup)
     {
         $this->subgroup->attach($subgroup);
     }
@@ -113,9 +113,9 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Removes a subgroup from the frontend user group
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $subgroup
+     * @param FrontendUserGroup $subgroup
      */
-    public function removeSubgroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $subgroup)
+    public function removeSubgroup(FrontendUserGroup $subgroup)
     {
         $this->subgroup->detach($subgroup);
     }
@@ -124,7 +124,7 @@ class FrontendUserGroup extends AbstractEntity
      * Returns the subgroups. Keep in mind that the property is called "subgroup"
      * although it can hold several subgroups.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage An object storage containing the subgroups
+     * @return ObjectStorage<FrontendUserGroup> An object storage containing the subgroups
      */
     public function getSubgroup()
     {

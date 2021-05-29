@@ -32,7 +32,7 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 class WidgetAjaxController extends AbstractController
 {
     /**
-     * @var Dashboard
+     * @var Dashboard|null
      */
     protected $currentDashboard;
 

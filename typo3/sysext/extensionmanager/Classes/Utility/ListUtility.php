@@ -54,7 +54,7 @@ class ListUtility implements SingletonInterface
     protected $packageManager;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $availableExtensions;
 

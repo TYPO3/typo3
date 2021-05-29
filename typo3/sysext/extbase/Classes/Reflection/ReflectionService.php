@@ -35,7 +35,7 @@ class ReflectionService implements SingletonInterface
     private static $cacheEntryIdentifier;
 
     /**
-     * @var FrontendInterface
+     * @var FrontendInterface|null
      */
     protected $dataCache;
 

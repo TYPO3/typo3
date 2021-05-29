@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileProvider extends AbstractProvider
 {
     /**
-     * @var File|Folder
+     * @var File|Folder|null
      */
     protected $record;
 

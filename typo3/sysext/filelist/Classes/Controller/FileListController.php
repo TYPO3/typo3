@@ -80,7 +80,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
     protected $id;
 
     /**
-     * @var Folder
+     * @var Folder|null
      */
     protected $folderObject;
 

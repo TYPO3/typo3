@@ -147,7 +147,7 @@ class Extension extends AbstractEntity
     protected $serializedDependencies = '';
 
     /**
-     * @var \SplObjectStorage<\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency>
+     * @var \SplObjectStorage<Dependency>
      */
     protected $dependencies;
 
@@ -509,7 +509,7 @@ class Extension extends AbstractEntity
     }
 
     /**
-     * @param \SplObjectStorage $dependencies
+     * @param \SplObjectStorage<Dependency> $dependencies
      */
     public function setDependencies($dependencies)
     {
@@ -517,7 +517,7 @@ class Extension extends AbstractEntity
     }
 
     /**
-     * @return \SplObjectStorage
+     * @return \SplObjectStorage<Dependency>
      */
     public function getDependencies()
     {
@@ -657,7 +657,7 @@ class Extension extends AbstractEntity
      * Converts string dependencies to an object storage of dependencies
      *
      * @param string $dependencies
-     * @return \SplObjectStorage
+     * @return \SplObjectStorage<Dependency>
      */
     protected function convertDependenciesToObjects(string $dependencies): \SplObjectStorage
     {

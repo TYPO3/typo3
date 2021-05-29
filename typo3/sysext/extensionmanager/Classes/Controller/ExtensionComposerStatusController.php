@@ -43,7 +43,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
     protected $composerDeficitDetector;
 
     /**
-     * @var ComposerDeficitDetector
+     * @var ComposerManifestProposalGenerator
      */
     protected $composerManifestProposalGenerator;
 

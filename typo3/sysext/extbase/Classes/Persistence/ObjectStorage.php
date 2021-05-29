@@ -23,6 +23,10 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  * SplObjectStorage introduced in PHP 5.3.
  *
  * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
+ *
+ * @template TEntity
+ * @implements \ArrayAccess<string, TEntity>
+ * @implements \Iterator<string, TEntity>
  */
 class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonitoringInterface
 {
@@ -116,7 +120,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Returns the current storage entry.
      *
-     * @return DomainObjectInterface The object at the current iterator position.
+     * @return TEntity The object at the current iterator position.
      */
     public function current()
     {
@@ -145,7 +149,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Associates data to an object in the storage. offsetSet() is an alias of attach().
      *
-     * @param DomainObjectInterface $object The object to add.
+     * @param TEntity $object The object to add.
      * @param mixed $information The data to associate with the object.
      */
     public function offsetSet($object, $information)
@@ -160,7 +164,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Checks whether an object exists in the storage.
      *
-     * @param DomainObjectInterface|int $value The object to look for, or the key in the storage.
+     * @param TEntity|int $value The object to look for, or the key in the storage.
      * @return bool
      */
     public function offsetExists($value)
@@ -172,7 +176,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Removes an object from the storage. offsetUnset() is an alias of detach().
      *
-     * @param DomainObjectInterface|int $value The object to remove, or its key in the storage.
+     * @param TEntity|int $value The object to remove, or its key in the storage.
      */
     public function offsetUnset($value)
     {
@@ -198,7 +202,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Returns the data associated with an object, or the object itself if an
      * integer is passed.
      *
-     * @param DomainObjectInterface|int $value The object to look for, or its key in the storage.
+     * @param TEntity|int $value The object to look for, or its key in the storage.
      * @return mixed The data associated with an object in the storage, or the object itself if an integer is passed.
      */
     public function offsetGet($value)
@@ -214,7 +218,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Checks if the storage contains a specific object.
      *
-     * @param DomainObjectInterface $object The object to look for.
+     * @param TEntity $object The object to look for.
      * @return bool
      */
     public function contains($object)
@@ -225,7 +229,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Adds an object in the storage, and optionally associate it to some data.
      *
-     * @param DomainObjectInterface $object The object to add.
+     * @param TEntity $object The object to add.
      * @param mixed $information The data to associate with the object.
      */
     public function attach($object, $information = null)
@@ -236,7 +240,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Removes an object from the storage.
      *
-     * @param DomainObjectInterface $object The object to remove.
+     * @param TEntity $object The object to remove.
      */
     public function detach($object)
     {
@@ -269,7 +273,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Adds all objects-data pairs from a different storage in the current storage.
      *
-     * @param ObjectStorage $objectStorage
+     * @param ObjectStorage<TEntity> $objectStorage
      */
     public function addAll(ObjectStorage $objectStorage)
     {
@@ -281,7 +285,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Removes objects contained in another storage from the current storage.
      *
-     * @param ObjectStorage $objectStorage The storage containing the elements to remove.
+     * @param ObjectStorage<TEntity> $objectStorage The storage containing the elements to remove.
      */
     public function removeAll(ObjectStorage $objectStorage)
     {

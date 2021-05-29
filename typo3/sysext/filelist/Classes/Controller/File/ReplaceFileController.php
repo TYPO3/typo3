@@ -50,7 +50,7 @@ class ReplaceFileController
     /**
      * The file or folder object that should be renamed
      *
-     * @var ResourceInterface $fileOrFolderObject
+     * @var ResourceInterface|null
      */
     protected $fileOrFolderObject;
 

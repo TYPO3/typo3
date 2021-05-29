@@ -128,7 +128,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * The current request.
      *
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     * @var RequestInterface
      */
     protected $request;
 

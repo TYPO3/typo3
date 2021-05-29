@@ -34,7 +34,7 @@ class FrontendUser extends AbstractEntity
     protected $password = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
+     * @var ObjectStorage<FrontendUserGroup>
      */
     protected $usergroup;
 
@@ -109,7 +109,7 @@ class FrontendUser extends AbstractEntity
     protected $company = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      */
     protected $image;
 
@@ -185,7 +185,7 @@ class FrontendUser extends AbstractEntity
      * Sets the usergroups. Keep in mind that the property is called "usergroup"
      * although it can hold several usergroups.
      *
-     * @param ObjectStorage $usergroup
+     * @param ObjectStorage<FrontendUserGroup> $usergroup
      */
     public function setUsergroup(ObjectStorage $usergroup)
     {
@@ -216,7 +216,7 @@ class FrontendUser extends AbstractEntity
      * Returns the usergroups. Keep in mind that the property is called "usergroup"
      * although it can hold several usergroups.
      *
-     * @return ObjectStorage An object storage containing the usergroup
+     * @return ObjectStorage<FrontendUserGroup> An object storage containing the usergroup
      */
     public function getUsergroup()
     {
@@ -506,7 +506,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Sets the image value
      *
-     * @param ObjectStorage $image
+     * @param ObjectStorage<FileReference> $image
      */
     public function setImage(ObjectStorage $image)
     {
@@ -516,7 +516,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Gets the image value
      *
-     * @return ObjectStorage
+     * @return ObjectStorage<FileReference>
      */
     public function getImage()
     {

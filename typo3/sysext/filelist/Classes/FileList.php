@@ -209,7 +209,7 @@ class FileList
      *
      * @param Folder $folderObject The folder to work on
      * @param int $pointer Pointer
-     * @param bool $sort Sorting column
+     * @param string $sort Sorting column
      * @param bool $sortRev Sorting direction
      * @param bool $clipBoard
      * @param bool $bigControlPanel Show clipboard flag

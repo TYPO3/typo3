@@ -53,7 +53,7 @@ class RenameFileController
     /**
      * The file or folder object that should be renamed
      *
-     * @var File|Folder $fileOrFolderObject
+     * @var File|Folder|null
      */
     protected $fileOrFolderObject;
 

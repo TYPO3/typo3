@@ -146,7 +146,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
         $countOfBindParamsPerRow = count(self::$fieldNames);
         // flush at least chunks of 50 elements - in case the currently used
         // database platform does not support that, the threshold is lowered
-        $this->maxRowsPerChunk = min(
+        $this->maxRowsPerChunk = (int)min(
             $this->maxRowsPerChunk,
             floor($maxBindParameters / $countOfBindParamsPerRow)
         );

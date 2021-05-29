@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -25,6 +24,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ *
+ * @template TEntity
+ * @extends ObjectStorage<TEntity>
  */
 class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterface
 {
@@ -95,7 +97,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * Constructs this proxy instance.
      *
-     * @param DomainObjectInterface $parentObject The object instance this proxy is part of
+     * @param TEntity $parentObject The object instance this proxy is part of
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
      * @param ?DataMapper $dataMapper
@@ -158,7 +160,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $object The object to add.
+     * @param TEntity $object The object to add.
      * @param mixed $data The data to associate with the object.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::attach
@@ -170,7 +172,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $object The object to look for.
+     * @param TEntity $object The object to look for.
      * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
@@ -204,7 +206,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @return DomainObjectInterface The object at the current iterator position.
+     * @return TEntity The object at the current iterator position.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
      */
@@ -215,7 +217,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $object The object to remove.
+     * @param TEntity $object The object to remove.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::detach
      */
@@ -246,7 +248,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $value The object to look for, or the key in the storage.
+     * @param TEntity $value The object to look for, or the key in the storage.
      * @return bool
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
@@ -258,7 +260,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $value The object to look for, or its key in the storage.
+     * @param TEntity $value The object to look for, or its key in the storage.
      * @return mixed
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
@@ -270,7 +272,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $object The object to add.
+     * @param TEntity $object The object to add.
      * @param mixed $info The data to associate with the object.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetSet
@@ -282,7 +284,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     }
 
     /**
-     * @param DomainObjectInterface $value The object to remove, or its key in the storage.
+     * @param TEntity $value The object to remove, or its key in the storage.
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
      */

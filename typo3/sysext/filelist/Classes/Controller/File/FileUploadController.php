@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,7 +63,7 @@ class FileUploadController
     /**
      * The folder object which is the target directory for the upload
      *
-     * @var \TYPO3\CMS\Core\Resource\Folder $folderObject
+     * @var File|Folder|null
      */
     protected $folderObject;
 
