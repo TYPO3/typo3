@@ -211,6 +211,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
         /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
         $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
@@ -226,8 +227,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('get')
             ->willReturnMap([
                 [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
+                [MimeTypeValidator::class, $mimeTypeValidator]
             ]);
 
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
@@ -270,6 +270,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         // Resource Factory
         /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
         /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
         $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
@@ -285,8 +286,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('get')
             ->willReturnMap([
                 [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
+                [MimeTypeValidator::class, $mimeTypeValidator]
             ]);
 
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
@@ -331,9 +331,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
         $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
 
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
-        $resourceFactory = $this->createMock(ResourceFactory::class);
         /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
         $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
 
@@ -349,8 +346,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('get')
             ->willReturnMap([
                 [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
+                [MimeTypeValidator::class, $mimeTypeValidator]
             ]);
 
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);

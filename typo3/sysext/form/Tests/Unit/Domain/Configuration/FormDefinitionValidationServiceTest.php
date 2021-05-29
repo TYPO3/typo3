@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
@@ -284,10 +283,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(ConfigurationService::class)->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
 
         $returnedExceptionCode = -1;
         try {
@@ -341,9 +337,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(ConfigurationService::class)->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
 
         $returnedExceptionCode = -1;
         try {

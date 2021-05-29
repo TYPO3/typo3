@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 
 /**
@@ -105,8 +104,7 @@ class InheritancesResolverService
     public static function create(array $configuration = []): InheritancesResolverService
     {
         /** @var InheritancesResolverService $inheritancesResolverService */
-        $inheritancesResolverService = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(self::class);
+        $inheritancesResolverService = GeneralUtility::makeInstance(self::class);
         $inheritancesResolverService->setReferenceConfiguration($configuration);
         return $inheritancesResolverService;
     }

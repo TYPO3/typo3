@@ -142,7 +142,7 @@ class ConfirmationFinisher extends AbstractFinisher
      */
     protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
     {
-        $standaloneView = $this->objectManager->get(StandaloneView::class);
+        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
 
         if (!isset($this->options['templateName'])) {
             throw new FinisherException(

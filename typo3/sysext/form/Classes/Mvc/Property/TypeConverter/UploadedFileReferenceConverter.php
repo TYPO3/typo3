@@ -183,7 +183,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         }
 
         if ($source['error'] !== \UPLOAD_ERR_OK) {
-            return $this->objectManager->get(Error::class, $this->getUploadErrorMessage($source['error']), 1471715915);
+            return GeneralUtility::makeInstance(Error::class, $this->getUploadErrorMessage($source['error']), 1471715915);
         }
 
         if (isset($this->convertedResources[$source['tmp_name']])) {
@@ -200,7 +200,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         } catch (TypeConverterException $e) {
             return $e->getError();
         } catch (\Exception $e) {
-            return $this->objectManager->get(Error::class, $e->getMessage(), $e->getCode());
+            return GeneralUtility::makeInstance(Error::class, $e->getMessage(), $e->getCode());
         }
 
         $this->convertedResources[$source['tmp_name']] = $resource;

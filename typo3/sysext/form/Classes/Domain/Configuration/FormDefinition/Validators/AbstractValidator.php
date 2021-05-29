@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
 
@@ -27,12 +26,6 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
  */
 abstract class AbstractValidator implements ValidatorInterface
 {
-
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
-
     /**
      * @var array
      */
@@ -88,17 +81,6 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function getConfigurationService(): ConfigurationService
     {
-        if (!($this->configurationService instanceof ConfigurationService)) {
-            $this->configurationService = $this->getObjectManager()->get(ConfigurationService::class);
-        }
-        return $this->configurationService;
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager(): ObjectManager
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
+        return GeneralUtility::makeInstance(ConfigurationService::class);
     }
 }

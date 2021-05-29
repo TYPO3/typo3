@@ -61,10 +61,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Arguments::class)->willReturn(new Arguments());
-        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -117,7 +114,6 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [
@@ -195,10 +191,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Arguments::class)->willReturn(new Arguments());
-        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -251,7 +244,6 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [
@@ -345,10 +337,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Arguments::class)->willReturn(new Arguments());
-        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
+        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -401,7 +390,6 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [

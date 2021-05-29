@@ -86,7 +86,7 @@ class FormEditorController extends AbstractBackendController
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);
         }
 
-        $configurationService = $this->objectManager->get(ConfigurationService::class);
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
 
         if ($prototypeName === null) {
@@ -187,7 +187,7 @@ class FormEditorController extends AbstractBackendController
                 throw new PersistenceManagerException(sprintf('Save "%s" is not allowed', $formPersistenceIdentifier), 1614500663);
             }
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
-            $configurationService = $this->objectManager->get(ConfigurationService::class);
+            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
             $this->prototypeConfiguration = $configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
             $formDefinition = $this->transformFormDefinitionForFormEditor($formDefinition);
             $response['formDefinition'] = $formDefinition;
@@ -222,7 +222,7 @@ class FormEditorController extends AbstractBackendController
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $formDefinition->getArrayCopy();
 
-        $formFactory = $this->objectManager->get(ArrayFormFactory::class);
+        $formFactory = GeneralUtility::makeInstance(ArrayFormFactory::class);
         $formDefinition = $formFactory->build($formDefinition, $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
         $response = new Response();
@@ -467,7 +467,7 @@ class FormEditorController extends AbstractBackendController
 
         $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
 
-        $view = $this->objectManager->get(TemplateView::class);
+        $view = GeneralUtility::makeInstance(TemplateView::class);
         $view->setControllerContext(clone $this->controllerContext);
         $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
         $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);

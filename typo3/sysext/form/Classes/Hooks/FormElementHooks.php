@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Form\Hooks;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -49,12 +48,11 @@ class FormElementHooks
             if ($elementValue['password'] !== $elementValue['confirmation']) {
                 $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
                 $processingRule->getProcessingMessages()->addError(
-                    GeneralUtility::makeInstance(ObjectManager::class)
-                        ->get(
-                            Error::class,
-                            TranslationService::getInstance()->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
-                            1556283177
-                        )
+                    GeneralUtility::makeInstance(
+                        Error::class,
+                        TranslationService::getInstance()->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
+                        1556283177
+                    )
                 );
             }
             $elementValue = $elementValue['password'];

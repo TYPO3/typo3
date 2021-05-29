@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
@@ -145,8 +144,7 @@ class FluidFormRenderer extends AbstractElementRenderer
         $formElementType = $this->formRuntime->getType();
         $renderingOptions = $this->formRuntime->getRenderingOptions();
 
-        $view = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(TemplateView::class);
+        $view = GeneralUtility::makeInstance(TemplateView::class);
         $view->setControllerContext($this->controllerContext);
 
         if (!isset($renderingOptions['templateRootPaths'])) {

@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
@@ -54,79 +53,27 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 {
     const FORM_DEFINITION_FILE_EXTENSION = '.form.yaml';
 
-    /**
-     * @var \TYPO3\CMS\Form\Mvc\Configuration\YamlSource
-     */
-    protected $yamlSource;
+    protected YamlSource $yamlSource;
+    protected StorageRepository $storageRepository;
+    protected FilePersistenceSlot $filePersistenceSlot;
+    protected ResourceFactory $resourceFactory;
+    protected array $formSettings;
+    protected FrontendInterface $runtimeCache;
 
-    /**
-     * @var \TYPO3\CMS\Core\Resource\StorageRepository
-     */
-    protected $storageRepository;
-
-    /**
-     * @var array
-     */
-    protected $formSettings;
-
-    /**
-     * @var FilePersistenceSlot
-     */
-    protected $filePersistenceSlot;
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $runtimeCache;
-
-    /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
-     * @param \TYPO3\CMS\Form\Mvc\Configuration\YamlSource $yamlSource
-     * @internal
-     */
-    public function injectYamlSource(YamlSource $yamlSource)
-    {
+    public function __construct(
+        YamlSource $yamlSource,
+        StorageRepository $storageRepository,
+        FilePersistenceSlot $filePersistenceSlot,
+        ResourceFactory $resourceFactory,
+        ConfigurationManagerInterface $configurationManager,
+        CacheManager $cacheManager
+    ) {
         $this->yamlSource = $yamlSource;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository
-     * @internal
-     */
-    public function injectStorageRepository(StorageRepository $storageRepository)
-    {
         $this->storageRepository = $storageRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Form\Slot\FilePersistenceSlot $filePersistenceSlot
-     */
-    public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
-    {
         $this->filePersistenceSlot = $filePersistenceSlot;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
-     */
-    public function injectResourceFactory(ResourceFactory $resourceFactory)
-    {
         $this->resourceFactory = $resourceFactory;
-    }
-
-    /**
-     * @internal
-     */
-    public function initializeObject()
-    {
-        $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class)
-            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
-        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+        $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 
     /**

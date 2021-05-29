@@ -59,8 +59,7 @@ class ArrayFormFactory extends AbstractFormFactory
             throw new RenderingException($configuration['label'], 1529710560);
         }
 
-        $prototypeConfiguration = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationService::class)
+        $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
             ->getPrototypeConfiguration($prototypeName);
 
         $form = GeneralUtility::makeInstance(ObjectManager::class)->get(

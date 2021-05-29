@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
@@ -65,14 +64,9 @@ class ConfigurationService implements SingletonInterface
      */
     protected $translationService;
 
-    /**
-     * @internal
-     */
-    public function initializeObject(): void
+    public function __construct(ConfigurationManagerInterface $configurationManager)
     {
-        $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class)
-            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
     }
 
     /**

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Mvc;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
@@ -95,8 +94,7 @@ class ProcessingRule
      */
     public function __construct()
     {
-        $this->processingMessages = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(Result::class);
+        $this->processingMessages = GeneralUtility::makeInstance(Result::class);
     }
 
     /**
@@ -170,8 +168,7 @@ class ProcessingRule
             $messages = $this->propertyMapper->getMessages();
             $this->propertyMapper->resetMessages();
         } else {
-            $messages = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(Result::class);
+            $messages = GeneralUtility::makeInstance(Result::class);
         }
 
         $validationResult = $this->validator->validate($value);

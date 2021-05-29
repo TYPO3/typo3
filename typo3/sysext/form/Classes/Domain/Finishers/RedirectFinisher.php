@@ -65,7 +65,7 @@ class RedirectFinisher extends AbstractFinisher
         $formRuntime = $this->finisherContext->getFormRuntime();
         $this->request = $formRuntime->getRequest();
         $this->response = $formRuntime->getResponse();
-        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->uriBuilder->setRequest($this->request);
 
         $pageUid = $this->parseOption('pageUid');

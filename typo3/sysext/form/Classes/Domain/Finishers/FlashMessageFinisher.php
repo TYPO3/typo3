@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Message;
 use TYPO3\CMS\Extbase\Error\Notice;
@@ -95,20 +96,20 @@ class FlashMessageFinisher extends AbstractFinisher
         $severity = $this->parseOption('severity');
         switch ($severity) {
             case AbstractMessage::NOTICE:
-                $message = $this->objectManager->get(Notice::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
+                $message = GeneralUtility::makeInstance(Notice::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
             case AbstractMessage::WARNING:
-                $message = $this->objectManager->get(Warning::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
+                $message = GeneralUtility::makeInstance(Warning::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
             case AbstractMessage::ERROR:
-                $message = $this->objectManager->get(Error::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
+                $message = GeneralUtility::makeInstance(Error::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
             default:
-                $message = $this->objectManager->get(Message::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
+                $message = GeneralUtility::makeInstance(Message::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
                 break;
         }
 
-        $flashMessage = $this->objectManager->get(
+        $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             $message->render(),
             $message->getTitle(),

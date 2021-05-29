@@ -108,7 +108,7 @@ class FormFrontendController extends ActionController
 
         if (isset($formDefinition['finishers'])) {
             $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
-            $configurationService = $this->objectManager->get(ConfigurationService::class);
+            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
             $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
             foreach ($formDefinition['finishers'] as $index => $formFinisherDefinition) {

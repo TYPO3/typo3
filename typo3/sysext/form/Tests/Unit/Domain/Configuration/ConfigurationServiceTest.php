@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
@@ -43,7 +41,6 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
         $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
@@ -53,10 +50,7 @@ class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-        $configurationService = new ConfigurationService();
-        $configurationService->initializeObject();
+        $configurationService = new ConfigurationService($configurationManager->reveal());
 
         $expected = [
             'key' => 'value',
@@ -70,7 +64,6 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
         $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
@@ -78,9 +71,7 @@ class ConfigurationServiceTest extends UnitTestCase
                     'noStandard' => [],
                 ],
             ]);
-        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-        $configurationService = new ConfigurationService();
+        $configurationService = new ConfigurationService($configurationManager->reveal());
 
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
@@ -93,7 +84,6 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
         $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
             ->willReturn([
@@ -111,10 +101,7 @@ class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-        $configurationService = new ConfigurationService();
-        $configurationService->initializeObject();
+        $configurationService = new ConfigurationService($configurationManager->reveal());
 
         $expected = [
             'standard',

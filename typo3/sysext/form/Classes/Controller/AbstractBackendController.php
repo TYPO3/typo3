@@ -56,7 +56,7 @@ abstract class AbstractBackendController extends ActionController
      */
     public function initializeObject()
     {
-        $this->formSettings = $this->objectManager->get(ConfigurationManagerInterface::class)
+        $this->formSettings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
     }
 

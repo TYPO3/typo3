@@ -41,9 +41,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477679819);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
@@ -69,9 +67,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1484071985);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
@@ -103,9 +99,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477679820);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $input = '-1:/user_uploads/_example.php';
         $mockFormPersistenceManager->_call('save', $input, []);
@@ -119,9 +113,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1477680881);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -141,9 +133,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1484073571);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
@@ -176,9 +166,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239534);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $input = '-1:/user_uploads/_example.php';
         $mockFormPersistenceManager->_call('delete', $input);
@@ -192,9 +180,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239535);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::any())
@@ -213,9 +199,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239536);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::any())
@@ -240,9 +224,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1484073878);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
@@ -280,10 +262,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(PersistenceManagerException::class);
         $this->expectExceptionCode(1472239516);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid',
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid', 'exists'], [], '', false);
 
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -319,9 +298,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsTrueIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])
@@ -352,10 +329,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndFileHasNoYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
-
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt';
         self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
@@ -365,9 +339,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileExistsAndExtensionLocationIsNotAllowed(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
@@ -384,10 +356,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsExtensionLocationAndFileNotExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'dummy'
-        ]);
-
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/_BlankForm.yaml';
         self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
@@ -397,9 +366,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsTrueIfPersistenceIdentifierIsStorageLocationAndFileExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid'], [], '', false);
 
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -423,9 +390,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsStorageLocationAndFileExistsAndFileNoYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid'], [], '', false);
 
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -449,9 +414,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function existsReturnsFalseIfPersistenceIdentifierIsStorageLocationAndFileNotExistsAndFileHasYamlExtension(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid'], [], '', false);
 
         $mockStorage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -475,9 +438,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function getUniquePersistenceIdentifierAppendNumberIfPersistenceIdentifierExists(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::exactly(3))
@@ -499,9 +460,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function getUniquePersistenceIdentifierAppendTimestampIfPersistenceIdentifierExists(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'exists'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::exactly(101))
@@ -537,9 +496,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $this->expectException(NoUniqueIdentifierException::class);
         $this->expectExceptionCode(1477688567);
 
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'checkForDuplicateIdentifier'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['checkForDuplicateIdentifier'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::any())
@@ -555,9 +512,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function getUniqueIdentifierAppendTimestampIfIdentifierExists(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'checkForDuplicateIdentifier'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['checkForDuplicateIdentifier'], [], '', false);
 
         $mockFormPersistenceManager
                 ->expects(self::exactly(101))
@@ -578,9 +533,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function checkForDuplicateIdentifierReturnsTrueIfIdentifierIsUsed(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'listForms'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['listForms'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::once())
@@ -600,9 +553,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function checkForDuplicateIdentifierReturnsFalseIfIdentifierIsUsed(): void
     {
-        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'listForms'
-        ]);
+        $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['listForms'], [], '', false);
 
         $mockFormPersistenceManager
             ->expects(self::once())
@@ -963,9 +914,7 @@ class FormPersistenceManagerTest extends UnitTestCase
      */
     public function isAllowedPersistencePathReturnsPropperValues(string $persistencePath, array $allowedExtensionPaths, array $allowedFileMounts, $expected): void
     {
-        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, [
-            'getStorageByUid',
-        ]);
+        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid'], [], '', false);
 
         $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)
             ->setMethods(['get', 'set'])

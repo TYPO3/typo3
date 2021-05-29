@@ -138,8 +138,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             return false;
         }
 
-        $resourceFactory = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ResourceFactory::class);
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         try {
             $resourceFactory->getFolderObjectFromCombinedIdentifier($saveToFileMountIdentifier);

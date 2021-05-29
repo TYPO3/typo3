@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Domain\Configuration;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
@@ -34,12 +33,6 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
  */
 class FormDefinitionValidationService implements SingletonInterface
 {
-
-    /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
-
     /**
      * Validate the form definition properties using the form setup.
      * Pseudo workflow:
@@ -165,7 +158,8 @@ class FormDefinitionValidationService implements SingletonInterface
             $propertyCollectionName
         );
 
-        if ($this->getConfigurationService()->isFormElementTypeCreatableByFormEditor($validationDto)) {
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        if ($configurationService->isFormElementTypeCreatableByFormEditor($validationDto)) {
             $this->validateAllPropertyValuesFromCreatableFormElement(
                 $currentFormElement,
                 $sessionToken,
@@ -177,7 +171,7 @@ class FormDefinitionValidationService implements SingletonInterface
                     $propertyCollectionElement['identifier']
                 );
 
-                if ($this->getConfigurationService()->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)) {
+                if ($configurationService->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)) {
                     $this->validateAllPropertyValuesFromCreatablePropertyCollectionElement(
                         $propertyCollectionElement,
                         $sessionToken,
@@ -381,24 +375,5 @@ class FormDefinitionValidationService implements SingletonInterface
                 )
             )
         );
-    }
-
-    /**
-     * @return ConfigurationService
-     */
-    protected function getConfigurationService(): ConfigurationService
-    {
-        if (!($this->configurationService instanceof ConfigurationService)) {
-            $this->configurationService = $this->getObjectManager()->get(ConfigurationService::class);
-        }
-        return $this->configurationService;
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager(): ObjectManager
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }
