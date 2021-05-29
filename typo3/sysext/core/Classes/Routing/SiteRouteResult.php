@@ -45,7 +45,7 @@ class SiteRouteResult implements RouteResultInterface
     protected $site;
 
     /**
-     * @var SiteLanguage
+     * @var SiteLanguage|null
      */
     protected $language;
 

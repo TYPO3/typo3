@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class YouTubeRenderer implements FileRendererInterface
 {
     /**
-     * @var OnlineMediaHelperInterface
+     * @var OnlineMediaHelperInterface|false
      */
     protected $onlineMediaHelper;
 
@@ -61,7 +61,7 @@ class YouTubeRenderer implements FileRendererInterface
      * Get online media helper
      *
      * @param FileInterface $file
-     * @return bool|OnlineMediaHelperInterface
+     * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
     {

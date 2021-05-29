@@ -149,10 +149,11 @@ class SemaphoreLockStrategy implements LockingStrategyInterface
             return true;
         }
 
-        $this->resource = sem_get($this->id, 1);
-        if ($this->resource === false) {
+        $resource = sem_get($this->id, 1);
+        if ($resource === false) {
             throw new LockAcquireException('Unable to get semaphore with id ' . $this->id, 1313828196);
         }
+        $this->resource = $resource;
 
         $this->isAcquired = (bool)sem_acquire($this->resource);
         return $this->isAcquired;

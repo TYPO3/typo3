@@ -31,7 +31,7 @@ abstract class AbstractFormProtection
     use BlockSerializationTrait;
 
     /**
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $validationFailedCallback;
 

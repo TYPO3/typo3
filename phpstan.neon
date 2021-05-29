@@ -129,14 +129,6 @@ parameters:
 
     # Ignored errors for level 5
     -
-      message: "#^Parameter \\#1 \\$(var|value) of function count expects array\\|Countable, string given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#1 \\$(input|array) of function array_slice expects array, string given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
       message: "#^Parameter \\#2 \\$suffix of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryGenerator\\:\\:cleanInputVal\\(\\) expects string, int given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Database/QueryGenerator.php
@@ -236,10 +228,6 @@ parameters:
       message: "#^Parameter \\#1 \\$file of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:replaceFile\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ProcessedFile\\|null given\\.$#"
       count: 2
       path: typo3/sysext/core/Classes/Resource/ResourceStorage.php
-    -
-      message: "#^Parameter \\#1 \\$address of method TYPO3\\\\CMS\\\\Core\\\\Mail\\\\Rfc822AddressesParser\\:\\:_splitAddresses\\(\\) expects string, string\\|true given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
     -
       message: "#^Parameter \\#2 \\$package of method TYPO3\\\\CMS\\\\Core\\\\DependencyInjection\\\\ServiceProviderRegistry\\:\\:create\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\|null, TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageInterface given\\.$#"
       count: 1

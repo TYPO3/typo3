@@ -28,7 +28,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var array
+     * @var array|false|null
      */
     protected $imageSizes;
 

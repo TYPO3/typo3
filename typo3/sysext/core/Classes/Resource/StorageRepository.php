@@ -64,7 +64,7 @@ class StorageRepository implements LoggerAwareInterface
     protected $eventDispatcher;
 
     /**
-     * @var ResourceStorage[]
+     * @var ResourceStorage[]|null
      */
     protected $storageInstances;
 

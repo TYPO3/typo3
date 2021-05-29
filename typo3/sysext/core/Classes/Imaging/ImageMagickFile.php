@@ -59,7 +59,7 @@ class ImageMagickFile
     /**
      * Resolved mime-type of file
      *
-     * @var string
+     * @var string|null
      */
     protected $mimeType;
 
@@ -143,7 +143,7 @@ class ImageMagickFile
 
         if ($this->fileExists) {
             $fileInfo = $this->getFileInfo($filePath);
-            $this->mimeType = $fileInfo->getMimeType();
+            $this->mimeType = $fileInfo->getMimeType() ?: null;
             $this->mimeExtensions = $fileInfo->getMimeExtensions();
         }
 

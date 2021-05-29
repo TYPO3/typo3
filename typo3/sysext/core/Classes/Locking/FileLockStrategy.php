@@ -102,10 +102,11 @@ class FileLockStrategy implements LockingStrategyInterface
             return true;
         }
 
-        $this->filePointer = fopen($this->filePath, 'c');
-        if ($this->filePointer === false) {
+        $filePointer = fopen($this->filePath, 'c');
+        if ($filePointer === false) {
             throw new LockAcquireException('Lock file could not be opened', 1294586099);
         }
+        $this->filePointer = $filePointer;
         GeneralUtility::fixPermissions($this->filePath);
 
         $operation = $mode & self::LOCK_CAPABILITY_EXCLUSIVE ? LOCK_EX : LOCK_SH;

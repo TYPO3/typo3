@@ -52,7 +52,7 @@ class ApplicationContext
     /**
      * The parent context, or NULL if there is no parent context
      *
-     * @var \TYPO3\CMS\Core\Core\ApplicationContext
+     * @var \TYPO3\CMS\Core\Core\ApplicationContext|null
      */
     protected $parentContext;
 
@@ -124,7 +124,7 @@ class ApplicationContext
     /**
      * Returns the parent context object, if any
      *
-     * @return \TYPO3\CMS\Core\Core\ApplicationContext the parent context or NULL, if there is none
+     * @return \TYPO3\CMS\Core\Core\ApplicationContext|null the parent context or NULL, if there is none
      */
     public function getParent()
     {

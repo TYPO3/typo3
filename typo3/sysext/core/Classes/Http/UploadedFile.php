@@ -40,12 +40,12 @@ class UploadedFile implements UploadedFileInterface
     protected $stream;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $clientFilename;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $clientMediaType;
 

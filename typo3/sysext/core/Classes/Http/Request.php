@@ -40,7 +40,7 @@ class Request extends Message implements RequestInterface
     /**
      * The HTTP method, defaults to GET
      *
-     * @var string
+     * @var string|null
      */
     protected $method;
 
@@ -75,7 +75,7 @@ class Request extends Message implements RequestInterface
 
     /**
      * An instance of the Uri object
-     * @var UriInterface
+     * @var UriInterface|null
      */
     protected $uri;
 

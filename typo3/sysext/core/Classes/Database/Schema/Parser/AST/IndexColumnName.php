@@ -35,7 +35,7 @@ class IndexColumnName
     public $length;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $direction;
 

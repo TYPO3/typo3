@@ -50,7 +50,7 @@ class Message implements MessageInterface
 
     /**
      * The body as a Stream object
-     * @var StreamInterface
+     * @var StreamInterface|null
      */
     protected $body;
 

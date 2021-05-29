@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Cache\Frontend;
 
-use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +32,7 @@ abstract class AbstractFrontend implements FrontendInterface
     protected $identifier;
 
     /**
-     * @var AbstractBackend|TaggableBackendInterface
+     * @var BackendInterface|TaggableBackendInterface
      */
     protected $backend;
 

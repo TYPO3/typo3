@@ -44,7 +44,7 @@ class TimeTracker implements SingletonInterface
     /**
      * Is set via finish() with the millisecond time when the request handler is finished.
      *
-     * @var int
+     * @var float
      */
     protected $finishtime = 0;
 

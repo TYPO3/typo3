@@ -38,7 +38,7 @@ abstract class AbstractFile implements FileInterface
     /**
      * The storage this file is located in
      *
-     * @var ResourceStorage
+     * @var ResourceStorage|null
      */
     protected $storage;
 

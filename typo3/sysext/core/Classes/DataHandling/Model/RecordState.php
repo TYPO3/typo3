@@ -46,12 +46,12 @@ class RecordState
     protected $subject;
 
     /**
-     * @var EntityPointerLink
+     * @var EntityPointerLink|null
      */
     protected $languageLink;
 
     /**
-     * @var EntityPointerLink
+     * @var EntityPointerLink|null
      */
     protected $versionLink;
 

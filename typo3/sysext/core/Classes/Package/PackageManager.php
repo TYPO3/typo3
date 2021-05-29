@@ -55,7 +55,7 @@ class PackageManager implements SingletonInterface
     protected $coreCache;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $cacheIdentifier;
 

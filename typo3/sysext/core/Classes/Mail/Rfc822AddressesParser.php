@@ -66,63 +66,63 @@ class Rfc822AddressesParser
     /**
      * The address being parsed by the RFC822 object.
      *
-     * @var string $address
+     * @var string|false
      */
     private $address = '';
 
     /**
      * The default domain to use for unqualified addresses.
      *
-     * @var string $default_domain
+     * @var string
      */
     private $default_domain = 'localhost';
 
     /**
      * Whether or not to validate atoms for non-ascii characters.
      *
-     * @var bool $validate
+     * @var bool
      */
     private $validate = true;
 
     /**
      * The array of raw addresses built up as we parse.
      *
-     * @var array $addresses
+     * @var array
      */
     private $addresses = [];
 
     /**
      * The final array of parsed address information that we build up.
      *
-     * @var array $structure
+     * @var array
      */
     private $structure = [];
 
     /**
      * The current error message, if any.
      *
-     * @var string $error
+     * @var string|null
      */
     private $error;
 
     /**
      * An internal counter/pointer.
      *
-     * @var int $index
+     * @var int|null
      */
     private $index;
 
     /**
      * The number of groups that have been found in the address list.
      *
-     * @var int $num_groups
+     * @var int
      */
     private $num_groups = 0;
 
     /**
      * A limit after which processing stops
      *
-     * @var int $limit
+     * @var int
      */
     private $limit;
 
@@ -180,7 +180,7 @@ class Rfc822AddressesParser
         $this->index = null;
         // Unfold any long lines in $this->address.
         $this->address = (string)preg_replace('/\\r?\\n/', '
-', $this->address);
+', (string)$this->address);
         $this->address = (string)preg_replace('/\\r\\n(\\t| )+/', ' ', $this->address);
         while ($this->address = $this->_splitAddresses($this->address)) {
         }
@@ -203,11 +203,14 @@ class Rfc822AddressesParser
      * Splits an address into separate addresses.
      *
      * @internal
-     * @param string $address The addresses to split.
-     * @return bool Success or failure.
+     * @param string|false $address The addresses to split.
+     * @return string|false False on failure.
      */
     protected function _splitAddresses($address)
     {
+        if ($address === false) {
+            return false;
+        }
         $split_char = '';
         $is_group = false;
         if (!empty($this->limit) && count($this->addresses) == $this->limit) {
@@ -267,11 +270,14 @@ class Rfc822AddressesParser
      * Checks for a group at the start of the string.
      *
      * @internal
-     * @param string $address The address to check.
+     * @param string|false $address The address to check.
      * @return bool Whether or not there is a group at the start of the string.
      */
     protected function _isGroup($address)
     {
+        if ($address === false) {
+            return false;
+        }
         // First comma not in quotes, angles or escaped:
         $parts = explode(',', $address);
         $string = $this->_splitCheck($parts, ',');

@@ -46,7 +46,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     protected $cookieParams = [];
 
     /**
-     * @var array
+     * @var array|object|null
      */
     protected $parsedBody;
 
@@ -85,7 +85,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         parent::__construct($uri, $method, $body, $headers);
 
         $this->serverParams  = $serverParams;
-        $this->uploadedFiles = $uploadedFiles;
+        $this->uploadedFiles = $uploadedFiles ?? [];
     }
 
     /**

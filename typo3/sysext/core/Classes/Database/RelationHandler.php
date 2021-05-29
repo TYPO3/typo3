@@ -308,7 +308,7 @@ class RelationHandler
         }
         // Set first and second tables:
         // Is the first table
-        $this->firstTable = key($this->tableArray);
+        $this->firstTable = (string)key($this->tableArray);
         next($this->tableArray);
         // Now, populate the internal itemArray and tableArray arrays:
         // If MM, then call this function to do that:

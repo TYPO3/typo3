@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Comparator extends \Doctrine\DBAL\Schema\Comparator
 {
     /**
-     * @var AbstractPlatform
+     * @var AbstractPlatform|null
      */
     protected $databasePlatform;
 

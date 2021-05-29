@@ -47,7 +47,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
     /**
      * The logger instance.
      *
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 

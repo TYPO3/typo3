@@ -34,13 +34,13 @@ class PackageConstraint
 
     /**
      * Minimum version for the constraint
-     * @var string
+     * @var string|null
      */
     protected $minVersion;
 
     /**
      * Maximum version for the constraint
-     * @var string
+     * @var string|null
      */
     protected $maxVersion;
 

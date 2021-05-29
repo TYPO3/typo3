@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 class VimeoRenderer implements FileRendererInterface
 {
     /**
-     * @var OnlineMediaHelperInterface
+     * @var OnlineMediaHelperInterface|false
      */
     protected $onlineMediaHelper;
 
@@ -60,7 +60,7 @@ class VimeoRenderer implements FileRendererInterface
      * Get online media helper
      *
      * @param FileInterface $file
-     * @return bool|OnlineMediaHelperInterface
+     * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
     {

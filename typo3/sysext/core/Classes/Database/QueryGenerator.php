@@ -434,9 +434,9 @@ class QueryGenerator
     /**
      * Process data
      *
-     * @param string $qC Query config
+     * @param array $qC Query config
      */
-    public function procesData($qC = '')
+    public function procesData($qC = [])
     {
         $this->queryConfig = $qC;
         $POST = GeneralUtility::_POST();
@@ -1465,7 +1465,7 @@ class QueryGenerator
                 $this->extFieldLists['queryOrder_SQL'] = implode(',', $reList);
             }
             // Query Generator:
-            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : '');
+            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
             $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
             $codeArr = $this->getFormElements();

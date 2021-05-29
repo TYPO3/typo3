@@ -450,12 +450,12 @@ abstract class AbstractService implements LoggerAwareInterface
      * Get the input content.
      * Will be read from input file if needed. (That is if ->inputContent is empty and ->inputFile is not)
      *
-     * @return string|bool
+     * @return string
      */
     public function getInput()
     {
         if ($this->inputContent == '') {
-            $this->inputContent = $this->readFile($this->inputFile);
+            $this->inputContent = (string)$this->readFile($this->inputFile);
         }
         return $this->inputContent;
     }
@@ -470,9 +470,9 @@ abstract class AbstractService implements LoggerAwareInterface
     public function getInputFile($createFile = '')
     {
         if ($this->inputFile) {
-            $this->inputFile = $this->checkInputFile($this->inputFile);
+            $this->inputFile = (string)$this->checkInputFile($this->inputFile);
         } elseif ($this->inputContent) {
-            $this->inputFile = $this->writeFile($this->inputContent, $createFile);
+            $this->inputFile = (string)$this->writeFile($this->inputContent, $createFile);
         }
         return $this->inputFile;
     }
@@ -485,7 +485,7 @@ abstract class AbstractService implements LoggerAwareInterface
     /**
      * Set the output file name.
      *
-     * @param string|bool $absFile File name
+     * @param string $absFile File name
      */
     public function setOutputFile($absFile)
     {
@@ -500,7 +500,7 @@ abstract class AbstractService implements LoggerAwareInterface
     public function getOutput()
     {
         if ($this->outputFile) {
-            $this->out = $this->readFile($this->outputFile);
+            $this->out = (string)$this->readFile($this->outputFile);
         }
         return $this->out;
     }
@@ -514,7 +514,7 @@ abstract class AbstractService implements LoggerAwareInterface
     public function getOutputFile($absFile = '')
     {
         if (!$this->outputFile) {
-            $this->outputFile = $this->writeFile($this->out, $absFile);
+            $this->outputFile = (string)$this->writeFile($this->out, $absFile);
         }
         return $this->outputFile;
     }

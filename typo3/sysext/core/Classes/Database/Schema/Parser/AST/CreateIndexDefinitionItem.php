@@ -23,9 +23,9 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 class CreateIndexDefinitionItem extends AbstractCreateDefinitionItem
 {
     /**
-     * @var string
+     * @var Identifier|null
      */
-    public $indexName = '';
+    public $indexName;
 
     /**
      * Create the primary key

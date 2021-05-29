@@ -41,7 +41,7 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     protected $tip;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
     protected $container;
 

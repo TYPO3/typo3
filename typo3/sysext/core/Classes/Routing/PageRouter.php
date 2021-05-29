@@ -162,6 +162,7 @@ class PageRouter implements RouterInterface
             throw new RouteNotFoundException('No page candidates found for path "' . $prefixedUrlPath . '"', 1538389999);
         }
 
+        /** @var RouteCollection<string, Route> $fullCollection */
         $fullCollection = new RouteCollection();
         foreach ($pageCandidates ?? [] as $page) {
             $pageIdForDefaultLanguage = (int)($page['l10n_parent'] ?: $page['uid']);

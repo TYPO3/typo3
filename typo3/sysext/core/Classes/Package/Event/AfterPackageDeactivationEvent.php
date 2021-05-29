@@ -33,7 +33,7 @@ final class AfterPackageDeactivationEvent
     private $type;
 
     /**
-     * @var object
+     * @var object|null
      */
     private $emitter;
 
@@ -54,7 +54,7 @@ final class AfterPackageDeactivationEvent
         return $this->type;
     }
 
-    public function getEmitter(): object
+    public function getEmitter(): ?object
     {
         return $this->emitter;
     }

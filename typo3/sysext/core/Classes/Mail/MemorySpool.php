@@ -44,7 +44,7 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
     /**
      * The logger instance.
      *
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 
@@ -86,7 +86,9 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
         try {
             $this->flushQueue($mailer->getRealTransport());
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error('An Exception occurred while flushing email queue: ' . $exception->getMessage());
+            if ($this->logger instanceof LoggerInterface) {
+                $this->logger->error('An Exception occurred while flushing email queue: ' . $exception->getMessage());
+            }
         }
     }
 

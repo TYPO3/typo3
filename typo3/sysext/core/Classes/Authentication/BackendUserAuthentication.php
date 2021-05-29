@@ -221,7 +221,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * User Config
-     * @var array
+     * @var array|string
      */
     public $uc;
 

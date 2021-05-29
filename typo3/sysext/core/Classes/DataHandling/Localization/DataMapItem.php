@@ -68,7 +68,7 @@ class DataMapItem
     protected $type;
 
     /**
-     * @var State
+     * @var State|null
      */
     protected $state;
 
@@ -284,9 +284,9 @@ class DataMapItem
     }
 
     /**
-     * @return State
+     * @return State|null
      */
-    public function getState(): State
+    public function getState(): ?State
     {
         if ($this->state === null && !$this->isParentType()) {
             $this->state = $this->buildState();

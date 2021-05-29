@@ -41,6 +41,9 @@ class PageUriMatcher
      */
     protected $mappableProcessor;
 
+    /**
+     * @param RouteCollection<string, Route> $routes
+     */
     public function __construct(RouteCollection $routes)
     {
         $this->routes = $routes;

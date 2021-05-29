@@ -50,7 +50,7 @@ class OnlineMediaHelperRegistry implements SingletonInterface
      * Get helper class for given File
      *
      * @param File $file
-     * @return bool|OnlineMediaHelperInterface
+     * @return false|OnlineMediaHelperInterface
      */
     public function getOnlineMediaHelper(File $file)
     {

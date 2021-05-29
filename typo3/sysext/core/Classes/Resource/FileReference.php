@@ -42,7 +42,7 @@ class FileReference implements FileInterface
     /**
      * Reference to the original File object underlying this FileReference.
      *
-     * @var File
+     * @var FileInterface
      */
     protected $originalFile;
 

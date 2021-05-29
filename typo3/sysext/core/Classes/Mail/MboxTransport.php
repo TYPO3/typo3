@@ -35,7 +35,7 @@ class MboxTransport extends AbstractTransport
     /**
      * The logger instance.
      *
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 

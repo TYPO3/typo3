@@ -29,7 +29,7 @@ class Stream implements StreamInterface
 {
     /**
      * The actual PHP resource
-     * @var resource
+     * @var resource|null
      */
     protected $resource;
 
@@ -51,7 +51,7 @@ class Stream implements StreamInterface
         if (is_resource($stream)) {
             $this->resource = $stream;
         } elseif (is_string($stream)) {
-            $this->resource = fopen($stream, $mode);
+            $this->resource = fopen($stream, $mode) ?: null;
         } else {
             throw new \InvalidArgumentException('Invalid stream provided; must be a string stream identifier or resource', 1436717284);
         }
@@ -89,7 +89,7 @@ class Stream implements StreamInterface
      */
     public function close()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return;
         }
         $resource = $this->detach();
@@ -135,7 +135,7 @@ class Stream implements StreamInterface
      */
     public function tell()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot tell position', 1436717285);
         }
         $result = ftell($this->resource);
@@ -152,7 +152,7 @@ class Stream implements StreamInterface
      */
     public function eof()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return true;
         }
         return feof($this->resource);
@@ -165,7 +165,7 @@ class Stream implements StreamInterface
      */
     public function isSeekable()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return false;
         }
         return (bool)$this->getMetadata('seekable');
@@ -187,7 +187,7 @@ class Stream implements StreamInterface
      */
     public function seek($offset, $whence = SEEK_SET)
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot seek position', 1436717287);
         }
 
@@ -222,7 +222,7 @@ class Stream implements StreamInterface
      */
     public function isWritable()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return false;
         }
         $uri = $this->getMetadata('uri');
@@ -238,7 +238,7 @@ class Stream implements StreamInterface
      */
     public function write($string)
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot write', 1436717290);
         }
         $result = fwrite($this->resource, $string);
@@ -255,7 +255,7 @@ class Stream implements StreamInterface
      */
     public function isReadable()
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return false;
         }
         $mode = $this->getMetadata('mode');
@@ -274,7 +274,7 @@ class Stream implements StreamInterface
      */
     public function read($length)
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             throw new \RuntimeException('No resource available; cannot read', 1436717292);
         }
         if (!$this->isReadable()) {
@@ -296,7 +296,7 @@ class Stream implements StreamInterface
      */
     public function getContents()
     {
-        if (!$this->isReadable()) {
+        if (!is_resource($this->resource) || !$this->isReadable()) {
             return '';
         }
         $result = stream_get_contents($this->resource);
@@ -322,6 +322,9 @@ class Stream implements StreamInterface
      */
     public function getMetadata($key = null)
     {
+        if (!is_resource($this->resource)) {
+            return null;
+        }
         $metadata = stream_get_meta_data($this->resource);
         if ($key === null) {
             return $metadata;

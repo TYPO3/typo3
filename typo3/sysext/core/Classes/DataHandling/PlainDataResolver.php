@@ -43,7 +43,7 @@ class PlainDataResolver
     protected $liveIds;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $sortingStatement;
 

@@ -29,7 +29,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
      * TYPO3 specific settings in $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'] take
      * precedence over native resolving.
      *
-     * @return string|bool Returns the mime type or FALSE if the mime type could not be discovered
+     * @return string|false Returns the mime type or FALSE if the mime type could not be discovered
      */
     public function getMimeType()
     {

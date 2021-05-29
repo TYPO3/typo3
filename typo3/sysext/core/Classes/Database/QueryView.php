@@ -249,7 +249,7 @@ class QueryView
                 $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
                 $queryGenerator->init('queryConfig', $saveArr['queryTable'], '', $this->settings);
                 $queryGenerator->makeSelectorTable($saveArr);
-                $queryGenerator->enablePrefix = 1;
+                $queryGenerator->enablePrefix = true;
                 $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -434,7 +434,7 @@ class QueryView
         if ($queryGenerator->table && is_array($GLOBALS['TCA'][$queryGenerator->table])) {
             if ($mQ) {
                 // Show query
-                $queryGenerator->enablePrefix = 1;
+                $queryGenerator->enablePrefix = true;
                 $queryString = $queryGenerator->getQuery($queryGenerator->queryConfig);
                 $selectQueryString = $queryGenerator->getSelectQuery($queryString);
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($queryGenerator->table);
