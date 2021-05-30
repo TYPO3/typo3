@@ -53,9 +53,9 @@ class ArrayBrowser
      * If set, the values are truncated with "..." appended if longer than a certain
      * length.
      *
-     * @var int
+     * @var bool
      */
-    public $regexMode = 0;
+    public $regexMode = false;
 
     /**
      * If set, search for string with regex, otherwise stristr()

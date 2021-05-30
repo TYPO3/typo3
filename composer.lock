@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a6013a98ba1ec2a7ab5e3719aa00cbe",
+    "content-hash": "c110d52283819e782f64960c0f6d4e1a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5452,16 +5452,16 @@
         },
         {
             "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.7.0",
+            "version": "0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "e51a2370ec3ecd44535c066fab90ee775c52e43b"
+                "reference": "5060372cb8d05673c6119e9a5443e9f11a49baa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/e51a2370ec3ecd44535c066fab90ee775c52e43b",
-                "reference": "e51a2370ec3ecd44535c066fab90ee775c52e43b",
+                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/5060372cb8d05673c6119e9a5443e9f11a49baa9",
+                "reference": "5060372cb8d05673c6119e9a5443e9f11a49baa9",
                 "shasum": ""
             },
             "require": {
@@ -5489,9 +5489,9 @@
             "description": "TYPO3 rules for PHPStan",
             "support": {
                 "issues": "https://github.com/FriendsOfTYPO3/phpstan-typo3/issues",
-                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.7.0"
+                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.8.1"
             },
-            "time": "2021-03-01T12:40:52+00:00"
+            "time": "2021-05-31T08:45:47+00:00"
         },
         {
             "name": "mikey179/vfsstream",

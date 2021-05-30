@@ -109,6 +109,20 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Database/Connection.php
 
+    # TypesAssignedToPropertiesRule
+    -
+      message: "#^Property Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff\\:\\:\\$newTables \\(array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>\\) does not accept array\\<Doctrine\\\\DBAL\\\\Schema\\\\TableDiff\\>\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
+    -
+      message: "#^Property Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff\\:\\:\\$removedTables \\(array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>\\) does not accept array\\<Doctrine\\\\DBAL\\\\Schema\\\\TableDiff\\>\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
+    -
+      message: "#^Property PhpParser\\\\Node\\\\Arg\\:\\:\\$value \\(PhpParser\\\\Node\\\\Expr\\) does not accept PhpParser\\\\Node\\\\Name\\\\FullyQualified\\.$#"
+      count: 1
+      path: typo3/sysext/install/Classes/ExtensionScanner/Php/GeneratorClassesResolver.php
+
     # Ignored errors for level 4
     -
       message: "#^Ternary operator condition is always false\\.$#"

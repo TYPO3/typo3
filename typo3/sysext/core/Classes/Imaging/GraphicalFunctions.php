@@ -296,7 +296,7 @@ class GraphicalFunctions
     protected $OFFSET;
 
     /**
-     * @var resource
+     * @var resource|\GdImage
      */
     protected $im;
 
