@@ -1,3 +1,7 @@
+This documentation describes the lowlevel script provided by the TYPO3 system
+extension EXT:lowlevel.
+
+
 Introduction
 ============
 
