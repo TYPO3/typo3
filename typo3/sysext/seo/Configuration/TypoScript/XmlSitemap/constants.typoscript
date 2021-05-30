@@ -16,6 +16,8 @@ plugin.tx_seo {
         pages {
           # cat=plugin.tx_seo/sitemap; type=string; label=Doktypes to exclude
           excludedDoktypes = 3, 4, 6, 7, 199, 254, 255
+          # cat=plugin.tx_seo/sitemap; type=string; label=List of page uids which should be excluded recursive
+          excludePagesRecursive =
           # cat=plugin.tx_seo/sitemap; type=string; label=Additional where clause
           additionalWhere = no_index = 0 AND canonical_link = ''
         }

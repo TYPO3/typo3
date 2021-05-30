@@ -134,4 +134,45 @@ class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
             (string)$this->getResponse('http://localhost/de/')->getBody()
         );
     }
+
+    /**
+     * @test
+     */
+    public function pagesSitemapDoesNotContainUrlsOfExcludedPages(): void
+    {
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'constants' => [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/excludePagesRecursive.typoscript'
+                ],
+                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript']
+            ]
+        );
+
+        $xml = (string)$this->getResponse()->getBody();
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/dummy-1-2</loc>',
+            $xml
+        );
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/dummy-1-2-5</loc>',
+            $xml
+        );
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/dummy-1-2-6</loc>',
+            $xml
+        );
+
+        self::assertStringContainsString(
+            '<loc>http://localhost/</loc>',
+            $xml
+        );
+
+        self::assertStringContainsString(
+            '<loc>http://localhost/dummy-1-3</loc>',
+            $xml
+        );
+    }
 }

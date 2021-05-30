@@ -1,0 +1,11 @@
+plugin.tx_seo {
+    settings {
+        xmlSitemap {
+            sitemaps {
+                pages {
+                    excludePagesRecursive = 2
+                }
+            }
+        }
+    }
+}

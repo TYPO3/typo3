@@ -48,6 +48,8 @@ plugin.tx_seo {
             # Here you can override the xslFile for a single sitemap
             # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
             excludedDoktypes = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludedDoktypes}
+            # comma-separated list of page uids which should be excluded recursive
+            excludePagesRecursive = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludePagesRecursive}
             additionalWhere = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.additionalWhere}
           }
         }

@@ -70,8 +70,14 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             $rootPageId = $site->getRootPageId();
         }
 
+        $excludePagesRecursive = GeneralUtility::intExplode(',', $this->config['excludePagesRecursive'] ?? '', true);
+        $excludePagesRecursiveWhereClause = '';
+        if ($excludePagesRecursive !== []) {
+            $excludePagesRecursiveWhereClause = sprintf('uid NOT IN (%s)', implode(',', $excludePagesRecursive));
+        }
+
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $treeList = $cObj->getTreeList(-$rootPageId, 99);
+        $treeList = $cObj->getTreeList(-$rootPageId, 99, 0, false, '', $excludePagesRecursiveWhereClause);
         $treeListArray = GeneralUtility::intExplode(',', $treeList);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
