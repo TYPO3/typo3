@@ -45,16 +45,18 @@ export default class Workspaces {
 
       for (const recipient of result.sendMailTo) {
         $form.append(
-          $('<div />', {class: 'checkbox'}).append(
-            $('<label />').text(recipient.label).prepend(
-              $('<input />', {
-                type: 'checkbox',
-                name: 'recipients',
-                class: 't3js-workspace-recipient',
-                id: recipient.name,
-                value: recipient.value,
-              }).prop('checked', recipient.checked).prop('disabled', recipient.disabled),
-            ),
+          $('<div />', {class: 'form-check'}).append(
+            $('<input />', {
+              type: 'checkbox',
+              name: 'recipients',
+              class: 'form-check-input t3js-workspace-recipient',
+              id: recipient.name,
+              value: recipient.value,
+            }).prop('checked', recipient.checked).prop('disabled', recipient.disabled),
+            $('<label />', {
+              class: 'form-check-label',
+              for: recipient.name
+            }).text(recipient.label),
           ),
         );
       }
