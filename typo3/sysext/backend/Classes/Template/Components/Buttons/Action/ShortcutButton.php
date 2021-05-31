@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,6 +81,11 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      * @deprecated since v11, will be removed in v12
      */
     protected $getVariables = [];
+
+    /**
+     * @var bool
+     */
+    protected bool $copyUrlToClipboard = true;
 
     /**
      * Gets the route identifier for the shortcut.
@@ -211,6 +218,19 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
+     * Defines whether the shortcut button should be extended to also
+     * allow copying the current URL to the operating systems' clipboard.
+     *
+     * @param bool $copyUrlToClipboard
+     * @return $this
+     */
+    public function setCopyUrlToClipboard(bool $copyUrlToClipboard): self
+    {
+        $this->copyUrlToClipboard = $copyUrlToClipboard;
+        return $this;
+    }
+
+    /**
      * Gets the button position.
      *
      * @return string
@@ -326,25 +346,68 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         unset($arguments['returnUrl']);
 
         // Encode arguments to be stored in the database
-        $arguments = json_encode($arguments) ?: '';
-
-        if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $arguments)) {
-            return '<a class="active btn btn-default btn-sm" title="">'
-                . $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render()
-                . '</a>';
-        }
+        $encodedArguments = json_encode($arguments) ?: '';
 
         $confirmationText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
-        $onClick = 'top.TYPO3.ShortcutMenu.createShortcut('
-            . GeneralUtility::quoteJSvalue($routeIdentifier)
-            . ', ' . GeneralUtility::quoteJSvalue($arguments)
-            . ', ' . GeneralUtility::quoteJSvalue($this->displayName)
-            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
-            . ', this);return false;';
+        $alreadyBookmarkedText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.alreadyBookmarked');
 
-        return '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($confirmationText) . '">'
-            . $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
-            . '</a>';
+        if (!$this->copyUrlToClipboard) {
+            return GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)
+                ? '<button type="button" class="active btn btn-default btn-sm" title="' . htmlspecialchars($alreadyBookmarkedText) . '">'
+                    . $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render()
+                    . '</button>'
+                : '<button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($confirmationText) . '" onclick="' . htmlspecialchars($this->getOnClick($routeIdentifier, $encodedArguments, $confirmationText)) . '">'
+                    . $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
+                    . '</button>';
+        }
+
+        $menuItems = [];
+
+        if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
+            $menuItems[] =
+                '<li>' .
+                    '<button type="button" class="dropdown-item btn btn-link disabled">' .
+                        $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . ' ' .
+                        htmlspecialchars($alreadyBookmarkedText) .
+                    '</button>' .
+                '</li>';
+        } else {
+            $menuItems[] = '
+                <li>' .
+                    '<button type="button" class="dropdown-item btn btn-link" onclick="' . htmlspecialchars($this->getOnClick($routeIdentifier, $encodedArguments, $confirmationText)) . '">' .
+                        $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . ' ' .
+                        htmlspecialchars($confirmationText) .
+                    '</button>' .
+                '</li>';
+        }
+
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/CopyToClipboard');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
+
+        $currentUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            $routeIdentifier,
+            $arguments,
+            UriBuilder::SHAREABLE_URL
+        );
+
+        $menuItems[] = '
+            <li>
+                <typo3-copy-to-clipboard text="' . htmlspecialchars($currentUrl) . '">
+                    <button type="button" class="dropdown-item btn btn-link">' .
+                        $iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render() . ' ' .
+                        htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl')) .
+                    '</button>' .
+                '</typo3-copy-to-clipboard>' .
+            '</li>';
+
+        return '
+            <button type="button" class="btn btn-default btn-sm" id="dropdownShortcutMenu" data-bs-toggle="dropdown" aria-expanded="false" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share')) . '">' .
+                $iconFactory->getIcon('share-alt', Icon::SIZE_SMALL)->render() .
+            '</button>' .
+            '<ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">' .
+                implode(LF, $menuItems) .
+            '</ul>';
     }
 
     /**
@@ -403,6 +466,24 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         }
 
         return '';
+    }
+
+    /**
+     * Return the markup for the onclick attribute of the "add shortcut" button
+     *
+     * @param string $routeIdentifier
+     * @param string $encodedArguments
+     * @param string $confirmationText
+     * @return string
+     */
+    protected function getOnClick(string $routeIdentifier, string $encodedArguments, string $confirmationText): string
+    {
+        return 'top.TYPO3.ShortcutMenu.createShortcut('
+            . GeneralUtility::quoteJSvalue($routeIdentifier)
+            . ', ' . GeneralUtility::quoteJSvalue($encodedArguments)
+            . ', ' . GeneralUtility::quoteJSvalue($this->displayName)
+            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
+            . ', this);return false;';
     }
 
     protected function routeExists(string $routeIdentifier): bool

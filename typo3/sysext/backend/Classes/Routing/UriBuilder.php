@@ -47,6 +47,11 @@ class UriBuilder implements SingletonInterface
     const ABSOLUTE_PATH = 'absolute';
 
     /**
+     * Generates an absolute url for URL sharing
+     */
+    const SHAREABLE_URL = 'share';
+
+    /**
      * @var Router
      */
     protected $router;
@@ -168,8 +173,8 @@ class UriBuilder implements SingletonInterface
             $parameters
         );
 
-        // If the route has the "public" option set, no token is generated.
-        if (!$route->hasOption('access') || $route->getOption('access') !== 'public') {
+        // If the route is not shareable and doesn't have the "public" option set, a token must be generated.
+        if ($referenceType !== self::SHAREABLE_URL && (!$route->hasOption('access') || $route->getOption('access') !== 'public')) {
             $parameters = [
                 'token' => FormProtectionFactory::get('backend')->generateToken('route', $name)
             ] + $parameters;

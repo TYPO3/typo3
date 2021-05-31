@@ -15,6 +15,12 @@
 			<trans-unit id="labels.makeBookmark" resname="labels.makeBookmark">
 				<source>Create a bookmark to this page</source>
 			</trans-unit>
+			<trans-unit id="labels.alreadyBookmarked" resname="labels.alreadyBookmarked">
+				<source>This page is already bookmarked</source>
+			</trans-unit>
+			<trans-unit id="labels.copyCurrentUrl" resname="labels.copyCurrentUrl">
+				<source>Copy URL of this page</source>
+			</trans-unit>
 			<trans-unit id="labels.lockedRecord" resname="labels.lockedRecord">
 				<source>The user '%s' began to edit this record %s ago.</source>
 			</trans-unit>
@@ -138,6 +144,9 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.reload" resname="labels.reload">
 				<source>Reload</source>
+			</trans-unit>
+			<trans-unit id="labels.share" resname="labels.share">
+				<source>Share</source>
 			</trans-unit>
 			<trans-unit id="labels.csv" resname="labels.csv">
 				<source>Download CSV file</source>

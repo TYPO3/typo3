@@ -39,7 +39,7 @@ class BookmarkCest
      *
      * @var string
      */
-    protected static $docHeaderBookmarkButtonSelector = '.module-docheader .btn[title="Create a bookmark to this page"]';
+    protected static $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
 
     /**
      * @param BackendTester $I
@@ -74,6 +74,8 @@ class BookmarkCest
         $I->switchToContentFrame();
 
         $I->click(self::$docHeaderBookmarkButtonSelector);
+        $I->waitForElementVisible('.module-docheader .dropdown-menu');
+        $I->click('.module-docheader .dropdown-menu button:nth-of-type(1)');
         // cancel the action to test the functionality
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $dialog->canSeeDialog();
@@ -85,7 +87,10 @@ class BookmarkCest
 
         $I->switchToContentFrame();
         $I->click(self::$docHeaderBookmarkButtonSelector);
+        $I->waitForElementVisible('.module-docheader .dropdown-menu');
+        $I->click('.module-docheader .dropdown-menu button:nth-of-type(1)');
 
+        $dialog->canSeeDialog();
         $dialog->clickButtonInDialog('OK');
 
         $this->clickBookmarkDropdownToggleInTopbar($I);

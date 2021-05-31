@@ -277,6 +277,14 @@ class IconRegistry implements SingletonInterface
             'options' => [
                 'name' => 'check-square'
             ]
+        ],
+
+        // Share
+        'share-alt' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'share-alt'
+            ]
         ]
     ];
 

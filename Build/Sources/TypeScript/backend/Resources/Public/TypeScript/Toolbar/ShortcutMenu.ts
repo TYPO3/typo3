@@ -18,6 +18,7 @@ import Icons = require('../Icons');
 import Modal = require('../Modal');
 import Notification = require('../Notification');
 import Viewport = require('../Viewport');
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
@@ -79,12 +80,14 @@ class ShortcutMenu {
           this.refreshMenu();
           $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
           if (typeof shortcutButton === 'object') {
+            const isDropdownItem = $(shortcutButton).hasClass('dropdown-item');
+            const securityUtility = new SecurityUtility();
             Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
-              $(shortcutButton).html(icon);
+              $(shortcutButton).html(icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : ''));
             });
-            $(shortcutButton).addClass('active');
-            $(shortcutButton).attr('title', null);
+            $(shortcutButton).addClass(isDropdownItem ? 'disabled' : 'active');
             $(shortcutButton).attr('onclick', null);
+            $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
           }
         });
         $(e.currentTarget).trigger('modal-dismiss');
