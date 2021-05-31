@@ -14,7 +14,17 @@
 import 'bootstrap';
 import $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
-import Client = require('TYPO3/CMS/Backend/Storage/Client');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+
+interface PreflightResponse {
+  capabilities: PreflightResponseCapabilities;
+}
+
+interface PreflightResponseCapabilities {
+  cookie: boolean,
+  referrer: boolean
+}
 
 /**
  * Module: TYPO3/CMS/Backend/Login
@@ -113,31 +123,25 @@ class BackendLogin {
   }
 
   private checkDocumentReferrerSupport(): void {
-    const referrerRefreshed = Client.get('referrerRefresh') === '1';
     const loginUrlLink = document.getElementById(this.options.loginUrlLink) as HTMLAnchorElement;
-    if (loginUrlLink === null
-      || typeof loginUrlLink.dataset.referrerCheckEnabled === 'undefined'
-      || loginUrlLink.dataset.referrerCheckEnabled !== '1'
+    // skip referrer check if explicitly disabled
+    if (loginUrlLink !== null
+      && typeof loginUrlLink.dataset.referrerCheckEnabled === 'undefined'
+      && loginUrlLink.dataset.referrerCheckEnabled !== '1'
     ) {
       return;
     }
-
-    if (typeof document.referrer === 'string' && document.referrer !== '') {
-      if (referrerRefreshed) {
-        Client.unset('referrerRefresh');
-      }
+    if (typeof TYPO3.settings === 'undefined' || typeof TYPO3.settings.ajaxUrls === 'undefined') {
       return;
     }
-    if (referrerRefreshed) {
-      Client.unset('referrerRefresh');
-      document.querySelectorAll(this.options.errorNoReferrer)
-        .forEach((element: HTMLElement): void => element.classList.remove('hidden'));
-    } else {
-      this.ready = false;
-
-      Client.set('referrerRefresh', '1');
-      loginUrlLink.click();
-    }
+    new AjaxRequest(TYPO3.settings.ajaxUrls.login_preflight).get()
+      .then(async (response: AjaxResponse) => {
+        const result = await response.resolve('application/json') as PreflightResponse;
+        if (result.capabilities.referrer !== true) {
+          document.querySelectorAll(this.options.errorNoReferrer)
+            .forEach((element: HTMLElement): void => element.classList.remove('hidden'));
+        }
+      });
   }
 
   /**
