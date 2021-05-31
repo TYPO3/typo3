@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f11a2c93ad6fec94d41cbd9f2623839",
+    "content-hash": "0a6013a98ba1ec2a7ab5e3719aa00cbe",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4569,16 +4569,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.6.10",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "f20db4e74cf9803c6cffca2ed2f03e1b0b89d0dc"
+                "reference": "3420f8cfd6afcfa98e077f40b8d34f9be12f079e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/f20db4e74cf9803c6cffca2ed2f03e1b0b89d0dc",
-                "reference": "f20db4e74cf9803c6cffca2ed2f03e1b0b89d0dc",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/3420f8cfd6afcfa98e077f40b8d34f9be12f079e",
+                "reference": "3420f8cfd6afcfa98e077f40b8d34f9be12f079e",
                 "shasum": ""
             },
             "require": {
@@ -4606,9 +4606,9 @@
             "description": "The TYPO3 Fluid template rendering engine",
             "support": {
                 "issues": "https://github.com/TYPO3/Fluid/issues",
-                "source": "https://github.com/TYPO3/Fluid/tree/2.6.10"
+                "source": "https://github.com/TYPO3/Fluid/tree/2.7.0"
             },
-            "time": "2020-11-16T21:38:14+00:00"
+            "time": "2021-05-31T06:39:11+00:00"
         },
         {
             "name": "webmozart/assert",

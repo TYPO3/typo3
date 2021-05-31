@@ -32,7 +32,6 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Class RenderingContext
@@ -69,29 +68,18 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->viewHelperVariableContainer = $viewHelperVariableContainer;
     }
 
-    /**
-     * @param ViewInterface $view
-     */
-    public function __construct(ViewInterface $view = null)
+    public function __construct()
     {
-        if ($view !== null) {
-            // Note: if $view is received here this indicates internal framework instancing
-            // and it is safe to call the parent constructor. Custom, non-view-providing
-            // usages will only perform the initialisation below (which is sufficient mind you!)
-            parent::__construct($view);
-        } else {
-            // Reproduced partial initialisation from parent::__construct; minus the custom
-            // implementations we attach below.
-            $this->setTemplateParser(new TemplateParser($this));
-            if (method_exists($this, 'setTemplateCompiler')) {
-                $this->setTemplateCompiler(new TemplateCompiler());
-            }
-            if (method_exists($this, 'setViewHelperInvoker')) {
-                $this->setViewHelperInvoker(new ViewHelperInvoker());
-            }
-            $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
-            $this->setVariableProvider(new StandardVariableProvider());
+        // Reproduced partial initialisation from parent::__construct; minus the custom implementations we attach below.
+        $this->setTemplateParser(new TemplateParser());
+        if (method_exists($this, 'setTemplateCompiler')) {
+            $this->setTemplateCompiler(new TemplateCompiler());
         }
+        if (method_exists($this, 'setViewHelperInvoker')) {
+            $this->setViewHelperInvoker(new ViewHelperInvoker());
+        }
+        $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
+        $this->setVariableProvider(new StandardVariableProvider());
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if (method_exists($this, 'setTemplateProcessors')) {

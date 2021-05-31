@@ -71,9 +71,10 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes', 'registerArgument'])
             ->getMock();
 
-        $viewHelper->expects(self::exactly(5))->method('registerArgument')->withConsecutive(
+        $viewHelper->expects(self::exactly(6))->method('registerArgument')->withConsecutive(
             ['additionalAttributes', 'array', self::anything()],
             ['data', 'array', self::anything()],
+            ['aria', 'array', self::anything()],
             ['route', 'string', self::anything()],
             ['parameters', 'array', self::anything()],
             ['referenceType', 'string', self::anything()]

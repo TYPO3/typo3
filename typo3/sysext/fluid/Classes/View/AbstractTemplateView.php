@@ -50,7 +50,7 @@ abstract class AbstractTemplateView extends TemplateView implements ViewInterfac
     public function __construct(RenderingContextInterface $context = null)
     {
         if (!$context) {
-            $context = GeneralUtility::makeInstance(ObjectManager::class)->get(RenderingContext::class, $this);
+            $context = GeneralUtility::makeInstance(ObjectManager::class)->get(RenderingContext::class);
         }
         parent::__construct($context);
     }

@@ -49,7 +49,7 @@ class StandaloneView extends AbstractTemplateView
         $configurationManager->setContentObject($contentObject);
 
         $request = $objectManager->get(Request::class);
-        $renderingContext = $objectManager->get(RenderingContext::class, $this);
+        $renderingContext = $objectManager->get(RenderingContext::class);
         $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
     }
