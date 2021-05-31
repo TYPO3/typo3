@@ -323,9 +323,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // SameSite "none" needs the secure option (only allowed on HTTPS)
             $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL');
             $sessionId = $this->userSession->getIdentifier();
+            $cookieValue = $this->userSession->getJwt();
             $this->setCookie = new Cookie(
                 $this->name,
-                $sessionId,
+                $cookieValue,
                 $cookieExpire,
                 $cookiePath,
                 $cookieDomain,

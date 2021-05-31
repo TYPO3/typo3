@@ -8555,12 +8555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "ec6ce3a2731aa2dda89c42a4c9af9d1712457795"
+                "reference": "3038638bfb1135ac533069c44c2ecbc4047d8f18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ec6ce3a2731aa2dda89c42a4c9af9d1712457795",
-                "reference": "ec6ce3a2731aa2dda89c42a4c9af9d1712457795",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3038638bfb1135ac533069c44c2ecbc4047d8f18",
+                "reference": "3038638bfb1135ac533069c44c2ecbc4047d8f18",
                 "shasum": ""
             },
             "require": {
@@ -8622,7 +8622,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-08-12T17:18:51+00:00"
+            "time": "2022-10-03T18:49:08+00:00"
         }
     ],
     "aliases": [],
@@ -8650,5 +8650,5 @@
     "platform-overrides": {
         "php": "8.1.1"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

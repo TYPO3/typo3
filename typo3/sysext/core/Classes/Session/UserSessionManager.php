@@ -85,8 +85,13 @@ class UserSessionManager implements LoggerAwareInterface
      */
     public function createFromRequestOrAnonymous(ServerRequestInterface $request, string $cookieName): UserSession
     {
-        $sessionId = (string)($request->getCookieParams()[$cookieName] ?? '');
-        return $this->getSessionFromSessionId($sessionId) ?? $this->createAnonymousSession();
+        try {
+            $cookieValue = (string)($request->getCookieParams()[$cookieName] ?? '');
+            $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue);
+        } catch (\Exception $exception) {
+            $this->logger->debug('Could not resolve session identifier from JWT', ['exception' => $exception]);
+        }
+        return $this->getSessionFromSessionId($sessionId ?? '') ?? $this->createAnonymousSession();
     }
 
     /**
@@ -98,8 +103,13 @@ class UserSessionManager implements LoggerAwareInterface
      */
     public function createFromGlobalCookieOrAnonymous(string $cookieName): UserSession
     {
-        $sessionId = isset($_COOKIE[$cookieName]) ? stripslashes((string)$_COOKIE[$cookieName]) : '';
-        return $this->getSessionFromSessionId($sessionId) ?? $this->createAnonymousSession();
+        try {
+            $cookieValue = isset($_COOKIE[$cookieName]) ? stripslashes((string)$_COOKIE[$cookieName]) : '';
+            $sessionId = UserSession::resolveIdentifierFromJwt($cookieValue);
+        } catch (\Exception $exception) {
+            $this->logger->debug('Could not resolve session identifier from JWT', ['exception' => $exception]);
+        }
+        return $this->getSessionFromSessionId($sessionId  ?? '') ?? $this->createAnonymousSession();
     }
 
     /**

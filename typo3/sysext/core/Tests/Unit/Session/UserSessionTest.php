@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
+use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UserSessionTest extends UnitTestCase
 {
+    use JwtTrait;
+
     /**
      * @test
      */
@@ -58,6 +61,7 @@ class UserSessionTest extends UnitTestCase
 
         self::assertTrue($session->dataWasUpdated());
         self::assertEquals(['override' => 'data'], $session->getData());
+        self::assertSame($record['ses_id'], UserSession::resolveIdentifierFromJwt($session->getJwt()));
     }
 
     /**

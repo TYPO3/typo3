@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -30,6 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class UserSessionManagerTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use JwtTrait;
 
     public function willExpireDataProvider(): array
     {
@@ -88,6 +91,7 @@ class UserSessionManagerTest extends UnitTestCase
      */
     public function createFromRequestOrAnonymousCreatesProperSessionObjects(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionBackendProphecy->get('invalid-session')->willThrow(SessionNotFoundException::class);
         $sessionBackendProphecy->get('valid-session')->willReturn([
@@ -102,12 +106,20 @@ class UserSessionManagerTest extends UnitTestCase
             50,
             new IpLocker(0, 0)
         );
+        $subject->setLogger(new NullLogger());
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getCookieParams()->willReturn([]);
         $anonymousSession = $subject->createFromRequestOrAnonymous($request->reveal(), 'foo');
         self::assertTrue($anonymousSession->isNew());
         self::assertTrue($anonymousSession->isAnonymous());
-        $request->getCookieParams()->willReturn(['foo' => 'invalid-session', 'bar' => 'valid-session']);
+        $validSessionJwt = self::encodeHashSignedJwt(
+            [
+                'identifier' => 'valid-session',
+                'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+            ],
+            self::createSigningKeyFromEncryptionKey(UserSession::class)
+        );
+        $request->getCookieParams()->willReturn(['foo' => 'invalid-session', 'bar' => $validSessionJwt]);
         $anonymousSessionFromInvalidBackendRequest = $subject->createFromRequestOrAnonymous($request->reveal(), 'foo');
         self::assertTrue($anonymousSessionFromInvalidBackendRequest->isNew());
         self::assertTrue($anonymousSessionFromInvalidBackendRequest->isAnonymous());

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Session;
 
+use Firebase\JWT\JWT;
+use TYPO3\CMS\Core\Security\JwtTrait;
+
 /**
  * Represents all information about a user's session.
  * A user session can be bound to a frontend / backend user, or an anonymous session based on session data stored
@@ -37,6 +40,8 @@ namespace TYPO3\CMS\Core\Session;
  */
 class UserSession
 {
+    use JwtTrait;
+
     protected const SESSION_UPDATE_GRACE_PERIOD = 61;
     protected string $identifier;
     protected ?int $userId;
@@ -214,6 +219,24 @@ class UserSession
     }
 
     /**
+     * Gets session ID wrapped in JWT to be used for emitting a new cookie.
+     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature>)>`
+     *
+     * @return string
+     */
+    public function getJwt(): string
+    {
+        // @todo payload could be organized in a new `SessionToken` object
+        return self::encodeHashSignedJwt(
+            [
+                'identifier' => $this->identifier,
+                'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+            ],
+            self::createSigningKeyFromEncryptionKey(UserSession::class)
+        );
+    }
+
+    /**
      * Create a new user session based on the provided session record
      *
      * @param string $id the session identifier
@@ -250,6 +273,24 @@ class UserSession
         $userSession->isPermanent = false;
         $userSession->isNew = true;
         return $userSession;
+    }
+
+    /**
+     * Verifies and resolves session ID from submitted cookie value:
+     * `Cookie: <JWT(HS256, [identifier => <session-id>], <signature>)>`
+     *
+     * @param string $cookieValue submitted cookie value
+     * @return non-empty-string|null session ID, null in case verification failed
+     * @throws \Exception
+     * @see getJwt()
+     */
+    public static function resolveIdentifierFromJwt(string $cookieValue): ?string
+    {
+        if ($cookieValue === '') {
+            return null;
+        }
+        $payload = self::decodeJwt($cookieValue, self::createSigningKeyFromEncryptionKey(UserSession::class));
+        return !empty($payload->identifier) && is_string($payload->identifier) ? $payload->identifier : null;
     }
 
     /**

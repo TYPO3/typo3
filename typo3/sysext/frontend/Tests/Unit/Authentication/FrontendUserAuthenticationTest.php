@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Security\JwtTrait;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
@@ -47,6 +48,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use JwtTrait;
 
     private const NOT_CHECKED_INDICATOR = '--not-checked--';
 
@@ -59,11 +61,19 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function userFieldIsNotSetForAnonymousSessions(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'secret-encryption-key-test';
         $uniqueSessionId = StringUtility::getUniqueId('test');
+        $uniqueSessionIdJwt = self::encodeHashSignedJwt(
+            [
+                'identifier' => $uniqueSessionId,
+                'time' => (new \DateTimeImmutable())->format(\DateTimeImmutable::RFC3339),
+            ],
+            self::createSigningKeyFromEncryptionKey(UserSession::class)
+        );
 
         // Prepare a request with session id cookie
         $request = new ServerRequest('http://example.com/', 'GET', null, [], []);
-        $request = $request->withCookieParams(['fe_typo_user' => $uniqueSessionId]);
+        $request = $request->withCookieParams(['fe_typo_user' => $uniqueSessionIdJwt]);
 
         // Main session backend setup
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
@@ -81,6 +91,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             86400,
             new IpLocker(0, 0)
         );
+        $userSessionManager->setLogger(new NullLogger());
         $subject = new FrontendUserAuthentication();
         $subject->setLogger(new NullLogger());
         $subject->initializeUserSessionManager($userSessionManager);
