@@ -10,3 +10,8 @@ parameters:
     - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
 
   checkMissingIterableValueType: false
+
+  ignoreErrors:
+    -
+      message: '#Call to an undefined method TYPO3\\CMS\\Extbase\\Mvc\\RequestInterface::getControllerActionName\(\)\.#'
+      path: %currentWorkingDirectory%/Classes/Controller/StyleguideController.php
