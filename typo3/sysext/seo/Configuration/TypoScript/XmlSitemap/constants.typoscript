@@ -1,3 +1,5 @@
+# customsubcategory=sitemap=XML Sitemap
+
 plugin.tx_seo {
   view {
     # cat=plugin.tx_seo/file; type=string; label=Path to template root (FE)
@@ -12,7 +14,9 @@ plugin.tx_seo {
     xmlSitemap {
       sitemaps {
         pages {
+          # cat=plugin.tx_seo/sitemap; type=string; label=Doktypes to exclude
           excludedDoktypes = 3, 4, 6, 7, 199, 254, 255
+          # cat=plugin.tx_seo/sitemap; type=string; label=Additional where clause
           additionalWhere = no_index = 0 AND canonical_link = ''
         }
       }
