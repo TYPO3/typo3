@@ -176,6 +176,13 @@ return [
         'access' => 'public'
     ],
 
+    // Preflight check for login form
+    'login_preflight' => [
+        'path' => '/login/preflight',
+        'target' => \TYPO3\CMS\Backend\Controller\AjaxLoginController::class . '::preflightAction',
+        'access' => 'public'
+    ],
+
     // Refresh login of backend
     'login_refresh' => [
         'path' => '/login/refresh',

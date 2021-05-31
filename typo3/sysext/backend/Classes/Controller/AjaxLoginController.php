@@ -70,6 +70,18 @@ class AjaxLoginController
         ]);
     }
 
+    public function preflightAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $headers = $request->getHeaders();
+        return new JsonResponse([
+            'capabilities' => [
+                'cookie' => !empty($request->getCookieParams()),
+                // using legacy `Referer` (sic!) header name
+                'referrer' => array_filter($headers['referer'] ?? []) !== [],
+            ],
+        ]);
+    }
+
     /**
      * Refreshes the login without needing login information. We just refresh the session.
      *
