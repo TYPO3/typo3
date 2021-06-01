@@ -1072,4 +1072,11 @@ return [
             'Breaking-93080-RelationHandlerInternalsProtected.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-94252-DeprecatedGeneralUtilitycompileSelectedGetVarsFromArray.rst'
+        ],
+    ],
 ];

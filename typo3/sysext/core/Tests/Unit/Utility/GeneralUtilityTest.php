@@ -962,34 +962,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     //////////////////////////////////
-    // Tests concerning compileSelectedGetVarsFromArray
-    //////////////////////////////////
-    /**
-     * @test
-     */
-    public function compileSelectedGetVarsFromArrayFiltersIncomingData()
-    {
-        $filter = 'foo,bar';
-        $getArray = ['foo' => 1, 'cake' => 'lie'];
-        $expected = ['foo' => 1];
-        $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, false);
-        self::assertSame($expected, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function compileSelectedGetVarsFromArrayUsesGetPostDataFallback()
-    {
-        $_GET['bar'] = '2';
-        $filter = 'foo,bar';
-        $getArray = ['foo' => 1, 'cake' => 'lie'];
-        $expected = ['foo' => 1, 'bar' => '2'];
-        $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, true);
-        self::assertSame($expected, $result);
-    }
-
-    //////////////////////////////////
     // Tests concerning revExplode
     //////////////////////////////////
 

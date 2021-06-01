@@ -465,7 +465,7 @@ class EditDocumentController
         $this->R_URL_getvars['edit'] = $this->editconf;
 
         // Prepare 'open documents' url, this is later modified again various times
-        $this->compileStoreData();
+        $this->compileStoreData($request);
         // Backend user session data of this module
         $this->docDat = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
         $this->docHandler = $this->docDat[0] ?? [];
@@ -621,7 +621,7 @@ class EditDocumentController
             // Unset default values since we don't need them anymore.
             unset($this->R_URL_getvars['defVals']);
             // Recompile the store* values since editconf changed
-            $this->compileStoreData();
+            $this->compileStoreData($request);
         }
         // See if any records was auto-created as new versions?
         if (!empty($tce->autoVersionIdMap)) {
@@ -670,7 +670,7 @@ class EditDocumentController
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
             // Recompile the store* values since editconf changed...
-            $this->compileStoreData();
+            $this->compileStoreData($request);
         }
         // If a document should be duplicated.
         if (isset($parsedBody['_duplicatedoc']) && is_array($this->editconf)) {
@@ -725,7 +725,7 @@ class EditDocumentController
             // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
             $this->R_URL_getvars['edit'] = $this->editconf;
             // Recompile the store* values since editconf changed...
-            $this->compileStoreData();
+            $this->compileStoreData($request);
 
             // Inform the user of the duplication
             $flashMessage = GeneralUtility::makeInstance(
@@ -2398,13 +2398,19 @@ class EditDocumentController
      * Populates the variables $this->storeArray, $this->storeUrl, $this->storeUrlMd5
      * to prepare 'open documents' urls
      */
-    protected function compileStoreData(): void
+    protected function compileStoreData(ServerRequestInterface $request): void
     {
-        // @todo: Refactor in TYPO3 v10: This GeneralUtility method fiddles with _GP()
-        $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
-            'edit,defVals,overrideVals,columnsOnly,noView',
-            $this->R_URL_getvars
-        );
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+
+        foreach (['edit', 'defVals', 'overrideVals' , 'columnsOnly' , 'noView'] as $key) {
+            if (isset($this->R_URL_getvars[$key])) {
+                $this->storeArray[$key] = $this->R_URL_getvars[$key];
+            } else {
+                $this->storeArray[$key] = $parsedBody[$key] ?? $queryParams[$key] ?? null;
+            }
+        }
+
         $this->storeUrl = HttpUtility::buildQueryString($this->storeArray, '&');
         $this->storeUrlMd5 = md5($this->storeUrl);
     }
