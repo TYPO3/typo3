@@ -988,6 +988,7 @@ class EditDocumentController
                         $this->storeArray,
                         $this->storeUrl,
                         $this->firstEl,
+                        $this->returnUrl,
                     ];
                     $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
                     BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
