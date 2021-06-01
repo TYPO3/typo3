@@ -65,35 +65,6 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function initializeArgumentsRegistersExpectedArguments()
-    {
-        $viewHelper = $this->getMockBuilder(LinkViewHelper::class)
-            ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes', 'registerArgument'])
-            ->getMock();
-
-        $viewHelper->expects(self::exactly(6))->method('registerArgument')->withConsecutive(
-            ['additionalAttributes', 'array', self::anything()],
-            ['data', 'array', self::anything()],
-            ['aria', 'array', self::anything()],
-            ['route', 'string', self::anything()],
-            ['parameters', 'array', self::anything()],
-            ['referenceType', 'string', self::anything()]
-        );
-
-        $viewHelper->expects(self::exactly(4))->method('registerTagAttribute')->withConsecutive(
-            ['name', 'string', self::anything()],
-            ['rel', 'string', self::anything()],
-            ['rev', 'string', self::anything()],
-            ['target', 'string', self::anything()]
-        );
-
-        $viewHelper->expects(self::once())->method('registerUniversalTagAttributes');
-        $viewHelper->initializeArguments();
-    }
-
-    /**
-     * @test
-     */
     public function renderRendersTagWithHrefFromRoute()
     {
         $this->viewHelper->setArguments([
