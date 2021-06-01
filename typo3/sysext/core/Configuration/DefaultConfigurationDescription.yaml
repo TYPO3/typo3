@@ -558,7 +558,7 @@ MAIL:
             type: dropdown
             allowedValues:
                 'html': 'Send emails only in HTML format'
-                'txt': 'Send emails only in plain text format'
+                'plain': 'Send emails only in plain text format'
                 'both': 'Send emails in HTML and plain text format'
             description: 'The Mailer API allows to send out templated emails, which can be configured on a system-level to send out HTML-based emails or plain text emails, or emails with both variants.'
         layoutRootPaths:
