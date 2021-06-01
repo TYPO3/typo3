@@ -267,7 +267,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineParentFieldName' => $parentFieldName,
 
             // values of the top most parent element set on first level and not overridden on following levels
-            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? 0),
+            'inlineTopMostParentUid' => $result['inlineTopMostParentUid'] ?: ($inlineTopMostParent['uid'] ?? null),
             'inlineTopMostParentTableName' => $result['inlineTopMostParentTableName'] ?: ($inlineTopMostParent['table'] ?? ''),
             'inlineTopMostParentFieldName' => $result['inlineTopMostParentFieldName'] ?: ($inlineTopMostParent['field'] ?? ''),
         ];
@@ -306,7 +306,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             'inlineParentUid' => $result['databaseRow']['uid'],
             'inlineParentTableName' => $result['tableName'],
             'inlineParentFieldName' => $parentFieldName,
-            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: ($inlineTopMostParent['uid'] ?? 0),
+            'inlineTopMostParentUid' => ($result['inlineTopMostParentUid'] ?? false) ?: ($inlineTopMostParent['uid'] ?? null),
             'inlineTopMostParentTableName' => ($result['inlineTopMostParentTableName'] ?? false) ?: ($inlineTopMostParent['table'] ?? ''),
             'inlineTopMostParentFieldName' => ($result['inlineTopMostParentFieldName'] ?? false) ?: ($inlineTopMostParent['field'] ?? ''),
             // The sys_language uid 0
