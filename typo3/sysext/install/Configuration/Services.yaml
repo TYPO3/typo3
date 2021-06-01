@@ -1,11 +1,16 @@
+# HEADS UP:
+# This file is intended for NON install tool context services only.
+# Therefore all services in this file are registered explictily and an
+# include-all directive like `resource: '../Classes/*'` avoided on purpose.
+#
+# All *regular* EXT:install services are registed in
+# TYPO3\CMS\Install\ServiceProvider instead to be usable without DI caches.
+
 services:
   _defaults:
     autowire: true
     autoconfigure: true
     public: false
-
-  TYPO3\CMS\Install\:
-    resource: '../Classes/*'
 
   TYPO3\CMS\Install\Controller\BackendModuleController:
     tags: ['backend.controller']
