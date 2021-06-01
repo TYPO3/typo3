@@ -63,28 +63,6 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function initializeArgumentsRegistersExpectedArguments()
-    {
-        $viewHelper = $this->getMockBuilder(LinkViewHelper::class)
-            ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes', 'registerArgument'])
-            ->getMock();
-
-        $viewHelper->expects($this->at(2))->method('registerArgument')->with('route', 'string', $this->anything());
-        $viewHelper->expects($this->at(3))->method('registerArgument')->with('parameters', 'array', $this->anything());
-        $viewHelper->expects($this->at(4))->method('registerArgument')
-            ->with('referenceType', 'string', $this->anything());
-
-        $viewHelper->expects($this->at(5))->method('registerTagAttribute')->with('name', 'string', $this->anything());
-        $viewHelper->expects($this->at(6))->method('registerTagAttribute')->with('rel', 'string', $this->anything());
-        $viewHelper->expects($this->at(7))->method('registerTagAttribute')->with('rev', 'string', $this->anything());
-        $viewHelper->expects($this->at(8))->method('registerTagAttribute')->with('target', 'string', $this->anything());
-        $viewHelper->expects($this->once())->method('registerUniversalTagAttributes');
-        $viewHelper->initializeArguments();
-    }
-
-    /**
-     * @test
-     */
     public function renderRendersTagWithHrefFromRoute()
     {
         $this->viewHelper->setArguments([
