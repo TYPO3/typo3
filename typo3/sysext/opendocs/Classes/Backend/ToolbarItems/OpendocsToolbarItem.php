@@ -162,7 +162,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
         $result['table'] = $table;
         $result['record'] = $record;
         $result['label'] = strip_tags(htmlspecialchars_decode($document[0]));
-        $uri = $this->uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
+        $uri = $this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $document[4] ?? null]) . '&' . $document[2];
         $pid = (int)$document[3]['pid'];
 
         if ($document[3]['table'] === 'pages') {
