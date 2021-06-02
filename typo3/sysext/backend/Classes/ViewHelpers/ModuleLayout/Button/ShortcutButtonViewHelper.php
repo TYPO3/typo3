@@ -52,10 +52,8 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        // This will be required in v12. Deprecation for empty argument logged by ModuleTemplate->makeShortcutIcon()
         $this->registerArgument('displayName', 'string', 'Name for the shortcut', false, '');
         $this->registerArgument('arguments', 'array', 'List of relevant GET variables as key/values list to store', false, []);
-        // @deprecated since v11, will be removed in v12. Use 'arguments' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
         $this->registerArgument('getVars', 'array', 'List of additional GET variables to store. The current id, module and all module arguments will always be stored', false, []);
     }
 
@@ -74,7 +72,6 @@ class ShortcutButtonViewHelper extends AbstractButtonViewHelper
         if (!empty($arguments['arguments'])) {
             $shortcutButton->setArguments($arguments['arguments']);
         } else {
-            // @deprecated since v11, will be removed in v12. Use 'variables' instead. Deprecation logged by ModuleTemplate->makeShortcutIcon()
             $extensionName = $currentRequest->getControllerExtensionName();
             $argumentPrefix = GeneralUtility::makeInstance(ExtensionService::class)
                 ->getPluginNamespace($extensionName, $moduleName);
