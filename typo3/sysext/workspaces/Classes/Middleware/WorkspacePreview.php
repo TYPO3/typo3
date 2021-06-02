@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RouteResultInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -413,7 +414,7 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'] ?: LanguageService::create('default');
+        return $GLOBALS['LANG'] ?: GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
     /**

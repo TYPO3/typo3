@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -374,7 +374,7 @@ class SlugServiceTest extends FunctionalTestCase
         GeneralUtility::makeInstance(SiteMatcher::class)->refresh();
         $this->subject = new SlugService(
             GeneralUtility::makeInstance(Context::class),
-            GeneralUtility::makeInstance(LanguageService::class),
+            GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default'),
             GeneralUtility::makeInstance(SiteFinder::class),
             GeneralUtility::makeInstance(PageRepository::class)
         );

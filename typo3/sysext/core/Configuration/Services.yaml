@@ -134,13 +134,16 @@ services:
         method: 'addCategoryDatabaseSchema'
 
   # @internal
-  # @todo: deprecate makeInstance(LanguageService::class)
   # This service entry is provided for legacy code that instantiates LanguageService
   # using GeneralUtility::makeInstance instead of the factory methods which itself
   # use LanguageServiceFactory (for install tool compatibility).
   TYPO3\CMS\Core\Localization\LanguageService:
     shared: false
     public: true
+    deprecated:
+      package: 'typo3/cms-core'
+      version: '11.3'
+      message: 'Injection/Instantiation of "%service_id%" is deprecated. Please use TYPO3\CMS\Core\Localization\LanguageServiceFactory->create().'
 
   TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader:
     public: true

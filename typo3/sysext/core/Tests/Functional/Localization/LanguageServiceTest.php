@@ -18,19 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LanguageServiceTest extends FunctionalTestCase
 {
-    /**
-     * @var LanguageService
-     */
-    protected $subject;
+    protected LanguageService $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = LanguageService::create('default');
+        $this->subject = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
     /**

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
@@ -104,7 +105,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function init()
     {
         parent::init();
-        $this->contentLanguageService = GeneralUtility::makeInstance(LanguageService::class);
+        $this->contentLanguageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
     /**
@@ -122,7 +123,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->editorId = $queryParameters['editorId'];
         $this->contentsLanguage = $queryParameters['contentsLanguage'];
 
-        $this->contentLanguageService = LanguageService::create($this->contentsLanguage);
+        $this->contentLanguageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($this->contentsLanguage);
 
         $tcaFieldConf = ['enableRichtext' => true];
         if (!empty($queryParameters['P']['richtextConfigurationName'])) {

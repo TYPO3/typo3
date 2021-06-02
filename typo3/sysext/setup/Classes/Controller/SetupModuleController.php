@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -152,19 +153,22 @@ class SetupModuleController
     protected IconFactory $iconFactory;
     protected PageRenderer $pageRenderer;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected LanguageServiceFactory $languageServiceFactory;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         MfaProviderRegistry $mfaProviderRegistry,
         IconFactory $iconFactory,
         PageRenderer $pageRenderer,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        LanguageServiceFactory $languageServiceFactory
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->mfaProviderRegistry = $mfaProviderRegistry;
         $this->iconFactory = $iconFactory;
         $this->pageRenderer = $pageRenderer;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->languageServiceFactory = $languageServiceFactory;
         // Instantiate the form protection before a simulated user is initialized
         $this->formProtection = FormProtectionFactory::get();
     }
@@ -702,7 +706,7 @@ class SetupModuleController
         $languageService = $this->getLanguageService();
         $content = '';
         // get all labels in default language as well
-        $defaultLanguageLabelService = LanguageService::create('default');
+        $defaultLanguageLabelService = $this->languageServiceFactory->create('default');
         $defaultLanguageLabelService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
         foreach ($items as $item) {
             $languageCode = $item[1];
@@ -1011,10 +1015,7 @@ class SetupModuleController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

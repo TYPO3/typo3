@@ -104,8 +104,7 @@ class LanguageService
 
     /**
      * Initializes the language to fetch XLF labels for.
-     * $languageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-     * $languageService->init($GLOBALS['BE_USER']->user['lang']);
+     * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)
@@ -356,22 +355,29 @@ class LanguageService
      *
      * @param string $locale the locale (= the TYPO3-internal locale given)
      * @return static
+     * @deprecated since TYPO3 v11.3, will be removed in v12.0
      */
     public static function create(string $locale): self
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
     }
 
+    /**
+     * @deprecated since TYPO3 v11.3, will be removed in v12.0
+     */
     public static function createFromUserPreferences(?AbstractUserAuthentication $user): self
     {
-        if ($user->user['lang'] ?? false) {
-            return static::create($user->user['lang']);
-        }
-        return static::create('default');
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($user);
     }
 
+    /**
+     * @deprecated since TYPO3 v11.3, will be removed in v12.0
+     */
     public static function createFromSiteLanguage(SiteLanguage $language): self
     {
-        return static::create($language->getTypo3Language());
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
     }
 }

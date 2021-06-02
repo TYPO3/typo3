@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFile;
@@ -54,7 +54,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $this->tmp = vfsStream::setup('tmp', null, $this->files);
     }
 

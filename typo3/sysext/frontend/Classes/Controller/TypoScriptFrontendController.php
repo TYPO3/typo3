@@ -48,6 +48,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
@@ -3202,7 +3203,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function setOutputLanguage()
     {
-        $this->languageService = LanguageService::createFromSiteLanguage($this->language);
+        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->language);
         // Always disable debugging for TSFE
         $this->languageService->debugKey = false;
     }

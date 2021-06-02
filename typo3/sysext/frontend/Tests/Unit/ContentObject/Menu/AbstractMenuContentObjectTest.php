@@ -82,7 +82,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->create(Argument::any())->willReturn($languageService);
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
         $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,7 +39,7 @@ class TotpProviderTest extends FunctionalTestCase
         parent::setUp();
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
         $this->user = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($this->user);
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
         $this->subject = $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('totp');
     }
 

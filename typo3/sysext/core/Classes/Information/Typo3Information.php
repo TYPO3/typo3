@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Information;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains information and links, or copyright information for the project.
@@ -42,7 +44,7 @@ class Typo3Information
         } elseif (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
             $this->languageService = $GLOBALS['LANG'];
         } else {
-            $this->languageService = LanguageService::create('default');
+            $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         }
     }
 

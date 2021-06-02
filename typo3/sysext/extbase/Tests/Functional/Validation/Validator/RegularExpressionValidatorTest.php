@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator;
@@ -15,7 +15,7 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = LanguageService::create('default');
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
     public function customErrorMessagesDataProvider(): array

@@ -161,7 +161,8 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Context\Context::class),
             $container->get(Console\CommandRegistry::class),
             $container->get(Configuration\ConfigurationManager::class),
-            $container->get(Core\BootService::class)
+            $container->get(Core\BootService::class),
+            $container->get(Localization\LanguageServiceFactory::class)
         );
     }
 

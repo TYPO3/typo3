@@ -25,10 +25,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,6 +60,16 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         '/ajax/login/timedout',
         '/ajax/core/requirejs',
     ];
+
+    private LanguageServiceFactory $languageServiceFactory;
+
+    public function __construct(
+        Context $context,
+        LanguageServiceFactory $languageServiceFactory
+    ) {
+        parent::__construct($context);
+        $this->languageServiceFactory = $languageServiceFactory;
+    }
 
     /**
      * Calls the bootstrap process to set up $GLOBALS['BE_USER'] AND $GLOBALS['LANG']
@@ -112,7 +123,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         if ($this->context->getAspect('backend.user')->isLoggedIn()) {
             $GLOBALS['BE_USER']->initializeBackendLogin();
         }
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         // Re-setting the user and take the workspace from the user object now
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
         $response = $handler->handle($request);
@@ -171,7 +182,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     ): ResponseInterface {
         // GLOBALS[LANG] needs to be set up, because the UriBuilder is generating a token, which in turn
         // needs the FormProtectionFactory, which then builds a Message Closure with GLOBALS[LANG] (hacky, yes!)
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($user);
+        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($user);
         $uri = GeneralUtility::makeInstance(UriBuilder::class)
             ->buildUriWithRedirectFromRequest(
                 'auth_mfa',

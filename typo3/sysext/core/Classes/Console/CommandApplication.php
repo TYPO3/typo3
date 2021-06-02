@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 
 /**
  * Entry point for the TYPO3 Command Line for Commands
@@ -48,18 +48,22 @@ class CommandApplication implements ApplicationInterface
 
     protected BootService $bootService;
 
+    protected LanguageServiceFactory $languageServiceFactory;
+
     protected Application $application;
 
     public function __construct(
         Context $context,
         CommandRegistry $commandRegistry,
         ConfigurationManager $configurationMananger,
-        BootService $bootService
+        BootService $bootService,
+        LanguageServiceFactory $languageServiceFactory
     ) {
         $this->context = $context;
         $this->commandRegistry = $commandRegistry;
         $this->configurationManager = $configurationMananger;
         $this->bootService = $bootService;
+        $this->languageServiceFactory = $languageServiceFactory;
 
         $this->checkEnvironmentOrDie();
         $this->application = new Application('TYPO3 CMS', sprintf(
@@ -103,7 +107,7 @@ class CommandApplication implements ApplicationInterface
         $this->initializeContext();
         // create the BE_USER object (not logged in yet)
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+        $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         // Make sure output is not buffered, so command-line output and interaction can take place
         ob_clean();
 

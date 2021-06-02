@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Core\Tests\Functional\Tca;
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -41,7 +41,7 @@ class FileStorageVisibleFieldsTest extends FunctionalTestCase
     public function fileStorageFormContainsExpectedFields()
     {
         $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
         $formResult = $formEngineTestService->createNewRecordForm('sys_file_storage');

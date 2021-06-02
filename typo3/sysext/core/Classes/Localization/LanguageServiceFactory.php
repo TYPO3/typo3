@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Localization;
 
-/**
- * @internal
- */
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+
 class LanguageServiceFactory
 {
     /**
@@ -49,5 +49,18 @@ class LanguageServiceFactory
         $obj = new LanguageService($this->locales, $this->localizationFactory);
         $obj->init($locale);
         return $obj;
+    }
+
+    public function createFromUserPreferences(?AbstractUserAuthentication $user): LanguageService
+    {
+        if ($user->user['lang'] ?? false) {
+            return $this->create($user->user['lang']);
+        }
+        return $this->create('default');
+    }
+
+    public function createFromSiteLanguage(SiteLanguage $language): LanguageService
+    {
+        return $this->create($language->getTypo3Language());
     }
 }

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -32,7 +32,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = LanguageService::create('default');
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
     /**

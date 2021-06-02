@@ -23,9 +23,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,6 +39,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
+    private LanguageServiceFactory $languageServiceFactory;
+
+    public function __construct(
+        Context $context,
+        LanguageServiceFactory $languageServiceFactory
+    ) {
+        parent::__construct($context);
+        $this->languageServiceFactory = $languageServiceFactory;
+    }
+
     /**
      * Creates a backend user authentication object, tries to authenticate a user
      *
@@ -59,7 +70,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
         if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
+            $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
             Bootstrap::loadExtTables();
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
         }

@@ -1114,4 +1114,25 @@ return [
             'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Localization\LanguageService::create' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\LanguageService::createFromUserPreferences' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Localization\LanguageService::createFromSiteLanguage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst'
+        ],
+    ],
 ];

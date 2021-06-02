@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FinisherOptionGenerator extends AbstractProcessor
 {
     /**
-     * @var \TYPO3\CMS\Core\Localization\LanguageService
+     * @var \TYPO3\CMS\Core\Localization\LanguageServiceFactory
      */
     protected $languageService;
 
@@ -41,7 +41,7 @@ class FinisherOptionGenerator extends AbstractProcessor
     {
         parent::__construct($converterDto);
 
-        $this->languageService = GeneralUtility::makeInstance(LanguageService::class);
+        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class);
         $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/Database.xlf');
     }
 

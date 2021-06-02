@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extensionmanager\Report;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -67,7 +68,8 @@ class ExtensionStatus implements StatusProviderInterface
     {
         $this->remoteRegistry = $remoteRegistry ?? GeneralUtility::makeInstance(RemoteRegistry::class);
         $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
-        $this->languageService = $languageService ?? LanguageService::createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+
+        $this->languageService = $languageService ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -56,7 +56,7 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
         parent::setUp();
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
         $this->user = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($this->user);
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
         $this->subject = $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('recovery-codes');
     }
 

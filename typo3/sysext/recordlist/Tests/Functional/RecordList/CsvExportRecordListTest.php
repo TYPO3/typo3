@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Recordlist\Tests\Functional\RecordList;
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Recordlist\RecordList\CsvExportRecordList;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -32,7 +32,7 @@ class CsvExportRecordListTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->user = parent::setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($this->user);
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
     }
 
     /**

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Labels;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -28,7 +28,7 @@ class CshViewHelperTest extends FunctionalTestCase
     {
         parent::setUp();
         if (!isset($GLOBALS['LANG'])) {
-            $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+            $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         }
     }
 
