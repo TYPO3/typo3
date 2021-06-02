@@ -116,9 +116,10 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
     public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine)
     {
         $flashMessageSeverity = FlashMessage::OK;
-        // Don't do anything if error_reporting is disabled by an @ sign or $errorLevel is something we won't handle
+        // Don't do anything if error_reporting is disabled by an @ sign (besides for E_USER_DEPRECATED)
+        // or $errorLevel is something we won't handle
         $shouldHandleErrorLevel = (bool)($this->errorHandlerErrors & $errorLevel);
-        if (error_reporting() === 0 || !$shouldHandleErrorLevel) {
+        if ((error_reporting() === 0 && $errorLevel !== E_USER_DEPRECATED) || !$shouldHandleErrorLevel) {
             return true;
         }
         $errorLevels = [
