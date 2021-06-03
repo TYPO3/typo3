@@ -222,8 +222,8 @@ class CronCommand
      * @param int $timestamp Unix timestamp
      * @return int Rounded timestamp
      */
-    protected function roundTimestamp($timestamp)
+    protected function roundTimestamp(int $timestamp): int
     {
-        return mktime((int)date('H', $timestamp), (int)date('i', $timestamp), 0, (int)date('n', $timestamp), (int)date('j', $timestamp), (int)date('Y', $timestamp));
+        return (int)(floor($timestamp / 60) * 60);
     }
 }

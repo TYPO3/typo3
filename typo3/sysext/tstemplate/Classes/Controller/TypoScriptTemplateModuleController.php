@@ -593,12 +593,9 @@ page.10.value = HELLO WORLD!
      * @param string $action
      * @return string
      */
-    protected function getHookObjectForAction($action)
+    protected function getHookObjectForAction(string $action): string
     {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action])) {
-            return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action];
-        }
-        return null;
+        return (string)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class][$action] ?? '');
     }
 
     /**

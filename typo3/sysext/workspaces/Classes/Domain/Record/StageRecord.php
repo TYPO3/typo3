@@ -55,7 +55,7 @@ class StageRecord extends AbstractRecord
     /**
      * @param int $uid
      * @param array $record
-     * @return StageRecord
+     * @return StageRecord|null
      */
     public static function get($uid, array $record = null)
     {

@@ -34,7 +34,7 @@ class DatabaseRecord
     protected $uid;
 
     /**
-     * @var array|null
+     * @var array
      */
     protected $row;
 
@@ -150,10 +150,8 @@ class DatabaseRecord
     /**
      * Loads the database record row (if not available yet).
      */
-    protected function loadRow()
+    protected function loadRow(): void
     {
-        if ($this->row === null) {
-            $this->row = BackendUtility::getRecord($this->getTable(), $this->getUid());
-        }
+        $this->row ??= BackendUtility::getRecord($this->getTable(), $this->getUid()) ?? [];
     }
 }

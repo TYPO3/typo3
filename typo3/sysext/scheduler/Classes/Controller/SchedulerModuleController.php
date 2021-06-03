@@ -1214,7 +1214,7 @@ class SchedulerModuleController
                 $result &= $providerObject->validateAdditionalFields($this->submittedData, $this);
             }
         }
-        return $result;
+        return (bool)$result;
     }
 
     /**
@@ -1229,7 +1229,7 @@ class SchedulerModuleController
         $dateTime = new \DateTime($input);
         $value = $dateTime->getTimestamp();
         if ($value !== 0) {
-            $value -= date('Z', $value);
+            $value -= (int)date('Z', $value);
         }
         return $value;
     }

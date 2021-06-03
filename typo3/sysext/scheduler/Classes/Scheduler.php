@@ -237,9 +237,10 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
     {
         $taskUid = $task->getTaskUid();
         if (!empty($taskUid)) {
-            $result = GeneralUtility::makeInstance(ConnectionPool::class)
+            $affectedRows = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_scheduler_task')
                 ->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
+            $result = $affectedRows === 1;
         } else {
             $result = false;
         }

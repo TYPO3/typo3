@@ -280,7 +280,7 @@ class StagesService implements SingletonInterface
      * Gets a particular stage record.
      *
      * @param int $stageid
-     * @return array
+     * @return array|null
      */
     public function getStageRecord($stageid)
     {

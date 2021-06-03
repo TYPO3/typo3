@@ -191,10 +191,9 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
-        $validData = $this->validateAllTablesAdditionalField($submittedData);
-        $validData &= $this->validateTableAdditionalField($submittedData);
-        $validData &= $this->validateNumberOfDaysAdditionalField($submittedData);
-        return $validData;
+        return $this->validateAllTablesAdditionalField($submittedData)
+            && $this->validateTableAdditionalField($submittedData)
+            && $this->validateNumberOfDaysAdditionalField($submittedData);
     }
 
     /**

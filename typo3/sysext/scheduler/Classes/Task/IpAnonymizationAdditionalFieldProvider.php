@@ -156,9 +156,8 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
-        $validData = $this->validateTableAdditionalField($submittedData, $schedulerModule);
-        $validData &= $this->validateNumberOfDaysAdditionalField($submittedData, $schedulerModule);
-        return $validData;
+        return $this->validateTableAdditionalField($submittedData, $schedulerModule)
+            && $this->validateNumberOfDaysAdditionalField($submittedData, $schedulerModule);
     }
 
     /**
