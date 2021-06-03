@@ -91,13 +91,12 @@ class SystemStatusUpdateTask extends AbstractTask
     /**
      * Sends a notification email, reporting system issues.
      *
-     * @param Status[] $systemStatus Array of statuses
+     * @param Status[][] $systemStatus Array of statuses
      */
     protected function sendNotificationEmail(array $systemStatus)
     {
         $systemIssues = [];
         foreach ($systemStatus as $statusProvider) {
-            /** @var Status $status */
             foreach ($statusProvider as $status) {
                 if ($this->getNotificationAll() || ($status->getSeverity() > Status::OK)) {
                     $systemIssues[] = (string)$status . CRLF . $status->getMessage() . CRLF . CRLF;

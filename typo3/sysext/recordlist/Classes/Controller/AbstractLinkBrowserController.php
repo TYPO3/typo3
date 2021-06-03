@@ -567,9 +567,9 @@ abstract class AbstractLinkBrowserController
         return array_merge(
             $attributes,
             [
-                'data-url-parameters' => json_encode($this->getUrlParameters()),
-                'data-parameters' => json_encode($this->parameters),
-                'data-link-attribute-fields' => json_encode($this->linkAttributeFields)
+                'data-url-parameters' => json_encode($this->getUrlParameters()) ?: '',
+                'data-parameters' => json_encode($this->parameters) ?: '',
+                'data-link-attribute-fields' => json_encode($this->linkAttributeFields) ?: ''
             ]
         );
     }

@@ -143,7 +143,11 @@ class CleanerTask extends AbstractTask
      */
     public function getPeriodAsTimestamp()
     {
-        return strtotime('-' . $this->getPeriod() . ' days');
+        $timeStamp = strtotime('-' . $this->getPeriod() . ' days');
+        if ($timeStamp === false) {
+            throw new \InvalidArgumentException('Period must be an integer.', 1623097600);
+        }
+        return $timeStamp;
     }
 
     /**

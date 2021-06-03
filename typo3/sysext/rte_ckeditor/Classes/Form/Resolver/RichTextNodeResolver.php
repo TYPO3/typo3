@@ -47,7 +47,7 @@ class RichTextNodeResolver implements NodeResolverInterface
     /**
      * Returns RichTextElement as class name if RTE widget should be rendered.
      *
-     * @return string|void New class name or void if this resolver does not change current class name.
+     * @return string|null New class name or null if this resolver does not change current class name.
      */
     public function resolve()
     {

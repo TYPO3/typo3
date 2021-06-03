@@ -594,7 +594,7 @@ class QueryGenerator
      * Save query in action
      *
      * @param int $uid
-     * @return int
+     * @return bool
      */
     protected function saveQueryInAction($uid)
     {
@@ -634,9 +634,9 @@ class QueryGenerator
                         ['t2_data' => Connection::PARAM_LOB]
                     );
             }
-            return 1;
+            return true;
         }
-        return null;
+        return false;
     }
     /**
      * Load store query configs
@@ -1052,15 +1052,15 @@ class QueryGenerator
         switch ($fields['type']) {
             case 'date':
                 if ($fieldValue != -1) {
-                    $out = strftime('%d-%m-%Y', (int)$fieldValue);
+                    $out = (string)strftime('%d-%m-%Y', (int)$fieldValue);
                 }
                 break;
             case 'time':
                 if ($fieldValue != -1) {
                     if ($splitString === '<br />') {
-                        $out = strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
+                        $out = (string)strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
                     } else {
-                        $out = strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
+                        $out = (string)strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
                     }
                 }
                 break;
@@ -1096,7 +1096,7 @@ class QueryGenerator
             $id = abs($id);
         }
         if ($begin == 0) {
-            $theList = $id;
+            $theList = (string)$id;
         } else {
             $theList = '';
         }

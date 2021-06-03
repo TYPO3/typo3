@@ -61,7 +61,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
      * Session data for this class can be set from outside with this method.
      *
      * @param mixed[] $data Session data array
-     * @return array[] Session data and boolean which indicates that data needs to be stored in session because it's changed
+     * @return array<int, array|bool> Session data and boolean which indicates that data needs to be stored in session because it's changed
      */
     public function processSessionData($data)
     {

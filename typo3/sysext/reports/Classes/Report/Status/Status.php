@@ -79,7 +79,7 @@ class Status implements RequestAwareReportInterface
      * Runs through all status providers and returns all statuses collected.
      *
      * @param ServerRequestInterface $request
-     * @return \TYPO3\CMS\Reports\Status[]
+     * @return \TYPO3\CMS\Reports\Status[][]
      */
     public function getSystemStatus(ServerRequestInterface $request = null)
     {
@@ -101,7 +101,7 @@ class Status implements RequestAwareReportInterface
     /**
      * Runs through all status providers and returns all statuses collected, which are detailed.
      *
-     * @return \TYPO3\CMS\Reports\Status[]
+     * @return \TYPO3\CMS\Reports\Status[][]
      */
     public function getDetailedSystemStatus()
     {
