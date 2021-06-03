@@ -653,7 +653,7 @@ class RecordProvider extends AbstractProvider
                     || $this->backendUser->check('non_exclude_fields', $this->table . ':' . $hiddenFieldName)
                 )
             ) {
-                return (int)$this->record[$hiddenFieldName] === (int)$value;
+                return (int)($this->record[$hiddenFieldName] ?? 0) === (int)$value;
             }
         }
         return false;
@@ -693,7 +693,7 @@ class RecordProvider extends AbstractProvider
     protected function isRecordInClipboard(string $mode = ''): bool
     {
         $isSelected = '';
-        if ($this->clipboard->current === 'normal') {
+        if ($this->clipboard->current === 'normal' && isset($this->record['uid'])) {
             $isSelected = $this->clipboard->isSelected($this->table, $this->record['uid']);
         }
         return $mode === '' ? !empty($isSelected) : $isSelected === $mode;

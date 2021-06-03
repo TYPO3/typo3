@@ -75,7 +75,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $parent = $inlineStackProcessor->getStructureLevel(-1);
         // Child, a record from this table should be rendered
         $child = $inlineStackProcessor->getUnstableStructure();
-        if (MathUtility::canBeInterpretedAsInteger($child['uid'])) {
+        if (MathUtility::canBeInterpretedAsInteger($child['uid'] ?? false)) {
             // If uid comes in, it is the id of the record neighbor record "create after"
             $childVanillaUid = -1 * abs((int)$child['uid']);
         } else {

@@ -53,7 +53,7 @@ class UserFunctions
     public function getRouteTitle(array &$parameters): void
     {
         $record = $parameters['row'];
-        if ($record['type'][0] === 'uri') {
+        if (($record['type'][0] ?? false) === 'uri') {
             $parameters['title'] = sprintf(
                 '%s %s %s',
                 $record['route'],
@@ -74,7 +74,7 @@ class UserFunctions
         $record = $parameters['row'];
         $format = '%s: %s';
         $arguments = [$record['errorCode']];
-        switch ($record['errorHandler'][0]) {
+        switch ($record['errorHandler'][0] ?? false) {
             case 'Fluid':
                 $arguments[] = $record['errorFluidTemplate'];
                 break;
@@ -85,7 +85,7 @@ class UserFunctions
                 $arguments[] = $record['errorPhpClassFQCN'];
                 break;
             default:
-                $arguments[] = $record['errorHandler'][0];
+                $arguments[] = $record['errorHandler'][0] ?? '';
         }
         $parameters['title'] = sprintf($format, ...$arguments);
     }

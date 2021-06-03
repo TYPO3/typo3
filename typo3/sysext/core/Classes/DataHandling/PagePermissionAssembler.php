@@ -91,19 +91,19 @@ class PagePermissionAssembler
      */
     protected function setTSconfigPermissions(array $fieldArray, array $tsconfig): array
     {
-        if ((string)$tsconfig['userid'] !== '') {
+        if ((string)($tsconfig['userid'] ?? '') !== '') {
             $fieldArray['perms_userid'] = (int)$tsconfig['userid'];
         }
-        if ((string)$tsconfig['groupid'] !== '') {
+        if ((string)($tsconfig['groupid'] ?? '') !== '') {
             $fieldArray['perms_groupid'] = (int)$tsconfig['groupid'];
         }
-        if ((string)$tsconfig['user'] !== '') {
+        if ((string)($tsconfig['user'] ?? '') !== '') {
             $fieldArray['perms_user'] = $this->assemblePermissions($tsconfig['user']);
         }
-        if ((string)$tsconfig['group'] !== '') {
+        if ((string)($tsconfig['group'] ?? '') !== '') {
             $fieldArray['perms_group'] = $this->assemblePermissions($tsconfig['group']);
         }
-        if ((string)$tsconfig['everybody'] !== '') {
+        if ((string)($tsconfig['everybody'] ?? '') !== '') {
             $fieldArray['perms_everybody'] = $this->assemblePermissions($tsconfig['everybody']);
         }
         return $fieldArray;

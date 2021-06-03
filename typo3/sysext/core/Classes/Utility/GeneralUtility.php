@@ -1921,7 +1921,7 @@ class GeneralUtility
     {
         $currentPath = $fullDirectoryPath;
         $firstCreatedPath = '';
-        $permissionMask = (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
+        $permissionMask = (int)octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] ?? 0);
         if (!@is_dir($currentPath)) {
             do {
                 $firstCreatedPath = $currentPath;

@@ -109,7 +109,7 @@ class NewMultiplePagesController
         $view->assign('pageUid', $pageUid);
 
         if ($canCreateNew) {
-            $newPagesData = (array)$request->getParsedBody()['pages'];
+            $newPagesData = (array)($request->getParsedBody()['pages'] ?? []);
             if (!empty($newPagesData)) {
                 $hasNewPagesData = true;
                 $afterExisting = isset($request->getParsedBody()['createInListEnd']);

@@ -35,7 +35,7 @@ class DatabaseDefaultLanguagePageRow extends AbstractDatabaseRecordProvider impl
     {
         // $defaultLanguagePageRow end up NULL if a record added or edited on root node
         $tableName = $result['tableName'];
-        if ($tableName === 'pages' && $result['databaseRow'][$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
+        if ($tableName === 'pages' && ($result['databaseRow'][$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0) {
             $result['defaultLanguagePageRow'] = $this->getRecordFromDatabase('pages', $result['databaseRow'][$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]);
         }
         return $result;

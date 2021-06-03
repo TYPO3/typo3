@@ -183,7 +183,7 @@ class LiveSearch
                 $queryBuilder->andWhere($this->userPermissions);
             }
 
-            $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
+            $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?? $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
             foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
                 [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
@@ -214,7 +214,7 @@ class LiveSearch
             if (!is_array($row)) {
                 continue;
             }
-            $onlineUid = $row['t3ver_oid'] ?: $row['uid'];
+            $onlineUid = ($row['t3ver_oid'] ?? false) ?: $row['uid'];
             $title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
             $collect[$onlineUid] = [
                 'id' => $tableName . ':' . $row['uid'],
@@ -327,7 +327,7 @@ class LiveSearch
                 }
                 $fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
+                $evalRules = ($fieldConfig['eval'] ?? '') ?: '';
 
                 // Check whether search should be case-sensitive or not
                 $searchConstraint = $queryBuilder->expr()->andX(
@@ -338,7 +338,7 @@ class LiveSearch
                     )
                 );
 
-                if (is_array($fieldConfig['search'])) {
+                if (is_array($fieldConfig['search'] ?? false)) {
                     if (in_array('case', $fieldConfig['search'], true)) {
                         // Replace case insensitive default constraint
                         $searchConstraint = $queryBuilder->expr()->andX(

@@ -169,7 +169,7 @@ class BackendLogController extends ActionController
         register_shutdown_function(function () use (&$reservedMemory): void {
             $reservedMemory = null; // free the reserved memory
             $error = error_get_last();
-            if (strpos($error['message'], 'Allowed memory size of') !== false) {
+            if (strpos($error['message'] ?? '', 'Allowed memory size of') !== false) {
                 $constraint = GeneralUtility::makeInstance(Constraint::class);
                 $this->persistConstraintInBeUserData($constraint);
             }
@@ -194,12 +194,12 @@ class BackendLogController extends ActionController
         foreach ($logEntries as $entry) {
             $pid = -1;
             // Create array if it is not defined yet
-            if (!is_array($targetStructure[$pid])) {
+            if (!is_array($targetStructure[$pid] ?? false)) {
                 $targetStructure[-1] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
             $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()) ?: '');
-            if (!is_array($targetStructure[$pid][$timestampDay])) {
+            if (!is_array($targetStructure[$pid][$timestampDay] ?? false)) {
                 $targetStructure[$pid][$timestampDay] = [];
             }
             // Add row

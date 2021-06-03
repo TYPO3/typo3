@@ -770,7 +770,7 @@ class ExtendedTemplateService extends TemplateService
                 $p = trim(substr($type, $m));
                 $reg = [];
                 preg_match('/\\[(.*)\\]/', $p, $reg);
-                $p = trim($reg[1]);
+                $p = trim($reg[1] ?? '');
                 if ($p) {
                     $retArr['paramstr'] = $p;
                     switch ($retArr['type']) {
@@ -861,7 +861,7 @@ class ExtendedTemplateService extends TemplateService
                         case 'int':
                         case 'int+':
                             $additionalAttributes = '';
-                            if ($typeDat['paramstr']) {
+                            if ($typeDat['paramstr'] ?? false) {
                                 $hint = ' Range: ' . $typeDat['paramstr'];
                             } elseif ($typeDat['type'] === 'int+') {
                                 $hint = ' Range: 0 - ';
@@ -935,7 +935,7 @@ class ExtendedTemplateService extends TemplateService
                             $p_field =
                                 '<input type="hidden" name="' . $fN . '" value="0" />'
                                 . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ?: 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
                                 . '<span class="t3-icon fa"></span>'
                                 . '</label>';
                             break;

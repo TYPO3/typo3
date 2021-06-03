@@ -292,7 +292,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']], [0, -1])
+            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -345,7 +345,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']], [0, -1])
+            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -365,7 +365,7 @@ class PageProvider extends RecordProvider
             return false;
         }
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']], [0, -1])
+            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -530,13 +530,13 @@ class PageProvider extends RecordProvider
         if ($itemName === 'pagesSort') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $attributes += [
-                'data-pages-sort-url' => (string)$uriBuilder->buildUriFromRoute('pages_sort', ['id' => $this->record['uid']]),
+                'data-pages-sort-url' => (string)$uriBuilder->buildUriFromRoute('pages_sort', ['id' => $this->record['uid'] ?? null]),
             ];
         }
         if ($itemName === 'pagesNewMultiple') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $attributes += [
-                'data-pages-new-multiple-url' => (string)$uriBuilder->buildUriFromRoute('pages_new', ['id' => $this->record['uid']]),
+                'data-pages-new-multiple-url' => (string)$uriBuilder->buildUriFromRoute('pages_new', ['id' => $this->record['uid'] ?? 0]),
             ];
         }
         if ($itemName === 'edit') {

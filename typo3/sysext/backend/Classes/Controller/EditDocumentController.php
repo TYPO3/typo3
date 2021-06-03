@@ -1423,7 +1423,7 @@ class EditDocumentController
         ) {
             $classNames = 't3js-editform-view';
 
-            $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
+            $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0);
 
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
                 $excludeDokTypes = GeneralUtility::intExplode(
@@ -1441,7 +1441,7 @@ class EditDocumentController
             }
 
             if (
-                !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
+                !in_array((int)($this->pageinfo['doktype'] ?? 0), $excludeDokTypes, true)
                 || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
             ) {
                 $previewPageId = $this->getPreviewPageId();
@@ -2516,7 +2516,7 @@ class EditDocumentController
         $table = (string)key($queryParameters['edit']);
         $tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table;
         $recordId = (int)key($queryParameters['edit'][$table]);
-        $action = (string)$queryParameters['edit'][$table][$recordId];
+        $action = (string)($queryParameters['edit'][$table][$recordId] ?? '');
 
         if ($action === 'new') {
             return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew') . ' ' . $tableTitle;
