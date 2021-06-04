@@ -114,7 +114,6 @@ class ModuleTemplate
     protected $content = '';
 
     protected IconFactory $iconFactory;
-    protected FlashMessageService $flashMessageService;
     protected FlashMessageQueue $flashMessageQueue;
     protected ServerRequestInterface $request;
 
@@ -240,7 +239,7 @@ class ModuleTemplate
     ) {
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;
-        $this->flashMessageService = $flashMessageService;
+        $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
 
         $currentRoute = $this->request->getAttribute('route');
@@ -398,7 +397,7 @@ class ModuleTemplate
             $this->view->assign('moduleClass', $this->moduleClass);
         }
         $this->view->assign('uiBlock', $this->uiBlock);
-        $this->view->assign('flashMessageQueueIdentifier', $this->getFlashMessageQueue()->getIdentifier());
+        $this->view->assign('flashMessageQueueIdentifier', $this->flashMessageQueue->getIdentifier());
         $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render());
         $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
         return $this->pageRenderer->render();
@@ -753,7 +752,7 @@ class ModuleTemplate
             $severity,
             $storeInSession
         );
-        $this->getFlashMessageQueue()->enqueue($flashMessage);
+        $this->flashMessageQueue->enqueue($flashMessage);
         return $this;
     }
 
@@ -765,17 +764,6 @@ class ModuleTemplate
     {
         $this->flashMessageQueue = $flashMessageQueue;
         return $this;
-    }
-
-    /**
-     * @return FlashMessageQueue
-     */
-    protected function getFlashMessageQueue()
-    {
-        if (!isset($this->flashMessageQueue)) {
-            $this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-        }
-        return $this->flashMessageQueue;
     }
 
     /**

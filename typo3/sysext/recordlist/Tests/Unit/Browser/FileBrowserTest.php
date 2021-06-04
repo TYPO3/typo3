@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\Browser\FileBrowser;
@@ -55,10 +54,8 @@ class FileBrowserTest extends UnitTestCase
      */
     private function setupProphecies(): array
     {
-        $flashMessageService = $this->prophesize(FlashMessageService::class);
-        $flashMessageService->getMessageQueueByIdentifier()->willReturn($this->prophesize(FlashMessageQueue::class)->reveal());
         $moduleTemplate = $this->getAccessibleMock(ModuleTemplate::class, ['setupPage'], [], '', false);
-        $moduleTemplate->_set('flashMessageService', $flashMessageService->reveal());
+        $moduleTemplate->_set('flashMessageQueue', $this->prophesize(FlashMessageQueue::class)->reveal());
         $moduleTemplate->_set('view', $this->prophesize(StandaloneView::class)->reveal());
         $moduleTemplate->_set('docHeaderComponent', $this->prophesize(DocHeaderComponent::class)->reveal());
         $moduleTemplate->_set('pageRenderer', $this->prophesize(PageRenderer::class)->reveal());
