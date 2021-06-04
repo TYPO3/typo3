@@ -101,7 +101,7 @@ class SessionService implements SingletonInterface
     /**
      * Starts a new session
      *
-     * @return string The session ID
+     * @return string|false The session ID
      */
     public function startSession()
     {
@@ -150,7 +150,7 @@ class SessionService implements SingletonInterface
     /**
      * Generates a new session ID and sends it to the client.
      *
-     * @return string the new session ID
+     * @return string|false the new session ID
      */
     private function renewSession()
     {

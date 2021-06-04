@@ -1167,12 +1167,12 @@ abstract class ImportExport
     public function getOrCreateTemporaryFolderName(): string
     {
         if (empty($this->temporaryFolderName)) {
-            $this->createTemporaryFolderName();
+            $this->temporaryFolderName = $this->createTemporaryFolderName();
         }
         return $this->temporaryFolderName;
     }
 
-    protected function createTemporaryFolderName(): void
+    protected function createTemporaryFolderName(): string
     {
         $temporaryPath = Environment::getVarPath() . '/transient';
         do {
@@ -1184,7 +1184,7 @@ abstract class ImportExport
             );
         } while (is_dir($temporaryFolderName));
         GeneralUtility::mkdir($temporaryFolderName);
-        $this->temporaryFolderName = $temporaryFolderName;
+        return $temporaryFolderName;
     }
 
     public function removeTemporaryFolderName(): void

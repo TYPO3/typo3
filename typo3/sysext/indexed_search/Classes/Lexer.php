@@ -116,7 +116,7 @@ class Lexer
         // Get next chars unicode number and find type:
         $bc = 0;
         $cp = $this->utf8_ord($theWord, $bc);
-        $cType = $this->charType($cp);
+        $cType = $this->charType((int)$cp);
         // If string is a CJK sequence we follow this algorithm:
         /*
         DESCRIPTION OF (CJK) ALGORITHMContinuous letters and numbers make up words. Spaces and symbols
@@ -238,7 +238,7 @@ class Lexer
             $pos += $bc;
             // Determine the type:
             $cType_prev = $cType;
-            $cType = $this->charType($cp);
+            $cType = $this->charType((int)$cp);
             if ($cType !== null) {
                 continue;
             }
@@ -282,7 +282,7 @@ class Lexer
      * @param int $len The length of the character (reference, return value)
      * @param int $pos Starting position in input string
      * @param bool $hex If set, then a hex. number is returned
-     * @return int UNICODE codepoint
+     * @return int|string UNICODE codepoint
      */
     public function utf8_ord(&$str, &$len, $pos = 0, $hex = false)
     {

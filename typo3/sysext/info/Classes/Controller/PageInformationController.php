@@ -501,7 +501,7 @@ class PageInformationController
         $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render() . '</span>';
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals('pages', $row)) {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']);
+            $icon = (string)BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']);
         }
         return $icon;
     }

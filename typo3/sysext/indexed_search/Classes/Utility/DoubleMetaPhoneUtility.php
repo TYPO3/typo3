@@ -819,15 +819,15 @@ class DoubleMetaPhoneUtility
     public function StringAt($string, $start, $length, $list)
     {
         if ($start < 0 || $start >= strlen($string)) {
-            return 0;
+            return false;
         }
         $listCount = count($list);
         for ($i = 0; $i < $listCount; $i++) {
             if ($list[$i] == substr($string, $start, $length)) {
-                return 1;
+                return true;
             }
         }
-        return 0;
+        return false;
     }
 
     /**

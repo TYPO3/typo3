@@ -68,6 +68,7 @@ class CoreVersionService
     }
 
     /**
+     * @todo docblock
      * @return array{community: string[], elts: string[]}
      */
     public function getSupportedMajorReleases(): array

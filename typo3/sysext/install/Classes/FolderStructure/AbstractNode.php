@@ -64,7 +64,7 @@ abstract class AbstractNode
      */
     protected function getTargetPermission()
     {
-        return $this->targetPermission;
+        return $this->targetPermission ?? '';
     }
 
     /**

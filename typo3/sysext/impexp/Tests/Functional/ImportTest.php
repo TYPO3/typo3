@@ -335,7 +335,6 @@ class ImportTest extends AbstractImportExportTestCase
             'ID' => '123456789',
         ];
         $files = [$fileInfo];
-        $importMock->_call('createTemporaryFolderName');
         $importMock->_set('dat', $dat);
         $importMock->writeFilesToTemporaryFolder($files);
         // End of simulation

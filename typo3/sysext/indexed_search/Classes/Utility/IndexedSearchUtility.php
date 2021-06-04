@@ -47,7 +47,7 @@ class IndexedSearchUtility
      */
     public static function md5inthash($stringToHash)
     {
-        return hexdec(substr(md5($stringToHash), 0, 7));
+        return (int)hexdec(substr(md5($stringToHash), 0, 7));
     }
 
     /**
@@ -174,6 +174,6 @@ class IndexedSearchUtility
      */
     public static function milliseconds()
     {
-        return round(microtime(true) * 1000);
+        return (int)round(microtime(true) * 1000);
     }
 }

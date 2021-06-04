@@ -62,8 +62,7 @@ class PhpInfoViewHelper extends AbstractViewHelper
     {
         ob_start();
         phpinfo();
-
-        return ob_get_clean();
+        return (string)ob_get_clean();
     }
 
     /**

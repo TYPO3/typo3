@@ -294,7 +294,7 @@ class FileContentParser
      * Return title of entry in media type selector box.
      *
      * @param string $extension File extension
-     * @return string String with label value of entry in media type search selector box (frontend plugin).
+     * @return string|false String with label value of entry in media type search selector box (frontend plugin).
      */
     public function searchTypeMediaTitle($extension)
     {
@@ -458,7 +458,7 @@ class FileContentParser
      * @param string $ext File extension, eg. "pdf", "doc" etc.
      * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
      * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
-     * @return array Standard content array (title, description, keywords, body keys)
+     * @return array|false|null Standard content array (title, description, keywords, body keys), false if the extension is not supported or null if nothing found
      */
     public function readFileContent($ext, $absFile, $cPKey)
     {

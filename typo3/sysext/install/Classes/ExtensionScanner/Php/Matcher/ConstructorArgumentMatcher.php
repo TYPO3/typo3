@@ -61,11 +61,12 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
      * Test for "->deprecated()" (weak match)
      *
      * @param Node $node
+     * @return void|null
      */
     public function enterNode(Node $node)
     {
         if ($this->isFileIgnored($node) || $this->isLineIgnored($node)) {
-            return;
+            return null;
         }
         $resolvedNode = $node->getAttribute(self::NODE_RESOLVED_AS, null) ?? $node;
         if (!$resolvedNode instanceof New_
@@ -73,13 +74,13 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
             || is_object($node->class) && !method_exists($node->class, '__toString')
             || !array_key_exists((string)$resolvedNode->class, $this->matcherDefinitions)
         ) {
-            return;
+            return null;
         }
 
         // A method call is considered a match if it is not called with argument unpacking
         // and number of used arguments is lower than numberOfMandatoryArguments
         if ($this->isArgumentUnpackingUsed($resolvedNode->args)) {
-            return;
+            return null;
         }
 
         // $node reflects invocation, e.g. `GeneralUtility::makeInstance(MyClass::class, 123)`

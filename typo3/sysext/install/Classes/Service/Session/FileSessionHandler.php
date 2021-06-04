@@ -233,7 +233,7 @@ class FileSessionHandler implements \SessionHandlerInterface
     /**
      * Returns the session ID of the running session.
      *
-     * @return string the session ID
+     * @return string|false the session ID
      */
     public function getSessionId()
     {

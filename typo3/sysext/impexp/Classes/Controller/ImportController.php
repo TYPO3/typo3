@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -309,9 +310,9 @@ class ImportController extends ImportExportController
      * Gets a file by combined identifier.
      *
      * @param string $combinedIdentifier
-     * @return File|null
+     * @return File|ProcessedFile|null
      */
-    protected function getFile(string $combinedIdentifier): ?File
+    protected function getFile(string $combinedIdentifier)
     {
         try {
             $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($combinedIdentifier);

@@ -90,7 +90,7 @@ class CodeStatistics extends NodeVisitorAbstract
      * True if a @extensionScannerIgnoreFile has been found.
      * Called externally *after* traversing
      *
-     * @return int
+     * @return bool
      */
     public function isFileIgnored()
     {

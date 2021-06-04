@@ -178,7 +178,7 @@ class WebServerConfigurationFileService
         string $newRewriteRule,
         string $configurationFileContent
     ): string {
-        return preg_replace_callback(
+        return (string)preg_replace_callback(
             $pattern,
             static function ($matches) use ($newRewriteRule) {
                 return str_replace($matches[2], '', ($matches[1] . $newRewriteRule)) . $matches[3];

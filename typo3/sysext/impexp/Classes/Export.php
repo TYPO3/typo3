@@ -441,9 +441,9 @@ class Export extends ImportExport
      *
      * @param int $pid Page ID to select from
      * @param string $table Table to select from
-     * @return Statement Query statement
+     * @return \Doctrine\DBAL\Driver\ResultStatement|int Query statement
      */
-    protected function execListQueryPid(int $pid, string $table): Statement
+    protected function execListQueryPid(int $pid, string $table)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 

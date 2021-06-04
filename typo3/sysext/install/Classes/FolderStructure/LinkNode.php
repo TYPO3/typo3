@@ -199,7 +199,7 @@ class LinkNode extends AbstractNode implements NodeInterface
             $result = true;
         } else {
             $actualTarget = $this->getCurrentTarget();
-            if ($expectedTarget === rtrim($actualTarget, '/')) {
+            if ($expectedTarget === rtrim((string)$actualTarget, '/')) {
                 $result = true;
             }
         }
@@ -209,7 +209,7 @@ class LinkNode extends AbstractNode implements NodeInterface
     /**
      * Return current target of link
      *
-     * @return string target
+     * @return false|string target
      */
     protected function getCurrentTarget()
     {
