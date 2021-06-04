@@ -157,13 +157,20 @@ class ListController extends AbstractModuleController
         }
 
         $this->addComposerModeNotification();
-        $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation($filter);
+        $isComposerMode = Environment::isComposerMode();
+        $availableAndInstalledExtensions = $this->enrichExtensionsWithViewInformation(
+            $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation($filter),
+            $isComposerMode
+        );
         ksort($availableAndInstalledExtensions);
         $this->view->assignMultiple(
             [
                 'extensions' => $availableAndInstalledExtensions,
-                'isComposerMode' => Environment::isComposerMode(),
-                'typeFilter' => $filter ?: 'All'
+                'isComposerMode' => $isComposerMode,
+                'typeFilter' => $filter ?: 'All',
+                // Sort extension by update state. This is only automatically set for non-composer
+                // mode and only takes effect if at least one extension can be updated.
+                'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode
             ]
         );
         $this->handleTriggerArguments();
@@ -334,6 +341,28 @@ class ListController extends AbstractModuleController
     protected function saveBackendUserFilter(string $filter): void
     {
         $this->getBackendUserAuthentication()->pushModuleData('ExtensionManager', ['filter' => $filter]);
+    }
+
+    protected function enrichExtensionsWithViewInformation(array $availableAndInstalledExtensions, bool $isComposerMode): array
+    {
+        $isOfflineMode = (bool)($this->settings['offlineMode'] ?? false);
+
+        foreach ($availableAndInstalledExtensions as &$extension) {
+            $extension['updateIsBlocked'] = $isComposerMode || $isOfflineMode || ($extension['state'] ?? '') === 'excludeFromUpdates';
+            $extension['sortUpdate'] = 2;
+            if ($extension['updateAvailable'] ?? false) {
+                $extension['sortUpdate'] = (int)$extension['updateIsBlocked'];
+            }
+        }
+
+        return $availableAndInstalledExtensions;
+    }
+
+    protected function extensionsWithUpdate(array $availableAndInstalledExtensions): array
+    {
+        return array_filter($availableAndInstalledExtensions, static function ($extension) {
+            return $extension['updateAvailable'] ?? false;
+        });
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

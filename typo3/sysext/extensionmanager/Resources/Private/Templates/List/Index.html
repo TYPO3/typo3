@@ -50,10 +50,10 @@
         <table id="typo3-extension-list" class="table table-striped table-hover extension-list">
             <thead>
                 <tr>
-                    <th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
+                    <th {f:if(condition: sortByUpdate, then: 'data-sort-default')} title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
                     <th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
                     <th data-filterable><f:translate key="extensionList.header.extensionName"/></th>
-                    <th data-filterable data-sort-default><f:translate key="extensionList.header.extensionKey"/></th>
+                    <th {f:if(condition: '!{sortByUpdate}', then: 'data-sort-default')} data-filterable><f:translate key="extensionList.header.extensionKey"/></th>
                     <th data-sort-method="dotsep"><f:translate key="extensionList.header.extensionVersion"/></th>
                     <th data-sort-method="none"><f:translate key="extensionList.header.extensionState"/></th>
                     <th><f:translate key="extensionList.header.extensionType"/></th>
@@ -62,10 +62,6 @@
             </thead>
             <tbody>
                 <f:for each="{extensions}" as="extension" key="extensionKey">
-                    <f:variable name="updateIsBlocked" value="{f:if(condition: '{isComposerMode} || {settings.offlineMode} || {extension.state} == \'excludeFromUpdates\'', then: '1', else: '0')}" />
-                    <f:variable name="sortUpdate" value="0" />
-                    <f:variable name="sortUpdate" value="{f:if(condition: '{extension.updateAvailable} && {updateIsBlocked}', then: '1')}" />
-                    <f:variable name="sortUpdate" value="{f:if(condition: '{extension.updateAvailable} && !{updateIsBlocked}', then: '2')}" />
                     <f:if condition="{extension.terObject}">
                         <f:then>
                             <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
@@ -74,9 +70,9 @@
                             <tr role="row" id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
                         </f:else>
                     </f:if>
-                    <td data-sort="{sortUpdate}">
+                    <td data-sort="{extension.sortUpdate}">
                         <f:if condition="{extension.updateAvailable}">
-                            <f:if condition="{updateIsBlocked}">
+                            <f:if condition="{extension.updateIsBlocked}">
                                 <f:then>
                                     <span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
                                         <core:icon identifier="actions-system-extension-update" />
