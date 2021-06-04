@@ -82,7 +82,7 @@ class Check implements CheckInterface
     protected $suggestedPhpExtensions = [
         'fileinfo' => 'This extension is used for proper file type detection in the File Abstraction Layer.',
         'intl' => 'This extension is used for correct language and locale handling.',
-        'openssl' => 'This extension is used for sending SMTP mails over an encrypted channel endpoint, and for extensions such as "rsaauth".'
+        'openssl' => 'This extension is used for sending SMTP mails over an encrypted channel endpoint.'
     ];
 
     public function __construct()

@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 
@@ -222,46 +221,35 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * Backend login security is set to rsa if rsaauth
-     * is installed (but not used) otherwise the default value "normal" has to be used.
-     * This forces either 'normal' or 'rsa' to be set in LocalConfiguration.
+     * This forces 'normal' for backend login security level.
      *
      * @throws ConfigurationChangedException
      */
     protected function configureBackendLoginSecurity()
     {
-        $rsaauthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
         try {
             $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('BE/loginSecurityLevel');
-            if ($rsaauthLoaded && $currentLoginSecurityLevelValue !== 'rsa') {
-                $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
-                $this->throwConfigurationChangedException();
-            } elseif (!$rsaauthLoaded && $currentLoginSecurityLevelValue !== 'normal') {
+            if ($currentLoginSecurityLevelValue !== 'normal') {
                 $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {
             // If an exception is thrown, the value is not set in LocalConfiguration
-            $this->configurationManager->setLocalConfigurationValueByPath(
-                'BE/loginSecurityLevel',
-                $rsaauthLoaded ? 'rsa' : 'normal'
-            );
+            $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
             $this->throwConfigurationChangedException();
         }
     }
 
     /**
-     * Frontend login security is set to normal in case
-     * any other value is set while ext:rsaauth is not loaded.
+     * Frontend login security is set to normal in case other value is set.
      *
      * @throws ConfigurationChangedException
      */
     protected function configureFrontendLoginSecurity()
     {
-        $rsaauthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
         try {
             $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('FE/loginSecurityLevel');
-            if (!$rsaauthLoaded && $currentLoginSecurityLevelValue !== 'normal') {
+            if ($currentLoginSecurityLevelValue !== 'normal') {
                 $this->configurationManager->setLocalConfigurationValueByPath('FE/loginSecurityLevel', 'normal');
                 $this->throwConfigurationChangedException();
             }

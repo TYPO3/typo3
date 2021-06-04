@@ -3,8 +3,6 @@
 defined('TYPO3') or die();
 
 // v9->v10 wizards below this line
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rsaauthExtension']
-    = \TYPO3\CMS\Install\Updates\RsaauthExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feeditExtension']
     = \TYPO3\CMS\Install\Updates\FeeditExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['taskcenterExtension']

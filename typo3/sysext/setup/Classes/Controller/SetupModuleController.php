@@ -512,7 +512,6 @@ class SetupModuleController
                     if ($type === 'password') {
                         $value = '';
                         $noAutocomplete = 'autocomplete="new-password" ';
-                        $more .= ' data-rsa-encryption=""';
                     }
                     $html = '<input aria-labelledby="label_' . htmlspecialchars($fieldName) . '" id="field_' . htmlspecialchars($fieldName) . '"
                         type="' . htmlspecialchars($type) . '"

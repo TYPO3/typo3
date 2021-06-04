@@ -84,7 +84,7 @@
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
 		"ext-intl": "TYPO3 with unicode-based filesystems",
 		"ext-mysqli": "",
-		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint, and for extensions such as \"rsaauth\"",
+		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint",
 		"ext-zip": "",
 		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files"
 	},

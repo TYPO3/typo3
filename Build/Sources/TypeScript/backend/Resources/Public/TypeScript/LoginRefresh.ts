@@ -254,7 +254,6 @@ class LoginRefresh {
             autofocus: 'autofocus',
             class: 'form-control',
             placeholder: TYPO3.lang['mess.refresh_login_password'],
-            'data-rsa-encryption': 't3-loginrefresh-userident',
           }),
         ),
       ),
@@ -275,11 +274,6 @@ class LoginRefresh {
     );
     this.registerDefaultModalEvents(this.$loginForm).on('submit', this.submitForm);
     $('body').append(this.$loginForm);
-    if (require.specified('TYPO3/CMS/Rsaauth/RsaEncryptionModule')) {
-      require(['TYPO3/CMS/Rsaauth/RsaEncryptionModule'], function(RsaEncryption: any): void {
-        RsaEncryption.registerForm($('#beLoginRefresh').get(0));
-      });
-    }
   }
 
   /**

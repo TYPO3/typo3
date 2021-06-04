@@ -26,10 +26,8 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
@@ -80,28 +78,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     }
 
     /**
-     * Dataprovider for configureBackendLoginSecurity
-     *
-     * @return array
-     */
-    public function configureBackendLoginSecurityLocalconfiguration(): array
-    {
-        return [
-            ['', 'rsa', true, false],
-            ['normal', 'rsa', true, true],
-            ['rsa', 'normal', false, true],
-        ];
-    }
-
-    /**
      * @test
-     * @dataProvider configureBackendLoginSecurityLocalconfiguration
-     * @param string $current
-     * @param string $setting
-     * @param bool $isPackageActive
-     * @param bool $hasLocalConfig
      */
-    public function configureBackendLoginSecurity($current, $setting, $isPackageActive, $hasLocalConfig)
+    public function configureBackendLoginSecurity(): void
     {
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
@@ -112,19 +91,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        /** @var $packageManager PackageManager|\PHPUnit\Framework\MockObject\MockObject */
-        $packageManager = $this->createMock(PackageManager::class);
-        $packageManager->expects(self::any())
-            ->method('isPackageActive')
-            ->willReturn($isPackageActive);
-        ExtensionManagementUtility::setPackageManager($packageManager);
-
         $currentLocalConfiguration = [
-            ['BE/loginSecurityLevel', $current]
+            ['BE/loginSecurityLevel', 'rsa']
         ];
-        $closure = function () {
-            throw new MissingArrayPathException('Path does not exist in array', 1538160231);
-        };
 
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -132,18 +101,12 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValueByPath',
             ]
         );
-        if ($hasLocalConfig) {
-            $this->configurationManager->expects(self::once())
-                ->method('getLocalConfigurationValueByPath')
-                ->willReturnMap($currentLocalConfiguration);
-        } else {
-            $this->configurationManager->expects(self::once())
-                ->method('getLocalConfigurationValueByPath')
-                ->willReturnCallback($closure);
-        }
+        $this->configurationManager->expects(self::once())
+            ->method('getLocalConfigurationValueByPath')
+            ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::once())
             ->method('setLocalConfigurationValueByPath')
-            ->with(self::equalTo('BE/loginSecurityLevel'), self::equalTo($setting));
+            ->with(self::equalTo('BE/loginSecurityLevel'), self::equalTo('normal'));
 
         $this->expectException(ConfigurationChangedException::class);
 
@@ -153,28 +116,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     }
 
     /**
-     * Dataprovider for configureBackendLoginSecurity
-     *
-     * @return array
-     */
-    public function configureFrontendLoginSecurityLocalconfiguration(): array
-    {
-        return [
-            ['', 'rsa', true, false],
-            ['normal', 'rsa', true, true],
-            ['rsa', 'normal', false, true],
-        ];
-    }
-
-    /**
      * @test
-     * @dataProvider configureFrontendLoginSecurityLocalconfiguration
-     * @param string $current
-     * @param string $setting
-     * @param bool $isPackageActive
-     * @param bool $hasLocalConfig
      */
-    public function configureFrontendLoginSecurity($current, $setting, $isPackageActive, $hasLocalConfig)
+    public function configureFrontendLoginSecurity(): void
     {
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
@@ -185,19 +129,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        /** @var $packageManager PackageManager|\PHPUnit\Framework\MockObject\MockObject */
-        $packageManager = $this->createMock(PackageManager::class);
-        $packageManager->expects(self::any())
-            ->method('isPackageActive')
-            ->willReturn($isPackageActive);
-        ExtensionManagementUtility::setPackageManager($packageManager);
-
         $currentLocalConfiguration = [
-            ['FE/loginSecurityLevel', $current]
+            ['FE/loginSecurityLevel', 'rsa']
         ];
-        $closure = function () {
-            throw new MissingArrayPathException('Path does not exist in array', 1476109311);
-        };
 
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -205,22 +139,14 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValueByPath',
             ]
         );
-        if ($hasLocalConfig) {
-            $this->configurationManager->expects(self::once())
-                ->method('getLocalConfigurationValueByPath')
-                ->willReturnMap($currentLocalConfiguration);
-        } else {
-            $this->configurationManager->expects(self::once())
-                ->method('getLocalConfigurationValueByPath')
-                ->willReturnCallback($closure);
-        }
-        if ($isPackageActive === false) {
-            $this->configurationManager->expects(self::once())
-                ->method('setLocalConfigurationValueByPath')
-                ->with(self::equalTo('FE/loginSecurityLevel'), self::equalTo($setting));
+        $this->configurationManager->expects(self::once())
+            ->method('getLocalConfigurationValueByPath')
+            ->willReturnMap($currentLocalConfiguration);
+        $this->configurationManager->expects(self::once())
+            ->method('setLocalConfigurationValueByPath')
+            ->with(self::equalTo('FE/loginSecurityLevel'), self::equalTo('normal'));
 
-            $this->expectException(ConfigurationChangedException::class);
-        }
+        $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 

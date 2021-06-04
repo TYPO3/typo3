@@ -104,7 +104,7 @@
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
 		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files",
 		"ext-intl": "Used for locale-aware operations",
-		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint, and for extensions such as \"rsaauth\"",
+		"ext-openssl": "OpenSSL is required for sending SMTP mails over an encrypted channel endpoint",
 		"ext-zip": "",
 		"ext-mysqli": ""
 	},
