@@ -707,6 +707,16 @@ class PageLayoutController
         return $content;
     }
 
+    /**
+     * Make the ModuleTemplate public accessible for the use in hooks.
+     *
+     * @return ModuleTemplate
+     */
+    public function getModuleTemplate(): ModuleTemplate
+    {
+        return $this->moduleTemplate;
+    }
+
     /***************************
      *
      * Sub-content functions, rendering specific parts of the module content.
