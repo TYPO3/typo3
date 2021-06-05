@@ -109,12 +109,33 @@ class RedirectService implements LoggerAwareInterface
             // check all redirects that are registered as regex
             if (!empty($allRedirects[$domainName]['regexp'])) {
                 $allRegexps = array_keys($allRedirects[$domainName]['regexp']);
+                $regExpPath = $path;
+                if (!empty($query)) {
+                    $regExpPath .= '?' . ltrim($query, '?');
+                }
                 foreach ($allRegexps as $regexp) {
-                    $matchResult = @preg_match((string)$regexp, $path);
-                    if ($matchResult) {
+                    $matchResult = @preg_match((string)$regexp, $regExpPath);
+                    if ($matchResult > 0) {
                         $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
-                    } elseif ($matchResult === false) {
+                        continue;
+                    }
+
+                    // Log invalid regular expression
+                    if ($matchResult === false) {
                         $this->logger->warning('Invalid regex in redirect', ['regex' => $regexp]);
+                        continue;
+                    }
+
+                    // We need a second match run to evaluate against path only, even when query parameters where
+                    // provided to ensure regexp without query parameters in mind are still processed.
+                    // We need to do this only if there are query parameters in the request, otherwise first
+                    // preg_match would have found it.
+                    if (!empty($query)) {
+                        $matchResult = preg_match((string)$regexp, $path);
+                        if ($matchResult > 0) {
+                            $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
+                            continue;
+                        }
                     }
                 }
             }
@@ -356,9 +377,25 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array
     {
-        $matchResult = @preg_match($matchedRedirect['source_path'], $uri->getPath(), $matches);
+        $uriToCheck = $uri->getPath();
+        if (($matchedRedirect['respect_query_parameters'] ?? false) && $uri->getQuery()) {
+            $uriToCheck .= '?' . $uri->getQuery();
+        }
+        $matchResult = preg_match($matchedRedirect['source_path'], $uriToCheck, $matches);
         if ($matchResult > 0) {
             foreach ($matches as $key => $val) {
+                // Unsafe regexp captching group may lead to adding query parameters to result url, which we need
+                // to prevent here, thus throwing everything beginning with ? away
+                if (strpos($val, '?') !== false) {
+                    $val = explode('?', $val, 2)[0] ?? '';
+                    $this->logger->warning(
+                        sprintf(
+                            'Unsafe captching group regex in redirect #%s, including query parameters in matched group',
+                            $matchedRedirect['uid'] ?? 0
+                        ),
+                        ['regex' => $matchedRedirect['source_path']]
+                    );
+                }
                 $linkDetails['url'] = str_replace('$' . $key, $val, $linkDetails['url']);
             }
         }

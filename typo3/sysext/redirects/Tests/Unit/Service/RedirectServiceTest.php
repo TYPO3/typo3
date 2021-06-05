@@ -637,4 +637,65 @@ class RedirectServiceTest extends UnitTestCase
         $uri = new Uri('https://anotherdomain.com/bar');
         self::assertEquals($uri, $result);
     }
+
+    /**
+     * @test
+     */
+    public function getTargetUrlWithQueryReplaceRegExpCaptureGroup()
+    {
+        $redirectTargetMatch = [
+            'uid' => 1,
+            'source_path' => '#^/index.php\?option=com_content&page=(.*)#',
+            'target' => 'https://anotherdomain.com/$1',
+            'force_https' => '0',
+            'keep_query_parameters' => 0,
+            'is_regexp' => 1,
+            'respect_query_parameters' => 1,
+        ];
+        $linkDetails = [
+            'type' => LinkService::TYPE_URL,
+            'url' => 'https://anotherdomain.com/$1',
+            'query' => '',
+        ];
+        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+
+        $queryParams = [];
+        $queryParams['option'] = 'com_content';
+        $queryParams['page'] = 'target';
+        $source = new Uri('https://example.com/index.php?option=com_content&page=target');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $queryParams, new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+
+        $uri = new Uri('https://anotherdomain.com/target');
+        self::assertEquals($uri, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroup()
+    {
+        $redirectTargetMatch = [
+            'uid' => 1,
+            'source_path' => '#^/index/\?option=com_content&page=(.*)#',
+            'target' => 'https://anotherdomain.com/$1',
+            'force_https' => '0',
+            'keep_query_parameters' => '1',
+            'is_regexp' => 1,
+            'respect_query_parameters' => 1,
+        ];
+        $linkDetails = [
+            'type' => LinkService::TYPE_URL,
+            'url' => 'https://anotherdomain.com/$1',
+        ];
+        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+
+        $queryParams = [];
+        $queryParams['option'] = 'com_content';
+        $queryParams['page'] = 'target';
+        $source = new Uri('https://example.com/index/?option=com_content&page=target');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $queryParams, new FrontendUserAuthentication(), $source, new Site('dummy', 13, []));
+
+        $uri = new Uri('https://anotherdomain.com/target?option=com_content&page=target');
+        self::assertEquals($uri, $result);
+    }
 }

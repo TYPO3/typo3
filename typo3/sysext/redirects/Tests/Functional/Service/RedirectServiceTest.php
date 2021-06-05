@@ -119,6 +119,30 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals(new Uri('https://acme.com/access-restricted'), $targetUrl);
     }
 
+    public function redirectsDataProvider(): array
+    {
+        return [
+            [
+                'https://acme.com/redirect-301',
+                301,
+                'https://acme.com/',
+                1,
+            ],
+            [
+                'https://acme.com/redirect-308',
+                308,
+                'https://acme.com/page2',
+                2,
+            ],
+            [
+                'https://acme.com/redirect-302',
+                302,
+                'https://www.typo3.org',
+                3,
+            ],
+        ];
+    }
+
     /**
      * @test
      * @dataProvider redirectsDataProvider
@@ -147,27 +171,114 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals($targetUrl, $response->getHeader('location')[0]);
     }
 
-    public function redirectsDataProvider(): array
+    public function checkRegExpRedirectsDataProvider(): array
     {
         return [
-          [
-              'https://acme.com/redirect-301',
-              301,
-              'https://acme.com/',
-              1
-          ],
-          [
-              'https://acme.com/redirect-308',
-              308,
-              'https://acme.com/page2',
-              2
-          ],
-          [
-              'https://acme.com/redirect-302',
-              302,
-              'https://www.typo3.org',
-              3
-          ],
+            'regexp redirect respecting query parameter but not keeping them' => [
+                'https://acme.com/index.php?option=com_content&page=some_page',
+                301,
+                'https://anotherdomain.com/some_page',
+                1,
+            ],
+            'regexp redirect respecting query parameter and keeping them' => [
+                'https://acme.com/index.php?option=com_content2&page=some_page',
+                301,
+                'https://anotherdomain.com/some_page?option=com_content2&page=some_page',
+                2,
+            ],
+            'regexp redirect not respecting query parameters and not keeping them' => [
+                'https://acme.com/some-old-page-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others',
+                3,
+            ],
+            'regexp redirect not respecting query parameters but keeping them' => [
+                'https://acme.com/some-page-others',
+                301,
+                'https://anotherdomain.com/others',
+                4,
+            ],
+            'regexp redirect not respecting query parameters and not keeping them, with query parameter in request' => [
+                'https://acme.com/some-old-page-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others',
+                3,
+            ],
+            'regexp redirect not respecting query parameters but keeping them, without query parameter in request' => [
+                'https://acme.com/some-page-others',
+                301,
+                'https://anotherdomain.com/others',
+                4,
+            ],
+            // check against unsafe regexp captching group
+            'regexp redirect with unsafe captching group, respecting query parameters and not keeping them, with query parameter in request' => [
+                'https://acme.com/unsafe-captchinggroup-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others',
+                5,
+            ],
+            // checks against unsafe regexp captching group, but as keeping query parameters this may be undetected,
+            // and as such this test acts as counterpart to tests above
+            'regexp redirect with unsafe captching group, respecting query parameters but keeping them, with query parameter in request' => [
+                'https://acme.com/another-unsafe-captchinggroup-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others?option=com_content',
+                6,
+            ],
+            // check against safe regexp captching group
+            'regexp redirect safe captching group, respecting query parameters and not keeping them, with query parameter in request' => [
+                'https://acme.com/safe-captchinggroup-not-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others',
+                7,
+            ],
+            // checks against safe regexp captching group
+            'regexp redirect safe captching group, respecting query parameters but keeping them, with query parameter in request' => [
+                'https://acme.com/another-safe-captchinggroup-not-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others?option=com_content',
+                8,
+            ],
+            // check against more safe regexp captching group - this tests path fallback even with queryparameters in
+            // request for non query regexp with $ as end matching in regexp
+            'regexp redirect safe captching group, not respecting query parameters and not keeping them, with query parameter in request' => [
+                'https://acme.com/more-safe-captchinggroup-not-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others',
+                9,
+            ],
+            'regexp redirect safe captching group, not respecting query parameters but keeping them, with query parameter in request' => [
+                'https://acme.com/another-more-safe-captchinggroup-not-matching-queryparameters-others?option=com_content',
+                301,
+                'https://anotherdomain.com/others?option=com_content',
+                10,
+            ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkRegExpRedirectsDataProvider
+     */
+    public function checkRegExpRedirects(string $url, int $expectedStatusCode, string $expectedRedirectUri, int $expectedRedirectUid)
+    {
+        $this->importDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.xml');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($url)
+        );
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader('X-Redirect-By'));
+        self::assertIsArray($response->getHeader('location'));
+        self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
     }
 }
