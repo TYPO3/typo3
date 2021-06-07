@@ -18,6 +18,13 @@ You find the standard configuration in
 This may serve as an example on how to configure the extension for
 your needs.
 
+.. note::
+
+   When checking for broken links in the TYPO3 backend module or the
+   corresponding scheduler task, the page TSconfig of the selected start
+   page is also applied to all subpages - when checking recursive.
+   In case subpages should behave differently and therefore contain a
+   different linkhandler configuration, they must be checked individually.
 
 .. _reference:
 
