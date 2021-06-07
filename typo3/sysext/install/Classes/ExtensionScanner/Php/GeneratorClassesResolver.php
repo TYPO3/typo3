@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\ExtensionScanner\Php;
 
+use PhpParser\BuilderFactory;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
@@ -40,6 +41,16 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractCoreMatcher;
 class GeneratorClassesResolver extends NodeVisitorAbstract
 {
     /**
+     * @var BuilderFactory
+     */
+    protected $builderFactory;
+
+    public function __construct(BuilderFactory $builderFactory = null)
+    {
+        $this->builderFactory = $builderFactory ?? new BuilderFactory();
+    }
+
+    /**
      * Called by PhpParser.
      * Create an fqdn object from first makeInstance argument if it is a String
      *
@@ -54,29 +65,81 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
             && isset($node->args[0]->value)
             && $node->args[0]->value instanceof Expr
         ) {
-            if (null === $className = $this->resolveClassName($node->args[0]->value)) {
-                return;
+            $argValue = $node->args[0]->value;
+            $argAlternative = $this->substituteClassString($argValue);
+            if ($argAlternative !== null) {
+                $node->args[0]->value = $argAlternative;
+                $argValue = $argAlternative;
             }
-            $node->args[0]->value = $className;
-            $node->setAttribute(AbstractCoreMatcher::NODE_RESOLVED_AS, new New_(
-                $className,
-                // remove first argument (class name)
-                array_slice($node->args, 1),
-                $node->getAttributes()
-            ));
-        }
-    }
 
-    protected function resolveClassName(Expr $value): ?FullyQualified
-    {
-        if ($value instanceof String_) {
-            // 'TYPO3\\CMS\\ClassName'
-            return new FullyQualified($value->value, $value->getAttributes());
-        }
-        if ($value instanceof ClassConstFetch && $value->class instanceof FullyQualified) {
-            // \TYPO3\CMS\ClassName::class
-            return $value->class;
+            $nodeAlternative = $this->substituteMakeInstance($node, $argValue);
+            if ($nodeAlternative !== null) {
+                $node->setAttribute(AbstractCoreMatcher::NODE_RESOLVED_AS, $nodeAlternative);
+            }
         }
         return null;
+    }
+
+    /**
+     * Substitutes class-string values with their corresponding class constant
+     * representation (`'Vendor\\ClassName'` -> `\Vendor\ClassName::class`).
+     *
+     * @param Expr $argValue
+     * @return ClassConstFetch|null
+     */
+    protected function substituteClassString(Expr $argValue): ?ClassConstFetch
+    {
+        // skip non-strings, and those starting with (invalid) namespace separator
+        if (!$argValue instanceof String_ || $argValue->value[0] === '\\') {
+            return null;
+        }
+
+        $classString = ltrim($argValue->value, '\\');
+        $className = new FullyQualified($classString);
+        $classArg = $this->builderFactory->classConstFetch($className, 'class');
+        $this->duplicateNodeAttributes($argValue, $className, $classArg);
+        return $classArg;
+    }
+
+    /**
+     * Substitutes `makeInstance` invocations with proper `new` invocations.
+     * `GeneralUtility(\Vendor\ClassName::class, 'a', 'b')` -> `new \Vendor\ClassName('a', 'b')`
+     *
+     * @param StaticCall $node
+     * @param Expr $argValue
+     * @return New_|null
+     */
+    protected function substituteMakeInstance(StaticCall $node, Expr $argValue): ?New_
+    {
+        if (!$argValue instanceof ClassConstFetch
+            || !$argValue->class instanceof FullyQualified
+        ) {
+            return null;
+        }
+
+        $newExpr = $this->builderFactory->new(
+            $argValue->class,
+            array_slice($node->args, 1),
+        );
+        $this->duplicateNodeAttributes($node, $newExpr);
+        return $newExpr;
+    }
+
+    /**
+     * Duplicates node positions in source file, based on the assumption
+     * that only lines are relevant. In case this shall be used for
+     * code-migration, real offset positions would be required.
+     *
+     * @param Node $source
+     * @param Node ...$targets
+     */
+    protected function duplicateNodeAttributes(Node $source, Node ...$targets): void
+    {
+        foreach ($targets as $target) {
+            $target->setAttributes([
+                'startLine' => $source->getStartLine(),
+                'endLine' => $source->getEndLine(),
+            ]);
+        }
     }
 }
