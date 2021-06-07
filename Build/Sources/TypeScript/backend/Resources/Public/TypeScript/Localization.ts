@@ -72,7 +72,7 @@ class Localization {
               + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-translate">'
               + localizeIconMarkup
               + '<input type="radio" name="mode" id="mode_translate" value="localize" style="display: none">'
-              + '<br>Translate</label>'
+              + '<br>' + TYPO3.lang['localize.wizard.button.translate'] + '</label>'
               + '</div>'
               + '<div class="col-sm-9">'
               + '<p class="t3js-helptext t3js-helptext-translate text-muted">' + TYPO3.lang['localize.educate.translate'] + '</p>'
@@ -88,7 +88,7 @@ class Localization {
               + '<label class="btn btn-block btn-default t3js-localization-option" data-helptext=".t3js-helptext-copy">'
               + copyIconMarkup
               + '<input type="radio" name="mode" id="mode_copy" value="copyFromLanguage" style="display: none">'
-              + '<br>Copy</label>'
+              + '<br>' + TYPO3.lang['localize.wizard.button.copy'] + '</label>'
               + '</div>'
               + '<div class="col-sm-9">'
               + '<p class="t3js-helptext t3js-helptext-copy text-muted">' + TYPO3.lang['localize.educate.copy'] + '</p>'

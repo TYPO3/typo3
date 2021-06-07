@@ -339,6 +339,12 @@
 			<trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page">
 				<source>Localize page &quot;{0}&quot; into {1}</source>
 			</trans-unit>
+			<trans-unit id="localize.wizard.button.translate" resname="localize.wizard.button.translate">
+				<source>Translate</source>
+			</trans-unit>
+			<trans-unit id="localize.wizard.button.copy" resname="localize.wizard.button.copy">
+				<source>Copy</source>
+			</trans-unit>
 			<trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
