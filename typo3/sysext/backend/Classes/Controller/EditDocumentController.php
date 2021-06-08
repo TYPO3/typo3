@@ -414,6 +414,15 @@ class EditDocumentController
         $this->init($request);
 
         if ($request->getMethod() === 'POST') {
+            // In case save&view is requested, we have to add this information to the redirect
+            // URL, since the ImmediateAction will be added to the module body afterwards.
+            if (isset($parsedBody['_savedokview'])) {
+                $this->R_URI = rtrim($this->R_URI, '&') .
+                    HttpUtility::buildQueryString([
+                        'showPreview' => true,
+                        'popViewId' => $this->getPreviewPageId()
+                    ], (empty($this->R_URL_getvars) ? '?' : '&'));
+            }
             return new RedirectResponse($this->R_URI, 302);
         }
 
@@ -738,20 +747,6 @@ class EditDocumentController
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        // If a preview is requested
-        if (isset($parsedBody['_savedokview'])) {
-            $array_keys = array_keys($this->data);
-            // Get the first table and id of the data array from DataHandler
-            $table = reset($array_keys);
-            $array_keys = array_keys($this->data[$table]);
-            $id = reset($array_keys);
-            if (!MathUtility::canBeInterpretedAsInteger($id)) {
-                $id = $tce->substNEWwithIDs[$id];
-            }
-            // Store this information for later use
-            $this->previewData['table'] = $table;
-            $this->previewData['id'] = $id;
-        }
         $tce->printLogErrorMessages();
 
         if ((int)$this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
@@ -780,15 +775,23 @@ class EditDocumentController
         $this->recTitle = (string)($parsedBody['recTitle'] ?? $queryParams['recTitle'] ?? '');
         $this->noView = (bool)($parsedBody['noView'] ?? $queryParams['noView'] ?? false);
         $this->perms_clause = $beUser->getPagePermsClause(Permission::PAGE_SHOW);
+
+        // Preview code is implicit only generated for GET requests, having the query
+        // parameters "popViewId" (the preview page id) and "showPreview" set.
+        if ($this->popViewId && ($queryParams['showPreview'] ?? false)) {
+            // Generate the preview code (markup), which is added to the module body later
+            $this->previewCode = $this->generatePreviewCode();
+            // After generating the preview code, those params should not longer be applied to the form
+            // action, as this would otherwise always refresh the preview window on saving the record.
+            unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
+        }
+
         // Set other internal variables:
         $this->R_URL_getvars['returnUrl'] = $this->retUrl;
         $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
-        if (isset($parsedBody['_savedokview']) && $this->popViewId) {
-            $this->previewCode = $this->generatePreviewCode();
-        }
         // Set context sensitive menu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
@@ -803,6 +806,11 @@ class EditDocumentController
      */
     protected function generatePreviewCode(): string
     {
+        $array_keys = array_keys($this->editconf);
+        $this->previewData['table'] = reset($array_keys) ?: null;
+        $array_keys = array_keys($this->editconf[$this->previewData['table']]);
+        $this->previewData['id'] = reset($array_keys) ?: null;
+
         $previewPageId = $this->getPreviewPageId();
         $anchorSection = $this->getPreviewUrlAnchorSection();
         $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
