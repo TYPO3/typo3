@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -60,7 +61,7 @@ class CodeViewHelper extends AbstractViewHelper
         foreach ($lines as $line) {
             $tmp = substr($line, $indentSize);
             $spaces = strlen($tmp) - strlen(ltrim($tmp));
-            $content .= str_repeat('  ', $spaces) . ltrim($tmp) . chr(10);
+            $content .= str_repeat('  ', $spaces) . ltrim($line) . chr(10);
         }
 
         $markup = [];
