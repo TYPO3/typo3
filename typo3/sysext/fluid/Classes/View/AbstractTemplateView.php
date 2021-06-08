@@ -18,8 +18,8 @@ namespace TYPO3\CMS\Fluid\View;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -50,7 +50,7 @@ abstract class AbstractTemplateView extends TemplateView implements ViewInterfac
     public function __construct(RenderingContextInterface $context = null)
     {
         if (!$context) {
-            $context = GeneralUtility::makeInstance(ObjectManager::class)->get(RenderingContext::class);
+            $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
         }
         parent::__construct($context);
     }

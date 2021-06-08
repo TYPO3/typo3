@@ -18,8 +18,8 @@ namespace TYPO3\CMS\Fluid\View;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
@@ -38,8 +38,6 @@ class StandaloneView extends AbstractTemplateView
      */
     public function __construct(ContentObjectRenderer $contentObject = null)
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
         // @todo: this needs to be removed in the future
         $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
         if ($contentObject === null) {
@@ -48,8 +46,8 @@ class StandaloneView extends AbstractTemplateView
         }
         $configurationManager->setContentObject($contentObject);
 
-        $request = $objectManager->get(Request::class);
-        $renderingContext = $objectManager->get(RenderingContext::class);
+        $request = GeneralUtility::makeInstance(Request::class);
+        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
         $renderingContext->setRequest($request);
         parent::__construct($renderingContext);
     }
