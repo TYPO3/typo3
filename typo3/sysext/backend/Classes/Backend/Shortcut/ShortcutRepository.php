@@ -582,7 +582,6 @@ class ShortcutRepository
      */
     protected function getShortcutIcon(string $routeIdentifier, string $moduleName, array $shortcut): string
     {
-        $selectFields = [];
         switch ($routeIdentifier) {
             case 'record_edit':
                 $table = $shortcut['table'];
@@ -590,43 +589,8 @@ class ShortcutRepository
                 $icon = '';
 
                 if ($shortcut['type'] === 'edit') {
-                    // Creating the list of fields to include in the SQL query:
-                    $selectFields[] = 'uid';
-                    $selectFields[] = 'pid';
-
-                    if ($table === 'pages') {
-                        $selectFields[] = 'module';
-                        $selectFields[] = 'extendToSubpages';
-                        $selectFields[] = 'doktype';
-                    }
-
-                    if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? null)) {
-                        $selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
-                    }
-
-                    if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'] ?? null) {
-                        $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
-                    }
-
-                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                        $selectFields[] = 't3ver_state';
-                        $selectFields[] = 't3ver_wsid';
-                        $selectFields[] = 't3ver_oid';
-                    }
-
-                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                    $queryBuilder->select(...array_unique(array_values($selectFields)))
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->in(
-                                'uid',
-                                $queryBuilder->createNamedParameter($recordid, \PDO::PARAM_INT)
-                            )
-                        );
-
-                    $row = $queryBuilder->execute()->fetch();
-
-                    $icon = $this->iconFactory->getIconForRecord($table, (array)$row, Icon::SIZE_SMALL)->render();
+                    $row = BackendUtility::getRecordWSOL($table, $recordid) ?? [];
+                    $icon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
                 } elseif ($shortcut['type'] === 'new') {
                     $icon = $this->iconFactory->getIconForRecord($table, [], Icon::SIZE_SMALL)->render();
                 }
