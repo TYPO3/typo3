@@ -60,6 +60,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     /**
      * @param ViewHelperVariableContainer $viewHelperVariableContainer
      * @internal used by typo3/testing-framework only
+     * @todo: Resolve this in ViewHelperBaseTestcase, then drop this method
      */
     public function injectViewHelperVariableContainer(ViewHelperVariableContainer $viewHelperVariableContainer)
     {

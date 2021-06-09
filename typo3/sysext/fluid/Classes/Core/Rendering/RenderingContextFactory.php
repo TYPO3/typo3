@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactory;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
@@ -36,29 +36,31 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
  * mechanism - Services.yaml is ignored in failsafe mode.
  *
  * A casual failsafe instantiation / injection using ServiceProvider.php wouldn't
- * need this factory - the ViewHelperResolver is a "normal" case. But the failsafe
- * mechanism is strict and relies on two things: The service is public: true,
- * this is the case with RenderingContext. And the service is shared: true - a
- * stateless singleton. This is not true for RenderingContext, it by definition
- * relies on context and must be created a-new per fluid parsing instance.
+ * need this factory. But the failsafe mechanism is strict and relies on two
+ * things: The service is public: true, this is the case with RenderingContext.
+ * And the service is shared: true - a stateless singleton. This is not true for
+ * RenderingContext, it by definition relies on context and must be created a-new
+ * per fluid parsing instance.
  *
  * To allow creating RenderingContext objects in failsafe mode, this factory
  * is registered as service provider to dynamically prepare instances.
+ *
+ * @internal May change / vanish any time
  */
-class RenderingContextFactory
+final class RenderingContextFactory
 {
     private ContainerInterface $container;
     private CacheManager $cacheManager;
-    private ViewHelperResolver $viewHelperResolver;
+    private ViewHelperResolverFactory $viewHelperResolverFactory;
 
     public function __construct(
         ContainerInterface $container,
         CacheManager $cacheManager,
-        ViewHelperResolver $viewHelperResolver
+        ViewHelperResolverFactory $viewHelperResolverFactory
     ) {
         $this->container = $container;
         $this->cacheManager = $cacheManager;
-        $this->viewHelperResolver = $viewHelperResolver;
+        $this->viewHelperResolverFactory = $viewHelperResolverFactory;
     }
 
     public function create(): RenderingContext
@@ -96,7 +98,7 @@ class RenderingContextFactory
         }
 
         return new RenderingContext(
-            $this->viewHelperResolver,
+            $this->viewHelperResolverFactory->create(),
             $cache,
             $processors,
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes']

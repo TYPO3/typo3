@@ -39,3 +39,86 @@ services:
   TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor:
     public: true
     shared: false
+
+  # VH's of base package
+  TYPO3Fluid\Fluid\ViewHelpers\Cache\DisableViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Cache\StaticViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Cache\WarmupViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Format\CdataViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Format\PrintfViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\Format\RawViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\AliasViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\CaseViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\CommentViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\CountViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\CycleViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\DebugViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\DefaultCaseViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\ElseViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\ForViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\GroupedForViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\IfViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\InlineViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\LayoutViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\OrViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\SectionViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\SpacelessViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\SwitchViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\ThenViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false
+  TYPO3Fluid\Fluid\ViewHelpers\VariableViewHelper:
+    tags: [ 'fluid.viewhelper' ]
+    autowire: false

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @internal
@@ -35,7 +36,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             Core\Rendering\RenderingContextFactory::class => [ static::class, 'getRenderingContextFactory' ],
-            Core\ViewHelper\ViewHelperResolver::class => [ static::class, 'getViewHelperResolver' ],
+            Core\ViewHelper\ViewHelperResolverFactory::class => [ static::class, 'getViewHelperResolverFactory' ],
         ];
     }
 
@@ -44,12 +45,15 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Core\Rendering\RenderingContextFactory::class, [
             $container,
             $container->get(CacheManager::class),
-            $container->get(Core\ViewHelper\ViewHelperResolver::class)
+            $container->get(Core\ViewHelper\ViewHelperResolverFactory::class)
         ]);
     }
 
-    public static function getViewHelperResolver(ContainerInterface $container): Core\ViewHelper\ViewHelperResolver
+    public static function getViewHelperResolverFactory(ContainerInterface $container): Core\ViewHelper\ViewHelperResolverFactory
     {
-        return self::new($container, Core\ViewHelper\ViewHelperResolver::class);
+        return self::new($container, Core\ViewHelper\ViewHelperResolverFactory::class, [
+            $container,
+            $container->get(ObjectManager::class)
+        ]);
     }
 }

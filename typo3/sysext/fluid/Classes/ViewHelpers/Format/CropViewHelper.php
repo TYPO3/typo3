@@ -127,10 +127,7 @@ class CropViewHelper extends AbstractViewHelper
 
         $stringToTruncate = $renderChildrenClosure();
 
-        // Even if we are in extbase/fluid context here, we're switching to a casual class of the framework here
-        // that has no dependency injection and other stuff. Therefor it is ok to use makeInstance instead of
-        // the ObjectManager here directly for additional performance
-        // Additionally, it would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
+        // It would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
         // but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
         // it is safe to use a fresh instance here directly.
         /** @var ContentObjectRenderer $contentObject */

@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper;
@@ -28,19 +28,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ViewHelperResolverTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
-
-    /**
-     * @test
-     */
-    public function createViewHelperInstanceCreatesViewHelperInstanceUsingObjectManager()
-    {
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get('x')->willReturn(new \stdClass());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
-        self::assertInstanceOf(\stdClass::class, (new ViewHelperResolver())->createViewHelperInstanceFromClassName('x'));
-    }
-
     /**
      * @test
      * @dataProvider getResolveViewHelperNameTestValues
@@ -50,7 +37,16 @@ class ViewHelperResolverTest extends UnitTestCase
      */
     public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected)
     {
-        $viewHelperResolver = new ViewHelperResolver();
+        $viewHelperResolver = new ViewHelperResolver(
+            $this->prophesize(ContainerInterface::class)->reveal(),
+            $this->prophesize(ObjectManagerInterface::class)->reveal(),
+            [
+                'f' => [
+                    0 => 'TYPO3Fluid\Fluid\ViewHelpers',
+                    1 => 'TYPO3\CMS\Fluid\ViewHelpers',
+                ]
+            ]
+        );
         self::assertEquals($expected, $viewHelperResolver->resolveViewHelperClassName($namespace, $method));
     }
 

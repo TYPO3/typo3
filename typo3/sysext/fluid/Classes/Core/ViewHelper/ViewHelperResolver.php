@@ -15,12 +15,14 @@
 
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
  * Class ViewHelperResolver
@@ -53,16 +55,28 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  */
 class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolver
 {
+    protected ContainerInterface $container;
+
+    /**
+     * @deprecated since v11, will be removed with 12
+     */
+    protected ObjectManagerInterface $objectManager;
+
     /**
      * ViewHelperResolver constructor
      *
      * Loads namespaces defined in global TYPO3 configuration. Overlays `f:`
      * with `f:debug:` when Fluid debugging is enabled in the admin panel,
      * causing debugging-specific ViewHelpers to be resolved in that case.
+     *
+     * @internal constructor, use `ViewHelperResolverFactory->create()` instead
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container, ObjectManagerInterface $objectManager, array $namespaces)
     {
-        $this->namespaces = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'];
+        $this->container = $container;
+        // @deprecated since v11, will be removed with 12. Drop argument in ViewHelperResolverFactory
+        $this->objectManager = $objectManager;
+        $this->namespaces = $namespaces;
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             && $this->getBackendUser() instanceof BackendUserAuthentication
@@ -75,26 +89,33 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
 
     /**
      * @param string $viewHelperClassName
-     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
+     * @return ViewHelperInterface
      */
-    public function createViewHelperInstanceFromClassName($viewHelperClassName)
+    public function createViewHelperInstanceFromClassName($viewHelperClassName): ViewHelperInterface
     {
-        return $this->getObjectManager()->get($viewHelperClassName);
+        if ($this->container instanceof FailsafeContainer) {
+            // The install tool creates VH instances using makeInstance to not rely on symfony DI here,
+            // otherwise we'd have to have all install-tool used ones in ServiceProvider.php. However,
+            // none of the install tool used VH's use injection.
+            /** @var ViewHelperInterface $viewHelperInstance */
+            $viewHelperInstance = GeneralUtility::makeInstance($viewHelperClassName);
+            return $viewHelperInstance;
+        }
+
+        if ($this->container->has($viewHelperClassName)) {
+            /** @var ViewHelperInterface $viewHelperInstance */
+            $viewHelperInstance = $this->container->get($viewHelperClassName);
+            return $viewHelperInstance;
+        }
+
+        /** @var ViewHelperInterface $viewHelperInstance */
+        // @deprecated since v11, will be removed with 12. Fallback if extensions VH has no Services.yaml, yet.
+        $viewHelperInstance = $this->objectManager->get($viewHelperClassName);
+        return $viewHelperInstance;
     }
 
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected function getObjectManager()
+    protected function getBackendUser(): ?BackendUserAuthentication
     {
-        return GeneralUtility::makeInstance(ObjectManager::class);
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }
