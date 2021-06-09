@@ -2820,47 +2820,47 @@ class DatabaseRecordList
     public function makeFieldList($table, $dontCheckUser = false, $addDateFields = false)
     {
         $backendUser = $this->getBackendUserAuthentication();
-        // Init fieldlist array:
-        $fieldListArr = [];
+        $fieldList = [];
+
         // Check table:
         if (is_array($GLOBALS['TCA'][$table]['columns'] ?? null)) {
             // Traverse configured columns and add them to field array, if available for user.
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
+            foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
                 if (($fieldValue['config']['type'] ?? '') === 'none') {
                     // Never render or fetch type=none fields from db
                     continue;
                 }
                 if ($dontCheckUser
-                    || (!($fieldValue['exclude'] ?? null) || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && ($fieldValue['config']['type'] ?? '') !== 'passthrough'
+                    || (!($fieldValue['exclude'] ?? null) || $backendUser->check('non_exclude_fields', $table . ':' . $fieldName)) && ($fieldValue['config']['type'] ?? '') !== 'passthrough'
                 ) {
-                    $fieldListArr[] = $fN;
+                    $fieldList[] = $fieldName;
                 }
             }
 
-            $fieldListArr[] = 'uid';
-            $fieldListArr[] = 'pid';
+            $fieldList[] = 'uid';
+            $fieldList[] = 'pid';
 
             // Add date fields
             if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
                 if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
-                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
                 }
                 if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
-                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
                 }
             }
             // Add more special fields:
             if ($dontCheckUser || $backendUser->isAdmin()) {
                 if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
-                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
                 }
                 if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
-                    $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                 }
                 if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                    $fieldListArr[] = 't3ver_state';
-                    $fieldListArr[] = 't3ver_wsid';
-                    $fieldListArr[] = 't3ver_oid';
+                    $fieldList[] = 't3ver_state';
+                    $fieldList[] = 't3ver_wsid';
+                    $fieldList[] = 't3ver_oid';
                 }
             }
         } else {
@@ -2868,7 +2868,7 @@ class DatabaseRecordList
                 ->getLogger(__CLASS__)
                 ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
         }
-        return $fieldListArr;
+        return array_values(array_unique($fieldList));
     }
 
     /**
