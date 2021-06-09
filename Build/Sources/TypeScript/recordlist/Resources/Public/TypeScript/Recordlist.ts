@@ -229,7 +229,7 @@ class Recordlist {
   private getCheckboxState(CBname: string): boolean {
     const fullName = 'CBC[' + CBname + ']';
     const checkbox: HTMLInputElement = document.querySelector('form[name="dblistForm"] [name="' + fullName + '"]');
-    return checkbox.checked;
+    return checkbox !== null ? checkbox.checked : false;
   }
 
   private registerPaginationEvents = (): void => {
