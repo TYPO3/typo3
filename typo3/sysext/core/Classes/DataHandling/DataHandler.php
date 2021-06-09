@@ -5960,7 +5960,7 @@ class DataHandler implements LoggerAwareInterface
                                 $this->remapListedDBRecords_procInline($conf, $value, $uid, $table);
                                 break;
                             default:
-                                $this->logger->debug('Field type should not appear here: ' . $conf['type']);
+                                $this->logger->debug('Field type should not appear here: {type}', ['type' => $conf['type']]);
                         }
                     }
                     // If any fields were changed, those fields are updated!

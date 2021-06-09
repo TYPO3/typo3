@@ -111,14 +111,11 @@ class Dispatcher implements SingletonInterface
      */
     public function dispatch(string $signalClassName, string $signalName, array $signalArguments = [])
     {
-        $this->logger->debug(
-            'Triggered signal ' . $signalClassName . ' ' . $signalName,
-            [
-                'signalClassName' => $signalClassName,
-                'signalName' => $signalName,
-                'signalArguments' => $signalArguments,
-            ]
-        );
+        $this->logger->debug('Triggered signal {signal_class} {signal_name} ', [
+            'signal_class' => $signalClassName,
+            'signal_name' => $signalName,
+            'signalArguments' => $signalArguments,
+        ]);
         if (!isset($this->slots[$signalClassName][$signalName])) {
             return $signalArguments;
         }

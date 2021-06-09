@@ -67,35 +67,55 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      * Writes exception to different logs
      *
      * @param \Throwable $exception The throwable object.
-     * @param string $context The context where the exception was thrown, WEB or CLI
+     * @param string $mode The context where the exception was thrown.
+     *     Either self::CONTEXT_WEB or self::CONTEXT_CLI.
      */
-    protected function writeLogEntries(\Throwable $exception, $context)
+    protected function writeLogEntries(\Throwable $exception, string $mode): void
     {
         // Do not write any logs for some messages to avoid filling up tables or files with illegal requests
         if (in_array($exception->getCode(), self::IGNORED_EXCEPTION_CODES, true)) {
             return;
         }
-        $filePathAndName = $exception->getFile();
-        $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
-        $logTitle = 'Core: Exception handler (' . $context . ')';
-        $logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | '
-            . get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
-        if ($context === 'WEB') {
-            $logMessage .= '. Requested URL: ' . $this->anonymizeToken(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        }
-        // When database credentials are wrong, the exception is probably
-        // caused by this. Therefor we cannot do any database operation,
-        // otherwise this will lead into recurring exceptions.
+
+        // PSR-3 logging framework.
         try {
             if ($this->logger) {
                 // 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
-                $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
-                $this->logger->critical($logTitle . ': ' . $logMessage, [
-                    'TYPO3_MODE' => $applicationType,
-                    'exception' => $exception
+                $applicationMode = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+                    ? 'FE'
+                    : 'BE';
+                $requestUrl = $this->anonymizeToken(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+                $this->logger->critical('Core: Exception handler ({mode}: {application_mode}): {exception_class}, code #{exception_code}, file {file}, line {line}: {message}', [
+                    'mode' => $mode,
+                    'application_mode' => $applicationMode,
+                    'exception_class' => get_class($exception),
+                    'exception_code' => $exception->getCode(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                    'message' => $exception->getMessage(),
+                    'request_url' => $requestUrl,
+                    'exception' => $exception,
                 ]);
             }
+        } catch (\Exception $exception) {
+            // A nested exception here was probably caused by a database failure, which means there's little
+            // else that can be done other than moving on and letting the system hard-fail.
+        }
+
+        // Legacy logger.  Remove this section eventually.
+        $filePathAndName = $exception->getFile();
+        $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
+        $logTitle = 'Core: Exception handler (' . $mode . ')';
+        $logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | '
+            . get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
+        if ($mode === self::CONTEXT_WEB) {
+            $logMessage .= '. Requested URL: ' . $this->anonymizeToken(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+        }
+        // When database credentials are wrong, the exception is probably
+        // caused by this. Therefore we cannot do any database operation,
+        // otherwise this will lead into recurring exceptions.
+        try {
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);
         } catch (\Exception $exception) {

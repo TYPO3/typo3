@@ -215,7 +215,10 @@ class Container implements SingletonInterface, LoggerAwareInterface
             }
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {
-                $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.');
+                $this->logger->notice('The singleton "{class}" needs a prototype in "{method}". This is often a bad code smell; often you rather want to inject a singleton.', [
+                    'class' => $classSchema->getClassName(),
+                    'method' => $injectMethodName,
+                ]);
             }
             if (is_callable([$instance, $injectMethodName])) {
                 $instance->{$injectMethodName}($instanceToInject);
@@ -228,7 +231,10 @@ class Container implements SingletonInterface, LoggerAwareInterface
 
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof SingletonInterface) {
-                $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');
+                $this->logger->notice('The singleton "{class}" needs a prototype in "{method}". This is often a bad code smell; often you rather want to inject a singleton.', [
+                    'class' => $classSchema->getClassName(),
+                    'method' => $injectPropertyName,
+                ]);
             }
 
             $instance->{$injectPropertyName} = $instanceToInject;
@@ -291,7 +297,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
                 if ($methodParameter->getDependency() !== null && !$methodParameter->hasDefaultValue()) {
                     $argument = $this->getInstanceInternal($methodParameter->getDependency());
                     if ($classSchema->isSingleton() && !$argument instanceof SingletonInterface) {
-                        $this->logger->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
+                        $this->logger->notice('The singleton "{class_name}" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', ['class_name' => $classSchema->getClassName()]);
                         // todo: the whole injection is flawed anyway, why would we care about injecting prototypes? so, wayne?
                         // todo: btw: if this is important, we can already detect this case in the class schema.
                     }

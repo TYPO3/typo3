@@ -928,10 +928,10 @@ class ReferenceIndex implements LoggerAwareInterface
                     ->execute();
             } catch (DBALException $e) {
                 // Table exists in TCA but does not exist in the database
-                $msg = 'Table "' .
-                        $tableName .
-                        '" exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.';
-                $this->logger->error($msg, ['exception' => $e]);
+                $this->logger->error('Table {table_name} exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', [
+                    'table_name' => $tableName,
+                    'exception' => $e,
+                ]);
                 continue;
             }
 
@@ -964,7 +964,7 @@ class ReferenceIndex implements LoggerAwareInterface
 
             // Subselect based queries only work on the same connection
             if ($refIndexConnectionName !== $tableConnectionName) {
-                $this->logger->error('Not checking table "' . $tableName . '" for lost indexes, "sys_refindex" table uses a different connection');
+                $this->logger->error('Not checking table {table_name} for lost indexes, "sys_refindex" table uses a different connection', ['table_name' => $tableName]);
                 continue;
             }
 

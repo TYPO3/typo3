@@ -2972,7 +2972,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 			)';
         $splittedContent = preg_split('%' . $tagsRegEx . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
         if ($splittedContent === false) {
-            $this->logger->debug('Unable to split "' . $content . '" into tags.');
+            $this->logger->debug('Unable to split "{content}" into tags.', ['content' => $content]);
             $splittedContent = [];
         }
         // Reverse array if we are cropping from right.
@@ -3463,7 +3463,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
                         $data = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $data);
                         if ($data === null) {
-                            $this->logger->debug('Stripping new lines failed for "' . $data . '"');
+                            $this->logger->debug('Stripping new lines failed for "{data}"', ['data' => $data]);
                             $data = '';
                         }
                     }
@@ -3970,7 +3970,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
                     }
                 } catch (Exception $exception) {
-                    $this->logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
+                    $this->logger->warning('The image "{file}" could not be found and won\'t be included in frontend output', [
+                        'file' => $file,
+                        'exception' => $exception,
+                    ]);
                     return null;
                 }
             }
@@ -4375,7 +4378,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             try {
                                 $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
                             } catch (MissingArrayPathException $exception) {
-                                $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
+                                $this->logger->warning('getData() with "{key}" failed', ['key' => $key, 'exception' => $exception]);
                             }
                         }
                         break;
@@ -4424,7 +4427,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $fileObject = null;
             }
         } catch (Exception $exception) {
-            $this->logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output', ['exception' => $exception]);
+            $this->logger->warning('The file "{uid}" could not be found and won\'t be included in frontend output', ['uid' => $fileUidOrCurrentKeyword, 'exception' => $exception]);
             $fileObject = null;
         }
 
@@ -4656,7 +4659,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
                 $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
             } catch (UnableToLinkException $e) {
-                $this->logger->debug(sprintf('Unable to link "%s": %s', $e->getLinkText(), $e->getMessage()), ['exception' => $e]);
+                $this->logger->debug('Unable to link "{text}"', [
+                    'text' => $e->getLinkText(),
+                    'exception' => $e,
+                ]);
 
                 // Only return the link text directly
                 return $e->getLinkText();
@@ -5018,7 +5024,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $lastDotLabel = $lastDotLabel ?: '(dot)';
                     $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
                     if ($spamProtectedMailAddress === null) {
-                        $this->logger->debug('Error replacing the last dot in email address "' . $spamProtectedMailAddress . '"');
+                        $this->logger->debug('Error replacing the last dot in email address "{email}"', ['email' => $spamProtectedMailAddress]);
                         $spamProtectedMailAddress = '';
                     }
                 }

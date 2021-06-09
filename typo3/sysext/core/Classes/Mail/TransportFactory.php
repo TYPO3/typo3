@@ -127,7 +127,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 $sendmailCommand = $mailSettings['transport_sendmail_command'] ?? @ini_get('sendmail_path');
                 if (empty($sendmailCommand)) {
                     $sendmailCommand = '/usr/sbin/sendmail -bs';
-                    $this->logger->warning('Mailer transport "sendmail" was chosen without a specific command, using "' . $sendmailCommand . '"');
+                    $this->logger->warning('Mailer transport "sendmail" was chosen without a specific command, using "{command}"', ['command' => $sendmailCommand]);
                 }
                 // Create transport
                 $transport = new SendmailTransport(

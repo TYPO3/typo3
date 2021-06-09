@@ -1662,10 +1662,9 @@ class GeneralUtility
                 $parameters = ['script' => $script];
                 $script = static::callUserFunction($hookMethod, $parameters, $fakeThis);
             } catch (\Exception $e) {
-                $errorMessage = 'Error minifying java script: ' . $e->getMessage();
-                $error .= $errorMessage;
-                static::getLogger()->warning($errorMessage, [
-                    'JavaScript' => $script,
+                $error .= 'Error minifying Javascript: ' . $e->getMessage();
+                static::getLogger()->warning('Error minifying Javascript: {file}, hook: {hook}', [
+                    'file' => $script,
                     'hook' => $hookMethod,
                     'exception' => $e,
                 ]);
@@ -2952,7 +2951,7 @@ class GeneralUtility
             }
         }
         if (!empty($url) && empty($sanitizedUrl)) {
-            static::getLogger()->notice('The URL "' . $url . '" is not considered to be local and was denied.');
+            static::getLogger()->notice('The URL "{url}" is not considered to be local and was denied.', ['url' => $url]);
         }
         return $sanitizedUrl;
     }
@@ -3541,8 +3540,11 @@ class GeneralUtility
             $info = array_merge($info, $requestInfo);
             $obj = self::makeInstance($info['className']);
             if (is_object($obj)) {
-                if (!@is_callable([$obj, 'init'])) {
-                    self::getLogger()->error('Requested service ' . $info['className'] . ' has no init() method.', ['service' => $info]);
+                if (!is_callable([$obj, 'init'])) {
+                    self::getLogger()->error('Requested service {class} has no init() method.', [
+                        'class' => $info['className'],
+                        'service' => $info,
+                    ]);
                     throw new \RuntimeException('Broken service: ' . $info['className'], 1568119209);
                 }
                 $obj->info = $info;

@@ -288,7 +288,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         if (empty($groupDataArr)) {
             $this->logger->debug('No usergroups found');
         } else {
-            $this->logger->debug(count($groupDataArr) . ' usergroup records found');
+            $this->logger->debug('{count} usergroup records found', ['count' => count($groupDataArr)]);
         }
         foreach ($groupDataArr as $groupData) {
             $groupId = (int)$groupData['uid'];
@@ -345,7 +345,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->updateOnlineTimestamp();
         }
 
-        $this->logger->debug('Valid frontend usergroups: ' . implode(',', $userGroups));
+        $this->logger->debug('Valid frontend usergroups: {groups}', ['groups' => $userGroups]);
         return GeneralUtility::makeInstance(UserAspect::class, $this, $userGroups);
     }
     /**

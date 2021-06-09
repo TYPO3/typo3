@@ -63,7 +63,10 @@ class AuthenticationService extends AbstractAuthenticationService
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP### for username \'%s\' with an empty password!', [
                 $this->login['uname']
             ]);
-            $this->logger->warning(sprintf('Login-attempt from %s, for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->login['uname']));
+            $this->logger->warning('Login-attempt from {ip}, for username "{username}" with an empty password!', [
+                'ip' => $this->authInfo['REMOTE_ADDR'],
+                'username' => $this->login['uname'],
+            ]);
             return false;
         }
 
@@ -71,8 +74,9 @@ class AuthenticationService extends AbstractAuthenticationService
         if (!is_array($user)) {
             // Failed login attempt (no username found)
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP###, username \'%s\' not found!', [$this->login['uname']]);
-            $this->logger->info('Login-attempt from username \'' . $this->login['uname'] . '\' not found!', [
-                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR']
+            $this->logger->info('Login-attempt from username "{username}" not found!', [
+                'username' => $this->login['uname'],
+                'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
             ]);
         } else {
             $this->logger->debug('User found', [
@@ -184,7 +188,10 @@ class AuthenticationService extends AbstractAuthenticationService
             ['password' => $newPassword],
             ['uid' => $uid]
         );
-        $this->logger->notice('Automatic password update for user record in ' . $table . ' with uid ' . $uid);
+        $this->logger->notice('Automatic password update for user record in {table} with uid {uid}', [
+            'table' => $table,
+            'uid' => $uid,
+        ]);
     }
 
     /**

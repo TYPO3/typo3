@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -131,9 +131,19 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $subject = new ProductionExceptionHandler();
-        $logger = $this->prophesize(LoggerInterface::class);
-        $logger->critical(Argument::containingString($expectedUrl), Argument::cetera())->shouldBeCalled();
-        $subject->setLogger($logger->reveal());
+        $logger = new class() implements LoggerInterface {
+            use LoggerTrait;
+            public array $records = [];
+            public function log($level, $message, array $context = []): void
+            {
+                $this->records[] = [
+                    'level' => $level,
+                    'message' => $message,
+                    'context' => $context
+                ];
+            }
+        };
+        $subject->setLogger($logger);
 
         GeneralUtility::setIndpEnv('TYPO3_REQUEST_URL', $originalUrl);
         $GLOBALS['BE_USER'] = null;
@@ -143,5 +153,8 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $subject->echoExceptionWeb($exception);
         // output is caught, so it does not pollute the test run
         ob_end_clean();
+
+        self::assertEquals('critical', $logger->records[0]['level']);
+        self::assertEquals($expectedUrl, $logger->records[0]['context']['request_url']);
     }
 }

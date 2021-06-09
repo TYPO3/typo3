@@ -1287,12 +1287,11 @@ class PageLayoutView implements LoggerAwareInterface
                     }
                     return $view->render();
                 } catch (\Exception $e) {
-                    $this->logger->warning(sprintf(
-                        'The backend preview for content element %d can not be rendered using the Fluid template file "%s": %s',
-                        $row['uid'],
-                        $fluidTemplateFile,
-                        $e->getMessage()
-                    ));
+                    $this->logger->warning('The backend preview for content element {uid} can not be rendered using the Fluid template file "{file}"', [
+                        'uid' => $row['uid'],
+                        'file' => $fluidTemplateFile,
+                        $e->getMessage(),
+                    ]);
 
                     if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
                         $view = GeneralUtility::makeInstance(StandaloneView::class);

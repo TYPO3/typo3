@@ -61,7 +61,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
             return true;
         }
         // URL is not allowed
-        $this->logger->warning('Url "' . $value . '" was not accepted.');
+        $this->logger->warning('Url "{url}" was not accepted.', ['url' => $value]);
         return false;
     }
 

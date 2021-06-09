@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Log\Logger;
+use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
@@ -48,20 +48,26 @@ class ContainerTest extends UnitTestCase
     /**
      * @var Container
      */
-    protected $subject;
+    protected Container $subject;
 
-    /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->logger = $this->getMockBuilder(Logger::class)
-            ->setMethods(['notice'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->logger = new class() implements LoggerInterface {
+            use LoggerTrait;
+            public array $records = [];
+            public function log($level, $message, array $context = []): void
+            {
+                $this->records[] = [
+                    'level' => $level,
+                    'message' => $message,
+                    'context' => $context
+                ];
+            }
+        };
+
         $reflectionService = new ReflectionService();
 
         $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
@@ -293,9 +299,11 @@ class ContainerTest extends UnitTestCase
      */
     public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage()
     {
-        $this->logger->expects(self::once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.');
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototype');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
+        self::assertEquals('notice', $this->logger->records[0]['level']);
+        self::assertEquals('t3lib_object_singletonNeedsPrototype', $this->logger->records[0]['context']['class']);
+        self::assertEquals('injectDependency', $this->logger->records[0]['context']['method']);
     }
 
     /**
@@ -303,9 +311,9 @@ class ContainerTest extends UnitTestCase
      */
     public function singletonWhichRequiresSingletonViaSetterInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingleton');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /**
@@ -313,9 +321,9 @@ class ContainerTest extends UnitTestCase
      */
     public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototype');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /**
@@ -323,9 +331,9 @@ class ContainerTest extends UnitTestCase
      */
     public function prototypeWhichRequiresSingletonViaSetterInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingleton');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /**
@@ -333,9 +341,10 @@ class ContainerTest extends UnitTestCase
      */
     public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage()
     {
-        $this->logger->expects(self::once())->method('notice')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.');
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
+        self::assertEquals('notice', $this->logger->records[0]['level']);
+        self::assertEquals('t3lib_object_singletonNeedsPrototypeInConstructor', $this->logger->records[0]['context']['class_name']);
     }
 
     /**
@@ -343,9 +352,9 @@ class ContainerTest extends UnitTestCase
      */
     public function singletonWhichRequiresSingletonViaConstructorInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /**
@@ -353,9 +362,9 @@ class ContainerTest extends UnitTestCase
      */
     public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /**
@@ -363,9 +372,9 @@ class ContainerTest extends UnitTestCase
      */
     public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks()
     {
-        $this->logger->expects(self::never())->method('notice');
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
+        self::assertEmpty($this->logger->records);
     }
 
     /************************************************

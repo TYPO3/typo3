@@ -90,7 +90,7 @@ class SyslogWriter extends AbstractWriter
      *
      * @param string $facility Facility to use when logging.
      */
-    public function setFacility($facility)
+    public function setFacility($facility): void
     {
         if (array_key_exists(strtolower($facility), $this->facilities)) {
             $this->facility = $this->facilities[strtolower($facility)];
@@ -103,26 +103,27 @@ class SyslogWriter extends AbstractWriter
      * @param LogRecord $record
      * @return string
      */
-    public function getMessageForSyslog(LogRecord $record)
+    public function getMessageForSyslog(LogRecord $record): string
     {
         $data = '';
-        $recordData = $record->getData();
-        if (!empty($recordData)) {
-            // According to PSR3 the exception-key may hold an \Exception
-            // Since json_encode() does not encode an exception, we run the _toString() here
-            if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
-                $recordData['exception'] = (string)$recordData['exception'];
+        $context = $record->getData();
+        $message = $record->getMessage();
+        if (!empty($context)) {
+            // Fold an exception into the message, and string-ify it into context so it can be jsonified.
+            if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+                $message .= $this->formatException($context['exception']);
+                $context['exception'] = (string)$context['exception'];
             }
-            $data = '- ' . json_encode($recordData);
+            $data = '- ' . json_encode($context);
         }
-        $message = sprintf(
+
+        return sprintf(
             '[request="%s" component="%s"] %s %s',
             $record->getRequestId(),
             $record->getComponent(),
-            $record->getMessage(),
+            $this->interpolate($message, $context),
             $data
         );
-        return $message;
     }
 
     /**

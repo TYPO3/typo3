@@ -118,16 +118,17 @@ class StageChangeNotification implements LoggerAwareInterface
             try {
                 $this->sendEmail($recipientData, $emailConfig, $viewPlaceholders);
             } catch (TransportException $e) {
-                $this->logger->warning('Could not send notification email to "' . $recipientData['email'] . '" due to mailer settings error', [
+                $this->logger->warning('Could not send notification email to "{recipient}" due to mailer settings error', [
+                    'recipient' => $recipientData['email'],
                     'recipientList' => array_column($recipients, 'email'),
-                    'exception' => $e
+                    'exception' => $e,
                 ]);
                 // At this point we break since the next attempts will also fail due to the invalid mailer settings
                 break;
             } catch (RfcComplianceException $e) {
-                $this->logger->warning('Could not send notification email to "' . $recipientData['email'] . '" due to invalid email address', [
-                    'recipientList' => [$recipientData['email']],
-                    'exception' => $e
+                $this->logger->warning('Could not send notification email to "{recipient}" due to invalid email address', [
+                    'recipient' => $recipientData['email'],
+                    'exception' => $e,
                 ]);
             }
         }

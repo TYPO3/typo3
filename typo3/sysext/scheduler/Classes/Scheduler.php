@@ -168,12 +168,17 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
         // Task is already running and multiple executions are not allowed
         if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
             // Log multiple execution error
-            $logMessage = 'Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
-            $this->logger->info($logMessage);
+            $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Class: {class}, UID: {uid}', [
+                'class' => get_class($task),
+                'uid' => $task->getTaskUid(),
+            ]);
             $result = false;
         } else {
             // Log scheduler invocation
-            $this->logger->info('Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid());
+            $this->logger->info('Start execution. Class: {class}, UID: {uid}', [
+                'class' => get_class($task),
+                'uid' => $task->getTaskUid(),
+            ]);
             // Register execution
             $executionID = $task->markExecution();
             $failure = null;
@@ -190,7 +195,10 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
             // Un-register execution
             $task->unmarkExecution($executionID, $failure);
             // Log completion of execution
-            $this->logger->info('Task executed. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid());
+            $this->logger->info('Task executed. Class: {class}, UID: {uid}', [
+                'class' => get_class($task),
+                'uid' => $task->getTaskUid(),
+            ]);
             // Now that the result of the task execution has been handled,
             // throw the exception again, if any
             if ($failure instanceof \Throwable) {
@@ -475,23 +483,24 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
         if (!($this->logger instanceof LoggerInterface)) {
             $this->setLogger(GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__));
         }
-        $message = trim('[scheduler]: ' . $code) . ' - ' . $message;
+        $message = '[scheduler]: {code} - {original_message}';
+        // @todo Replace these magic numbers with constants or enums.
         switch ((int)$status) {
             // error (user problem)
             case 1:
-                $this->logger->alert($message);
+                $this->logger->alert($message, ['code' => $code, 'original_message' => $message]);
                 break;
             // System Error (which should not happen)
             case 2:
-                $this->logger->error($message);
+                $this->logger->error($message, ['code' => $code, 'original_message' => $message]);
                 break;
             // security notice (admin)
             case 3:
-                $this->logger->emergency($message);
+                $this->logger->emergency($message, ['code' => $code, 'original_message' => $message]);
                 break;
             // regular message (= 0)
             default:
-                $this->logger->info($message);
+                $this->logger->info($message, ['code' => $code, 'original_message' => $message]);
         }
     }
 }

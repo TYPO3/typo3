@@ -48,10 +48,9 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
         $backgroundImageUri = $this->getUriForFileName($backgroundImage);
         if ($backgroundImageUri === '') {
-            $this->logger->warning(
-                'The configured TYPO3 backend login background image "' . htmlspecialchars($backgroundImageUri) .
-                '" can\'t be resolved. Please check if the file exists and the extension is activated.'
-            );
+            $this->logger->warning('The configured TYPO3 backend login background image "{image_url}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
+                'image_url' => $backgroundImageUri,
+            ]);
             return '';
         }
 
@@ -103,10 +102,9 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
         }
         $logoUri = $this->getUriForFileName($logo);
         if ($logoUri === '') {
-            $this->logger->warning(
-                'The configured TYPO3 backend login logo "' . htmlspecialchars($logoUri) .
-                '" can\'t be resolved. Please check if the file exists and the extension is activated.'
-            );
+            $this->logger->warning('The configured TYPO3 backend login logo "{logo_url}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
+                'logo_url' => $logoUri,
+            ]);
             return '';
         }
 

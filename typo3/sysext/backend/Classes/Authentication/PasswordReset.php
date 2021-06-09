@@ -117,7 +117,7 @@ class PasswordReset implements LoggerAwareInterface
             return;
         }
         if ($this->hasExceededMaximumAttemptsForReset($context, $emailAddress)) {
-            $this->logger->alert('Password reset requested for email "' . $emailAddress . '" . but was requested too many times.');
+            $this->logger->alert('Password reset requested for email {email} but was requested too many times.', ['email' => $emailAddress]);
             return;
         }
         $queryBuilder = $this->getPreparedQueryBuilder();
@@ -159,7 +159,7 @@ class PasswordReset implements LoggerAwareInterface
             ->setTemplate('PasswordReset/AmbiguousResetRequested');
 
         GeneralUtility::makeInstance(Mailer::class)->send($emailObject);
-        $this->logger->warning('Password reset sent to email address ' . $emailAddress . ' but multiple accounts found');
+        $this->logger->warning('Password reset sent to email address {email} but multiple accounts found', ['email' => $emailAddress]);
         $this->log(
             'Sent password reset email to email address %s but with multiple accounts attached.',
             SystemLogLoginAction::PASSWORD_RESET_REQUEST,
@@ -195,7 +195,10 @@ class PasswordReset implements LoggerAwareInterface
             ->setTemplate('PasswordReset/ResetRequested');
 
         GeneralUtility::makeInstance(Mailer::class)->send($emailObject);
-        $this->logger->info('Sent password reset email to email address ' . $emailAddress . ' for user ' . $user['username']);
+        $this->logger->info('Sent password reset email to email address {email} for user {username}', [
+            'email' => $emailAddress,
+            'username' => $user['username'],
+        ]);
         $this->log(
             'Sent password reset email to email address %s',
             SystemLogLoginAction::PASSWORD_RESET_REQUEST,
@@ -339,7 +342,7 @@ class PasswordReset implements LoggerAwareInterface
             ->getConnectionForTable('be_users')
             ->update('be_users', ['password_reset_token' => '', 'password' => $this->getHasher()->getHashedPassword($newPassword)], ['uid' => $userId]);
 
-        $this->logger->info('Password reset successful for user ' . $userId);
+        $this->logger->info('Password reset successful for user {user_id)', ['user_id' => $userId]);
         $this->log(
             'Password reset successful for user %s',
             SystemLogLoginAction::PASSWORD_RESET_ACCOMPLISHED,

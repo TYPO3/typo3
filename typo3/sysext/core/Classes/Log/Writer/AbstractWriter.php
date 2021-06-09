@@ -42,4 +42,60 @@ abstract class AbstractWriter implements WriterInterface
             }
         }
     }
+
+    /**
+     * Interpolates context values into the message placeholders.
+     */
+    protected function interpolate(string $message, array $context = []): string
+    {
+        // Build a replacement array with braces around the context keys.
+        $replace = [];
+        foreach ($context as $key => $val) {
+            if (!is_array($val) && !is_null($val) && (!is_object($val) || method_exists($val, '__toString'))) {
+                $replace['{' . $key . '}'] = $this->formatContextValue($val);
+            }
+        }
+
+        // Interpolate replacement values into the message and return.
+        return strtr($message, $replace);
+    }
+
+    /**
+     * Escape or quote a value from the context appropriate for the output.
+     *
+     * Note: In some output cases, escaping should not be done here but later on output,
+     * such as if it's being written to a database for later display.
+     *
+     * @param string $value
+     * @return string
+     */
+    protected function formatContextValue(string $value): string
+    {
+        return $value;
+    }
+
+    /**
+     * Formats an exception into a string.
+     *
+     * The format here is nearly the same as just casting an exception to a string,
+     * but omits the full class namespace and stack trace, as those get very long.
+     *
+     * @param \Exception $ex
+     * @return string
+     */
+    protected function formatException(\Exception $ex): string
+    {
+        $classname = get_class($ex);
+        if ($pos = strrpos($classname, '\\')) {
+            $classname = substr($classname, $pos + 1);
+        }
+
+        return sprintf(
+            '- %s: %s, in file %s:%s',
+            $classname,
+            $ex->getMessage(),
+            $ex->getFile(),
+            $ex->getLine(),
+        );
+    }
 }

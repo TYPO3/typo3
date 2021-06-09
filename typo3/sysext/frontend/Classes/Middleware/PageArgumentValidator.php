@@ -104,7 +104,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
                 if (empty($relevantParametersForCacheHashArgument)) {
                     // cHash was given, but nothing to be calculated, so let's do a redirect to the current page
                     // but without the cHash
-                    $this->logger->notice('The incoming cHash "' . $cHash . '" is given but not needed. cHash is unset');
+                    $this->logger->notice('The incoming cHash "{hash}" is given but not needed. cHash is unset', ['hash' => $cHash]);
                     $uri = $request->getUri();
                     unset($queryParams['cHash']);
                     $uri = $uri->withQuery(HttpUtility::buildQueryString($queryParams));

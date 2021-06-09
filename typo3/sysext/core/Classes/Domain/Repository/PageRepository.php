@@ -1010,15 +1010,14 @@ class PageRepository implements LoggerAwareInterface
                 }
         }
         // Check if short cut page was a shortcut itself, if so look up recursively:
-        if ($page['doktype'] == self::DOKTYPE_SHORTCUT) {
+        if ((int)$page['doktype'] === self::DOKTYPE_SHORTCUT) {
             if (!in_array($page['uid'], $pageLog) && $iteration > 0) {
                 $pageLog[] = $page['uid'];
                 $page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $iteration - 1, $pageLog, $disableGroupCheck);
             } else {
                 $pageLog[] = $page['uid'];
-                $message = 'Page shortcuts were looping in uids ' . implode(',', $pageLog) . '...!';
-                $this->logger->error($message);
-                throw new \RuntimeException($message, 1294587212);
+                $this->logger->error('Page shortcuts were looping in uids {uids}', ['uids' => implode(', ', array_values($pageLog))]);
+                throw new \RuntimeException('Page shortcuts were looping in uids: ' . implode(', ', array_values($pageLog)), 1294587212);
             }
         }
         // Return resulting page:

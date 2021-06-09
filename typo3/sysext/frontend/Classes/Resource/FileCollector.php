@@ -197,11 +197,10 @@ class FileCollector implements \Countable, LoggerAwareInterface
                     $this->addFileObjects(array_values($files));
                 }
             } catch (Exception $e) {
-                $this->logger->warning(
-                    'The folder with identifier  "' . $folderIdentifier
-                    . '" could not be found and won\'t be included in frontend output',
-                    ['exception' => $e]
-                );
+                $this->logger->warning('The folder with identifier  "{folder}" could not be found and won\'t be included in frontend output', [
+                    'folder' => $folderIdentifier,
+                    'exception' => $e,
+                ]);
             }
         }
     }
@@ -308,8 +307,12 @@ class FileCollector implements \Countable, LoggerAwareInterface
              * The storage does not exist anymore
              * Log the exception message for admins as they maybe can restore the storage
              */
-            $logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
-            $this->logger->error($logMessage, ['exception' => $e]);
+            $this->logger->error('{exception_message}: table: {table}, field: {field}, currentId: {current_id}', [
+                'table' => $tableName,
+                'field' => $fieldName,
+                'currentId' => $currentId,
+                'exception' => $e,
+            ]);
             return [];
         }
 

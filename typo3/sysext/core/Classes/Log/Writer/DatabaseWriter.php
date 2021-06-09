@@ -63,14 +63,13 @@ class DatabaseWriter extends AbstractWriter
     public function writeLog(LogRecord $record)
     {
         $data = '';
-        $recordData = $record->getData();
-        if (!empty($recordData)) {
-            // According to PSR3 the exception-key may hold an \Exception
-            // Since json_encode() does not encode an exception, we run the _toString() here
-            if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
-                $recordData['exception'] = (string)$recordData['exception'];
+        $context = $record->getData();
+        if (!empty($context)) {
+            // Fold an exception into the message, and string-ify it into context so it can be jsonified.
+            if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+                $context['exception'] = (string)$context['exception'];
             }
-            $data = '- ' . json_encode($recordData);
+            $data = '- ' . json_encode($context);
         }
 
         $fieldValues = [

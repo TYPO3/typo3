@@ -420,7 +420,11 @@ class GridDataService implements LoggerAwareInterface
                     // Do nothing
             }
         } else {
-            $this->logger->critical('Try to sort "' . $this->sort . '" in "\\TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.');
+            $this->logger->critical('Trying to sort by {field} in "{class}::{method}" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.', [
+                'field' => $this->sort,
+                'class' => __CLASS__,
+                'method' => __FUNCTION__,
+            ]);
         }
         // Trigger an event for extensibility
         $event = new SortVersionedDataEvent($this, $this->dataArray, $this->sort, $this->sortDir);

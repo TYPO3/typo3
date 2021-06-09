@@ -49,10 +49,9 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
         $orderedTitleProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)
             ->orderByDependencies($titleProviders);
 
-        $this->logger->debug(
-            'Page title providers ordered',
-            ['orderedTitleProviders' => $orderedTitleProviders]
-        );
+        $this->logger->debug('Page title providers ordered', [
+            'orderedTitleProviders' => $orderedTitleProviders,
+        ]);
 
         foreach ($orderedTitleProviders as $provider => $configuration) {
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
@@ -61,17 +60,18 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
                 if (($pageTitle = $titleProviderObject->getTitle())
                     || ($pageTitle = $this->pageTitleCache[$configuration['provider']] ?? '') !== ''
                 ) {
-                    $this->logger->debug(
-                        'Page title provider ' . $configuration['provider'] . ' used',
-                        ['title' => $pageTitle, 'providerUsed' => $configuration['provider']]
-                    );
+                    $this->logger->debug('Page title provider {provider} used on page {title}', [
+                        'title' => $pageTitle,
+                        'provider' => $configuration['provider'],
+                    ]);
                     $this->pageTitleCache[$configuration['provider']] = $pageTitle;
                     break;
                 }
-                $this->logger->debug(
-                    'Page title provider ' . $configuration['provider'] . ' skipped',
-                    ['name' => $provider, 'skippedProvider' => $configuration['provider']]
-                );
+                $this->logger->debug('Page title provider {provider} skipped on page {title}', [
+                    'title' => $pageTitle,
+                    'provider' => $configuration['provider'],
+                    'providerUsed' => $configuration['provider'],
+                ]);
             }
         }
 

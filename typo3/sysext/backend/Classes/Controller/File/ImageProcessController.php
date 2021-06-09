@@ -58,7 +58,7 @@ class ImageProcessController implements LoggerAwareInterface
             );
         } catch (\Throwable $e) {
             // Fatal error occurred, which will be responded as 404
-            $this->logger->error(sprintf('Processing of file with id "%s" failed', $processedFileId), ['exception' => $e]);
+            $this->logger->error('Processing of file with id {processed_file} failed', ['processed_file' => $processedFileId, 'exception' => $e]);
         }
 
         return new HtmlResponse('', 404);

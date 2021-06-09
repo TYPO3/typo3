@@ -110,7 +110,7 @@ class RedirectService implements LoggerAwareInterface
                     if ($matchResult) {
                         $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
                     } elseif ($matchResult === false) {
-                        $this->logger->warning('Invalid regex in redirect', ['regex' => $regexp]);
+                        $this->logger->warning('Invalid regex in redirect: {regex}', ['regex' => $regexp]);
                     }
                 }
             }
@@ -190,11 +190,11 @@ class RedirectService implements LoggerAwareInterface
         $site = $request->getAttribute('site');
         $uri = $request->getUri();
         $queryParams = $request->getQueryParams();
-        $this->logger->debug('Found a redirect to process', $matchedRedirect);
+        $this->logger->debug('Found a redirect to process', ['redirect' => $matchedRedirect]);
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
         $redirectTarget = $linkParameterParts['url'];
         $linkDetails = $this->resolveLinkDetailsFromLinkTarget($redirectTarget);
-        $this->logger->debug('Resolved link details for redirect', $linkDetails);
+        $this->logger->debug('Resolved link details for redirect', ['details' => $linkDetails]);
         if (!empty($linkParameterParts['additionalParams']) && $matchedRedirect['keep_query_parameters']) {
             $params = GeneralUtility::explodeUrl2Array($linkParameterParts['additionalParams']);
             foreach ($params as $key => $value) {

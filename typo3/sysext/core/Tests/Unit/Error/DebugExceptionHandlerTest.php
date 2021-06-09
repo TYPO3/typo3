@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\DebugExceptionHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -98,9 +98,21 @@ class DebugExceptionHandlerTest extends UnitTestCase
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl)
     {
         $subject = new DebugExceptionHandler();
-        $logger = $this->prophesize(LoggerInterface::class);
-        $logger->critical(Argument::containingString($expectedUrl), Argument::cetera())->shouldBeCalled();
-        $subject->setLogger($logger->reveal());
+
+        $logger = new class() implements LoggerInterface {
+            use LoggerTrait;
+            public array $records = [];
+            public function log($level, $message, array $context = []): void
+            {
+                $this->records[] = [
+                    'level' => $level,
+                    'message' => $message,
+                    'context' => $context
+                ];
+            }
+        };
+
+        $subject->setLogger($logger);
 
         GeneralUtility::setIndpEnv('TYPO3_REQUEST_URL', $originalUrl);
 
@@ -109,5 +121,8 @@ class DebugExceptionHandlerTest extends UnitTestCase
         $subject->echoExceptionWeb($exception);
         // output is caught, so it does not pollute the test run
         ob_end_clean();
+
+        self::assertEquals('critical', $logger->records[0]['level']);
+        self::assertEquals($expectedUrl, $logger->records[0]['context']['request_url']);
     }
 }

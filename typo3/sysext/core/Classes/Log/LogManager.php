@@ -150,7 +150,11 @@ class LogManager implements SingletonInterface, LogManagerInterface
                     $logWriter = GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
                     $logger->addWriter($severityLevel, $logWriter);
                 } catch (InvalidArgumentException|InvalidLogWriterConfigurationException $e) {
-                    $logger->warning('Instantiation of LogWriter "' . $logWriterClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
+                    $logger->warning('Instantiation of LogWriter "{class_name}" failed for logger {name}', [
+                        'class_name' => $logWriterClassName,
+                        'name' => $logger->getName(),
+                        'exception' => $e,
+                    ]);
                 }
             }
         }
@@ -171,7 +175,11 @@ class LogManager implements SingletonInterface, LogManagerInterface
                     $logProcessor = GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);
                     $logger->addProcessor($severityLevel, $logProcessor);
                 } catch (InvalidArgumentException|InvalidLogProcessorConfigurationException $e) {
-                    $logger->warning('Instantiation of LogProcessor "' . $logProcessorClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
+                    $logger->warning('Instantiation of LogProcessor "{class_name}" failed for logger {name}', [
+                        'class_name' => $logProcessorClassName,
+                        'name' => $logger->getName(),
+                        'exception' => $e,
+                    ]);
                 }
             }
         }

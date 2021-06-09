@@ -987,7 +987,12 @@ class BackendUtility
                  * The storage does not exist anymore
                  * Log the exception message for admins as they maybe can restore the storage
                  */
-                self::getLogger()->error($e->getMessage(), ['table' => $tableName, 'fieldName' => $fieldName, 'referenceUid' => $referenceUid, 'exception' => $e]);
+                self::getLogger()->error($e->getMessage(), [
+                    'table' => $tableName,
+                    'fieldName' => $fieldName,
+                    'referenceUid' => $referenceUid,
+                    'exception' => $e,
+                ]);
             }
         }
 

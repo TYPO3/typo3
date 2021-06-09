@@ -87,7 +87,7 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
             $this->flushQueue($mailer->getRealTransport());
         } catch (TransportExceptionInterface $exception) {
             if ($this->logger instanceof LoggerInterface) {
-                $this->logger->error('An Exception occurred while flushing email queue: ' . $exception->getMessage());
+                $this->logger->error('An Exception occurred while flushing email queue: {message}', ['exception' => $exception, 'message' => $exception->getMessage()]);
             }
         }
     }

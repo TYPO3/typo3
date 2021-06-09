@@ -28,22 +28,15 @@ class FileWriter extends AbstractWriter
 {
     /**
      * Log file path, relative to TYPO3's base project folder
-     *
-     * @var string
      */
-    protected $logFile = '';
+    protected string $logFile = '';
 
-    /**
-     * @var string
-     */
-    protected $logFileInfix = '';
+    protected string $logFileInfix = '';
 
     /**
      * Default log file path
-     *
-     * @var string
      */
-    protected $defaultLogFileTemplate = '/log/typo3_%s.log';
+    protected string $defaultLogFileTemplate = '/log/typo3_%s.log';
 
     /**
      * Log file handle storage
@@ -52,21 +45,19 @@ class FileWriter extends AbstractWriter
      * we share the file handles in a static class variable
      *
      * @static
-     * @var array
      */
-    protected static $logFileHandles = [];
+    protected static array $logFileHandles = [];
 
     /**
      * Keep track of used file handles by different fileWriter instances
+     *
      * As the logger gets instantiated by class name but the resources
      * are shared via the static $logFileHandles we need to track usage
      * of file handles to avoid closing handles that are still needed
      * by different instances. Only if the count is zero may the file
      * handle be closed.
-     *
-     * @var array
      */
-    protected static $logFileHandlesCount = [];
+    protected static array $logFileHandlesCount = [];
 
     /**
      * Constructor, opens the log file handle
@@ -105,7 +96,7 @@ class FileWriter extends AbstractWriter
      * @return WriterInterface
      * @throws InvalidLogWriterConfigurationException
      */
-    public function setLogFile($relativeLogFile)
+    public function setLogFile(string $relativeLogFile)
     {
         $logFile = $relativeLogFile;
         // Skip handling if logFile is a stream resource. This is used by unit tests with vfs:// directories
@@ -126,10 +117,8 @@ class FileWriter extends AbstractWriter
 
     /**
      * Gets the path to the log file.
-     *
-     * @return string Path to the log file.
      */
-    public function getLogFile()
+    public function getLogFile(): string
     {
         return $this->logFile;
     }
@@ -143,26 +132,25 @@ class FileWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
-        $timestamp = date('r', (int)$record->getCreated());
-        $levelName = strtoupper($record->getLevel());
         $data = '';
-        $recordData = $record->getData();
-        if (!empty($recordData)) {
-            // According to PSR3 the exception-key may hold an \Exception
-            // Since json_encode() does not encode an exception, we run the _toString() here
-            if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
-                $recordData['exception'] = (string)$recordData['exception'];
+        $context = $record->getData();
+        $message = $record->getMessage();
+        if (!empty($context)) {
+            // Fold an exception into the message, and string-ify it into context so it can be jsonified.
+            if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+                $message .= $this->formatException($context['exception']);
+                $context['exception'] = (string)$context['exception'];
             }
-            $data = '- ' . json_encode($recordData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $data = '- ' . json_encode($context, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
         $message = sprintf(
             '%s [%s] request="%s" component="%s": %s %s',
-            $timestamp,
-            $levelName,
+            date('r', (int)$record->getCreated()),
+            strtoupper($record->getLevel()),
             $record->getRequestId(),
             $record->getComponent(),
-            $record->getMessage(),
+            $this->interpolate($record->getMessage(), $context),
             $data
         );
 

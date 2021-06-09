@@ -211,10 +211,7 @@ class StorageRepository implements LoggerAwareInterface
             if ($this->driverRegistry->driverExists($storageRow['driver'])) {
                 $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
-                $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
-                    $storageRow
-                );
+                $this->logger->warning('Could not instantiate storage "{name}" because of missing driver.', ['name' => $storageRow['name']]);
             }
         }
         return $storageObjects;
@@ -235,10 +232,7 @@ class StorageRepository implements LoggerAwareInterface
             if ($this->driverRegistry->driverExists($storageRow['driver'])) {
                 $storageObjects[] = $this->getStorageObject($storageRow['uid'], $storageRow);
             } else {
-                $this->logger->warning(
-                    sprintf('Could not instantiate storage "%s" because of missing driver.', $storageRow['name']),
-                    $storageRow
-                );
+                $this->logger->warning('Could not instantiate storage "{name}" because of missing driver.', ['name' => $storageRow['name']]);
             }
         }
         return $storageObjects;

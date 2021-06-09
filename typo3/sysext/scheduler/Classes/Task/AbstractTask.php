@@ -471,9 +471,9 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Removes given execution from list
      *
      * @param int $executionID Id of the execution to remove.
-     * @param \Throwable $failure An exception to signal a failed execution
+     * @param \Throwable $e An exception to signal a failed execution
      */
-    public function unmarkExecution($executionID, \Throwable $failure = null)
+    public function unmarkExecution($executionID, \Throwable $e = null)
     {
         // Get the executions for the task
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -498,18 +498,20 @@ abstract class AbstractTask implements LoggerAwareInterface
             } else {
                 $runningExecutionsSerialized = '';
             }
-            if ($failure instanceof \Throwable) {
+            if ($e instanceof \Throwable) {
                 // Log failed execution
-                $logMessage = 'Task failed to execute successfully. Class: ' . static::class
-                    . ', UID: ' . $this->taskUid . ', Code: ' . $failure->getCode() . ', ' . $failure->getMessage();
-                $this->logger->error($logMessage, ['exception' => $failure]);
+                $this->logger->error('Task failed to execute successfully. Class: {class}, UID: {uid}', [
+                    'class' => __CLASS__,
+                    'uid' => $this->taskUid,
+                    'exception' => $e,
+                ]);
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
                 $failureString = serialize([
-                    'code' => $failure->getCode(),
-                    'message' => $failure->getMessage(),
-                    'file' => $failure->getFile(),
-                    'line' => $failure->getLine(),
-                    'traceString' => $failure->getTraceAsString(),
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'traceString' => $e->getTraceAsString(),
                 ]);
             } else {
                 $failureString = '';
@@ -604,7 +606,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     protected function logException(\Exception $e)
     {
-        $this->logger->error('A Task Exception was captured: ' . $e->getMessage() . ' (' . $e->getCode() . ')', ['exception' => $e]);
+        $this->logger->error('A Task Exception was captured.', ['exception' => $e]);
     }
 
     /**

@@ -122,7 +122,7 @@ class UserSessionManager implements LoggerAwareInterface
      */
     public function createSessionFromStorage(string $sessionId): UserSession
     {
-        $this->logger->debug('Fetch session with identifier ' . $sessionId);
+        $this->logger->debug('Fetch session with identifier {session}', ['session' => $sessionId]);
         $sessionRecord = $this->sessionBackend->get($sessionId);
         return UserSession::createFromRecord($sessionId, $sessionRecord);
     }
@@ -189,7 +189,7 @@ class UserSessionManager implements LoggerAwareInterface
     public function elevateToFixatedUserSession(UserSession $session, int $userId, bool $isPermanent = false): UserSession
     {
         $sessionId = $session->getIdentifier();
-        $this->logger->debug('Create session ses_id = ' . $sessionId);
+        $this->logger->debug('Create session ses_id = {session}', ['session' => $sessionId]);
         // Delete any session entry first
         $this->sessionBackend->remove($sessionId);
         // Re-create session entry

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Authentication;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -25,6 +26,25 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PasswordResetTest extends FunctionalTestCase
 {
+    protected LoggerInterface $logger;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->logger = new class() implements LoggerInterface {
+            use LoggerTrait;
+            public array $records = [];
+            public function log($level, $message, array $context = []): void
+            {
+                $this->records[] = [
+                    'level' => $level,
+                    'message' => $message,
+                    'context' => $context
+                ];
+            }
+        };
+    }
+
     /**
      * @test
      */
@@ -130,12 +150,12 @@ class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'duplicate@example.com';
         $subject = new PasswordReset();
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->warning()->withArguments(['Password reset sent to email address ' . $emailAddress . ' but multiple accounts found'])->shouldBeCalled();
-        $subject->setLogger($loggerProphecy->reveal());
+        $subject->setLogger($this->logger);
         $context = new Context();
         $request = new ServerRequest();
         $subject->initiateReset($request, $context, $emailAddress);
+        self::assertEquals('warning', $this->logger->records[0]['level']);
+        self::assertEquals($emailAddress, $this->logger->records[0]['context']['email']);
     }
 
     /**
@@ -150,12 +170,13 @@ class PasswordResetTest extends FunctionalTestCase
         $emailAddress = 'editor-with-email@example.com';
         $username = 'editor-with-email';
         $subject = new PasswordReset();
-        $loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $loggerProphecy->info()->withArguments(['Sent password reset email to email address ' . $emailAddress . ' for user ' . $username])->shouldBeCalled();
-        $subject->setLogger($loggerProphecy->reveal());
+        $subject->setLogger($this->logger);
         $context = new Context();
         $request = new ServerRequest();
         $subject->initiateReset($request, $context, $emailAddress);
+        self::assertEquals('info', $this->logger->records[0]['level']);
+        self::assertEquals($emailAddress, $this->logger->records[0]['context']['email']);
+        self::assertEquals($username, $this->logger->records[0]['context']['username']);
     }
 
     /**

@@ -491,7 +491,9 @@ class TypoScriptParser
                     $fakeThis = null;
                     $newValue = GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
                 } else {
-                    self::getLogger()->warning('Missing function definition for ' . $modifierName . ' on TypoScript');
+                    self::getLogger()->warning('Missing function definition for {modifier_name} on TypoScript', [
+                        'modifier_name' => $modifierName,
+                    ]);
                 }
         }
         return $newValue;

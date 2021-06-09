@@ -102,7 +102,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
 
             // In case the image size could not be retrieved, log the incident as a warning.
             if (empty($this->imageSizes)) {
-                $this->logger->warning('I could not retrieve the image size for file ' . $this->getPathname());
+                $this->logger->warning('I could not retrieve the image size for file {file}', ['file' => $this->getPathname()]);
                 $this->imageSizes = [0, 0];
             }
         }

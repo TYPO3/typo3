@@ -276,12 +276,11 @@ class LanguagePackService
                     }
                 }
             } else {
-                $this->logger->warning(sprintf(
-                    'Requesting %s was not successful, got status code %d (%s)',
-                    $languagePackBaseUrl . $packageUrl,
-                    $response->getStatusCode(),
-                    $response->getReasonPhrase()
-                ));
+                $this->logger->warning('Requesting {request} was not successful, got status code {status} ({reason})', [
+                    'request' => $languagePackBaseUrl . $packageUrl,
+                    'status' => $response->getStatusCode(),
+                    'reason' => $response->getReasonPhrase(),
+                ]);
             }
         } catch (\Exception $e) {
             $operationResult = false;

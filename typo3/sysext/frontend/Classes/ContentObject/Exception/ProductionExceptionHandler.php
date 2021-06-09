@@ -30,10 +30,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var array
-     */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * @param array $configuration
@@ -67,7 +64,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
                 throw $exception;
             }
         }
-        $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Code: %s';
+        $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Code: {code}';
         $code = date('YmdHis', $_SERVER['REQUEST_TIME']) . GeneralUtility::makeInstance(Random::class)->generateRandomHexString(8);
 
         $this->logException($exception, $errorMessage, $code);
@@ -82,6 +79,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
      */
     protected function logException(\Exception $exception, $errorMessage, $code)
     {
-        $this->logger->alert(sprintf($errorMessage, $code), ['exception' => $exception]);
+        $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code]);
     }
 }

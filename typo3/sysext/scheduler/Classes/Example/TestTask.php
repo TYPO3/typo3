@@ -47,7 +47,7 @@ class TestTask extends AbstractTask
     {
         if (!empty($this->email)) {
             // If an email address is defined, send a message to it
-            $this->logger->info('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email . '"');
+            $this->logger->info('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "{email}"', ['email' => $this->email]);
 
             $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
             $templateConfiguration['templateRootPaths'][20] = 'EXT:scheduler/Resources/Private/Templates/Email/';

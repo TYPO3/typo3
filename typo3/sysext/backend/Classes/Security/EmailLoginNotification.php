@@ -103,7 +103,7 @@ class EmailLoginNotification implements LoggerAwareInterface
      * @param AbstractUserAuthentication $user
      * @param string|null $subjectPrefix
      */
-    protected function sendEmail(string $recipient, AbstractUserAuthentication $user, string $subjectPrefix = null): void
+    protected function sendEmail(string $recipient, AbstractUserAuthentication $user, ?string $subjectPrefix = null): void
     {
         $headline = 'TYPO3 Backend Login notification';
         $recipients = explode(',', $recipient);
@@ -120,16 +120,18 @@ class EmailLoginNotification implements LoggerAwareInterface
         try {
             GeneralUtility::makeInstance(Mailer::class)->send($email);
         } catch (TransportException $e) {
-            $this->logger->warning('Could not send notification email to "' . $recipient . '" due to mailer settings error', [
+            $this->logger->warning('Could not send notification email to "{recipient}" due to mailer settings error', [
+                'recipient' => $recipient,
                 'userId' => $user->user['uid'] ?? 0,
                 'recipientList' => $recipients,
-                'exception' => $e
+                'exception' => $e,
             ]);
         } catch (RfcComplianceException $e) {
-            $this->logger->warning('Could not send notification email to "' . $recipient . '" due to invalid email address', [
+            $this->logger->warning('Could not send notification email to "{recipient}" due to invalid email address', [
+                'recipient' => $recipient,
                 'userId' => $user->user['uid'] ?? 0,
                 'recipientList' => $recipients,
-                'exception' => $e
+                'exception' => $e,
             ]);
         }
     }

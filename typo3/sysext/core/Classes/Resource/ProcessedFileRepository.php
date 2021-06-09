@@ -322,12 +322,11 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 $file->getStorage()->setEvaluatePermissions(false);
                 $file->delete(true);
             } catch (\Exception $e) {
-                $this->logger->error(
-                    'Failed to delete file "' . $row['identifier'] . '" in storage uid ' . $row['storage'] . '.',
-                    [
-                        'exception' => $e
-                    ]
-                );
+                $this->logger->error('Failed to delete file {identifier} in storage uid {storage}.', [
+                    'identifier' => $row['identifier'],
+                    'storage' => $row['storage'],
+                    'exception' => $e,
+                ]);
                 ++$errorCount;
             }
         }

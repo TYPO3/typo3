@@ -556,9 +556,7 @@ class ValidatorTask extends AbstractTask
             // Add default template name to task if empty or given template name does not exist
             $this->emailTemplateName = 'ValidatorTask';
             $this->taskNeedsUpdate = true;
-            $this->logger->notice(
-                $this->getLanguageService()->sL($this->languageFile . ':tasks.notice.useDefaultTemplate')
-            );
+            $this->logger->notice($this->getLanguageService()->sL($this->languageFile . ':tasks.notice.useDefaultTemplate'));
         }
 
         $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);

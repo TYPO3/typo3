@@ -1168,7 +1168,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 );
                 throw new PropagateResponseException($response, 1533931350);
             } catch (AbstractServerErrorException $e) {
-                $this->logger->error($message);
+                $this->logger->error($message, ['exception' => $e]);
                 $exceptionClass = get_class($e);
                 throw new $exceptionClass($message, 1301648167);
             }
@@ -1778,9 +1778,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->sPre = $typoScriptPageTypeName;
                 $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'];
                 if (!is_array($this->pSetup)) {
-                    $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
-                    $this->logger->alert($message);
+                    $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
                     try {
+                        $message = 'The page is not configured! [type=' . $this->type . '][' . $typoScriptPageTypeName . '].';
                         $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
                             $request,
                             $message,
@@ -3082,8 +3082,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function set_no_cache($reason = '', $internal = false)
     {
+        $context = [];
         if ($reason !== '') {
-            $warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
+            $warning = '$TSFE->set_no_cache() was triggered. Reason: {reason}.';
+            $context['reason'] = $reason;
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             // This is a hack to work around ___FILE___ resolving symbolic links
@@ -3094,9 +3096,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             } else {
                 $file = str_replace(Environment::getPublicPath() . '/', '', $file);
             }
-            $line = $trace[0]['line'];
-            $trigger = $file . ' on line ' . $line;
-            $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by ' . $trigger . '.';
+            $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by {file} on line {line}.';
+            $context['file'] = $file;
+            $context['line'] = $trace[0]['line'];
         }
         if (!$internal && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
             $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
@@ -3106,9 +3108,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->disableCache();
         }
         if ($internal && $this->isBackendUserLoggedIn()) {
-            $this->logger->notice($warning);
+            $this->logger->notice($warning, $context);
         } else {
-            $this->logger->warning($warning);
+            $this->logger->warning($warning, $context);
         }
     }
 

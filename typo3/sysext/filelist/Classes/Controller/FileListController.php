@@ -503,11 +503,10 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             self::UPLOAD_ACTION_RENAME,
             self::UPLOAD_ACTION_SKIP
         ], true)) {
-            $this->logger->warning(sprintf(
-                'TSConfig: options.file_list.uploader.defaultAction contains an invalid value ("%s"), fallback to default value: "%s"',
-                $defaultAction,
-                self::UPLOAD_ACTION_SKIP
-            ));
+            $this->logger->warning('TSConfig: options.file_list.uploader.defaultAction contains an invalid value ("{value}"), fallback to default value: "{default}"', [
+                'value' => $defaultAction,
+                'default' => self::UPLOAD_ACTION_SKIP
+            ]);
             $defaultAction = self::UPLOAD_ACTION_SKIP;
         }
         return $defaultAction;

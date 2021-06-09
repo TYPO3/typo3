@@ -556,13 +556,10 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             foreach ($finder as $siteConfigDirectory) {
                 $siteIdentifier = $siteConfigDirectory->getBasename();
                 if (isset($existingSites[$siteIdentifier])) {
-                    $this->logger->warning(
-                        sprintf(
-                            'Skipped importing site configuration from %s due to existing site identifier %s',
-                            $extensionKey,
-                            $siteIdentifier
-                        )
-                    );
+                    $this->logger->warning('Skipped importing site configuration from {key} due to existing site identifier {site}', [
+                        'key' => $extensionKey,
+                        'site' => $siteIdentifier,
+                    ]);
                     continue;
                 }
                 $targetDir = $destinationFolder . '/' . $siteIdentifier;
@@ -588,12 +585,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             $newSiteIdentifierList[] = $siteIdentifier;
             $importedPageId = $importedPages[$exportedPageId] ?? null;
             if ($importedPageId === null) {
-                $this->logger->warning(
-                    sprintf(
-                        'Imported site configuration with identifier %s could not be mapped to imported page id',
-                        $siteIdentifier
-                    )
-                );
+                $this->logger->warning('Imported site configuration with identifier {site} could not be mapped to imported page id', [
+                    'site' => $siteIdentifier,
+                ]);
                 continue;
             }
             $configuration = $siteConfiguration->load($siteIdentifier);
