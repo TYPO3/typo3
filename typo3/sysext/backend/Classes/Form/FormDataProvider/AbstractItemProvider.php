@@ -73,6 +73,14 @@ abstract class AbstractItemProvider
             'table' => $table,
             'row' => $result['databaseRow'],
             'field' => $fieldName,
+            // IMPORTANT: Below fields are only available in FormEngine context.
+            // They are not used by the DataHandler when processing itemsProcFunc
+            // for checking if a submitted value is valid. This means, in case
+            // an item is added based on one of these fields, it won't be persisted
+            // by the DataHandler. This currently(!) only concerns columns of type "check"
+            // and type "radio", see checkValueForCheck() and checkValueForRadio().
+            // Therefore, no limitations when using those fields with other types
+            // like "select", but this may change in the future.
             'inlineParentUid' => $result['inlineParentUid'],
             'inlineParentTableName' => $result['inlineParentTableName'],
             'inlineParentFieldName' => $result['inlineParentFieldName'],
