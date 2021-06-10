@@ -93,6 +93,9 @@
 			<trans-unit id="minimalTableTitleField" xml:space="preserve">
 				<source>Title field</source>
 			</trans-unit>
+			<trans-unit id="accordion" xml:space="preserve">
+				<source>Accordion</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
