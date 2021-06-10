@@ -315,7 +315,8 @@ class ListController extends AbstractModuleController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
 
         if ($this->actionMethodName === 'showAllVersionsAction') {
-            $uri = $this->uriBuilder->reset()->uriFor('ter', [], 'List');
+            $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
+            $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
             $title = $this->translate('extConfTemplate.backToList');
             $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
             $classes = '';

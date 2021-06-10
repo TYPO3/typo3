@@ -107,7 +107,18 @@
                         <span title="{extension.description}">{extension.title}</span>
                     </td>
                     <td>{extensionKey}</td>
-                    <td>{extension.version}</td>
+                    <td>
+                        <f:if condition="{extension.terObject}">
+                            <f:then>
+                                <f:link.action action="showAllVersions" arguments="{extensionKey: extensionKey, returnTo: 'index'}" title="{f:translate(key:'showAllVersions')}">
+                                    {extension.version}
+                                </f:link.action>
+                            </f:then>
+                            <f:else>
+                                {extension.version}
+                            </f:else>
+                        </f:if>
+                    </td>
                     <td><span class="label label-{extension.state}">{extension.state}</span></td>
                     <td>{extension.type}</td>
                     <td>
