@@ -162,6 +162,9 @@ pre[class*="language-"] {
   color: #f8f8f8;
   font-family: monospace, fixed;
 }
+.example.code:before {
+  content: 'EXAMPLE CODE';
+}
 .example pre {
   font-size: 14px;
   margin: 0;
