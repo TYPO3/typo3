@@ -162,9 +162,17 @@ class RecordListController
             $MOD_SETTINGS['bigControlPanel'] = false;
         }
         // Set predefined value for Clipboard:
-        $MOD_SETTINGS['clipBoard'] = ($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated' ? false : true;
-        $clipboard = $this->initializeClipboard($request, (bool)($MOD_SETTINGS['clipBoard'] ?? false));
-
+        if (isset($this->modTSconfig['enableClipBoard'])) {
+            if ($this->modTSconfig['enableClipBoard'] === 'activated') {
+                $MOD_SETTINGS['clipBoard'] = true;
+            } elseif ($this->modTSconfig['enableClipBoard'] === 'deactivated') {
+                $MOD_SETTINGS['clipBoard'] = false;
+            }
+        }
+        if (!isset($MOD_SETTINGS['clipBoard'])) {
+            $MOD_SETTINGS['clipBoard'] = true;
+        }
+        $clipboard = $this->initializeClipboard($request, (bool)$MOD_SETTINGS['clipBoard']);
         $csvExport = (bool)($request->getQueryParams()['csv'] ?? false);
         $enableListing = $access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '');
 
