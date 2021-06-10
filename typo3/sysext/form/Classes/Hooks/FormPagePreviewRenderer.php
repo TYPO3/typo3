@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -53,7 +52,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'];
         if (!empty($persistenceIdentifier)) {
             try {
-                $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
+                $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
 
                 try {
                     if (

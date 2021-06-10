@@ -21,9 +21,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook;
-use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -182,11 +180,8 @@ class DataStructureIdentifierHookTest extends UnitTestCase
      */
     public function parseDataStructureByIdentifierPostProcessAddsExistingFormItems(array $formDefinition, array $expectedItem): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-        $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
-        $objectManagerProphecy->get(FormPersistenceManagerInterface::class)
-            ->willReturn($formPersistenceManagerProphecy->reveal());
+        $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManagerInterface::class);
+        GeneralUtility::addInstance(FormPersistenceManagerInterface::class, $formPersistenceManagerProphecy->reveal());
 
         $formPersistenceManagerProphecy->listForms()->shouldBeCalled()->willReturn([$formDefinition]);
 

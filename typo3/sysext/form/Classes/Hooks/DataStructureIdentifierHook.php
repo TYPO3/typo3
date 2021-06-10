@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -109,7 +108,7 @@ class DataStructureIdentifierHook
         if (isset($identifier['ext-form-persistenceIdentifier'])) {
             try {
                 // Add list of existing forms to drop down if we find our key in the identifier
-                $formPersistenceManager = GeneralUtility::makeInstance(ObjectManager::class)->get(FormPersistenceManagerInterface::class);
+                $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
                 $formIsAccessible = false;
                 foreach ($formPersistenceManager->listForms() as $form) {
                     $invalidFormDefinition = $form['invalid'] ?? false;

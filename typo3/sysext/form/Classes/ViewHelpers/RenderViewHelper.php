@@ -83,9 +83,8 @@ class RenderViewHelper extends AbstractViewHelper
         $prototypeName = $arguments['prototypeName'];
         $overrideConfiguration = $arguments['overrideConfiguration'];
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         if (!empty($persistenceIdentifier)) {
-            $formPersistenceManager = $objectManager->get(FormPersistenceManagerInterface::class);
+            $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
             $formConfiguration = $formPersistenceManager->load($persistenceIdentifier);
             ArrayUtility::mergeRecursiveWithOverrule(
                 $formConfiguration,
@@ -99,6 +98,7 @@ class RenderViewHelper extends AbstractViewHelper
             $prototypeName = $overrideConfiguration['prototypeName'] ?? 'standard';
         }
 
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var FormFactoryInterface $factory */
         $factory = $objectManager->get($factoryClass);
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
