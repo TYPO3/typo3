@@ -1,4 +1,3 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <h4><f:translate key="makeadvanc_softReferences" /></h4>
 <div class="form-group">
     <f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources"><f:translate key="makeadvanc_excludeHtmlCssFile" /></f:be.buttons.csh>
@@ -27,4 +26,3 @@
     <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_update')}" />
     <f:form.hidden name="tx_impexp[download_export_name]" value="{nameSuggestion -> f:format.crop(maxCharacters: 30, append: '')}" />
 </div>
-</html>
