@@ -3,10 +3,6 @@
 defined('TYPO3') or die();
 
 call_user_func(function () {
-    // Register upgrade wizard in install tool
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['formFileExtension']
-        = \TYPO3\CMS\Form\Hooks\FormFileExtensionUpdate::class;
-
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('filelist')) {
         // Context menu item handling for form files
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1530637161]
