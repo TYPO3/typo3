@@ -142,7 +142,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             ) {
-                $yamlSettings = $this->objectManager->get(TypoScriptService::class)
+                $yamlSettings = GeneralUtility::makeInstance(TypoScriptService::class)
                     ->resolvePossibleTypoScriptConfiguration($yamlSettings);
             }
         }

@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
-use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
@@ -473,22 +471,7 @@ class FormFrontendControllerTest extends UnitTestCase
      */
     public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists()
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Arguments::class)->willReturn(new Arguments());
-        $objectManager->get(TypoScriptService::class)->willReturn($typoScriptServiceProphecy->reveal());
-
-        $mockController->injectObjectManager($objectManager->reveal());
-
-        $typoScriptServiceProphecy
-            ->resolvePossibleTypoScriptConfiguration(Argument::cetera())
-            ->willReturnArgument(0);
-
+        $mockController = $this->getAccessibleMock(FormFrontendController::class, ['dummy'], [], '', false);
         $mockController->_set('settings', [
             'formDefinitionOverrides' => [
             ],
@@ -547,13 +530,7 @@ class FormFrontendControllerTest extends UnitTestCase
         ], [], '', false);
 
         $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
-
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Arguments::class)->willReturn(new Arguments());
-        $objectManager->get(TypoScriptService::class)->willReturn($typoScriptServiceProphecy->reveal());
-
-        $mockController->injectObjectManager($objectManager->reveal());
-
+        GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceProphecy->reveal());
         $typoScriptServiceProphecy
             ->resolvePossibleTypoScriptConfiguration(Argument::cetera())
             ->willReturnArgument(0);

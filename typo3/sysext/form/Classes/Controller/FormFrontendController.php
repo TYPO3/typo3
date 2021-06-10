@@ -163,7 +163,7 @@ class FormFrontendController extends ActionController
                 $formDefinition,
                 $this->settings['formDefinitionOverrides'][$formDefinition['identifier']]
             );
-            $formDefinition = $this->objectManager->get(TypoScriptService::class)
+            $formDefinition = GeneralUtility::makeInstance(TypoScriptService::class)
                 ->resolvePossibleTypoScriptConfiguration($formDefinition);
         }
         return $formDefinition;

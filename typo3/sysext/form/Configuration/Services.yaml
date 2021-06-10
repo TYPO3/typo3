@@ -12,6 +12,9 @@ services:
     alias: TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager
     public: true
 
+  TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService:
+    public: true
+
   TYPO3\CMS\Form\Slot\ResourcePublicationSlot:
     tags:
       - name: event.listener

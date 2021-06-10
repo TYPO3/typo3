@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
+use TYPO3\CMS\Core\TypoScript\TypoScriptService as CoreTypoScriptService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -26,19 +27,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class TypoScriptService
 {
+    protected CoreTypoScriptService $coreTypoScriptService;
 
-    /**
-     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService
-     */
-    protected $extbaseTypoScriptService;
-
-    /**
-     * @param \TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService
-     * @internal
-     */
-    public function injectTypoScriptService(\TYPO3\CMS\Core\TypoScript\TypoScriptService $typoScriptService)
+    public function __construct(CoreTypoScriptService $coreTypoScriptService)
     {
-        $this->extbaseTypoScriptService = $typoScriptService;
+        $this->coreTypoScriptService = $coreTypoScriptService;
     }
 
     /**
@@ -51,9 +44,9 @@ class TypoScriptService
      */
     public function resolvePossibleTypoScriptConfiguration(array $configuration = []): array
     {
-        $configuration = $this->extbaseTypoScriptService->convertPlainArrayToTypoScriptArray($configuration);
+        $configuration = $this->coreTypoScriptService->convertPlainArrayToTypoScriptArray($configuration);
         $configuration = $this->resolveTypoScriptConfiguration($configuration);
-        $configuration = $this->extbaseTypoScriptService->convertTypoScriptArrayToPlainArray($configuration);
+        $configuration = $this->coreTypoScriptService->convertTypoScriptArrayToPlainArray($configuration);
         return $configuration;
     }
 
