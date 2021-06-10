@@ -1025,7 +1025,7 @@ class DatabaseRecordList
                     $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
                     break;
                 case '_CLIPBOARD_':
-                    if (!$this->moduleData['clipBoard']) {
+                    if (!$this->moduleData['clipBoard'] || ($table === 'pages' && $this->showOnlyTranslatedRecords)) {
                         break;
                     }
                     // Clipboard:
@@ -1716,7 +1716,11 @@ class DatabaseRecordList
     public function makeClip($table, $row)
     {
         // Return blank, if disabled:
-        if (!$this->moduleData['clipBoard'] || !$this->isEditable($table) || $this->isRecordDeletePlaceholder($row)) {
+        if (!$this->moduleData['clipBoard']
+            || ($table === 'pages' && $this->showOnlyTranslatedRecords)
+            || !$this->isEditable($table)
+            || $this->isRecordDeletePlaceholder($row)
+        ) {
             return '';
         }
         $cells = [];
