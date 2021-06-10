@@ -74,7 +74,7 @@ class StyleguideController extends ActionController
         // Hand over flash message queue to module template
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'debug', 'helpers', 'modal', 'accordion']);
+            'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion']);
         $this->view->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
@@ -239,14 +239,6 @@ class StyleguideController extends ActionController
         $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
         $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
         $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
-        return $this->htmlResponse($this->view->render());
-    }
-
-    /**
-     * Helpers
-     */
-    public function helpersAction(): ResponseInterface
-    {
         return $this->htmlResponse($this->view->render());
     }
 
