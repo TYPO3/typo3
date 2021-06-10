@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -75,20 +74,24 @@ class TranslationService implements SingletonInterface
      */
     protected $alternativeLanguageKeys = [];
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
+
+    public function __construct(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
     /**
      * Return TranslationService as singleton
      *
-     * @return TranslationService
+     * @return self
      * @internal
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        return GeneralUtility::makeInstance(ObjectManager::class)->get(self::class);
+        /** @var self $instance */
+        $instance = GeneralUtility::makeInstance(self::class);
+        return $instance;
     }
 
     /**
@@ -615,7 +618,7 @@ class TranslationService implements SingletonInterface
      */
     protected function loadTypoScriptLabels()
     {
-        $frameworkConfiguration = $this->getConfigurationManager()
+        $frameworkConfiguration = $this->configurationManager
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'form');
 
         if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? null)) {
@@ -685,22 +688,6 @@ class TranslationService implements SingletonInterface
             krsort($array);
         }
         return $array;
-    }
-
-    /**
-     * Returns instance of the configuration manager
-     *
-     * @return ConfigurationManagerInterface
-     */
-    protected function getConfigurationManager(): ConfigurationManagerInterface
-    {
-        if ($this->configurationManager !== null) {
-            return $this->configurationManager;
-        }
-
-        $this->configurationManager = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class);
-        return $this->configurationManager;
     }
 
     /**

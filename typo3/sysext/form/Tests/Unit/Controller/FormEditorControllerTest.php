@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -48,27 +47,15 @@ class FormEditorControllerTest extends UnitTestCase
      */
     public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
     {
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translate'
-        ], [], '', false);
-
+        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translate'], [], '', false);
+        GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
             ->expects(self::any())
             ->method('translate')
             ->willReturnArgument(4);
 
-        $objectManagerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $mockController->_set('prototypeConfiguration', [
+        $subject = $this->getAccessibleMock(FormEditorController::class, ['dummy'], [], '', false);
+        $subject->_set('prototypeConfiguration', [
             'formEditor' => [
                 'formElementGroups' => [
                     'input' => [
@@ -138,7 +125,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $mockController->_call('getInsertRenderablesPanelConfiguration', $input));
+        self::assertSame($expected, $subject->_call('getInsertRenderablesPanelConfiguration', $input));
     }
 
     /**
@@ -146,27 +133,15 @@ class FormEditorControllerTest extends UnitTestCase
      */
     public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
-        $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
-        ], [], '', false);
-
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateValuesRecursive'
-        ], [], '', false);
-
+        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
+        GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
             ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
-        $objectManagerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $mockController->_set('prototypeConfiguration', [
+        $subject = $this->getAccessibleMock(FormEditorController::class, ['dummy'], [], '', false);
+        $subject->_set('prototypeConfiguration', [
             'formEditor' => [
                 'someOtherValues' => [
                     'horst' => [
@@ -272,7 +247,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, $mockController->_call('getFormEditorDefinitions'));
+        self::assertSame($expected, $subject->_call('getFormEditorDefinitions'));
     }
 
     /**

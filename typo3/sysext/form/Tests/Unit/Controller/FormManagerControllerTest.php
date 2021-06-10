@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormManagerController;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Service\DatabaseService;
@@ -103,31 +102,19 @@ class FormManagerControllerTest extends UnitTestCase
      */
     public function getFormManagerAppInitialDataReturnsProcessedArray(): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
-            'translateValuesRecursive'
-        ], [], '', false);
-
+        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
+        GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
             ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
-        $objectManagerProphecy
-            ->get(TranslationService::class)
-            ->willReturn($mockTranslationService);
-
-        $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'getAccessibleFormStorageFolders'
-        ], [], '', false);
+        $subject = $this->getAccessibleMock(FormManagerController::class, ['getAccessibleFormStorageFolders'], [], '', false);
 
         $mockUriBuilder = $this->createMock(UriBuilder::class);
 
-        $mockController->_set('uriBuilder', $mockUriBuilder);
-
-        $mockController->_set('formSettings', [
+        $subject->_set('uriBuilder', $mockUriBuilder);
+        $subject->_set('formSettings', [
             'formManager' => [
                 'selectablePrototypesConfiguration' => [],
             ],
@@ -137,7 +124,7 @@ class FormManagerControllerTest extends UnitTestCase
             '/typo3/index.php?some=param'
         );
 
-        $mockController
+        $subject
             ->expects(self::any())
             ->method('getAccessibleFormStorageFolders')
             ->willReturn([
@@ -163,7 +150,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame(json_encode($expected), $mockController->_call('getFormManagerAppInitialData'));
+        self::assertSame(json_encode($expected), $subject->_call('getFormManagerAppInitialData'));
     }
 
     /**

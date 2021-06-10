@@ -73,11 +73,11 @@ class RedirectFinisherTest extends UnitTestCase
         $finisherContextProphecy->cancel()->shouldBeCalledOnce();
 
         $translationServiceProphecy = $this->prophesize(TranslationService::class);
+        GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceProphecy->reveal());
         $translationServiceProphecy->translateFinisherOption(Argument::cetera())->willReturnArgument(3);
 
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         $objectManagerProphecy->get(UriBuilder::class)->willReturn(new UriBuilder());
-        $objectManagerProphecy->get(TranslationService::class)->willReturn($translationServiceProphecy->reveal());
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
         $redirectFinisherMock->injectObjectManager($objectManagerProphecy->reveal());
 

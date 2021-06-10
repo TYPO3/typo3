@@ -64,7 +64,6 @@ class TranslationServiceTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -94,9 +93,7 @@ class TranslationServiceTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(LocalizationFactory::class, $localizationFactory->reveal());
 
-        $this->mockConfigurationManager = $this->getAccessibleMock(ConfigurationManager::class, [
-            'getConfiguration'
-        ], [], '', false);
+        $this->mockConfigurationManager = $this->getAccessibleMock(ConfigurationManager::class, ['getConfiguration'], [], '', false);
 
         $this->mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'getConfigurationManager',
@@ -109,10 +106,7 @@ class TranslationServiceTest extends UnitTestCase
             ->method('getLanguageService')
             ->willReturn($languageService);
 
-        $this->mockTranslationService
-            ->expects(self::any())
-            ->method('getConfigurationManager')
-            ->willReturn($this->mockConfigurationManager);
+        $this->mockTranslationService->_set('configurationManager', $this->mockConfigurationManager);
 
         $this->store = GeneralUtility::makeInstance(LanguageStore::class);
         $this->store->initialize();
