@@ -41,59 +41,20 @@ class ProcessingRule
      */
     protected $dataType;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
-     */
-    protected $propertyMappingConfiguration;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator
-     */
-    protected $validator;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Error\Result
-     */
-    protected $processingMessages;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     */
-    protected $propertyMapper;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration
-     * @internal
-     */
-    public function injectPropertyMappingConfiguration(PropertyMappingConfiguration $propertyMappingConfiguration)
-    {
-        $this->propertyMappingConfiguration = $propertyMappingConfiguration;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator $validator
-     * @internal
-     */
-    public function injectConjunctionValidator(ConjunctionValidator $validator)
-    {
-        $this->validator = $validator;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @internal
-     */
-    public function injectPropertyMapper(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
-    }
+    protected PropertyMappingConfiguration $propertyMappingConfiguration;
+    protected ConjunctionValidator $validator;
+    protected Result $processingMessages;
+    protected PropertyMapper $propertyMapper;
 
     /**
      * Constructs this processing rule
      * @internal
      */
-    public function __construct()
+    public function __construct(PropertyMapper $propertyMapper)
     {
+        $this->propertyMapper = $propertyMapper;
+        $this->propertyMappingConfiguration = GeneralUtility::makeInstance(PropertyMappingConfiguration::class);
+        $this->validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
         $this->processingMessages = GeneralUtility::makeInstance(Result::class);
     }
 

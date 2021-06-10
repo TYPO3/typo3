@@ -19,6 +19,10 @@ services:
     alias: TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager
     public: true
 
+  TYPO3\CMS\Form\Mvc\ProcessingRule:
+    public: true
+    shared: false
+
   TYPO3\CMS\Form\Slot\ResourcePublicationSlot:
     tags:
       - name: event.listener

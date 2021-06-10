@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -666,7 +667,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     public function getProcessingRule(string $propertyPath): ProcessingRule
     {
         if (!isset($this->processingRules[$propertyPath])) {
-            $this->processingRules[$propertyPath] = $this->objectManager->get(ProcessingRule::class);
+            $this->processingRules[$propertyPath] = GeneralUtility::makeInstance(ProcessingRule::class);
         }
         return $this->processingRules[$propertyPath];
     }

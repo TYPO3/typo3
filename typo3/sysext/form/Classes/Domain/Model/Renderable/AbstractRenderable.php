@@ -467,8 +467,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
         $identifier = $options['identifier'] ?? '';
         unset($options['identifier']);
 
-        $variant = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(RenderableVariant::class, $identifier, $options, $this);
+        $variant = GeneralUtility::makeInstance(RenderableVariant::class, $identifier, $options, $this);
 
         $this->addVariant($variant);
         return $variant;
