@@ -116,10 +116,6 @@ services:
     shared: false
     public: true
 
-  TYPO3\CMS\Core\Service\TypoScriptService:
-    shared: false
-    public: true
-
   # FAL security checks for backend users
   TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:
     tags:
