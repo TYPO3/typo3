@@ -14,7 +14,7 @@
 class ClipboardComponent {
   private static setCheckboxValue(checkboxName: string, check: boolean): void {
     const fullName = 'CBC[' + checkboxName + ']';
-    const checkboxElement: HTMLInputElement = document.querySelector('form[name="dblistForm"] [name="' + fullName + '"]');
+    const checkboxElement: HTMLInputElement = document.querySelector('input[name="' + fullName + '"]');
     if (checkboxElement !== null) {
       checkboxElement.checked = check;
     }

@@ -4,50 +4,44 @@
         <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns" />
     </button>
     <div class="dropdown-menu dropdown-menu-end pt-0 field-selector-dropdown" aria-labelledby="selectcolumns-{tableIdentifier}">
-        <f:comment>
-            The below form and the anchor do only have effect outside of Recordlist (e.g. DatabaseBrowser) since
-            Recordlist already defines an outer form and nested forms are not supported.
-        </f:comment>
-        <form action="{formUrl}#t3-table-{tableIdentifier}" method="post" name="field-selector-form-{tableIdentifier}">
-            <div class="pt-2 pb-2 mb-2 row align-items-center border-bottom field-selector-header">
-                <div class="col">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input recordlist-select-allcolumns" id="select-allcolumns-{tableIdentifier}" {f:if(condition: allChecked, then: ' checked')} />
-                        <label class="form-check-label" for="select-allcolumns-{tableIdentifier}">
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
-                        </label>
-                    </div>
-                </div>
-                <div class="col text-end">
-                    <button type="submit" class="btn btn-primary">
-                        <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView" />
-                    </button>
+        <div class="pt-2 pb-2 mb-2 row align-items-center border-bottom field-selector-header">
+            <div class="col">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input recordlist-select-allcolumns" id="select-allcolumns-{tableIdentifier}" {f:if(condition: allChecked, then: ' checked')} />
+                    <label class="form-check-label" for="select-allcolumns-{tableIdentifier}">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
+                    </label>
                 </div>
             </div>
-            <f:for each="{checkboxes}" as="checkbox">
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input
-                            type="checkbox"
-                            id="select-column-{tableIdentifier}-{checkbox.fieldName}"
-                            name="displayFields[{table}][]"
-                            class="form-check-input recordlist-select-column"
-                            value="{checkbox.fieldName}"
-                            {f:if(condition:'{checkbox.checked}', then:' checked')}
-                        {f:if(condition:'{checkbox.disabled}', then: 'disabled')}
-                        />
-                        <f:if condition="{checkbox.disabled}">
-                            <input type="hidden" name="displayFields[{table}][]" value="{checkbox.fieldName}" />
+            <div class="col text-end">
+                <button type="submit" class="btn btn-primary">
+                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView" />
+                </button>
+            </div>
+        </div>
+        <f:for each="{checkboxes}" as="checkbox">
+            <div class="mb-2">
+                <div class="form-check">
+                    <input
+                        type="checkbox"
+                        id="select-column-{tableIdentifier}-{checkbox.fieldName}"
+                        name="displayFields[{table}][]"
+                        class="form-check-input recordlist-select-column"
+                        value="{checkbox.fieldName}"
+                        {f:if(condition:'{checkbox.checked}', then:' checked')}
+                    {f:if(condition:'{checkbox.disabled}', then: 'disabled')}
+                    />
+                    <f:if condition="{checkbox.disabled}">
+                        <input type="hidden" name="displayFields[{table}][]" value="{checkbox.fieldName}" />
+                    </f:if>
+                    <label class="form-check-label" for="select-column-{tableIdentifier}-{checkbox.fieldName}">
+                        <f:if condition="{checkbox.fieldLabel}">
+                            <span class="me-2"><f:translate key="{checkbox.fieldLabel}">{checkbox.fieldLabel}</f:translate></span>
                         </f:if>
-                        <label class="form-check-label" for="select-column-{tableIdentifier}-{checkbox.fieldName}">
-                            <f:if condition="{checkbox.fieldLabel}">
-                                <span class="me-2"><f:translate key="{checkbox.fieldLabel}">{checkbox.fieldLabel}</f:translate></span>
-                            </f:if>
-                            <span class="text-muted text-monospace">[{checkbox.fieldName}]</span>
-                        </label>
-                    </div>
+                        <span class="text-muted text-monospace">[{checkbox.fieldName}]</span>
+                    </label>
                 </div>
-            </f:for>
-        </form>
+            </div>
+        </f:for>
     </div>
 </div>

@@ -330,9 +330,7 @@ class RecordListController
         if ($beforeOutput) {
             $body .= '<div class="row">' . $beforeOutput . '</div>';
         }
-        $body .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">';
         $body .= $output;
-        $body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
         // If a listing was produced, create the page footer with search form etc:
         if ($tableOutput) {
             // Adding checkbox options for extended listing and clipboard display:

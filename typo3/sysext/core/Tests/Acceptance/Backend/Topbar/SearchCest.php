@@ -85,7 +85,12 @@ class SearchCest
         $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
 
         $I->switchToContentFrame();
-        $I->waitForElementVisible('form[name="dblistForm"]');
-        $I->canSee('fileadmin');
+
+        // Search word is transferred to the recordlist search form
+        $I->seeInField('#search_field', 'fileadmin');
+
+        // Correct table and element is displayed
+        $I->waitForElementVisible('form[name="list-table-form-sys_file_storage"]');
+        $I->canSee('fileadmin', 'form[name="list-table-form-sys_file_storage"] a');
     }
 }

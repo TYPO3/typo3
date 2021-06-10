@@ -752,16 +752,20 @@ class DatabaseRecordList
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
             <div class="panel panel-space panel-default recordlist" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
-                <div class="panel-heading">
-                ' . $tableHeader . '
-                </div>
-                <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
-                    <div class="table-fit">
-                        <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
-                            ' . $columnsOutput . $rowOutput . '
-                        </table>
+                <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
+                    <input type="hidden" name="cmd_table" />
+                    <input type="hidden" name="cmd" />
+                    <div class="panel-heading">
+                    ' . $tableHeader . '
                     </div>
-                </div>
+                    <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
+                        <div class="table-fit">
+                            <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover">
+                                ' . $columnsOutput . $rowOutput . '
+                            </table>
+                        </div>
+                    </div>
+                </form>
             </div>
         ';
     }
@@ -1990,7 +1994,6 @@ class DatabaseRecordList
 
         return $this->getFluidTemplateObject('ColumnSelector.html')
             ->assignMultiple([
-                'formUrl' => $this->listURL(),
                 'table' => $table,
                 'tableIdentifier' => $this->showOnlyTranslatedRecords ? ($table . '_translated') : $table,
                 'allChecked' => $checkAllChecked,
@@ -2018,10 +2021,13 @@ class DatabaseRecordList
      */
     public function linkClipboardHeaderIcon($icon, $table, $cmd, $warning = '', $title = '')
     {
-        $jsCode = 'document.dblistForm.cmd.value=' . GeneralUtility::quoteJSvalue($cmd)
-            . ';document.dblistForm.cmd_table.value='
-            . GeneralUtility::quoteJSvalue($table)
-            . ';document.dblistForm.submit();';
+        $tableIdentifier = $this->showOnlyTranslatedRecords ? ($table . '_translated') : $table;
+        $formName = 'list-table-form-' . htmlspecialchars($tableIdentifier);
+
+        // @todo Replace this inline JavaScript by a custom elements or some kind of trigger class
+        $jsCode = 'document.querySelector(\'form[name="' . $formName . '"]\').cmd.value=' . GeneralUtility::quoteJSvalue($cmd)
+            . ';document.querySelector(\'form[name="' . $formName . '"]\').cmd_table.value=' . GeneralUtility::quoteJSvalue($table)
+            . ';document.querySelector(\'form[name="' . $formName . '"]\').submit();';
 
         $attributes = [];
         if ($title !== '') {
@@ -2041,11 +2047,7 @@ class DatabaseRecordList
             $attributes['onclick'] = $jsCode . 'return false;';
         }
 
-        $attributesString = '';
-        foreach ($attributes as $key => $value) {
-            $attributesString .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
-        }
-        return $tag[0] . $attributesString . '>' . $icon . $tag[1];
+        return $tag[0] . GeneralUtility::implodeAttributes($attributes, true) . '>' . $icon . $tag[1];
     }
 
     /**
