@@ -13,19 +13,7 @@
 
 	<p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
 
-	<table class="table" style="width: auto;">
-		<tr>
-			<td>
-				<b:avatar />
-			</td>
-			<td>
-				<strong>{backendUser.username}</strong><br>
-				{backendUser.realName}
-			</td>
-		</tr>
-	</table>
-
-	<sg:code language="html" codeonly="true">
+	<sg:code language="html">
 		<b:avatar />
 	</sg:code>
 
@@ -34,19 +22,7 @@
 	<p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
 		Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
 
-	<table class="table" style="width: auto;">
-		<tr>
-			<td>
-				<b:avatar showIcon="true" />
-			</td>
-			<td>
-				<strong>{backendUser.username}</strong><br>
-				{backendUser.realName}
-			</td>
-		</tr>
-	</table>
-
-	<sg:code language="html" codeonly="true">
+	<sg:code language="html">
 		<b:avatar showIcon="true" />
 	</sg:code>
 </f:section>
