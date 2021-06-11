@@ -69,7 +69,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     /**
      * Getter for uid.
      *
-     * @return int the uid or NULL if none set yet.
+     * @return int|null The uid or NULL if none set yet.
      */
     public function getUid(): ?int
     {
