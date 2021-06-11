@@ -25,8 +25,9 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -72,12 +73,12 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  * another representation format such as YAML.
  *
  * /---code php
- * $formDefinition = $this->objectManager->get(FormDefinition::class, 'myForm');
+ * $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm');
  *
- * $page1 = $this->objectManager->get(Page::class, 'page1');
+ * $page1 = GeneralUtility::makeInstance(Page::class, 'page1');
  * $formDefinition->addPage($page);
  *
- * $element1 = $this->objectManager->get(GenericFormElement::class, 'title', 'Textfield'); # the second argument is the type of the form element
+ * $element1 = GeneralUtility::makeInstance(GenericFormElement::class, 'title', 'Textfield'); # the second argument is the type of the form element
  * $page1->addElement($element1);
  * \---
  *
@@ -96,7 +97,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  * /---code php
  * $prototypeConfiguration = []; // We'll talk about this later
  *
- * $formDefinition = $this->objectManager->get(FormDefinition::class, 'myForm', $prototypeConfiguration);
+ * $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm', $prototypeConfiguration);
  * $page1 = $formDefinition->createPage('page1');
  * $element1 = $page1->addElement('title', 'Textfield');
  * \---
@@ -222,12 +223,6 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  */
 class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * The finishers for this form
      *
@@ -290,15 +285,6 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * @var string
      */
     protected $persistenceIdentifier;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * Constructor. Creates a new FormDefinition with the given identifier.
@@ -416,8 +402,20 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             throw new TypeDefinitionNotFoundException(sprintf('The "implementationClassName" was not set in type definition "%s".', $typeName), 1477083126);
         }
         $implementationClassName = $typeDefinition['implementationClassName'];
-        /** @var Page $page */
-        $page = $this->objectManager->get($implementationClassName, $identifier, $typeName);
+
+        $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($implementationClassName);
+        if ($classSchema->hasInjectMethods() || $classSchema->hasInjectProperties() || $classSchema->hasMethod('initializeObject')) {
+            // @deprecated since v11, will be removed in v12 - Fallback for Page implementations that have
+            // inject* or initializeObject methods, since Page prototype needs manual constructor arguments
+            // which can't be mixed with injection in symfony DI. Deprecation is logged by ObjectManager->get().
+            // Drop everything except the makeInstance call below in v12.
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            /** @var Page $page */
+            $page = $objectManager->get($implementationClassName, $identifier, $typeName);
+        } else {
+            /** @var Page $page */
+            $page = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
+        }
 
         if (isset($typeDefinition['label'])) {
             $page->setLabel($typeDefinition['label']);
@@ -513,8 +511,33 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
-            /** @var FinisherInterface $finisher */
-            $finisher = $this->objectManager->get($implementationClassName, $finisherIdentifier);
+            $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($implementationClassName);
+            if (!$classSchema->hasMethod('setFinisherIdentifier')
+                || ($classSchema->hasMethod('__construct')
+                    && count($classSchema->getMethod('__construct')->getParameters()) >= 1
+                    && (string)$classSchema->getMethod('__construct')->getFirstParameter()->getType() === 'string')
+            ) {
+                // @deprecated since v11, will be removed in v12 - Fallback for Finishers that do not
+                // extend AbstractFinisher and have no setFinisherIdentifier() method or still have a
+                // constructor argument to set the finisher name: Mixing manual constructor arguments
+                // with injection is not allowed by symfony DI, so we dropped the constructor argument
+                // for v11 to keep the injection.
+                // The above if detects "old" finisher and falls back to ObjectManager, which will log
+                // a deprecation.
+                // Drop the if with this body in v12, keep else body, clean up
+                // AbstractFinisher->setFinisherIdentifier() and enable the method in FinisherInterface.
+                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+                /** @var FinisherInterface $finisher */
+                $finisher = $objectManager->get($implementationClassName, $finisherIdentifier);
+                if ($classSchema->hasMethod('setFinisherIdentifier')) {
+                    $finisher->setFinisherIdentifier($finisherIdentifier);
+                }
+            } else {
+                /** @var FinisherInterface $finisher */
+                $finisher = GeneralUtility::makeInstance($implementationClassName);
+                $finisher->setFinisherIdentifier($finisherIdentifier);
+            }
+
             $finisher->setOptions($defaultOptions);
             $this->addFinisher($finisher);
             return $finisher;
@@ -657,7 +680,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      */
     public function bind(Request $request, ResponseInterface $response): FormRuntime
     {
-        return $this->objectManager->get(FormRuntime::class, $this, $request, $response);
+        return GeneralUtility::makeInstance(FormRuntime::class, $this, $request, $response);
     }
 
     /**

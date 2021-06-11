@@ -42,6 +42,7 @@ abstract class AbstractFinisher implements FinisherInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @deprecated since v11, will be removed in v12. Drop together with inject method and ObjectManager removal.
      */
     protected $objectManager;
 
@@ -80,6 +81,7 @@ abstract class AbstractFinisher implements FinisherInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @internal
+     * @deprecated since v11, will be removed in v12. Drop together with property and ObjectManager removal.
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
@@ -87,17 +89,26 @@ abstract class AbstractFinisher implements FinisherInterface
     }
 
     /**
+     * @deprecated since v11, will be removed in v12. Drop together with ObjectManager cleanup.
+     */
+    public function __construct()
+    {
+        // no-op so parent::construct() calls don't fail in v11.
+    }
+
+    /**
      * @param string $finisherIdentifier The identifier for this finisher
      */
-    public function __construct(string $finisherIdentifier = '')
+    public function setFinisherIdentifier(string $finisherIdentifier): void
     {
-        if (empty($finisherIdentifier)) {
-            $this->finisherIdentifier = (new \ReflectionClass($this))->getShortName();
-        } else {
+        if (empty($this->finisherIdentifier)) {
+            // @deprecated since v11, will be removed in v12. Do not override finisher in case
+            // some class implemented setting something in initializeObject() or constructor.
+            // In v12, drop the if condition, but keep the body and enable setFinisherIdentifier()
+            // in FinisherInterface.
             $this->finisherIdentifier = $finisherIdentifier;
+            $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
         }
-
-        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
     }
 
     /**

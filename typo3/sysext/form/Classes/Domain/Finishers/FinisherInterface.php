@@ -38,6 +38,12 @@ interface FinisherInterface
     public function execute(FinisherContext $finisherContext);
 
     /**
+     * @param string $finisherIdentifier
+     * @todo enable this method in TYPO3 v12 with a Breaking.rst as the interface changes and drop the if condition (not body) in AbstractFinisher.
+     */
+    //public function setFinisherIdentifier(string $finisherIdentifier): void;
+
+    /**
      * @param array $options configuration options in the format ['option1' => 'value1', 'option2' => 'value2', ...]
      */
     public function setOptions(array $options);

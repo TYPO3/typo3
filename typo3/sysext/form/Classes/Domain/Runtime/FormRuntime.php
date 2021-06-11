@@ -39,6 +39,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -104,25 +105,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Form\Domain\Model\FormDefinition
-     */
-    protected $formDefinition;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Request
-     */
-    protected $request;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
+    protected ObjectManagerInterface $objectManager;
+    protected FormDefinition $formDefinition;
+    protected Request $request;
+    protected ResponseInterface $response;
+    protected HashService $hashService;
+    protected ConfigurationManagerInterface $configurationManager;
 
     /**
      * @var \TYPO3\CMS\Form\Domain\Runtime\FormState
@@ -158,11 +146,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $lastDisplayedPage;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     */
-    protected $hashService;
-
-    /**
      * The current site language configuration.
      *
      * @var SiteLanguage
@@ -175,37 +158,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface
      */
     protected $currentFinisher;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
-     * @internal
-     */
-    public function injectHashService(HashService $hashService)
-    {
-        $this->hashService = $hashService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-    }
 
     /**
      * @param FormDefinition $formDefinition
@@ -221,15 +173,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if (isset($arguments[$formIdentifier])) {
             $this->request->setArguments($arguments[$formIdentifier]);
         }
-
         $this->response = $response;
-    }
 
-    /**
-     * @internal
-     */
-    public function initializeObject()
-    {
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
+
         $this->initializeCurrentSiteLanguage();
         $this->initializeFormSessionFromRequest();
         $this->initializeFormStateFromRequest();

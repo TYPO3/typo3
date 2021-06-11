@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Factory;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -62,7 +61,7 @@ class ArrayFormFactory extends AbstractFormFactory
         $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
             ->getPrototypeConfiguration($prototypeName);
 
-        $form = GeneralUtility::makeInstance(ObjectManager::class)->get(
+        $form = GeneralUtility::makeInstance(
             FormDefinition::class,
             $configuration['identifier'],
             $prototypeConfiguration,
