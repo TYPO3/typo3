@@ -1093,4 +1093,25 @@ return [
             'Deprecation-94311-DeprecatedGeneralUtilityrmFromList.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\HttpUtility::redirect' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst'
+        ],
+    ],
 ];
