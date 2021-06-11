@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Parent class for "Services" classes
+ *
+ * @deprecated since v11, will be removed in v12.
  */
 abstract class AbstractService implements LoggerAwareInterface
 {

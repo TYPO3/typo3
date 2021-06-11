@@ -1659,4 +1659,9 @@ return [
             'Deprecation-94231-DeprecateExtbaseInvalidRequestMethodException.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Service\AbstractService' => [
+        'restFiles' => [
+            'Deprecation-94313-ClassAbstractService.rst'
+       ],
+    ],
 ];
