@@ -323,9 +323,6 @@ BE:
             'strict': 'Cookies sent by TYPO3 are only available for the current site, never shared to other third-party packages'
             'none': 'Allow cookies set by TYPO3 to be sent to other sites as well, please note - this only works with HTTPS connections'
           description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Backend.'
-        loginSecurityLevel:
-            type: text
-            description: 'Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text. The client/server communication should be secured with HTTPS.'
         showRefreshLoginPopup:
             type: bool
             description: 'If set, the Ajax relogin will show a real popup window for relogin after the count down. Some auth services need this as they add custom validation to the login form. If it''s not set, the Ajax relogin will show an inline relogin window.'
@@ -435,9 +432,6 @@ FE:
               '7': 'Use the first seven blocks (112 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370") as part of the session locking of Backend Users'
               '8': 'Use the visitors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
             description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv6-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for the session.'
-        loginSecurityLevel:
-            type: text
-            description: 'See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". The client/server communication should be secured with HTTPS.'
         lifetime:
             type: int
             description: 'If >0 and the option permalogin is >=0, the cookie of FE users will have a lifetime of the number of seconds this value indicates. Otherwise it will be a session cookie (deleted when browser is shut down). Setting this value to 604800 will result in automatic login of FE users during a whole week, 86400 will keep the FE users logged in for a day.'

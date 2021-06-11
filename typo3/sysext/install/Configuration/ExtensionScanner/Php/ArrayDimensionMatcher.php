@@ -477,4 +477,14 @@ return [
             'Feature-93056-NewEventAfterRetrievingUserGroupsRecursively.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'loginSecurityLevel\']' => [
+        'restFiles' => [
+            'Important-94312-RemovedBEloginSecurityLevelAndFEloginSecurityLevelOptions.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'loginSecurityLevel\']' => [
+        'restFiles' => [
+            'Important-94312-RemovedBEloginSecurityLevelAndFEloginSecurityLevelOptions.rst',
+        ],
+    ],
 ];

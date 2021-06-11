@@ -162,6 +162,9 @@ class SilentConfigurationUpgradeService
         'BE/lockBeUserToDBmounts',
         // #92941
         'BE/enabledBeUserIPLock',
+        // #94312
+        'BE/loginSecurityLevel',
+        'FE/loginSecurityLevel'
     ];
 
     public function __construct(ConfigurationManager $configurationManager)
@@ -178,8 +181,6 @@ class SilentConfigurationUpgradeService
     public function execute()
     {
         $this->generateEncryptionKeyIfNeeded();
-        $this->configureBackendLoginSecurity();
-        $this->configureFrontendLoginSecurity();
         $this->migrateImageProcessorSetting();
         $this->transferHttpSettings();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
@@ -217,44 +218,6 @@ class SilentConfigurationUpgradeService
         // If something was changed: Trigger a reload to have new values in next request
         if ($removed) {
             $this->throwConfigurationChangedException();
-        }
-    }
-
-    /**
-     * This forces 'normal' for backend login security level.
-     *
-     * @throws ConfigurationChangedException
-     */
-    protected function configureBackendLoginSecurity()
-    {
-        try {
-            $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('BE/loginSecurityLevel');
-            if ($currentLoginSecurityLevelValue !== 'normal') {
-                $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-                $this->throwConfigurationChangedException();
-            }
-        } catch (MissingArrayPathException $e) {
-            // If an exception is thrown, the value is not set in LocalConfiguration
-            $this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-            $this->throwConfigurationChangedException();
-        }
-    }
-
-    /**
-     * Frontend login security is set to normal in case other value is set.
-     *
-     * @throws ConfigurationChangedException
-     */
-    protected function configureFrontendLoginSecurity()
-    {
-        try {
-            $currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('FE/loginSecurityLevel');
-            if ($currentLoginSecurityLevelValue !== 'normal') {
-                $this->configurationManager->setLocalConfigurationValueByPath('FE/loginSecurityLevel', 'normal');
-                $this->throwConfigurationChangedException();
-            }
-        } catch (MissingArrayPathException $e) {
-            // no value set, just ignore
         }
     }
 

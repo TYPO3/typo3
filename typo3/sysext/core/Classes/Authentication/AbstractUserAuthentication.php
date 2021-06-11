@@ -1119,18 +1119,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Processes Login data submitted by a form or params depending on the
-     * passwordTransmissionStrategy
+     * Processes Login data submitted by a form or params
      *
      * @param array $loginData Login data array
-     * @param string $passwordTransmissionStrategy Alternative passwordTransmissionStrategy. Used when authentication services wants to override the default.
      * @return array
      * @internal
      */
-    public function processLoginData($loginData, $passwordTransmissionStrategy = '')
+    public function processLoginData($loginData)
     {
-        $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
-        $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
         $this->logger->debug('Login data before processing', $loginData);
         $subType = 'processLoginData' . $this->loginType;
         $authInfo = $this->getAuthInfoArray();
@@ -1138,7 +1134,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $processedLoginData = $loginData;
         /** @var AuthenticationService $serviceObject */
         foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObject) {
-            $serviceResult = $serviceObject->processLoginData($processedLoginData, $passwordTransmissionStrategy);
+            $serviceResult = $serviceObject->processLoginData($processedLoginData, 'normal');
             if (!empty($serviceResult)) {
                 $isLoginDataProcessed = true;
                 // If the service returns >=200 then no more processing is needed
