@@ -643,8 +643,6 @@ class PageLayoutController
             // Context may not be set, which happens if the page module is viewed by a user with no access to the
             // current page, or if the ID parameter is malformed. In this case we do not resolve any backend layout
             // or other page structure information and we do not render any "table output" for the module.
-            $backendLayout = $this->context->getBackendLayout();
-
             $configuration = $this->context->getDrawingConfiguration();
             $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
             $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));

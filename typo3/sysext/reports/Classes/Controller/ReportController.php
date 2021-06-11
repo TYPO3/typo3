@@ -193,8 +193,7 @@ class ReportController
 
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['title']),
-            true
+            $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['title'])
         );
 
         $this->view->assignMultiple([

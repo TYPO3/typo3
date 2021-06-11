@@ -237,7 +237,6 @@ class TypoScriptParser
     {
         while (isset($this->raw[$this->rawP])) {
             $line = ltrim($this->raw[$this->rawP]);
-            $lineP = $this->rawP;
             $this->rawP++;
             // Set comment flag?
             if (!$this->multiLineEnabled && strpos($line, '/*') === 0) {
