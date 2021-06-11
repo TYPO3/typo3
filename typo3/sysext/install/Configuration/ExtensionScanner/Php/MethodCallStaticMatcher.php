@@ -1079,4 +1079,11 @@ return [
             'Deprecation-94252-DeprecatedGeneralUtilitycompileSelectedGetVarsFromArray.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-94309-DeprecatedGeneralUtilitystdAuthCode.rst'
+        ],
+    ],
 ];

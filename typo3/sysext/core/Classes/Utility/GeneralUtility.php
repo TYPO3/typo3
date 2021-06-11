@@ -3081,9 +3081,15 @@ class GeneralUtility
      * @param string $fields List of fields from the record if that is given.
      * @param int $codeLength Length of returned authentication code.
      * @return string MD5 hash of 8 chars.
+     * @deprecated since v11, will be removed in v12.
      */
     public static function stdAuthCode($uid_or_record, $fields = '', $codeLength = 8)
     {
+        trigger_error(
+            'GeneralUtility::stdAuthCode() is deprecated and will be removed in v12.',
+            E_USER_DEPRECATED
+        );
+
         if (is_array($uid_or_record)) {
             $recCopy_temp = [];
             if ($fields) {
