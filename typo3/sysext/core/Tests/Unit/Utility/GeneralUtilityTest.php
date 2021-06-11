@@ -540,46 +540,6 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     ///////////////////////////////
-    // Tests concerning rmFromList
-    ///////////////////////////////
-    /**
-     * @test
-     * @param string $initialList
-     * @param string $listWithElementRemoved
-     * @dataProvider rmFromListRemovesElementsFromCommaSeparatedListDataProvider
-     */
-    public function rmFromListRemovesElementsFromCommaSeparatedList($initialList, $listWithElementRemoved)
-    {
-        self::assertSame($listWithElementRemoved, GeneralUtility::rmFromList('removeme', $initialList));
-    }
-
-    /**
-     * Data provider for rmFromListRemovesElementsFromCommaSeparatedList
-     *
-     * @return array
-     */
-    public function rmFromListRemovesElementsFromCommaSeparatedListDataProvider()
-    {
-        return [
-            'Element as second element of three' => ['one,removeme,two', 'one,two'],
-            'Element at beginning of list' => ['removeme,one,two', 'one,two'],
-            'Element at end of list' => ['one,two,removeme', 'one,two'],
-            'One item list' => ['removeme', ''],
-            'Element not contained in list' => ['one,two,three', 'one,two,three'],
-            'Empty element survives' => ['one,,three,,removeme', 'one,,three,'],
-            'Empty element survives at start' => [',removeme,three,removeme', ',three'],
-            'Empty element survives at end' => ['removeme,three,removeme,', 'three,'],
-            'Empty list' => ['', ''],
-            'List contains removeme multiple times' => ['removeme,notme,removeme,removeme', 'notme'],
-            'List contains removeme multiple times nothing else' => ['removeme,removeme,removeme', ''],
-            'List contains removeme multiple times nothing else 2x' => ['removeme,removeme', ''],
-            'List contains removeme multiple times nothing else 3x' => ['removeme,removeme,removeme', ''],
-            'List contains removeme multiple times nothing else 4x' => ['removeme,removeme,removeme,removeme', ''],
-            'List contains removeme multiple times nothing else 5x' => ['removeme,removeme,removeme,removeme,removeme', ''],
-        ];
-    }
-
-    ///////////////////////////////
     // Tests concerning expandList
     ///////////////////////////////
     /**

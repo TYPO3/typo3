@@ -1086,4 +1086,11 @@ return [
             'Deprecation-94309-DeprecatedGeneralUtilitystdAuthCode.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94311-DeprecatedGeneralUtilityrmFromList.rst'
+        ],
+    ],
 ];

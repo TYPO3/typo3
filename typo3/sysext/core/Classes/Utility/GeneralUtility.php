@@ -538,9 +538,15 @@ class GeneralUtility
      * @param string $element Element to remove
      * @param string $list Comma-separated list of items (string)
      * @return string New comma-separated list of items
+     * @deprecated since v11, will be removed in v12.
      */
     public static function rmFromList($element, $list)
     {
+        trigger_error(
+            'GeneralUtility::rmFromList() is deprecated and will be removed in v12.',
+            E_USER_DEPRECATED
+        );
+
         $items = explode(',', $list);
         foreach ($items as $k => $v) {
             if ($v == $element) {
