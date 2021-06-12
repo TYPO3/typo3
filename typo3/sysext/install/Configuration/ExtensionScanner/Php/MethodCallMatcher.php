@@ -4837,4 +4837,18 @@ return [
             'Deprecation-94377-ExtbaseObjectManager-getEmptyObject.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Request->setDispatched' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94394-ExtbaseRequestSetDispatchedAndIsDispatched.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Request->isDispatched' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94394-ExtbaseRequestSetDispatchedAndIsDispatched.rst'
+        ],
+    ],
 ];

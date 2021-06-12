@@ -446,6 +446,7 @@ abstract class ActionController implements ControllerInterface
     public function processRequest(RequestInterface $request): ResponseInterface
     {
         $this->request = $request;
+        // @deprecated since v11, will be removed in v12.
         $this->request->setDispatched(true);
         $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
         $this->uriBuilder->setRequest($request);

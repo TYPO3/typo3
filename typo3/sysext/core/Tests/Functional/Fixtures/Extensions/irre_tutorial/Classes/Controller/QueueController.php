@@ -17,6 +17,9 @@ namespace OliverHader\IrreTutorial\Controller;
 
 use OliverHader\IrreTutorial\Domain\Repository\ContentRepository;
 use OliverHader\IrreTutorial\Service\QueueService;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -46,7 +49,7 @@ class QueueController extends AbstractController
         $this->persistenceManager = $persistenceManager;
     }
 
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         $calls = [];
         $calls[] = ['Content', 'list'];
@@ -59,7 +62,7 @@ class QueueController extends AbstractController
         return new ForwardResponse('process');
     }
 
-    public function processAction()
+    public function processAction(): ResponseInterface
     {
         $call = $this->queueService->shift();
         if ($call === null) {
@@ -73,16 +76,21 @@ class QueueController extends AbstractController
 
         $arguments = $call[2] ?? null;
         if (is_array($arguments)) {
-            $response  = $response->withArguments($arguments);
+            $response = $response->withArguments($arguments);
         }
 
         return $response;
     }
 
-    public function finishAction()
+    public function finishAction(): ResponseInterface
     {
-        $this->request->setDispatched(true);
+        $typoScriptFrontendController = $GLOBALS['TSFE'];
+        $typoScriptFrontendController->setContentType('application/json');
+
         $value = $this->queueService->getValues();
         $this->view->assign('value', $value);
+        $body = new Stream('php://temp', 'rw');
+        $body->write($this->view->render());
+        return new Response($body);
     }
 }

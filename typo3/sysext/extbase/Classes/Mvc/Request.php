@@ -79,6 +79,7 @@ class Request implements RequestInterface
 
     /**
      * @var bool If this request has been changed and needs to be dispatched again
+     * @deprecated since v11, will be removed in v12.
      */
     protected $dispatched = false;
 
@@ -100,6 +101,7 @@ class Request implements RequestInterface
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
+     * @deprecated since v11, will be removed in v12.
      */
     public function setDispatched($flag)
     {
@@ -114,6 +116,7 @@ class Request implements RequestInterface
      * addressed yet.
      *
      * @return bool TRUE if this request has been dispatched successfully
+     * @deprecated since v11, will be removed in v12.
      */
     public function isDispatched()
     {
