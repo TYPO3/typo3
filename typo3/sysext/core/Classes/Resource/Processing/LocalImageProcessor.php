@@ -15,14 +15,18 @@
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Processes Local Images files
  */
-class LocalImageProcessor implements ProcessorInterface
+class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Returns TRUE if this processor can process the given task.
      *
@@ -72,15 +76,22 @@ class LocalImageProcessor implements ProcessorInterface
                 $task->setExecuted(true);
                 $imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($result['filePath']);
                 $task->getTargetFile()->setName($task->getTargetFileName());
-                $task->getTargetFile()->updateProperties(
-                    ['width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum()]
-                );
+                $task->getTargetFile()->updateProperties([
+                    'width' => $imageDimensions[0] ?? 0,
+                    'height' => $imageDimensions[1] ?? 0,
+                    'size' => filesize($result['filePath']),
+                    'checksum' => $task->getConfigurationChecksum()
+                ]);
                 $task->getTargetFile()->updateWithLocalFile($result['filePath']);
             } else {
                 // Seems we have no valid processing result
                 $task->setExecuted(false);
             }
         } catch (\Exception $e) {
+            // @todo: Swallowing all exceptions including PHP warnings here is a bad idea.
+            // @todo: This should be restricted to more specific exceptions - if at all.
+            // @todo: For now, we at least log the situation.
+            $this->logger->error(sprintf('Processing task of image file'), ['exception' => $e]);
             $task->setExecuted(false);
         }
     }

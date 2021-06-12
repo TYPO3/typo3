@@ -655,7 +655,7 @@ class BackendUtility
                         );
                     }
                     $foreignRow = self::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);
-                    if ($foreignRow[$foreignTableTypeField]) {
+                    if ($foreignRow[$foreignTableTypeField] ?? false) {
                         $typeNum = $foreignRow[$foreignTableTypeField];
                     }
                 }
@@ -2750,7 +2750,7 @@ class BackendUtility
                                 $changed = 1;
                             }
                         } else {
-                            if ((string)$settings[$key] !== (string)$CHANGED_SETTINGS[$key]) {
+                            if ((string)($settings[$key] ?? '') !== (string)($CHANGED_SETTINGS[$key] ?? '')) {
                                 $settings[$key] = $CHANGED_SETTINGS[$key];
                                 $changed = 1;
                             }

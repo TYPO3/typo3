@@ -134,7 +134,7 @@ class ShortcutRepository
         $groups = [];
 
         foreach ($this->shortcuts as $shortcut) {
-            $groups[$shortcut['group']] = $this->shortcutGroups[$shortcut['group']];
+            $groups[$shortcut['group']] = $this->shortcutGroups[$shortcut['group']] ?? '';
         }
 
         return array_unique($groups);

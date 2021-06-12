@@ -2587,7 +2587,7 @@ class DatabaseRecordList
                 }
                 $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
+                $evalRules = ($fieldConfig['eval'] ?? false) ?: '';
                 $searchConstraint = $expressionBuilder->andX(
                     $expressionBuilder->comparison(
                         'LOWER(' . $queryBuilder->castFieldToTextType($fieldName) . ')',

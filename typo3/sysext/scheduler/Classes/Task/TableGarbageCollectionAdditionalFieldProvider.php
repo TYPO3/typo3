@@ -109,21 +109,21 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $options = [];
         // Add an empty option on top if an existing task is configured
         // with a table that can not be found in configuration anymore
-        if (!array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
+        if ($task && !array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
             $options[] = '<option value="" selected="selected"></option>';
         }
         foreach ($tableConfiguration as $tableName => $configuration) {
             if ($currentSchedulerModuleAction->equals(Action::ADD) && empty($options)) {
                 // Select first table by default if adding a new task
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
-            } elseif ($task->table === $tableName) {
+            } elseif ($task && $task->table === $tableName) {
                 // Select currently selected table
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
             } else {
                 $options[] = '<option value="' . $tableName . '">' . $tableName . '</option>';
             }
         }
-        $disabled = $task->allTables === true ? ' disabled="disabled"' : '';
+        $disabled = ($task && $task->allTables === true) ? ' disabled="disabled"' : '';
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_table]';
         $fieldId = 'task_tableGarbageCollection_table';
         $fieldHtml = [];
@@ -167,7 +167,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
                 }
             }
         }
-        if ($task->allTables === true) {
+        if ($task && $task->allTables === true) {
             $disabled = ' disabled="disabled"';
         }
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';

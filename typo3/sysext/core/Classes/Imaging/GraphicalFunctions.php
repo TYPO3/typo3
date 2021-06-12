@@ -583,15 +583,15 @@ class GraphicalFunctions
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
-        $theText = $conf['text'];
-        if ($conf['imgMap'] && is_array($conf['imgMap.'])) {
+        $theText = $conf['text'] ?? '';
+        if (($conf['imgMap'] ?? false) && is_array($conf['imgMap.'])) {
             $this->addToMap($this->calcTextCordsForMap($conf['BBOX'][2], $txtPos, $conf['imgMap.']), $conf['imgMap.']);
         }
-        if (!$conf['hideButCreateMap']) {
+        if (!($conf['hideButCreateMap'] ?? false)) {
             // Font Color:
             $cols = $this->convertColor($conf['fontColor']);
             // NiceText is calculated
-            if (!$conf['niceText']) {
+            if (!($conf['niceText'] ?? false)) {
                 $Fcolor = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
                 // antiAliasing is setup:
                 $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
@@ -600,7 +600,7 @@ class GraphicalFunctions
                     if ($spacing || $wordSpacing) {
                         $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
                     } else {
-                        $this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf);
+                        $this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf);
                     }
                 }
             } else {
@@ -613,7 +613,7 @@ class GraphicalFunctions
                 $fileColor = $tmpStr . '_colorNT.' . $this->gifExtension;
                 $fileMask = $tmpStr . '_maskNT.' . $this->gifExtension;
                 // Scalefactor
-                $sF = MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
+                $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
                 $newW = (int)ceil($sF * imagesx($im));
                 $newH = (int)ceil($sF * imagesy($im));
                 // Make mask
@@ -625,7 +625,7 @@ class GraphicalFunctions
                 if ($spacing || $wordSpacing) {
                     $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
                 } else {
-                    $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf, $sF);
+                    $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
                 }
                 $this->ImageWrite($maskImg, $fileMask);
                 imagedestroy($maskImg);
@@ -687,7 +687,8 @@ class GraphicalFunctions
         $result[2] = $BB[0];
         $result[3] = $BB[1];
         $w = $workArea[2];
-        switch ($conf['align']) {
+        $alignment = $conf['align'] ?? '';
+        switch ($alignment) {
             case 'right':
 
             case 'center':
@@ -703,7 +704,7 @@ class GraphicalFunctions
                 $result[1] = ceil($len2 * $factor + (1 - $factor) * $len1);
                 break;
         }
-        switch ($conf['align']) {
+        switch ($alignment) {
             case 'right':
                 break;
             case 'center':
@@ -733,7 +734,7 @@ class GraphicalFunctions
         $sF = $this->getTextScalFactor($conf);
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf, $sF);
         $theText = $conf['text'];
-        $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'], $sF);
+        $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, ($conf['splitRendering.'] ?? []), $sF);
         $theBBoxInfo = $charInf;
         if ($conf['angle']) {
             $xArr = [$charInf[0], $charInf[2], $charInf[4], $charInf[6]];
@@ -993,7 +994,7 @@ class GraphicalFunctions
             // Initialize:
             $colorIndex = $color;
             // Set custom color if any (only when niceText is off):
-            if ($strCfg['color'] && $sF == 1) {
+            if (($strCfg['color'] ?? false) && $sF == 1) {
                 $cols = $this->convertColor($strCfg['color']);
                 $colorIndex = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
                 $colorIndex = $color >= 0 ? $colorIndex : -$colorIndex;
@@ -1009,8 +1010,8 @@ class GraphicalFunctions
                 imagettftext($im, $this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
                 // Calculate offset to apply:
                 $wordInf = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
-                $x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
-                $y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
+                $x += $wordInf[2] - $wordInf[0] + (int)($splitRendering['compX'] ?? 0) + (int)($strCfg['xSpaceAfter'] ?? 0);
+                $y += $wordInf[5] - $wordInf[7] - (int)($splitRendering['compY'] ?? 0) - (int)($strCfg['ySpaceAfter'] ?? 0);
             } else {
                 debug('cannot read file: ' . $fontFile, self::class . '::ImageTTFTextWrapper()');
             }
@@ -1166,8 +1167,8 @@ class GraphicalFunctions
      */
     public function calcWordSpacing($conf, $scaleFactor = 1)
     {
-        $spacing = (int)$conf['spacing'];
-        $wordSpacing = (int)$conf['wordSpacing'];
+        $spacing = (int)($conf['spacing'] ?? 0);
+        $wordSpacing = (int)($conf['wordSpacing'] ?? 0);
         $wordSpacing = $wordSpacing ?: $spacing * 2;
         $spacing *= $scaleFactor;
         $wordSpacing *= $scaleFactor;
@@ -1183,11 +1184,11 @@ class GraphicalFunctions
      */
     public function getTextScalFactor($conf)
     {
-        if (!$conf['niceText']) {
+        if (!($conf['niceText'] ?? false)) {
             $sF = 1;
         } else {
             // NICETEXT::
-            $sF = MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
+            $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
         }
         return $sF;
     }
@@ -1996,7 +1997,7 @@ class GraphicalFunctions
             }
         }
         // ... and possibly recalculating the value
-        if (trim($cParts[1])) {
+        if (trim($cParts[1] ?? '')) {
             $cParts[1] = trim($cParts[1]);
             if ($cParts[1][0] === '*') {
                 $val = (float)substr($cParts[1], 1);
@@ -2033,7 +2034,7 @@ class GraphicalFunctions
         $result[3] = $BB[1];
         $w = $workArea[2];
         $h = $workArea[3];
-        $align = explode(',', $conf['align']);
+        $align = explode(',', $conf['align'] ?? ',');
         $align[0] = strtolower(substr(trim($align[0]), 0, 1));
         $align[1] = strtolower(substr(trim($align[1]), 0, 1));
         switch ($align[0]) {
@@ -2138,7 +2139,7 @@ class GraphicalFunctions
         $info[1] = $data[1];
         $frame = $this->addFrameSelection ? (int)$frame : 0;
         if (!$params) {
-            $params = $this->cmds[$newExt];
+            $params = $this->cmds[$newExt] ?? '';
         }
         // Cropscaling:
         if ($data['crs']) {

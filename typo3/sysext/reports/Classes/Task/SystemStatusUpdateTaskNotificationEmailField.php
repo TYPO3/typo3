@@ -63,7 +63,8 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         // build html for additional email field
         $fieldName = $this->getFullFieldName('notificationEmail');
         $fieldId = 'task_' . $fieldName;
-        $fieldHtml = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" >' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
+        $fieldContent = $taskInfo[$fieldName] ?? '';
+        $fieldHtml = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" >' . htmlspecialchars($fieldContent) . '</textarea>';
 
         $additionalFields = [];
         $additionalFields[$fieldId] = [
@@ -76,7 +77,8 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         // build html for additional mail all checkbox field
         $fieldName = $this->getFullFieldName('notificationAll');
         $fieldId = 'task_' . $fieldName;
-        $fieldHtml = '<input type="checkbox" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" value="1"' . ($taskInfo[$fieldName] ? ' checked="checked"' : '') . '>';
+        $fieldChecked = (bool)($taskInfo[$fieldName] ?? false);
+        $fieldHtml = '<input type="checkbox" name="tx_scheduler[' . $fieldName . ']" id="' . $fieldId . '" value="1"' . ($fieldChecked ? ' checked="checked"' : '') . '>';
 
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,

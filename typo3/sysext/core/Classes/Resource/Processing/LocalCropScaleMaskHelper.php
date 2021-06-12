@@ -68,7 +68,7 @@ class LocalCropScaleMaskHelper
         $gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
 
         $configuration = $targetFile->getProcessingConfiguration();
-        $configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters($configuration['additionalParameters'], $configuration);
+        $configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters((string)($configuration['additionalParameters'] ?? ''), $configuration);
 
         if (empty($configuration['fileExtension'])) {
             $configuration['fileExtension'] = $task->getTargetFileExtension();
@@ -113,21 +113,21 @@ class LocalCropScaleMaskHelper
         }
 
         // Normal situation (no masking)
-        if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
+        if (!(is_array($configuration['maskImages'] ?? null) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
             $result = $gifBuilder->imageMagickConvert(
                 $originalFileName,
                 $configuration['fileExtension'],
-                $configuration['width'],
-                $configuration['height'],
+                $configuration['width'] ?? '',
+                $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
-                $configuration['frame'],
+                $configuration['frame'] ?? '',
                 $options
             );
         } else {
             $targetFileName = $this->getFilenameForImageCropScaleMask($task);
             $temporaryFileName = Environment::getPublicPath() . '/typo3temp/' . $targetFileName;
-            $maskImage = $configuration['maskImages']['maskImage'];
+            $maskImage = $configuration['maskImages']['maskImage'] ?? null;
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof FileInterface && $maskBackgroundImage instanceof FileInterface) {
                 $temporaryExtension = 'png';
@@ -138,10 +138,10 @@ class LocalCropScaleMaskHelper
                 $tempFileInfo = $gifBuilder->imageMagickConvert(
                     $originalFileName,
                     $temporaryExtension,
-                    $configuration['width'],
-                    $configuration['height'],
+                    $configuration['width'] ?? '',
+                    $configuration['height'] ?? '',
                     $configuration['additionalParameters'],
-                    $configuration['frame'],
+                    $configuration['frame'] ?? '',
                     $options
                 );
                 if (is_array($tempFileInfo)) {
@@ -219,24 +219,24 @@ class LocalCropScaleMaskHelper
     {
         $configuration = $processedFile->getProcessingConfiguration();
 
-        if ($configuration['useSample']) {
+        if ($configuration['useSample'] ?? false) {
             $gifBuilder->scalecmd = '-sample';
         }
         $options = [];
-        if ($configuration['maxWidth']) {
+        if ($configuration['maxWidth'] ?? false) {
             $options['maxW'] = $configuration['maxWidth'];
         }
-        if ($configuration['maxHeight']) {
+        if ($configuration['maxHeight'] ?? false) {
             $options['maxH'] = $configuration['maxHeight'];
         }
-        if ($configuration['minWidth']) {
+        if ($configuration['minWidth'] ?? false) {
             $options['minW'] = $configuration['minWidth'];
         }
-        if ($configuration['minHeight']) {
+        if ($configuration['minHeight'] ?? false) {
             $options['minH'] = $configuration['minHeight'];
         }
 
-        $options['noScale'] = $configuration['noScale'];
+        $options['noScale'] = $configuration['noScale'] ?? null;
 
         return $options;
     }
@@ -268,7 +268,7 @@ class LocalCropScaleMaskHelper
      * @param array $configuration The TypoScript configuration of [IMAGE].file
      * @return string
      */
-    protected function modifyImageMagickStripProfileParameters($parameters, array $configuration)
+    protected function modifyImageMagickStripProfileParameters(string $parameters, array $configuration)
     {
         // Strips profile information of image to save some space:
         if (isset($configuration['stripProfile'])) {

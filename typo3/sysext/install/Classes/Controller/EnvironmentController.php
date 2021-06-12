@@ -355,7 +355,7 @@ class EnvironmentController extends AbstractController
         $textColor = imagecolorallocate($image, 233, 14, 91);
         @imagettftext(
             $image,
-            20 / 96.0 * 72, // As in  compensateFontSizeBasedOnFreetypeDpi
+            20 / 96.0 * 72, // As in compensateFontSizeBasedOnFreetypeDpi
             0,
             10,
             20,
@@ -364,16 +364,19 @@ class EnvironmentController extends AbstractController
             'Testing true type'
         );
         $outputFile = Environment::getPublicPath() . '/typo3temp/assets/images/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
-        imagegif($image, $outputFile);
+        @imagegif($image, $outputFile);
         $fileExists = file_exists($outputFile);
         if ($fileExists) {
             GeneralUtility::fixPermissions($outputFile);
         }
-        return $this->getImageTestResponse([
+        $result = [
             'fileExists' => $fileExists,
-            'outputFile' => $outputFile,
             'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Font.gif',
-        ]);
+        ];
+        if ($fileExists) {
+            $result['outputFile'] = $outputFile;
+        }
+        return $this->getImageTestResponse($result);
     }
 
     /**
@@ -991,7 +994,7 @@ class EnvironmentController extends AbstractController
     {
         $command = CommandUtility::imageMagickCommand('identify', '-version');
         CommandUtility::exec($command, $result);
-        $string = $result[0];
+        $string = $result[0] ?? '';
         $version = '';
         if (!empty($string)) {
             [, $version] = explode('Magick', $string);

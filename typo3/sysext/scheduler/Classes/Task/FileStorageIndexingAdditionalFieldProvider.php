@@ -62,7 +62,7 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
             $selected = '';
             if ($task !== null && $task->storageUid === $storage->getUid()) {
                 $selected = ' selected="selected"';
-            } elseif ((int)$taskInfo['scheduler_fileStorageIndexing_storage'] === $storage->getUid()) {
+            } elseif ((int)($taskInfo['scheduler_fileStorageIndexing_storage'] ?? 0) === $storage->getUid()) {
                 $selected = ' selected="selected"';
             }
             $options[] = '<option value="' . $storage->getUid() . '" ' . $selected . ' >' . $storage->getName() . '</option>';

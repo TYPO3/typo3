@@ -631,7 +631,7 @@ class SchedulerModuleController
         $table = [];
 
         // Disable checkbox
-        $this->view->assign('task_disable', ($taskInfo['disable'] ? ' checked="checked"' : ''));
+        $this->view->assign('task_disable', (($taskInfo['disable'] ?? false) ? ' checked="checked"' : ''));
         $this->view->assign('task_disable_label', 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable');
 
         // Task class selector
@@ -684,7 +684,7 @@ class SchedulerModuleController
         $this->view->assign('multiple', ($taskInfo['multiple'] ? 'checked="checked"' : ''));
 
         // Description
-        $this->view->assign('description', $taskInfo['description']);
+        $this->view->assign('description', $taskInfo['description'] ?? '');
 
         // Display additional fields
         $additionalFieldList = [];
@@ -701,9 +701,9 @@ class SchedulerModuleController
                     $field = [];
                     $field['htmlClassName'] = $htmlClassName;
                     $field['code'] = $fieldInfo['code'];
-                    $field['cshKey'] = $fieldInfo['cshKey'];
-                    $field['cshLabel'] = $fieldInfo['cshLabel'];
-                    $field['langLabel'] = $fieldInfo['label'];
+                    $field['cshKey'] = $fieldInfo['cshKey'] ?? '';
+                    $field['cshLabel'] = $fieldInfo['cshLabel'] ?? '';
+                    $field['langLabel'] = $fieldInfo['label'] ?? '';
                     $field['fieldID'] = $fieldID;
                     $field['additionalFieldsStyle'] = $additionalFieldsStyle;
                     $field['browseButton'] = $this->getBrowseButton($fieldID, $fieldInfo);

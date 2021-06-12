@@ -1388,13 +1388,13 @@ class GeneralUtility
                 $tagName = (string)$options['parentTagMap'][$stackData['parentTagName']];
             } elseif (MathUtility::canBeInterpretedAsInteger($tagName)) {
                 // If integer...;
-                if ($options['useNindex']) {
+                if ($options['useNindex'] ?? false) {
                     // If numeric key, prefix "n"
                     $tagName = 'n' . $tagName;
                 } else {
                     // Use special tag for num. keys:
                     $attr .= ' index="' . $tagName . '"';
-                    $tagName = $options['useIndexTagForNum'] ?: 'numIndex';
+                    $tagName = ($options['useIndexTagForNum'] ?? false) ?: 'numIndex';
                 }
             } elseif (!empty($options['useIndexTagForAssoc'])) {
                 // Use tag for all associative keys:

@@ -59,14 +59,14 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
         $options = [];
         // Add an empty option on top if an existing task is configured
         // with a table that can not be found in configuration anymore
-        if (!array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
+        if ($task && !array_key_exists($task->table, $tableConfiguration) && $currentSchedulerModuleAction->equals(Action::EDIT)) {
             $options[] = '<option value="" selected="selected"></option>';
         }
         foreach ($tableConfiguration as $tableName => $configuration) {
             if ($currentSchedulerModuleAction->equals(Action::ADD) && empty($options)) {
                 // Select first table by default if adding a new task
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
-            } elseif ($task->table === $tableName) {
+            } elseif ($task && $task->table === $tableName) {
                 // Select currently selected table
                 $options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
             } else {
