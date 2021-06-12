@@ -21,8 +21,7 @@ are available in the plugin's FlexForm as shown in the :ref:`screenshots`.
 Using the plugin
 ^^^^^^^^^^^^^^^^
 
-Just as with the old login box, the felogin plugin is available
-through the Content Wizard as "Login Form":
+The felogin plugin is available through the Content Wizard as "Login Form":
 
 
 .. figure:: ../Images/ContentElementWizard.png
@@ -33,24 +32,20 @@ through the Content Wizard as "Login Form":
 
 .. _storage-folder:
 
-Choosing a Storage Folder for Website Users
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Choosing a User Storage Page for Website Users
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order for Website Users to be able to log in, the felogin plugin
-must know where the records are stored. There are three possibilities
+must know where the records are stored. There are two possibilities
 for setting this storage folder:
 
-- Go to the page where the felogin plugin exists and edit the page
-  properties, setting the field for the "General Record Storage Page" to
-  your storage folder.
-
-- Or edit the felogin plugin, setting the field for the "User Storage
-  Page" to your storage folder.
+- Edit the felogin plugin, setting the field for the "User Storage
+  Page" to your storage page.
 
 - Or set the UID of you storage folder through TypoScript in the setup
   field of your TypoScript Template:
 
 ::
 
-   plugin.tx_felogin_pi1.storagePid = xxx
+   plugin.tx_felogin_login.settings.pages = xxx
 

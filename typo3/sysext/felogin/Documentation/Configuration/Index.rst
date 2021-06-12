@@ -12,166 +12,21 @@ All configuration options are available in the FlexForm or TypoScript,
 with the FlexForm settings taking precedence.
 
 
-.. _plugin-tx-felogin-pi1:
+.. _plugin-tx-felogin-login:
 
-plugin.tx\_felogin\_pi1
-=======================
-
-.. _storagepid:
-
-storagePid
-----------
-
-.. container:: table-row
-
-   Property
-         storagePid
-
-   Data type
-         string
-
-   Default
-         {$styles.content.loginform.pid}
-
-   Description
-         Define the Storage Folder with the Website User Records, using a comma
-         separated list or single value
+plugin.tx\_felogin\_login.settings
+==================================
 
 
+.. _showforgotpassword:
 
-.. _recursive:
-
-recursive
----------
+showForgotPassword
+------------------
 
 .. container:: table-row
 
    Property
-         recursive
-
-   Data type
-         bool
-
-   Description
-         If set, also any subfolders of the storagePid will be used
-
-
-
-.. _templatefile:
-
-templateFile
-------------
-
-.. container:: table-row
-
-   Property
-         templateFile
-
-   Data type
-         string
-
-   Default
-         EXT:felogin/Resources/Private/Templates/FrontendLogin.html
-
-   Description
-         The Template File
-
-
-
-.. _feloginbaseurl:
-
-feloginBaseURL
---------------
-
-.. container:: table-row
-
-   Property
-         feloginBaseURL
-
-   Data type
-         string
-
-   Description
-         Base url if something other than the system base URL is needed
-
-
-
-.. _wrapcontentinbaseclass:
-
-wrapContentInBaseClass
-----------------------
-
-.. container:: table-row
-
-   Property
-         wrapContentInBaseClass
-
-   Data type
-         bool
-
-   Default
-         true
-
-   Description
-         If set, plugin is wrapped by Standard Base Class-Wrap
-
-
-
-.. _linkconfig:
-
-linkConfig
-----------
-
-.. container:: table-row
-
-   Property
-         linkConfig
-
-   Data type
-         array
-
-   Description
-         Typolink Configuration for the generated Links
-
-
-
-.. _preservegetvars:
-
-preserveGETvars
----------------
-
-.. container:: table-row
-
-   Property
-         preserveGETvars
-
-   Data type
-         String
-
-   Description
-         When using login plugin on a page with other plugins you might want to
-         have your GET-params preserved. You can define them here. Possible
-         settings:
-
-         all - takes all GET-vars found
-
-         comma-separated list - takes defined vars
-
-         Example::
-
-            preserveGETvars = tx_ttnews[tt_news],tx_myext[id],...
-
-
-
-.. _showforgotpasswordlink:
-
-showForgotPasswordLink
-----------------------
-
-.. container:: table-row
-
-   Property
-         showForgotPasswordLink
+         showForgotPassword
 
    Data type
          bool
@@ -207,48 +62,6 @@ showPermaLogin
 
 
 
-.. _forgetlinkhashvalidtime:
-
-forgetLinkHashValidTime
------------------------
-
-.. container:: table-row
-
-   Property
-         forgetLinkHashValidTime
-
-   Data type
-         integer
-
-   Default
-         12
-
-   Description
-         How many hours the link for forget password is valid
-
-
-
-.. _newpasswordminlength:
-
-newPasswordMinLength
---------------------
-
-.. container:: table-row
-
-   Property
-         newPasswordMinLength
-
-   Data type
-         integer
-
-   Default
-         6
-
-   Description
-         Minimum length of the new password a user sets
-
-
-
 .. _showlogoutformafterlogin:
 
 showLogoutFormAfterLogin
@@ -273,410 +86,47 @@ showLogoutFormAfterLogin
 
 
 
-.. _welcomeheader-stdwrap:
+.. _pages:
 
-welcomeHeader\_stdWrap
-----------------------
+pages
+-----
 
 .. container:: table-row
 
    Property
-         welcomeHeader\_stdWrap
+         pages
 
    Data type
-         array
+         string
 
    Default
-         wrap = <h3>\|</h3>
+         {$styles.content.loginform.pid}
 
    Description
-         stdWrap for Welcome Header
+         Define the User Storage Page with the Website User Records, using a
+         comma separated list or single value
 
 
 
-.. _welcomemessage-stdwrap:
+.. _recursive:
 
-welcomeMessage\_stdWrap
------------------------
+recursive
+---------
 
 .. container:: table-row
 
    Property
-         welcomeMessage\_stdWrap
+         recursive
 
    Data type
-         array
+         int
 
    Default
-         wrap = <div>\|</div>
+         {$styles.content.loginform.recursive}
 
    Description
-         stdWrap for Welcome Message
-
-
-
-.. _successheader-stdwrap:
-
-successHeader\_stdWrap
-----------------------
-
-.. container:: table-row
-
-   Property
-         successHeader\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <h3>\|</h3>
-
-   Description
-         stdWrap for Login SuccessHeader
-
-
-
-.. _successmessage-stdwrap:
-
-successMessage\_stdWrap
------------------------
-
-.. container:: table-row
-
-   Property
-         successMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for Login Success Message
-
-
-
-.. _logoutheader-stdwrap:
-
-logoutHeader\_stdWrap
----------------------
-
-.. container:: table-row
-
-   Property
-         logoutHeader\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <h3>\|</h3>
-
-   Description
-         stdWrap for Logout Header
-
-
-
-.. _logoutmessage-stdwrap:
-
-logoutMessage\_stdWrap
-----------------------
-
-.. container:: table-row
-
-   Property
-         logoutMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for Logout Message
-
-
-
-.. _errorheader-stdwrap:
-
-errorHeader\_stdWrap
---------------------
-
-.. container:: table-row
-
-   Property
-         errorHeader\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <h3>\|</h3>
-
-   Description
-         stdWrap for Error Header
-
-
-
-.. _errormessage-stdwrap:
-
-errorMessage\_stdWrap
----------------------
-
-.. container:: table-row
-
-   Property
-         errorMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for Error Message
-
-
-
-.. _forgotheader-stdwrap:
-
-forgotHeader\_stdWrap
----------------------
-
-.. container:: table-row
-
-   Property
-         forgotHeader\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <h3>\|</h3>
-
-   Description
-         stdWrap for Forgot Header
-
-
-
-.. _forgotmessage-stdwrap:
-
-forgotMessage\_stdWrap
-----------------------
-
-.. container:: table-row
-
-   Property
-         forgotMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for Forgot Message
-
-
-
-.. _forgoterrormessage-stdwrap:
-
-forgotErrorMessage\_stdWrap
----------------------------
-
-.. container:: table-row
-
-   Property
-         forgotErrorMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for error message in forgot password form
-
-
-
-.. _forgotresetmessageemailsentmessage-stdwrap:
-
-forgotResetMessageEmailSentMessage\_stdWrap
--------------------------------------------
-
-.. container:: table-row
-
-   Property
-         forgotResetMessageEmailSentMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for message that password reset mail was sent
-
-
-
-.. _changepasswordnotvalidmessage-stdwrap:
-
-changePasswordNotValidMessage\_stdWrap
---------------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordNotValidMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for message that changed password was not valid
-
-
-
-.. _changepasswordtooshortmessage-stdwrap:
-
-changePasswordTooShortMessage\_stdWrap
---------------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordTooShortMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for message that new password was too short
-
-
-
-.. _changepasswordnotequalmessage-stdwrap:
-
-changePasswordNotEqualMessage\_stdWrap
---------------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordNotEqualMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for message that new passwords were not equal
-
-
-
-.. _changepasswordheader-stdwrap:
-
-changePasswordHeader\_stdWrap
------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordHeader\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <h3>\|</h3>
-
-   Description
-         stdWrap for Change Password Header
-
-
-
-.. _changepasswordmessage-stdwrap:
-
-changePasswordMessage\_stdWrap
-------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for Change Password Message
-
-
-
-.. _changepassworddonemessage-stdwrap:
-
-changePasswordDoneMessage\_stdWrap
-----------------------------------
-
-.. container:: table-row
-
-   Property
-         changePasswordDoneMessage\_stdWrap
-
-   Data type
-         array
-
-   Default
-         wrap = <div>\|</div>
-
-   Description
-         stdWrap for message that password was changed
-
-
-
-.. _userfields:
-
-userfields
-----------
-
-.. container:: table-row
-
-   Property
-         userfields
-
-   Data type
-         array
-
-   Description
-         Array of fields from the fe\_users table. Each field can have its own
-         stdWrap configuration. These fields can be used as markers in the
-         template (e.g. ###FEUSER\_USERNAME###)
-
-         Example:
-
-         .. code-block:: typoscript
-
-            username {
-                htmlSpecialChars = 1
-                wrap = <strong>\|</strong>
-            }
+         If set, also any subfolders of the User Storage Page will be used
+         at configured recursive levels
 
 
 
@@ -693,11 +143,14 @@ redirectMode
    Data type
          string
 
+   Default
+         {$styles.content.loginform.redirectMode}
+
    Description
          Comma separated list of redirect modes. Possible values:
 
-         groupLogin, userLogin, login, getpost, referer, refererDomains,
-         loginError, logout
+         ``groupLogin``, ``userLogin``, ``login``, ``getpost``, ``referer``,
+         ``refererDomains``, ``loginError``, ``logout``
 
          See section on redirect modes for details.
 
@@ -715,6 +168,9 @@ redirectFirstMethod
 
    Data type
          bool
+
+   Default
+         {$styles.content.loginform.redirectFirstMethod}
 
    Description
          If set the first method from redirectMode which is possible will be
@@ -735,6 +191,9 @@ redirectPageLogin
    Data type
          integer
 
+   Default
+         {$styles.content.loginform.redirectPageLogin}
+
    Description
          Page id to redirect to after Login
 
@@ -752,6 +211,9 @@ redirectPageLoginError
 
    Data type
          integer
+
+   Default
+         {$styles.content.loginform.redirectPageLoginError}
 
    Description
          Page id to redirect to after Login Error
@@ -771,6 +233,9 @@ redirectPageLogout
    Data type
          integer
 
+   Default
+         {$styles.content.loginform.redirectPageLogout}
+
    Description
          Page id to redirect to after Logout
 
@@ -789,8 +254,32 @@ redirectDisable
    Data type
          bool
 
+   Default
+         {$styles.content.loginform.redirectDisable}
+
    Description
          If set redirecting is disabled
+
+
+
+.. _dateformat:
+
+dateFormat
+----------
+
+.. container:: table-row
+
+   Property
+         dateFormat
+
+   Data type
+         date-conf
+
+   Default
+         Y-m-d H:i
+
+   Description
+         Format for the link is valid until message (forget password email)
 
 
 
@@ -830,21 +319,125 @@ email\_fromName
 
 
 
-.. _replyto:
-
-replyTo
--------
+email.templateName
+------------------
 
 .. container:: table-row
 
    Property
-         replyTo
+         email.templateName
 
    Data type
          string
 
+   Default
+         {$styles.content.loginform.email.templateName}
+
    Description
-         Reply-to address used in the change password emails
+         Template name for emails. Plaintext emails get the .txt file extension.
+
+
+
+email.layoutRootPaths
+---------------------
+
+.. container:: table-row
+
+   Property
+         email.layoutRootPaths
+
+   Data type
+         array
+
+   Default
+         {$styles.content.loginform.email.layoutRootPath}
+
+   Description
+         Path to layout directory used for emails
+
+
+
+email.templateRootPaths
+-----------------------
+
+.. container:: table-row
+
+   Property
+         email.templateRootPaths
+
+   Data type
+         array
+
+   Default
+         {$styles.content.loginform.email.templateRootPaths}
+
+   Description
+         Path to template directory used for emails
+
+
+
+email.partialRootPaths
+----------------------
+
+.. container:: table-row
+
+   Property
+         email.partialRootPaths
+
+   Data type
+         array
+
+   Default
+         {$styles.content.loginform.email.partialRootPaths}
+
+   Description
+         Path to partial directory used for emails
+
+
+
+exposeNonexistentUserInForgotPasswordDialog
+-------------------------------------------
+
+.. container:: table-row
+
+   Property
+         exposeNonexistentUserInForgotPasswordDialog
+
+   Data type
+         bool
+
+   Default
+         {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
+
+   Description
+         If set and the user account cannot be found in the forgot password
+         dialogue, an error message will be shown that the account could not be
+         found.
+
+         .. warning::
+
+            Enabling this will disclose information about whether an
+            email address is actually used for a frontend user account! Visitors
+            can find out if a user is known as frontend user.
+
+
+
+forgotLinkHashValidTime
+-----------------------
+
+.. container:: table-row
+
+   Property
+         forgotLinkHashValidTime
+
+   Data type
+         integer
+
+   Default
+         {$styles.content.loginform.forgotLinkHashValidTime}
+
+   Description
+         Time in hours how long the link for forget password is valid
 
 
 
@@ -867,171 +460,16 @@ domains
 
 
 
-.. _dateformat:
-
-dateFormat
-----------
+passwordValidators
+------------------
 
 .. container:: table-row
 
    Property
-         dateFormat
-
-   Data type
-         date-conf
-
-   Default
-         Y-m-d H:i
-
-   Description
-         Format for the link is valid until message (forget password email)
-
-
-
-.. _linkprefix:
-
-linkPrefix
-----------
-
-.. container:: table-row
-
-   Property
-         linkPrefix
-
-   Data type
-         string
-
-   Description
-         Prefix for the link sent in the forgot password email
-
-
-
-.. _exposenonexistentuserinforgotpassworddialog:
-
-exposeNonexistentUserInForgotPasswordDialog
--------------------------------------------
-
-.. container:: table-row
-
-   Property
-         exposeNonexistentUserInForgotPasswordDialog
-
-   Data type
-         bool
-
-   Default
-         0
-
-   Description
-         If set and the user account cannot be found in the forgot password
-         dialogue, an error message will be shown that the account could not be
-         found.
-
-         .. warning::
-
-            Enabling this will disclose information about whether an
-            email address is actually used for a frontend user account! Visitors
-            can find out if a user is known as frontend user.
-
-
-
-.. _css-default-style:
-
-\_CSS\_DEFAULT\_STYLE
----------------------
-
-.. container:: table-row
-
-   Property
-         \_CSS\_DEFAULT\_STYLE
-
-   Data type
-         string
-
-   Description
-         CSS included in the page containing the login form
-
-         Example:
-
-         .. code-block:: typoscript
-
-            .tx-felogin-pi1 label {
-                display: block;
-            }
-
-
-.. _default-pi-vars:
-
-\_DEFAULT\_PI\_VARS
--------------------
-
-.. container:: table-row
-
-   Property
-         \_DEFAULT\_PI\_VARS
+         passwordValidators
 
    Data type
          array
 
    Description
-         Default values for variables sent from the forms.
-
-
-.. _local-lang:
-
-\_LOCAL\_LANG
--------------
-
-.. container:: table-row
-
-   Property
-         \_LOCAL\_LANG (+ "." + "default" or language code)
-
-   Data type
-         array
-
-   Description
-         Localized labels that can be overridden per TypoScript.
-
-         =========================================== =================================
-         Label                                       Usage
-         =========================================== =================================
-         ll\_welcome\_header                         Status header
-         ll\_welcome\_message                        Status message
-         ll\_logout\_header                          Status header
-         ll\_logout\_message                         Status message
-         ll\_error\_header                           Status header
-         ll\_error\_message                          Status message
-         ll\_success\_header                         Status header
-         ll\_success\_message                        Status message
-         ll\_status\_header                          Status header
-         ll\_status\_message                         Status message
-         cookie\_warning                             Warning when no cookie can be set
-         username                                    Form field label
-         password                                    Form field label
-         login                                       Legend, form field label
-         permalogin                                  Form field label
-         logout                                      Legend, submit button
-         send\_password                              Submit button
-         reset\_password                             Legend, submit button
-         ll\_change\_password\_header                Status header
-         ll\_change\_password\_message               Status message
-         ll\_change\_password\_nolinkprefix\_message Error message
-         ll\_change\_password\_notvalid\_message     Status message
-         ll\_change\_password\_notequal\_message     Status message
-         ll\_change\_password\_tooshort\_message     Status message
-         ll\_change\_password\_done\_message         Status message
-         change\_password                            Legend
-         newpassword\_label1                         Form field label
-         newpassword\_label2                         Form field label
-         your\_email                                 Form field label
-         ll\_forgot\_header                          Status header, link text
-         ll\_forgot\_validate\_reset\_password       Email body
-         ll\_forgot\_message\_emailSent              Status message
-         ll\_forgot\_reset\_message                  Status message
-         ll\_forgot\_reset\_message\_emailSent       Status message
-         ll\_forgot\_reset\_message\_error           Status message
-         ll\_forgot\_header\_backToLogin             Text of back link to loginform
-         ll\_enter\_your\_data                       Form field label
-         oLabel\_header\_welcome                     Legend
-         =========================================== =================================
+         Array of validators to use for the new user password.

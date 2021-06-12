@@ -41,7 +41,7 @@ original page:
 
 ::
 
-   plugin.tx_felogin_pi1.redirectMode = referer
+   plugin.tx_felogin_login.settings.redirectMode = referer
 
 (This option can also be set in the flexform configuration of the
 felogin content element)
@@ -91,8 +91,7 @@ redirect options must be set in the TypoScript configuration. Any
 output of this plugin can be hidden with CSS. Redirect options will be
 executed by this invisible felogin. If there are two instances of
 felogin present on a page (one as a content element, the other via
-TypoScript) this can easily lead to problems, just as with any
-pi\_base plugin.
+TypoScript) this can easily lead to problems, just as with any plugin.
 
 Of course setting the felogin plugin to Hide at login and having
 redirect options together doesn't really makes sense if a redirect

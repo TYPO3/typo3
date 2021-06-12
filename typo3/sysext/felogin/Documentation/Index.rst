@@ -59,7 +59,7 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
    UsersManual/Index
    LoginMechanism/Index
    Configuration/Index
-   Hooks/Index
+   Events/Index
    Examples/Index
    KnownProblems/Index
    Targets

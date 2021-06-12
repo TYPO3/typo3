@@ -23,11 +23,6 @@ purpose extension for frontend logins. In addition to the actual login
 box, it includes several methods for redirecting after login/logout
 and includes forgot password functionality.
 
-It is based on the newloginbox extension and replaces the old TYPO3
-Login content element. If you install this extension, it will
-automatically replace the old form.
-
-
 .. _screenshots:
 
 Screenshots
@@ -64,5 +59,5 @@ Messages Tab
 .. figure:: ../Images/MessagesConfiguration.png
    :alt: Messages Configuration
 
-   Configuration of the various messages
+   Configuration of the various messages (screenshot shows not all options)
 

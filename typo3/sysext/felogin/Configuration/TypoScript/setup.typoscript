@@ -1,9 +1,30 @@
 plugin.tx_felogin_login {
+  view {
+    templateRootPaths {
+      0 = EXT:felogin/Resources/Private/Templates/
+      10 = {$plugin.tx_felogin_login.view.templateRootPath}
+    }
+
+    partialRootPaths {
+      0 = EXT:felogin/Resources/Private/Partials/
+      10 = {$plugin.tx_felogin_login.view.partialRootPath}
+    }
+
+    layoutRootPaths {
+      0 = EXT:felogin/Resources/Private/Layouts/
+      10 = {$plugin.tx_felogin_login.view.layoutRootPath}
+    }
+  }
+
   settings {
-    showPermaLogin = {$styles.content.loginform.showPermaLogin}
+    pages = {$styles.content.loginform.pid}
+    recursive = {$styles.content.loginform.recursive}
 
     # Template
     dateFormat = {$styles.content.loginform.dateFormat}
+    showForgotPasswordLink = {$styles.content.loginform.showForgotPasswordLink}
+    showPermaLogin = {$styles.content.loginform.showPermaLogin}
+    showLogoutFormAfterLogin = {$styles.content.loginform.showLogoutFormAfterLogin}
 
     # Email Settings
     email_from = {$styles.content.loginform.emailFrom}
@@ -21,12 +42,18 @@ plugin.tx_felogin_login {
       }
     }
 
-    replyTo = {$styles.content.loginform.replyToEmail}
+    # Redirect Settings
+    redirectMode = {$styles.content.loginform.redirectMode}
+    redirectFirstMethod = {$styles.content.loginform.redirectFirstMethod}
+    redirectPageLogin = {$styles.content.loginform.redirectPageLogin}
+    redirectPageLoginError = {$styles.content.loginform.redirectPageLoginError}
+    redirectPageLogout = {$styles.content.loginform.redirectPageLogout}
+    redirectDisable = {$styles.content.loginform.redirectDisable}
 
     # Security
     exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
     forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
-    newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
+    domains = {$styles.content.loginform.domains}
     passwordValidators {
       10 = TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
       20 {
