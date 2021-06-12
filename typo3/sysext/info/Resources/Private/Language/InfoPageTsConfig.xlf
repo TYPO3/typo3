@@ -10,7 +10,7 @@
 				<source>All</source>
 			</trans-unit>
 			<trans-unit id="tsconf_parts_1" resname="tsconf_parts_1">
-				<source>Module key ('mod') with overruling user settings</source>
+				<source>Module</source>
 			</trans-unit>
 			<trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a">
 				<source>Module: Web&gt;Page</source>
