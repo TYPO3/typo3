@@ -18,9 +18,6 @@
 			<trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b">
 				<source>Module: Web&gt;View</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1c" resname="tsconf_parts_1c">
-				<source>Module: Web&gt;Modules</source>
-			</trans-unit>
 			<trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d">
 				<source>Module: Web&gt;List</source>
 			</trans-unit>

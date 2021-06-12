@@ -185,9 +185,6 @@ class InfoPageTyposcriptConfigController
                     case '1b':
                         $pageTsConfig = $pageTsConfig['mod.']['web_view.'] ?? [];
                         break;
-                    case '1c':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_modules.'] ?? [];
-                        break;
                     case '1d':
                         $pageTsConfig = $pageTsConfig['mod.']['web_list.'] ?? [];
                         break;
@@ -239,7 +236,6 @@ class InfoPageTyposcriptConfigController
                 1 => $lang->getLL('tsconf_parts_1') . ' [mod.]',
                 '1a' => $lang->getLL('tsconf_parts_1a') . ' [mod.web_layout.]',
                 '1b' => $lang->getLL('tsconf_parts_1b') . ' [mod.web_view.]',
-                '1c' => $lang->getLL('tsconf_parts_1c') . ' [mod.web_modules.]',
                 '1d' => $lang->getLL('tsconf_parts_1d') . ' [mod.web_list.]',
                 '1e' => $lang->getLL('tsconf_parts_1e') . ' [mod.web_info.]',
                 '1g' => $lang->getLL('tsconf_parts_1g') . ' [mod.web_ts.]',
