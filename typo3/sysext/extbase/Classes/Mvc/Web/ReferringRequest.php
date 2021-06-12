@@ -36,9 +36,6 @@ class ReferringRequest extends Request
             case '@extension':
                 $this->setControllerExtensionName($value);
                 break;
-            case '@subpackage':
-                $this->setControllerSubpackageKey($value);
-                break;
             case '@controller':
                 $this->setControllerName($value);
                 break;

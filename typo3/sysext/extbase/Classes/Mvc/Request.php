@@ -43,13 +43,6 @@ class Request implements RequestInterface
     protected $controllerExtensionName;
 
     /**
-     * Subpackage key of the controller which is supposed to handle this request.
-     *
-     * @var string
-     */
-    protected $controllerSubpackageKey;
-
-    /**
      * @var string
      */
     protected $controllerObjectName;
@@ -153,7 +146,6 @@ class Request implements RequestInterface
     {
         $nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
         $this->controllerExtensionName = $nameParts['extensionName'];
-        $this->controllerSubpackageKey = $nameParts['subpackageKey'] ?? null;
         $this->controllerName = $nameParts['controllerName'];
     }
 
@@ -212,29 +204,6 @@ class Request implements RequestInterface
     public function getControllerExtensionKey()
     {
         return GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
-    }
-
-    /**
-     * Sets the subpackage key of the controller.
-     *
-     * @param string $subpackageKey The subpackage key.
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerSubpackageKey($subpackageKey)
-    {
-        $this->controllerSubpackageKey = $subpackageKey;
-    }
-
-    /**
-     * Returns the subpackage key of the specified controller.
-     * If there is no subpackage key set, the method returns NULL
-     *
-     * @return string The subpackage key
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function getControllerSubpackageKey()
-    {
-        return $this->controllerSubpackageKey;
     }
 
     /**

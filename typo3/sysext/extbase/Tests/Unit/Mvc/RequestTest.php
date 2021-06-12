@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
 
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -97,19 +96,6 @@ class RequestTest extends UnitTestCase
         $request->method('setControllerExtensionName')->with('MyExtension');
         $request->setArgument('@extension', 'MyExtension');
         self::assertFalse($request->hasArgument('@extension'));
-    }
-
-    /**
-     * @test
-     */
-    public function setArgumentShouldSetControllerSubpackageKeyIfSubpackageKeyIsGiven(): void
-    {
-        $request = $this->getMockBuilder(Request::class)
-            ->onlyMethods(['setControllerSubpackageKey'])
-            ->getMock();
-        $request->method('setControllerSubpackageKey')->with('MySubPackage');
-        $request->setArgument('@subpackage', 'MySubPackage');
-        self::assertFalse($request->hasArgument('@subpackage'));
     }
 
     /**
@@ -263,7 +249,6 @@ class RequestTest extends UnitTestCase
             'Vendor TYPO3\CMS, extension, controller given' => [
                 [
                     'extensionName' => 'Ext',
-                    'subpackageKey' => '',
                     'controllerName' => 'Foo',
                 ],
                 'TYPO3\\CMS\\Ext\\Controller\\FooController',
@@ -271,15 +256,13 @@ class RequestTest extends UnitTestCase
             'Vendor TYPO3\CMS, extension, subpackage, controller given' => [
                 [
                     'extensionName' => 'Fluid',
-                    'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Paginate',
                 ],
-                PaginateController::class,
+                'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\Controller\\PaginateController',
             ],
             'Vendor VENDOR, extension, controller given' => [
                 [
                     'extensionName' => 'Ext',
-                    'subpackageKey' => '',
                     'controllerName' => 'Foo',
                 ],
                 'VENDOR\\Ext\\Controller\\FooController',
@@ -287,7 +270,6 @@ class RequestTest extends UnitTestCase
             'Vendor VENDOR, extension subpackage, controller given' => [
                 [
                     'extensionName' => 'Ext',
-                    'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Foo',
                 ],
                 'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
@@ -310,7 +292,6 @@ class RequestTest extends UnitTestCase
 
         $actualControllerArguments = [
             'extensionName' => $request->getControllerExtensionName(),
-            'subpackageKey' => $request->getControllerSubpackageKey(),
             'controllerName' => $request->getControllerName(),
         ];
 

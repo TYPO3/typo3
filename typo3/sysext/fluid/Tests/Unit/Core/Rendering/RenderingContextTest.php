@@ -46,28 +46,6 @@ class RenderingContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
-    {
-        $renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->onlyMethods(['setControllerAction', 'setControllerName'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request = $this->getMockBuilder(Request::class)
-            ->setMethods(['getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'])
-            ->getMock();
-        $request->expects(self::exactly(2))->method('getControllerSubpackageKey')->willReturn('test1');
-        $request->expects(self::once())->method('getControllerName')->willReturn('test2');
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)
-            ->setMethods(['getRequest'])
-            ->getMock();
-        $controllerContext->expects(self::once())->method('getRequest')->willReturn($request);
-        $renderingContext->expects(self::once())->method('setControllerName')->with('test1\\test2');
-        $renderingContext->setControllerContext($controllerContext);
-    }
-
-    /**
-     * @test
-     */
     public function templateVariableContainerCanBeReadCorrectly()
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);

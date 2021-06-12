@@ -212,14 +212,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     {
         $this->request = $request;
         $this->setControllerAction($request->getControllerActionName());
-        // Check if Request is using a sub-package key; in which case we translate this
-        // for our RenderingContext as an emulated plain old sub-namespace controller.
-        $controllerName = $request->getControllerName();
-        if ($request->getControllerSubpackageKey() && !strpos($controllerName, '\\')) {
-            $this->setControllerName($request->getControllerSubpackageKey() . '\\' . $controllerName);
-        } else {
-            $this->setControllerName($controllerName);
-        }
+        $this->setControllerName($request->getControllerName());
         // Also ensure that controller context is filled, if not set yet.
         if ($this->controllerContext === null) {
             $this->controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
