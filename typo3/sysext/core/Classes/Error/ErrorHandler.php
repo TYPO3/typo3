@@ -115,13 +115,25 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine)
     {
-        $flashMessageSeverity = FlashMessage::OK;
         // Don't do anything if error_reporting is disabled by an @ sign (besides for E_USER_DEPRECATED)
         // or $errorLevel is something we won't handle
         $shouldHandleErrorLevel = (bool)($this->errorHandlerErrors & $errorLevel);
-        if ((error_reporting() === 0 && $errorLevel !== E_USER_DEPRECATED) || !$shouldHandleErrorLevel) {
+        $reportingLevel = error_reporting();
+        if (// Ignore by configuration
+            !$shouldHandleErrorLevel
+            // symfony does this: @trigger_error('...', E_USER_DEPRECATED), and we DO want to log these, so do NOT ignore this combination.
+            // Ignore in PHP <= 8.0: When @foo() raises an error, error_reporting is 0, indicating @ error control operator is used,
+            || (PHP_VERSION_ID < 80000
+                && $reportingLevel === 0
+                && $errorLevel !== E_USER_DEPRECATED)
+            // Ignore in PHP >= 8.0: When @foo() raises an error, error_reporting is 4437, indicating @ error control operator is used
+            || (PHP_VERSION_ID >= 80000
+                && $reportingLevel === (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR)
+                && $errorLevel !== E_USER_DEPRECATED)
+        ) {
             return true;
         }
+
         $errorLevels = [
             E_WARNING => 'PHP Warning',
             E_NOTICE => 'PHP Notice',
@@ -137,6 +149,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         if ($errorLevel & $this->exceptionalErrors) {
             throw new Exception($message, 1476107295);
         }
+        $flashMessageSeverity = FlashMessage::OK;
         switch ($errorLevel) {
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
