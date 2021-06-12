@@ -174,9 +174,6 @@ class Bootstrap
                 $this->cObj->convertToUserIntObject();
                 return '';
             }
-            $extbaseRequest->setIsCached(false);
-        } else {
-            $extbaseRequest->setIsCached(true);
         }
 
         // Dispatch the extbase request

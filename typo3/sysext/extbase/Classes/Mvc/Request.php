@@ -104,11 +104,6 @@ class Request implements RequestInterface
     protected $originalRequestMappingResults;
 
     /**
-     * @var bool TRUE if the current request is cached, false otherwise.
-     */
-    protected $isCached = false;
-
-    /**
      * Sets the dispatched flag
      *
      * @param bool $flag If this request has been dispatched
@@ -550,27 +545,5 @@ class Request implements RequestInterface
             $baseUri .= TYPO3_mainDir;
         }
         return $baseUri;
-    }
-
-    /**
-     * Set if the current request is cached.
-     *
-     * @param bool $isCached
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setIsCached($isCached)
-    {
-        $this->isCached = (bool)$isCached;
-    }
-
-    /**
-     * Return whether the current request is a cached request or not.
-     *
-     * @return bool the caching status.
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function isCached()
-    {
-        return $this->isCached;
     }
 }
