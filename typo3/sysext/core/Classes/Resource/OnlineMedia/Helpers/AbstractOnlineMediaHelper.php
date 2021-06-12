@@ -117,13 +117,15 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
     }
 
     /**
-     * Get temporary folder path to save preview images
+     * Get temporary folder path to save preview images.
+     * In composer-mode with TYPO3 installations, this needs to be put under public/
+     * In the future this should be handled via processed file objects.
      *
      * @return string
      */
     protected function getTempFolderPath()
     {
-        $path = Environment::getVarPath() . '/transient/';
+        $path = Environment::getPublicPath() . '/typo3temp/assets/online_media/';
         if (!is_dir($path)) {
             GeneralUtility::mkdir_deep($path);
         }
