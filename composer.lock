@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "392b6da64c34956cd9a02de228760d1c",
+    "content-hash": "4723051a66990c5301b6b18f55343e38",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7541,16 +7541,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.8.2",
+            "version": "6.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "d74a027a186d62e6218b8e29328449d9b97e259f"
+                "reference": "554fabca86975ec895eb443a017e09d1e37abc38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/d74a027a186d62e6218b8e29328449d9b97e259f",
-                "reference": "d74a027a186d62e6218b8e29328449d9b97e259f",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/554fabca86975ec895eb443a017e09d1e37abc38",
+                "reference": "554fabca86975ec895eb443a017e09d1e37abc38",
                 "shasum": ""
             },
             "require": {
@@ -7564,6 +7564,9 @@
                 "typo3/cms-frontend": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-recordlist": "10.*.*@dev || 11.*.*@dev",
                 "typo3fluid/fluid": "^2.5|^3"
+            },
+            "conflict": {
+                "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "type": "library",
             "autoload": {
@@ -7597,9 +7600,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.8.2"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.8.3"
             },
-            "time": "2021-05-04T20:51:31+00:00"
+            "time": "2021-06-12T20:34:13+00:00"
         }
     ],
     "aliases": [],
