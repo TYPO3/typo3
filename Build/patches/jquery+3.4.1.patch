@@ -1,36 +1,63 @@
 diff --git a/node_modules/jquery/dist/jquery.js b/node_modules/jquery/dist/jquery.js
-index 773ad95..ef1eb73 100644
+index 773ad95..e5d2ccf 100644
 --- a/node_modules/jquery/dist/jquery.js
 +++ b/node_modules/jquery/dist/jquery.js
-@@ -4722,9 +4722,6 @@
+@@ -1,5 +1,5 @@
+ /*!
+- * jQuery JavaScript Library v3.4.1
++ * jQuery JavaScript Library v3.4.1+security1
+  * https://jquery.com/
+  *
+  * Includes Sizzle.js
+@@ -10,6 +10,10 @@
+  * https://jquery.org/license
+  *
+  * Date: 2019-05-01T21:04Z
++ *
++ * + security1 patch: CVE-2020-11022 & CVE-2020-11023
++ *   - https://github.com/DanielRuf/snyk-js-jquery-565129
++ *   - behaves like jQuery v3.5.1
+  */
+ ( function( global, factory ) {
+ 
+@@ -142,7 +146,7 @@ function toType( obj ) {
+ 
+ 
+ var
+-	version = "3.4.1",
++	version = "3.4.1+security1",
+ 
+ 	// Define a local copy of jQuery
+ 	jQuery = function( selector, context ) {
+@@ -4722,9 +4726,6 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
  // We have to close these tags to support XHTML (#13200)
  var wrapMap = {
-
+ 
 -	// Support: IE <=9 only
 -	option: [ 1, "<select multiple='multiple'>", "</select>" ],
 -
  	// XHTML parsers do not magically insert elements in the
  	// same way that tag soup parsers do. So we cannot shorten
  	// this by omitting <tbody> or other required elements.
-@@ -4736,12 +4733,14 @@
+@@ -4736,12 +4737,14 @@ var wrapMap = {
  	_default: [ 0, "", "" ]
  };
-
+ 
 -// Support: IE <=9 only
 -wrapMap.optgroup = wrapMap.option;
 -
  wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
  wrapMap.th = wrapMap.td;
-
+ 
 +// Support: IE <=9 only
 +if ( !support.option ) {
 +	wrapMap.optgroup = wrapMap.option = [ 1, "<select multiple='multiple'>", "</select>" ];
 +}
 +
-
+ 
  function getAll( context, tag ) {
-
-@@ -4897,6 +4896,12 @@
+ 
+@@ -4897,6 +4900,12 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
  	// Make sure textarea (and checkbox) defaultValue is properly cloned
  	div.innerHTML = "<textarea>x</textarea>";
  	support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
@@ -41,28 +68,28 @@ index 773ad95..ef1eb73 100644
 +	div.innerHTML = "<option></option>";
 +	support.option = !!div.lastChild;
  } )();
-
-
-@@ -5771,11 +5771,6 @@ jQuery.fn.extend( {
-
+ 
+ 
+@@ -5771,11 +5780,6 @@ jQuery.fn.extend( {
+ 
  var
-
+ 
 -	/* eslint-disable max-len */
 -
 -	// See https://github.com/eslint/eslint/issues/3229
 -	rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
 -
  	/* eslint-enable */
-
+ 
  	// Support: IE <=10 - 11, Edge 12 - 13 only
-@@ -5976,7 +5971,7 @@ function remove( elem, selector, keepData ) {
-
+@@ -5976,7 +5980,7 @@ function remove( elem, selector, keepData ) {
+ 
  jQuery.extend( {
  	htmlPrefilter: function( html ) {
 -		return html.replace( rxhtmlTag, "<$1></$2>" );
 +		return html;
  	},
-
+ 
  	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 diff --git a/node_modules/jquery/dist/jquery.min.js b/node_modules/jquery/dist/jquery.min.js
 index a1c07fd..aebe828 100644

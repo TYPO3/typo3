@@ -1,5 +1,5 @@
 /*!
- * jQuery JavaScript Library v3.4.1
+ * jQuery JavaScript Library v3.4.1+security1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -10,6 +10,10 @@
  * https://jquery.org/license
  *
  * Date: 2019-05-01T21:04Z
+ *
+ * + security1 patch: CVE-2020-11022 & CVE-2020-11023
+ *   - https://github.com/DanielRuf/snyk-js-jquery-565129
+ *   - behaves like jQuery v3.5.1
  */
 ( function( global, factory ) {
 
@@ -142,7 +146,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.4.1",
+	version = "3.4.1+security1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
