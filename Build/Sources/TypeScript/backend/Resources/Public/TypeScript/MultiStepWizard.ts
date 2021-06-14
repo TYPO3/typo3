@@ -263,7 +263,7 @@ class MultiStepWizard {
 
     // Event fires when the slide transition is invoked
     this.setup.$carousel.on('slide.bs.carousel', (evt: any): void => {
-      if (evt.direction === 'right') {
+      if (evt.direction === 'left') {
         this.nextSlideChanges($modal);
       } else {
         this.prevSlideChanges($modal);
