@@ -121,11 +121,9 @@ services:
       - name: event.listener
         identifier: 'backend-user-permissions'
         method: 'addUserPermissionsToCategoryTreeData'
-        event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
 
   # Listener to provide information about column without a colPos set
   TYPO3\CMS\Backend\View\PageLayoutViewDrawEmptyColposContent:
     tags:
       - name: event.listener
         identifier: 'backend-empty-colpos'
-        event:  TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent

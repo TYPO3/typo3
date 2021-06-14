@@ -33,4 +33,3 @@ services:
     tags:
       - name: event.listener
         identifier: 'record-list-content-legacy-hook'
-        event: TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent

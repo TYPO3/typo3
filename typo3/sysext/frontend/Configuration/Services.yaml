@@ -22,4 +22,3 @@ services:
       - name: event.listener
         identifier: 'typo3-frontend/overlay'
         method: 'languageAndWorkspaceOverlay'
-        event: TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent

@@ -12,4 +12,3 @@ services:
       - name: event.listener
         identifier: 'belog/show-latest-errors'
         method: 'appendMessage'
-        event: TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent

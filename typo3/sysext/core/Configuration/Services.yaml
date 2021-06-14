@@ -102,11 +102,9 @@ services:
       - name: event.listener
         identifier: 'non-composer-class-loader'
         method: 'updateClassLoadingInformationAfterPackageActivation'
-        event: TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent
       - name: event.listener
         identifier: 'non-composer-class-loader'
         method: 'updateClassLoadingInformationAfterPackageDeactivation'
-        event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
 
   TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
     shared: false
@@ -122,21 +120,18 @@ services:
       - name: event.listener
         identifier: 'backend-user-permissions'
         method: 'addUserPermissionsToStorage'
-        event: TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent
 
   TYPO3\CMS\Core\Cache\DatabaseSchemaService:
     tags:
       - name: event.listener
         identifier: 'caching-framework'
         method: 'addCachingFrameworkDatabaseSchema'
-        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
 
   TYPO3\CMS\Core\Category\CategoryRegistry:
     tags:
       - name: event.listener
         identifier: 'category-registry'
         method: 'addCategoryDatabaseSchema'
-        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
 
   # @internal
   # @todo: deprecate makeInstance(LanguageService::class)
@@ -163,15 +158,12 @@ services:
       - name: event.listener
         identifier: 'delete-processed-files-after-add'
         method: 'cleanupProcessedFilesPostFileAdd'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent
       - name: event.listener
         identifier: 'delete-processed-files-after-replace'
         method: 'cleanupProcessedFilesPostFileReplace'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileReplacedEvent
       - name: event.listener
         identifier: 'delete-processed-files-after-delete'
         method: 'removeFromRepositoryAfterFileDeleted'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileDeletedEvent
 
   # synchronize folder relations
   TYPO3\CMS\Core\Resource\SynchronizeFolderRelations:
@@ -179,11 +171,9 @@ services:
       - name: event.listener
         identifier: 'synchronize-file-collections-after-folder-renamed'
         method: 'synchronizeFileCollectionsAfterRename'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent
       - name: event.listener
         identifier: 'synchronize-filemounts-after-folder-renamed'
         method: 'synchronizeFilemountsAfterRename'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent
 
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here

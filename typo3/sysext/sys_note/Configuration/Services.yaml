@@ -10,4 +10,3 @@ services:
     tags:
       - name: event.listener
         identifier: 'note-to-record-list'
-        event: TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent

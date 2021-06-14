@@ -22,4 +22,3 @@ services:
       - name: event.listener
         identifier: 'scheduler/show-latest-errors'
         method: 'getItem'
-        event: TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent

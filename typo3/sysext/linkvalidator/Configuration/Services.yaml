@@ -23,13 +23,10 @@ services:
     tags:
       - name: event.listener
         identifier: 'rte-check-link-external'
-        event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent
         method: 'checkExternalLink'
       - name: event.listener
         identifier: 'rte-check-link-to-page'
-        event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent
         method: 'checkPageLink'
       - name: event.listener
         identifier: 'rte-check-link-to-file'
-        event: TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent
         method: 'checkFileLink'
