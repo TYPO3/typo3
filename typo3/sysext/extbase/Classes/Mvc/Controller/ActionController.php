@@ -954,11 +954,11 @@ abstract class ActionController implements ControllerInterface
      * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
      * @param array|null $arguments Arguments to pass to the target action
      * @param int|null $pageUid Target page uid. If NULL, the current page uid is used
-     * @param int $delay (optional) The delay in seconds. Default is no delay.
+     * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @throws StopActionException
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $delay = 0, $statusCode = 303)
+    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303)
     {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
@@ -971,7 +971,7 @@ abstract class ActionController implements ControllerInterface
             $this->uriBuilder->setAbsoluteUriScheme('https');
         }
         $uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
-        $this->redirectToUri($uri, $delay, $statusCode);
+        $this->redirectToUri($uri, null, $statusCode);
     }
 
     /**
@@ -980,17 +980,15 @@ abstract class ActionController implements ControllerInterface
      * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
      *
      * @param mixed $uri A string representation of a URI
-     * @param int $delay (optional) The delay in seconds. Default is no delay.
-     * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
+     * @param null $_ (optional) Unused
+     * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
      * @throws StopActionException
      */
-    protected function redirectToUri($uri, $delay = 0, $statusCode = 303)
+    protected function redirectToUri($uri, $_ = null, $statusCode = 303)
     {
         $uri = $this->addBaseUriIfNecessary($uri);
-        $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-
         $response = new HtmlResponse(
-            '<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>',
+            '',
             $statusCode,
             [
                 'Location' => (string)$uri
