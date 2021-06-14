@@ -2,6 +2,36 @@ diff --git a/node_modules/jquery/dist/jquery.js b/node_modules/jquery/dist/jquer
 index 9b5206b..1ba41a8 100644
 --- a/node_modules/jquery/dist/jquery.js
 +++ b/node_modules/jquery/dist/jquery.js
+@@ -1,5 +1,5 @@
+ /*!
+- * jQuery JavaScript Library v3.3.1
++ * jQuery JavaScript Library v3.3.1+security2
+  * https://jquery.com/
+  *
+  * Includes Sizzle.js
+@@ -10,6 +10,13 @@
+  * https://jquery.org/license
+  *
+  * Date: 2018-01-20T17:24Z
++ *
++ * + security1 patch: CVE-2019-11358
++ *   - https://github.com/DanielRuf/snyk-js-jquery-174006
++ *   - behaves like jQuery v3.4.1
++ * + security2 patch: CVE-2020-11022 & CVE-2020-11023
++ *   - https://github.com/DanielRuf/snyk-js-jquery-565129
++ *   - behaves like jQuery v3.5.1
+  */
+ ( function( global, factory ) {
+
+@@ -129,7 +136,7 @@
+
+
+ var
+-	version = "3.3.1",
++	version = "3.3.1+security2",
+
+ 	// Define a local copy of jQuery
+ 	jQuery = function( selector, context ) {
 @@ -261,8 +261,8 @@ jQuery.extend = jQuery.fn.extend = function() {
  				src = target[ name ];
  				copy = options[ name ];
