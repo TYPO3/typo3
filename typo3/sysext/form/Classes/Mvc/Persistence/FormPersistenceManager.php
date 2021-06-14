@@ -247,9 +247,12 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     'removable' => true,
                     'location' => 'storage',
                     'duplicateIdentifier' => false,
-                    'invalid' => $form['invalid'],
-                    'fileUid' => $form['fileUid'],
+                    'invalid' => $form['invalid'] ?? false,
+                    'fileUid' => $form['fileUid'] ?? 0,
                 ];
+                if (!isset($identifiers[$form['identifier']])) {
+                    $identifiers[$form['identifier']] = 0;
+                }
                 $identifiers[$form['identifier']]++;
             }
         }
@@ -267,9 +270,12 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                         'removable' => $this->formSettings['persistenceManager']['allowDeleteFromExtensionPaths'] ? true: false,
                         'location' => 'extension',
                         'duplicateIdentifier' => false,
-                        'invalid' => $form['invalid'],
-                        'fileUid' => $form['fileUid'],
+                        'invalid' => $form['invalid'] ?? false,
+                        'fileUid' => $form['fileUid'] ?? 0,
                     ];
+                    if (!isset($identifiers[$form['identifier']])) {
+                        $identifiers[$form['identifier']] = 0;
+                    }
                     $identifiers[$form['identifier']]++;
                 }
             }

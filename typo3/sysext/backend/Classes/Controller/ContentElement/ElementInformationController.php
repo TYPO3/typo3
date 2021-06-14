@@ -364,7 +364,7 @@ class ElementInformationController
                 continue;
             }
 
-            $isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
+            $isExcluded = !(!($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
             if ($isExcluded) {
                 continue;
             }
@@ -426,7 +426,7 @@ class ElementInformationController
                             continue;
                         }
 
-                        $isExcluded = !(!$GLOBALS['TCA'][$table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
+                        $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
                         if ($isExcluded) {
                             continue;
                         }
@@ -468,7 +468,7 @@ class ElementInformationController
 
             $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];
             foreach ($ctrlKeysOfUnneededFields as $field) {
-                if (($key = array_search($GLOBALS['TCA'][$table]['ctrl'][$field], $fieldList, true)) !== false) {
+                if (isset($GLOBALS['TCA'][$table]['ctrl'][$field]) && ($key = array_search($GLOBALS['TCA'][$table]['ctrl'][$field], $fieldList, true)) !== false) {
                     unset($fieldList[$key]);
                 }
             }
@@ -578,7 +578,7 @@ class ElementInformationController
      */
     protected function getLabelForTableColumn($tableName, $fieldName): string
     {
-        if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== null) {
+        if (($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] ?? null) !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
             if (trim($field) === '') {
                 $field = $fieldName;

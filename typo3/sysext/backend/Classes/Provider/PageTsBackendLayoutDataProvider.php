@@ -175,10 +175,10 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
         $backendLayout = [];
         if (!empty($data['config.']['backend_layout.']) && is_array($data['config.']['backend_layout.'])) {
             $backendLayout['uid'] = substr($identifier, 0, -1);
-            $backendLayout['title'] = $data['title'] ?: $backendLayout['uid'];
-            $backendLayout['icon'] = $data['icon'] ?: '';
+            $backendLayout['title'] = $data['title'] ?? $backendLayout['uid'];
+            $backendLayout['icon'] = $data['icon'] ?? '';
             // Convert PHP array back to plain TypoScript so it can be processed
-            $config = ArrayUtility::flatten($data['config.']);
+            $config = ArrayUtility::flatten($data['config.'] ?? []);
             $backendLayout['config'] = '';
             foreach ($config as $row => $value) {
                 $backendLayout['config'] .= $row . ' = ' . $value . "\r\n";
