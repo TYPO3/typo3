@@ -46,14 +46,17 @@ Loading and parsing PageTSconfig on a low-level should be done via the new PHP c
 
 Usages for fetching all available PageTS of a page/rootline in one large string:
 
-:php:
-    $loader = GeneralUtility::makeInstance(PageTsConfigLoader::class);
-    $tsConfigString = $loader->load($rootLine);
+.. code-block:: php
+
+   $loader = GeneralUtility::makeInstance(PageTsConfigLoader::class);
+   $tsConfigString = $loader->load($rootLine);
 
 
-The string is parsed (and conditions are applied) with the Parser::
+The string is parsed (and conditions are applied) with the Parser:
 
-   $parser = GeneralUtility::makeInstance(
+.. code-block:: php
+
+      $parser = GeneralUtility::makeInstance(
        PageTsConfigParser::class,
        $typoScriptParser,
        $hashCache
