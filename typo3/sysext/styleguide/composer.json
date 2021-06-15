@@ -31,7 +31,10 @@
   },
   "config": {
     "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
+    "bin-dir": ".Build/bin",
+	"preferred-install": {
+	  "typo3/cms-core": "source"
+	}
   },
   "require-dev": {
     "typo3/cms-core": "dev-master",
