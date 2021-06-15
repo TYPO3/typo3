@@ -144,7 +144,11 @@ abstract class AbstractElementBrowser
      */
     protected function getBParamDataAttributes()
     {
-        [$fieldRef, $rteParams, $rteConfig, , $irreObjectId] = explode('|', $this->bparams);
+        $params = explode('|', $this->bparams);
+        $fieldRef = $params[0];
+        $rteParams = $params[1];
+        $rteConfig = $params[2];
+        $irreObjectId = $params[4] ?? null;
 
         return [
             'data-form-field-name' => 'data[' . $fieldRef . '][' . $rteParams . '][' . $rteConfig . ']',

@@ -218,7 +218,7 @@ class RichTextElement extends AbstractFormElement
                     $configuration[$configName] = array_replace_recursive($extraPluginConfig['config'], $configuration[$configName]);
                 }
             }
-            $configuration['extraPlugins'] .= ',' . $extraPluginName;
+            $configuration['extraPlugins'] = ($configuration['extraPlugins'] ?? '') . ',' . $extraPluginName;
             if (isset($this->data['parameterArray']['fieldConf']['config']['placeholder'])) {
                 $configuration['editorplaceholder'] = (string)$this->data['parameterArray']['fieldConf']['config']['placeholder'];
             }
@@ -407,13 +407,13 @@ class RichTextElement extends AbstractFormElement
         $configuration = $this->replaceAbsolutePathsToRelativeResourcesPath($configuration);
 
         // there are some places where we define an array, but it needs to be a list in order to work
-        if (is_array($configuration['extraPlugins'])) {
+        if (is_array($configuration['extraPlugins'] ?? null)) {
             $configuration['extraPlugins'] = implode(',', $configuration['extraPlugins']);
         }
-        if (is_array($configuration['removePlugins'])) {
+        if (is_array($configuration['removePlugins'] ?? null)) {
             $configuration['removePlugins'] = implode(',', $configuration['removePlugins']);
         }
-        if (is_array($configuration['removeButtons'])) {
+        if (is_array($configuration['removeButtons'] ?? null)) {
             $configuration['removeButtons'] = implode(',', $configuration['removeButtons']);
         }
 

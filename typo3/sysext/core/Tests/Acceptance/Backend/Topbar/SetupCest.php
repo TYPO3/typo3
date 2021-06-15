@@ -21,16 +21,16 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\Topbar;
 
 /**
- * Tests for the help module in the topbar
+ * Tests for the user settings/setup module in the topbar
  */
-class HelpCest
+class SetupCest
 {
     /**
-     * Selector for the module container in the topbar
+     * Selector for the user module container in the topbar
      *
      * @var string
      */
-    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
+    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
 
     /**
      * @param BackendTester $I
@@ -54,24 +54,12 @@ class HelpCest
      * @depends canSeeModuleInTopbar
      * @param BackendTester $I
      */
-    public function seeStyleguideInHelpModule(BackendTester $I)
+    public function seeUserSettingsInUserToolbarModule(BackendTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
+        $I->canSee('User Settings', self::$topBarModuleSelector);
+        $I->click('User Settings', self::$topBarModuleSelector);
         $I->switchToContentFrame();
-        $I->see('TYPO3 CMS Backend Styleguide', 'h1');
-    }
-
-    /**
-     * @param BackendTester $I
-     */
-    public function seeAboutInHelpModule(BackendTester $I)
-    {
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('About TYPO3 CMS', self::$topBarModuleSelector);
-        $I->click('About TYPO3 CMS', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
-        $I->see('Web Content Management System', 'h1');
+        $I->see('User Settings', 'h1');
     }
 }

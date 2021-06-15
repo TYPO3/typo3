@@ -195,7 +195,7 @@ class HelpController
 
     protected function getManuals(ServerRequestInterface $request): array
     {
-        $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
+        $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'] ?? '';
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
 
         return $field === '*'

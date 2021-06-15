@@ -176,8 +176,10 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         [$fieldPointerString] = explode('|', $this->bparams);
         // parts like: data, pages], 79], storage_pid]
         $fieldPointerParts = explode('[', $fieldPointerString);
-        $relatingTableName = substr($fieldPointerParts[1], 0, -1);
-        $relatingFieldName = substr($fieldPointerParts[3], 0, -1);
+
+        $relatingTableName = substr(($fieldPointerParts[1] ?? ''), 0, -1);
+        $relatingFieldName = substr(($fieldPointerParts[3] ?? ''), 0, -1);
+
         if ($relatingTableName && $relatingFieldName) {
             $dbList->setRelatingTableAndField($relatingTableName, $relatingFieldName);
         }

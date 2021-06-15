@@ -298,7 +298,7 @@ abstract class AbstractFile implements FileInterface
         // this basically extracts the mimetype and guess the filetype based
         // on the first part of the mimetype works for 99% of all cases, and
         // we don't need to make an SQL statement like EXT:media does currently
-        if (!$this->properties['type']) {
+        if (!($this->properties['type'] ?? false)) {
             $mimeType = $this->getMimeType();
             [$fileType] = explode('/', $mimeType);
             switch (strtolower($fileType)) {

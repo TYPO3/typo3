@@ -45,9 +45,9 @@ class PageCreationWithDragAndDropCest
         $this->pageTree = $pageTree;
         $I->useExistingSession('admin');
         $I->click('List');
-        $this->pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement(static::$treeNode, 5);
         $I->waitForElement(static::$dragNode, 5);
+        $this->pageTree->openPath(['styleguide TCA demo']);
     }
 
     /**

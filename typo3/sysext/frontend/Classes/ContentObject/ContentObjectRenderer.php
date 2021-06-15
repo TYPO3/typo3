@@ -3503,7 +3503,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                         }
                         // Search Words:
-                        if ($tsfe->no_cache && $conf['sword'] && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
+                        if (($tsfe->no_cache ?? false) && $conf['sword'] && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
                             $newstring = '';
                             do {
                                 $pregSplitMode = 'i';
@@ -5344,7 +5344,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
             $old_conf = $confArr[$prop . '.'];
-            [, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+            $conf = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup)[1] ?? [];
             if (is_array($old_conf) && !empty($old_conf)) {
                 $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
             }

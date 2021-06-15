@@ -118,7 +118,7 @@ class AboutController
                 'name'  => $moduleName,
                 'label' => $moduleLabels['title']
             ];
-            if (is_array($moduleInfo['sub']) && !empty($moduleInfo['sub'])) {
+            if (is_array($moduleInfo['sub'] ?? null) && !empty($moduleInfo['sub'])) {
                 $mainModuleData['subModules'] = $this->getSubModuleData((string)$moduleName);
             }
             $mainModulesData[] = $mainModuleData;

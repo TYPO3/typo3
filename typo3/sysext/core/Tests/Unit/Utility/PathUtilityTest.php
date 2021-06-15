@@ -507,6 +507,11 @@ class PathUtilityTest extends UnitTestCase
                 true,
                 true
             ],
+            'path empty' => [
+                '',
+                false,
+                false
+            ],
         ];
     }
 

@@ -40,7 +40,7 @@ class TableManualRepository
 
         // Load descriptions for table $table
         $this->getLanguageService()->loadSingleTableDescription($table);
-        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->checkAccess('tables_select', $table)) {
+        if (is_array($GLOBALS['TCA_DESCR'][$table]['columns'] ?? null) && $this->checkAccess('tables_select', $table)) {
             // Reserved for header of table
             $parts[0] = '';
             // Traverse table columns as listed in TCA_DESCR
@@ -99,14 +99,14 @@ class TableManualRepository
         $loadModules->load($GLOBALS['TBE_MODULES']);
         foreach ($loadModules->modules as $mainMod => $info) {
             $cshKey = '_MOD_' . $mainMod;
-            if ($cshKeys[$cshKey]) {
+            if ($cshKeys[$cshKey] ?? '') {
                 $lang->loadSingleTableDescription($cshKey);
                 $this->renderTableOfContentItem($mode, $cshKey, 'modules', $outputSections, $tocArray, $cshKeys);
             }
-            if (is_array($info['sub'])) {
+            if (is_array($info['sub'] ?? null)) {
                 foreach ($info['sub'] as $subMod => $subInfo) {
                     $cshKey = '_MOD_' . $mainMod . '_' . $subMod;
-                    if ($cshKeys[$cshKey]) {
+                    if ($cshKeys[$cshKey] ?? '') {
                         $lang->loadSingleTableDescription($cshKey);
                         $this->renderTableOfContentItem($mode, $cshKey, 'modules', $outputSections, $tocArray, $cshKeys);
                     }
@@ -117,7 +117,7 @@ class TableManualRepository
         foreach ($tcaKeys as $table) {
             // Load descriptions for table $table
             $lang->loadSingleTableDescription($table);
-            if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $this->checkAccess('tables_select', $table)) {
+            if (is_array($GLOBALS['TCA_DESCR'][$table]['columns'] ?? null) && $this->checkAccess('tables_select', $table)) {
                 $this->renderTableOfContentItem($mode, $table, 'tables', $outputSections, $tocArray, $cshKeys);
             }
         }
@@ -239,7 +239,7 @@ class TableManualRepository
                 'configuration' => $setup,
                 'headerLine' => $this->getTableFieldLabel($table, $field),
                 'content' => !empty($setup['description']) ? $setup['description'] : '',
-                'images' => !empty($setup['image']) ? $this->getImages($setup['image'], $setup['image_descr']) : [],
+                'images' => !empty($setup['image']) ? $this->getImages($setup['image'], ($setup['image_descr'] ?? '')) : [],
                 'seeAlso' => !empty($setup['seeAlso']) ? $this->getSeeAlsoLinks($setup['seeAlso'], $anchors ? $table : '') : '',
             ];
         }
@@ -263,14 +263,14 @@ class TableManualRepository
             if ($itemValue) {
                 $reference = GeneralUtility::trimExplode(':', $itemValue);
                 $referenceUrl = GeneralUtility::trimExplode('|', $itemValue);
-                if (strpos($referenceUrl[1], 'http') === 0) {
+                if (strpos(($referenceUrl[1] ?? ''), 'http') === 0) {
                     // URL reference
                     $lines[] = [
                         'url' => $referenceUrl[1],
                         'title' => $referenceUrl[0],
                         'target' => '_blank'
                     ];
-                } elseif (strpos($referenceUrl[1], 'FILE:') === 0) {
+                } elseif (strpos(($referenceUrl[1] ?? ''), 'FILE:') === 0) {
                     // File reference
                     $fileName = GeneralUtility::getFileAbsFileName(substr($referenceUrl[1], 5));
                     if ($fileName && @is_file($fileName)) {
@@ -352,7 +352,7 @@ class TableManualRepository
         if (!empty($imgArray)) {
             $descrArray = explode(LF, $descriptions, count($imgArray));
             foreach ($imgArray as $k => $image) {
-                $descriptions = $descrArray[$k];
+                $descriptions = $descrArray[$k] ?? '';
                 $absImagePath = GeneralUtility::getFileAbsFileName($image);
                 if ($absImagePath && @is_file($absImagePath)) {
                     $imgFile = PathUtility::getAbsoluteWebPath($absImagePath);

@@ -82,7 +82,7 @@ class ReportController
         $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
 
         if ($action !== 'index' && !$isRedirect && !$extension
-            && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
+            && is_array($GLOBALS['BE_USER']->uc['reports']['selection'] ?? null)) {
             $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
             if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
                 return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('system_reports', [

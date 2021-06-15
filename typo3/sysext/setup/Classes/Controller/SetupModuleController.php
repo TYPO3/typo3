@@ -751,13 +751,13 @@ class SetupModuleController
                     foreach ($modData['sub'] as $subData) {
                         $modName = $subData['name'];
                         $modules .= '<option value="' . htmlspecialchars($modName) . '"';
-                        $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
+                        $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $modName ? ' selected="selected"' : '';
                         $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
                     }
                 } elseif ($isStandalone) {
                     $modName = $modData['name'];
                     $modules .= '<option value="' . htmlspecialchars($modName) . '"';
-                    $modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
+                    $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $modName ? ' selected="selected"' : '';
                     $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
                 }
                 $groupLabel = htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($mainMod)['title']));
