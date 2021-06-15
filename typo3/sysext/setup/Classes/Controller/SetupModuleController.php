@@ -258,7 +258,7 @@ class SetupModuleController
                     if (($config['type'] ?? false) === 'check') {
                         $backendUser->uc[$field] = isset($d[$field]) ? 1 : 0;
                     } else {
-                        $backendUser->uc[$field] = htmlspecialchars($d[$field]);
+                        $backendUser->uc[$field] = htmlspecialchars($d[$field] ?? '');
                     }
                 }
                 // Personal data for the users be_user-record (email, name, password...)
@@ -447,11 +447,6 @@ class SetupModuleController
         $fieldArray = $this->getFieldsFromShowItem();
         $tabLabel = '';
         foreach ($fieldArray as $fieldName) {
-            $config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName];
-            if (isset($config['access']) && !$this->checkAccess($config)) {
-                continue;
-            }
-
             if (strpos($fieldName, '--div--;') === 0) {
                 if ($firstTabLabel === '') {
                     // First tab
@@ -467,10 +462,16 @@ class SetupModuleController
                 }
                 continue;
             }
-            $label = $this->getLabel($config['label'], $fieldName);
-            $label = $this->getCSH($config['csh'] ?: $fieldName, $label, $fieldName);
-            $type = $config['type'];
-            $class = $config['class'];
+
+            $config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName] ?? null;
+            if ($config && isset($config['access']) && !$this->checkAccess($config)) {
+                continue;
+            }
+
+            $label = $this->getLabel($config['label'] ?? '', $fieldName);
+            $label = $this->getCSH(($config['csh'] ?? false) ?: $fieldName, $label, $fieldName);
+            $type = $config['type'] ?? '';
+            $class = $config['class'] ?? '';
             if ($type !== 'check' && $type !== 'select') {
                 $class .= ' form-control';
             }
@@ -481,21 +482,19 @@ class SetupModuleController
             if ($class) {
                 $more .= ' class="' . htmlspecialchars($class) . '"';
             }
-            $style = $config['style'];
+            $style = $config['style'] ?? '';
             if ($style) {
                 $more .= ' style="' . htmlspecialchars($style) . '"';
             }
             if (isset($this->overrideConf[$fieldName])) {
                 $more .= ' disabled="disabled"';
             }
-            $value = $config['table'] === 'be_users' ? $backendUser->user[$fieldName] : $backendUser->uc[$fieldName];
+            $isBeUsersTable = ($config['table'] ?? false) === 'be_users';
+            $value = $isBeUsersTable ? ($backendUser->user[$fieldName] ?? false) : ($backendUser->uc[$fieldName] ?? false);
             if (!$value && isset($config['default'])) {
                 $value = $config['default'];
             }
-            $dataAdd = '';
-            if (($config['table'] ?? false) === 'be_users') {
-                $dataAdd = '[be_users]';
-            }
+            $dataAdd = $isBeUsersTable ? '[be_users]' : '';
 
             switch ($type) {
                 case 'text':
