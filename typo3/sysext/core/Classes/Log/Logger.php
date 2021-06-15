@@ -27,41 +27,32 @@ class Logger extends AbstractLogger
 {
     /**
      * Logger name or component for which this logger is meant to be used for.
+     *
      * This should be a dot-separated name and should normally be based on
      * the class name or the name of a subsystem, such as
      * core.t3lib.cache.manager, core.backend.workspaces or extension.news
-     *
-     * @var string
      */
-    protected $name = '';
+    protected string $name = '';
 
     /**
      * Unique ID of the request
-     *
-     * @var string
      */
-    protected $requestId = '';
+    protected string $requestId = '';
 
     /**
      * Minimum log level, anything below this level will be ignored.
-     *
-     * @var int
      */
-    protected $minimumLogLevel;
+    protected int $minimumLogLevel;
 
     /**
      * Writers used by this logger
-     *
-     * @var array
      */
-    protected $writers = [];
+    protected array $writers = [];
 
     /**
      * Processors used by this logger
-     *
-     * @var array
      */
-    protected $processors = [];
+    protected array $processors = [];
 
     /**
      * Constructor.
@@ -141,15 +132,11 @@ class Logger extends AbstractLogger
     public function addWriter(string $minimumLevel, WriterInterface $writer)
     {
         $minLevelAsNumber = LogLevel::normalizeLevel($minimumLevel);
-        LogLevel::validateLevel($minLevelAsNumber);
         // Cycle through all the log levels which are as severe as or higher
         // than $minimumLevel and add $writer to each severity level
-        for ($logLevelWhichTriggersWriter = LogLevel::normalizeLevel(LogLevel::EMERGENCY); $logLevelWhichTriggersWriter <= $minLevelAsNumber; $logLevelWhichTriggersWriter++) {
-            $logLevelName = LogLevel::getInternalName($logLevelWhichTriggersWriter);
-            if (!isset($this->writers[$logLevelName])) {
-                $this->writers[$logLevelName] = [];
-            }
-            $this->writers[$logLevelName][] = $writer;
+        foreach (LogLevel::atLeast($minLevelAsNumber) as $levelName) {
+            $this->writers[$levelName] ??= [];
+            $this->writers[$levelName][] = $writer;
         }
         if ($minLevelAsNumber > $this->getMinimumLogLevel()) {
             $this->setMinimumLogLevel($minLevelAsNumber);
@@ -181,9 +168,7 @@ class Logger extends AbstractLogger
         // than $minimumLevel and add $processor to each severity level
         for ($logLevelWhichTriggersProcessor = LogLevel::normalizeLevel(LogLevel::EMERGENCY); $logLevelWhichTriggersProcessor <= $minLevelAsNumber; $logLevelWhichTriggersProcessor++) {
             $logLevelName = LogLevel::getInternalName($logLevelWhichTriggersProcessor);
-            if (!isset($this->processors[$logLevelName])) {
-                $this->processors[$logLevelName] = [];
-            }
+            $this->processors[$logLevelName] ??= [];
             $this->processors[$logLevelName][] = $processor;
         }
         if ($minLevelAsNumber > $this->getMinimumLogLevel()) {
@@ -232,15 +217,13 @@ class Logger extends AbstractLogger
      */
     protected function callProcessors(LogRecord $record)
     {
-        if (!empty($this->processors[$record->getLevel()])) {
-            /** @var ProcessorInterface $processor */
-            foreach ($this->processors[$record->getLevel()] as $processor) {
-                $processedRecord = $processor->processLogRecord($record);
-                if (!$processedRecord instanceof LogRecord) {
-                    throw new \RuntimeException('Processor ' . get_class($processor) . ' returned invalid data. Instance of TYPO3\\CMS\\Core\\Log\\LogRecord expected', 1343593398);
-                }
-                $record = $processedRecord;
+        /** @var ProcessorInterface $processor */
+        foreach ($this->processors[$record->getLevel()] ?? [] as $processor) {
+            $processedRecord = $processor->processLogRecord($record);
+            if (!$processedRecord instanceof LogRecord) {
+                throw new \RuntimeException('Processor ' . get_class($processor) . ' returned invalid data. Instance of TYPO3\\CMS\\Core\\Log\\LogRecord expected', 1343593398);
             }
+            $record = $processedRecord;
         }
         return $record;
     }
@@ -252,11 +235,9 @@ class Logger extends AbstractLogger
      */
     protected function writeLog(LogRecord $record)
     {
-        if (!empty($this->writers[$record->getLevel()])) {
-            /** @var WriterInterface $writer */
-            foreach ($this->writers[$record->getLevel()] as $writer) {
-                $writer->writeLog($record);
-            }
+        /** @var WriterInterface $writer */
+        foreach ($this->writers[$record->getLevel()] ?? [] as $writer) {
+            $writer->writeLog($record);
         }
     }
 }

@@ -232,7 +232,7 @@ class FileWriter extends AbstractWriter
     {
         // write .htaccess file to protect the log file
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) && !file_exists($htaccessFile)) {
-            $htaccessContent = '
+            $htaccessContent = <<<END
 # Apache < 2.3
 <IfModule !mod_authz_core.c>
 	Order allow,deny
@@ -244,7 +244,7 @@ class FileWriter extends AbstractWriter
 <IfModule mod_authz_core.c>
 	Require all denied
 </IfModule>
-			';
+END;
             GeneralUtility::writeFile($htaccessFile, $htaccessContent);
         }
     }

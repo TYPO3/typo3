@@ -103,4 +103,16 @@ class LogLevel extends \Psr\Log\LogLevel
 
         return (int)$level;
     }
+
+    /**
+     * Returns a list of all log levels at least as severe as the specified level.
+     *
+     * @param int|string $level
+     * @return array<string>
+     */
+    public static function atLeast($level): array
+    {
+        $level = self::normalizeLevel($level);
+        return array_filter(self::$levels, static fn ($intLevel) => $intLevel <= $level, ARRAY_FILTER_USE_KEY);
+    }
 }

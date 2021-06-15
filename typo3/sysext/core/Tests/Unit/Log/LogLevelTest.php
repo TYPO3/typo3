@@ -76,4 +76,47 @@ class LogLevelTest extends UnitTestCase
     {
         self::assertEquals(7, LogLevel::normalizeLevel('debug'));
     }
+
+    public function atLeastReturnsCorrectListOfLevelsDataProvider(): array
+    {
+        return [
+            'debug and up' => [
+                LogLevel::DEBUG,
+                [
+                    'emergency',
+                    'alert',
+                    'critical',
+                    'error',
+                    'warning',
+                    'notice',
+                    'info',
+                    'debug',
+                ]
+            ],
+            'error and up' => [
+                LogLevel::ERROR,
+                [
+                    'emergency',
+                    'alert',
+                    'critical',
+                    'error',
+                ]
+            ],
+            'emergency only' => [
+                LogLevel::EMERGENCY,
+                [
+                    'emergency',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider atLeastReturnsCorrectListOfLevelsDataProvider
+     */
+    public function atLeastReturnsCorrectListOfLevels(string $level, array $expected): void
+    {
+        self::assertSame($expected, LogLevel::atLeast($level));
+    }
 }

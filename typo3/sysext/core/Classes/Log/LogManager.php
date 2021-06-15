@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Log;
 
 use Psr\Log\InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -40,24 +41,18 @@ class LogManager implements SingletonInterface, LogManagerInterface
 
     /**
      * Loggers to retrieve them for repeated use.
-     *
-     * @var array
      */
-    protected $loggers = [];
+    protected array $loggers = [];
 
     /**
      * Default / global / root logger.
-     *
-     * @var \TYPO3\CMS\Core\Log\Logger
      */
-    protected $rootLogger;
+    protected Logger $rootLogger;
 
     /**
      * Unique ID of the request
-     *
-     * @var string
      */
-    protected $requestId = '';
+    protected string $requestId = '';
 
     /**
      * Constructor
@@ -89,25 +84,26 @@ class LogManager implements SingletonInterface, LogManagerInterface
      * as parameter.
      *
      * @param string $name Logger name, empty to get the global "root" logger.
-     * @return \TYPO3\CMS\Core\Log\Logger Logger with name $name
+     * @return Logger Logger with name $name
      */
-    public function getLogger($name = '')
+    public function getLogger(string $name = ''): LoggerInterface
     {
-        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-        $logger = null;
         // Transform namespaces and underscore class names to the dot-name style
         $separators = ['_', '\\'];
         $name = str_replace($separators, '.', $name);
-        if (isset($this->loggers[$name])) {
-            $logger = $this->loggers[$name];
-        } else {
-            // Lazy instantiation
-            /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-            $logger = GeneralUtility::makeInstance(Logger::class, $name, $this->requestId);
-            $this->loggers[$name] = $logger;
-            $this->setWritersForLogger($logger);
-            $this->setProcessorsForLogger($logger);
-        }
+
+        return $this->loggers[$name] ??= $this->makeLogger($name, $this->requestId);
+    }
+
+    /**
+     * Instantiates a new logger object, with the appropriate attached writers and processors.
+     */
+    protected function makeLogger(string $name, string $requestId): Logger
+    {
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+        $logger = GeneralUtility::makeInstance(Logger::class, $name, $requestId);
+        $this->setWritersForLogger($logger);
+        $this->setProcessorsForLogger($logger);
         return $logger;
     }
 
@@ -140,12 +136,10 @@ class LogManager implements SingletonInterface, LogManagerInterface
     {
         $configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
         foreach ($configuration as $severityLevel => $writer) {
+            $writer = array_filter($writer, static fn (array $options) => !($options['disabled'] ?? false));
             foreach ($writer as $logWriterClassName => $logWriterOptions) {
-                if ($logWriterOptions['disabled'] ?? false) {
-                    continue;
-                }
-                unset($logWriterOptions['disabled']);
                 try {
+                    unset($logWriterOptions['disabled']);
                     /** @var \TYPO3\CMS\Core\Log\Writer\WriterInterface $logWriter */
                     $logWriter = GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
                     $logger->addWriter($severityLevel, $logWriter);
