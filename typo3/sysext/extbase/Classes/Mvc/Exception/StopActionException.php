@@ -28,6 +28,10 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
  * continues dispatching the request or returns control to the request handler.
  *
  * See the Action Controller's forward() and redirectToUri() methods for more information.
+ *
+ * @deprecated since v11, will be removed in v12. This action shouldn't be thrown anymore:
+ * Actions that extbase-internally forward to another action should RETURN Extbase\Http\ForwardResponse
+ * instead. Actions that initiate a client redirect should RETURN a Core\Http\RedirectResponse instead.
  */
 class StopActionException extends Exception
 {
@@ -38,6 +42,9 @@ class StopActionException extends Exception
 
     public function __construct($message = '', $code = 0, \Throwable $previous = null, ResponseInterface $response = null)
     {
+        // @deprecated since v11, will be removed in v12. Can not trigger_error() here since
+        // extbase ActionController still has to use this exception for b/w compatibility.
+        // See the usages of this exception when dropping in v12.
         $this->response = $response ?? new Response();
         parent::__construct($message, $code, $previous);
     }

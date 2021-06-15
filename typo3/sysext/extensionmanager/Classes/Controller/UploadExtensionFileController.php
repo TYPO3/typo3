@@ -98,7 +98,7 @@ class UploadExtensionFileController extends AbstractController
      * Extract an uploaded file and install the matching extension
      *
      * @param bool $overwrite Overwrite existing extension if TRUE
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws StopActionException @deprecated since v11, will be removed in v12
      */
     public function extractAction($overwrite = false)
     {
@@ -145,10 +145,12 @@ class UploadExtensionFileController extends AbstractController
                         FlashMessage::OK
                     );
                 } else {
+                    // @deprecated since v11, change to return $this->redirect()
                     $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
         } catch (StopActionException $exception) {
+            // @deprecated since v11, will be removed in v12: redirect() will no longer throw in v12, drop this catch block
             throw $exception;
         } catch (InvalidFileException $exception) {
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
@@ -156,6 +158,7 @@ class UploadExtensionFileController extends AbstractController
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         }
+        // @deprecated since v11, change to return $this->redirect()
         $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
             self::TRIGGER_RefreshTopbar => true

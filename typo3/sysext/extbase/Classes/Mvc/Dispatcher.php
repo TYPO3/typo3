@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
@@ -90,7 +91,14 @@ class Dispatcher implements SingletonInterface
             try {
                 $response = $controller->processRequest($request);
                 if ($response instanceof ForwardResponse) {
+                    // The controller action returned an extbase internal Forward response:
+                    // Another action should be dispatched.
                     $request = static::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                }
+                if ($response instanceof RedirectResponse) {
+                    // The controller action returned a core HTTP redirect response.
+                    // Dispatching ends here and response is sent to client.
+                    return $response;
                 }
             } catch (StopActionException $ignoredException) {
                 $response = $ignoredException->getResponse();

@@ -111,6 +111,13 @@ class RenderViewHelper extends AbstractViewHelper
         try {
             return $form->render();
         } catch (StopActionException $exception) {
+            // @deprecated since v11, will be removed in v12: StopActionException is deprecated, drop this catch block.
+            // RedirectFinisher for throws a PropagateResponseException instead which bubbles up into Middleware.
+            trigger_error(
+                'Throwing StopActionException is deprecated. If really needed, throw a (internal) PropagateResponseException'
+                . ' instead, for now. Note this is subject to change.',
+                E_USER_DEPRECATED
+            );
             return $exception->getResponse()->getBody()->getContents();
         }
     }

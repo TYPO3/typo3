@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Finishers;
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\Exception;
@@ -84,7 +84,7 @@ class RedirectFinisherTest extends UnitTestCase
         try {
             $redirectFinisherMock->execute($finisherContextProphecy->reveal());
             self::fail('RedirectFinisher did not throw expected exception.');
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (StopActionException $e) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (PropagateResponseException $e) {
             $response = $e->getResponse();
             self::assertSame($uriPrefix . $expectedPage, $response->getHeader('Location')[0]);
         }

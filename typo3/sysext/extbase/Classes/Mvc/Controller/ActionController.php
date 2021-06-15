@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -946,9 +947,6 @@ abstract class ActionController implements ControllerInterface
      *
      * Redirect will be sent to the client which then performs another request to the new URI.
      *
-     * NOTE: This method only supports web requests and will thrown an exception
-     * if used with other request types.
-     *
      * @param string $actionName Name of the action to forward to
      * @param string|null $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
      * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
@@ -956,9 +954,10 @@ abstract class ActionController implements ControllerInterface
      * @param int|null $pageUid Target page uid. If NULL, the current page uid is used
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @throws StopActionException
+     * @throws StopActionException deprecated since TYPO3 11.0, method will RETURN a Core\Http\RedirectResponse instead of throwing in v12
+     * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303)
+    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): void
     {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
@@ -977,24 +976,17 @@ abstract class ActionController implements ControllerInterface
     /**
      * Redirects the web request to another uri.
      *
-     * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
-     *
      * @param mixed $uri A string representation of a URI
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
-     * @throws StopActionException
+     * @throws StopActionException deprecated since TYPO3 11.0, will be removed in 12.0
+     * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
-    protected function redirectToUri($uri, $_ = null, $statusCode = 303)
+    protected function redirectToUri($uri, $_ = null, $statusCode = 303): void
     {
         $uri = $this->addBaseUriIfNecessary($uri);
-        $response = new HtmlResponse(
-            '',
-            $statusCode,
-            [
-                'Location' => (string)$uri
-            ]
-        );
-
+        $response = new RedirectResponse($uri, $statusCode);
+        // @deprecated since v11, will be removed in v12. RETURN the response instead. See Dispatcher class, too.
         throw new StopActionException('redirectToUri', 1476045828, null, $response);
     }
 

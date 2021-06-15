@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -37,7 +36,6 @@ class RedirectFinisher extends AbstractFinisher
     protected $defaultOptions = [
         'pageUid' => 1,
         'additionalParameters' => '',
-        'delay' => 0,
         'statusCode' => 303,
     ];
 
@@ -45,11 +43,6 @@ class RedirectFinisher extends AbstractFinisher
      * @var \TYPO3\CMS\Extbase\Mvc\Request
      */
     protected $request;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $response;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
@@ -64,7 +57,6 @@ class RedirectFinisher extends AbstractFinisher
     {
         $formRuntime = $this->finisherContext->getFormRuntime();
         $this->request = $formRuntime->getRequest();
-        $this->response = $formRuntime->getResponse();
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->uriBuilder->setRequest($this->request);
 
@@ -73,11 +65,10 @@ class RedirectFinisher extends AbstractFinisher
         $additionalParameters = $this->parseOption('additionalParameters');
         $additionalParameters = is_string($additionalParameters) ? $additionalParameters : '';
         $additionalParameters = '&' . ltrim($additionalParameters, '&');
-        $delay = (int)$this->parseOption('delay');
         $statusCode = (int)$this->parseOption('statusCode');
 
         $this->finisherContext->cancel();
-        $this->redirect($pageUid, $additionalParameters, $delay, $statusCode);
+        $this->redirect($pageUid, $additionalParameters, $statusCode);
     }
 
     /**
@@ -90,18 +81,17 @@ class RedirectFinisher extends AbstractFinisher
      *
      * @param int $pageUid Target page uid. If NULL, the current page uid is used
      * @param string $additionalParameters
-     * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @see forward()
      */
-    protected function redirect(int $pageUid = 1, string $additionalParameters = '', int $delay = 0, int $statusCode = 303)
+    protected function redirect(int $pageUid = 1, string $additionalParameters = '', int $statusCode = 303)
     {
         $typolinkConfiguration = [
             'parameter' => $pageUid,
             'additionalParams' => $additionalParameters,
         ];
         $redirectUri = $this->getTypoScriptFrontendController()->cObj->typoLink_URL($typolinkConfiguration);
-        $this->redirectToUri($redirectUri, $delay, $statusCode);
+        $this->redirectToUri($redirectUri, $statusCode);
     }
 
     /**
@@ -110,25 +100,18 @@ class RedirectFinisher extends AbstractFinisher
      * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
      *
      * @param string $uri A string representation of a URI
-     * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @throws StopActionException
+     * @throws PropagateResponseException
      */
-    protected function redirectToUri(string $uri, int $delay = 0, int $statusCode = 303)
+    protected function redirectToUri(string $uri, int $statusCode = 303)
     {
         $uri = $this->addBaseUriIfNecessary($uri);
-        $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-
-        $body = new Stream('php://temp', 'r+');
-        $body->write('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-        $body->rewind();
-
-        $this->response = $this->response
-            ->withBody($body)
-            ->withStatus($statusCode)
-            ->withHeader('Location', (string)$uri)
-        ;
-        throw new StopActionException('redirectToUri', 1477070964, null, $this->response);
+        $response = new RedirectResponse($uri, $statusCode);
+        // End processing and dispatching by throwing a PropagateResponseException with our response.
+        // @todo: Should be changed to *return* a response instead, but this requires the ContentObjectRender
+        // @todo: to deal with responses instead of strings, if the form is used in a fluid template rendered by the
+        // @todo: FluidTemplateContentObject and the extbase bootstrap isn't used.
+        throw new PropagateResponseException($response, 1477070964);
     }
 
     /**
