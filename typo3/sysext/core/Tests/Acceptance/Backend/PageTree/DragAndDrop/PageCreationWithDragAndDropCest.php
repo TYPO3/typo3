@@ -48,6 +48,8 @@ class PageCreationWithDragAndDropCest
         $I->waitForElement(static::$treeNode, 5);
         $I->waitForElement(static::$dragNode, 5);
         $this->pageTree->openPath(['styleguide TCA demo']);
+        // Wait until DOM actually rendered everything
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
     }
 
     /**
