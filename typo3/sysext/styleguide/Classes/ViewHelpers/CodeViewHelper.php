@@ -59,7 +59,7 @@ class CodeViewHelper extends AbstractViewHelper
         $indentSize = strlen($lines[0]) - strlen(ltrim($lines[0]));
         $content = '';
         foreach ($lines as $line) {
-            $tmp = substr($line, $indentSize);
+            $tmp = substr($line, $indentSize) ?: '';
             $spaces = strlen($tmp) - strlen(ltrim($tmp));
             $content .= str_repeat('  ', $spaces) . ltrim($line) . chr(10);
         }

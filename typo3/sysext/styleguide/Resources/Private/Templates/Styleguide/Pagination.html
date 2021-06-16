@@ -1,0 +1,205 @@
+{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
+{namespace belog=TYPO3\CMS\Belog\ViewHelpers}
+<f:layout name="Default"/>
+
+<f:section name="content">
+    <h1>
+        <f:translate key="pagination"/>
+    </h1>
+
+    <h3>Simple Filter</h3>
+
+    <p class="lead">This is not a working example! It shows only the basic HTML structure to use.</p>
+
+    <sg:code language="html">
+        <div class="row row-cols-auto align-items-end g-3">
+
+            <div class="col">
+                <label for="belog-users" class="form-label">User</label>
+                <f:form.select
+                    property="userOrGroup"
+                    options="{userGroups}"
+                    class="form-select"
+                    id="belog-users"
+                />
+            </div>
+
+            <div class="col">
+                <label for="belog-max" class="form-label">Max</label>
+                <belog:form.translateLabelSelect
+                    property="number"
+                    options="{0: '50', 1: '100', 2: '200'}"
+                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                    class="form-select"
+                    id="belog-max"
+                />
+            </div>
+            <div class="col">
+                <label for="belog-workspaces" class="form-label">Workspace</label>
+                <f:form.select
+                    property="workspaceUid"
+                    options="{'-99': '[Any]' , 0: 'LIVE'}"
+                    class="form-select"
+                    id="belog-workspaces"
+                />
+            </div>
+
+            <div class="col">
+                <label for="belog-action" class="form-label">Action</label>
+                <belog:form.translateLabelSelect
+                    property="action"
+                    options="{0: '[Any]', 1: 'Database', 2: 'File', 3: 'Cache', 4: 'Settings'}"
+                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                    class="form-select"
+                    id="belog-action"
+                />
+            </div>
+
+            <div class="col">
+                <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
+
+                <div class="input-group">
+                    <f:form.textfield
+                        name="manualDateStart"
+                        value="{f:format.date(date: 'now')}"
+                    id="manualDateStart"
+                    additionalAttributes="{'autocomplete': 'off'}"
+                    class="form-control t3js-datetimepicker t3js-clearable"
+                    data="{date-type: 'datetime'}"
+                    />
+                    <label class="mb-0 btn btn-default" for="manualDateStart">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
+                <div class="input-group">
+                    <f:form.textfield
+                        name="manualDateStop"
+                        value="{f:format.date(date: 'now', format: 'H:i d-m-Y')}"
+                        additionalAttributes="{'autocomplete': 'off'}"
+                        id="manualDateStop"
+                        class="form-control t3js-datetimepicker t3js-clearable"
+                        data="{date-type: 'datetime'}"
+                    />
+                    <label class="mb-0 btn btn-default" for="manualDateStop">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">Filter</f:form.button>
+                <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">Reset</f:form.button>
+            </div>
+        </div>
+    </sg:code>
+
+    <h3>Simple Pagination</h3>
+
+    <sg:code language="html">
+        <nav class="pagination-wrap">
+            <ul class="pagination">
+                <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
+                    <f:then>
+                        <li class="page-item">
+                            <f:link.action arguments="{page: 1}" action="pagination" title="{f:translate(key:'pagination.first')}" class="page-link">
+                                <core:icon identifier="actions-view-paging-first" />
+                            </f:link.action>
+                        </li>
+                        <li class="page-item">
+                            <f:link.action arguments="{page: pagination.previousPageNumber}" action="pagination" title="{f:translate(key:'pagination.previous')}" class="page-link">
+                                <core:icon identifier="actions-view-paging-previous" />
+                            </f:link.action>
+                        </li>
+                    </f:then>
+                    <f:else>
+                        <li class="page-item disabled">
+                    <span class="page-link">
+                        <core:icon identifier="actions-view-paging-first" />
+                    </span>
+                        </li>
+                        <li class="page-item disabled">
+                    <span class="page-link">
+                        <core:icon identifier="actions-view-paging-previous" />
+                    </span>
+                        </li>
+                    </f:else>
+                </f:if>
+                <li class="page-item">
+            <span class="page-link">
+                <f:translate key="pagination.forms" /> {pagination.startRecordNumber} - {pagination.endRecordNumber}
+            </span>
+                </li>
+                <li class="page-item">
+            <span class="page-link">
+                <f:translate key="pagination.page" />
+                <form style="display:inline;"
+                      data-global-event="submit"
+                      data-action-navigate="$form=~s/$value/"
+                      data-navigate-value="{f:uri.action(action: 'pagination', arguments:'{page: \'$[value]\'}')}"
+                      data-value-selector="input[name='paginator-target-page']">
+                    <input
+                        min="{pagination.firstPageNumber}"
+                        max="{pagination.lastPageNumber}"
+                        data-number-of-pages="{paginator.numberOfPages}"
+                        name="paginator-target-page"
+                        class="form-control form-control-sm paginator-input"
+                        size="5"
+                        value="{paginator.currentPageNumber}"
+                        type="number"/>
+                </form>
+                / {pagination.lastPageNumber}
+            </span>
+                </li>
+                <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
+                    <f:then>
+                        <li class="page-item">
+                            <f:link.action arguments="{page: pagination.nextPageNumber}" action="pagination" title="{f:translate(key:'pagination.next')}" class="page-link">
+                                <core:icon identifier="actions-view-paging-next" />
+                            </f:link.action>
+                        </li>
+                        <li class="page-item">
+                            <f:link.action arguments="{page: pagination.lastPageNumber}" action="pagination" title="{f:translate(key:'pagination.last')}" class="page-link">
+                                <core:icon identifier="actions-view-paging-last" />
+                            </f:link.action>
+                        </li>
+                    </f:then>
+                    <f:else>
+                        <li class="page-item disabled">
+                    <span class="page-link">
+                        <core:icon identifier="actions-view-paging-next" />
+                    </span>
+                        </li>
+                        <li class="page-item disabled">
+                    <span class="page-link">
+                        <core:icon identifier="actions-view-paging-last" />
+                    </span>
+                        </li>
+                    </f:else>
+                </f:if>
+                <li class="page-item">
+                    <f:link.action arguments="{page: paginator.currentPageNumber}" action="pagination" title="{f:translate(key:'pagination.refresh')}" class="page-link">
+                        <core:icon identifier="actions-refresh" />
+                    </f:link.action>
+                </li>
+            </ul>
+        </nav>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <th>
+                    Codenames
+                </th>
+            </thead>
+            <tbody>
+                <f:for each="{paginator.paginatedItems}" as="item">
+                    <tr><td>{item}</td></tr>
+                </f:for>
+            </tbody>
+        </table>
+    </sg:code>
+
+</f:section>

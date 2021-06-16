@@ -93,6 +93,9 @@
 			<trans-unit id="accordion" xml:space="preserve">
 				<source>Accordion</source>
 			</trans-unit>
+			<trans-unit id="pagination" xml:space="preserve">
+				<source>Pagination / Filter</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -9,7 +9,7 @@ defined('TYPO3') or die();
     'styleguide',
     '',
     [
-        \TYPO3\CMS\Styleguide\Controller\StyleguideController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion'
+        \TYPO3\CMS\Styleguide\Controller\StyleguideController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion, pagination'
     ],
     [
         'access' => 'user,group',
