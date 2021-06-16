@@ -20,6 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend\PhpError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**
  * Trait used for test classes that want to set up (= write) site configuration files.
@@ -227,5 +231,70 @@ trait SiteBasedTestTrait
             );
         }
         return static::LANGUAGE_PRESETS[$identifier];
+    }
+
+    /**
+     * @param InternalRequest $request
+     * @param AbstractInstruction ...$instructions
+     * @return InternalRequest
+     *
+     * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
+     */
+    protected function applyInstructions(InternalRequest $request, AbstractInstruction ...$instructions): InternalRequest
+    {
+        $modifiedInstructions = [];
+
+        foreach ($instructions as $instruction) {
+            $identifier = $instruction->getIdentifier();
+            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) !== null) {
+                $modifiedInstructions[$identifier] = $this->mergeInstruction(
+                    $modifiedInstructions[$identifier] ?? $request->getInstruction($identifier),
+                    $instruction
+                );
+            } else {
+                $modifiedInstructions[$identifier] = $instruction;
+            }
+        }
+
+        return $request->withInstructions($modifiedInstructions);
+    }
+
+    /**
+     * @param AbstractInstruction $current
+     * @param AbstractInstruction $other
+     * @return AbstractInstruction
+     */
+    protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
+    {
+        if (get_class($current) !== get_class($other)) {
+            throw new \LogicException('Cannot merge different instruction types', 1565863174);
+        }
+
+        if ($current instanceof TypoScriptInstruction) {
+            /** @var $other TypoScriptInstruction */
+            $typoScript = array_replace_recursive(
+                $current->getTypoScript() ?? [],
+                $other->getTypoScript() ?? []
+            );
+            $constants = array_replace_recursive(
+                $current->getConstants() ?? [],
+                $other->getConstants() ?? []
+            );
+            if ($typoScript !== []) {
+                $current = $current->withTypoScript($typoScript);
+            }
+            if ($constants !== []) {
+                $current = $current->withConstants($constants);
+            }
+            return $current;
+        }
+
+        if ($current instanceof ArrayValueInstruction) {
+            /** @var $other ArrayValueInstruction */
+            $array = array_merge_recursive($current->getArray(), $other->getArray());
+            return $current->withArray($array);
+        }
+
+        return $current;
     }
 }
