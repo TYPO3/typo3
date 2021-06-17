@@ -30,10 +30,12 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -43,7 +45,6 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
-use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
@@ -795,20 +796,25 @@ abstract class ActionController implements ControllerInterface
                     base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments']))
                 );
             }
-            // todo: Remove ReferringRequest. It's only used here in this context to trigger the logic of
-            //       \TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest::setArgument() and its parent method which should then
-            //       be extracted from the request class.
-            $referringRequest = new ReferringRequest();
-            $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
-        }
-
-        if ($referringRequest !== null) {
-            return (new ForwardResponse((string)$referringRequest->getControllerActionName()))
-                ->withControllerName((string)$referringRequest->getControllerName())
-                ->withExtensionName((string)$referringRequest->getControllerExtensionName())
-                ->withArguments($referringRequest->getArguments())
-                ->withArgumentsValidationResult($this->arguments->validate())
-            ;
+            $replacedArguments = array_replace_recursive($arguments, $referrerArray);
+            $nonExtbaseBaseArguments = [];
+            foreach ($replacedArguments as $argumentName => $argumentValue) {
+                if (!is_string($argumentName) || $argumentName === '') {
+                    throw new InvalidArgumentNameException('Invalid argument name.', 1623940985);
+                }
+                if (StringUtility::beginsWith($argumentName, '__')
+                    || in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format'], true)
+                ) {
+                    // Don't handle internalArguments here, not needed for forwardResponse()
+                    continue;
+                }
+                $nonExtbaseBaseArguments[$argumentName] = $argumentValue;
+            }
+            return (new ForwardResponse((string)($replacedArguments['@action'] ?? 'index')))
+                ->withControllerName((string)($replacedArguments['@controller'] ?? 'Standard'))
+                ->withExtensionName((string)($replacedArguments['@extension'] ?? ''))
+                ->withArguments($nonExtbaseBaseArguments)
+                ->withArgumentsValidationResult($this->arguments->validate());
         }
 
         return null;

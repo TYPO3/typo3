@@ -274,6 +274,7 @@ class Arguments extends \ArrayObject
         foreach ($this as $argument) {
             $argumentValidationResults = $argument->validate();
             if ($argumentValidationResults === null) {
+                // @todo: Obsolete?! "validate(): Result", can't be null!
                 continue;
             }
             $results->forProperty($argument->getName())->merge($argumentValidationResults);

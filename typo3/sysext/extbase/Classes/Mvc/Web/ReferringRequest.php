@@ -19,9 +19,21 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 
 /**
  * Represents a referring web request.
+ *
+ * @deprecated since v11, will be removed in v12. Create a ForwardResponse instead, see ActionController->forwardToReferringRequest()
  */
 class ReferringRequest extends Request
 {
+    /**
+     * @param string $controllerClassName
+     */
+    public function __construct(string $controllerClassName = '')
+    {
+        // @todo: Move to parent::__construct() in case Request is deprecated in v11, too, otherwise drop this todo.
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12, use ForwardResponse instead, see ActionController->forwardToReferringRequest().', E_USER_DEPRECATED);
+        parent::__construct($controllerClassName);
+    }
+
     /**
      * Sets the value of the specified argument
      *
