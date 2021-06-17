@@ -49,10 +49,10 @@ class UserFileMountService
             $this->getBackendUserAuthentication()->getFileStorages()
         );
         // If working for sys_filemounts table
-        $storageUid = (int)$PA['row']['base'][0];
+        $storageUid = (int)($PA['row']['base'][0] ?? 0);
         if (!$storageUid) {
             // If working for sys_file_collection table
-            $storageUid = (int)$PA['row']['storage'][0];
+            $storageUid = (int)($PA['row']['storage'][0] ?? 0);
         }
         if ($storageUid > 0 && in_array($storageUid, $allowedStorageIds, true)) {
             /** @var StorageRepository $storageRepository */

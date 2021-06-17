@@ -981,6 +981,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.new" resname="cm.new">
 				<source>New</source>
 			</trans-unit>
+			<trans-unit id="cm.newFilemount" resname="cm.newFilemount">
+				<source>New Filemount</source>
+			</trans-unit>
 			<trans-unit id="cm.pasteinto" resname="cm.pasteinto">
 				<source>Paste into</source>
 			</trans-unit>

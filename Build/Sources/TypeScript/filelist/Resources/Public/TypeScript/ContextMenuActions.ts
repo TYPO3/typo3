@@ -69,6 +69,20 @@ class ContextMenuActions {
     );
   }
 
+  public static createFilemount(table: string, uid: string): void {
+    const parts: Array<string> = uid.split(':');
+    if (parts.length !== 2) {
+      return;
+    }
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.FormEngine.moduleUrl
+      + '&edit[sys_filemounts][0]=new'
+      + '&defVals[sys_filemounts][base]=' + encodeURIComponent(parts[0])
+      + '&defVals[sys_filemounts][path]=' + encodeURIComponent(parts[1])
+      + '&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  }
+
   public static deleteFile(table: string, uid: string): void {
     const $anchorElement = $(this);
     const performDelete = () => {

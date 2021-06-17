@@ -60,6 +60,11 @@ class FileProvider extends AbstractProvider
             'iconIdentifier' => 'actions-document-new',
             'callbackAction' => 'createFile'
         ],
+        'newFileMount' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.newFilemount',
+            'iconIdentifier' => 'mimetypes-x-sys_filemounts',
+            'callbackAction' => 'createFilemount'
+        ],
         'info' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
@@ -154,6 +159,9 @@ class FileProvider extends AbstractProvider
             case 'new':
                 $canRender = $this->canCreateNew();
                 break;
+            case 'newFileMount':
+                $canRender = $this->canCreateNewFilemount();
+                break;
             case 'pasteInto':
                 $canRender = $this->canBePastedInto();
                 break;
@@ -221,6 +229,16 @@ class FileProvider extends AbstractProvider
     protected function canCreateNew(): bool
     {
         return $this->isFolder() && $this->record->checkActionPermission('write');
+    }
+
+    /**
+     * New filemounts can only be created for readable folders by admins
+     *
+     * @return bool
+     */
+    protected function canCreateNewFilemount(): bool
+    {
+        return $this->isFolder() && $this->record->checkActionPermission('read') && $this->backendUser->isAdmin();
     }
 
     /**
