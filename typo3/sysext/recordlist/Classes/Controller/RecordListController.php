@@ -20,7 +20,6 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -42,11 +41,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Event\RenderAdditionalContentToRecordListEvent;
-use TYPO3\CMS\Recordlist\RecordList\CsvExportRecordList;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
@@ -137,7 +134,6 @@ class RecordListController
         // Clean up settings:
         $MOD_SETTINGS = BackendUtility::getModuleData(['bigControlPanel' => '', 'clipBoard' => ''], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
         // main
-        $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         // Loading current page record and checking access:
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
@@ -172,7 +168,6 @@ class RecordListController
             $MOD_SETTINGS['clipBoard'] = true;
         }
         $clipboard = $this->initializeClipboard($request, (bool)$MOD_SETTINGS['clipBoard']);
-        $csvExport = (bool)($request->getQueryParams()['csv'] ?? false);
         $enableListing = $access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '');
 
         // Initialize the dblist object:
@@ -196,12 +191,6 @@ class RecordListController
         if (isset($this->modTSconfig['tableDisplayOrder.'])) {
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $dblist->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
-        }
-
-        // Return early if CSV Export is requested
-        if ($enableListing && $csvExport) {
-            $dblist->start($this->id, $table, 0, $search_field, $search_levels);
-            return $this->csvExportAction($dblist, $table);
         }
 
         $dblist->clipObj = $clipboard;
@@ -548,13 +537,6 @@ class RecordListController
                 || (isset($this->modTSconfig['noExportRecordsLinks'])
                     && !$this->modTSconfig['noExportRecordsLinks']))
         ) {
-            // CSV
-            $csvButton = $buttonBar->makeLinkButton()
-                ->setHref($listUrl . '&csv=1')
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.csv'))
-                ->setIcon($this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL))
-                ->setShowLabelText(true);
-            $buttonBar->addButton($csvButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
                 $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export');
@@ -733,48 +715,11 @@ class RecordListController
         ));
     }
 
-    protected function csvExportAction(DatabaseRecordList $recordList, string $table): ResponseInterface
-    {
-        $user = $this->getBackendUserAuthentication();
-        $csvExporter = GeneralUtility::makeInstance(
-            CsvExportRecordList::class,
-            $recordList,
-            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
-        );
-        // Ensure the fields chosen by the backend editor are selected / displayed
-        $recordList->setFields = $user->getModuleData('list/displayFields');
-        $columnsToRender = $recordList->getColumnsToRender($table, false);
-        $headerRow = $csvExporter->getHeaderRow($columnsToRender);
-        $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*' || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $table);
-        $records = $csvExporter->getRecords($table, $this->id, $columnsToRender, $user, $hideTranslations);
-        return $this->csvResponse(
-            $table . '_' . date('dmy-Hi') . '.csv',
-            $records,
-            $headerRow
-        );
-    }
-
     protected function htmlResponse(string $html): ResponseInterface
     {
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8');
         $response->getBody()->write($html);
-        return $response;
-    }
-
-    protected function csvResponse($fileName, array $data, array $headerRow = []): ResponseInterface
-    {
-        $response = $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'application/octet-stream')
-            ->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
-
-        $csvDelimiter = $this->modTSconfig['csvDelimiter'] ?? ',';
-        $csvQuote = $this->modTSconfig['csvQuote'] ?? '"';
-        $result[] = CsvUtility::csvValues($headerRow, $csvDelimiter, $csvQuote);
-        foreach ($data as $csvRow) {
-            $result[] = CsvUtility::csvValues($csvRow, $csvDelimiter, $csvQuote);
-        }
-        $response->getBody()->write(implode(CRLF, $result));
         return $response;
     }
 

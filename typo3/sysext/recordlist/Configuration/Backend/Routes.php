@@ -8,4 +8,8 @@ return [
         'path' => '/wizard/record/browse',
         'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserController::class . '::mainAction'
     ],
+    'record_export' => [
+        'path' => '/records/export',
+        'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::handleRequest'
+    ],
 ];

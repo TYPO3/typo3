@@ -648,6 +648,8 @@ class DatabaseRecordList
             }
             // Show the select box
             $tableHeader .= $this->columnSelector($table);
+            // Create the CSV Export button
+            $tableHeader .= $this->createExportButtonForTable($table, $totalItems);
         }
         // Render table rows only if in multi table view or if in single table view
         $rowOutput = '';
@@ -768,6 +770,26 @@ class DatabaseRecordList
                 </form>
             </div>
         ';
+    }
+
+    protected function createExportButtonForTable(string $table, int $totalItems): string
+    {
+        // Do not render the export button for page translations or in case export is disabled
+        if (($this->modTSconfig['noExportRecordsLinks'] ?? false) || $this->showOnlyTranslatedRecords) {
+            return '';
+        }
+
+        $downloadCsvFileLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.csv');
+        $exportButtonLabel = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:csvExport');
+        $downloadCsvLabel = sprintf($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecord' : 'exportRecords')), $totalItems);
+        $exportUrl = $this->uriBuilder->buildUriFromRoute('record_export', ['id' => $this->id, 'table' => $table, 'search_field' => $this->searchString, 'search_levels' => $this->searchLevels]);
+
+        return '<div class="pull-right"><a href="' . htmlspecialchars($exportUrl) . '"'
+            . ' class="btn btn-default btn-sm me-2"'
+            . ' title="' . htmlspecialchars($downloadCsvLabel) . '"'
+            . ' aria-label="' . htmlspecialchars($downloadCsvFileLabel) . '"'
+            . ' download>'
+            . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($exportButtonLabel) . '</a></div>';
     }
 
     /**

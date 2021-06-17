@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:recordlist/Resources/Private/Language/locallang_export.xlf" date="2012-06-17T10:22:33Z" product-name="recordlist">
+		<header/>
+		<body>
+			<trans-unit id="exportRecord" resname="exportRecord">
+				<source>Export %d record</source>
+			</trans-unit>
+			<trans-unit id="exportRecords" resname="exportRecords">
+				<source>Export %d records</source>
+			</trans-unit>
+			<trans-unit id="csvExport" resname="csvExport">
+				<source>CSV Export</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
