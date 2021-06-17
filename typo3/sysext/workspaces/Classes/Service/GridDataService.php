@@ -138,7 +138,7 @@ class GridDataService implements LoggerAwareInterface
     {
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
-        $swapStage = $workspaceAccess['publish_access'] & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
+        $swapStage = ($workspaceAccess['publish_access'] ?? 0) & 1 ? StagesService::STAGE_PUBLISH_ID : 0;
         $swapAccess = $backendUser->workspacePublishAccess($backendUser->workspace);
         $this->initializeWorkspacesCachingFramework();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -177,7 +177,7 @@ class GridDataService implements LoggerAwareInterface
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
                     [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
                     $calculatedT3verOid = $record['t3ver_oid'];
-                    if ((int)$record['t3ver_state'] === VersionState::NEW_PLACEHOLDER) {
+                    if ((int)($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                         // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
                         // live counterpart, but the publish methods later need a live uid to publish to. We thus
                         // use the uid as t3ver_oid here to be transparent on javascript side.
@@ -198,8 +198,8 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
                     $versionArray['value_nextStage'] = (int)$tempStage['uid'];
                     $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
-                    $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
-                    $versionArray['value_prevStage'] = (int)$tempStage['uid'];
+                    $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid'] ?? 0));
+                    $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
                     $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                     $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
                     $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
@@ -527,7 +527,7 @@ class GridDataService implements LoggerAwareInterface
     protected function isFilterTextInVisibleColumns($filterText, array $versionArray)
     {
         $backendUser = $this->getBackendUser();
-        if (is_array($backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'])) {
+        if (is_array($backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'] ?? false)) {
             $visibleColumns = $backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'];
         } else {
             $visibleColumns = [

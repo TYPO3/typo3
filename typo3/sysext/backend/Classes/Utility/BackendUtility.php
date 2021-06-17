@@ -1975,7 +1975,7 @@ class BackendUtility
         $fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, true, false, $uid, $forceResult, $pid);
         if (!isset($fVnew)) {
             if (is_array($GLOBALS['TCA'][$table])) {
-                if ($fN == $GLOBALS['TCA'][$table]['ctrl']['tstamp'] || $fN == $GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+                if ($fN == ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? 0) || $fN == ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? 0)) {
                     $fVnew = self::datetime((int)$fV);
                 } elseif ($fN === 'pid') {
                     // Fetches the path with no regard to the users permissions to select pages.

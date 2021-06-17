@@ -60,7 +60,7 @@ class MassActionHandler
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
         if ($massActionsEnabled) {
             $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
-            if ($publishAccess && !($backendUser->workspaceRec['publish_access'] & 1)) {
+            if ($publishAccess && !(($backendUser->workspaceRec['publish_access'] ?? 0) & 1)) {
                 $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_publish')];
             }
             if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {

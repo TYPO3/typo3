@@ -52,7 +52,8 @@ class BackendCoreEnvironment extends BackendEnvironment
             'sys_note',
             'scheduler',
             'tstemplate',
-            'lowlevel'
+            'lowlevel',
+            'workspaces'
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide'
@@ -64,6 +65,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/sys_category.xml',
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
             'typo3/sysext/core/Tests/Acceptance/Fixtures/pages.xml',
+            'typo3/sysext/core/Tests/Acceptance/Fixtures/workspaces.xml',
         ],
         'configurationToUseInTestInstance' => [
             'MAIL' => [

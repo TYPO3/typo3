@@ -1085,10 +1085,10 @@ class DataHandler implements LoggerAwareInterface
                 $fieldArray = $this->overrideFieldArray($table, $fieldArray);
                 // Setting system fields
                 if ($status === 'new') {
-                    if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+                    if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
                     }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
+                    if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']] = $this->userid;
                     }
                 } elseif ($this->checkSimilar) {

@@ -42,7 +42,7 @@ class AjaxController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $workspaceId = (int)($parsedBody['workspaceId'] ?? $queryParams['workspaceId']);
-        $pageId = (int)($parsedBody['pageId'] ?? $queryParams['pageId']);
+        $pageId = (int)($parsedBody['pageId'] ?? $queryParams['pageId'] ?? 0);
         $finalPageUid = 0;
         $originalPageId = $pageId;
 

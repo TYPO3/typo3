@@ -135,8 +135,8 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
         if (is_array($cacheConfigurations)) {
             foreach ($cacheConfigurations as $cacheConfiguration) {
-                $backend = $cacheConfiguration['backend'];
-                if (!in_array($backend, $backends)) {
+                $backend = (string)($cacheConfiguration['backend'] ?? '');
+                if (!in_array($backend, $backends, true)) {
                     $backends[] = $backend;
                 }
             }

@@ -2332,7 +2332,7 @@ class EditDocumentController
                             $ids = GeneralUtility::trimExplode(',', $cKey, true);
                             foreach ($ids as $idKey => $theUid) {
                                 if (is_array($mapArray)) {
-                                    if ($mapArray[$table][$theUid]) {
+                                    if ($mapArray[$table][$theUid] ?? false) {
                                         $ids[$idKey] = $mapArray[$table][$theUid];
                                     }
                                 } else {
@@ -2375,7 +2375,7 @@ class EditDocumentController
                 // Check for versioning support of the table:
                 if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.
-                    if ($reqRecord['t3ver_oid'] > 0 || (int)$reqRecord['t3ver_state'] === VersionState::NEW_PLACEHOLDER) {
+                    if ($reqRecord['t3ver_oid'] > 0 || (int)($reqRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
                         // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)

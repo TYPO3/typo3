@@ -215,7 +215,7 @@ class DataHandlerHook
                 $id = $record['uid'];
             }
         }
-        $recordVersionState = VersionState::cast($record['t3ver_state']);
+        $recordVersionState = VersionState::cast($record['t3ver_state'] ?? 0);
         // Look, if record is an offline version, then delete directly:
         if ((int)($record['t3ver_oid'] ?? 0) > 0) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {

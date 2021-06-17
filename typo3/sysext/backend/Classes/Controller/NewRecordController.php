@@ -243,9 +243,9 @@ class NewRecordController
             $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         }
         // If a page-record was returned, the user had read-access to the page.
-        if ($this->pageinfo['uid']) {
+        if ($this->pageinfo['uid'] ?? false) {
             // Get record of parent page
-            $this->pidInfo = BackendUtility::getRecord('pages', $this->pageinfo['pid']) ?: [];
+            $this->pidInfo = BackendUtility::getRecord('pages', ($this->pageinfo['pid'] ?? 0)) ?? [];
             // Checking the permissions for the user with regard to the parent page: Can he create new pages, new
             // content record, new page after?
             if ($beUser->doesUserHaveAccess($this->pageinfo, 8)) {
@@ -282,11 +282,11 @@ class NewRecordController
         if (!empty($this->pageinfo['uid']) || $this->getBackendUserAuthentication()->isAdmin()) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
             // Acquiring TSconfig for this module/current page:
-            $this->web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'])['mod.']['web_list.'] ?? [];
+            $this->web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0)['mod.']['web_list.'] ?? [];
             $this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['allowedNewTables'] ?? '', true);
             $this->deniedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['deniedNewTables'] ?? '', true);
             // Acquiring TSconfig for this module/parent page:
-            $this->web_list_modTSconfig_pid = BackendUtility::getPagesTSconfig($this->pageinfo['pid'])['mod.']['web_list.'] ?? [];
+            $this->web_list_modTSconfig_pid = BackendUtility::getPagesTSconfig($this->pageinfo['pid'] ?? 0)['mod.']['web_list.'] ?? [];
             $this->allowedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['allowedNewTables'] ?? '', true);
             $this->deniedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['deniedNewTables'] ?? '', true);
             // More init:
@@ -363,7 +363,7 @@ class NewRecordController
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
 
-        if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
+        if ($this->pageinfo['uid'] ?? false) {
             // View
             $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
             if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {

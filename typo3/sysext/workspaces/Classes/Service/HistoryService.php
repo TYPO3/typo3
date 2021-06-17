@@ -109,8 +109,10 @@ class HistoryService implements SingletonInterface
     {
         $differences = [];
         $tableName = $entry['tablename'];
-        if (is_array($entry['newRecord'])) {
+        if (is_array($entry['newRecord'] ?? false)) {
             $fields = array_keys($entry['newRecord']);
+
+            /** @var array<int, string> $fields */
             foreach ($fields as $field) {
                 if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
                     // Create diff-result:
@@ -120,7 +122,7 @@ class HistoryService implements SingletonInterface
                     );
                     if (!empty($fieldDifferences)) {
                         $differences[] = [
-                            'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, $field)),
+                            'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
                             'html' => nl2br(trim($fieldDifferences)),
                         ];
                     }
