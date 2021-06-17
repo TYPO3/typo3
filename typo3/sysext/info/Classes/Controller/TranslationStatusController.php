@@ -185,7 +185,6 @@ class TranslationStatusController
         $titleLen = $this->getBackendUser()->uc['titleLen'];
         // Put together the TREE:
         $output = '';
-        $newOL_js = [];
         $langRecUids = [];
 
         $userTsConfig = $this->getBackendUser()->getTSConfig();
@@ -295,13 +294,6 @@ class TranslationStatusController
                         $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
                         $info .= '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
                         $info .= '<span class="t3-icon fa"></span></label></div>';
-                        $newOL_js[$languageId] .=
-                            ' +(document.webinfoForm['
-                            . GeneralUtility::quoteJSvalue('newOL[' . $languageId . '][' . $data['row']['uid'] . ']')
-                            . '].checked ? '
-                            . GeneralUtility::quoteJSvalue('&edit[pages][' . $data['row']['uid'] . ']=new')
-                            . ' : \'\')'
-                        ;
                         $tCells[] = '<td class="' . $status . ' col-border-left">&nbsp;</td>';
                         $tCells[] = '<td class="' . $status . '">&nbsp;</td>';
                         $tCells[] = '<td class="' . $status . '">' . $info . '</td>';
@@ -349,7 +341,7 @@ class TranslationStatusController
                 // Title:
                 $headerCells[] = '<th class="col-border-left">' . htmlspecialchars($siteLanguage->getTitle()) . '</th>';
                 // Edit language overlay records:
-                if (is_array($langRecUids[$languageId])) {
+                if (is_array($langRecUids[$languageId] ?? null)) {
                     $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                         'edit' => [
                             'pages' => [

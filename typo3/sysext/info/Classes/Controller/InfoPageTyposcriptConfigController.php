@@ -378,7 +378,7 @@ class InfoPageTyposcriptConfigController
                 $line['lines'] = '';
             }
             $lines[] = $line;
-            $lines = $this->getList($pageArray[$identifier . '.'], $lines, $pageDepth + 1);
+            $lines = $this->getList($pageArray[$identifier . '.'] ?? [], $lines, $pageDepth + 1);
         }
         return $lines;
     }
