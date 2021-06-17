@@ -74,4 +74,18 @@ class HelpCest
         $I->switchToContentFrame();
         $I->see('Web Content Management System', 'h1');
     }
+
+    /**
+     * @param BackendTester $I
+     */
+    public function seeManualInHelpModule(BackendTester $I)
+    {
+        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
+        $I->canSee('TYPO3 Manual', self::$topBarModuleSelector);
+        $I->click('TYPO3 Manual', self::$topBarModuleSelector);
+        $I->switchToContentFrame();
+        $I->see('TYPO3 Inline User Manual', 'h1');
+        $I->click('TYPO3 Core', '.help-view');
+        $I->see('TYPO3 Core', 'h2');
+    }
 }
