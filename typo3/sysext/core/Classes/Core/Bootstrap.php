@@ -114,6 +114,8 @@ class Bootstrap
 
         $bootState = new \stdClass();
         $bootState->done = false;
+        // After a deprecation grace period, only one of those flag will remain, likely ->done
+        $bootState->complete = false;
         $bootState->cacheDisabled = $disableCaching;
 
         $builder = new ContainerBuilder([
@@ -145,6 +147,7 @@ class Bootstrap
 
         if ($failsafe) {
             $bootState->done = true;
+            $bootState->complete = true;
             return $container;
         }
 
@@ -155,6 +158,7 @@ class Bootstrap
         $bootState->done = true;
         static::loadBaseTca(true, $coreCache);
         static::checkEncryptionKey();
+        $bootState->complete = true;
 
         return $container;
     }

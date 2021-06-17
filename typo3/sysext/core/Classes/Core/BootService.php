@@ -123,6 +123,7 @@ class BootService
         $beUserBackup = $GLOBALS['BE_USER'] ?? null;
 
         $container->get('boot.state')->done = false;
+        $container->get('boot.state')->complete = false;
         $assetsCache = $container->get('cache.assets');
         PageRenderer::setCache($assetsCache);
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
@@ -133,6 +134,7 @@ class BootService
         $container->get('boot.state')->done = true;
         Bootstrap::loadBaseTca($allowCaching);
         Bootstrap::loadExtTables($allowCaching);
+        $container->get('boot.state')->complete = true;
 
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);
