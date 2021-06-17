@@ -27,7 +27,7 @@ use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
 /**
- * A fluid RendererInterface implementation which used to render a *FormDefinition*.
+ * A fluid RendererInterface implementation used to render a *FormDefinition*.
  *
  * This renderer is called from {@link \TYPO3\CMS\Form\Domain\Runtime\FormRuntime::render()}.
  *

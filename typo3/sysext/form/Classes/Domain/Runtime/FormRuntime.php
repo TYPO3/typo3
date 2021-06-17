@@ -21,12 +21,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Runtime;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -39,7 +41,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -76,7 +77,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * That's easy, just call render() on the FormRuntime:
  *
  * /---code php
- * $form = $formDefinition->bind($request, $response);
+ * $form = $formDefinition->bind($request);
  * $renderedForm = $form->render();
  * \---
  *
@@ -100,20 +101,24 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
+ *
+ * @internal High cohesion to FormDefinition, may change any time
+ * @todo: Declare final in v12
  */
 class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
+    protected ContainerInterface $container;
     protected ObjectManagerInterface $objectManager;
-    protected FormDefinition $formDefinition;
-    protected Request $request;
+    protected ?FormDefinition $formDefinition = null;
+    protected ?Request $request = null;
     protected ResponseInterface $response;
     protected HashService $hashService;
     protected ConfigurationManagerInterface $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Form\Domain\Runtime\FormState
+     * @var FormState
      */
     protected $formState;
 
@@ -133,7 +138,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * finishing actions need to take place. You should use $this->isAfterLastPage()
      * instead of explicitly checking for NULL.
      *
-     * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page|null
+     * @var Page|null
      */
     protected $currentPage;
 
@@ -141,7 +146,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * Reference to the page which has been shown on the last request (i.e.
      * we have to handle the submitted data from lastDisplayedPage)
      *
-     * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page
+     * @var Page
      */
     protected $lastDisplayedPage;
 
@@ -155,29 +160,41 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * Reference to the current running finisher
      *
-     * @var \TYPO3\CMS\Form\Domain\Finishers\FinisherInterface
+     * @var FinisherInterface
      */
     protected $currentFinisher;
 
-    /**
-     * @param FormDefinition $formDefinition
-     * @param Request $request
-     * @param ResponseInterface $response
-     */
-    public function __construct(FormDefinition $formDefinition, Request $request, ResponseInterface $response)
+    public function __construct(
+        ContainerInterface $container,
+        ObjectManagerInterface $objectManager,
+        ConfigurationManagerInterface $configurationManager,
+        HashService $hashService
+    ) {
+        $this->container = $container;
+        // @deprecated since v11, will be removed in v12
+        $this->objectManager = $objectManager;
+        $this->configurationManager = $configurationManager;
+        $this->hashService = $hashService;
+        $this->response = new Response();
+    }
+
+    public function setFormDefinition(FormDefinition $formDefinition)
     {
         $this->formDefinition = $formDefinition;
-        $arguments = $request->getArguments();
+    }
+
+    public function setRequest(Request $request)
+    {
         $this->request = clone $request;
+    }
+
+    public function initialize()
+    {
+        $arguments = $this->request->getArguments();
         $formIdentifier = $this->formDefinition->getIdentifier();
         if (isset($arguments[$formIdentifier])) {
             $this->request->setArguments($arguments[$formIdentifier]);
         }
-        $this->response = $response;
-
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $this->hashService = GeneralUtility::makeInstance(HashService::class);
 
         $this->initializeCurrentSiteLanguage();
         $this->initializeFormSessionFromRequest();
@@ -343,7 +360,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $honeypotNameFromSession = $this->getHoneypotNameFromSession($this->lastDisplayedPage);
             if ($honeypotNameFromSession) {
                 $honeypotElement = $this->lastDisplayedPage->createElement($honeypotNameFromSession, $renderingOptions['honeypot']['formElementToUse']);
-                $validator = $this->objectManager->get(EmptyValidator::class);
+                $validator = GeneralUtility::makeInstance(EmptyValidator::class);
                 $honeypotElement->addValidator($validator);
             }
         }
@@ -388,7 +405,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];
             $honeypotElement = $this->currentPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
-            $validator = $this->objectManager->get(EmptyValidator::class);
+            $validator = GeneralUtility::makeInstance(EmptyValidator::class);
 
             $honeypotElement->addValidator($validator);
             if (random_int(0, 1) === 1) {
@@ -544,7 +561,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function mapAndValidatePage(Page $page): Result
     {
-        $result = $this->objectManager->get(Result::class);
+        $result = GeneralUtility::makeInstance(Result::class);
         $requestArguments = $this->request->getArguments();
 
         $propertyPathsForWhichPropertyMappingShouldHappen = [];
@@ -659,7 +676,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             throw new RenderingException(sprintf('The form definition "%s" does not have a rendererClassName set.', $this->formDefinition->getIdentifier()), 1326095912);
         }
         $rendererClassName = $this->formDefinition->getRendererClassName();
-        $renderer = $this->objectManager->get($rendererClassName);
+        if ($this->container->has($rendererClassName)) {
+            $renderer = $this->container->get($rendererClassName);
+        } else {
+            // @deprecated since v11, will be removed in v12.
+            $renderer = $this->objectManager->get($rendererClassName);
+        }
         if (!($renderer instanceof RendererInterface)) {
             throw new RenderingException(sprintf('The renderer "%s" des not implement RendererInterface', $rendererClassName), 1326096024);
         }
@@ -678,7 +700,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function invokeFinishers(): string
     {
-        $finisherContext = $this->objectManager->get(
+        $finisherContext = GeneralUtility::makeInstance(
             FinisherContext::class,
             $this,
             $this->getControllerContext(),
@@ -874,11 +896,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      */
     protected function getControllerContext(): ControllerContext
     {
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
-        $controllerContext = $this->objectManager->get(ControllerContext::class);
+        $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
         $controllerContext->setRequest($this->request);
-        $controllerContext->setArguments($this->objectManager->get(Arguments::class, []));
+        $controllerContext->setArguments(GeneralUtility::makeInstance(Arguments::class));
         $controllerContext->setUriBuilder($uriBuilder);
         return $controllerContext;
     }

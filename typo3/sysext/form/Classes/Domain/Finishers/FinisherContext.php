@@ -45,25 +45,19 @@ class FinisherContext
     protected $cancelled = false;
 
     /**
-     * A reference to the Form Runtime that the finisher belongs to
-     *
-     * @var \TYPO3\CMS\Form\Domain\Runtime\FormRuntime
+     * A reference to the Form Runtime the finisher belongs to
      */
-    protected $formRuntime;
+    protected FormRuntime $formRuntime;
 
     /**
      * The assigned controller context which might be needed by the finisher.
-     *
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
      */
-    protected $controllerContext;
+    protected ControllerContext $controllerContext;
 
     /**
      * The assigned controller context which might be needed by the finisher.
-     *
-     * @var FinisherVariableProvider
      */
-    protected $finisherVariableProvider;
+    protected FinisherVariableProvider $finisherVariableProvider;
 
     private Request $request;
 
@@ -78,13 +72,6 @@ class FinisherContext
         $this->formRuntime = $formRuntime;
         $this->controllerContext = $controllerContext;
         $this->request = $request;
-    }
-
-    /**
-     * Sets up the FinisherVariableProvider
-     */
-    public function initializeObject()
-    {
         $this->finisherVariableProvider = GeneralUtility::makeInstance(FinisherVariableProvider::class);
     }
 

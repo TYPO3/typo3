@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -98,12 +97,19 @@ class RenderViewHelper extends AbstractViewHelper
             $prototypeName = $overrideConfiguration['prototypeName'] ?? 'standard';
         }
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var FormFactoryInterface $factory */
-        $factory = $objectManager->get($factoryClass);
+        // Even though getContainer() is internal, we can't get container injected here due to static scope
+        $container = GeneralUtility::getContainer();
+        if ($container->has($factoryClass)) {
+            /** @var FormFactoryInterface $factory */
+            $factory = $container->get($factoryClass);
+        } else {
+            // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
+            /** @var FormFactoryInterface $factory */
+            $factory = GeneralUtility::makeInstance(ObjectManager::class)->get($factoryClass);
+        }
+
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
-        $response = new Response();
-        $form = $formDefinition->bind($renderingContext->getRequest(), $response);
+        $form = $formDefinition->bind($renderingContext->getRequest());
 
         // If the controller context does not contain a response object, this viewhelper is used in a
         // fluid template rendered by the FluidTemplateContentObject. Handle the StopActionException

@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model;
 
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -208,9 +207,8 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  *
  * /---code php
  * # $currentRequest and $currentResponse need to be available, f.e. inside a controller you would
- * # use $this->request and $this->response; inside a ViewHelper you would use $this->controllerContext->getRequest()
- * # and $this->controllerContext->getResponse()
- * $form = $formDefinition->bind($currentRequest, $currentResponse);
+ * # use $this->request. Inside a ViewHelper you would use $this->controllerContext->getRequest()
+ * $form = $formDefinition->bind($currentRequest);
  *
  * # now, you can use the $form object to get information about the currently
  * # entered values into the form, etc.
@@ -220,6 +218,9 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  *
  * Scope: frontend
  * **This class is NOT meant to be sub classed by developers.**
+ *
+ * @internal May change any time, use FormFactoryInterface to select a different FormDefinition if needed
+ * @todo: Declare final in v12
  */
 class FormDefinition extends AbstractCompositeRenderable implements VariableRenderableInterface
 {
@@ -675,12 +676,15 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      * a new "instance" of the Form.
      *
      * @param Request $request
-     * @param ResponseInterface $response
      * @return FormRuntime
      */
-    public function bind(Request $request, ResponseInterface $response): FormRuntime
+    public function bind(Request $request): FormRuntime
     {
-        return GeneralUtility::makeInstance(FormRuntime::class, $this, $request, $response);
+        $formRuntime = GeneralUtility::makeInstance(FormRuntime::class);
+        $formRuntime->setFormDefinition($this);
+        $formRuntime->setRequest($request);
+        $formRuntime->initialize();
+        return $formRuntime;
     }
 
     /**

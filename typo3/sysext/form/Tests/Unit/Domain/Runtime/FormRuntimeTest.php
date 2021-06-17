@@ -15,8 +15,7 @@
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Runtime;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
@@ -89,9 +88,6 @@ class FormRuntimeTest extends UnitTestCase
      */
     public function renderThrowsExceptionIfRendererClassNameInstanceDoesNotImplementRendererInterface(): void
     {
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [
             'isAfterLastPage', 'processVariants'
         ], [], '', false);
@@ -107,34 +103,22 @@ class FormRuntimeTest extends UnitTestCase
             'getIdentifier'
         ])->disableOriginalConstructor()->getMock();
 
-        $mockPage
-            ->method('getIndex')
-            ->willReturn(1);
+        $mockPage->method('getIndex')->willReturn(1);
 
-        $mockFormDefinition
-            ->method('getRendererClassName')
-            ->willReturn('fooRenderer');
+        $mockFormDefinition->method('getRendererClassName')->willReturn('fooRenderer');
+        $mockFormDefinition->method('getIdentifier')->willReturn('text-1');
 
-        $mockFormDefinition
-            ->method('getIdentifier')
-            ->willReturn('text-1');
+        $mockFormRuntime->method('isAfterLastPage')->willReturn(false);
+        $mockFormRuntime->method('processVariants')->willReturn(null);
 
-        $mockFormRuntime
-            ->method('isAfterLastPage')
-            ->willReturn(false);
-
-        $mockFormRuntime
-            ->method('processVariants')
-            ->willReturn(null);
-
-        $objectManagerProphecy
-            ->get('fooRenderer')
-            ->willReturn(new \stdClass());
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->has('fooRenderer')->willReturn(true)->shouldBeCalled();
+        $containerProphecy->get('fooRenderer')->willReturn(new \stdClass())->shouldBeCalled();
 
         $mockFormRuntime->_set('formState', $mockFormState);
         $mockFormRuntime->_set('currentPage', $mockPage);
         $mockFormRuntime->_set('formDefinition', $mockFormDefinition);
-        $mockFormRuntime->_set('objectManager', $objectManagerProphecy->reveal());
+        $mockFormRuntime->_set('container', $containerProphecy->reveal());
 
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1326096024);

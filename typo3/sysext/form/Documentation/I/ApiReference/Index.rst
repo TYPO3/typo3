@@ -453,7 +453,7 @@ Signature::
 
 Example::
 
-   $form = $formDefinition->bind($this->request, $this->response);
+   $form = $formDefinition->bind($this->request);
    $form->overrideCurrentPage($pageIndex);
 
 
@@ -740,7 +740,7 @@ Bind the current request and response to this form instance, effectively creatin
 
 Signature::
 
-   public function bind(Request $request, Response $response): FormRuntime;
+   public function bind(Request $request): FormRuntime;
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getprocessingrule:

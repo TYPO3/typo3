@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -225,8 +224,7 @@ class FormEditorController extends AbstractBackendController
         $formFactory = GeneralUtility::makeInstance(ArrayFormFactory::class);
         $formDefinition = $formFactory->build($formDefinition, $prototypeName);
         $formDefinition->setRenderingOption('previewMode', true);
-        $response = new Response();
-        $form = $formDefinition->bind($this->request, $response);
+        $form = $formDefinition->bind($this->request);
         $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
         $form->overrideCurrentPage($pageIndex);
 

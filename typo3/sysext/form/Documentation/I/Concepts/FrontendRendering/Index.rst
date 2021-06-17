@@ -157,9 +157,9 @@ To trigger the rendering of a ``FormDefinition`` domain model, the current
 object which contains the ``Runtime State`` of the form. Among other things,
 this object includes the currently inserted values::
 
-   // $currentRequest and $currentResponse need to be available
-   // inside a controller, you would use $this->request and $this->response;
-   $form = $formDefinition->bind($currentRequest, $currentResponse);
+   // $currentRequest needs to be available.
+   // Inside a controller, you would use $this->request
+   $form = $formDefinition->bind($currentRequest);
    // now, you can use the $form object to get information about the currently entered values, etc.
 
 
@@ -184,7 +184,7 @@ Rendering a form
 
 Rendering a form is easy. Just call ``render()`` on the ``FormRuntime``::
 
-   $form = $formDefinition->bind($request, $response);
+   $form = $formDefinition->bind($request);
    $renderedForm = $form->render();
 
 

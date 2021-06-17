@@ -19,6 +19,18 @@ services:
     alias: TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager
     public: true
 
+  TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory:
+    public: true
+    shared: false
+
+  TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer:
+    public: true
+    shared: false
+
+  TYPO3\CMS\Form\Domain\Runtime\FormRuntime:
+    public: true
+    shared: false
+
   TYPO3\CMS\Form\Mvc\ProcessingRule:
     public: true
     shared: false
