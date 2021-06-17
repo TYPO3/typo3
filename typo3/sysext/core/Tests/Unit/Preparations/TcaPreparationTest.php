@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
 
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
@@ -341,6 +342,9 @@ class TcaPreparationTest extends UnitTestCase
         $connectionPool = $this->prophesize(ConnectionPool::class);
         $connectionPool->getConnectionForTable(Argument::any())->willReturn($connection->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+        $features = $this->prophesize(Features::class);
+        $features->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')->willReturn(false);
+        GeneralUtility::addInstance(Features::class, $features->reveal());
         $subject = new TcaPreparation();
         self::assertEquals($expected, $subject->prepare($input));
     }

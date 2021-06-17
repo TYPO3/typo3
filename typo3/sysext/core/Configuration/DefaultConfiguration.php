@@ -73,6 +73,7 @@ return [
         'features' => [
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
+            'runtimeDbQuotingOfTcaConfiguration' => true,
             'unifiedPageTranslationHandling' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false

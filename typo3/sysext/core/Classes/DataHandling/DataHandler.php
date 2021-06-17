@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
@@ -5740,9 +5741,15 @@ class DataHandler implements LoggerAwareInterface
             $queryBuilder->expr()->eq($relationUidFieldName, $queryBuilder->createNamedParameter($recordUid, \PDO::PARAM_INT))
         );
         if (!empty($fieldConfig['MM_table_where']) && is_string($fieldConfig['MM_table_where'])) {
-            $queryBuilder->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$recordUid, $fieldConfig['MM_table_where']))
-            );
+            if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
+                $queryBuilder->andWhere(
+                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$recordUid, QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['MM_table_where'])))
+                );
+            } else {
+                $queryBuilder->andWhere(
+                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$recordUid, $fieldConfig['MM_table_where']))
+                );
+            }
         }
         $mmMatchFields = $fieldConfig['MM_match_fields'] ?? [];
         foreach ($mmMatchFields as $fieldName => $fieldValue) {

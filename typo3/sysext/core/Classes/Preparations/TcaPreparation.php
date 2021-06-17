@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Preparations;
 
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,7 +46,9 @@ class TcaPreparation
     public function prepare(array $tca): array
     {
         $tca = $this->configureCategoryRelations($tca);
-        $tca = $this->prepareQuotingOfTableNamesAndColumnNames($tca);
+        if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
+            $tca = $this->prepareQuotingOfTableNamesAndColumnNames($tca);
+        }
         return $tca;
     }
 

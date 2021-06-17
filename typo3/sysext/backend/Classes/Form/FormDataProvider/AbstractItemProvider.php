@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -734,7 +735,11 @@ abstract class AbstractItemProvider
         if (!empty($result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'])
             && is_string($result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'])
         ) {
-            $foreignTableClause = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'];
+            if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
+                $foreignTableClause = QueryHelper::quoteDatabaseIdentifiers($connection, $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where']);
+            } else {
+                $foreignTableClause = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'];
+            }
             // Replace possible markers in query
             if (strpos($foreignTableClause, '###REC_FIELD_') !== false) {
                 // " AND table.field='###REC_FIELD_field1###' AND ..." -> array(" AND table.field='", "field1###' AND ...")

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -349,10 +350,16 @@ class LiveSearch
                         );
                     }
                     // Apply additional condition, if any
-                    if ($fieldConfig['search']['andWhere']) {
-                        $searchConstraint->add(
-                            QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
-                        );
+                    if ($fieldConfig['search']['andWhere'] ?? false) {
+                        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
+                            $searchConstraint->add(
+                                QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
+                            );
+                        } else {
+                            $searchConstraint->add(
+                                QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
+                            );
+                        }
                     }
                 }
                 // Assemble the search condition only if the field makes sense to be searched

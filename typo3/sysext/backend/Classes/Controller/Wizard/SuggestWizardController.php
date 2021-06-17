@@ -19,8 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -129,6 +131,7 @@ class SuggestWizardController
                 $config['addWhere'] = $whereClause;
             }
             if (isset($config['addWhere'])) {
+                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $replacement = [
                     '###THIS_UID###' => (int)$uid,
                     '###CURRENT_PID###' => (int)$pid
@@ -142,13 +145,17 @@ class SuggestWizardController
                         $replacement['###PAGE_TSCONFIG_IDLIST###'] = implode(',', GeneralUtility::intExplode(',', $fieldTSconfig['PAGE_TSCONFIG_IDLIST']));
                     }
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_STR'])) {
-                        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($fieldConfig['foreign_table']);
+                        $connection = $connectionPool->getConnectionForTable($fieldConfig['foreign_table']);
                         // nasty hack, but it's currently not possible to just quote anything "inside" the value but not escaping
                         // the whole field as it is not known where it is used in the WHERE clause
                         $replacement['###PAGE_TSCONFIG_STR###'] = trim($connection->quote($fieldTSconfig['PAGE_TSCONFIG_STR']), '\'');
                     }
                 }
-                $config['addWhere'] = strtr(' ' . $config['addWhere'], $replacement);
+                if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
+                    $config['addWhere'] = QueryHelper::quoteDatabaseIdentifiers($connectionPool->getConnectionForTable($queryTable), strtr(' ' . $config['addWhere'], $replacement));
+                } else {
+                    $config['addWhere'] = strtr(' ' . $config['addWhere'], $replacement);
+                }
             }
 
             // instantiate the class that should fetch the records for this $queryTable
