@@ -289,8 +289,12 @@ class ArrayUtility
                 throw new \RuntimeException('Invalid path segment specified', 1341406846);
             }
             // Create cell if it doesn't exist
-            if (!array_key_exists($segment, $pointer)) {
+            if (is_array($pointer) && !array_key_exists($segment, $pointer)) {
                 $pointer[$segment] = [];
+            }
+            // Make it array if it was something else before
+            if (!is_array($pointer)) {
+                $pointer = [];
             }
             // Set pointer to new cell
             $pointer = &$pointer[$segment];

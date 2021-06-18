@@ -713,6 +713,45 @@ class ArrayUtilityTest extends UnitTestCase
                         ]
                     ]
                 ]
+            ],
+            'setting longer path' => [
+                [
+                    'foo' => [
+                        'bar' => 'value',
+                    ]
+                ],
+                'foo/bar/baz/foobar',
+                'newValue',
+                [
+                    'foo' => [
+                        'bar' => [
+                            'baz' => [
+                                'foobar' => 'newValue',
+                            ],
+                        ],
+                    ]
+                ],
+            ],
+            'setting longer path in existing array' => [
+                [
+                    'foo' => [
+                        'bar' => [
+                            'existingKey' => 'lolli.did.this',
+                        ]
+                    ]
+                ],
+                'foo/bar/baz/foobar',
+                'newValue',
+                [
+                    'foo' => [
+                        'bar' => [
+                            'existingKey' => 'lolli.did.this',
+                            'baz' => [
+                                'foobar' => 'newValue',
+                            ],
+                        ],
+                    ]
+                ],
             ]
         ];
     }
