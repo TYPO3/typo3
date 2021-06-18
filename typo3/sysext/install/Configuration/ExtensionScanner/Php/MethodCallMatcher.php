@@ -4830,4 +4830,11 @@ return [
             'Deprecation-94228-DeprecateExtbaseRequestGetRequestUri.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Object\ObjectManager->getEmptyObject' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94377-ExtbaseObjectManager-getEmptyObject.rst'
+        ],
+    ],
 ];

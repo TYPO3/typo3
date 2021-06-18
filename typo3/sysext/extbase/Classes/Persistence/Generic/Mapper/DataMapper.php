@@ -201,6 +201,7 @@ class DataMapper
             throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
                 . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
         }
+        // @deprecated since v11, will be removed in v12. Change to makeInstance(), so v12 will call __construct() on thawed domain objects!
         $object = $this->objectManager->getEmptyObject($className);
         return $object;
     }

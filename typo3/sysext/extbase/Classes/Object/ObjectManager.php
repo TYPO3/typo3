@@ -119,6 +119,8 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @param string $className
      * @return object
+     * @deprecated since v11, will be removed in v12. Does NOT log, has a v11 deprecation.rst file.
+     *      Used in DataMapper, will be removed as breaking change in v12. Also drop doctrine/instantiator.
      */
     public function getEmptyObject(string $className): object
     {
