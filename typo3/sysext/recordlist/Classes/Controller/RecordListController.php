@@ -129,7 +129,6 @@ class RecordListController
         $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
-        $cmd_table = (string)($parsedBody['cmd_table'] ?? $queryParams['cmd_table'] ?? '');
         // Set site languages
         $site = $request->getAttribute('site');
         $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
@@ -214,18 +213,19 @@ class RecordListController
         if ($enableListing) {
             // Deleting records...:
             // Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
-            if ($cmd === 'delete') {
-                $items = $clipboard->cleanUpCBC($parsedBody['CBC'] ?? [], $cmd_table, 1);
+            if ($cmd === 'delete' && $request->getMethod() === 'POST') {
+                $items = $clipboard->cleanUpCBC($parsedBody['CBC'] ?? [], $parsedBody['cmd_table'] ?? '', 1);
                 if (!empty($items)) {
-                    $cmd = [];
+                    // Create data handler command array
+                    $dataHandlerCmd = [];
                     foreach ($items as $iK => $value) {
                         $iKParts = explode('|', (string)$iK);
-                        $cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
+                        $dataHandlerCmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
                     }
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start([], $cmd);
+                    $tce->start([], $dataHandlerCmd);
                     $tce->process_cmdmap();
-                    if (isset($cmd['pages'])) {
+                    if (isset($dataHandlerCmd['pages'])) {
                         BackendUtility::setUpdateSignal('updatePageTree');
                     }
                     $tce->printLogErrorMessages();
