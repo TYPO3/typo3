@@ -137,7 +137,7 @@ class FileWriter extends AbstractWriter
         $message = $record->getMessage();
         if (!empty($context)) {
             // Fold an exception into the message, and string-ify it into context so it can be jsonified.
-            if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+            if (isset($context['exception']) && $context['exception'] instanceof \Throwable) {
                 $message .= $this->formatException($context['exception']);
                 $context['exception'] = (string)$context['exception'];
             }
@@ -150,7 +150,7 @@ class FileWriter extends AbstractWriter
             strtoupper($record->getLevel()),
             $record->getRequestId(),
             $record->getComponent(),
-            $this->interpolate($record->getMessage(), $context),
+            $this->interpolate($message, $context),
             $data
         );
 

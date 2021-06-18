@@ -79,11 +79,8 @@ abstract class AbstractWriter implements WriterInterface
      *
      * The format here is nearly the same as just casting an exception to a string,
      * but omits the full class namespace and stack trace, as those get very long.
-     *
-     * @param \Exception $ex
-     * @return string
      */
-    protected function formatException(\Exception $ex): string
+    protected function formatException(\Throwable $ex): string
     {
         $classname = get_class($ex);
         if ($pos = strrpos($classname, '\\')) {

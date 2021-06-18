@@ -66,7 +66,7 @@ class DatabaseWriter extends AbstractWriter
         $context = $record->getData();
         if (!empty($context)) {
             // Fold an exception into the message, and string-ify it into context so it can be jsonified.
-            if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+            if (isset($context['exception']) && $context['exception'] instanceof \Throwable) {
                 $context['exception'] = (string)$context['exception'];
             }
             $data = '- ' . json_encode($context);
