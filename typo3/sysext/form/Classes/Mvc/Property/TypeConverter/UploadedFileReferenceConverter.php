@@ -291,7 +291,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         int $resourcePointer = null
     ): PseudoFileReference {
         if ($resourcePointer === null) {
-            $fileReference = $this->objectManager->get(PseudoFileReference::class);
+            $fileReference = GeneralUtility::makeInstance(PseudoFileReference::class);
         } else {
             $fileReference = $this->persistenceManager->getObjectByIdentifier($resourcePointer, PseudoFileReference::class, false);
         }

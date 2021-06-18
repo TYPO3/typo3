@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -113,23 +112,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedAddsFileReferenceConverter(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
-        $resourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(UploadedFileReferenceConverter::class)->willReturn($typeConverter);
-        $objectManager->get(MimeTypeValidator::class)->willReturn($mimeTypeValidator);
-        $objectManager->get(ResourceFactory::class)->willReturn($resourceFactory);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
-
         // No validators
         $this->processingRule
             ->expects(self::any())
@@ -157,21 +139,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     public function afterBuildingFinishedAddsMimeTypeConverter(): void
     {
         $mimeTypes = ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']];
-
-        // Create a MimeTypeValidator Mock
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['__construct'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager to return the MimeTypeValidator
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(UploadedFileReferenceConverter::class)->willReturn($typeConverter);
-        $objectManager->get(MimeTypeValidator::class, $mimeTypes)->willReturn($mimeTypeValidator);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         // Don't add any validators for now
         $this->processingRule
@@ -204,33 +171,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedSetsUpStoragePathToPropertySaveToFileMountIfItExists(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
         // Resource Factory
         /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects(self::any())
-            ->method('get')
-            ->willReturnMap([
-                [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         // Don't add any validators for now
         $this->processingRule
@@ -263,33 +207,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedSetsUpStoragePathToToFormDefinitionPathIfSaveToFileMountIsNotDefinedAndFormWasNotAddedProgrammatically(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
         // Resource Factory
         /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
         $resourceFactory = $this->createMock(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects(self::any())
-            ->method('get')
-            ->willReturnMap([
-                [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         // Don't add any validators for now
         $this->processingRule
@@ -327,30 +248,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedSetsStoragePathToUserUploadIfNeitherSaveToFileMountIsSetNorThereIsAFormDefinitionPath(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects(self::any())
-            ->method('get')
-            ->willReturnMap([
-                [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
-
         // Don't add any validators for now
         $this->processingRule
             ->expects(self::any())
@@ -384,36 +281,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedCopiesValidators(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
         // Some other Validator
         $otherValidator = $this->getMockForAbstractClass(AbstractValidator::class);
-
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
-        $resourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects(self::any())
-            ->method('get')
-            ->willReturnMap([
-                [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();
@@ -443,36 +312,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function afterBuildingFinishedDoesNotCopyNotEmptyValidator(): void
     {
-        // Mime Type Validator
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MimeTypeValidator $mimeTypeValidator */
-        $mimeTypeValidator = $this->createMock(MimeTypeValidator::class);
-
         // Not Empty Validator
         $notEmptyValidator = $this->getMockForAbstractClass(NotEmptyValidator::class);
-
-        // Resource Factory
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ResourceFactory $resourceFactory */
-        $resourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|UploadedFileReferenceConverter $typeConverter */
-        $typeConverter = $this->createMock(UploadedFileReferenceConverter::class);
-
-        // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects(self::any())
-            ->method('get')
-            ->willReturnMap([
-                [UploadedFileReferenceConverter::class, $typeConverter],
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();

@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Renderable;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Exception\ValidatorPresetNotFoundException;
@@ -215,8 +214,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
 
             /** @var ValidatorInterface $validator */
-            $validator = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get($implementationClassName, $defaultOptions);
+            $validator = GeneralUtility::makeInstance($implementationClassName, $defaultOptions);
             $this->addValidator($validator);
             return $validator;
         }

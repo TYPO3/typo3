@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Mvc\Property;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -62,8 +61,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             //   in a dedicated sub-folder (e.g. ".../form_<40-chars-hash>/actual.file").
 
             /** @var UploadedFileReferenceConverter $typeConverter */
-            $typeConverter = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(UploadedFileReferenceConverter::class);
+            $typeConverter = GeneralUtility::makeInstance(UploadedFileReferenceConverter::class);
             /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
             $propertyMappingConfiguration = $renderable->getRootForm()
                 ->getProcessingRule($renderable->getIdentifier())
@@ -76,8 +74,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
             if (!empty($allowedMimeTypes)) {
-                $mimeTypeValidator = GeneralUtility::makeInstance(ObjectManager::class)
-                    ->get(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
+                $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
                 $validators = [$mimeTypeValidator];
             }
 

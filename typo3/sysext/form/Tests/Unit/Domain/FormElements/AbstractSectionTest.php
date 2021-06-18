@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
@@ -132,10 +131,7 @@ class AbstractSectionTest extends UnitTestCase
             ->method('getRootForm')
             ->willReturn($rootForm);
 
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(UnknownFormElement::class, 'foo', 'bar')->willReturn(new UnknownFormElement('foo', 'bar'));
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        GeneralUtility::addInstance(UnknownFormElement::class, new UnknownFormElement('foo', 'bar'));
         $result = $mockAbstractSection->createElement('foo', 'bar');
 
         self::assertInstanceOf(UnknownFormElement::class, $result);
@@ -224,9 +220,7 @@ class AbstractSectionTest extends UnitTestCase
             ->method('getRootForm')
             ->willReturn($rootForm);
 
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(self::class, 'id', 'foobar')->willReturn($this);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        GeneralUtility::addInstance(self::class, $this);
 
         $this->expectException(TypeDefinitionNotValidException::class);
         $this->expectExceptionCode(1327318156);
@@ -295,10 +289,7 @@ class AbstractSectionTest extends UnitTestCase
             ->method('getRootForm')
             ->willReturn($rootForm);
 
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(get_class($implementationMock), 'id', 'foobar')->willReturn($implementationMock);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        GeneralUtility::addInstance(get_class($implementationMock), $implementationMock);
 
         $mockAbstractSection->createElement('id', 'foobar');
     }

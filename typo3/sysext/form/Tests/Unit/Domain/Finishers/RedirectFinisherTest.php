@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -75,11 +73,6 @@ class RedirectFinisherTest extends UnitTestCase
         $translationServiceProphecy = $this->prophesize(TranslationService::class);
         GeneralUtility::setSingletonInstance(TranslationService::class, $translationServiceProphecy->reveal());
         $translationServiceProphecy->translateFinisherOption(Argument::cetera())->willReturnArgument(3);
-
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        $objectManagerProphecy->get(UriBuilder::class)->willReturn(new UriBuilder());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
-        $redirectFinisherMock->injectObjectManager($objectManagerProphecy->reveal());
 
         try {
             $redirectFinisherMock->execute($finisherContextProphecy->reveal());

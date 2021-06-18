@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
@@ -120,8 +119,7 @@ abstract class AbstractSection extends AbstractCompositeRenderable
                 throw new TypeDefinitionNotFoundException(sprintf('Type "%s" not found. Probably some configuration is missing.', $typeName), 1382364019);
             }
 
-            $element = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(UnknownFormElement::class, $identifier, $typeName);
+            $element = GeneralUtility::makeInstance(UnknownFormElement::class, $identifier, $typeName);
             $this->addElement($element);
             return $element;
         }
@@ -131,8 +129,7 @@ abstract class AbstractSection extends AbstractCompositeRenderable
         }
 
         $implementationClassName = $typeDefinition['implementationClassName'];
-        $element = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get($implementationClassName, $identifier, $typeName);
+        $element = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
         if (!$element instanceof FormElementInterface) {
             throw new TypeDefinitionNotValidException(sprintf('The "implementationClassName" for element "%s" ("%s") does not implement the FormElementInterface.', $identifier, $implementationClassName), 1327318156);
         }
