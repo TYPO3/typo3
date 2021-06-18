@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -116,9 +117,11 @@ class FileProvider extends AbstractProvider
     protected function initialize()
     {
         parent::initialize();
-        $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)
-                ->retrieveFileOrFolderObject($this->identifier);
-        $this->record = $fileObject;
+        try {
+            $this->record = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->identifier);
+        } catch (ResourceDoesNotExistException $e) {
+            $this->record = null;
+        }
     }
 
     /**
