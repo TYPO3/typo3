@@ -33,6 +33,7 @@ class PageTreeFilterCest
         $I->useExistingSession('admin');
         $I->click('List');
 
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
     }
@@ -48,6 +49,7 @@ class PageTreeFilterCest
 
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
 
         $I->amGoingTo('prove filter reset button is visible upon input');
         $I->canSeeElement($this->filterInputFieldClearButton);
@@ -65,6 +67,7 @@ class PageTreeFilterCest
 
         $I->click($this->pageTreeReloadButton);
         $this->waitForAjaxRequestToFinish($I);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
 
         // [#91885] filter must still apply after page tree reload
         $I->amGoingTo('prove the filter applies after page tree reload');

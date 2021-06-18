@@ -38,6 +38,7 @@ class SelectPagetreeWithKeyboardCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['Root']);
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $I->waitForElement('#identifier-0_1[tabindex="0"]', 5);

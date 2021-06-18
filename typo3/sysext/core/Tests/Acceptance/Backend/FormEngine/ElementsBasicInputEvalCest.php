@@ -36,6 +36,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
+        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath(['styleguide TCA demo', 'elements basic']);
         $I->switchToContentFrame();
 

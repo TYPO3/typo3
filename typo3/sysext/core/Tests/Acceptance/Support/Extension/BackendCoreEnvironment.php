@@ -53,6 +53,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'scheduler',
             'tstemplate',
             'lowlevel',
+            'dashboard',
             'workspaces'
         ],
         'testExtensionsToLoad' => [
