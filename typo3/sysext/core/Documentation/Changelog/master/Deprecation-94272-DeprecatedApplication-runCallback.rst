@@ -16,7 +16,7 @@ or the backend by calling :php:`run()` on the corresponding Application class.
 
 The :php:`run()` method also featured the possibility to provide a :php:`callback`
 as first argument. This was mainly introduced, because no proper solution for
-subrequests existed at this time. Since :issue:`#83725`, the callback is not
+subrequests existed at this time. Since :issue:`83725`, the callback is not
 longer necessary as such functionality can be handled by a PSR-15
 middleware.
 
