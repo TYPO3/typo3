@@ -15,10 +15,10 @@ the two possibilities `challenged` and `superchallenged` in v7, `rsa` and
 `normal` were the only two valid values left.
 
 The `rsa` value however also became more or less obsolete, after dropping
-`EXT:rsaauth` from core in :issue:`#87470`. Setting `rsa` therefore only had
+`EXT:rsaauth` from core in :issue:`87470`. Setting `rsa` therefore only had
 effect in case the standalone `friendsoftypo3/rsaauth` extension was installed.
 
-Finally, with :issue:`#94279` also the support for the standalone
+Finally, with :issue:`94279` also the support for the standalone
 `friendsoftypo3/rsaauth` was abandoned, making the `loginSecurityLevel`
 option superfluous, as `normal` was left as the only valid option.
 
