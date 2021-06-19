@@ -19,8 +19,7 @@ use TYPO3\CMS\Core\Exception;
 
 /**
  * A "Your TypoScript condition is invalid" exception
- * used when a TypoScript condition is called but not extending
- * from the AbstractCondition class.
+ * used when a TypoScript condition is called with invalid syntax.
  */
 class InvalidTypoScriptConditionException extends Exception
 {
