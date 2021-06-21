@@ -54,7 +54,8 @@ class BackendCoreEnvironment extends BackendEnvironment
             'tstemplate',
             'lowlevel',
             'dashboard',
-            'workspaces'
+            'workspaces',
+            'info'
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide'

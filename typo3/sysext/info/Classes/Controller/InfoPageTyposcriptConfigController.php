@@ -217,9 +217,9 @@ class InfoPageTyposcriptConfigController
                 }
 
                 $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
-                $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']));
+                $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? '0'));
             }
-            $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"'));
+            $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false, '', '', 'id="checkTsconf_alphaSort"'));
             $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']));
         }
         return $this->view->render();

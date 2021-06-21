@@ -40,7 +40,7 @@ class BackendLogModuleBootstrap
     public function main(ServerRequestInterface $request)
     {
         $queryParams = $request->getQueryParams();
-        $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'];
+        $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
         $queryParams['tx_belog_system_beloglog']['layout'] = 'Plain';
         $request = $request->withQueryParams($queryParams);
 
