@@ -265,18 +265,20 @@ class RecordListController
 
         $beforeOutput = '';
         $output = '';
-        // Show the selector to add page translations and the list of translations of the current page
-        // but only when in "default" mode
+        // Show the selector to add page translations, but only when in "default" mode.
+        // If not disabled via module TSconfig and the user is allowed, also show the page translations table.
         if ($this->id && !$search_field && !$cmd && !$table) {
             $beforeOutput .= $this->languageSelector($request->getAttribute('normalizedParams')->getRequestUri());
-            $pageTranslationsDatabaseRecordList = clone $dblist;
-            $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
-            $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
-            $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
-            $pageTranslationsDatabaseRecordList->hideTranslations = '';
-            $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
-            $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
-            $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
+            if ($this->showPageTranslations()) {
+                $pageTranslationsDatabaseRecordList = clone $dblist;
+                $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
+                $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
+                $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
+                $pageTranslationsDatabaseRecordList->hideTranslations = '';
+                $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
+                $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
+                $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
+            }
         }
 
         // search box toolbar
@@ -697,6 +699,22 @@ class RecordListController
             $pageTitle,
             $this->id
         ));
+    }
+
+    protected function showPageTranslations(): bool
+    {
+        if (!$this->getBackendUserAuthentication()->check('tables_select', 'pages')) {
+            return false;
+        }
+
+        if (isset($this->modTSconfig['pages.']['hideTable'])) {
+            return !$this->modTSconfig['pages.']['hideTable'];
+        }
+
+        $hideTables = $this->modTSconfig['hideTables'] ?? '';
+        return ($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
+            && $hideTables !== '*'
+            && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
 
     protected function htmlResponse(string $html): ResponseInterface
