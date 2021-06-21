@@ -1154,7 +1154,7 @@ class DatabaseRecordList
                                     . ' title="' . $title . '"'
                                     . ' aria-label="' . $title . '">'
                                     . $spriteIcon->render()
-                                    . '</button>';
+                                    . '</a>';
                             } elseif ($table === 'pages') {
                                 $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()];
                                 $href = (string)$this->uriBuilder->buildUriFromRoute('db_new', $parameters);
