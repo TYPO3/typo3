@@ -17,6 +17,13 @@ import NProgress = require('nprogress');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Icons = TYPO3.Icons;
 
+enum Selectors {
+  bulkItemSelector = '.typo3-list-check',
+  importSelectionSelector = 'button[data-action="import"]',
+  selectionToggleSelector = '.typo3-selection-toggle',
+  listContainer = '[data-list-container="files"]'
+}
+
 interface LinkElement {
   fileName: string;
   uid: string;
@@ -47,23 +54,49 @@ class BrowseFiles {
       );
     }).delegateTo(document, '[data-close]');
 
-    new RegularEvent('change', BrowseFiles.Selector.toggleImportButton).delegateTo(document, '.typo3-bulk-item');
-    new RegularEvent('click', BrowseFiles.Selector.handle).delegateTo(document, '#t3js-importSelection');
-    new RegularEvent('click', BrowseFiles.Selector.toggle).delegateTo(document, '#t3js-toggleSelection');
+    new RegularEvent('change', BrowseFiles.Selector.toggleImportButton).delegateTo(document, Selectors.bulkItemSelector);
+    new RegularEvent('click', BrowseFiles.Selector.handle).delegateTo(document, Selectors.importSelectionSelector);
+    new RegularEvent('click', BrowseFiles.Selector.toggle).delegateTo(document, Selectors.selectionToggleSelector);
+    new RegularEvent('change', BrowseFiles.Selector.toggle).delegateTo(document, Selectors.bulkItemSelector);
   }
 
 }
 
 class Selector {
   /**
-   * Toggle selection button is pressed
+   * Either a toggle button (all/none/toggle) button was pressed, or a checkbox was switched
    */
   public toggle = (e: MouseEvent): void => {
     e.preventDefault();
+    const element = e.target as HTMLInputElement;
+    const action = element.dataset.action;
     const items = this.getItems();
-    items.forEach((item: HTMLInputElement) => {
-      item.checked = !item.checked;
-    });
+
+    switch (action) {
+      case 'select-toggle':
+        items.forEach((item: HTMLInputElement) => {
+          item.checked = !item.checked;
+          item.closest('tr').classList.toggle('success');
+        });
+        break;
+      case 'select-all':
+        items.forEach((item: HTMLInputElement) => {
+          item.checked = true;
+          item.closest('tr').classList.add('success');
+        });
+        break;
+      case 'select-none':
+        items.forEach((item: HTMLInputElement) => {
+          item.checked = false;
+          item.closest('tr').classList.remove('success');
+        });
+        break;
+      default:
+        // the button itself was checked
+        if (element.classList.contains('typo3-list-check')) {
+          element.closest('tr').classList.toggle('success');
+        }
+    }
     this.toggleImportButton();
   }
 
@@ -89,12 +122,12 @@ class Selector {
   }
 
   public getItems(): NodeList {
-    return document.getElementById('typo3-filelist').querySelectorAll('.typo3-bulk-item');
+    return document.querySelector(Selectors.listContainer).querySelectorAll(Selectors.bulkItemSelector);
   }
 
   public toggleImportButton(): void {
-    const hasCheckedElements = document.getElementById('typo3-filelist')?.querySelectorAll('.typo3-bulk-item:checked').length > 0;
-    document.getElementById('t3js-importSelection').classList.toggle('disabled', !hasCheckedElements);
+    const hasCheckedElements = document.querySelector(Selectors.listContainer)?.querySelectorAll(Selectors.bulkItemSelector + ':checked').length > 0;
+    document.querySelector(Selectors.importSelectionSelector).classList.toggle('disabled', !hasCheckedElements);
   }
 
   private handleSelection(items: LinkElement[]): void {

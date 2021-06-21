@@ -180,8 +180,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         if (!$noThumbs) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
             $_MOD_MENU = ['displayThumbs' => ''];
-            $_MCONF['name'] = 'file_list';
-            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
+            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list');
         }
         $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? false;
         $noThumbs = $noThumbs ?: !$displayThumbs;
@@ -225,6 +224,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $lang = $this->getLanguageService();
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
+        // Create the header of current folder:
+        $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
+        $header = '<h4 class="text-truncate p-0 mb-1">' . $folderIcon . ' ' . htmlspecialchars($folder->getStorage()->getName() . ': ' . $folder->getReadablePath()) . '</h4>';
+
         if ($this->searchWord !== '') {
             $searchDemand = FileSearchDemand::createForSearchTerm($this->searchWord)->withRecursive();
             $files = $folder->searchFiles($searchDemand);
@@ -233,22 +236,43 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $files = $this->getFilesInFolder($folder, $extensionList);
         }
         if (empty($files)) {
-            return '<div class="shadow-sm bg-info bg-gradient p-4 pb-2 pt-2 mb-3">' . sprintf(htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:no_files')), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()) . '</div>';
+            return $header . '<div class="shadow-sm bg-info bg-gradient p-3 mb-4 mt-4">' . sprintf(htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:no_files')), $folder->getStorage()->getName() . ':' . $folder->getReadablePath()) . '</div>';
         }
         $lines = [];
 
-        // Create the header of current folder:
-        $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
-
-        $lines[] = '
-			<tr>
-				<th class="col-title nowrap">' . $folderIcon . ' ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getStorage()->getName() . ':' . $folder->getReadablePath(), $titleLen)) . '</th>
-				<th class="col-control nowrap"></th>
-				<th class="col-clipboard nowrap">
-					<a href="#" class="btn btn-default disabled" id="t3js-importSelection" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . '</a>
-					<a href="#" class="btn btn-default" id="t3js-toggleSelection" title="' . htmlspecialchars($lang->getLL('toggleSelection')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>
-				</th>
-			</tr>';
+        $tableHeader = '
+            <thead>
+                <tr>
+                    <th colspan="3" class="nowrap">
+                        <div class="btn-group dropdown position-static me-1">
+                            <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="actions_filebrowser" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' .
+                                $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) .
+                            '</button>
+                            <ul id="actions_filebrowser" class="dropdown-menu">
+                                <li>
+                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-all">' .
+                                        $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) .
+                                    '</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-none">' .
+                                        $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) .
+                                    '</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-toggle">' .
+                                        $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('toggleSelection')) .
+                                    '</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-default disabled" data-action="import" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' .
+                            $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('importSelection')) .
+                        '</button>
+                    </th>
+                    <th class="col-control nowrap"></th>
+                </tr>
+            </thead>';
 
         foreach ($files as $fileObject) {
             // Thumbnail/size generation:
@@ -279,7 +303,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $ATag .= '<span title="' . htmlspecialchars($lang->getLL('addToList')) . '">' . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</span>';
                 $ATag_alt = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . $size . '" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" data-close="1">';
                 $ATag_e = '</a>';
-                $bulkCheckBox = '<label class="mb-0 btn btn-default btn-checkbox"><input type="checkbox" class="typo3-bulk-item" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" name="file_' . $fileObject->getUid() . '" value="0" /><span class="t3-icon fa"></span></label>';
+                $bulkCheckBox = '
+                    <span class="form-check form-toggle">
+                        <input type="checkbox" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" name="file_' . $fileObject->getUid() . '" value="0" autocomplete="off" class="form-check-input typo3-list-check"  />
+                    </span>';
             } else {
                 $ATag = '';
                 $ATag_alt = '';
@@ -299,19 +326,14 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Show element:
             $lines[] = '
 					<tr>
+						<td>' . $bulkCheckBox . '</td>
 						<td class="col-title nowrap">' . $filenameAndIcon . '</td>
+						<td class="nowrap">' . ($pDim ? $ATag_alt . $clickIcon . $ATag_e . $pDim : '') . '</td>
 						<td class="col-control">
 							<div class="btn-group">' . $ATag . $ATag_e . '
 							<a href="' . htmlspecialchars($Ahref) . '" class="btn btn-default" title="' . htmlspecialchars($lang->getLL('info')) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>
 						</td>
-						<td class="col-clipboard">' . $bulkCheckBox . '</td>
 					</tr>';
-            if ($pDim) {
-                $lines[] = '
-					<tr>
-						<td colspan="3">' . $ATag_alt . $clickIcon . $ATag_e . $pDim . '</td>
-					</tr>';
-            }
         }
 
         $formUrl = $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&');
@@ -320,14 +342,19 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             ->render($formUrl);
 
         $markup = [];
-        $markup[] = '<div class="pt-2 pb-3">' . $searchBox . '</div>';
+        $markup[] = '<div class="mt-4 mb-4">' . $searchBox . '</div>';
         $markup[] = '<div id="filelist">';
+        $markup[] = '  <div class="list-header">';
         $markup[] = '   ' . $this->getBulkSelector();
-        $markup[] = '     <table class="table table-sm table-responsive table-striped table-hover" id="typo3-filelist">';
+        $markup[] = '   </div>';
+        $markup[] = '   <table class="mt-1 table table-sm table-responsive table-striped table-hover" id="typo3-filelist" data-list-container="files">';
+        $markup[] = '       ' . $tableHeader;
+        $markup[] = '       <tbody>';
         $markup[] = '         ' . implode('', $lines);
-        $markup[] = '     </table>';
+        $markup[] = '       </tbody>';
+        $markup[] = '   </table>';
         $markup[] = ' </div>';
-        return implode('', $markup);
+        return $header . implode('', $markup);
     }
 
     /**
@@ -355,8 +382,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     protected function getBulkSelector(): string
     {
-        $_MCONF = [];
-
         $lang = $this->getLanguageService();
         $out = '';
 
@@ -365,23 +390,22 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         if (!$noThumbsInEB && $this->selectedFolder) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
             $_MOD_MENU = ['displayThumbs' => ''];
-            $_MCONF['name'] = 'file_list';
-            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
+            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list');
             $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
             $thumbNailCheck = '<div class="form-check form-switch">'
                 . BackendUtility::getFuncCheck(
                     '',
                     'SET[displayThumbs]',
-                    $_MOD_SETTINGS['displayThumbs'] ?? false,
+                    $_MOD_SETTINGS['displayThumbs'] ?? true,
                     $this->thisScript,
                     $addParams,
                     'id="checkDisplayThumbs"'
                 )
                 . '<label for="checkDisplayThumbs" class="form-check-label">'
                 . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '</label></div>';
-            $out .= '<div class="pt-2 float-end">' . $thumbNailCheck . '</div>';
+            $out .= '<div class="float-end ps-2">' . $thumbNailCheck . '</div>';
         } else {
-            $out .= '<div class="pt-2"></div>';
+            $out .= '';
         }
         return $out;
     }

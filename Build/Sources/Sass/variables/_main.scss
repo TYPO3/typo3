@@ -133,6 +133,7 @@ $btn-default-border: #bbb;
 $btn-primary-color: #fff;
 $btn-primary-bg: $primary;
 $btn-primary-border: darken($btn-primary-bg, 5%);
+$btn-disabled-opacity: 0.5 !default;
 
 // Pill
 $rounded-pill: 0.625rem;
