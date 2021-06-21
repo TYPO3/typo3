@@ -409,19 +409,21 @@ class RecordListController
         $this->moduleTemplate->setTitle($title);
 
         $output = '';
-        // Show the selector to add page translations and the list of translations of the current page
-        // but only when in "default" mode
+        // Show the selector to add page translations, but only when in "default" mode.
+        // If not disabled via module TSconfig and the user is allowed, also show the page translations table.
         if ($this->id && !$dblist->csvOutput && !$this->search_field && !$this->cmd && !$this->table) {
             $output .= $this->languageSelector($this->id);
-            $pageTranslationsDatabaseRecordList = clone $dblist;
-            $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
-            $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
-            $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
-            $pageTranslationsDatabaseRecordList->hideTranslations = '';
-            $pageTranslationsDatabaseRecordList->iLimit = $pageTranslationsDatabaseRecordList->itemsLimitPerTable;
-            $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
-            $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
-            $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
+            if ($this->showPageTranslations()) {
+                $pageTranslationsDatabaseRecordList = clone $dblist;
+                $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
+                $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
+                $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
+                $pageTranslationsDatabaseRecordList->hideTranslations = '';
+                $pageTranslationsDatabaseRecordList->iLimit = $pageTranslationsDatabaseRecordList->itemsLimitPerTable;
+                $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
+                $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
+                $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
+            }
         }
 
         if (!empty($dblist->HTMLcode)) {
@@ -621,6 +623,22 @@ class RecordListController
                 . '</select></div></div>';
         }
         return '';
+    }
+
+    protected function showPageTranslations(): bool
+    {
+        if (!$this->getBackendUserAuthentication()->check('tables_select', 'pages')) {
+            return false;
+        }
+
+        if (isset($this->modTSconfig['properties']['table.']['pages.']['hideTable'])) {
+            return !$this->modTSconfig['properties']['table.']['pages.']['hideTable'];
+        }
+
+        $hideTables = $this->modTSconfig['properties']['hideTables'] ?? '';
+        return !($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
+            && $hideTables !== '*'
+            && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
 
     /**
