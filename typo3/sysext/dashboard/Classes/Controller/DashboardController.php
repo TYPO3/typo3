@@ -34,6 +34,7 @@ use TYPO3\CMS\Dashboard\DashboardInitializationService;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
+use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -195,18 +196,20 @@ class DashboardController extends AbstractController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
+     * @throws RequiredArgumentMissingException
      */
     public function addWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parameters = $request->getQueryParams();
-        $widgetKey = $parameters['widget'];
+        $widgetKey = (string)($request->getQueryParams()['widget'] ?? '');
 
-        if ($widgetKey) {
-            $widgets = $this->currentDashboard->getWidgetConfig();
-            $hash = sha1($widgetKey . '-' . time());
-            $widgets[$hash] = ['identifier' => $widgetKey];
-            $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
+        if ($widgetKey === '') {
+            throw new RequiredArgumentMissingException('Argument "widget" not set.', 1624436360);
         }
+
+        $widgets = $this->currentDashboard->getWidgetConfig();
+        $hash = sha1($widgetKey . '-' . time());
+        $widgets[$hash] = ['identifier' => $widgetKey];
+        $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
 
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
         return new RedirectResponse($route);

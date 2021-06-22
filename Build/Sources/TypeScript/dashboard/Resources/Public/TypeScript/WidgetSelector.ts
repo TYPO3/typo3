@@ -42,6 +42,11 @@ class WidgetSelector {
       };
       Modal.advanced(configuration);
     }).delegateTo(document, this.selector);
+
+    // Display button only if all initialized
+    document.querySelectorAll(this.selector).forEach((item) => {
+      item.classList.remove('hide');
+    })
   }
 }
 
