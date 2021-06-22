@@ -707,12 +707,12 @@ class RecordListController
             return false;
         }
 
-        if (isset($this->modTSconfig['pages.']['hideTable'])) {
-            return !$this->modTSconfig['pages.']['hideTable'];
+        if (isset($this->modTSconfig['table.']['pages.']['hideTable'])) {
+            return !$this->modTSconfig['table.']['pages.']['hideTable'];
         }
 
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
-        return ($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
+        return !($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
             && $hideTables !== '*'
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
