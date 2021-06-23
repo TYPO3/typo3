@@ -933,7 +933,7 @@ class Clipboard
      */
     public function isElements()
     {
-        return is_array($this->clipData[$this->current]['el']) && !empty($this->clipData[$this->current]['el']);
+        return is_array($this->clipData[$this->current]['el'] ?? null) && !empty($this->clipData[$this->current]['el']);
     }
 
     /**

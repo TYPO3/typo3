@@ -1858,7 +1858,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // No cache
         // Set $this->no_cache TRUE if the config.no_cache value is set!
-        if ($this->config['config']['no_cache']) {
+        if ($this->config['config']['no_cache'] ?? false) {
             $this->set_no_cache('config.no_cache is set', true);
         }
 

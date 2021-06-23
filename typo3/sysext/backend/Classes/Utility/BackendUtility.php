@@ -1257,7 +1257,7 @@ class BackendUtility
             // Hidden
             $lang = static::getLanguageService();
             if ($ctrl['disabled'] ?? false) {
-                $out .= $row[$ctrl['disabled']] ? ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
+                $out .= ($row[$ctrl['disabled']] ?? false) ? ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') : '';
             }
             if (($ctrl['starttime'] ?? false) && ($row[$ctrl['starttime']] ?? 0) > $GLOBALS['EXEC_TIME']) {
                 $out .= ' - ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.days') . ')';
@@ -1306,15 +1306,15 @@ class BackendUtility
         $pageTsConfig = static::getPagesTSconfig($pageId);
         $label = '';
         if (isset($pageTsConfig['TCEFORM.'])
-            && \is_array($pageTsConfig['TCEFORM.'])
-            && \is_array($pageTsConfig['TCEFORM.'][$table . '.'])
-            && \is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'])
+            && is_array($pageTsConfig['TCEFORM.'] ?? null)
+            && is_array($pageTsConfig['TCEFORM.'][$table . '.'] ?? null)
+            && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'] ?? null)
         ) {
-            if (\is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'])
+            if (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'] ?? null)
                 && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key])
             ) {
                 $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key];
-            } elseif (\is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'])
+            } elseif (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'] ?? null)
                 && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key])
             ) {
                 $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key];
@@ -1678,7 +1678,7 @@ class BackendUtility
 
                                 // Add additional where clause if foreign_match_fields are defined
                                 $foreignMatchFields = [];
-                                if (is_array($theColConf['foreign_match_fields'])) {
+                                if (is_array($theColConf['foreign_match_fields'] ?? false)) {
                                     $foreignMatchFields = $theColConf['foreign_match_fields'];
                                 }
 

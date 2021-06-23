@@ -3212,7 +3212,7 @@ class DatabaseRecordList
         $languageInformation = $this->translateTools->getSystemLanguages($pageId);
         $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
         $indent = ($table !== 'pages' && $this->isLocalized($table, $row)) ? ' style="margin-left: 16px;"' : '';
-        if ($languageInformation[$languageUid]['flagIcon']) {
+        if ($languageInformation[$languageUid]['flagIcon'] ?? false) {
             return '<span title="' . $title . '"' . $indent . '>' . $this->iconFactory->getIcon(
                 $languageInformation[$languageUid]['flagIcon'],
                 Icon::SIZE_SMALL

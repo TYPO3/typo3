@@ -370,7 +370,7 @@ class ElementHistoryController
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
             foreach ($fieldsToDisplay as $fN) {
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
+                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && ($GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '') !== 'passthrough') {
                     // Create diff-result:
                     $diffres = $diffUtility->makeDiffDisplay(
                         BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, true),

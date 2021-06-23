@@ -57,17 +57,17 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function canHandleLink(array $linkParts)
     {
-        if (!$linkParts['url']) {
+        if (empty($linkParts['url'] ?? '')) {
             return false;
         }
         $data = $linkParts['url'];
         // Check if the page still exists
-        if ((int)$data['pageuid'] > 0) {
+        if ((int)($data['pageuid'] ?? 0) > 0) {
             $pageRow = BackendUtility::getRecordWSOL('pages', $data['pageuid']);
             if (!$pageRow) {
                 return false;
             }
-        } elseif ($data['pageuid'] !== 'current') {
+        } elseif ($data['pageuid'] ?? '' !== 'current') {
             return false;
         }
 

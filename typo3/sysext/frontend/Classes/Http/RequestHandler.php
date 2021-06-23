@@ -1044,7 +1044,7 @@ class RequestHandler implements RequestHandlerInterface
         if (!$isInPreviewMode || $controller->doWorkspacePreview() || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
             return;
         }
-        if ($controller->config['config']['message_preview']) {
+        if ($controller->config['config']['message_preview'] ?? '') {
             $message = $controller->config['config']['message_preview'];
         } else {
             $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tsfe.xlf:preview');
