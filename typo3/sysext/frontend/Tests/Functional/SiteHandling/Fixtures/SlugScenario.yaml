@@ -108,7 +108,8 @@ entities:
         - self: {id: 1600, title: 'About us', slug: '/about'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 1800, title: 'Work in progress', hidden: 1, slug: '/never-visible-working-on-it' }
-        - self: {id: 404, title: 'Page not found', slug: '/404'}
+        - self: {id: 403, title: 'That page is forbidden to you', slug: '/403'}
+        - self: {id: 404, title: 'That page was not found', slug: '/404'}
           entities:
             content:
               - self: {title: 'EN: Page not found', type: *contentText}

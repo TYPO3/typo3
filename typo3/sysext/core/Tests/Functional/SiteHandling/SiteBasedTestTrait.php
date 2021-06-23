@@ -188,9 +188,18 @@ trait SiteBasedTestTrait
         array $codes
     ): array {
         if ($handler === 'Page') {
-            $baseConfiguration = [
-                'errorContentSource' => '404',
-            ];
+            // This implies you cannot test both 404 and 403 in the same test.
+            // Fixing that requires much deeper changes to the testing harness,
+            // as the structure here is only a portion of the config array structure.
+            if (in_array(404, $codes, true)) {
+                $baseConfiguration = [
+                    'errorContentSource' => 't3://page?uid=404',
+                ];
+            } elseif (in_array(403, $codes, true)) {
+                $baseConfiguration = [
+                    'errorContentSource' => 't3://page?uid=403',
+                ];
+            }
         } elseif ($handler === 'Fluid') {
             $baseConfiguration = [
                 'errorFluidTemplate' => 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/FluidError.html',
