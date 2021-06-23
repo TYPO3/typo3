@@ -24,14 +24,10 @@ use TYPO3\CMS\Extbase\Mvc\Request;
  */
 class ReferringRequest extends Request
 {
-    /**
-     * @param string $controllerClassName
-     */
-    public function __construct(string $controllerClassName = '')
+    public function __construct($request = null)
     {
-        // @todo: Move to parent::__construct() in case Request is deprecated in v11, too, otherwise drop this todo.
         trigger_error(__CLASS__ . ' will be removed in TYPO3 v12, use ForwardResponse instead, see ActionController->forwardToReferringRequest().', E_USER_DEPRECATED);
-        parent::__construct($controllerClassName);
+        parent::__construct($request);
     }
 
     /**
@@ -46,16 +42,16 @@ class ReferringRequest extends Request
 
         switch ($argumentName) {
             case '@extension':
-                $this->setControllerExtensionName($value);
+                $this->getExtbaseAttribute()->setControllerExtensionName($value);
                 break;
             case '@controller':
-                $this->setControllerName($value);
+                $this->getExtbaseAttribute()->setControllerName($value);
                 break;
             case '@action':
-                $this->setControllerActionName($value);
+                $this->getExtbaseAttribute()->setControllerActionName($value);
                 break;
             case '@format':
-                $this->setFormat($value);
+                $this->getExtbaseAttribute()->setFormat($value);
                 break;
         }
     }

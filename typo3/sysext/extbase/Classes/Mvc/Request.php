@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,507 +17,722 @@
 
 namespace TYPO3\CMS\Extbase\Mvc;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
 /**
- * Represents a generic request.
+ * The extbase request.
+ *
+ * This is a decorator: The core PSR-7 request is hand over as constructor
+ * argument, this class implements ServerRequestInterface, too.
+ * Additionally, the extbase request details are attached as 'extbase'
+ * attribute to the PSR-7 request and this class implements extbase RequestInterface.
+ * This class has no state except the PSR-7 request, all operations are
+ * hand down to the PSR-7 request.
  */
-class Request implements RequestInterface
+class Request implements ServerRequestInterface, RequestInterface
 {
-    const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
+    protected ServerRequestInterface $request;
 
     /**
-     * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
+     * @todo v12: final public function __construct(ServerRequestInterface $request)
      */
-    protected $pluginName = '';
-
-    /**
-     * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
-     */
-    protected $controllerExtensionName;
-
-    /**
-     * @var string
-     */
-    protected $controllerObjectName;
-
-    /**
-     * @var string Object name of the controller which is supposed to handle this request.
-     */
-    protected $controllerName = 'Standard';
-
-    /**
-     * @var string Name of the action the controller is supposed to take.
-     */
-    protected $controllerActionName = 'index';
-
-    /**
-     * @var array The arguments for this request
-     */
-    protected $arguments = [];
-
-    /**
-     * Framework-internal arguments for this request, such as __referrer.
-     * All framework-internal arguments start with double underscore (__),
-     * and are only used from within the framework. Not for user consumption.
-     * Internal Arguments can be objects, in contrast to public arguments
-     *
-     * @var array
-     */
-    protected $internalArguments = [];
-
-    /**
-     * @var string The requested representation format
-     */
-    protected $format = 'html';
-
-    /**
-     * @var bool If this request has been changed and needs to be dispatched again
-     * @deprecated since v11, will be removed in v12.
-     */
-    protected $dispatched = false;
-
-    /**
-     * If this request is a forward because of an error, the original request gets filled.
-     *
-     * @var \TYPO3\CMS\Extbase\Mvc\Request|null
-     */
-    protected $originalRequest;
-
-    /**
-     * If the request is a forward because of an error, these mapping results get filled here.
-     *
-     * @var \TYPO3\CMS\Extbase\Error\Result|null
-     */
-    protected $originalRequestMappingResults;
-
-    /**
-     * Sets the dispatched flag
-     *
-     * @param bool $flag If this request has been dispatched
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function setDispatched($flag)
+    public function __construct($request = null)
     {
-        $this->dispatched = (bool)$flag;
+        if (is_string($request) && !empty($request)) {
+            // Deprecation layer for old extbase Request __construct(string $controllerClassName = '')
+            $controllerClassName = $request;
+            /** @var ServerRequestInterface $request */
+            $request = $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest();
+            $attribute = new ExtbaseRequestParameters($controllerClassName);
+            $request = $request->withAttribute('extbase', $attribute);
+        } elseif ($request === null) {
+            // Deprecation layer when ServerRequestInterface is not given yet
+            /** @var ServerRequestInterface $request */
+            // Fallback "new ServerRequest()" currently used in install tool.
+            $request = $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest();
+            $attribute = new ExtbaseRequestParameters('');
+            $request = $request->withAttribute('extbase', $attribute);
+        }
+        if (!$request instanceof ServerRequestInterface) {
+            throw new \InvalidArgumentException(
+                'Request must implement PSR-7 ServerRequestInterface',
+                1624452071
+            );
+        }
+        if (!$request->getAttribute('extbase') instanceof ExtbaseRequestParameters) {
+            throw new \InvalidArgumentException(
+                'Given request must have an attribute "extbase" of type ExtbaseAttribute',
+                1624452070
+            );
+        }
+        $this->request = $request;
     }
 
     /**
-     * If this request has been dispatched and addressed by the responsible
-     * controller and the response is ready to be sent.
-     *
-     * The dispatcher will try to dispatch the request again if it has not been
-     * addressed yet.
-     *
-     * @return bool TRUE if this request has been dispatched successfully
-     * @deprecated since v11, will be removed in v12.
+     * ExtbaseAttribute attached as attribute 'extbase' to $request carries extbase
+     * specific request values. This helper method type hints this attribute.
      */
-    public function isDispatched()
+    protected function getExtbaseAttribute(): ExtbaseRequestParameters
     {
-        return $this->dispatched;
+        return $this->request->getAttribute('extbase');
+    }
+
+    public function getServerRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 
     /**
-     * @param string $controllerClassName
+     * Methods implementing extbase RequestInterface
      */
-    public function __construct(string $controllerClassName = '')
-    {
-        $this->controllerObjectName = $controllerClassName;
-    }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getControllerObjectName(): string
     {
-        return $this->controllerObjectName;
+        return $this->getExtbaseAttribute()->getControllerObjectName();
     }
 
     /**
-     * Explicitly sets the object name of the controller
-     *
-     * @param string $controllerObjectName The fully qualified controller object name
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * Return an instance with the specified controller object name set.
      */
-    public function setControllerObjectName($controllerObjectName)
+    public function withControllerObjectName(string $controllerObjectName): self
     {
-        $nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
-        $this->controllerExtensionName = $nameParts['extensionName'];
-        $this->controllerName = $nameParts['controllerName'];
-    }
-
-    /**
-     * Sets the plugin name.
-     *
-     * @param string|null $pluginName
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setPluginName($pluginName = null)
-    {
-        if ($pluginName !== null) {
-            $this->pluginName = $pluginName;
-        }
+        $attribute = $this->getExtbaseAttribute()->setControllerObjectName($controllerObjectName);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
     }
 
     /**
      * Returns the plugin key.
      *
-     * @return string The plugin key
+     * @todo: Should be "public function getPluginName(): string", blocked by testing-framework
      */
     public function getPluginName()
     {
-        return $this->pluginName;
+        return $this->getExtbaseAttribute()->getPluginName();
     }
 
     /**
-     * Sets the extension name of the controller.
-     *
-     * @param string $controllerExtensionName The extension name.
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * Return an instance with the specified plugin name set.
      */
-    public function setControllerExtensionName($controllerExtensionName)
+    public function withPluginName($pluginName = null): self
     {
-        if ($controllerExtensionName !== null) {
-            $this->controllerExtensionName = $controllerExtensionName;
-        }
+        $attribute = $this->getExtbaseAttribute()->setPluginName($pluginName);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
     }
 
     /**
      * Returns the extension name of the specified controller.
      *
-     * @return string The extension name
+     * @todo: Should be "public function getControllerExtensionName(): string", blocked by testing-framework
      */
     public function getControllerExtensionName()
     {
-        return $this->controllerExtensionName;
+        return $this->getExtbaseAttribute()->getControllerExtensionName();
     }
 
     /**
-     * Returns the extension name of the specified controller.
+     * Return an instance with the specified controller extension name set.
+     *
+     * @param string|null $controllerExtensionName Extension name
+     * @return self
+     */
+    public function withControllerExtensionName($controllerExtensionName): self
+    {
+        $attribute = $this->getExtbaseAttribute()->setControllerExtensionName($controllerExtensionName);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
+    }
+
+    /**
+     * Returns the extension key of the specified controller.
      *
      * @return string The extension key
      */
-    public function getControllerExtensionKey()
+    public function getControllerExtensionKey(): string
     {
-        return GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+        return $this->getExtbaseAttribute()->getControllerExtensionKey();
     }
 
     /**
-     * @var array
-     */
-    protected $controllerAliasToClassNameMapping = [];
-
-    /**
-     * @param array $controllerAliasToClassNameMapping
-     */
-    public function setControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping)
-    {
-        // this is only needed as long as forwarded requests are altered and unless there
-        // is no new request object created by the request builder.
-        $this->controllerAliasToClassNameMapping = $controllerAliasToClassNameMapping;
-    }
-
-    /**
-     * Sets the name of the controller which is supposed to handle the request.
-     * Note: This is not the object name of the controller!
-     *
-     * @param string $controllerName Name of the controller
-     * @throws Exception\InvalidControllerNameException
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerName($controllerName)
-    {
-        if (!is_string($controllerName) && $controllerName !== null) {
-            throw new InvalidControllerNameException('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-        }
-        if ($controllerName !== null) {
-            $this->controllerName = $controllerName;
-            $this->controllerObjectName = $this->controllerAliasToClassNameMapping[$controllerName] ?? '';
-            // There might be no Controller Class, for example for Fluid Templates.
-        }
-    }
-
-    /**
-     * Returns the object name of the controller supposed to handle this request, if one
+     * Returns the controller name supposed to handle this request, if one
      * was set already (if not, the name of the default controller is returned)
      *
-     * @return string Object name of the controller
+     * @todo: Should be "public function getControllerName(): string", blocked by testing-framework
      */
     public function getControllerName()
     {
-        return $this->controllerName;
+        return (string)$this->getExtbaseAttribute()->getControllerName();
     }
 
     /**
-     * Sets the name of the action contained in this request.
+     * Return an instance with the specified controller name set.
+     * Note: This is not the object name of the controller!
      *
-     * Note that the action name must start with a lower case letter and is case sensitive.
-     *
-     * @param string $actionName Name of the action to execute by the controller
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @param string|null $controllerName Controller name
+     * @return self
      */
-    public function setControllerActionName($actionName)
+    public function withControllerName($controllerName): self
     {
-        if (!is_string($actionName) && $actionName !== null) {
-            throw new InvalidActionNameException('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176359);
-        }
-        if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== null) {
-            throw new InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
-        }
-        if ($actionName !== null) {
-            $this->controllerActionName = $actionName;
-        }
+        $attribute = $this->getExtbaseAttribute()->setControllerName($controllerName);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
     }
 
     /**
      * Returns the name of the action the controller is supposed to execute.
      *
-     * @return string Action name
+     * @todo: Should be "public function getControllerActionName(): string", blocked by testing-framework
      */
     public function getControllerActionName()
     {
-        $controllerObjectName = $this->getControllerObjectName();
-        if ($controllerObjectName !== '' && $this->controllerActionName === strtolower($this->controllerActionName)) {
-            // todo: this is nonsense! We can detect a non existing method in
-            // todo: \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin, if necessary.
-            // todo: At this point, we want to have a getter for a fixed value.
-            $actionMethodName = $this->controllerActionName . 'Action';
-            $classMethods = get_class_methods($controllerObjectName);
-            if (is_array($classMethods)) {
-                foreach ($classMethods as $existingMethodName) {
-                    if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
-                        $this->controllerActionName = substr($existingMethodName, 0, -6);
-                        break;
-                    }
-                }
-            }
-        }
-        return $this->controllerActionName;
+        return $this->getExtbaseAttribute()->getControllerActionName();
     }
 
     /**
-     * Sets the value of the specified argument
+     * Return an instance with the specified controller action name set.
      *
-     * @param string $argumentName Name of the argument to set
-     * @param mixed $value The new value
-     * @throws Exception\InvalidArgumentNameException
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * Note that the action name must start with a lower case letter and is case sensitive.
+     *
+     * @param string|null $actionName Action name
+     * @return self
      */
-    public function setArgument($argumentName, $value)
+    public function withControllerActionName($actionName): self
     {
-        if (!is_string($argumentName) || $argumentName === '') {
-            throw new InvalidArgumentNameException('Invalid argument name.', 1210858767);
-        }
-        if ($argumentName[0] === '_' && $argumentName[1] === '_') {
-            $this->internalArguments[$argumentName] = $value;
-            return;
-        }
-        if (!in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format'], true)) {
-            $this->arguments[$argumentName] = $value;
-        }
+        $attribute = $this->getExtbaseAttribute()->setControllerActionName($actionName);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
     }
 
     /**
-     * Sets the whole arguments array and therefore replaces any arguments
-     * which existed before.
-     *
-     * @param array $arguments An array of argument names and their values
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @inheritdoc
      */
-    public function setArguments(array $arguments)
+    public function getArguments(): array
     {
-        $this->arguments = [];
-        foreach ($arguments as $argumentName => $argumentValue) {
-            $this->setArgument($argumentName, $argumentValue);
-        }
+        return $this->getExtbaseAttribute()->getArguments();
     }
 
     /**
-     * Returns an array of arguments and their values
-     *
-     * @return array Associative array of arguments and their values (which may be arguments and values as well)
+     * Return an instance with the specified extbase arguments, replacing
+     * any arguments which existed before.
      */
-    public function getArguments()
+    public function withArguments(array $arguments): self
     {
-        return $this->arguments;
+        $attribute = $this->getExtbaseAttribute()->setArguments($arguments);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
     }
 
     /**
-     * Returns the value of the specified argument
-     *
-     * @param string $argumentName Name of the argument
-     *
-     * @return string|array Value of the argument
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
+     * @inheritdoc
      */
     public function getArgument($argumentName)
     {
-        if (!isset($this->arguments[$argumentName])) {
-            throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
-        }
-        return $this->arguments[$argumentName];
+        return $this->getExtbaseAttribute()->getArgument($argumentName);
     }
 
     /**
-     * Checks if an argument of the given name exists (is set)
-     *
-     * @param string $argumentName Name of the argument to check
-     *
-     * @return bool TRUE if the argument is set, otherwise FALSE
+     * @inheritDoc
      */
-    public function hasArgument($argumentName)
+    public function hasArgument($argumentName): bool
     {
-        return isset($this->arguments[$argumentName]);
+        return $this->getExtbaseAttribute()->hasArgument($argumentName);
     }
 
     /**
-     * Sets the requested representation format
+     * Return an instance with the specified argument set.
      *
-     * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
+     * @param string $argumentName Name of the argument to set
+     * @param mixed $value The new value
+     * @return self
+     */
+    public function withArgument(string $argumentName, $value): self
+    {
+        $attribute = $this->getExtbaseAttribute()->setArgument($argumentName, $value);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
+    }
+
+    /**
+     * Returns the requested representation format, something
+     * like "html", "xml", "png", "json" or the like.
+     */
+    public function getFormat(): string
+    {
+        return $this->getExtbaseAttribute()->getFormat();
+    }
+
+    /**
+     * Return an instance with the specified derived request attribute.
+     *
+     * This method allows setting a single derived request attribute as
+     * described in getFormat().
+     */
+    public function withFormat(string $format): self
+    {
+        $attribute = $this->getExtbaseAttribute()->setFormat($format);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
+    }
+
+    /**
+     * Extbase @internal methods, not part of extbase RequestInterface. Should vanish as soon as unused.
+     */
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setControllerObjectName($controllerObjectName)
+    {
+        $this->getExtbaseAttribute()->setControllerObjectName($controllerObjectName);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setPluginName($pluginName = null)
+    {
+        $this->getExtbaseAttribute()->setPluginName($pluginName);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setControllerExtensionName($controllerExtensionName)
+    {
+        $this->getExtbaseAttribute()->setControllerExtensionName($controllerExtensionName);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping)
+    {
+        // this is only needed as long as forwarded requests are altered and unless there
+        // is no new request object created by the request builder.
+        $this->getExtbaseAttribute()->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
+    }
+
+    /**
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public function withControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping): self
+    {
+        // this is only needed as long as forwarded requests are altered and unless there
+        // is no new request object created by the request builder.
+        $attribute = $this->getExtbaseAttribute()->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
+        $request = $this->request->withAttribute('extbase', $attribute);
+        return new static($request);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setControllerName($controllerName)
+    {
+        $this->getExtbaseAttribute()->setControllerName($controllerName);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setControllerActionName($actionName)
+    {
+        $this->getExtbaseAttribute()->setControllerActionName($actionName);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setArgument($argumentName, $value)
+    {
+        $this->getExtbaseAttribute()->setArgument($argumentName, $value);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
+     */
+    public function setArguments(array $arguments)
+    {
+        $this->getExtbaseAttribute()->setArguments($arguments);
+    }
+
+    /**
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
      */
     public function setFormat($format)
     {
-        $this->format = $format;
+        $this->getExtbaseAttribute()->setFormat($format);
     }
 
     /**
-     * Returns the requested representation format
-     *
-     * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-     */
-    public function getFormat()
-    {
-        return $this->format;
-    }
-
-    /**
-     * Returns the original request. Filled only if a property mapping error occurred.
-     *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request|null the original request.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getOriginalRequest(): ?Request
     {
-        return $this->originalRequest;
+        return $this->getExtbaseAttribute()->getOriginalRequest();
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
      */
-    public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest)
+    public function setOriginalRequest(Request $originalRequest)
     {
-        $this->originalRequest = $originalRequest;
+        $this->getExtbaseAttribute()->setOriginalRequest($originalRequest);
     }
 
     /**
      * Get the request mapping results for the original request.
      *
-     * @return \TYPO3\CMS\Extbase\Error\Result
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getOriginalRequestMappingResults(): Result
     {
-        if ($this->originalRequestMappingResults === null) {
-            return new Result();
-        }
-        return $this->originalRequestMappingResults;
+        return $this->getExtbaseAttribute()->getOriginalRequestMappingResults();
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @internal only to be used within Extbase, not part of TYPO3 Core API. Violates immutability.
      */
     public function setOriginalRequestMappingResults(Result $originalRequestMappingResults)
     {
-        $this->originalRequestMappingResults = $originalRequestMappingResults;
+        $this->getExtbaseAttribute()->setOriginalRequestMappingResults($originalRequestMappingResults);
     }
 
     /**
-     * Get the internal arguments of the request, i.e. every argument starting
-     * with two underscores.
-     *
-     * @return array
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getInternalArguments()
+    public function getInternalArguments(): array
     {
-        return $this->internalArguments;
+        return $this->getExtbaseAttribute()->getInternalArguments();
     }
 
     /**
-     * Returns the value of the specified argument
-     *
-     * @param string $argumentName Name of the argument
-     * @return string Value of the argument, or NULL if not set.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getInternalArgument($argumentName)
     {
-        if (!isset($this->internalArguments[$argumentName])) {
-            return null;
-        }
-        return $this->internalArguments[$argumentName];
+        return $this->getExtbaseAttribute()->getInternalArgument($argumentName);
     }
 
     /**
-     * Returns the name of the request method
-     *
-     * @return string Name of the request method
+     * Deprecated methods of extbase Request for v11 compat.
      */
-    public function getMethod()
+
+    /**
+     * @deprecated since v11, will be removed in v12. Violates immutability.
+     */
+    public function setDispatched($flag)
     {
-        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
-        $request = $GLOBALS['TYPO3_REQUEST'];
-        return $request->getMethod();
+        $this->getExtbaseAttribute()->setDispatched($flag);
     }
 
     /**
-     * Returns the request URI
-     *
-     * @return string URI of this web request
-     * @deprecated since v11, will be removed in v12
+     * @deprecated since v11, will be removed in v12.
+     */
+    public function isDispatched()
+    {
+        return $this->getExtbaseAttribute()->isDispatched();
+    }
+
+    /**
+     * @deprecated since v11, will be removed in v12.
      */
     public function getRequestUri()
     {
         trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
-
-        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
-        $mainRequest = $GLOBALS['TYPO3_REQUEST'];
         /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
+        $normalizedParams = $this->getAttribute('normalizedParams');
         return $normalizedParams->getRequestUrl();
     }
 
     /**
-     * Returns the base URI
-     *
-     * @return string Base URI of this web request
-     * @deprecated since v11, will be removed in v12
+     * @deprecated since v11, will be removed in v12.
      */
     public function getBaseUri()
     {
         trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
-
-        // @todo Global access is obsolete as soon as this class implements ServerRequestInterface
-        $mainRequest = $GLOBALS['TYPO3_REQUEST'];
         /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $mainRequest->getAttribute('normalizedParams');
+        $normalizedParams = $this->getAttribute('normalizedParams');
         $baseUri = $normalizedParams->getSiteUrl();
-        if (ApplicationType::fromRequest($mainRequest)->isBackend()) {
+        if (ApplicationType::fromRequest($this)->isBackend()) {
             $baseUri .= TYPO3_mainDir;
         }
         return $baseUri;
+    }
+
+    /**
+     * Methods implementing ServerRequestInterface
+     */
+
+    /**
+     * @inheritdoc
+     */
+    public function getServerParams(): array
+    {
+        return $this->request->getServerParams();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCookieParams(): array
+    {
+        return $this->request->getCookieParams();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withCookieParams(array $cookies): self
+    {
+        $request = $this->request->withCookieParams($cookies);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getQueryParams(): array
+    {
+        return $this->request->getQueryParams();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withQueryParams(array $query): self
+    {
+        $request = $this->request->withQueryParams($query);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUploadedFiles(): array
+    {
+        return $this->request->getUploadedFiles();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withUploadedFiles(array $uploadedFiles): self
+    {
+        $request = $this->request->withUploadedFiles($uploadedFiles);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getParsedBody()
+    {
+        return $this->request->getParsedBody();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withParsedBody($data): self
+    {
+        $request = $this->request->withParsedBody($data);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttributes(): array
+    {
+        return $this->request->getAttributes();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttribute($name, $default = null)
+    {
+        return $this->request->getAttribute($name, $default);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withAttribute($name, $value): self
+    {
+        $request = $this->request->withAttribute($name, $value);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withoutAttribute($name): self
+    {
+        $request = $this->request->withoutAttribute($name);
+        return new static($request);
+    }
+
+    /**
+     * Methods implementing RequestInterface
+     */
+
+    /**
+     * @inheritdoc
+     */
+    public function getRequestTarget(): string
+    {
+        return $this->request->getRequestTarget();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withRequestTarget($requestTarget): self
+    {
+        $request = $this->request->withRequestTarget($requestTarget);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMethod(): string
+    {
+        return $this->request->getMethod();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withMethod($method): self
+    {
+        $request = $this->request->withMethod($method);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUri(): UriInterface
+    {
+        return $this->request->getUri();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withUri(UriInterface $uri, $preserveHost = false): self
+    {
+        $request = $this->request->withUri($uri, $preserveHost);
+        return new static($request);
+    }
+
+    /**
+     * Methods implementing MessageInterface
+     */
+
+    /**
+     * @inheritdoc
+     */
+    public function getProtocolVersion(): string
+    {
+        return $this->request->getProtocolVersion();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withProtocolVersion($version): self
+    {
+        $request = $this->request->withProtocolVersion($version);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHeaders(): array
+    {
+        return $this->request->getHeaders();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasHeader($name): bool
+    {
+        return $this->request->hasHeader($name);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHeader($name): array
+    {
+        return $this->request->getHeader($name);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHeaderLine($name): string
+    {
+        return $this->request->getHeaderLine($name);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withHeader($name, $value): self
+    {
+        $request = $this->request->withHeader($name, $value);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withAddedHeader($name, $value): self
+    {
+        $request = $this->request->withAddedHeader($name, $value);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withoutHeader($name): self
+    {
+        $request = $this->request->withoutHeader($name);
+        return new static($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBody(): StreamInterface
+    {
+        return $this->request->getBody();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function withBody(StreamInterface $body): self
+    {
+        $request = $this->request->withBody($body);
+        return new static($request);
     }
 }

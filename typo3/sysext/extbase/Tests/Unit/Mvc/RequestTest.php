@@ -37,17 +37,6 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsNoString(): void
-    {
-        $this->expectException(InvalidArgumentNameException::class);
-        $this->expectExceptionCode(1210858767);
-        $request = new Request();
-        $request->setArgument(123, 'theValue');
-    }
-
-    /**
-     * @test
-     */
     public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsAnEmptyString(): void
     {
         $this->expectException(InvalidArgumentNameException::class);
@@ -67,22 +56,6 @@ class RequestTest extends UnitTestCase
         $request->setArguments($arguments);
         $actualResult = $request->getArguments();
         self::assertEquals($arguments, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function setArgumentsCallsSetArgumentForEveryArrayEntry(): void
-    {
-        $request = $this->getMockBuilder(Request::class)
-            ->onlyMethods(['setArgument'])
-            ->getMock();
-        $request->expects(self::exactly(2))->method('setArgument')
-            ->withConsecutive(
-                ['key1', 'value1'],
-                ['key2', 'value2']
-            );
-        $request->setArguments(['key1' => 'value1', 'key2' => 'value2']);
     }
 
     /**
@@ -208,11 +181,7 @@ class RequestTest extends UnitTestCase
      */
     public function theActionNameCanBeSetAndRetrieved()
     {
-        $request = $this->getMockBuilder(Request::class)
-            ->onlyMethods(['getControllerObjectName'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->expects(self::once())->method('getControllerObjectName')->willReturn('');
+        $request = new Request();
         $request->setControllerActionName('theAction');
         self::assertEquals('theAction', $request->getControllerActionName());
     }

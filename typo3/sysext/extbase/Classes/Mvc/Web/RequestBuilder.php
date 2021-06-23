@@ -21,11 +21,11 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
@@ -181,21 +181,22 @@ class RequestBuilder implements SingletonInterface
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
 
-        $request = GeneralUtility::makeInstance(Request::class);
-        $request->setPluginName($this->pluginName);
-        $request->setControllerExtensionName($this->extensionName);
-        $request->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
-        $request->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
-        $request->setControllerActionName($actionName);
+        $extbaseAttribute = new ExtbaseRequestParameters();
+        $extbaseAttribute->setPluginName($this->pluginName);
+        $extbaseAttribute->setControllerExtensionName($this->extensionName);
+        $extbaseAttribute->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
+        $extbaseAttribute->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
+        $extbaseAttribute->setControllerActionName($actionName);
+
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
-            $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
+            $extbaseAttribute->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
         } else {
-            $request->setFormat($this->defaultFormat);
+            $extbaseAttribute->setFormat($this->defaultFormat);
         }
         foreach ($parameters as $argumentName => $argumentValue) {
-            $request->setArgument($argumentName, $argumentValue);
+            $extbaseAttribute->setArgument($argumentName, $argumentValue);
         }
-        return $request;
+        return new Request($mainRequest->withAttribute('extbase', $extbaseAttribute));
     }
 
     /**
