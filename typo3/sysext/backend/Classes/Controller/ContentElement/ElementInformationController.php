@@ -259,7 +259,7 @@ class ElementInformationController
                 $view->assignMultiple($this->getPreview());
                 $view->assignMultiple($this->getPropertiesForTable());
                 $view->assignMultiple($this->getReferences($request));
-                $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl']));
+                $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
                 $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
                 $content .= $view->render();
             }
