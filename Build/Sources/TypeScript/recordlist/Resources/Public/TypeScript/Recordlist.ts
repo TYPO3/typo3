@@ -18,10 +18,6 @@ import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 
-declare global {
-  const T3_THIS_LOCATION: string;
-}
-
 interface IconIdentifier {
   collapse: string;
   expand: string;
@@ -137,9 +133,6 @@ class Recordlist {
       switch (name) {
         case 'entityIdentifiers':
           value = entityIdentifiers;
-          break;
-        case 'T3_THIS_LOCATION':
-          value = T3_THIS_LOCATION;
           break;
         default:
           return;
