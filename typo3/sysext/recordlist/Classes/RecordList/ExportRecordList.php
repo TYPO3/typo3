@@ -24,14 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Fetches all records like in the list module but returns them as array in order to allow
- * CSV exports in the Controller with prepared data.
+ * exports (e.g. CSV) in the Controller with prepared data.
  *
  * This class acts as a composition-based wrapper for DatabaseRecordList for creating records
  * ready to be exported.
  *
  * @internal this class is not part of the TYPO3 Core API due to its nature as being a wrapper for DatabaseRecordList and a very specific implementation.
  */
-class CsvExportRecordList
+class ExportRecordList
 {
     protected DatabaseRecordList $recordList;
     protected TranslationConfigurationProvider $translationConfigurationProvider;
@@ -43,7 +43,7 @@ class CsvExportRecordList
     }
 
     /**
-     * Add header line with field names as CSV line.
+     * Add header line with field names.
      *
      * @param string[] $columnsToRender
      * @return array the columns to be used / shown.
@@ -72,10 +72,17 @@ class CsvExportRecordList
      * @param string[] $columnsToRender
      * @param BackendUserAuthentication $backendUser the current backend user needed to check for permissions
      * @param bool $hideTranslations
+     * @param bool $rawValues Whether the field values should not be processed
      * @return array[] an array of rows ready to be output
      */
-    public function getRecords(string $table, int $pageId, array $columnsToRender, BackendUserAuthentication $backendUser, bool $hideTranslations = false): array
-    {
+    public function getRecords(
+        string $table,
+        int $pageId,
+        array $columnsToRender,
+        BackendUserAuthentication $backendUser,
+        bool $hideTranslations = false,
+        bool $rawValues = false
+    ): array {
         // Creating the list of fields to include in the SQL query
         $selectFields = $this->recordList->getFieldsToSelect($table, $columnsToRender);
         $queryResult = $this->recordList->getQueryBuilder($table, $pageId, [], $selectFields, true, 0, 0)->execute();
@@ -88,7 +95,7 @@ class CsvExportRecordList
             if (!is_array($row)) {
                 continue;
             }
-            $result[] = $this->prepareRow($table, $row, $columnsToRender, $pageId);
+            $result[] = $this->prepareRow($table, $row, $columnsToRender, $pageId, $rawValues);
             if (!$l10nEnabled) {
                 continue;
             }
@@ -105,7 +112,7 @@ class CsvExportRecordList
                 // In offline workspace, look for alternative record
                 BackendUtility::workspaceOL($table, $translationRow, $backendUser->workspace, true);
                 if (is_array($translationRow) && $backendUser->checkLanguageAccess($languageId)) {
-                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $pageId);
+                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $pageId, $rawValues);
                 }
             }
         }
@@ -120,15 +127,18 @@ class CsvExportRecordList
      * @param mixed[] $row Current record
      * @param string[] $columnsToRender the columns to be displayed / exported
      * @param int $pageId used for the legacy hook
+     * @param bool $rawValues Whether the field values should not be processed
      * @return array the prepared row
      */
-    protected function prepareRow(string $table, array $row, array $columnsToRender, int $pageId): array
+    protected function prepareRow(string $table, array $row, array $columnsToRender, int $pageId, bool $rawValues): array
     {
         foreach ($columnsToRender as $columnName) {
-            if ($columnName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
-                $row[$columnName] = BackendUtility::getRecordTitle($table, $row, false, true);
-            } elseif ($columnName !== 'pid') {
-                $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid']);
+            if (!$rawValues) {
+                if ($columnName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
+                    $row[$columnName] = BackendUtility::getRecordTitle($table, $row, false, true);
+                } elseif ($columnName !== 'pid') {
+                    $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid']);
+                }
             }
         }
         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][DatabaseRecordList::class]['customizeCsvRow'] ?? [];

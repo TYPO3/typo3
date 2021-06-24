@@ -10,6 +10,7 @@ return [
     ],
     'record_export' => [
         'path' => '/records/export',
-        'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::handleRequest'
+        'methods' => ['POST'],
+        'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::handleExportRequest'
     ],
 ];

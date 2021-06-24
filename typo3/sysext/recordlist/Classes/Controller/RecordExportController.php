@@ -21,13 +21,16 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\RecordList\CsvExportRecordList;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
+use TYPO3\CMS\Recordlist\RecordList\ExportRecordList;
 
 /**
  * Controller for handling exports of records, typically executed from the list module.
@@ -36,97 +39,335 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 class RecordExportController
 {
-    protected int $id = 0;
-    protected array $modTSconfig = [];
-    protected ResponseFactoryInterface $responseFactory;
+    private const EXPORT_FORMATS = [
+        'csv' => [
+            'options' => [
+                'delimiter' => [
+                    'comma' => ',',
+                    'semicolon' => ';',
+                    'pipe' => '|'
+                ],
+                'quote' => [
+                    'doublequote' => '"',
+                    'singlequote' => '\'',
+                    'space' => ' '
+                ]
+            ],
+            'defaults' => [
+                'delimiter' => ',',
+                'quote' => '"'
+            ]
+        ],
+        'json' => [
+            'options' => [
+                'meta' => [
+                    'full' => 'full',
+                    'prefix' => 'prefix',
+                    'none' => 'none'
+                ]
+            ],
+            'defaults' => [
+                'meta' => 'prefix'
+            ]
+        ]
+    ];
 
-    public function __construct(ResponseFactoryInterface $responseFactory)
+    protected int $id = 0;
+    protected string $table = '';
+    protected string $format = '';
+    protected string $filename = '';
+    protected array $modTSconfig = [];
+
+    protected ResponseFactoryInterface $responseFactory;
+    protected UriBuilder $uriBuilder;
+
+    public function __construct(ResponseFactoryInterface $responseFactory, UriBuilder $uriBuilder)
     {
         $this->responseFactory = $responseFactory;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /**
-     * Handle record export request
+     * Handle record export request by evaluating the provided arguments,
+     * checking access, initializing the record list, fetching records and
+     * finally calling the requested export format action (e.g. csv).
      *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function handleExportRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $queryParams = $request->getQueryParams();
-        $backendUser = $this->getBackendUserAuthentication();
+        $parsedBody = $request->getParsedBody();
 
-        $table = (string)($queryParams['table'] ?? '');
-        if ($table === '') {
-            throw new InvalidTableException('No table was given for exporting records', 1623941276);
+        $this->table = (string)($parsedBody['table'] ?? '');
+        if ($this->table === '') {
+            throw new \RuntimeException('No table was given for exporting records', 1623941276);
+        }
+        $this->format = (string)($parsedBody['format'] ?? '');
+        if ($this->format === '' || !isset(self::EXPORT_FORMATS[$this->format])) {
+            throw new \RuntimeException('No or an invalid export format given', 1624562166);
         }
 
-        $this->id = (int)($queryParams['id'] ?? 0);
-        $search_field = (string)($queryParams['search_field'] ?? '');
-        $search_levels = (int)($queryParams['search_levels'] ?? 0);
+        $this->filename = $this->generateFilename((string)($parsedBody['filename'] ?? ''));
+        $this->id = (int)($parsedBody['id'] ?? 0);
 
         // Loading module configuration
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
 
         // Loading current page record and checking access
+        $backendUser = $this->getBackendUserAuthentication();
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
-
-        $hasAccess = is_array($pageinfo) || ($this->id === 0 && $search_levels !== 0 && $search_field !== '');
-        if ($hasAccess === false) {
+        $searchString = (string)($parsedBody['searchString'] ?? '');
+        $searchLevels = (int)($parsedBody['searchLevels'] ?? 0);
+        if (!is_array($pageinfo) && !($this->id === 0 && $searchString !== '' && $searchLevels !== 0)) {
             throw new AccessDeniedException('Insufficient permissions for accessing this export', 1623941361);
         }
 
+        // Initialize database record list
         $recordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $recordList->modTSconfig = $this->modTSconfig;
+        $recordList->setFields[$this->table] = ($parsedBody['allColumns'] ?? false)
+            ? $recordList->makeFieldList($this->table, false, true)
+            : $backendUser->getModuleData('list/displayFields')[$this->table] ?? [];
         $recordList->setLanguagesAllowedForUser($this->getSiteLanguages($request));
-        $recordList->start($this->id, $table, 0, $search_field, $search_levels);
+        $recordList->start($this->id, $this->table, 0, $searchString, $searchLevels);
 
-        // Currently only CSV is supported for export. As soon as Core adds additional
-        // formats, this should be changed to e.g. a switch case on the requested $format
-        return $this->csvExportAction($recordList, $table);
+        $columnsToRender = $recordList->getColumnsToRender($this->table, false);
+        $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*'
+            || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $this->table);
+
+        // Initialize the exporter
+        $exporter = GeneralUtility::makeInstance(
+            ExportRecordList::class,
+            $recordList,
+            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
+        );
+
+        // Fetch and process the header row and the records
+        $headerRow = $exporter->getHeaderRow($columnsToRender);
+        $records = $exporter->getRecords(
+            $this->table,
+            $this->id,
+            $columnsToRender,
+            $this->getBackendUserAuthentication(),
+            $hideTranslations,
+            (bool)($parsedBody['rawValues'] ?? false)
+        );
+
+        $exportAction = $this->format . 'ExportAction';
+        return $this->{$exportAction}($request, $headerRow, $records);
     }
 
+    /**
+     * Generate settings form for the export request
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function exportSettingsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $exportArguments = $request->getQueryParams();
+
+        $this->table = (string)($exportArguments['table'] ?? '');
+        if ($this->table === '') {
+            throw new \RuntimeException('No table was given for exporting records', 1624551586);
+        }
+
+        $this->id = (int)($exportArguments['id'] ?? 0);
+        $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
+
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:recordlist/Resources/Private/Templates/RecordExportSettings.html'
+        ));
+
+        $view->assignMultiple([
+            'formUrl' => $this->uriBuilder->buildUriFromRoute('record_export'),
+            'table' => $this->table,
+            'exportArguments' => $exportArguments,
+            'formats' => array_keys(self::EXPORT_FORMATS),
+            'formatOptions' => $this->getFormatOptionsWithResolvedDefaults(),
+        ]);
+
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8');
+
+        $response->getBody()->write($view->render());
+        return $response;
+    }
+
+    /**
+     * Generating an export in CSV format
+     *
+     * @param ServerRequestInterface $request
+     * @param array $headerRow
+     * @param array $records
+     * @return ResponseInterface
+     */
+    protected function csvExportAction(
+        ServerRequestInterface $request,
+        array $headerRow,
+        array $records
+    ): ResponseInterface {
+        // Fetch csv related format options
+        $csvDelimiter = $this->getFormatOption($request, 'delimiter');
+        $csvQuote = $this->getFormatOption($request, 'quote');
+
+        // Create result
+        $result[] = CsvUtility::csvValues($headerRow, $csvDelimiter, $csvQuote);
+        foreach ($records as $record) {
+            $result[] = CsvUtility::csvValues($record, $csvDelimiter, $csvQuote);
+        }
+
+        return $this->generateExportResponse(implode(CRLF, $result));
+    }
+
+    /**
+     * Generating an export in JSON format
+     *
+     * @param ServerRequestInterface $request
+     * @param array $headerRow
+     * @param array $records
+     *
+     * @return ResponseInterface
+     */
+    protected function jsonExportAction(
+        ServerRequestInterface $request,
+        array $headerRow,
+        array $records
+    ): ResponseInterface {
+        // Fetch and evaluate json related format option
+        switch ($this->getFormatOption($request, 'meta')) {
+            case 'prefix':
+                $result = [$this->table . ':' . $this->id => $records];
+                break;
+            case 'full':
+                $user = $this->getBackendUserAuthentication();
+                $parsedBody = $request->getParsedBody();
+                $result = [
+                    'meta' => [
+                        'table' => $this->table,
+                        'page' => $this->id,
+                        'timestamp' => GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
+                        'user' => $user->user[$user->username_column] ?? '',
+                        'site' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
+                        'options' => [
+                            'columns' => array_values($headerRow),
+                            'values' => ($parsedBody['rawvalues'] ?? false) ? 'raw' : 'processed'
+                        ]
+                    ],
+                    'records' => $records
+                ];
+                $searchString = (string)($parsedBody['searchString'] ?? '');
+                $searchLevels = (int)($parsedBody['searchLevels'] ?? 0);
+                if ($searchString !== '' || $searchLevels !== 0) {
+                    $result['meta']['search'] = [
+                        'searchTerm' => $searchString,
+                        'searchLevels' => $searchLevels
+                    ];
+                }
+                break;
+            case 'none':
+            default:
+                $result = $records;
+                break;
+        }
+
+        return $this->generateExportResponse(json_encode($result) ?: '');
+    }
+
+    /**
+     * Get site languages, available for the current backend user
+     *
+     * @param ServerRequestInterface $request
+     * @return array
+     */
     protected function getSiteLanguages(ServerRequestInterface $request): array
     {
         $site = $request->getAttribute('site');
         return $site->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
     }
 
-    protected function csvExportAction(DatabaseRecordList $recordList, string $table): ResponseInterface
+    /**
+     * Return an evaluated and processed custom filename or a
+     * default, if non or an invalid custom filename was provided.
+     *
+     * @param string $filename
+     * @return string
+     */
+    protected function generateFilename(string $filename): string
     {
-        $user = $this->getBackendUserAuthentication();
-        $csvExporter = GeneralUtility::makeInstance(
-            CsvExportRecordList::class,
-            $recordList,
-            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
-        );
-        // Ensure the fields chosen by the backend editor are selected / displayed
-        $recordList->setFields = $user->getModuleData('list/displayFields');
-        $columnsToRender = $recordList->getColumnsToRender($table, false);
-        $headerRow = $csvExporter->getHeaderRow($columnsToRender);
-        $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*' || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $table);
-        $records = $csvExporter->getRecords($table, $this->id, $columnsToRender, $user, $hideTranslations);
-        return $this->csvResponse(
-            $table . '_' . date('dmy-Hi') . '.csv',
-            $records,
-            $headerRow
-        );
+        $defaultFilename = $this->table . '_' . date('dmy-Hi') . '.' . $this->format;
+
+        // Return default filename if given filename is empty or not valid
+        if ($filename === '' || !preg_match('/^[0-9a-z._\-]+$/i', $filename)) {
+            return $defaultFilename;
+        }
+
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        if ($extension === '') {
+            // Add original extension in case alternative filename did not contain any
+            $filename = rtrim($filename, '.') . '.' . $this->format;
+        }
+
+        // Check if given or resolved extension matches the original one
+        return pathinfo($filename, PATHINFO_EXTENSION) === $this->format ? $filename : $defaultFilename;
     }
 
-    protected function csvResponse($fileName, array $data, array $headerRow = []): ResponseInterface
+    /**
+     * Return the format options with resolved default values from TSconfig
+     *
+     * @return array
+     */
+    protected function getFormatOptionsWithResolvedDefaults(): array
+    {
+        $formatOptions = self::EXPORT_FORMATS;
+
+        if ($this->modTSconfig === []) {
+            return $formatOptions;
+        }
+
+        if ($this->modTSconfig['csvDelimiter'] ?? false) {
+            $default = (string)$this->modTSconfig['csvDelimiter'];
+            if (!in_array($default, $formatOptions['csv']['options']['delimiter'], true)) {
+                // In case the user defined option is not yet available as format options, add it
+                $formatOptions['csv']['options']['delimiter']['custom'] = $default;
+            }
+            $formatOptions['csv']['defaults']['delimiter'] = $default;
+        }
+
+        if ($this->modTSconfig['csvQuote'] ?? false) {
+            $default = (string)$this->modTSconfig['csvQuote'];
+            if (!in_array($default, $formatOptions['csv']['options']['quote'], true)) {
+                // In case the user defined option is not yet available as format options, add it
+                $formatOptions['csv']['options']['quote']['custom'] = $default;
+            }
+            $formatOptions['csv']['defaults']['quote'] = $default;
+        }
+
+        return $formatOptions;
+    }
+
+    protected function getFormatOptions(ServerRequestInterface $request): array
+    {
+        return $request->getParsedBody()[$this->format] ?? [];
+    }
+
+    protected function getFormatOption(ServerRequestInterface $request, string $option, $default = null)
+    {
+        return $this->getFormatOptions($request)[$option]
+            ?? $this->getFormatOptionsWithResolvedDefaults()[$this->format]['defaults'][$option]
+            ?? $default;
+    }
+
+    protected function generateExportResponse(string $result): ResponseInterface
     {
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/octet-stream')
-            ->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
+            ->withHeader('Content-Disposition', 'attachment; filename=' . $this->filename);
+        $response->getBody()->write($result);
 
-        $csvDelimiter = $this->modTSconfig['csvDelimiter'] ?? ',';
-        $csvQuote = $this->modTSconfig['csvQuote'] ?? '"';
-        $result[] = CsvUtility::csvValues($headerRow, $csvDelimiter, $csvQuote);
-        foreach ($data as $csvRow) {
-            $result[] = CsvUtility::csvValues($csvRow, $csvDelimiter, $csvQuote);
-        }
-        $response->getBody()->write(implode(CRLF, $result));
         return $response;
     }
 

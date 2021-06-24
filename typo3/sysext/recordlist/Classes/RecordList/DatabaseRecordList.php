@@ -791,17 +791,33 @@ class DatabaseRecordList
             return '';
         }
 
-        $downloadCsvFileLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.csv');
-        $exportButtonLabel = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:csvExport');
-        $downloadCsvLabel = sprintf($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecord' : 'exportRecords')), $totalItems);
-        $exportUrl = $this->uriBuilder->buildUriFromRoute('record_export', ['id' => $this->id, 'table' => $table, 'search_field' => $this->searchString, 'search_levels' => $this->searchLevels]);
+        $exportButtonLabel = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:export');
+        $exportButtonTitle = sprintf($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecord' : 'exportRecords')), $totalItems);
+        $exportCancelTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel');
+        $exportSettingsUrl = $this->uriBuilder->buildUriFromRoute(
+            'ajax_record_export_settings',
+            ['id' => $this->id, 'table' => $table, 'searchString' => $this->searchString, 'searchLevels' => $this->searchLevels]
+        );
+        $exportSettingsTitle = sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecordSettings' : 'exportRecordsSettings')),
+            $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
+            $totalItems
+        );
 
-        return '<div class="pull-right"><a href="' . htmlspecialchars($exportUrl) . '"'
-            . ' class="btn btn-default btn-sm me-2"'
-            . ' title="' . htmlspecialchars($downloadCsvLabel) . '"'
-            . ' aria-label="' . htmlspecialchars($downloadCsvFileLabel) . '"'
-            . ' download>'
-            . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($exportButtonLabel) . '</a></div>';
+        return '
+            <div class="pull-right">
+                <typo3-recordlist-record-export-button
+                    url="' . htmlspecialchars($exportSettingsUrl) . '"
+                    title="' . htmlspecialchars($exportSettingsTitle) . '"
+                    ok="' . htmlspecialchars($exportButtonTitle) . '"
+                    close="' . htmlspecialchars($exportCancelTitle) . '"
+                >
+                    <button type="button" class="btn btn-default btn-sm me-2" title="' . htmlspecialchars($exportButtonTitle) . '">' .
+                        $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL) . ' ' .
+                        htmlspecialchars($exportButtonLabel) .
+                    '</button>
+                </typo3-recordlist-record-export-button>
+            </div>';
     }
 
     /**

@@ -126,6 +126,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $enableControlPanels = $this->arguments['enableControlPanels'];
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordExportButton');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
         if ($enableControlPanels === true) {
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
