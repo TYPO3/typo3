@@ -411,7 +411,7 @@ class PageInformationController
                     $theData[$field] = $row[$field] ? '<strong>x</strong>' : '&nbsp;';
                     break;
                 case 'actual_backend_layout':
-                    $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($row['uid']);
+                    $backendLayout = $this->backendLayoutView->getBackendLayoutForPage((int)$row['uid']);
                     $theData[$field] = $backendLayout !== null
                         ? htmlspecialchars($this->getLanguageService()->sL($backendLayout->getTitle()))
                         : '';

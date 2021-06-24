@@ -74,7 +74,7 @@ class BackendLayoutFromParentPage extends AbstractNode
             // Get the resolved backend layout for the current page.
             $backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
             $backendLayout = $backendLayoutView->getBackendLayoutForPage(
-                $this->data['databaseRow']['uid'] ?? $this->data['effectivePid'] ?? 0
+                (int)($this->data['databaseRow']['uid'] ?? $this->data['effectivePid'] ?? 0)
             );
             if ($backendLayout !== null) {
                 $backendLayoutInformation = sprintf(
