@@ -393,6 +393,18 @@ class DatabaseRecordList
     protected array $languagesAllowedForUser = [];
 
     /**
+     * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
+     * @var array
+     */
+    protected array $pagePermsCache = [];
+
+    /**
+     * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
+     * @var array
+     */
+    protected array $backendUserCache = [];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -921,14 +933,7 @@ class DatabaseRecordList
             } elseif ($fCol === 'pid') {
                 $theData[$fCol] = $row[$fCol];
             } elseif ($fCol !== '' && $fCol === ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? '')) {
-                $beUserRecord = BackendUtility::getRecord('be_users', (int)$row[$fCol]);
-                if (is_array($beUserRecord)) {
-                    $avatar = GeneralUtility::makeInstance(Avatar::class);
-                    $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
-                    $theData[$fCol] = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
-                } else {
-                    $theData[$fCol] = '<strong>&ndash;</strong>';
-                }
+                $theData[$fCol] = $this->getBackendUserInformation((int)$row[$fCol]);
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
             } elseif ($fCol === '_REF_') {
@@ -1354,20 +1359,13 @@ class DatabaseRecordList
 
         // Hide the move elements for localized records - doesn't make much sense to perform these options for them
         $isL10nOverlay = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0;
+        $localCalcPerms = $this->getPagePermissionsForRecord($table, $row);
         if ($table === 'pages') {
-            // If the listed table is 'pages' we have to request the permission settings for each page.
-            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
+            $permsEdit = ($backendUser->checkLanguageAccess($row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0))
+                && $localCalcPerms->editPagePermissionIsGranted();
         } else {
-            // If the listed table is not 'pages' we have to request the permission settings from the parent page
-            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid'])));
+            $permsEdit = $localCalcPerms->editContentPermissionIsGranted() && $backendUser->recordEditAccessInternals($table, $row);
         }
-        $permsEdit = ($table === 'pages')
-                     && ($backendUser->checkLanguageAccess($row[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0))
-                     && $localCalcPerms->editPagePermissionIsGranted()
-                     || ($table !== 'pages'
-                        && $localCalcPerms->editContentPermissionIsGranted()
-                        && $backendUser->recordEditAccessInternals($table, $row))
-        ;
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
         // "Show" link (only pages and tt_content elements)
@@ -1644,7 +1642,10 @@ class DatabaseRecordList
                 }
                 // Down (Paste as subpage to the page right above)
                 if (!$isL10nOverlay && !$isDeletePlaceHolder && !empty($this->currentTable['prevUid'][$row['uid']])) {
-                    $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']])));
+                    $localCalcPerms = $this->getPagePermissionsForRecord(
+                        'pages',
+                        BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]) ?? []
+                    );
                     if ($localCalcPerms->createPagePermissionIsGranted()) {
                         $params = [];
                         $params['redirect'] = $this->listURL();
@@ -1802,7 +1803,7 @@ class DatabaseRecordList
 
                 // Check permission to cut page or content
                 if ($table === 'pages') {
-                    $localCalcPerms = new Permission($this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
+                    $localCalcPerms = $this->getPagePermissionsForRecord('pages', $row);
                     $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
                     $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
@@ -2140,6 +2141,41 @@ class DatabaseRecordList
             $this->recPath_cache[$pid] = BackendUtility::getRecordPath($pid, $this->perms_clause, 20);
         }
         return $this->recPath_cache[$pid];
+    }
+
+    /**
+     * Helper method around fetching the permissions of a record, by incorporating the record information AND the
+     * current user information.
+     */
+    protected function getPagePermissionsForRecord(string $table, array $row): Permission
+    {
+        // If the listed table is 'pages' we have to request the permission settings for each page.
+        // If the listed table is not 'pages' we have to request the permission settings from the parent page
+        $pageId = (int)($table === 'pages' ? ($row['l10n_parent'] ?: $row['uid']) : $row['pid']);
+        if (!isset($this->pagePermsCache[$pageId])) {
+            $this->pagePermsCache[$pageId] = new Permission($this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $pageId)));
+        }
+        return $this->pagePermsCache[$pageId];
+    }
+
+    /**
+     * Helper method around fetching a "cruser_id" information for a record, with a cache, so the same information
+     * does not have to be processed for the same user over and over again.
+     */
+    protected function getBackendUserInformation(int $backendUserId): string
+    {
+        if (!isset($this->backendUserCache[$backendUserId])) {
+            $beUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
+            if (is_array($beUserRecord)) {
+                $avatar = GeneralUtility::makeInstance(Avatar::class);
+                $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
+                $content = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
+            } else {
+                $content = '<strong>&ndash;</strong>';
+            }
+            $this->backendUserCache[$backendUserId] = $content;
+        }
+        return $this->backendUserCache[$backendUserId];
     }
 
     /**
@@ -2722,9 +2758,7 @@ class DatabaseRecordList
             case 'edit':
                 // If the listed table is 'pages' we have to request the permission settings for each page:
                 if ($table === 'pages') {
-                    $localCalcPerms = new Permission($this->getBackendUserAuthentication()->calcPerms(
-                        BackendUtility::getRecord('pages', $row['uid'])
-                    ));
+                    $localCalcPerms = $this->getPagePermissionsForRecord('pages', $row);
                     $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
                     $backendUser = $this->getBackendUserAuthentication();
