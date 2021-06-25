@@ -100,7 +100,7 @@ class TranslationServiceTest extends UnitTestCase
             'getLanguageService'
         ], [], '', false);
 
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()));
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $this->mockTranslationService
             ->expects(self::any())
             ->method('getLanguageService')

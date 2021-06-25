@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,13 +57,6 @@ class LanguageService
     public $debugKey = false;
 
     /**
-     * Internal cache for ll-labels (filled as labels are requested)
-     *
-     * @var array
-     */
-    protected $LL_labels_cache = [];
-
-    /**
      * List of language dependencies for actual language. This is used for local variants of a language
      * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
      *
@@ -71,34 +65,22 @@ class LanguageService
     protected $languageDependencies = [];
 
     /**
-     * An internal cache for storing loaded files, see readLLfile()
-     *
-     * @var array
-     */
-    protected $languageFileCache = [];
-
-    /**
      * @var string[][]
      */
     protected $labels = [];
 
-    /**
-     * @var Locales
-     */
-    protected $locales;
-
-    /**
-     * @var LocalizationFactory
-     */
-    protected $localizationFactory;
+    protected Locales $locales;
+    protected LocalizationFactory $localizationFactory;
+    protected FrontendInterface $runtimeCache;
 
     /**
      * @internal use one of the factory methods instead
      */
-    public function __construct(Locales $locales, LocalizationFactory $localizationFactory)
+    public function __construct(Locales $locales, LocalizationFactory $localizationFactory, FrontendInterface $runtimeCache)
     {
         $this->locales = $locales;
         $this->localizationFactory = $localizationFactory;
+        $this->runtimeCache = $runtimeCache;
         $this->debugKey = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['languageDebug'];
     }
 
@@ -184,9 +166,10 @@ class LanguageService
      */
     public function sL($input)
     {
-        $identifier = $input . '_' . (int)$this->debugKey;
-        if (isset($this->LL_labels_cache[$this->lang][$identifier])) {
-            return $this->LL_labels_cache[$this->lang][$identifier];
+        $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
+        $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
+        if ($cacheEntry !== false) {
+            return $cacheEntry;
         }
         if (strpos(trim($input), 'LLL:') === 0) {
             $restStr = substr(trim($input), 4);
@@ -204,7 +187,7 @@ class LanguageService
             $output = $input;
         }
         $output .= $this->debugLL($input);
-        $this->LL_labels_cache[$this->lang][$identifier] = $output;
+        $this->runtimeCache->set($cacheIdentifier, $output);
         return $output;
     }
 
@@ -323,8 +306,10 @@ class LanguageService
      */
     protected function readLLfile($fileRef): array
     {
-        if (isset($this->languageFileCache[$fileRef . $this->lang])) {
-            return $this->languageFileCache[$fileRef . $this->lang];
+        $cacheIdentifier = 'labels_file_' . md5($fileRef . $this->lang);
+        $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
+        if (is_array($cacheEntry)) {
+            return $cacheEntry;
         }
 
         if ($this->lang !== 'default') {
@@ -345,8 +330,8 @@ class LanguageService
                 ArrayUtility::mergeRecursiveWithOverrule($localLanguage[$this->lang], $tempLL[$language], true, false);
             }
         }
-        $this->languageFileCache[$fileRef . $this->lang] = $localLanguage;
 
+        $this->runtimeCache->set($cacheIdentifier, $localLanguage);
         return $localLanguage;
     }
 

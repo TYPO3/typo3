@@ -18,24 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class LanguageServiceFactory
 {
-    /**
-     * @var Locales
-     */
-    protected $locales;
+    protected Locales $locales;
+    protected LocalizationFactory $localizationFactory;
+    protected FrontendInterface $runtimeCache;
 
-    /**
-     * @var LocalizationFactory
-     */
-    protected $localizationFactory;
-
-    public function __construct(Locales $locales, LocalizationFactory $localizationFactory)
-    {
+    public function __construct(
+        Locales $locales,
+        LocalizationFactory $localizationFactory,
+        FrontendInterface $runtimeCache
+    ) {
         $this->locales = $locales;
         $this->localizationFactory = $localizationFactory;
+        $this->runtimeCache = $runtimeCache;
     }
 
     /**
@@ -46,7 +45,7 @@ class LanguageServiceFactory
      */
     public function create(string $locale): LanguageService
     {
-        $obj = new LanguageService($this->locales, $this->localizationFactory);
+        $obj = new LanguageService($this->locales, $this->localizationFactory, $this->runtimeCache);
         $obj->init($locale);
         return $obj;
     }

@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -157,10 +157,12 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel()
     {
-        $nullCacheBackend = new NullBackend('');
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -541,10 +543,12 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $pageTitleProvider->getPageTitleCache()->willReturn([]);
         GeneralUtility::setSingletonInstance(PageTitleProviderManager::class, $pageTitleProvider->reveal());
 
-        $nullCacheBackend = new NullBackend('');
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRendererProphecy->stdWrapValue(Argument::cetera())->willReturn('');
@@ -559,18 +563,20 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function pageRendererLanguageIsSetToSiteLanguageTypo3LanguageInConstructor(): void
     {
-        $nullCacheBackend = new NullBackend('');
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
-        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr-test',
         ]);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -595,18 +601,20 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function languageServiceIsSetUpWithSiteLanguageTypo3LanguageInConstructor(): void
     {
-        $nullCacheBackend = new NullBackend('');
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
-        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr',
         ]);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -636,12 +644,14 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function mountPointParameterContainsOnlyValidMPValues(): void
     {
-        $nullCacheBackend = new NullBackend('');
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
-        $cacheManager->getCache('l10n')->willReturn($nullCacheBackend);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManager->reveal()));
+        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
+        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
+        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());

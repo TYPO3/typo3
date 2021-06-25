@@ -241,7 +241,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Localization\LanguageServiceFactory::class, [
             $container->get(Localization\Locales::class),
-            $container->get(Localization\LocalizationFactory::class)
+            $container->get(Localization\LocalizationFactory::class),
+            $container->get(Cache\CacheManager::class)->getCache('runtime')
         ]);
     }
 

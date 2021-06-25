@@ -140,6 +140,8 @@ services:
   TYPO3\CMS\Core\Localization\LanguageService:
     shared: false
     public: true
+    arguments:
+      $runtimeCache: '@cache.runtime'
     deprecated:
       package: 'typo3/cms-core'
       version: '11.3'
