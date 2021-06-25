@@ -155,7 +155,10 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
         if (is_array($flashMessages)) {
             $flashMessages = array_map('json_encode', $flashMessages);
         }
-        $this->getUserByContext()->setAndSaveSessionData($this->identifier, $flashMessages);
+        $user = $this->getUserByContext();
+        if ($user instanceof AbstractUserAuthentication) {
+            $user->setAndSaveSessionData($this->identifier, $flashMessages);
+        }
     }
 
     /**
@@ -202,16 +205,17 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     }
 
     /**
-     * Gets user object by context
+     * Gets user object by context.
+     * This class is also used in install tool, where $GLOBALS['BE_USER'] is not set and can be null.
      *
-     * @return AbstractUserAuthentication
+     * @return AbstractUserAuthentication|null
      */
-    protected function getUserByContext()
+    protected function getUserByContext(): ?AbstractUserAuthentication
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && $GLOBALS['TSFE']->fe_user instanceof FrontendUserAuthentication) {
             return $GLOBALS['TSFE']->fe_user;
         }
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 
     /**
