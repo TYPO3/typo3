@@ -779,7 +779,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
             return false;
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
             // Language field must be found in input row - otherwise it does not make sense.
             if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                 if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
@@ -802,23 +802,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Checking authMode fields:
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
-                if (isset($idOrRow[$fieldName])) {
-                    if (
-                        $fieldValue['config']['type'] === 'select' && $fieldValue['config']['authMode']
-                        && $fieldValue['config']['authMode_enforce'] === 'strict'
-                    ) {
-                        if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
-                            $this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode']
-                                . '" failed for field "' . $fieldName . '" with value "'
-                                . $idOrRow[$fieldName] . '" evaluated';
-                            return false;
-                        }
-                    }
+                if (isset($idOrRow[$fieldName])
+                    && ($fieldValue['config']['type'] ?? '') === 'select'
+                    && ($fieldValue['config']['authMode'] ?? false)
+                    && ($fieldValue['config']['authMode_enforce'] ?? '') === 'strict'
+                    && !$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
+                    $this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode']
+                            . '" failed for field "' . $fieldName . '" with value "'
+                            . $idOrRow[$fieldName] . '" evaluated';
+                    return false;
                 }
             }
         }
         // Checking "editlock" feature (doesn't apply to new records)
-        if (!$newRecord && $GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+        if (!$newRecord && ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false)) {
             if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
                 if ($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
                     $this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
