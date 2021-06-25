@@ -23,7 +23,7 @@ class Typo3Version
     protected const BRANCH = '10.4';
 
     /**
-     * Define constants used up until TYPO3 v10, this constructor can be removed in TYPO3 v11.
+     * Define constants used up until TYPO3 v10, this constructor can be removed in TYPO3 v12.
      */
     public function __construct()
     {
