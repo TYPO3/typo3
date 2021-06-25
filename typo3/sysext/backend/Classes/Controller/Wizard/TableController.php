@@ -264,8 +264,8 @@ class TableController extends AbstractWizardController
     protected function getConfiguration(array $row, ServerRequestInterface $request)
     {
         // Get delimiter settings
-        $this->tableParsing_quote = $row['table_enclosure'] ? chr((int)$row['table_enclosure']) : '';
-        $this->tableParsing_delimiter = $row['table_delimiter'] ? chr((int)$row['table_delimiter']) : '|';
+        $this->tableParsing_quote = ($row['table_enclosure'] ?? false) ? chr((int)$row['table_enclosure']) : '';
+        $this->tableParsing_delimiter = ($row['table_delimiter'] ?? false) ? chr((int)$row['table_delimiter']) : '|';
         // If some data has been submitted, then construct
         if (isset($this->TABLECFG['c'])) {
             // Process incoming:
@@ -281,10 +281,10 @@ class TableController extends AbstractWizardController
                 $bodyText = $this->configurationArrayToString($this->TABLECFG['c']);
                 // Create cfgArr from the string based configuration - that way it is cleaned up
                 // and any incompatibilities will be removed!
-                $configuration = $this->configurationStringToArray($bodyText, (int)$row[$this->colsFieldName]);
+                $configuration = $this->configurationStringToArray($bodyText, (int)($row[$this->colsFieldName] ?? 0));
             }
             // If a save button has been pressed, then save the new field content:
-            if ($_POST['_savedok'] || $_POST['_saveandclosedok']) {
+            if (($_POST['_savedok'] ?? false) || ($_POST['_saveandclosedok'] ?? false)) {
                 // Get DataHandler object:
                 /** @var DataHandler $dataHandler */
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -304,7 +304,7 @@ class TableController extends AbstractWizardController
                 $dataHandler->start($data, []);
                 $dataHandler->process_datamap();
                 // If the save/close button was pressed, then redirect the screen:
-                if ($_POST['_saveandclosedok']) {
+                if ($_POST['_saveandclosedok'] ?? false) {
                     return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
                 }
             }
@@ -426,7 +426,7 @@ class TableController extends AbstractWizardController
                 ) {
                     $valueParts[$a] = substr(trim($valueParts[$a]), 1, -1);
                 }
-                $configurationArray[$key][$a] = (string)$valueParts[$a];
+                $configurationArray[$key][$a] = (string)($valueParts[$a] ?? '');
             }
         }
         return $configurationArray;
