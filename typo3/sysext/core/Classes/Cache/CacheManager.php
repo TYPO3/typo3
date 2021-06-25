@@ -102,7 +102,7 @@ class CacheManager implements SingletonInterface
             if (!is_array($configuration)) {
                 throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
             }
-            // Fallback layer, will be removed in TYPO3 v11.0.
+            // Fallback layer, will be removed in TYPO3 v12.0.
             if (strpos($identifier, 'cache_') === 0) {
                 $identifier = substr($identifier, 6);
                 if (empty($identifier)) {
@@ -145,7 +145,7 @@ class CacheManager implements SingletonInterface
      */
     public function getCache($identifier)
     {
-        // Fallback layer, will be removed in TYPO3 v11.0.
+        // Fallback layer, will be removed in TYPO3 v12.0.
         if (strpos($identifier, 'cache_') === 0) {
             trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
             $identifier = substr($identifier, 6);
@@ -167,7 +167,7 @@ class CacheManager implements SingletonInterface
      */
     public function hasCache($identifier)
     {
-        // Fallback layer, will be removed in TYPO3 v11.0.
+        // Fallback layer, will be removed in TYPO3 v12.0.
         if (strpos($identifier, 'cache_') === 0) {
             trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
             $identifier = substr($identifier, 6);
