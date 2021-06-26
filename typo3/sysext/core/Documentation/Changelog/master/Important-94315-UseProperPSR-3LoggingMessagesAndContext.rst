@@ -31,7 +31,7 @@ Correct call:
    $this->logger->alert('Password reset requested for email {email} but was requested too many times.', ['email' => $emailAddress]);
 
 First argument is 'message', second (optional) argument is 'context'. A message can
-use :php:`{placehlders}`. All core provided log writers will substitute placeholders
+use :php:`{placeholders}`. All core provided log writers will substitute placeholders
 in the message with data from the context array, if a context array key with same name exists.
 
 .. index:: PHP-API, ext:core
