@@ -30,7 +30,7 @@
 		"christian-riesen/base32": "^1.5",
 		"cogpowered/finediff": "~0.3.1",
 		"doctrine/annotations": "^1.11",
-		"doctrine/dbal": "^2.12",
+		"doctrine/dbal": "^2.13",
 		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^2.1",
