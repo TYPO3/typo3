@@ -247,7 +247,13 @@ class ModuleMenu {
 
     deferred.then((): void => {
       this.initializeModuleMenuEvents();
-      Viewport.Topbar.Toolbar.registerEvent(() => this.initializeTopBarEvents());
+      Viewport.Topbar.Toolbar.registerEvent(() => {
+        // Only initialize top bar events when top bar exists.
+        // E.g. install tool has no top bar
+        if(document.querySelector('.t3js-scaffold-toolbar')) {
+          this.initializeTopBarEvents()
+        }
+      });
     });
   }
 

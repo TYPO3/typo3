@@ -633,8 +633,8 @@ class GraphicalFunctions
                 if (!$this->processorEffectsEnabled) {
                     $command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
                 } else {
-                    $command = trim($conf['niceText.']['before'] . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . $conf['niceText.']['after'] . ' -negate');
-                    if ($conf['niceText.']['sharpen']) {
+                    $command = trim(($conf['niceText.']['before'] ?? '') . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . ($conf['niceText.']['after'] ?? '') . ' -negate');
+                    if (isset($conf['niceText.']['sharpen'])) {
                         $command .= $this->v5_sharpen($conf['niceText.']['sharpen']);
                     }
                 }
@@ -1456,7 +1456,7 @@ class GraphicalFunctions
                 imagedestroy($blurTextImg_tmp);
                 // Adjust the mask
                 $intensity = 40;
-                if ($conf['intensity']) {
+                if ($conf['intensity'] ?? false) {
                     $intensity = MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
                 }
                 $intensity = (int)ceil(255 - $intensity / 100 * 255);

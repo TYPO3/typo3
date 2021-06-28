@@ -442,7 +442,7 @@ class SettingsController extends AbstractController
     public function extensionConfigurationWriteAction(ServerRequestInterface $request): ResponseInterface
     {
         $extensionKey = $request->getParsedBody()['install']['extensionKey'];
-        $configuration = $request->getParsedBody()['install']['extensionConfiguration'];
+        $configuration = $request->getParsedBody()['install']['extensionConfiguration'] ?? [];
         $nestedConfiguration = [];
         foreach ($configuration as $configKey => $value) {
             $nestedConfiguration = ArrayUtility::setValueByPath($nestedConfiguration, $configKey, $value, '.');

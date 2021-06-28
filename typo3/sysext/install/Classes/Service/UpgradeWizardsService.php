@@ -182,7 +182,7 @@ class UpgradeWizardsService
                 }
                 foreach ($changedTable->addedIndexes as $addedIndex) {
                     /** $var Index $addedIndex */
-                    if (!is_array($adds['indexes'])) {
+                    if (!is_array($adds['indexes'] ?? false)) {
                         $adds['indexes'] = [];
                     }
                     $adds['indexes'][] = [

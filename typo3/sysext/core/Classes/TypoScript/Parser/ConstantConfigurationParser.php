@@ -123,7 +123,7 @@ class ConstantConfigurationParser
             }
         }
         $configurationOption['labels'] = GeneralUtility::trimExplode(':', $configurationOption['label'], false, 2);
-        $configurationOption['subcat_name'] = $configurationOption['subcat_name'] ?: '__default';
+        $configurationOption['subcat_name'] = ($configurationOption['subcat_name'] ?? false) ?: '__default';
         $hierarchicConfiguration[$configurationOption['cat']][$configurationOption['subcat_name']][$configurationOption['name']] = $configurationOption;
         return $hierarchicConfiguration;
     }

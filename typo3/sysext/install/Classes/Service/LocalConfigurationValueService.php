@@ -91,13 +91,13 @@ class LocalConfigurationValueService
             if ($descriptionType === 'container') {
                 $valueFromCurrentConfiguration = $sectionsFromCurrentConfiguration[$key] ?? null;
                 $data = array_merge($data, $this->recursiveConfigurationFetching($value, $valueFromCurrentConfiguration, $descriptionInfo, $newPath));
-            } elseif (!preg_match('/[' . LF . CR . ']/', (string)$value) || $descriptionType === 'multiline') {
+            } elseif (!preg_match('/[' . LF . CR . ']/', (string)(is_array($value) ? '' : $value)) || $descriptionType === 'multiline') {
                 $itemData = [];
                 $itemData['key'] = implode('/', $newPath);
                 $itemData['path'] = '[' . implode('][', $newPath) . ']';
                 $itemData['fieldType'] = $descriptionInfo['type'];
-                $itemData['description'] = $descriptionInfo['description'];
-                $itemData['allowedValues'] = $descriptionInfo['allowedValues'];
+                $itemData['description'] = $descriptionInfo['description'] ?? '';
+                $itemData['allowedValues'] = $descriptionInfo['allowedValues'] ?? [];
                 $itemData['differentValueInCurrentConfiguration'] = (!isset($descriptionInfo['compareValuesWithCurrentConfiguration']) ||
                     $descriptionInfo['compareValuesWithCurrentConfiguration']) &&
                     isset($sectionsFromCurrentConfiguration[$key]) &&

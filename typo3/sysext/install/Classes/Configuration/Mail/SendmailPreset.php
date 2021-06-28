@@ -55,7 +55,7 @@ class SendmailPreset extends AbstractPreset
     {
         $configurationValues = $this->configurationValues;
         $configurationValues['MAIL/transport_sendmail_command'] = $this->getSendmailPath();
-        if ($this->postValues['Mail']['enable'] === 'Sendmail') {
+        if (($this->postValues['Mail']['enable'] ?? false) === 'Sendmail') {
             $configurationValues['MAIL/transport'] = 'sendmail';
         }
         return $configurationValues;
