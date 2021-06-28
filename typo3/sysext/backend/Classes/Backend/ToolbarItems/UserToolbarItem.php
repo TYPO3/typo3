@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -71,9 +71,8 @@ class UserToolbarItem implements ToolbarItemInterface
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $mostRecentUsers = [];
-        if (ExtensionManagementUtility::isLoaded('beuser')
-            && $backendUser->isAdmin()
-            && !$backendUser->getOriginalUserIdWhenInSwitchUserMode()
+        if ($backendUser->isAdmin()
+            && $backendUser->getOriginalUserIdWhenInSwitchUserMode() === null
             && isset($backendUser->uc['recentSwitchedToUsers'])
             && is_array($backendUser->uc['recentSwitchedToUsers'])
         ) {
@@ -89,18 +88,11 @@ class UserToolbarItem implements ToolbarItemInterface
             $mostRecentUsers = array_flip($backendUser->uc['recentSwitchedToUsers']);
 
             while ($row = $result->fetch()) {
-                $row['switchUserLink'] = (string)$uriBuilder->buildUriFromRoute(
-                    'system_BeuserTxBeuser',
-                    [
-                        'SwitchUser' => $row['uid']
-                    ]
-                );
-
                 $mostRecentUsers[$row['uid']] = $row;
             }
 
             // Remove any item that is not an array (means, the stored uid is not available anymore)
-            $mostRecentUsers = array_filter($mostRecentUsers, function ($record) {
+            $mostRecentUsers = array_filter($mostRecentUsers, static function ($record) {
                 return is_array($record);
             });
 
@@ -111,11 +103,14 @@ class UserToolbarItem implements ToolbarItemInterface
             }
         }
 
+        GeneralUtility::makeInstance(PageRenderer::class)
+            ->loadRequireJsModule('TYPO3/CMS/Backend/SwitchUser');
+
         $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
         $view->assignMultiple([
             'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
             'logoutUrl' => (string)$uriBuilder->buildUriFromRoute('logout'),
-            'switchUserMode' => (int)$this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode(),
+            'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
             'recentUsers' => $mostRecentUsers,
         ]);
         return $view->render();

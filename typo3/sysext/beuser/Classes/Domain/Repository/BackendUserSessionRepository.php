@@ -82,42 +82,6 @@ class BackendUserSessionRepository
         );
     }
 
-    /**
-     * Update current session to move back to the original user.
-     *
-     * @param AbstractUserAuthentication $userObject
-     */
-    public function switchBackToOriginalUser(AbstractUserAuthentication $userObject): void
-    {
-        $sessionObject = $userObject->getSession();
-        $originalUser = (int)$sessionObject->get('backuserid');
-        $sessionObject->set('backuserid', null);
-        $sessionRecord = $sessionObject->toArray();
-        $sessionRecord['ses_userid'] = $originalUser;
-        $this->sessionBackend->update($sessionObject->getIdentifier(), $sessionRecord);
-        // We must regenerate the internal session so the new ses_userid is present in the userObject
-        $userObject->enforceNewSessionId();
-    }
-
-    /**
-     * Update current session to move to the target user. This is done
-     * by setting the target user id as ses_userid and storing the current
-     * user in backuserid to restore the session record later on.
-     *
-     * @param AbstractUserAuthentication $userObject
-     * @param int $targetUserId
-     */
-    public function switchToUser(AbstractUserAuthentication $userObject, int $targetUserId): void
-    {
-        $sessionObject = $userObject->getSession();
-        $sessionObject->set('backuserid', (int)$userObject->user['uid']);
-        $sessionRecord = $sessionObject->toArray();
-        $sessionRecord['ses_userid'] = $targetUserId;
-        $this->sessionBackend->update($sessionObject->getIdentifier(), $sessionRecord);
-        // We must regenerate the internal session so the new ses_userid is present in the userObject
-        $userObject->enforceNewSessionId();
-    }
-
     public function getPersistedSessionIdentifier(AbstractUserAuthentication $userObject): string
     {
         $currentSessionId = $userObject->getSession()->getIdentifier();

@@ -15,21 +15,23 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Beuser\Tests\Unit\Controller;
+namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use TYPO3\CMS\Beuser\Controller\BackendUserController;
+use TYPO3\CMS\Backend\Controller\SwitchUserController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class BackendUserControllerTest extends UnitTestCase
+class SwitchUserControllerTest extends UnitTestCase
 {
     /**
-     * @var BackendUserController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * Same as in SwitchUserController
      */
-    protected $subject;
+    protected const RECENT_USERS_LIMIT = 3;
+
+    protected SwitchUserController $subject;
 
     protected function setUp(): void
     {
@@ -39,28 +41,28 @@ class BackendUserControllerTest extends UnitTestCase
             'recentSwitchedToUsers' => []
         ];
 
-        $this->subject = $this->getAccessibleMock(BackendUserController::class, ['dummy'], [], '', false);
+        $this->subject = $this->getAccessibleMock(SwitchUserController::class, ['dummy'], [], '', false);
     }
 
     /**
      * @test
      */
-    public function generateListOfLatestSwitchedUsersReturnsCorrectAmountAndOrder()
+    public function generateListOfLatestSwitchedUsersReturnsCorrectAmountAndOrder(): void
     {
-        $items = range(1, BackendUserController::RECENT_USERS_LIMIT + 5);
-        $expected = array_reverse(array_slice($items, -BackendUserController::RECENT_USERS_LIMIT));
+        $items = range(1, self::RECENT_USERS_LIMIT + 5);
+        $expected = array_reverse(array_slice($items, -self::RECENT_USERS_LIMIT));
         foreach ($items as $id) {
             $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', $id);
         }
 
-        self::assertCount(BackendUserController::RECENT_USERS_LIMIT, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
+        self::assertCount(self::RECENT_USERS_LIMIT, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
         self::assertSame($expected, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
     }
 
     /**
      * @test
      */
-    public function listOfLatestSwitchedUsersDoesNotContainTheSameUserTwice()
+    public function listOfLatestSwitchedUsersDoesNotContainTheSameUserTwice(): void
     {
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);

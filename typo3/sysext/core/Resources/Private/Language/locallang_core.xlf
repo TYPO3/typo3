@@ -918,6 +918,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="buttons.exit" resname="buttons.exit">
 				<source>Exit</source>
 			</trans-unit>
+			<trans-unit id="buttons.exitSwitchUser" resname="buttons.exitSwitchUser">
+				<source>Exit switch user mode</source>
+			</trans-unit>
 			<trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules">
 				<source>MODULES</source>
 			</trans-unit>

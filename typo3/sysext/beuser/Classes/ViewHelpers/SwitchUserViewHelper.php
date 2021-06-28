@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
+ * Displays 'SwitchUser' button to change current backend user to target backend user
  * @internal
  */
 class SwitchUserViewHelper extends AbstractViewHelper
@@ -59,19 +59,28 @@ class SwitchUserViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $backendUser = $arguments['backendUser'];
+        $targetUser = $arguments['backendUser'];
+        $currentUser = self::getBackendUserAuthentication();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive() || $GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()) {
+
+        if ((int)$targetUser->getUid() === (int)($currentUser->user[$currentUser->userid_column] ?? 0)
+            || !$targetUser->isActive()
+            || !$currentUser->isAdmin()
+            || $currentUser->getOriginalUserIdWhenInSwitchUserMode() !== null
+        ) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
-        $title = LocalizationUtility::translate('switchBackMode', 'beuser') ?? '';
-        $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
-            'system_BeuserTxBeuser',
-            [
-                'SwitchUser' => $backendUser->getUid(),
-            ]
-        );
-        return '<a class="btn btn-default" href="' . htmlspecialchars((string)$uri) . '" target="_top" title="' . htmlspecialchars($title) . '">' .
-            $iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() . '</a>';
+
+        return '
+            <typo3-backend-switch-user targetUser="' . htmlspecialchars((string)$targetUser->getUid()) . '">
+                <button type="button" class="btn btn-default" title="' . htmlspecialchars(LocalizationUtility::translate('switchBackMode', 'beuser') ?? '') . '">'
+                    . $iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() .
+                '</button>
+            </typo3-switch-user-button>';
+    }
+
+    protected static function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

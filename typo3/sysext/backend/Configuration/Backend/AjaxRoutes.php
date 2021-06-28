@@ -213,6 +213,18 @@ return [
         ]
     ],
 
+    // Switch user
+    'switch_user' => [
+        'path' => '/switch/user',
+        'methods' => ['POST'],
+        'target' => Controller\SwitchUserController::class . '::switchUserAction'
+    ],
+    'switch_user_exit' => [
+        'path' => '/switch/user/exit',
+        'methods' => ['POST'],
+        'target' => Controller\SwitchUserController::class . '::exitSwitchUserAction'
+    ],
+
     // Multi-factor authentication configuration
     'mfa' => [
         'path' => '/mfa',

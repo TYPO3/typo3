@@ -17,13 +17,11 @@ namespace TYPO3\CMS\Beuser\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
@@ -33,8 +31,6 @@ use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\PropagateResponseException;
-use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -57,11 +53,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendUserController extends ActionController
 {
-    /**
-     * @var int
-     */
-    const RECENT_USERS_LIMIT = 3;
-
     protected ?ModuleData $moduleData = null;
     protected ?ModuleTemplate $moduleTemplate = null;
     protected BackendUserRepository $backendUserRepository;
@@ -150,7 +141,6 @@ class BackendUserController extends ActionController
 
     /**
      * Displays all BackendUsers
-     * - Switch session to different user
      *
      * @param Demand|null $demand
      * @param int $currentPage
@@ -173,13 +163,7 @@ class BackendUserController extends ActionController
         }
         $backendUser->pushModuleData('tx_beuser', $this->moduleData->forUc());
 
-        // Switch user until logout
-        $switchUser = (int)GeneralUtility::_GP('SwitchUser');
-        if ($switchUser > 0) {
-            $this->switchUser($switchUser);
-        }
         $compareUserList = $this->moduleData->getCompareUserList();
-
         $backendUsers = $this->backendUserRepository->findDemanded($demand);
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
@@ -211,6 +195,8 @@ class BackendUserController extends ActionController
             ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'index']])
             ->setDisplayName(LocalizationUtility::translate('backendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SwitchUser');
 
         $this->moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($this->moduleTemplate->renderContent());
@@ -537,79 +523,6 @@ class BackendUserController extends ActionController
         $backendUser->uc['beuser']['compareGroupUidList'] = [];
         $backendUser->writeUC();
         $this->redirect('groups');
-    }
-
-    /**
-     * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
-     *
-     * @param int $switchUser BE-user record that will be switched to
-     */
-    protected function switchUser($switchUser)
-    {
-        $backendUser = $this->getBackendUser();
-        $targetUser = BackendUtility::getRecord('be_users', $switchUser);
-        if (is_array($targetUser) && $backendUser->isAdmin()) {
-            // Set backend user listing module as starting module for switchback
-            $backendUser->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
-            $backendUser->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
-            $backendUser->writeUC();
-
-            // User switch   written to log
-            $backendUser->writelog(
-                255,
-                2,
-                0,
-                1,
-                'User %s switched to user %s (be_users:%s)',
-                [
-                    $backendUser->user['username'],
-                    $targetUser['username'],
-                    $targetUser['uid'],
-                ]
-            );
-
-            $this->backendUserSessionRepository->switchToUser($backendUser, (int)$targetUser['uid']);
-
-            $event = new SwitchUserEvent(
-                $backendUser->getSession()->getIdentifier(),
-                $targetUser,
-                (array)$backendUser->user
-            );
-            $this->eventDispatcher->dispatch($event);
-
-            $redirectUri = $this->backendUriBuilder->buildUriFromRoute(
-                'main',
-                $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? [] : ['commandLI' => '1']
-            );
-            throw new PropagateResponseException(new RedirectResponse($redirectUri, 303), 1607271592);
-        }
-    }
-
-    /**
-     * Generates a list of users to whom where switched in the past. This is limited by RECENT_USERS_LIMIT.
-     *
-     * @param int $targetUserUid
-     * @return int[]
-     */
-    protected function generateListOfMostRecentSwitchedUsers(int $targetUserUid): array
-    {
-        $latestUserUids = [];
-        $backendUser = $this->getBackendUser();
-
-        if (isset($backendUser->uc['recentSwitchedToUsers']) && is_array($backendUser->uc['recentSwitchedToUsers'])) {
-            $latestUserUids = $backendUser->uc['recentSwitchedToUsers'];
-        }
-
-        // Remove potentially existing user in that list
-        $index = array_search($targetUserUid, $latestUserUids, true);
-        if ($index !== false) {
-            unset($latestUserUids[$index]);
-        }
-
-        array_unshift($latestUserUids, $targetUserUid);
-        $latestUserUids = array_slice($latestUserUids, 0, static::RECENT_USERS_LIMIT);
-
-        return $latestUserUids;
     }
 
     /**

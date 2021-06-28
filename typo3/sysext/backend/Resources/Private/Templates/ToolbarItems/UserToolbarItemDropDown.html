@@ -33,32 +33,31 @@
         <f:for each="{recentUsers}" as="user">
             <div class="dropdown-table-row">
                 <div class="dropdown-table-column dropdown-table-title">
-                    <a href="{user.switchUserLink}" title="{f:translate(key: 'usermodule.su.tooltip', arguments: '{0: user.username}')}">
-                        <be:avatar backendUser="{user.uid}" size="32" />
-                        <f:if condition="{user.realName}">
-                            <f:then>
-                                {user.realName}
-                            </f:then>
-                            <f:else>
-                                {user.username}
-                            </f:else>
-                        </f:if>
-                    </a>
+                    <typo3-backend-switch-user mode="switch" targetUser="{user.uid}">
+                        <button type="button" class="modulemenu-action" title="{f:translate(key: 'usermodule.su.tooltip', arguments: '{0: user.username}')}">
+                            <be:avatar backendUser="{user.uid}" size="32" />&nbsp;{f:if(condition: user.realName, then: user.realName, else: user.username)}
+                        </button>
+                    </typo3-backend-switch-user>
                 </div>
             </div>
         </f:for>
     </div>
     <hr>
 </f:if>
-<a href="{logoutUrl}" class="btn btn-danger pull-left" target="_top">
-    <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-    <f:if condition="{switchUserMode}">
-        <f:then>
-            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exit') -> f:format.raw()}
-        </f:then>
-        <f:else>
-            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout') -> f:format.raw()}
-        </f:else>
-    </f:if>
-</a>
+<f:if condition="{switchUserMode}">
+    <f:then>
+        <typo3-backend-switch-user mode="exit">
+            <button type="button" class="btn btn-danger pull-left">
+                <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+                {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser')}
+            </button>
+        </typo3-backend-switch-user>
+    </f:then>
+    <f:else>
+        <a href="{logoutUrl}" class="btn btn-danger pull-left" target="_top">
+            <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
+        </a>
+    </f:else>
+</f:if>
 </html>
