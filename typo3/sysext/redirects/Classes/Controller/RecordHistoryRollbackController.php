@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\SlugService;
 
@@ -32,18 +33,17 @@ use TYPO3\CMS\Redirects\Service\SlugService;
  */
 class RecordHistoryRollbackController
 {
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
+    protected ?LanguageService $languageService = null;
+    protected LanguageServiceFactory $languageServiceFactory;
 
-    public function __construct(LanguageService $languageService)
+    public function __construct(LanguageServiceFactory $languageServiceFactory)
     {
-        $this->languageService = $languageService;
+        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     public function revertCorrelation(ServerRequestInterface $request): ResponseInterface
     {
+        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         $revertedCorrelationTypes = [];
         $correlationIds = $request->getQueryParams()['correlation_ids'] ?? [];
         /** @var CorrelationId[] $correlationIds */

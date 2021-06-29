@@ -19,21 +19,18 @@ namespace TYPO3\CMS\Dashboard\Widgets\Provider;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {
-    /**
-     * @var LanguageService
-     */
-    private $languageService;
+    private LanguageServiceFactory $languageServiceFactory;
 
-    public function __construct(LanguageService $languageService)
+    public function __construct(LanguageServiceFactory $languageServiceFactory)
     {
-        $this->languageService = $languageService;
+        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     /**
@@ -41,13 +38,14 @@ class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
      */
     public function getChartData(): array
     {
+        $languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         $adminUsers = $this->getNumberOfUsers(true);
         $normalUsers = $this->getNumberOfUsers(false);
 
         return [
             'labels' => [
-                $this->languageService ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.normalUsers'),
-                $this->languageService ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers')
+                $languageService->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.normalUsers'),
+                $languageService->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers')
             ],
             'datasets' => [
                 [

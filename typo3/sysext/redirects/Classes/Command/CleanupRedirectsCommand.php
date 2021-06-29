@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
@@ -37,10 +38,10 @@ class CleanupRedirectsCommand extends Command
      */
     protected $languageService;
 
-    public function __construct(RedirectRepository $redirectRepository, LanguageService $languageService)
+    public function __construct(RedirectRepository $redirectRepository, LanguageServiceFactory $languageServiceFactory)
     {
         $this->redirectRepository = $redirectRepository;
-        $this->languageService = $languageService;
+        $this->languageService = $languageServiceFactory->create('default');
         parent::__construct(null);
     }
 

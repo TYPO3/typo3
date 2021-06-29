@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,10 +46,8 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      */
     protected $installUtility;
 
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
+    protected LanguageServiceFactory $languageServiceFactory;
+    protected ?LanguageService $languageService = null;
 
     /**
      * @param EmConfUtility $emConfUtility
@@ -66,12 +65,9 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         $this->installUtility = $installUtility;
     }
 
-    /**
-     * @param LanguageService $languageService
-     */
-    public function injectLanguageService(LanguageService $languageService)
+    public function injectLanguageServiceFactory(LanguageServiceFactory $languageServiceFactory)
     {
-        $this->languageService = $languageService;
+        $this->languageServiceFactory = $languageServiceFactory;
     }
 
     /**
@@ -79,6 +75,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function initializeObject()
     {
+        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 

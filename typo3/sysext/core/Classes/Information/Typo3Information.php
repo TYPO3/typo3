@@ -32,16 +32,11 @@ class Typo3Information
     public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
     public const URL_OPCACHE = 'https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Troubleshooting/Index.html#opcode-cache-messages';
 
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
+    protected LanguageService $languageService;
 
-    public function __construct(LanguageService $languageService = null)
+    public function __construct()
     {
-        if ($languageService) {
-            $this->languageService = $languageService;
-        } elseif (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
+        if (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
             $this->languageService = $GLOBALS['LANG'];
         } else {
             $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

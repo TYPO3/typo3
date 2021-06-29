@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -35,11 +37,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionStatusTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
+    use ProphecyTrait;
 
     /**
      * Set up
@@ -48,7 +46,6 @@ class ExtensionStatusTest extends UnitTestCase
     {
         parent::setUp();
         $this->resetSingletonInstances = true;
-        $this->languageService = $this->prophesize(LanguageService::class)->reveal();
     }
 
     /**
@@ -110,8 +107,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusCallsMainRepositoryForMainRepositoryStatusResult(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $subject->getStatus();
 
         $remoteRegistryProphecy->hasDefaultRemote()->shouldHaveBeenCalled();
@@ -122,9 +123,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorStatusIfRepositoryIsNotFound(): void
     {
-        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(0, true, false);
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
 
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $remoteRegistryProphecy = $this->setUpRegistryStatusTests(0, true, false);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -152,9 +156,13 @@ class ExtensionStatusTest extends UnitTestCase
                 return true;
             }
         };
-        $remoteRegistryProphecy->getDefaultRemote()->willReturn($remote);
 
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
+        $remoteRegistryProphecy->getDefaultRemote()->willReturn($remote);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -166,8 +174,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForLoadedExtensionIfNoInsecureExtensionIsLoaded(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests();
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -179,8 +191,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-1);
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -192,8 +208,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests(0, false);
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
             self::assertInstanceOf(Status::class, $statusObject);
@@ -206,8 +226,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-1, false);
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -219,8 +243,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-2, true);
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
@@ -232,8 +260,12 @@ class ExtensionStatusTest extends UnitTestCase
      */
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
+        $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
+        $languageServiceFactoryProphecy->createFromUserPreferences(Argument::cetera())->willReturn($this->prophesize(LanguageService::class)->reveal());
+        GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());
+
         $remoteRegistryProphecy = $this->setUpRegistryStatusTests(-2, false);
-        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal(), $this->languageService);
+        $subject = new ExtensionStatus($remoteRegistryProphecy->reveal());
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);

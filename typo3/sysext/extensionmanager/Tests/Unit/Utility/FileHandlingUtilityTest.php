@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
@@ -97,9 +98,11 @@ class FileHandlingUtilityTest extends UnitTestCase
     {
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory']);
-        $languageServiceMock = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $fileHandlerMock->injectLanguageService($languageServiceMock);
+        $languageServiceFactoryMock = $this->getMockBuilder(LanguageServiceFactory::class)->disableOriginalConstructor()->getMock();
+        $fileHandlerMock->injectLanguageServiceFactory($languageServiceFactoryMock);
+        $fileHandlerMock->initializeObject();
         $fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
     }
 

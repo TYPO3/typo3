@@ -62,14 +62,13 @@ class ExtensionStatus implements StatusProviderInterface
 
     /**
      * @param RemoteRegistry|null  $remoteRegistry
-     * @param LanguageService|null $languageService
      */
-    public function __construct(RemoteRegistry $remoteRegistry = null, LanguageService $languageService = null)
+    public function __construct(RemoteRegistry $remoteRegistry = null)
     {
         $this->remoteRegistry = $remoteRegistry ?? GeneralUtility::makeInstance(RemoteRegistry::class);
         $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);
 
-        $this->languageService = $languageService ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
