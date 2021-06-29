@@ -156,6 +156,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
             [
                 'userid' => $userId,
                 'type' => SystemLogType::ERROR,
+                'channel' => SystemLogType::toChannel(SystemLogType::ERROR),
                 'action' => SystemLogGenericAction::UNDEFINED,
                 'error' => SystemLogErrorClassification::SYSTEM_ERROR,
                 'details_nr' => 0,

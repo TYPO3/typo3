@@ -17,8 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\SysLog;
 
+use Psr\Log\LogLevel;
+
 /**
- * A class defining possible logging types
+ * A class defining possible logging types.
+ *
+ * @internal The logging type system is moving towards PSR-3-defined log levels and channels, this class might get removed without any further notice from TYPO3 v12.0. on.
  */
 class Type
 {
@@ -29,4 +33,50 @@ class Type
     public const ERROR = 5;
     public const SETTING = 254;
     public const LOGIN = 255;
+
+    private static array $channelMap = [
+        self::DB => 'content',
+        self::FILE => 'file',
+        self::CACHE => 'default',
+        self::EXTENSION => 'default',
+        self::ERROR => 'php',
+        self::SETTING => 'default',
+        self::LOGIN => 'user',
+    ];
+
+    private static array $levelMap = [
+        self::DB => LogLevel::WARNING,
+        self::FILE => LogLevel::INFO,
+        self::CACHE => LogLevel::INFO,
+        self::EXTENSION => LogLevel::INFO,
+        self::ERROR => LogLevel::ERROR,
+        self::SETTING => LogLevel::INFO,
+        self::LOGIN => LogLevel::INFO,
+    ];
+
+    /**
+     * @internal
+     */
+    public static function levelMap(): array
+    {
+        return static::$levelMap;
+    }
+
+    /**
+     * @internal
+     */
+    public static function channelMap(): array
+    {
+        return static::$channelMap;
+    }
+
+    public static function toChannel(int $type): string
+    {
+        return static::$channelMap[$type] ?? 'default';
+    }
+
+    public static function toLevel(int $type): string
+    {
+        return static::$levelMap[$type] ?? LogLevel::INFO;
+    }
 }

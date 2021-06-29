@@ -414,6 +414,8 @@ class PasswordReset implements LoggerAwareInterface
         $fields = [
             'userid' => $userId,
             'type' => SystemLogType::LOGIN,
+            'channel' => SystemLogType::toChannel(SystemLogType::LOGIN),
+            'level' => SystemLogType::toLevel(SystemLogType::LOGIN),
             'action' => $action,
             'error' => $error,
             'details_nr' => 1,
@@ -435,6 +437,8 @@ class PasswordReset implements LoggerAwareInterface
             [
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,
+                \PDO::PARAM_STR,
+                \PDO::PARAM_STR,
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,

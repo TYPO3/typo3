@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -2154,9 +2155,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             $data['originalUser'] = $backuserid;
         }
 
+        // @todo Remove this once this method is properly typed.
+        $type = (int)$type;
+
         $fields = [
             'userid' => (int)$userId,
-            'type' => (int)$type,
+            'type' => $type,
+            'channel' => Type::toChannel($type),
+            'level' => Type::toLevel($type),
             'action' => (int)$action,
             'error' => (int)$error,
             'details_nr' => (int)$details_nr,
@@ -2178,6 +2184,8 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             [
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,
+                \PDO::PARAM_STR,
+                \PDO::PARAM_STR,
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,
                 \PDO::PARAM_INT,

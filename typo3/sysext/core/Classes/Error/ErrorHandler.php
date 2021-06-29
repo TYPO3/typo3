@@ -249,6 +249,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 [
                     'userid' => $userId,
                     'type' => SystemLogType::ERROR,
+                    'channel' => SystemLogType::toChannel(SystemLogType::ERROR),
                     'action' => SystemLogGenericAction::UNDEFINED,
                     'error' => SystemLogErrorClassification::SYSTEM_ERROR,
                     'level' => $severity,
