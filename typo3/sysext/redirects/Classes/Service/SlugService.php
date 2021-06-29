@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -56,11 +55,6 @@ class SlugService implements LoggerAwareInterface
      * @var Context
      */
     protected $context;
-
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
 
     /**
      * @var SiteInterface
@@ -107,10 +101,9 @@ class SlugService implements LoggerAwareInterface
      */
     protected $httpStatusCode;
 
-    public function __construct(Context $context, LanguageService $languageService, SiteFinder $siteFinder, PageRepository $pageRepository)
+    public function __construct(Context $context, SiteFinder $siteFinder, PageRepository $pageRepository)
     {
         $this->context = $context;
-        $this->languageService = $languageService;
         $this->siteFinder = $siteFinder;
         $this->pageRepository = $pageRepository;
     }
