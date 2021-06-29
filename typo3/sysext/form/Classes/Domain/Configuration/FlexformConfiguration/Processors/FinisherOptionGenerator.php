@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FlexformConfiguration\Processors;
 
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Generate a FlexForm element for a finisher option
@@ -29,22 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FinisherOptionGenerator extends AbstractProcessor
 {
-    /**
-     * @var \TYPO3\CMS\Core\Localization\LanguageServiceFactory
-     */
-    protected $languageService;
-
-    /**
-     * @param ProcessorDto $converterDto
-     */
-    public function __construct(ProcessorDto $converterDto)
-    {
-        parent::__construct($converterDto);
-
-        $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class);
-        $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/Database.xlf');
-    }
-
     /**
      * @param string $_ unused in this context
      * @param mixed $__ unused in this context
@@ -89,10 +72,11 @@ class FinisherOptionGenerator extends AbstractProcessor
         } catch (MissingArrayPathException $exception) {
         }
 
+        $languageService = $this->getLanguageService();
         if (empty($optionValue)) {
-            $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $this->languageService->getLL('default'), $this->languageService->getLL('empty'));
+            $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $languageService->getLL('default'), $languageService->getLL('empty'));
         } else {
-            $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $this->languageService->getLL('default'));
+            $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $languageService->getLL('default'));
         }
 
         if (isset($elementConfiguration['config'])) {
@@ -103,5 +87,10 @@ class FinisherOptionGenerator extends AbstractProcessor
         $sheetElements['settings.finishers.' . $finisherIdentifier . '.' . $optionKey]['TCEforms'] = $elementConfiguration;
 
         $this->converterDto->setResult($sheetElements);
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
