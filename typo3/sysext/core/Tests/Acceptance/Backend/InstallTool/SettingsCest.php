@@ -37,7 +37,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeExtensionConfiguration(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeExtensionConfiguration(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Configure extensions');
         $modalDialog->canSeeDialog();
@@ -58,7 +58,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeChangeInstallToolPassword(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeChangeInstallToolPassword(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Change Install Tool Password');
         $modalDialog->canSeeDialog();
@@ -77,7 +77,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeManageSystemMaintainers(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeManageSystemMaintainers(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Manage System Maintainers');
         $modalDialog->canSeeDialog();
@@ -96,7 +96,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeConfigurationPresets(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeConfigurationPresets(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Choose Preset');
         $modalDialog->canSeeDialog();
@@ -112,7 +112,7 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    public function seeFeatureToggles(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeFeatureToggles(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Configure Features');
         $modalDialog->canSeeDialog();
@@ -129,7 +129,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeConfigureInstallationWideOptions(BackendTester $I, ModalDialog $modalDialog)
+    protected function seeConfigureInstallationWideOptions(BackendTester $I, ModalDialog $modalDialog)
     {
         $I->click('Configure options');
         $modalDialog->canSeeDialog();
