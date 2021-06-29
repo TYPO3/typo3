@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Beuser\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -188,7 +189,7 @@ class PermissionController extends ActionController
     /**
      * Index action
      */
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         if (!$this->id) {
             $this->pageInfo = ['title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], 'uid' => 0, 'pid' => 0];
@@ -251,12 +252,14 @@ class PermissionController extends ActionController
             $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions'),
             $this->id !== 0 && isset($this->pageInfo['title']) ? $this->pageInfo['title'] : ''
         );
+
+        return $this->htmlResponse();
     }
 
     /**
      * Edit action
      */
-    public function editAction()
+    public function editAction(): ResponseInterface
     {
         $this->view->assign('id', $this->id);
         $this->view->assign('depth', $this->depth);
@@ -296,6 +299,8 @@ class PermissionController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('returnUrl', $this->returnUrl);
         $this->view->assign('recursiveSelectOptions', $this->getRecursiveSelectOptions());
+
+        return $this->htmlResponse();
     }
 
     /**
