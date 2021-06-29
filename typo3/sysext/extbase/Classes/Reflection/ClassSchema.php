@@ -278,7 +278,7 @@ class ClassSchema
             if ($type->isCollection()) {
                 $this->properties[$propertyName]['t'] = ltrim($type->getClassName() ?? $type->getBuiltinType(), '\\');
 
-                if (($collectionValueType = $type->getCollectionValueType()) instanceof Type) {
+                if (($collectionValueType = ($type->getCollectionValueTypes()[0] ?? null)) instanceof Type) {
                     $this->properties[$propertyName]['e'] = ltrim($collectionValueType->getClassName() ?? $type->getBuiltinType(), '\\');
                 }
             } else {
