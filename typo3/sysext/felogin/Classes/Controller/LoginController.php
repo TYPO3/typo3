@@ -137,7 +137,7 @@ class LoginController extends AbstractLoginFormController
     /**
      * Show login form
      */
-    public function loginAction()
+    public function loginAction(): ResponseInterface
     {
         if ($this->isLogoutSuccessful()) {
             $this->eventDispatcher->dispatch(new LogoutConfirmedEvent($this, $this->view));
@@ -164,14 +164,17 @@ class LoginController extends AbstractLoginFormController
                 'noRedirect' => $this->isRedirectDisabled(),
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
      * User overview for logged in users
      *
      * @param bool $showLoginMessage
+     * @return ResponseInterface
      */
-    public function overviewAction(bool $showLoginMessage = false)
+    public function overviewAction(bool $showLoginMessage = false): ResponseInterface
     {
         if (!$this->userAspect->isLoggedIn()) {
             return new ForwardResponse('login');
@@ -187,13 +190,16 @@ class LoginController extends AbstractLoginFormController
                 'showLoginMessage' => $showLoginMessage,
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
      * Show logout form
      * @param int $redirectPageLogout
+     * @return ResponseInterface
      */
-    public function logoutAction(int $redirectPageLogout = 0): void
+    public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
     {
         $this->handleRedirect();
 
@@ -206,6 +212,8 @@ class LoginController extends AbstractLoginFormController
                 'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration, $redirectPageLogout, $this->isRedirectDisabled()),
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
