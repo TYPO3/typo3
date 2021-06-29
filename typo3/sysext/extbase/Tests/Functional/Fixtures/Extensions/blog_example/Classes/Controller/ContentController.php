@@ -77,10 +77,7 @@ class ContentController extends ActionController
         ]]);
         $this->view->assign('value', $value);
 
-        $response = $this->responseFactory->createResponse()
-            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
-        $response->getBody()->write($this->view->render());
-        return $response;
+        return $this->jsonResponse();
     }
 
     /**

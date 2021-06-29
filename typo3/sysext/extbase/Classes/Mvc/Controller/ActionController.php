@@ -55,7 +55,6 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -571,27 +570,11 @@ abstract class ActionController implements ControllerInterface
         $body = new Stream('php://temp', 'rw');
         if ($actionResult === null && $this->view instanceof ViewInterface) {
             if ($this->view instanceof JsonView) {
-                // this is just a temporary solution until Extbase uses PSR-7 responses and users are forced to return a
-                // response object in their controller actions.
-
-                if (!empty($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-                    /** @var TypoScriptFrontendController $typoScriptFrontendController */
-                    $typoScriptFrontendController = $GLOBALS['TSFE'];
-                    if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
-                        // If the charset header is *not* disabled in configuration,
-                        // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
-                        $typoScriptFrontendController->setContentType('application/json');
-                    } else {
-                        // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
-                        // Content-Type headers optionally carry charset information at the same time.
-                        // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                        $response = $response->withHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
-                    }
-                } else {
-                    $response = $response->withHeader('Content-Type', 'application/json');
-                }
+                // This is just a fallback solution until v12, when Extbase requires PSR-7 responses to be
+                // returned in their controller actions. The header, added below, may gets overwritten in
+                // the Extbase bootstrap, depending on the context (FE/BE) and TypoScript configuration.
+                $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
             }
-
             $body->write($this->view->render());
         } elseif (is_string($actionResult) && $actionResult !== '') {
             $body->write($actionResult);
@@ -1092,6 +1075,23 @@ abstract class ActionController implements ControllerInterface
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8');
         $response->getBody()->write($html ?? $this->view->render());
+        return $response;
+    }
+
+    /**
+     * Returns a response object with either the given json string or the current rendered
+     * view as content. Mainly to be used for actions / controllers using the JsonView.
+     *
+     * @param string|null $json
+     * @return ResponseInterface
+     */
+    protected function jsonResponse(string $json = null): ResponseInterface
+    {
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withHeader('Content-Type', 'application/json; charset=utf-8');
+
+        $response->getBody()->write($json ?? $this->view->render());
         return $response;
     }
 }

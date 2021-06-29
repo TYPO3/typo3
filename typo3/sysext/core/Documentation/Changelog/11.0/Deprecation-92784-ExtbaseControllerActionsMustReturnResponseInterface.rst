@@ -95,5 +95,25 @@ Example:
    Since Extbase uses PSR-7 responses, you should make yourself familiar with its API.
    Documentation and more information regarding PSR-7 responses can be found here: https://www.php-fig.org/psr/psr-7/#33-psrhttpmessageresponseinterface
 
+In case you are using the :php:`JsonView` in your extbase controller, you may
+want to ease the migration path with the new :php:`jsonResponse(string $json = null)`
+method. Similar to :php:`htmlResponse()`, this method creates a PSR-7 Response
+with the :html:`Content-Type: application/json` header and http code `200 Ok`.
+If argument :php:`$json` is omitted, the current view is rendered automatically.
+
+Example:
+
+.. code-block:: php
+
+   public function listApiAction(): ResponseInterface
+   {
+       $items = $this->itemRepository->findAll();
+       $this->view->assign('value', [
+            'items' => $items
+        ]);
+
+       return $this->jsonResponse();
+   }
+
 
 .. index:: PHP-API, NotScanned, ext:extbase

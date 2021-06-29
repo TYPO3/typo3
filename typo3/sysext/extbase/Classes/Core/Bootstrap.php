@@ -34,6 +34,7 @@ use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Creates a request and dispatches it to the controller which was specified
@@ -191,6 +192,27 @@ class Bootstrap
         if ($response->getStatusCode() === 400) {
             $this->clearCacheOnError();
         }
+
+        // In case TSFE is available and this is a json response, we have
+        // to take the TypoScript settings regarding charset into account.
+        // @todo Since HTML5 only utf-8 is a valid charset, this settings should be deprecated
+        if (($typoScriptFrontendController = ($GLOBALS['TSFE'] ?? null)) instanceof TypoScriptFrontendController
+            && strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0
+        ) {
+            // Unset the already defined Content-Type
+            $response = $response->withoutHeader('Content-Type');
+            if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
+                // If the charset header is *not* disabled in configuration,
+                // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
+                $typoScriptFrontendController->setContentType('application/json');
+            } else {
+                // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
+                // Content-Type headers optionally carry charset information at the same time.
+                // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
+                $response = $response->withHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
+            }
+        }
+
         if (headers_sent() === false) {
             foreach ($response->getHeaders() as $name => $values) {
                 foreach ($values as $value) {

@@ -118,12 +118,7 @@ class UpdateFromTerController extends AbstractController
             'errorMessage' => $errorMessage
         ]);
 
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
-        $response->getBody()->write($this->view->render());
-
-        return $response;
+        return $this->jsonResponse();
     }
 
     /**

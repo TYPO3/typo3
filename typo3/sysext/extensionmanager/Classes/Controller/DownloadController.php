@@ -159,12 +159,7 @@ class DownloadController extends AbstractController
             'title' => $title
         ]);
 
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
-        $response->getBody()->write($this->view->render());
-
-        return $response;
+        return $this->jsonResponse();
     }
 
     /**
@@ -286,12 +281,7 @@ class DownloadController extends AbstractController
             $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
 
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
-        $response->getBody()->write('');
-
-        return $response;
+        return $this->jsonResponse();
     }
 
     /**
@@ -329,12 +319,7 @@ class DownloadController extends AbstractController
             )
         ]);
 
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
-        $response->getBody()->write($this->view->render());
-
-        return $response;
+        return $this->jsonResponse();
     }
 
     /**
