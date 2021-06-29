@@ -604,6 +604,9 @@ MAIL:
         transport_smtp_password:
             type: password
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.'
+        transport_smtp_domain:
+          type: text
+          description: '<em>only with transport=smtp</em>: Mail domain under which emails will be sent.'
         transport_sendmail_command:
             type: text
             description: '<em>only with transport=sendmail</em>: The command to call to send a mail locally.'

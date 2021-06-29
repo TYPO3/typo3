@@ -22,6 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport\NullTransport;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -327,5 +328,28 @@ class TransportFactoryTest extends UnitTestCase
         $transport->send($message);
 
         $eventDispatcher->dispatch(Argument::any())->shouldHaveBeenCalledOnce();
+    }
+
+    /**
+     * @test
+     */
+    public function smtpTransportIsCorrectlyConfigured(): void
+    {
+        $mailSettings = [
+            'transport' => 'smtp',
+            'transport_smtp_server' => 'localhost:25',
+            'transport_smtp_username' => 'username',
+            'transport_smtp_password' => 'password',
+            'transport_smtp_domain' => 'example.com',
+        ];
+
+        $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
+
+        self::assertInstanceOf(EsmtpTransport::class, $transport);
+        self::assertSame(explode(':', $mailSettings['transport_smtp_server'], 2)[0], $transport->getStream()->getHost());
+        self::assertSame((int)explode(':', $mailSettings['transport_smtp_server'], 2)[1], $transport->getStream()->getPort());
+        self::assertSame($mailSettings['transport_smtp_username'], $transport->getUsername());
+        self::assertSame($mailSettings['transport_smtp_password'], $transport->getPassword());
+        self::assertSame($mailSettings['transport_smtp_domain'], $transport->getLocalDomain());
     }
 }

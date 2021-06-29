@@ -1462,6 +1462,7 @@ return [
         'transport_smtp_encrypt' => false,
         'transport_smtp_username' => '',
         'transport_smtp_password' => '',
+        'transport_smtp_domain' => '',
         'transport_sendmail_command' => '',
         'transport_mbox_file' => '',
         'transport_spool_type' => '',

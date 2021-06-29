@@ -121,6 +121,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 if ($password !== '') {
                     $transport->setPassword($password);
                 }
+                $mailDomain = (string)($mailSettings['transport_smtp_domain'] ?? '');
+                if ($mailDomain !== '') {
+                    $transport->setLocalDomain($mailDomain);
+                }
                 break;
             case 'sendmail':
                 $sendmailCommand = $mailSettings['transport_sendmail_command'] ?? @ini_get('sendmail_path');
