@@ -41,12 +41,12 @@
                                         <f:translate key="chLog_l_table"/>
                                     </f:then>
                                     <f:else>
-                                        <f:translate key="chLog_l_types"/>
+                                        <f:translate key="chLog_l_level"/>
                                     </f:else>
                                 </f:if>
                             </th>
                             <th>
-                                <f:translate key="chLog_l_action"/>
+                                <f:translate key="chLog_l_channel"/>
                             </th>
                             <th>
                                 <f:translate key="chLog_l_details"/>
@@ -103,26 +103,12 @@
                                             {logItem.tableName}
                                         </f:then>
                                         <f:else>
-                                            <f:if condition="{f:translate(key:'type_{logItem.type}')}">
-                                                <f:then>
-                                                    <f:translate key="type_{logItem.type}"/>
-                                                </f:then>
-                                                <f:else>
-                                                    [{logItem.type}]
-                                                </f:else>
-                                            </f:if>
+                                            {logItem.level}
                                         </f:else>
                                     </f:if>
                                 </td>
                                 <td>
-                                    <f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
-                                        <f:then>
-                                            <f:translate key="action_{logItem.type}_{logItem.action}"/>
-                                        </f:then>
-                                        <f:else>
-                                            [{logItem.action}]
-                                        </f:else>
-                                    </f:if>
+                                    {logItem.channel}
                                 </td>
                                 <td class="col-word-break">
                                     <belog:formatDetails logEntry="{logItem}"/>

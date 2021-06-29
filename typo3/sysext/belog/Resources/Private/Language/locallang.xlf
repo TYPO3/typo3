@@ -33,6 +33,9 @@
 			<trans-unit id="reset" resname="reset">
 				<source>Reset</source>
 			</trans-unit>
+			<trans-unit id="all" resname="all">
+				<source>[all]</source>
+			</trans-unit>
 			<trans-unit id="50" resname="50" translate="no">
 				<source>50</source>
 			</trans-unit>
@@ -89,6 +92,12 @@
 			</trans-unit>
 			<trans-unit id="action" resname="action">
 				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="channel" resname="channel">
+				<source>Channel</source>
+			</trans-unit>
+			<trans-unit id="levels" resname="levels">
+				<source>Levels</source>
 			</trans-unit>
 			<trans-unit id="workspace" resname="workspace">
 				<source>Workspace</source>
@@ -306,8 +315,14 @@
 			<trans-unit id="chLog_l_action" resname="chLog_l_action">
 				<source>Action</source>
 			</trans-unit>
+			<trans-unit id="chLog_l_channel" resname="chLog_l_channel">
+				<source>Channel</source>
+			</trans-unit>
 			<trans-unit id="chLog_l_types" resname="chLog_l_types">
 				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="chLog_l_level" resname="chLog_l_level">
+				<source>Level</source>
 			</trans-unit>
 			<trans-unit id="chLog_l_table" resname="chLog_l_table">
 				<source>Table</source>

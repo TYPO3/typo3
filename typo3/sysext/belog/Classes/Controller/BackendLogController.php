@@ -104,6 +104,10 @@ class BackendLogController extends ActionController
             'userGroups' => $this->createUserAndGroupListForSelectOptions(),
             'workspaces' => $this->createWorkspaceListForSelectOptions(),
             'pageDepths' => $this->createPageDepthOptions(),
+            'channels' => $this->logEntryRepository->getUsedChannels(),
+            'channel' => $constraint->getChannel(),
+            'levels' => $this->logEntryRepository->getUsedLevels(),
+            'level' => $constraint->getLevel(),
         ]);
 
         if ($layout === 'Default') {

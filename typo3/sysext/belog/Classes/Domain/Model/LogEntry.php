@@ -39,101 +39,83 @@ class LogEntry extends AbstractEntity
      * This case is ugly in extbase, the best way we
      * have found now is to resolve the username (if it exists) in a
      * view helper and just use the uid of the be user here.
-     *
-     * @var int
      */
-    protected $backendUserUid = 0;
+    protected int $backendUserUid = 0;
 
     /**
      * Action ID of the action that happened, for example 3 was a file action
-     *
-     * @var int
      */
-    protected $action = 0;
+    protected int $action = 0;
 
     /**
      * UID of the record the event happened to
-     *
-     * @var int
      */
-    protected $recordUid = 0;
+    protected int $recordUid = 0;
 
     /**
      * Table name
-     *
-     * @var string
      */
-    protected $tableName = 0;
+    protected string $tableName = '';
 
     /**
      * PID of the record the event happened to
-     *
-     * @var int
      */
-    protected $recordPid = 0;
+    protected int $recordPid = 0;
 
     /**
      * Error code
-     *
-     * @var int
      */
-    protected $error = 0;
+    protected int $error = 0;
 
     /**
      * This is the log message itself, but possibly with %s substitutions.
-     *
-     * @var string
      */
-    protected $details = '';
+    protected string $details = '';
 
     /**
      * Timestamp when the log entry was written
-     *
-     * @var int
      */
-    protected $tstamp = 0;
+    protected int $tstamp = 0;
 
     /**
      * Type code
-     *
-     * @var int
      */
-    protected $type = 0;
+    protected int $type = 0;
+
+    /**
+     * Channel name.
+     */
+    protected string $channel = 'narf';
+
+    /**
+     * Level.
+     */
+    protected string $level = '';
 
     /**
      * Details number
-     *
-     * @var int
      */
-    protected $detailsNumber = 0;
+    protected int $detailsNumber = 0;
 
     /**
      * IP address of client
-     *
-     * @var string
      */
-    protected $ip = '';
+    protected string $ip = '';
 
     /**
      * Serialized log data. This is a serialized array with substitutions for $this->details.
-     *
-     * @var string
      */
-    protected $logData = '';
+    protected string $logData = '';
 
     /**
      * Event PID
-     *
-     * @var int
      */
-    protected $eventPid = 0;
+    protected int $eventPid = 0;
 
     /**
      * This is only the UID and not the full workspace object for the same reason as in $beUserUid.
-     *
-     * @var int
      */
-    protected $workspaceUid = 0;
+    protected int $workspaceUid = 0;
 
     /**
      * New ID
@@ -341,6 +323,38 @@ class LogEntry extends AbstractEntity
     public function getType()
     {
         return (int)$this->type;
+    }
+
+    /**
+     * Set channel
+     */
+    public function setChannel(string $channel): void
+    {
+        $this->channel = $channel;
+    }
+
+    /**
+     * Get channel
+     */
+    public function getChannel(): string
+    {
+        return $this->channel;
+    }
+
+    /**
+     * Set level
+     */
+    public function setLevel(string $level): void
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * Get level
+     */
+    public function getLevel(): string
+    {
+        return $this->level;
     }
 
     /**

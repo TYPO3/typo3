@@ -100,7 +100,19 @@ return [
             'config' => [
                 'type' => 'input'
             ]
-        ]
+        ],
+        'channel' => [
+            'label' => 'channel',
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
+        'level' => [
+            'label' => 'level',
+            'config' => [
+                'type' => 'input'
+            ]
+        ],
     ],
     'types' => [
         '1' => [

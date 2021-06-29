@@ -75,13 +75,13 @@ final class SystemInformationController
                     $count,
                     (string)$uriBuilder->buildUriFromRoute(
                         'system_BelogLog',
-                        ['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]]
+                        ['tx_belog_system_beloglog' => ['constraint' => ['channel' => 'php']]]
                     )
                 ),
                 InformationStatus::STATUS_ERROR,
                 $count,
                 'system_BelogLog',
-                http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['action' => -1]]])
+                http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['channel' => 'php']]])
             );
         }
     }

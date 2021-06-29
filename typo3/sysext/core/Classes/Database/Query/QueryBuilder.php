@@ -428,6 +428,16 @@ class QueryBuilder
     }
 
     /**
+     * Specifies that this query should be DISTINCT.
+     */
+    public function distinct(): QueryBuilder
+    {
+        $this->concreteQueryBuilder->distinct();
+
+        return $this;
+    }
+
+    /**
      * Adds an item that is to be returned in the query result.
      *
      * @param string ...$selects

@@ -64,13 +64,28 @@
         </f:if>
 
         <div class="col">
-            <label for="belog-action" class="form-label"><f:translate key="action" /></label>
-            <belog:form.translateLabelSelect
-                property="action"
-                options="{settings.selectableActions}"
-                optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+            <label for="belog-channel" class="form-label"><f:translate key="channel" /></label>
+            <f:form.select
+                property="channel"
+                options="{channels}"
+                prependOptionLabel="{f:translate(key='all')}"
+                prependOptionValue=""
                 class="form-select"
-                id="belog-action"
+                id="belog-channel"
+                value="{channel}"
+            />
+        </div>
+
+        <div class="col">
+            <label for="belog-level" class="form-label"><f:translate key="levels" /></label>
+            <f:form.select
+                property="level"
+                options="{levels}"
+                prependOptionLabel="{f:translate(key='all')}"
+                prependOptionValue=""
+                class="form-select"
+                id="belog-level"
+                value="{level}"
             />
         </div>
 

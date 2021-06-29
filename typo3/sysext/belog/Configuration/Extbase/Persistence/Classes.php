@@ -30,6 +30,12 @@ return [
             'newId' => [
                 'fieldName' => 'NEWid'
             ],
+            'channel' => [
+                'fieldName' => 'channel'
+            ],
+            'level' => [
+                'fieldName' => 'level'
+            ],
         ]
     ],
     \TYPO3\CMS\Belog\Domain\Model\Workspace::class => [

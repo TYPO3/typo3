@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Belog\Domain\Model;
 
+use Psr\Log\LogLevel;
+
 /**
  * Constraints for log entries
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
@@ -43,11 +45,18 @@ class Constraint
     protected $workspaceUid = Workspace::UID_ANY_WORKSPACE;
 
     /**
-     * Selected action
+     * Selected channel
      *
-     * @var int
+     * @var string
      */
-    protected $action = 0;
+    protected string $channel = '';
+
+    /**
+     * Selected level
+     *
+     * @var string
+     */
+    protected string $level = LogLevel::DEBUG;
 
     /**
      * Calculated start timestamp
@@ -150,23 +159,35 @@ class Constraint
     }
 
     /**
-     * Set action
-     *
-     * @param int $action
+     * Set channel
      */
-    public function setAction($action)
+    public function setChannel(string $channel): void
     {
-        $this->action = $action;
+        $this->channel = $channel;
     }
 
     /**
-     * Get action
-     *
-     * @return int
+     * Get channel
      */
-    public function getAction()
+    public function getChannel(): string
     {
-        return (int)$this->action;
+        return $this->channel;
+    }
+
+    /**
+     * Set level
+     */
+    public function setLevel(string $level): void
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * Get level
+     */
+    public function getLevel(): string
+    {
+        return $this->level;
     }
 
     /**

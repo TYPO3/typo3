@@ -87,10 +87,6 @@ parameters:
 
     # Ignored errors for level 3
     -
-      message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$tableName \\(string\\) does not accept default value of type int\\.$#"
-      count: 1
-      path: typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
-    -
       message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$newId \\(string\\) does not accept default value of type int\\.$#"
       count: 1
       path: typo3/sysext/belog/Classes/Domain/Model/LogEntry.php

@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Belog\Domain\Repository;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Model\Workspace;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogLevel as Typo3LogLevel;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
@@ -89,11 +91,13 @@ class LogEntryRepository extends Repository
         if ((int)$constraint->getWorkspaceUid() !== Workspace::UID_ANY_WORKSPACE) {
             $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
         }
-        // Action (type):
-        if ($constraint->getAction() > 0) {
-            $queryConstraints[] = $query->equals('type', $constraint->getAction());
-        } elseif ($constraint->getAction() === -1) {
-            $queryConstraints[] = $query->equals('type', 5);
+        // Channel
+        if ($channel = $constraint->getChannel()) {
+            $queryConstraints[] = $query->equals('channel', $channel);
+        }
+        // Level
+        if ($level = $constraint->getLevel()) {
+            $queryConstraints[] = $query->in('level', Typo3LogLevel::atLeast($level));
         }
         // Start / endtime handling: The timestamp calculation was already done
         // in the controller, since we need those calculated values in the view as well.
@@ -192,5 +196,49 @@ class LogEntryRepository extends Repository
         return $queryBuilder->delete('sys_log')
             ->where(...$constraints)
             ->execute();
+    }
+
+    public function getUsedChannels(): array
+    {
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_log');
+
+        $channels = $conn->createQueryBuilder()
+            ->select('channel')
+            ->distinct()
+            ->from('sys_log')
+            ->orderBy('channel')
+            ->execute()
+            ->fetchFirstColumn();
+
+        return array_combine($channels, $channels);
+    }
+
+    public function getUsedLevels(): array
+    {
+        static $allLevels = [
+            LogLevel::EMERGENCY,
+            LogLevel::ALERT,
+            LogLevel::CRITICAL,
+            LogLevel::ERROR,
+            LogLevel::WARNING,
+            LogLevel::NOTICE,
+            LogLevel::INFO,
+            LogLevel::DEBUG,
+        ];
+
+        $conn = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_log');
+
+        $levels = $conn->createQueryBuilder()
+            ->select('level')
+            ->distinct()
+            ->from('sys_log')
+            ->execute()
+            ->fetchFirstColumn();
+
+        $levelsUsed = array_intersect($allLevels, $levels);
+
+        return array_combine($levelsUsed, $levelsUsed);
     }
 }
