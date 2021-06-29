@@ -7,96 +7,6 @@
         <f:translate key="pagination"/>
     </h1>
 
-    <h3>Simple Filter</h3>
-
-    <p class="lead">This is not a working example! It shows only the basic HTML structure to use.</p>
-
-    <sg:code language="html">
-        <div class="row row-cols-auto align-items-end g-3">
-
-            <div class="col">
-                <label for="belog-users" class="form-label">User</label>
-                <f:form.select
-                    property="userOrGroup"
-                    options="{userGroups}"
-                    class="form-select"
-                    id="belog-users"
-                />
-            </div>
-
-            <div class="col">
-                <label for="belog-max" class="form-label">Max</label>
-                <belog:form.translateLabelSelect
-                    property="number"
-                    options="{0: '50', 1: '100', 2: '200'}"
-                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-                    class="form-select"
-                    id="belog-max"
-                />
-            </div>
-            <div class="col">
-                <label for="belog-workspaces" class="form-label">Workspace</label>
-                <f:form.select
-                    property="workspaceUid"
-                    options="{'-99': '[Any]' , 0: 'LIVE'}"
-                    class="form-select"
-                    id="belog-workspaces"
-                />
-            </div>
-
-            <div class="col">
-                <label for="belog-action" class="form-label">Action</label>
-                <belog:form.translateLabelSelect
-                    property="action"
-                    options="{0: '[Any]', 1: 'Database', 2: 'File', 3: 'Cache', 4: 'Settings'}"
-                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
-                    class="form-select"
-                    id="belog-action"
-                />
-            </div>
-
-            <div class="col">
-                <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
-
-                <div class="input-group">
-                    <f:form.textfield
-                        name="manualDateStart"
-                        value="{f:format.date(date: 'now')}"
-                    id="manualDateStart"
-                    additionalAttributes="{'autocomplete': 'off'}"
-                    class="form-control t3js-datetimepicker t3js-clearable"
-                    data="{date-type: 'datetime'}"
-                    />
-                    <label class="mb-0 btn btn-default" for="manualDateStart">
-                        <core:icon identifier="actions-calendar" />
-                    </label>
-                </div>
-            </div>
-
-            <div class="col">
-                <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
-                <div class="input-group">
-                    <f:form.textfield
-                        name="manualDateStop"
-                        value="{f:format.date(date: 'now', format: 'H:i d-m-Y')}"
-                        additionalAttributes="{'autocomplete': 'off'}"
-                        id="manualDateStop"
-                        class="form-control t3js-datetimepicker t3js-clearable"
-                        data="{date-type: 'datetime'}"
-                    />
-                    <label class="mb-0 btn btn-default" for="manualDateStop">
-                        <core:icon identifier="actions-calendar" />
-                    </label>
-                </div>
-            </div>
-
-            <div class="col">
-                <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">Filter</f:form.button>
-                <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">Reset</f:form.button>
-            </div>
-        </div>
-    </sg:code>
-
     <h3>Simple Pagination</h3>
 
     <sg:code language="html">
@@ -196,10 +106,102 @@
             </thead>
             <tbody>
                 <f:for each="{paginator.paginatedItems}" as="item">
-                    <tr><td>{item}</td></tr>
+                    <tr>
+                        <td>{item}</td>
+                    </tr>
                 </f:for>
             </tbody>
         </table>
+    </sg:code>
+
+    <h3>Simple Filter</h3>
+
+    <p class="lead">This is not a working example! It shows only the basic HTML structure to use.</p>
+
+    <sg:code language="html">
+        <div class="row row-cols-auto align-items-end g-3">
+
+            <div class="col">
+                <label for="belog-users" class="form-label">User</label>
+                <f:form.select
+                    property="userOrGroup"
+                    options="{userGroups}"
+                    class="form-select"
+                    id="belog-users"
+                />
+            </div>
+
+            <div class="col">
+                <label for="belog-max" class="form-label">Max</label>
+                <belog:form.translateLabelSelect
+                    property="number"
+                    options="{0: '50', 1: '100', 2: '200'}"
+                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                    class="form-select"
+                    id="belog-max"
+                />
+            </div>
+            <div class="col">
+                <label for="belog-workspaces" class="form-label">Workspace</label>
+                <f:form.select
+                    property="workspaceUid"
+                    options="{'-99': '[Any]' , 0: 'LIVE'}"
+                    class="form-select"
+                    id="belog-workspaces"
+                />
+            </div>
+
+            <div class="col">
+                <label for="belog-action" class="form-label">Action</label>
+                <belog:form.translateLabelSelect
+                    property="action"
+                    options="{0: '[Any]', 1: 'Database', 2: 'File', 3: 'Cache', 4: 'Settings'}"
+                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                    class="form-select"
+                    id="belog-action"
+                />
+            </div>
+
+            <div class="col">
+                <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
+
+                <div class="input-group">
+                    <f:form.textfield
+                        name="manualDateStart"
+                        value="{f:format.date(date: 'now')}"
+                    id="manualDateStart"
+                    additionalAttributes="{'autocomplete': 'off'}"
+                    class="form-control t3js-datetimepicker t3js-clearable"
+                    data="{date-type: 'datetime'}"
+                    />
+                    <label class="mb-0 btn btn-default" for="manualDateStart">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
+                <div class="input-group">
+                    <f:form.textfield
+                        name="manualDateStop"
+                        value="{f:format.date(date: 'now', format: 'H:i d-m-Y')}"
+                        additionalAttributes="{'autocomplete': 'off'}"
+                        id="manualDateStop"
+                        class="form-control t3js-datetimepicker t3js-clearable"
+                        data="{date-type: 'datetime'}"
+                    />
+                    <label class="mb-0 btn btn-default" for="manualDateStop">
+                        <core:icon identifier="actions-calendar" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <f:form.button type="submit" name="operation" value="filter" class="btn btn-light">Filter</f:form.button>
+                <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">Reset</f:form.button>
+            </div>
+        </div>
     </sg:code>
 
 </f:section>
