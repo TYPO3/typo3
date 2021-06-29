@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -75,9 +76,10 @@ class FormManagerController extends AbstractBackendController
      * Displays the Form Manager
      *
      * @param int $page
+     * @return ResponseInterface
      * @internal
      */
-    public function indexAction(int $page = 1)
+    public function indexAction(int $page = 1): ResponseInterface
     {
         $this->registerDocHeaderButtons();
         $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
@@ -103,6 +105,8 @@ class FormManagerController extends AbstractBackendController
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
             $this->getPageRenderer()->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -123,11 +127,12 @@ class FormManagerController extends AbstractBackendController
      * @param string $templatePath
      * @param string $prototypeName
      * @param string $savePath
+     * @return ResponseInterface
      * @throws FormException
      * @throws PersistenceManagerException
      * @internal
      */
-    public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath)
+    public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500657);
@@ -179,6 +184,13 @@ class FormManagerController extends AbstractBackendController
         $this->view->setVariablesToRender([
             'response',
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**
@@ -198,10 +210,11 @@ class FormManagerController extends AbstractBackendController
      * @param string $formName
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
      * @param string $savePath
+     * @return ResponseInterface
      * @throws PersistenceManagerException
      * @internal
      */
-    public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath)
+    public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500658);
@@ -247,6 +260,13 @@ class FormManagerController extends AbstractBackendController
         $this->view->setVariablesToRender([
             'response',
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**
@@ -264,10 +284,11 @@ class FormManagerController extends AbstractBackendController
      * Show references to this persistence identifier
      *
      * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
+     * @return ResponseInterface
      * @throws PersistenceManagerException
      * @internal
      */
-    public function referencesAction(string $formPersistenceIdentifier)
+    public function referencesAction(string $formPersistenceIdentifier): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Read from "%s" is not allowed', $formPersistenceIdentifier), 1614500660);
@@ -281,6 +302,13 @@ class FormManagerController extends AbstractBackendController
             'references',
             'formPersistenceIdentifier'
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**

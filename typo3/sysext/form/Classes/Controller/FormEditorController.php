@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -65,10 +66,11 @@ class FormEditorController extends AbstractBackendController
      *
      * @param string $formPersistenceIdentifier
      * @param string $prototypeName
+     * @return ResponseInterface
      * @throws PersistenceManagerException
      * @internal
      */
-    public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null)
+    public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null): ResponseInterface
     {
         $this->registerDocHeaderButtons();
         $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
@@ -143,6 +145,8 @@ class FormEditorController extends AbstractBackendController
         );
 
         $this->view->assign('addInlineSettings', $addInlineSettings);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -161,9 +165,10 @@ class FormEditorController extends AbstractBackendController
      *
      * @param string $formPersistenceIdentifier
      * @param FormDefinitionArray $formDefinition
+     * @return ResponseInterface
      * @internal
      */
-    public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition)
+    public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition): ResponseInterface
     {
         $formDefinition = $formDefinition->getArrayCopy();
 
@@ -204,6 +209,13 @@ class FormEditorController extends AbstractBackendController
         $this->view->setVariablesToRender([
             'response',
         ]);
+
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
     /**
@@ -213,11 +225,14 @@ class FormEditorController extends AbstractBackendController
      * @param FormDefinitionArray $formDefinition
      * @param int $pageIndex
      * @param string $prototypeName
-     * @return string
+     * @return ResponseInterface
      * @internal
      */
-    public function renderFormPageAction(FormDefinitionArray $formDefinition, int $pageIndex, string $prototypeName = null): string
-    {
+    public function renderFormPageAction(
+        FormDefinitionArray $formDefinition,
+        int $pageIndex,
+        string $prototypeName = null
+    ): ResponseInterface {
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $formDefinition->getArrayCopy();
 
@@ -228,7 +243,7 @@ class FormEditorController extends AbstractBackendController
         $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
         $form->overrideCurrentPage($pageIndex);
 
-        return $form->render();
+        return $this->htmlResponse($form->render());
     }
 
     /**
