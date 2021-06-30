@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Install\Configuration\Mail;
 
-use TYPO3\CMS\Install\Configuration;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**

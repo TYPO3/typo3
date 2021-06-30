@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-
 /**
  * Interface ProviderInterface
  */

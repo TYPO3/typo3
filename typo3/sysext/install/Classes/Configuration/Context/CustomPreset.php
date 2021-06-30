@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Install\Configuration\Context;
 
-use TYPO3\CMS\Install\Configuration;
 use TYPO3\CMS\Install\Configuration\AbstractCustomPreset;
 use TYPO3\CMS\Install\Configuration\CustomPresetInterface;
 

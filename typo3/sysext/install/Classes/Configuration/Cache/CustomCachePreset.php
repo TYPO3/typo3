@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Install\Configuration\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
-use TYPO3\CMS\Install\Configuration;
 use TYPO3\CMS\Install\Configuration\AbstractCustomPreset;
 use TYPO3\CMS\Install\Configuration\CustomPresetInterface;
 

@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\DataHandling;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;

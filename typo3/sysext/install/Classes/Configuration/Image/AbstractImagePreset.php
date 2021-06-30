@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Install\Configuration\Image;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Configuration;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 
 /**
