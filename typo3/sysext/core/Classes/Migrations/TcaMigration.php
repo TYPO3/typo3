@@ -422,14 +422,14 @@ class TcaMigration
                 continue;
             }
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') != 'inline'
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'inline'
                     || !isset($fieldConfig['config']['appearance']['showRemovedLocalizationRecords'])
                 ) {
                     continue;
                 }
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' is '
-                    . 'defined as type \'inline\' with the \'appearance.showRemovedLocalizationRecords\' option. This is not '
-                    . 'evaluated anymore. There is no replacement and should therefore be removed.';
+                    . 'defined as type \'inline\' with the \'appearance.showRemovedLocalizationRecords\' option set. '
+                    . 'As this option is not evaluated anymore and no replacement exists, it should be removed from TCA.';
                 unset($fieldConfig['config']['appearance']['showRemovedLocalizationRecords']);
             }
         }

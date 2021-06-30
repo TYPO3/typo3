@@ -821,7 +821,31 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'showRemovedLocalizationRecords' => 1
+                                'showRemovedLocalizationRecords' => true
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'inlineField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'showRemovedLocalizationRecords' => false
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'someField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'appearance' => [
+                                'showRemovedLocalizationRecords' => true
                             ]
                         ]
                     ]
@@ -836,6 +860,28 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => []
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'inlineField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => []
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'someField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'appearance' => [
+                                'showRemovedLocalizationRecords' => true
+                            ]
                         ]
                     ]
                 ]
