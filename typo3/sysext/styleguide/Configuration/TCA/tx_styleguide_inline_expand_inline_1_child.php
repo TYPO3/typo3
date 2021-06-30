@@ -119,7 +119,6 @@ return [
                         'height' => '45c',
                     ],
                     'showPossibleLocalizationRecords' => false,
-                    'showRemovedLocalizationRecords' => false,
                     'showSynchronizationLink' => false,
                     'showAllLocalizationLink' => false,
                     'enabledControls' => [

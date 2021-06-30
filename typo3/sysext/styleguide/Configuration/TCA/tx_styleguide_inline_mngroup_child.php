@@ -102,7 +102,6 @@ return [
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
-                    'showRemovedLocalizationRecords' => 1,
                 ],
             ],
         ],

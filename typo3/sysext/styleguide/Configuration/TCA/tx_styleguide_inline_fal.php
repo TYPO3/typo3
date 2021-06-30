@@ -164,7 +164,6 @@ return [
                 [
                     'appearance' => [
                         'showPossibleLocalizationRecords' => true,
-                        'showRemovedLocalizationRecords' => true,
                         'showAllLocalizationLink' => true,
                         'showSynchronizationLink' => true,
                     ]
@@ -219,7 +218,6 @@ return [
                                                             <height>45c</height>
                                                         </headerThumbnail>
                                                         <showPossibleLocalizationRecords>0</showPossibleLocalizationRecords>
-                                                        <showRemovedLocalizationRecords>0</showRemovedLocalizationRecords>
                                                         <showSynchronizationLink>0</showSynchronizationLink>
                                                         <showAllLocalizationLink>0</showAllLocalizationLink>
                                                         <enabledControls>
