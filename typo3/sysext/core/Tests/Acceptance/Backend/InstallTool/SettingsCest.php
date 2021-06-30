@@ -37,19 +37,36 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    protected function seeExtensionConfiguration(BackendTester $I, ModalDialog $modalDialog)
+    public function seeExtensionConfiguration(BackendTester $I, ModalDialog $modalDialog)
     {
-        $I->click('Configure extensions');
+        $logoAltText = 'TYPO3 logo alt text';
+        $inputAltText = '#em-backend-loginLogoAlt';
+        $button = 'Configure extensions';
+        $modalSave = 'Save "backend" configuration';
+        $panel = 'backend';
+
+        // Open modal, change alt text and save
+        $I->click($button);
         $modalDialog->canSeeDialog();
-
         $I->amGoingTo('open the backend panel');
-        $I->click('backend', '.panel-heading');
-        $I->waitForElement('#em-backend-loginLogoAlt');
-
+        $I->click($panel, '.panel-heading');
+        $I->waitForElement($inputAltText);
+        $previousLogoAltText = $I->grabValueFrom($inputAltText);
         $I->amGoingTo('fill in an alt text for the logo');
-        $I->fillField('#em-backend-loginLogoAlt', 'TYPO3 logo alt text');
-        $I->click('Save "backend" configuration', ModalDialog::$openedModalSelector);
-        $I->waitForText('Configuration saved', 5, self::$alertContainerSelector);
+        $I->fillField($inputAltText, $logoAltText);
+        $I->click($modalSave, ModalDialog::$openedModalSelector);
+        $this->closeModalAndHideFlashMessage($I);
+
+        // Open modal, reset alt text and save
+        $I->amGoingTo('see saved alt text and reset the alt text for the logo');
+        $I->click($button);
+        $modalDialog->canSeeDialog();
+        $I->click($panel, '.panel-heading');
+        $I->waitForElement($inputAltText);
+        $value = $I->grabValueFrom($inputAltText);
+        $I->assertEquals($logoAltText, $value);
+        $I->fillField($inputAltText, $previousLogoAltText);
+        $I->click($modalSave, ModalDialog::$openedModalSelector);
         $this->closeModalAndHideFlashMessage($I);
     }
 
@@ -58,14 +75,22 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    protected function seeChangeInstallToolPassword(BackendTester $I, ModalDialog $modalDialog)
+    public function seeChangeInstallToolPassword(BackendTester $I, ModalDialog $modalDialog)
     {
+        $expectedInitialPasswordValue = '';
+
         $I->click('Change Install Tool Password');
         $modalDialog->canSeeDialog();
 
+        $I->amGoingTo('check if password fields are initially empty');
+        $passwordValue = $I->grabValueFrom('#t3-install-tool-password');
+        $I->assertEquals($expectedInitialPasswordValue, $passwordValue);
+        $passwordRepeatValue = $I->grabValueFrom('#t3-install-tool-password-repeat');
+        $I->assertEquals($expectedInitialPasswordValue, $passwordRepeatValue);
+
         $I->amGoingTo('change the install tool password');
-        $I->fillField('#t3-install-tool-password', 'password');
-        $I->fillField('#t3-install-tool-password-repeat', 'password');
+        $I->fillField('#t3-install-tool-password', self::INSTALL_TOOL_PASSWORD);
+        $I->fillField('#t3-install-tool-password-repeat', self::INSTALL_TOOL_PASSWORD);
 
         $I->click('Set new password', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForText('Install tool password changed', 5, self::$alertContainerSelector);
@@ -77,17 +102,32 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    protected function seeManageSystemMaintainers(BackendTester $I, ModalDialog $modalDialog)
+    public function seeManageSystemMaintainers(BackendTester $I, ModalDialog $modalDialog)
     {
-        $I->click('Manage System Maintainers');
-        $modalDialog->canSeeDialog();
+        $button = 'Manage System Maintainers';
+        $modalSave = 'Save system maintainer list';
 
         $I->amGoingTo('add a system maintainer to the list');
+        $I->click($button);
+        $modalDialog->canSeeDialog();
         $I->click('.chosen-search-input', ModalDialog::$openedModalSelector);
-        $I->click('.active-result[data-option-array-index="0"]', '.chosen-results');
 
-        $I->click('Save system maintainer list', ModalDialog::$openedModalButtonContainerSelector);
+        // Select first user in list - "admin"
+        $I->amGoingTo('select first user in list');
+        $I->click('.active-result[data-option-array-index="0"]', '.chosen-results');
+        $I->click($modalSave, ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForText('Updated system maintainers', 5, self::$alertContainerSelector);
+        $this->closeModalAndHideFlashMessage($I);
+
+        $I->amGoingTo('remove the maintainer from the list');
+        $I->click($button);
+        $modalDialog->canSeeDialog();
+        // Wait for current list of maintainers to appear
+        $I->waitForElementVisible('.search-choice-close', 5);
+        $I->click('.search-choice-close', ModalDialog::$openedModalSelector);
+        $I->waitForElementNotVisible('.search-choice', 5);
+        $I->click($modalSave, ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForText('Cleared system maintainer list', 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
     }
 
@@ -96,31 +136,38 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    protected function seeConfigurationPresets(BackendTester $I, ModalDialog $modalDialog)
+    public function seeConfigurationPresets(BackendTester $I, ModalDialog $modalDialog)
     {
-        $I->click('Choose Preset');
+        $button = 'Choose Preset';
+        $modalButton = 'Activate preset';
+        $expectedFlashMessageText = 'Configuration written';
+
+        $I->click($button);
         $modalDialog->canSeeDialog();
 
-        $I->amGoingTo('open the cache settings panel');
         $I->click('Cache settings', '.panel-heading');
         $I->waitForElement('#t3-install-tool-configuration-cache-file');
 
         $I->amGoingTo('change cache configuration and save configuration');
         $I->click('#t3-install-tool-configuration-cache-file');
-        $I->click('Activate preset', ModalDialog::$openedModalButtonContainerSelector);
-        $I->waitForText('Configuration written', 5, self::$alertContainerSelector);
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForText($expectedFlashMessageText, 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
-    }
 
-    protected function seeFeatureToggles(BackendTester $I, ModalDialog $modalDialog)
-    {
-        $I->click('Configure Features');
+        $I->click($button);
         $modalDialog->canSeeDialog();
 
-        $I->amGoingTo('change a feature toggle and save it');
-        $I->click('#t3-install-tool-features-redirects.hitCount');
-        $I->click('Save', ModalDialog::$openedModalButtonContainerSelector);
-        $I->waitForText('Features updated', 5, self::$alertContainerSelector);
+        // Check if value was saved as expected
+        $fileCacheValue = $I->grabValueFrom('#t3-install-tool-configuration-cache-file');
+        $I->assertEquals('File', $fileCacheValue);
+
+        // Reset cache to custom configuration
+        $I->click('Cache settings', '.panel-heading');
+        $I->waitForElement('#t3-install-tool-configuration-cache-database');
+        $I->amGoingTo('change and save the cache configuration');
+        $I->click('#t3-install-tool-configuration-cache-custom');
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForText($expectedFlashMessageText, 5, self::$alertContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
     }
 
@@ -129,19 +176,65 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    protected function seeConfigureInstallationWideOptions(BackendTester $I, ModalDialog $modalDialog)
+    public function seeFeatureToggles(BackendTester $I, ModalDialog $modalDialog)
     {
-        $I->click('Configure options');
+        $button = 'Configure Features';
+        $modalButton = 'Save';
+        $featureToggle = '#t3-install-tool-features-redirects.hitCount';
+
+        // Switch hit count feature toggle
+        $I->click($button);
         $modalDialog->canSeeDialog();
+        $I->amGoingTo('change hit count feature toggle and save it');
+        $I->click($featureToggle);
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForText('Features updated', 5, self::$alertContainerSelector);
+        $this->closeModalAndHideFlashMessage($I);
 
+        // Switch back hit count feature toggle
+        $I->click($button);
+        $modalDialog->canSeeDialog();
+        $I->cantSeeCheckboxIsChecked($featureToggle);
+        $I->amGoingTo('reset hit count feature toggle and save it');
+        $I->click($featureToggle);
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
+        $this->closeModalAndHideFlashMessage($I);
+    }
+
+    /**
+     * @param BackendTester $I
+     * @param ModalDialog $modalDialog
+     * @throws \Exception
+     */
+    public function seeConfigureInstallationWideOptions(BackendTester $I, ModalDialog $modalDialog)
+    {
+        $button = 'Configure options';
+        $panel = 'Backend';
+        $checkbox = '#BE_languageDebug';
+        $modalButton = 'Write configuration';
+        $expectedFlashMessageText = 'BE/languageDebug';
+
+        // Activate [BE][languageDebug]
+        $I->click($button);
+        $modalDialog->canSeeDialog();
         $I->amGoingTo('open the backend panel');
-        $I->click('Backend', '.panel-heading');
-        $I->waitForElement('#BE_languageDebug');
+        $I->click($panel, '.panel-heading');
+        $I->waitForElement($checkbox);
+        $I->amGoingTo('tick the checkbox [BE][languageDebug] option');
+        $I->click($checkbox);
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForText($expectedFlashMessageText, 5, self::$alertContainerSelector);
+        $this->closeModalAndHideFlashMessage($I);
 
-        $I->amGoingTo('tick of checkbox the [BE][languageDebug] option');
-        $I->click('#BE_languageDebug');
-        $I->click('Write configuration', ModalDialog::$openedModalButtonContainerSelector);
-        $I->waitForText('BE/languageDebug', 5, self::$alertContainerSelector);
+        // Reset [BE][languageDebug]
+        $I->click($button);
+        $modalDialog->canSeeDialog();
+        $I->click($panel, '.panel-heading');
+        $I->waitForElement($checkbox);
+        $I->seeCheckboxIsChecked($checkbox);
+        $I->amGoingTo('reset [BE][languageDebug] checkbox');
+        $I->click($checkbox);
+        $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
         $this->closeModalAndHideFlashMessage($I);
     }
 
