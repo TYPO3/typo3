@@ -47,6 +47,7 @@
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^2.1",
 		"guzzlehttp/guzzle": "^7.2",
+		"guzzlehttp/psr7": "^1.7.0",
 		"nikic/php-parser": "^4.10.4",
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.4",
