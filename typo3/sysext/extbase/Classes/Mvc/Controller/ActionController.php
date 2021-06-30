@@ -38,6 +38,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -128,7 +129,8 @@ abstract class ActionController implements ControllerInterface
     /**
      * The current request.
      *
-     * @var RequestInterface
+     * @var Request
+     * @todo v12: Change @var to RequestInterface, when RequestInterface extends ServerRequestInterface
      */
     protected $request;
 
@@ -443,6 +445,7 @@ abstract class ActionController implements ControllerInterface
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
+        /** @var Request $request */
         $this->request = $request;
         // @deprecated since v11, will be removed in v12.
         $this->request->setDispatched(true);

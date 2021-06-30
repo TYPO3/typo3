@@ -523,7 +523,7 @@ class FormManagerController extends AbstractBackendController
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri())
+            ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);

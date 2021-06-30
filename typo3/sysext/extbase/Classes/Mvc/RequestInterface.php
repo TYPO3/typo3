@@ -20,6 +20,8 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
 /**
  * Contract for an extbase request.
+ *
+ * @todo v12: interface RequestInterface extends ServerRequestInterface
  */
 interface RequestInterface
 {

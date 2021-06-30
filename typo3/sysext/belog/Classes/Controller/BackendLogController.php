@@ -107,7 +107,7 @@ class BackendLogController extends ActionController
         ]);
 
         if ($layout === 'Default') {
-            $moduleTemplate = $this->moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+            $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
             $moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
             $moduleTemplate->setContent($this->view->render());
             return $this->htmlResponse($moduleTemplate->renderContent());

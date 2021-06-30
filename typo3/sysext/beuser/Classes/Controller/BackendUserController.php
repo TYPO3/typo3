@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Beuser\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -118,7 +117,7 @@ class BackendUserController extends ActionController
     public function initializeAction(): void
     {
         $this->moduleData = ModuleData::fromUc((array)($this->getBackendUser()->getModuleData('tx_beuser')));
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->getRequest());
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
     }
 
@@ -187,7 +186,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
-                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ]));
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -252,7 +251,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
-                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ]));
         $buttonBar->addButton($editButton);
         $addUserButton = $buttonBar->makeLinkButton()
@@ -260,7 +259,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
-                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ]));
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -331,7 +330,7 @@ class BackendUserController extends ActionController
             );
         } else {
             GeneralUtility::makeInstance(PasswordReset::class)->initiateReset(
-                $this->getRequest(),
+                $this->request,
                 $context,
                 $user->getEmail()
             );
@@ -432,7 +431,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],
-                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
             ]));
         $buttonBar->addButton($addGroupButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -604,16 +603,5 @@ class BackendUserController extends ActionController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * This is a temporary hack to receive the PSR-7 request until extbase
-     * provides a PSR-7 compatible request in actions.
-     *
-     * @return ServerRequestInterface
-     */
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
