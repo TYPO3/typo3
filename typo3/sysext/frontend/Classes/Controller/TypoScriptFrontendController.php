@@ -2957,7 +2957,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $storages = $storageRepository->findAll();
         foreach ($storages as $storage) {
             if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
-                $folder = $storage->getPublicUrl($storage->getRootLevelFolder(), true);
+                $folder = $storage->getPublicUrl($storage->getRootLevelFolder());
                 $search[] = '"' . $folder;
                 $replace[] = '"' . $this->absRefPrefix . $folder;
             }
