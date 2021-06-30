@@ -21,7 +21,6 @@ $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
-                    'showRemovedLocalizationRecords' => 1,
                 ],
             ]
         ],
@@ -36,7 +35,6 @@ $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
-                    'showRemovedLocalizationRecords' => 1,
                 ],
             ]
         ],

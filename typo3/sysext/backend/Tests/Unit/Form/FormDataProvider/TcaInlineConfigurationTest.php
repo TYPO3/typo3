@@ -34,7 +34,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
         'appearance' => [
             'levelLinksPosition' => 'top',
             'showPossibleLocalizationRecords' => false,
-            'showRemovedLocalizationRecords' => false,
             'enabledControls' => [
                 'info' => true,
                 'new' => true,
@@ -353,58 +352,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
         $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = false;
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataKeepshowRemovedLocalizationRecordsButForcesBooleanTrue()
-    {
-        $input = [
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'inline',
-                            'foreign_table' => 'aForeignTableName',
-                            'appearance' => [
-                                'showRemovedLocalizationRecords' => 1,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $expected = [];
-        $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = true;
-        self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataKeepsShowRemovedLocalizationRecordsButForcesBooleanFalse()
-    {
-        $input = [
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'inline',
-                            'foreign_table' => 'aForeignTableName',
-                            'appearance' => [
-                                'showRemovedLocalizationRecords' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $expected = [];
-        $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = false;
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 

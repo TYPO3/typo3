@@ -60,6 +60,7 @@ class TcaMigration
         $tca = $this->removeWorkspacePlaceholderShadowColumnsConfiguration($tca);
         $tca = $this->migrateLanguageFieldToTcaTypeLanguage($tca);
         $tca = $this->migrateSpecialLanguagesToTcaTypeLanguage($tca);
+        $tca = $this->removeShowRemovedLocalizationRecords($tca);
 
         return $tca;
     }
@@ -408,6 +409,28 @@ class TcaMigration
                 $fieldConfig['config'] = [
                     'type' => 'language'
                 ];
+            }
+        }
+
+        return $tca;
+    }
+
+    protected function removeShowRemovedLocalizationRecords(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') != 'inline'
+                    || !isset($fieldConfig['config']['appearance']['showRemovedLocalizationRecords'])
+                ) {
+                    continue;
+                }
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' is '
+                    . 'defined as type \'inline\' with the \'appearance.showRemovedLocalizationRecords\' option. This is not '
+                    . 'evaluated anymore. There is no replacement and should therefore be removed.';
+                unset($fieldConfig['config']['appearance']['showRemovedLocalizationRecords']);
             }
         }
 

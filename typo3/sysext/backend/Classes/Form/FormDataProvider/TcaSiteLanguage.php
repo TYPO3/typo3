@@ -107,7 +107,6 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
             $config['appearance'] = [];
         }
         $config['appearance']['showPossibleLocalizationRecords'] = false;
-        $config['appearance']['showRemovedLocalizationRecords'] = false;
         $config['appearance']['collapseAll'] = true;
         $config['appearance']['expandSignle'] = false;
         $config['appearance']['enabledControls'] = [

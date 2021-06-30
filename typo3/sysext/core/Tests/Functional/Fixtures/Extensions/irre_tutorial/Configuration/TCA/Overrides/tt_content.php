@@ -23,7 +23,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
-                    'showRemovedLocalizationRecords' => 1,
                 ],
             ]
         ],
@@ -38,7 +37,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                     'showSynchronizationLink' => 1,
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
-                    'showRemovedLocalizationRecords' => 1,
                 ],
                 'default' => '',
             ]

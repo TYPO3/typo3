@@ -22,7 +22,6 @@
 									<showSynchronizationLink>1</showSynchronizationLink>
 									<showAllLocalizationLink>1</showAllLocalizationLink>
 									<showPossibleLocalizationRecords>1</showPossibleLocalizationRecords>
-									<showRemovedLocalizationRecords>1</showRemovedLocalizationRecords>
 								</appearance>
 							</config>
 						</TCEforms>
@@ -46,7 +45,6 @@
 									<showSynchronizationLink>1</showSynchronizationLink>
 									<showAllLocalizationLink>1</showAllLocalizationLink>
 									<showPossibleLocalizationRecords>1</showPossibleLocalizationRecords>
-									<showRemovedLocalizationRecords>1</showRemovedLocalizationRecords>
 								</appearance>
 							</config>
 						</TCEforms>

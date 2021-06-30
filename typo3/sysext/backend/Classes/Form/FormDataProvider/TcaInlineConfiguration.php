@@ -115,8 +115,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
         }
         $config['appearance']['showPossibleLocalizationRecords']
             = isset($config['appearance']['showPossibleLocalizationRecords']) && $config['appearance']['showPossibleLocalizationRecords'];
-        $config['appearance']['showRemovedLocalizationRecords']
-            = isset($config['appearance']['showRemovedLocalizationRecords']) && $config['appearance']['showRemovedLocalizationRecords'];
         // Defines which controls should be shown in header of each record
         $enabledControls = [
             'info' => true,

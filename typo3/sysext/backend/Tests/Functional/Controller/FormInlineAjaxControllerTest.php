@@ -186,7 +186,6 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
                 'showSynchronizationLink' => 1,
                 'showAllLocalizationLink' => 1,
                 'showPossibleLocalizationRecords' => true,
-                'showRemovedLocalizationRecords' => true,
                 'levelLinksPosition' => 'top',
                 'enabledControls' => [
                     'info' => true,

@@ -808,4 +808,41 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function showRemovedLocalizationRecordsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'inlineField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'showRemovedLocalizationRecords' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'inlineField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => []
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }
