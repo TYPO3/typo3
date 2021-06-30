@@ -13,7 +13,7 @@
     }
   ],
   "type": "typo3-cms-extension",
-  "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+  "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
   "homepage": "https://github.com/TYPO3/styleguide",
   "license": "GPL-2.0-or-later",
   "keywords": [
