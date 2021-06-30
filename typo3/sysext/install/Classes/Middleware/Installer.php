@@ -87,7 +87,7 @@ class Installer implements MiddlewareInterface
             if ($session->isExpired()) {
                 $session->refreshSession();
             }
-            $postValues = $request->getParsedBody()['install'];
+            $postValues = $request->getParsedBody()['install'] ?? [];
             $sessionTokenOk = false;
             if (empty($postValues)) {
                 // No post data is there, no token check necessary

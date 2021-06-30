@@ -379,8 +379,8 @@ class InstallerController
                     'socket' => $this->getDatabaseConfiguredMysqliSocket(),
                 ]
             );
-            if ($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['driver'] === 'mysqli'
-                && $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['host'] === 'localhost') {
+            if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['driver'] ?? '') === 'mysqli'
+                && ($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['host'] ?? '') === 'localhost') {
                 $activeAvailableOption = 'mysqliSocketManualConfiguration';
             }
         }
@@ -627,8 +627,8 @@ class InstallerController
     public function checkDatabaseSelectAction(): ResponseInterface
     {
         $success = false;
-        if ((string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['dbname'] !== ''
-            || (string)$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['path'] !== ''
+        if ((string)($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['dbname'] ?? '') !== ''
+            || (string)($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['path'] ?? '') !== ''
         ) {
             try {
                 $success = GeneralUtility::makeInstance(ConnectionPool::class)
