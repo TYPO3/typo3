@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
@@ -24,19 +26,16 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 class GenericViewResolver implements ViewResolverInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
+    private ContainerInterface $container;
 
     /**
      * @var string
      */
     private $defaultViewClass;
 
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ContainerInterface $container)
     {
-        $this->objectManager = $objectManager;
+        $this->container = $container;
     }
 
     /**
@@ -50,6 +49,14 @@ class GenericViewResolver implements ViewResolverInterface
 
     public function resolve(string $controllerObjectName, string $actionName, string $format): ViewInterface
     {
-        return $this->objectManager->get($this->defaultViewClass);
+        if ($this->container->has($this->defaultViewClass)) {
+            /** @var ViewInterface $view */
+            $view = $this->container->get($this->defaultViewClass);
+            return $view;
+        }
+        // @deprecated since v11, will be removed with 12. Fallback if extensions provide no proper Services.yaml. Drop together with if condition above in v12.
+        /** @var ViewInterface $view */
+        $view = GeneralUtility::makeInstance(ObjectManager::class)->get($this->defaultViewClass);
+        return $view;
     }
 }

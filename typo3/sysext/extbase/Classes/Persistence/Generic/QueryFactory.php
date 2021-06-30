@@ -15,10 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -28,47 +30,39 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class QueryFactory implements QueryFactoryInterface, SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
+    protected ConfigurationManagerInterface $configurationManager;
+    protected DataMapFactory $dataMapFactory;
+    private ContainerInterface $container;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    protected $dataMapFactory;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     */
     public function __construct(
-        ObjectManagerInterface $objectManager,
         ConfigurationManagerInterface $configurationManager,
-        DataMapFactory $dataMapFactory
+        DataMapFactory $dataMapFactory,
+        ContainerInterface $container
     ) {
-        $this->objectManager = $objectManager;
         $this->configurationManager = $configurationManager;
         $this->dataMapFactory = $dataMapFactory;
+        $this->container = $container;
     }
 
     /**
      * Creates a query object working on the given class name
      *
      * @param string $className The class name
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+     * @return QueryInterface
      */
-    public function create($className)
+    public function create($className): QueryInterface
     {
-        $query = $this->objectManager->get(QueryInterface::class, $className);
-        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        /** @var QueryInterface $query */
+        $query = $this->container->get(QueryInterface::class);
+        if ($query instanceof ForwardCompatibleQueryInterface) {
+            $query->setType($className);
+        } else {
+            // @deprecated since v11, will be removed in v12. Use ObjectManager if an implementation does not implement ForwardCompatibleQueryInterface.
+            /** @var QueryInterface $query */
+            $query = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryInterface::class, $className);
+        }
+
+        $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
 
         $dataMap = $this->dataMapFactory->buildDataMap($className);
         if ($dataMap->getIsStatic() || $dataMap->getRootLevel()) {

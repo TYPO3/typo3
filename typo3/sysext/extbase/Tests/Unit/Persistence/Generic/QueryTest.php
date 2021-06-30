@@ -15,9 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
-use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -52,18 +51,25 @@ class QueryTest extends UnitTestCase
     protected $dataMapFactory;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * Sets up this test case
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->getAccessibleMock(Query::class, ['getSelectorName'], ['someType']);
+        $this->query = $this->getAccessibleMock(Query::class, ['getSelectorName'], [], '', false);
         $this->querySettings = $this->createMock(QuerySettingsInterface::class);
         $this->query->_set('querySettings', $this->querySettings);
         $this->persistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->query->_set('persistenceManager', $this->persistenceManager);
         $this->dataMapFactory = $this->createMock(DataMapFactory::class);
         $this->query->_set('dataMapFactory', $this->dataMapFactory);
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->query->_set('container', $this->container);
     }
 
     /**
@@ -71,11 +77,9 @@ class QueryTest extends UnitTestCase
      */
     public function executeReturnsQueryResultInstanceAndInjectsItself()
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject $objectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
-        $this->query->_set('objectManager', $objectManager);
         $queryResult = $this->createMock(QueryResult::class);
-        $objectManager->expects(self::once())->method('get')->with(QueryResultInterface::class, $this->query)->willReturn($queryResult);
+        $this->container->expects(self::once())->method('has')->with(QueryResultInterface::class)->willReturn(true);
+        $this->container->expects(self::once())->method('get')->with(QueryResultInterface::class)->willReturn($queryResult);
         $actualResult = $this->query->execute();
         self::assertSame($queryResult, $actualResult);
     }
@@ -155,14 +159,8 @@ class QueryTest extends UnitTestCase
      */
     public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand)
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject $objectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $dynamicOperand */
-        $dynamicOperand = $this->createMock(PropertyValueInterface::class);
-        $objectManager->expects(self::any())->method('get')->willReturn($dynamicOperand);
         /** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);
-        $qomFactory->_set('objectManager', $objectManager);
         $qomFactory->expects(self::once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
         $this->query->expects(self::any())->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);

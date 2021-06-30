@@ -141,7 +141,7 @@ abstract class ActionController implements ControllerInterface
     protected $signalSlotDispatcher;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $objectManager;
@@ -170,7 +170,7 @@ abstract class ActionController implements ControllerInterface
     protected $arguments;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @var ControllerContext
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected $controllerContext;
@@ -215,7 +215,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * Injects the object manager
      *
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
@@ -396,11 +396,11 @@ abstract class ActionController implements ControllerInterface
             // todo: It's quite odd that an instance of ConjunctionValidator is created directly here.
             // todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::getBaseValidatorConjunction could/should be used
             // todo: here, to benefit of the built in 1st level cache of the ValidatorResolver.
-            $validator = $this->objectManager->get(ConjunctionValidator::class);
+            $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
 
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
                 /** @var ValidatorInterface $validatorInstance */
-                $validatorInstance = $this->objectManager->get(
+                $validatorInstance = GeneralUtility::makeInstance(
                     $validatorDefinition['className'],
                     $validatorDefinition['options']
                 );
@@ -449,7 +449,7 @@ abstract class ActionController implements ControllerInterface
         $this->request = $request;
         // @deprecated since v11, will be removed in v12.
         $this->request->setDispatched(true);
-        $this->uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->uriBuilder->setRequest($request);
         $this->actionMethodName = $this->resolveActionMethodName();
         $this->initializeActionMethodArguments();
@@ -621,7 +621,7 @@ abstract class ActionController implements ControllerInterface
             }
         }
         if (!isset($view)) {
-            $view = $this->objectManager->get(NotFoundView::class);
+            $view = GeneralUtility::makeInstance(NotFoundView::class);
             $view->assign('errorMessage', 'No template was found. View could not be resolved for action "'
                 . $this->request->getControllerActionName() . '" in class "' . $this->request->getControllerObjectName() . '"');
         }
@@ -878,14 +878,14 @@ abstract class ActionController implements ControllerInterface
     /**
      * Initialize the controller context
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext ControllerContext to be passed to the view
+     * @return ControllerContext ControllerContext to be passed to the view
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     protected function buildControllerContext()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
-        $controllerContext = $this->objectManager->get(ControllerContext::class);
+        /** @var ControllerContext $controllerContext */
+        $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
         $controllerContext->setRequest($this->request);
         if ($this->arguments !== null) {
             $controllerContext->setArguments($this->arguments);

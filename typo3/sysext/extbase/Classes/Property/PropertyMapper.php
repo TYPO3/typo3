@@ -15,11 +15,13 @@
 
 namespace TYPO3\CMS\Extbase\Property;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -35,15 +37,8 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class PropertyMapper implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
-     */
-    protected $configurationBuilder;
+    protected ContainerInterface $container;
+    protected PropertyMappingConfigurationBuilder $configurationBuilder;
 
     /**
      * A multi-dimensional array which stores the Type Converters available in the system.
@@ -64,21 +59,11 @@ class PropertyMapper implements SingletonInterface
      */
     protected $messages;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $configurationBuilder
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function injectConfigurationBuilder(PropertyMappingConfigurationBuilder $configurationBuilder)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        PropertyMappingConfigurationBuilder $configurationBuilder
+    ) {
+        $this->container = $container;
         $this->configurationBuilder = $configurationBuilder;
     }
 
@@ -93,7 +78,13 @@ class PropertyMapper implements SingletonInterface
     {
         $this->resetMessages();
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] as $typeConverterClassName) {
-            $typeConverter = $this->objectManager->get($typeConverterClassName);
+            if ($this->container->has($typeConverterClassName)) {
+                $typeConverter = $this->container->get($typeConverterClassName);
+            } else {
+                // @deprecated since v11, will be removed in v12.
+                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+                $typeConverter = $objectManager->get($typeConverterClassName);
+            }
             foreach ($typeConverter->getSupportedSourceTypes() as $supportedSourceType) {
                 if (isset($this->typeConverters[$supportedSourceType][$typeConverter->getSupportedTargetType()][$typeConverter->getPriority()])) {
                     throw new DuplicateTypeConverterException('There exist at least two converters which handle the conversion from "' . $supportedSourceType . '" to "' . $typeConverter->getSupportedTargetType() . '" with priority "' . $typeConverter->getPriority() . '": ' . get_class($this->typeConverters[$supportedSourceType][$typeConverter->getSupportedTargetType()][$typeConverter->getPriority()]) . ' and ' . get_class($typeConverter), 1297951378);

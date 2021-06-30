@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -71,7 +72,7 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
             throw new Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . (is_object($object) ? get_class($object) : 'null'), 1342895975);
         }
         /** @var \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder $subject */
-        $subject = $this->objectManager->get($targetType);
+        $subject = GeneralUtility::makeInstance($targetType);
         $subject->setOriginalResource($object);
         return $subject;
     }

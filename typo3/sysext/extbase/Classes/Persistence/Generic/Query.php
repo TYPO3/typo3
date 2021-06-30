@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
+use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -32,8 +34,11 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * The Query class used to run queries against the database
+ *
+ * @todo v12: Drop ForwardCompatibleQueryInterface when merged into QueryInterface
+ * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
  */
-class Query implements QueryInterface
+class Query implements QueryInterface, ForwardCompatibleQueryInterface
 {
     /**
      * An inner join.
@@ -60,25 +65,10 @@ class Query implements QueryInterface
      */
     protected $type;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    protected $dataMapFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     */
-    protected $persistenceManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-     */
-    protected $qomFactory;
+    protected DataMapFactory $dataMapFactory;
+    protected PersistenceManagerInterface $persistenceManager;
+    protected QueryObjectModelFactory $qomFactory;
+    protected ContainerInterface $container;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
@@ -123,44 +113,19 @@ class Query implements QueryInterface
      */
     protected $parentQuery;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     */
-    public function injectDataMapFactory(DataMapFactory $dataMapFactory)
-    {
+    public function __construct(
+        DataMapFactory $dataMapFactory,
+        PersistenceManagerInterface $persistenceManager,
+        QueryObjectModelFactory $qomFactory,
+        ContainerInterface $container
+    ) {
         $this->dataMapFactory = $dataMapFactory;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
-    {
         $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
-     */
-    public function injectQomFactory(QueryObjectModelFactory $qomFactory)
-    {
         $this->qomFactory = $qomFactory;
+        $this->container = $container;
     }
 
-    /**
-     * Constructs a query object working on the given class name
-     *
-     * @param string $type
-     */
-    public function __construct($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
@@ -260,14 +225,25 @@ class Query implements QueryInterface
      * Executes the query against the database and returns the result
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
+     * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
      */
     public function execute($returnRawQueryResult = false)
     {
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
-        return $this->objectManager->get(QueryResultInterface::class, $this);
+        if ($this->container->has(QueryResultInterface::class)) {
+            /** @var QueryResultInterface $queryResult */
+            $queryResult = $this->container->get(QueryResultInterface::class);
+            if ($queryResult instanceof ForwardCompatibleQueryResultInterface) {
+                $queryResult->setQuery($this);
+                return $queryResult;
+            }
+        }
+        // @deprecated since v11, will be removed in v12. Fallback to ObjectManager, drop together with ForwardCompatibleQueryResultInterface.
+        /** @var QueryResultInterface $queryResult */
+        $queryResult = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryResultInterface::class, $this);
+        return $queryResult;
     }
 
     /**
@@ -619,10 +595,9 @@ class Query implements QueryInterface
      */
     public function __wakeup()
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->persistenceManager = $this->objectManager->get(PersistenceManagerInterface::class);
-        $this->dataMapFactory = $this->objectManager->get(DataMapFactory::class);
-        $this->qomFactory = $this->objectManager->get(QueryObjectModelFactory::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
+        $this->dataMapFactory = GeneralUtility::makeInstance(DataMapFactory::class);
+        $this->qomFactory = GeneralUtility::makeInstance(QueryObjectModelFactory::class);
     }
 
     /**

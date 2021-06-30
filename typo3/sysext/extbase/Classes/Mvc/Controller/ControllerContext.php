@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
@@ -38,7 +37,7 @@ class ControllerContext
     protected $arguments;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     * @var UriBuilder
      */
     protected $uriBuilder;
 
@@ -114,7 +113,7 @@ class ControllerContext
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
+     * @param UriBuilder $uriBuilder
      */
     public function setUriBuilder(UriBuilder $uriBuilder)
     {
@@ -122,7 +121,7 @@ class ControllerContext
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     * @return UriBuilder
      * @deprecated since v11, will be removed in v12
      */
     public function getUriBuilder()
@@ -130,7 +129,7 @@ class ControllerContext
         // todo: trigger an error as soon as this whole object can be deprecated
 
         if (!$this->uriBuilder) {
-            $this->uriBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(UriBuilder::class);
+            $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             if ($this->request) {
                 $this->uriBuilder->setRequest($this->request);
             }

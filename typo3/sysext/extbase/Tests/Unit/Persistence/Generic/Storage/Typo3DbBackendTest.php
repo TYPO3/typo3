@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -30,10 +31,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -62,6 +66,7 @@ class Typo3DbBackendTest extends UnitTestCase
     /**
      * @test
      * @dataProvider uidOfAlreadyPersistedValueObjectIsDeterminedCorrectlyDataProvider
+     * @todo: This mocks WAY too much - drop or create functional to be useful
      */
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(bool $isFrontendEnvironment)
     {
@@ -133,6 +138,7 @@ class Typo3DbBackendTest extends UnitTestCase
 
     /**
      * @test
+     * @todo: This mocks WAY too much - drop or create functional to be useful
      */
     public function overlayLanguageAndWorkspaceChangesUidIfInPreview()
     {
@@ -164,7 +170,8 @@ class Typo3DbBackendTest extends UnitTestCase
             ->setMethods(['getWorkspaceVersionOfRecord'])
             ->setConstructorArgs([$context])
             ->getMock();
-        $query = new Query('random');
+        $this->container = $this->createMock(ContainerInterface::class);
+        $query = new Query($this->createMock(DataMapFactory::class), $this->createMock(PersistenceManagerInterface::class), $this->createMock(QueryObjectModelFactory::class), $this->container);
         $query->setQuerySettings($mockQuerySettings);
         $pageRepositoryMock->expects(self::once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->willReturn($workspaceVersion);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())

@@ -271,6 +271,13 @@ interface QueryInterface
     public function greaterThanOrEqual($propertyName, $operand);
 
     /**
+     * Set the type this query cares for.
+     *
+     * @todo v12: Enable and drop ForwardCompatibleQueryInterface
+     */
+    // public function setType(string $type): void;
+
+    /**
      * Returns the type this query cares for.
      *
      * @return string

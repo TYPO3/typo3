@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Fixture\Entity;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
@@ -178,7 +179,8 @@ class CollectionValidatorTest extends UnitTestCase
         $lazyObjectStorage = new LazyObjectStorage(
             $parentObject,
             'someProperty',
-            ['someNotEmptyValue']
+            ['someNotEmptyValue'],
+            $this->createMock(DataMapper::class)
         );
         // only in this test case we want to mock the isValid method
         $validator = $this->getValidator(['elementType' => $elementType], ['isValid']);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException;
@@ -60,8 +61,11 @@ class ObjectConverter extends AbstractTypeConverter
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\Container\Container
+     * @deprecated since v11, will be removed in v12.
      */
     protected $objectContainer;
+
+    protected ContainerInterface $container;
 
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -70,6 +74,7 @@ class ObjectConverter extends AbstractTypeConverter
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer
+     * @deprecated since v11, will be removed in v12.
      */
     public function injectObjectContainer(Container $objectContainer): void
     {
@@ -82,6 +87,11 @@ class ObjectConverter extends AbstractTypeConverter
     public function injectReflectionService(ReflectionService $reflectionService): void
     {
         $this->reflectionService = $reflectionService;
+    }
+
+    public function injectContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -129,6 +139,7 @@ class ObjectConverter extends AbstractTypeConverter
             return $configuredTargetType;
         }
 
+        // @deprecated since v11, will be removed in v12: ContainerInterface resolves class names. v12: drop next line.
         $specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
         $classSchema = $this->reflectionService->getClassSchema($specificTargetType);
 
@@ -241,6 +252,11 @@ class ObjectConverter extends AbstractTypeConverter
      */
     protected function buildObject(array &$possibleConstructorArgumentValues, string $objectType): object
     {
+        if (empty($possibleConstructorArgumentValues) && $this->container->has($objectType)) {
+            return $this->container->get($objectType);
+        }
+
+        // @deprecated since v11, will be removed in v12: ContainerInterface resolves class names. v12: Drop everything below.
         $specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
         $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
 
@@ -257,8 +273,10 @@ class ObjectConverter extends AbstractTypeConverter
                     throw new InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
                 }
             }
+            // @deprecated since v11, will be removed in v12
             return $this->objectManager->get(...[$objectType, ...$constructorArguments]);
         }
+        // @deprecated since v11, will be removed in v12
         return $this->objectManager->get($objectType);
     }
 }

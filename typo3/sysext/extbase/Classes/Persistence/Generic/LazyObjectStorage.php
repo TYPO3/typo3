@@ -15,7 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use Symfony\Component\VarDumper\Cloner\Data;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -40,10 +41,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      */
     private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
-    /**
-     * @var DataMapper|null
-     */
-    protected $dataMapper;
+    protected DataMapper $dataMapper;
 
     /**
      * The object this property is contained in.
@@ -72,19 +70,6 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     protected $isInitialized = false;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * Returns the state of the initialization
      *
      * @return bool
@@ -108,17 +93,11 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
         reset($this->storage);
-        $this->dataMapper = $dataMapper;
-    }
-
-    /**
-     * Object initialization called when object is created with ObjectManager, after constructor
-     */
-    public function initializeObject()
-    {
-        if (!$this->dataMapper) {
-            $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        if ($dataMapper === null) {
+            $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         }
+        /** @var DataMapper $dataMapper */
+        $this->dataMapper = $dataMapper;
     }
 
     /**

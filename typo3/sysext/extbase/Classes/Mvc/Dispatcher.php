@@ -130,6 +130,7 @@ class Dispatcher implements SingletonInterface
         if ($this->container->has($controllerObjectName)) {
             $controller = $this->container->get($controllerObjectName);
         } else {
+            // @deprecated since v11, will be removed in v12.
             $controller = $this->objectManager->get($controllerObjectName);
         }
         if (!$controller instanceof ControllerInterface) {

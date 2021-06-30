@@ -367,7 +367,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings()
     {
-        $this->mockQuery = new Query('foo');
+        $this->mockQuery = $this->createMock(Query::class);
         $mockDefaultQuerySettings = $this->createMock(QuerySettingsInterface::class);
         $this->repository->setDefaultQuerySettings($mockDefaultQuerySettings);
         $query = $this->repository->createQuery();

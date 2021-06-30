@@ -16,8 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -25,72 +24,39 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * A lazy result list that is returned by Query::execute()
+ *
+ * @todo v12: Drop ForwardCompatibleQueryResultInterface when merged into QueryResultInterface
+ * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
  */
-class QueryResult implements QueryResultInterface
+class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-     */
-    protected $dataMapper;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     */
-    protected $persistenceManager;
+    protected DataMapper $dataMapper;
+    protected PersistenceManagerInterface $persistenceManager;
 
     /**
      * @var int|null
      */
     protected $numberOfResults;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\QueryInterface
-     */
-    protected $query;
+    protected ?QueryInterface $query = null;
 
     /**
      * @var array
      */
     protected $queryResult;
 
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-     */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
-    {
+    public function __construct(
+        DataMapper $dataMapper,
+        PersistenceManagerInterface $persistenceManager
+    ) {
+        $this->dataMapper = $dataMapper;
         $this->persistenceManager = $persistenceManager;
     }
 
-    /**
-     * Constructor
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-     */
-    public function __construct(QueryInterface $query)
+    public function setQuery(QueryInterface $query): void
     {
         $this->query = $query;
-    }
-
-    /**
-     * Object initialization called when object is created with ObjectManager, after constructor
-     */
-    public function initializeObject()
-    {
-        $this->dataMapper = $this->objectManager->get(DataMapper::class);
-        $this->dataMapper->setQuery($this->query);
+        $this->dataMapper->setQuery($query);
     }
 
     /**
@@ -106,7 +72,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Returns a clone of the query object
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @return QueryInterface
      */
     public function getQuery()
     {
@@ -264,15 +230,14 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * Ensures that the objectManager, persistenceManager and dataMapper are back when loading the QueryResult
+     * Ensures that the persistenceManager and dataMapper are back when loading the QueryResult
      * from the cache
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __wakeup()
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->persistenceManager = $objectManager->get(PersistenceManagerInterface::class);
-        $this->dataMapper = $objectManager->get(DataMapper::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
+        $this->dataMapper = GeneralUtility::makeInstance(DataMapper::class);
     }
 
     /**

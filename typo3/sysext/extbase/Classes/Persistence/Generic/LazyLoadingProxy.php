@@ -15,9 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
 /**
@@ -27,10 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
  */
 class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {
-    /**
-     * @var DataMapper|null
-     */
-    protected $dataMapper;
+    protected DataMapper $dataMapper;
 
     /**
      * The object this property is contained in.
@@ -54,19 +51,6 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     private $fieldValue;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
      * Constructs this proxy instance.
      *
      * @param DomainObjectInterface $parentObject The object instance this proxy is part of
@@ -79,17 +63,11 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
-        $this->dataMapper = $dataMapper;
-    }
-
-    /**
-     * Object initialization called when object is created with ObjectManager, after constructor
-     */
-    public function initializeObject()
-    {
-        if (!$this->dataMapper) {
-            $this->dataMapper = $this->objectManager->get(DataMapper::class);
+        if ($dataMapper === null) {
+            $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         }
+        /** @var DataMapper $dataMapper */
+        $this->dataMapper = $dataMapper;
     }
 
     /**

@@ -55,6 +55,7 @@ class DebuggerUtility
     protected static $blacklistedClassNames = [
         'PHPUnit_Framework_MockObject_InvocationMocker',
         ReflectionService::class,
+        // @deprecated since v11, will be removed in v12.
         ObjectManager::class,
         DataMapper::class,
         PersistenceManager::class,

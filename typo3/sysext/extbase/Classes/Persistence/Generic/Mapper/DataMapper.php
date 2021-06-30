@@ -48,56 +48,19 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class DataMapper
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-     */
-    protected $qomFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-     */
-    protected $persistenceSession;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
-     */
-    protected $dataMapFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-     */
-    protected $queryFactory;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected ReflectionService $reflectionService;
+    protected QueryObjectModelFactory $qomFactory;
+    protected Session $persistenceSession;
+    protected DataMapFactory $dataMapFactory;
+    protected QueryFactoryInterface $queryFactory;
+    protected ObjectManagerInterface $objectManager;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var QueryInterface|null
      */
     protected $query;
 
-    /**
-     * DataMapper constructor.
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ReflectionService $reflectionService,
         QueryObjectModelFactory $qomFactory,
@@ -112,6 +75,7 @@ class DataMapper
         $this->persistenceSession = $persistenceSession;
         $this->dataMapFactory = $dataMapFactory;
         $this->queryFactory = $queryFactory;
+        // @deprecated since v11, will be removed in v12.
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -367,12 +331,12 @@ class DataMapper
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
         if ($enableLazyLoading === true && $property->isLazy()) {
             if ($property->getType() === ObjectStorage::class) {
-                $result = $this->objectManager->get(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
+                $result = GeneralUtility::makeInstance(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } else {
                 if (empty($fieldValue)) {
                     $result = null;
                 } else {
-                    $result = $this->objectManager->get(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
+                    $result = GeneralUtility::makeInstance(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
                 }
             }
         } else {

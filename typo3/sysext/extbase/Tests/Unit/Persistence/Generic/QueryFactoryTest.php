@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
@@ -42,9 +44,9 @@ class QueryFactoryTest extends UnitTestCase
     protected $queryFactory;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Psr\Container\ContainerInterface
      */
-    protected $objectManager;
+    protected $container;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory|\PHPUnit\Framework\MockObject\MockObject
@@ -59,8 +61,8 @@ class QueryFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject $objectManager */
-        $this->objectManager = $this->createMock(ObjectManager::class);
+
+        $this->container = $this->createMock(ContainerInterface::class);
 
         $this->dataMap = $this->getMockBuilder(DataMap::class)
             ->setMethods(['getIsStatic', 'getRootLevel'])
@@ -74,9 +76,9 @@ class QueryFactoryTest extends UnitTestCase
         $this->dataMapFactory->expects(self::any())->method('buildDataMap')->willReturn($this->dataMap);
 
         $this->queryFactory = new QueryFactory(
-            $this->objectManager,
             $this->createMock(ConfigurationManagerInterface::class),
-            $this->dataMapFactory
+            $this->dataMapFactory,
+            $this->container
         );
     }
 
@@ -103,14 +105,14 @@ class QueryFactoryTest extends UnitTestCase
         $this->dataMap->expects(self::any())->method('getIsStatic')->willReturn($static);
         $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);
 
-        $query = $this->createMock(QueryInterface::class);
+        $query = $this->createMock(ForwardCompatibleQueryInterface::class);
         $querySettings = new Typo3QuerySettings(
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
-        $this->objectManager->expects(self::exactly(2))->method('get')
-            ->withConsecutive([QueryInterface::class], [QuerySettingsInterface::class])
-            ->willReturnOnConsecutiveCalls($query, $querySettings);
+        GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
+        $this->container->expects(self::any())->method('has')->willReturn(true);
+        $this->container->expects(self::exactly(1))->method('get')->with(QueryInterface::class)->willReturn($query);
 
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
         $this->queryFactory->create($this->className);
