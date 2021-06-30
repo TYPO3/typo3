@@ -33,6 +33,7 @@
 		"doctrine/lexer": "^1.0",
 		"egulias/email-validator": "^2.1",
 		"guzzlehttp/guzzle": "^6.3.0",
+		"guzzlehttp/psr7": "^1.4.0",
 		"nikic/php-parser": "^4.10.4",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
