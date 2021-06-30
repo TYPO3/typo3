@@ -42,6 +42,7 @@ class Locales implements SingletonInterface
         'ca' => 'Catalan',
         'ch' => 'Chinese (Simple)',
         'cs' => 'Czech',
+        'cy' => 'Welsh',
         'da' => 'Danish',
         'de' => 'German',
         'el' => 'Greek',
