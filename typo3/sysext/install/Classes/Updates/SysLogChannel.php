@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\StringType;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\SysLog\Type;
@@ -66,6 +70,14 @@ END;
         foreach (Type::channelMap() as $type => $channel) {
             $statement->executeQuery([$channel, $type]);
         }
+
+        // Ensure the level field is a varchar, otherwise we are in trouble when logging into TYPO3 Backend.
+        $schema = $this->sysLogTable->getSchemaManager();
+        $schema->alterTable(new TableDiff(
+            'sys_log',
+            [],
+            [new ColumnDiff('level', new Column('level', new StringType(), ['length' => 10, 'default' => 'info', 'notnull' => true]))],
+        ));
 
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET level = ? WHERE type = ?');
         foreach (Type::levelMap() as $type => $level) {
