@@ -639,6 +639,7 @@ class DatabaseRecordList
                 : '<span title="' . htmlspecialchars($lang->getLL('expandView')) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL)->render() . '</span>';
             $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
         }
+        $tableActions = '';
         if ($onlyShowRecordsInSingleTableMode) {
             $tableHeader = BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
         } else {
@@ -647,7 +648,7 @@ class DatabaseRecordList
             if (!$this->table) {
                 $title = sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle);
                 $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                $tableHeader .= '<button type="button"'
+                $tableActions .= '<button type="button"'
                     . ' class="btn btn-default btn-sm pull-right t3js-toggle-recordlist"'
                     . ' title="' . $title . '"'
                     . ' aria-label="' . $title . '"'
@@ -659,9 +660,9 @@ class DatabaseRecordList
                     . '</button>';
             }
             // Show the select box
-            $tableHeader .= $this->columnSelector($table);
+            $tableActions .= $this->columnSelector($table);
             // Create the CSV Export button
-            $tableHeader .= $this->createExportButtonForTable($table, $totalItems);
+            $tableActions .= $this->createExportButtonForTable($table, $totalItems);
         }
         // Render table rows only if in multi table view or if in single table view
         $rowOutput = '';
@@ -762,15 +763,28 @@ class DatabaseRecordList
             $columnsOutput = $this->renderListHeader($table, $currentIdList);
         }
 
+        // Check for the add button
+        $addButton = $this->createAddButtonForTable($table);
+        if ($addButton) {
+            $tableActions = '<div class="btn-group me-2">' . $addButton . '</div>' . $tableActions;
+        }
+
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
-            <div class="recordlist mb-4 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
+            <div class="recordlist mb-5 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
                 <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
                     <input type="hidden" name="cmd_table" />
                     <input type="hidden" name="cmd" />
-                    <div class="recordlist-heading">
-                    ' . $tableHeader . '
+                    <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center">
+                        <div class="col">
+                            <span class="text-truncate">
+                            ' . $tableHeader . '
+                            </span>
+                        </div>
+                        <div class="col-auto">
+                         ' . $tableActions . '
+                        </div>
                     </div>
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
                         <div class="table-fit mb-0">
@@ -782,6 +796,70 @@ class DatabaseRecordList
                 </form>
             </div>
         ';
+    }
+
+    /**
+     * If new records can be created on this page, create a link.
+     *
+     * @param string $table
+     * @return string|null
+     */
+    protected function createAddButtonForTable(string $table): ?string
+    {
+        if (!$this->isEditable($table)) {
+            return null;
+        }
+        if (!$this->showNewRecLink($table)) {
+            return null;
+        }
+        $permsAdditional = ($table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT);
+        if (!$this->calcPerms->isGranted($permsAdditional)) {
+            return null;
+        }
+
+        $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
+        $additionalAttributes = '';
+        $additionalCssClasses = '';
+        $iconIdentifier = 'actions-add';
+        switch ($table) {
+            case 'tt_content':
+                // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
+                $newContentElementWizard = $tsConfig['mod.']['newContentElementWizard.']['override']
+                    ?? 'new_content_element_wizard';
+                $url = (string)$this->uriBuilder->buildUriFromRoute(
+                    $newContentElementWizard,
+                    [
+                        'id' => $this->id,
+                        'returnUrl' => $this->listURL(),
+                    ]
+                );
+                $additionalCssClasses = 't3js-toggle-new-content-element-wizard disabled';
+                break;
+            case 'pages':
+                $iconIdentifier = 'actions-page-new';
+                $additionalAttributes = 'data-new="page"';
+                $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()];
+                $url = (string)$this->uriBuilder->buildUriFromRoute('db_new', $parameters);
+                break;
+            default:
+                $params = [
+                    'edit' => [
+                        $table => [
+                            $this->id => 'new'
+                        ]
+                    ],
+                    'returnUrl' => $this->listURL()
+                ];
+                $url = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
+        }
+        return '<a class="btn btn-default btn-sm ' . $additionalCssClasses . '"'
+            . ($additionalAttributes ? ' ' . $additionalAttributes : '')
+            . ' href="' . htmlspecialchars($url) . '"'
+            . ' title="' . $title . '"'
+            . ' aria-label="' . $title . '">'
+            . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render()
+            . '&nbsp;' . $title
+            . '</a>';
     }
 
     protected function createExportButtonForTable(string $table, int $totalItems): string
@@ -1152,59 +1230,6 @@ class DatabaseRecordList
                 case '_CONTROL_':
                     // Control panel:
                     if ($this->isEditable($table)) {
-                        // If new records can be created on this page, add links:
-                        $permsAdditional = ($table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT);
-                        if ($this->calcPerms->isGranted($permsAdditional) && $this->showNewRecLink($table)) {
-                            $spriteIcon = $table === 'pages'
-                                ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
-                                : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL);
-                            if ($table === 'tt_content') {
-                                // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-                                $newContentElementWizard = $tsConfig['mod.']['newContentElementWizard.']['override']
-                                    ?? 'new_content_element_wizard';
-                                $url = (string)$this->uriBuilder->buildUriFromRoute(
-                                    $newContentElementWizard,
-                                    [
-                                        'id' => $this->id,
-                                        'returnUrl' => $this->listURL(),
-                                    ]
-                                );
-                                $title = htmlspecialchars($lang->getLL('new'));
-                                $icon = '<a class="btn btn-default t3js-toggle-new-content-element-wizard disabled"'
-                                    . ' href="' . htmlspecialchars($url) . '" '
-                                    . ' title="' . $title . '"'
-                                    . ' aria-label="' . $title . '">'
-                                    . $spriteIcon->render()
-                                    . '</a>';
-                            } elseif ($table === 'pages') {
-                                $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()];
-                                $href = (string)$this->uriBuilder->buildUriFromRoute('db_new', $parameters);
-                                $icon = '<a data-new="page" class="btn btn-default"'
-                                    . ' href="' . htmlspecialchars($href) . '"'
-                                    . ' aria-label="' . htmlspecialchars($lang->getLL('new')) . '"'
-                                    . ' title="' . htmlspecialchars($lang->getLL('new')) . '">'
-                                    . $spriteIcon->render() . '</a>';
-                            } else {
-                                $params = [
-                                    'edit' => [
-                                        $table => [
-                                            $this->id => 'new'
-                                        ]
-                                    ]
-                                ];
-                                if ($table === 'pages') {
-                                    $params['overrideVals']['pages']['doktype'] = (int)$this->pageRow['doktype'];
-                                }
-                                $params['returnUrl'] = $this->listURL();
-                                $newLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
-                                $icon = '<a class="btn btn-default"'
-                                    . ' href="' . htmlspecialchars($newLink) . '"'
-                                    . ' title="' . htmlspecialchars($lang->getLL('new')) . '"'
-                                    . ' aria-label="' . htmlspecialchars($lang->getLL('new')) . '">'
-                                    . $spriteIcon->render()
-                                    . '</a>';
-                            }
-                        }
                         // If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
                         if ($permsEdit && $this->table && is_array($currentIdList)) {
                             $entityIdentifiers = 'entityIdentifiers';
