@@ -160,9 +160,7 @@ class Dispatcher implements SingletonInterface
             $request->setControllerExtensionName($forwardResponse->getExtensionName());
         }
 
-        if ($forwardResponse->getArguments() !== []) {
-            $request->setArguments($forwardResponse->getArguments());
-        }
+        $request->setArguments($forwardResponse->getArguments());
 
         $request->setOriginalRequest($currentRequest);
         $request->setOriginalRequestMappingResults($forwardResponse->getArgumentsValidationResult());
