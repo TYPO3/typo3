@@ -221,37 +221,37 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             'edit',
             'totp',
             false,
-            'Selected MFA provider has to be active to perfom this action!'
+            'Selected MFA provider has to be active to perform this action!'
         ];
         yield 'Inactive provider on update' => [
             'save',
             'totp',
             false,
-            'Selected MFA provider has to be active to perfom this action!'
+            'Selected MFA provider has to be active to perform this action!'
         ];
         yield 'Inactive provider on deactivate' => [
             'deactivate',
             'totp',
             false,
-            'Selected MFA provider has to be active to perfom this action!'
+            'Selected MFA provider has to be active to perform this action!'
         ];
         yield 'Inactive provider on unlock' => [
             'unlock',
             'totp',
             false,
-            'Selected MFA provider has to be active to perfom this action!'
+            'Selected MFA provider has to be active to perform this action!'
         ];
         yield 'Active provider on setup' => [
             'setup',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perfom this action!'
+            'Selected MFA provider has to be inactive to perform this action!'
         ];
         yield 'Active provider on activate' => [
             'activate',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perfom this action!'
+            'Selected MFA provider has to be inactive to perform this action!'
         ];
     }
 

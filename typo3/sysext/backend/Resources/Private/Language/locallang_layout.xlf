@@ -368,7 +368,7 @@
 			</trans-unit>
 			<trans-unit id="localize.educate.translate" resname="localize.educate.translate" xml:space="preserve">
 				<source>Translating content will create a direct connection between the original language and the language you translate to.&lt;br&gt;
-					This means that moving and element or setting meta information like start- or endtime will be taken from the original content and you will not be able to set these values on a translated content element.&lt;br&gt;
+					This means that moving an element or setting meta information like start- or endtime will be taken from the original content and you will not be able to set these values on a translated content element.&lt;br&gt;
 					&lt;strong&gt;Use this when your workflow demands a strict translation workflow.&lt;/strong&gt;
 				</source>
 			</trans-unit>

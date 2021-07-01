@@ -85,7 +85,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
         );
 
         self::assertFalse($response['success']);
-        self::assertEquals('Your are not allowed to perfom this action', $response['message']);
+        self::assertEquals('Your are not allowed to perform this action', $response['message']);
     }
 
     /**

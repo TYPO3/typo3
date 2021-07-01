@@ -64,13 +64,13 @@
 				<source>Selected MFA provider was not found!</source>
 			</trans-unit>
 			<trans-unit id="providerNotActive" resname="providerNotActive">
-				<source>Selected MFA provider has to be active to perfom this action!</source>
+				<source>Selected MFA provider has to be active to perform this action!</source>
 			</trans-unit>
 			<trans-unit id="providerActive" resname="providerActive">
-				<source>Selected MFA provider has to be inactive to perfom this action!</source>
+				<source>Selected MFA provider has to be inactive to perform this action!</source>
 			</trans-unit>
 			<trans-unit id="providerIsLocked" resname="providerNotFound">
-				<source>Selected MFA provider has to be unlocked to perfom this action!</source>
+				<source>Selected MFA provider has to be unlocked to perform this action!</source>
 			</trans-unit>
 			<trans-unit id="setup.instructions" resname="setup.instructions">
 				<source>Setup instructions</source>
@@ -157,7 +157,7 @@
 				<source>Invalid request could not be processed</source>
 			</trans-unit>
 			<trans-unit id="ajax.insufficientPermissions">
-				<source>Your are not allowed to perfom this action</source>
+				<source>Your are not allowed to perform this action</source>
 			</trans-unit>
 			<trans-unit id="ajax.deactivate.providersNotDeactivated">
 				<source>No provider has been deactivated</source>
