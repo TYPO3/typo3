@@ -107,6 +107,9 @@ class RecoveryService implements RecoveryServiceInterface
     public function sendRecoveryEmail(string $emailAddress): void
     {
         $hash = $this->recoveryConfiguration->getForgotHash();
+        // @todo: This repository method call should be moved to PasswordRecoveryController, since its
+        // @todo: unexpected that it happens here. Would also drop the dependency to FrontendUserRepository
+        // @todo: in this sendRecoveryEmail() method and the class.
         $this->userRepository->updateForgotHashForUserByEmail($emailAddress, GeneralUtility::hmac($hash));
         $userInformation = $this->userRepository->fetchUserInformationByEmail($emailAddress);
         $receiver = new Address($emailAddress, $this->getReceiverName($userInformation));

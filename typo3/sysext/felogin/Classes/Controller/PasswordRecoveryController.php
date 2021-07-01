@@ -71,12 +71,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
      *
      * @param string|null $userIdentifier
      *
+     * @return ResponseInterface|void
+     *
      * @throws StopActionException
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function recoveryAction(string $userIdentifier = null): void
+    public function recoveryAction(string $userIdentifier = null)
     {
         if (empty($userIdentifier)) {
-            return;
+            return $this->htmlResponse();
         }
 
         $email = $this->userRepository->findEmailByUsernameOrEmailOnPages(
@@ -122,34 +125,30 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $result = $this->request->getOriginalRequestMappingResults();
             $result->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
             $this->request->setOriginalRequestMappingResults($result);
+
             return (new ForwardResponse('recovery'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArgumentsValidationResult($result)
-            ;
+                ->withArgumentsValidationResult($result);
         }
     }
 
     /**
-     * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
-     * to recoveryAction() is made, without further information.
-     *
-     * @throws AspectNotFoundException
-     * @throws StopActionException
-     */
-    public function initializeShowChangePasswordAction()
-    {
-        return $this->validateIfHashHasExpired();
-    }
-
-    /**
-     * Show the change password form but only if a hash exists (from get parameters).
+     * Show the change password form if a valid hash is available.
      *
      * @param string $hash
+     * @return ResponseInterface
      */
-    public function showChangePasswordAction(string $hash): void
+    public function showChangePasswordAction(string $hash = ''): ResponseInterface
     {
+        // Validate the lifetime of the hash
+        if (($response = $this->validateIfHashHasExpired()) instanceof ResponseInterface) {
+            return $response;
+        }
+
         $this->view->assign('hash', $hash);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -160,10 +159,11 @@ class PasswordRecoveryController extends AbstractLoginFormController
      *
      * @throws NoSuchArgumentException
      * @throws StopActionException
+     * @todo: Refactor all password checks to validators
      */
-    public function initializeChangePasswordAction()
+    public function validateHashAndPasswords()
     {
-        // Re-validate the lifetime of the hash again (just as showChangePassword action)
+        // Validate the lifetime of the hash
         if (($response = $this->validateIfHashHasExpired()) instanceof ResponseInterface) {
             return $response;
         }
@@ -179,10 +179,12 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 1554971665
             ));
             $this->request->setOriginalRequestMappingResults($originalResult);
+
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArguments(['hash' => $this->request->getArgument('hash')]);
+                ->withArguments(['hash' => $this->request->getArgument('hash')])
+                ->withArgumentsValidationResult($originalResult);
         }
 
         $this->validateNewPassword($originalResult);
@@ -193,7 +195,8 @@ class PasswordRecoveryController extends AbstractLoginFormController
             return (new ForwardResponse('showChangePassword'))
                 ->withControllerName('PasswordRecovery')
                 ->withExtensionName('felogin')
-                ->withArguments(['hash' => $this->request->getArgument('hash')]);
+                ->withArguments(['hash' => $this->request->getArgument('hash')])
+                ->withArgumentsValidationResult($originalResult);
         }
     }
 
@@ -203,17 +206,27 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @param string $newPass
      * @param string $hash
      *
-     * @throws InvalidPasswordHashException
+     * @return ResponseInterface|string|ForwardResponse
+     *
      * @throws StopActionException
      * @throws AspectNotFoundException
+     * @throws InvalidPasswordHashException
      */
     public function changePasswordAction(string $newPass, string $hash)
     {
+        if (($response = $this->validateHashAndPasswords()) instanceof ResponseInterface) {
+            return $response;
+        }
+
         $hashedPassword = GeneralUtility::makeInstance(PasswordHashFactory::class)
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        if (($hashedPassword = $this->notifyPasswordChange($newPass, $hashedPassword, $hash)) instanceof ForwardResponse) {
+        if (($hashedPassword = $this->notifyPasswordChange(
+            $newPass,
+            $hashedPassword,
+            $hash
+        )) instanceof ForwardResponse) {
             return $hashedPassword;
         }
 
@@ -310,6 +323,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 ->withExtensionName('felogin')
                 ->withArguments(['hash' => $hash]);
         }
+
         return $hashedPassword;
     }
 
