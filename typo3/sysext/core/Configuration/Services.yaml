@@ -218,6 +218,9 @@ services:
     arguments: ['l10n']
 
   # Interface implementations
+  Psr\Container\ContainerInterface:
+    alias: service_container
+    public: true
   Psr\EventDispatcher\EventDispatcherInterface:
     alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
     public: true
