@@ -1,47 +1,61 @@
-<div class="pull-right dropdown me-2 p-0">
-    <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="selectcolumns-{tableIdentifier}" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-        <core:icon identifier="actions-options" size="small" />
-        <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns" />
-    </button>
-    <div class="dropdown-menu dropdown-menu-end pt-0 field-selector-dropdown" aria-labelledby="selectcolumns-{tableIdentifier}">
-        <div class="pt-2 pb-2 mb-2 row align-items-center border-bottom field-selector-header">
-            <div class="col">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input recordlist-select-allcolumns" id="select-allcolumns-{tableIdentifier}" {f:if(condition: allChecked, then: ' checked')} />
-                    <label class="form-check-label" for="select-allcolumns-{tableIdentifier}">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall" />
-                    </label>
-                </div>
-            </div>
-            <div class="col text-end">
-                <button type="submit" class="btn btn-primary">
-                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView" />
-                </button>
-            </div>
-        </div>
-        <f:for each="{checkboxes}" as="checkbox">
-            <div class="mb-2">
-                <div class="form-check">
+<form id="columnSelectorForm">
+
+    <div class="sticky-form-actions border-bottom t3js-record-column-selector-actions">
+        <button type="button" class="btn btn-default disabled" data-action="select-all">
+            <core:icon identifier="actions-check-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+        </button>
+        <button type="button" class="btn btn-default disabled" data-action="select-none">
+            <core:icon identifier="actions-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+        </button>
+        <button type="button" class="btn btn-default" data-action="select-toggle">
+            <core:icon identifier="actions-document-select"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+        </button>
+    </div>
+
+    <div class="row pt-5">
+        <f:for each="{columns}" as="column">
+            <div class="col-6">
+                <div class="mt-2 form-check form-check-type-icon-toggle {f:if(condition: column.disabled, then: 'disabled')}">
                     <input
                         type="checkbox"
-                        id="select-column-{tableIdentifier}-{checkbox.fieldName}"
-                        name="displayFields[{table}][]"
-                        class="form-check-input recordlist-select-column"
-                        value="{checkbox.fieldName}"
-                        {f:if(condition:'{checkbox.checked}', then:' checked')}
-                    {f:if(condition:'{checkbox.disabled}', then: 'disabled')}
+                        id="select-column-{table}-{column.name}"
+                        name="selectedColumns[]"
+                        class="form-check-input t3js-record-column-selector"
+                        value="{column.name}"
+                        {f:if(condition:'{column.selected}', then:' checked')}
+                        {f:if(condition:'{column.disabled}', then: 'disabled')}
                     />
-                    <f:if condition="{checkbox.disabled}">
-                        <input type="hidden" name="displayFields[{table}][]" value="{checkbox.fieldName}" />
-                    </f:if>
-                    <label class="form-check-label" for="select-column-{tableIdentifier}-{checkbox.fieldName}">
-                        <f:if condition="{checkbox.fieldLabel}">
-                            <span class="me-2"><f:translate key="{checkbox.fieldLabel}">{checkbox.fieldLabel}</f:translate></span>
-                        </f:if>
-                        <span class="text-muted text-monospace">[{checkbox.fieldName}]</span>
+                    <label class="form-check-label" for="select-column-{table}-{column.name}">
+                        <span class="form-check-label-icon">
+                            <span class="form-check-label-icon-checked">
+                                <core:icon identifier="actions-eye" size="small" alternativeMarkupIdentifier="inline" />
+                            </span>
+                            <span class="form-check-label-icon-unchecked">
+                                <core:icon identifier="actions-eye" size="small" alternativeMarkupIdentifier="inline" />
+                            </span>
+                        </span>
+                        <span class="form-check-label-text">
+                            <f:if condition="{column.pseudo} && {column.label}">
+                                <f:then>
+                                    <span><i>[{column.label}]</i></span>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{column.label}">
+                                        <span>{column.label}</span>
+                                    </f:if>
+                                    <span class="text-muted text-monospace">[{column.name}]</span>
+                                </f:else>
+                            </f:if>
+                        </span>
                     </label>
                 </div>
+                <f:if condition="{column.disabled}">
+                    <input type="hidden" name="selectedColumns[]" value="{column.name}" />
+                </f:if>
             </div>
         </f:for>
     </div>
-</div>
+
+    <input type="hidden" name="table" value="{table}">
+
+</form>

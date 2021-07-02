@@ -554,3 +554,26 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
         }
     }
 }
+
+/**
+ * A fixed form actions menu for the modal-body
+ */
+.sticky-form-actions {
+    position: fixed;
+    z-index: 1;
+    margin-left: -1rem; // revert modal-body padding
+    margin-top: -1rem; // revert modal-body padding
+    padding: 0.625rem 1rem; // modal-header / modal-footer like padding
+    background: $white;
+
+    a,
+    button {
+        margin: 0.25rem 0.25rem 0.25rem 0;
+    }
+}
+
+.modal-size-medium {
+    .sticky-form-actions {
+        width: 800px;
+    }
+}

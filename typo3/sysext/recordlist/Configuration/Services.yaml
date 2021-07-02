@@ -13,6 +13,9 @@ services:
   TYPO3\CMS\Recordlist\Controller\RecordExportController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Recordlist\Controller\ColumnSelectorController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Recordlist\Controller\ElementBrowserController:
     tags: ['backend.controller']
 

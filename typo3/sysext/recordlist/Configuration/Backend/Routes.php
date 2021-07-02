@@ -9,7 +9,7 @@ return [
         'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserController::class . '::mainAction'
     ],
     'record_export' => [
-        'path' => '/records/export',
+        'path' => '/record/export',
         'methods' => ['POST'],
         'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::handleExportRequest'
     ],

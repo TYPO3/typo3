@@ -6,8 +6,17 @@
 			<trans-unit id="showColumns" resname="showColumns">
 				<source>Show Columns</source>
 			</trans-unit>
+			<trans-unit id="showColumnsSelection" resname="showColumnsSelection">
+				<source>Show columns for %s</source>
+			</trans-unit>
 			<trans-unit id="updateColumnView" resname="updateColumnView">
 				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="updateColumnView.nothingUpdated" resname="updateColumnView.nothingUpdated">
+				<source>No columns were updated</source>
+			</trans-unit>
+			<trans-unit id="updateColumnView.error" resname="updateColumnView.error">
+				<source>Could not update columns</source>
 			</trans-unit>
 			<trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>

@@ -46,6 +46,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseDatabase');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/PageBrowser');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordExportButton');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
     }
 
     protected function initVariables()
@@ -196,7 +197,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $searchLevels
         );
 
-        $dbList->setDispFields($this->getRequest()->getParsedBody()['displayFields'] ?? null);
+        $dbList->setDispFields();
         $tableList = $dbList->generateList();
 
         $out .= $this->renderSearchBox($dbList, $searchWord, $searchLevels);

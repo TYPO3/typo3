@@ -317,6 +317,14 @@ class DatabaseRecordList
     public $CBnames = [];
 
     /**
+     * Whether the column selector should be displayed in the tables' header
+     *
+     * @var bool
+     * @internal
+     */
+    public bool $displayColumnSelector = true;
+
+    /**
      * [$tablename][$uid] = number of references to this record
      *
      * @var int[][]
@@ -1278,6 +1286,9 @@ class DatabaseRecordList
                             $sortLabel = $lang->sL($fieldTSConfig['label.'][$lang->lang]);
                         }
                         $sortLabel = htmlspecialchars($sortLabel);
+                    } elseif ($specialLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fCol)) {
+                        // Special label exists for this field (Probably a management field, e.g. sorting)
+                        $sortLabel = htmlspecialchars($specialLabel);
                     } else {
                         // No TCA field, only output the $fCol variable with square brackets []
                         $sortLabel = htmlspecialchars($fCol);
@@ -1991,93 +2002,59 @@ class DatabaseRecordList
     }
 
     /**
-     * Creates a checkbox list for selecting fields to display from a table:
+     * Creates a button, which triggers a modal for the column selection
      *
      * @param string $table Table name
-     * @return string HTML content with the selector check box (name: displayFields['.$table.'][])
+     * @return string HTML content with the button
      */
     protected function columnSelector(string $table): string
     {
-        // Table with the field selector
-        $lang = $this->getLanguageService();
-        // Load already selected fields, if any:
-        $selectedFields = (array)($this->setFields[$table] ?? []);
-        // Request fields from table:
-        $fields = $this->makeFieldList($table, false, true);
-        // Add pseudo "control" fields
-        $fields[] = '_PATH_';
-        $fields[] = '_REF_';
-        // Create a checkbox for each field:
-        $checkboxes = [];
-        $checkAllChecked = true;
-        $tsConfig = BackendUtility::getPagesTSconfig($this->id);
+        if ($this->displayColumnSelector === false) {
+            // Early return in case column selector is disabled
+            return '';
+        }
 
         $shouldRenderSelector = true;
         // See if it is disabled in general
-        if (empty($tsConfig['mod.']['web_list.']['displayColumnSelector'] ?? true)) {
-            $shouldRenderSelector = false;
+        if (isset($this->modTSconfig['displayColumnSelector'])) {
+            $shouldRenderSelector = (bool)$this->modTSconfig['displayColumnSelector'];
         }
         // Table override was explicitly set to false
-        if (isset($tsConfig['mod.']['web_list.']['table.'][$table . '.']['displayColumnSelector'])) {
-            if (empty($tsConfig['mod.']['web_list.']['table.'][$table . '.']['displayColumnSelector'])) {
-                $shouldRenderSelector = false;
-            } else {
-                $shouldRenderSelector = true;
-            }
+        if (isset($this->modTSconfig['table.'][$table . '.']['displayColumnSelector'])) {
+            $shouldRenderSelector = (bool)$this->modTSconfig['table.'][$table . '.']['displayColumnSelector'];
         }
+        // Do not render button if column selector is disabled
         if ($shouldRenderSelector === false) {
             return '';
         }
 
-        $tsConfigOfTable = is_array($tsConfig['TCEFORM.'][$table . '.'] ?? null) ? $tsConfig['TCEFORM.'][$table . '.'] : null;
-        foreach ($fields as $fieldName) {
-            // Hide field if hidden
-            if ($tsConfigOfTable && is_array($tsConfigOfTable[$fieldName . '.'] ?? null) && isset($tsConfigOfTable[$fieldName . '.']['disabled']) && (int)$tsConfigOfTable[$fieldName . '.']['disabled'] === 1) {
-                continue;
-            }
-            // Determine, if checkbox should be checked
-            if (($fieldName === $GLOBALS['TCA'][$table]['ctrl']['label'] ?? false) || in_array($fieldName, $selectedFields, true)) {
-                $checked = true;
-            } else {
-                $checkAllChecked = false;
-                $checked = false;
-            }
+        $lang = $this->getLanguageService();
+        $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
+        $columnSelectorUrl = $this->uriBuilder->buildUriFromRoute(
+            'ajax_record_show_columns_selector',
+            ['id' => $this->id, 'table' => $table]
+        );
+        $columnSelectorTitle = sprintf(
+            $lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumnsSelection'),
+            $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
+        );
 
-            // Field label
-            $fieldTSConfig = [];
-            $fieldLabel = '';
-            if (is_array($tsConfigOfTable[$fieldName . '.'] ?? null)) {
-                $fieldTSConfig = $tsConfigOfTable[$fieldName . '.'];
-            }
-            if (!empty($fieldTSConfig['label'])) {
-                $fieldLabel = $fieldTSConfig['label'];
-            }
-            if (!empty($fieldTSConfig['label.'][$lang->lang])) {
-                $fieldLabel = $fieldTSConfig['label.'][$lang->lang];
-            }
-
-            $fieldLabel = $fieldLabel ?: BackendUtility::getItemLabel($table, $fieldName);
-            $checkboxes[] = [
-                'fieldName' => $fieldName,
-                'checked' => $checked,
-                'disabled' => ($fieldName === $GLOBALS['TCA'][$table]['ctrl']['label']),
-                'fieldLabel' => $fieldLabel
-            ];
-        }
-
-        // Sort disabled fields to top
-        usort($checkboxes, function ($a, $b) {
-            return $b['disabled'] - $a['disabled'];
-        });
-
-        return $this->getFluidTemplateObject('ColumnSelector.html')
-            ->assignMultiple([
-                'table' => $table,
-                'tableIdentifier' => $this->showOnlyTranslatedRecords ? ($table . '_translated') : $table,
-                'allChecked' => $checkAllChecked,
-                'checkboxes' => $checkboxes
-            ])
-            ->render();
+        return '
+            <div class="pull-right me-2 p-0">
+                <typo3-recordlist-column-selector-button
+                    url="' . htmlspecialchars($columnSelectorUrl) . '"
+                    target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
+                    title="' . htmlspecialchars($columnSelectorTitle) . '"
+                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView')) . '"
+                    close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
+                    error="' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView.error')) . '"
+                >
+                    <button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($columnSelectorTitle) . '">' .
+                        $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' ' .
+                        htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns')) .
+                    '</button>
+                </typo3-recordlist-column-selector-button>
+            </div>';
     }
 
     /*********************************
@@ -2463,23 +2440,12 @@ class DatabaseRecordList
     }
 
     /**
-     * Setting the field names to display in extended list.
-     * Sets the internal variable $this->setFields
+     * Fetching the user defined fields to be displayed.
+     * Sets the internal variable $this->setFields.
      */
-    public function setDispFields($updatedFieldsToDisplay = null)
+    public function setDispFields(): void
     {
-        $backendUser = $this->getBackendUserAuthentication();
-        // Getting from session:
-        $dispFields = $backendUser->getModuleData('list/displayFields');
-        // If fields have been inputted, then set those as the value and push it to session variable:
-        if (is_array($updatedFieldsToDisplay) && $updatedFieldsToDisplay !== []) {
-            foreach ($updatedFieldsToDisplay as $table => $fields) {
-                $dispFields[$table] = $fields;
-                $backendUser->pushModuleData('list/displayFields', $dispFields);
-            }
-        }
-        // Setting result:
-        $this->setFields = $dispFields;
+        $this->setFields = $this->getBackendUserAuthentication()->getModuleData('list/displayFields');
     }
 
     /**

@@ -110,6 +110,7 @@ class RecordListController
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordExportButton');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
@@ -217,7 +218,7 @@ class RecordListController
             }
             // Initialize the listing object, dblist, for rendering the list:
             $dblist->start($this->id, $table, $pointer, $search_field, $search_levels);
-            $dblist->setDispFields($request->getParsedBody()['displayFields'] ?? null);
+            $dblist->setDispFields();
             // Render the list of tables:
             $tableOutput = $dblist->generateList();
 

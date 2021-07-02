@@ -19,16 +19,6 @@
     .pagination {
         display: inline-flex;
     }
-
-    .field-selector-dropdown {
-        overflow-y: auto;
-        max-height: 6 * (($line-height-base * $font-size-base) + 4px + (2 * $padding-base-horizontal) + 1px);
-    }
-
-    .field-selector-header {
-        background-color: $dropdown-bg;
-        z-index: 2;
-    }
 }
 
 div.typo3-newRecordLink,

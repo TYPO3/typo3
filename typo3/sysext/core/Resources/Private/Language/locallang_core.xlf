@@ -127,6 +127,33 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels._REF_" resname="labels._REF_">
 				<source>Ref</source>
 			</trans-unit>
+			<trans-unit id="labels.uid" resname="labels.uid">
+				<source>Unique ID</source>
+			</trans-unit>
+			<trans-unit id="labels.pid" resname="labels.pid">
+				<source>Parent page ID</source>
+			</trans-unit>
+			<trans-unit id="labels.tstamp" resname="labels.tstamp">
+				<source>Last changed</source>
+			</trans-unit>
+			<trans-unit id="labels.crdate" resname="labels.crdate">
+				<source>Creation date</source>
+			</trans-unit>
+			<trans-unit id="labels.cruser_id" resname="labels.cruser_id">
+				<source>Creator</source>
+			</trans-unit>
+			<trans-unit id="labels.sorting" resname="labels.sorting">
+				<source>Sorting</source>
+			</trans-unit>
+			<trans-unit id="labels.t3ver_state" resname="labels.t3ver_state">
+				<source>Workspace status</source>
+			</trans-unit>
+			<trans-unit id="labels.t3ver_wsid" resname="labels.t3ver_wsid">
+				<source>Workspace ID</source>
+			</trans-unit>
+			<trans-unit id="labels.t3ver_oid" resname="labels.t3ver_oid">
+				<source>Live record ID</source>
+			</trans-unit>
 			<trans-unit id="labels.setFields" resname="labels.setFields">
 				<source>Set fields</source>
 			</trans-unit>
@@ -282,6 +309,9 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.toggleall" resname="labels.toggleall">
 				<source>Toggle all</source>
+			</trans-unit>
+			<trans-unit id="labels.toggleSelection" resname="labels.toggleSelection">
+				<source>Toggle selection</source>
 			</trans-unit>
 			<trans-unit id="labels.selected" resname="labels.selected">
 				<source>Selected Items</source>

@@ -149,6 +149,8 @@ class TableListViewHelper extends AbstractBackendViewHelper
         }
         $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
         $dblist->dontShowClipControlPanels = true;
+        // Column selector is disabled since fields are defined by the "fieldList" argument
+        $dblist->displayColumnSelector = false;
         $dblist->setFields = [$tableName => $fieldList];
         $dblist->noControlPanels = !$enableControlPanels;
         $dblist->sortField = $sortField;
