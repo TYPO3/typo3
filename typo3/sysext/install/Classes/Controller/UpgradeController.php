@@ -619,7 +619,7 @@ class UpgradeController extends AbstractController
      */
     public function extensionScannerMarkFullyScannedRestFilesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $foundRestFileHashes = (array)$request->getParsedBody()['install']['hashes'];
+        $foundRestFileHashes = (array)($request->getParsedBody()['install']['hashes'] ?? []);
         // First un-mark files marked as scanned-ok
         $registry = new Registry();
         $registry->removeAllByNamespace('extensionScannerNotAffected');

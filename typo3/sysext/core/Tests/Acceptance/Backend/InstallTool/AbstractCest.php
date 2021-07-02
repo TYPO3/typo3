@@ -35,6 +35,8 @@ class AbstractCest
     public function _after(BackendTester $I)
     {
         $I->click('Logout');
+        // Make sure logout has finished
+        $I->waitForText('The Install Tool is locked', 20);
 
         $I->amGoingTo('clean up created files');
         unlink(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);

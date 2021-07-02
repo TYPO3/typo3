@@ -20,7 +20,7 @@
                     </button>
                 </f:else>
             </f:if>
-            <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">
+            <a role="button" data-bs-toggle="collapse" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">
                 <span class="caret"></span>
                 <strong>{fileArray.headline}</strong>
             </a>
@@ -36,7 +36,7 @@
                 <a href="{fileArray.url.documentation}" target="_blank" rel="noreferrer" class="nowrap"><core:icon identifier="actions-window-open" /> Open rendered version</a>
             </f:if>
         </div>
-        <pre><f:format.raw>{fileArray.parsedContent}</f:format.raw></pre>
+        <pre class="panel-body"><f:format.raw>{fileArray.parsedContent}</f:format.raw></pre>
     </div>
 </div>
 
