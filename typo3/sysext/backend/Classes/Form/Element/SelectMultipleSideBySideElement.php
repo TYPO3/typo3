@@ -143,17 +143,15 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         $possibleItems = $config['items'];
         $selectedItems = $parameterArray['itemFormElValue'] ?: [];
-        $selectedItemsCount = count($selectedItems);
-
         $maxItems = $config['maxitems'];
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
-        $size = 2;
-        if (isset($config['size'])) {
-            $size = (int)$config['size'];
+
+        $size = (int)($config['size'] ?? 2);
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
-        if ($autoSizeMax >= 1) {
-            $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
-        }
+
         $itemCanBeSelectedMoreThanOnce = !empty($config['multiple']);
 
         $listOfSelectedValues = [];
@@ -387,16 +385,13 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         if (!is_array($selectedItems)) {
             $selectedItems = GeneralUtility::trimExplode(',', $selectedItems, true);
         }
-        $selectedItemsCount = count($selectedItems);
+        $size = (int)($config['size'] ?? 2);
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
+        }
 
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
-        $size = 2;
-        if (isset($config['size'])) {
-            $size = (int)$config['size'];
-        }
-        if ($autoSizeMax >= 1) {
-            $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
-        }
         $multiple = '';
         if ($size !== 1) {
             $multiple = ' multiple="multiple"';

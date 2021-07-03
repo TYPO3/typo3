@@ -174,16 +174,13 @@ class SelectSingleBoxElement extends AbstractFormElement
     {
         $selectItems = $parameterArray['fieldConf']['config']['items'];
         $size = (int)($config['size'] ?? 0);
-        $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
-
-        if ($config['autoSizeMax'] ?? false) {
-            $size = MathUtility::forceIntegerInRange(
-                count($selectItems) + 1,
-                MathUtility::forceIntegerInRange($size, 1),
-                $config['autoSizeMax']
-            );
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($selectItems) + 1, $size, $autoSizeMax);
         }
 
+        $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
         $attributes = array_merge(
             [
                 'name' => $parameterArray['itemFormElName'] . '[]',

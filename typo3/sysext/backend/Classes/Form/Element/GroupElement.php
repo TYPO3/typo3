@@ -120,16 +120,13 @@ class GroupElement extends AbstractFormElement
         $elementName = $parameterArray['itemFormElName'];
 
         $selectedItems = $parameterArray['itemFormElValue'];
-        $selectedItemsCount = count($selectedItems);
-
         $maxItems = $config['maxitems'];
-        $autoSizeMax = MathUtility::forceIntegerInRange($config['autoSizeMax'] ?? 0, 0);
-        $size = 5;
-        if (isset($config['size'])) {
-            $size = (int)$config['size'];
-        }
-        if ($autoSizeMax >= 1) {
-            $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
+
+        $size = (int)($config['size'] ?? 5);
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
 
         $internalType = (string)($config['internal_type'] ?? 'db');
