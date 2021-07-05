@@ -78,9 +78,9 @@ class UserFileInlineLabelService
             if ((string)$value === '') {
                 continue;
             }
-            $labelText = (string)LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $field, 'lang');
-            $title[] = '<dt>' . htmlspecialchars($labelText) . '</dt><dd>' . $value . '</dd>';
+            $labelText = (string)LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $field);
+            $title[] = '<dt class="col-md-1 text-truncate">' . htmlspecialchars($labelText) . '</dt><dd class="col-md-11">' . $value . '</dd>';
         }
-        $params['title'] = '<dl>' . implode('', $title) . '</dl>';
+        $params['title'] = '<dl class="row g-0">' . implode('<div class="w-100"></div>', $title) . '</dl>';
     }
 }

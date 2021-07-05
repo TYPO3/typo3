@@ -378,9 +378,9 @@ select {
     white-space: normal;
     padding-left: 5px;
 
-    dl {
-        @extend .dl-horizontal;
-
+    dl,
+    dd,
+    dt {
         margin-bottom: 0;
     }
 }
