@@ -88,7 +88,7 @@ class Popover {
   public setOption($element: JQuery, key: string, value: string): void {
     if (key === 'content') {
       $element.attr('data-bs-content', value);
-      $element.data('typo3.bs.popover').setContent(value);
+      $element.data('typo3.bs.popover').setContent();
     } else {
       $element.each((i, el) => {
         const popover = $(el).data('typo3.bs.popover');
@@ -157,6 +157,16 @@ class Popover {
         popover.toggle();
       }
     });
+  }
+
+  // noinspection JSMethodCanBeStatic
+  /**
+   * Update popover with new content
+   *
+   * @param $element
+   */
+  public update($element: JQuery): void {
+    $element.data('typo3.bs.popover')._popper.update();
   }
 }
 

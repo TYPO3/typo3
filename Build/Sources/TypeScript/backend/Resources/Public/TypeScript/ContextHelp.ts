@@ -163,6 +163,8 @@ class ContextHelp {
           content: content,
         };
         Popover.setOptions($trigger, options);
+        Popover.update($trigger);
+
         $trigger.attr('data-loaded', 'true');
       });
     }
