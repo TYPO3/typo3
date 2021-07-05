@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
@@ -42,7 +43,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -51,9 +51,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -2130,9 +2127,8 @@ class EditDocumentController
                     }
                     $languageMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
                     $languageMenu->setIdentifier('_langSelector');
-                    foreach ($availableLanguages as $language) {
-                        $languageId = $language->getLanguageId();
-                        $selectorOptionLabel = $language->getTitle();
+                    foreach ($availableLanguages as $languageId => $language) {
+                        $selectorOptionLabel = $language['title'];
                         // Create url for creating a localized record
                         $addOption = true;
                         $href = '';
@@ -2250,7 +2246,7 @@ class EditDocumentController
      *                hidden. If set to another value, the query will select all sys_language records that has a
      *                translation record on that page (and is not hidden, unless you are admin user)
      * @param string $table For pages we want all languages, for other records the languages of the page translations
-     * @return SiteLanguage[] Language
+     * @return array Array with languages (uid, title, ISOcode, flagIcon)
      */
     protected function getLanguages(int $id, string $table): array
     {
@@ -2270,14 +2266,11 @@ class EditDocumentController
             }
             $pageId = $id;
         }
-        try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
-        } catch (SiteNotFoundException $e) {
-            $site = new NullSite();
-        }
-
         // Fetch the current translations of this page, to only show the ones where there is a page translation
-        $allLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
+        $allLanguages = array_filter(
+            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId),
+            static fn ($language) => (int)$language['uid'] !== -1
+        );
         if ($table !== 'pages' && $id > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()
