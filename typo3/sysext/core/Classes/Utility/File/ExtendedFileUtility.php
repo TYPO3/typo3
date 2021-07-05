@@ -226,7 +226,7 @@ class ExtendedFileUtility extends BasicFileUtility
             }
 
             // Check if there were new folder names expected, but non given
-            if ($this->fileCmdMap['newfolder']) {
+            if ($this->fileCmdMap['newfolder'] ?? false) {
                 foreach ($this->fileCmdMap['newfolder'] as $key => $cmdArr) {
                     if (empty($cmdArr['data'])) {
                         unset($this->fileCmdMap['newfolder'][$key]);

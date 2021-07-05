@@ -201,13 +201,16 @@ class EditFileController
                 throw new \Exception('Files with that extension are not editable. Allowed extensions are: ' . $extList, 1476050135);
             }
 
+            $fullIdentifier= $this->fileObject->getCombinedIdentifier();
+            $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier]);
+
             // Making the formfields
             $formData = [
                 'databaseRow' => [
                     'uid' => 0,
                     'data' => $this->fileObject->getContents(),
                     'target' => $this->fileObject->getUid(),
-                    'redirect' => $this->returnUrl,
+                    'redirect' => $returnUrl,
                 ],
                 'tableName' => 'editfile',
                 'processedTca' => [
@@ -300,24 +303,10 @@ class EditFileController
             ->setName('_save')
             ->setValue('1')
             ->setForm('EditFileController')
+            ->setShowLabelText(true)
             ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.submit'))
             ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
-
-        // Save and Close button
-        $saveAndCloseButton = $buttonBar->makeInputButton()
-            ->setName('_saveandclosedok')
-            ->setValue('1')
-            ->setForm('EditFileController')
-            ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.saveAndClose'))
-            ->setIcon($this->iconFactory->getIcon(
-                'actions-document-save-close',
-                Icon::SIZE_SMALL
-            ));
-
-        $splitButton = $buttonBar->makeSplitButton()
-            ->addItem($saveButton)
-            ->addItem($saveAndCloseButton);
-        $buttonBar->addButton($splitButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
+        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
 
         // Cancel button
         $closeButton = $buttonBar->makeLinkButton()
