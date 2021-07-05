@@ -108,7 +108,7 @@ $contrast-color: rgba(0, 0, 0, 0.1);
 //
 #alert-container {
     width: 400px;
-    position: absolute;
+    position: fixed;
     right: 5px;
     top: 46px;
     z-index: 10000;
