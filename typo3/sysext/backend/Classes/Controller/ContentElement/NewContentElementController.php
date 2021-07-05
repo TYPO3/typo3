@@ -336,7 +336,7 @@ class NewContentElementController
             $clientContext
         );
         $posMap->cur_sys_language = $this->sys_language;
-        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI));
+        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, 0, $colPosList, $this->R_URI));
     }
 
     /**

@@ -30,13 +30,6 @@ class ContentMovingPagePositionMap extends PagePositionMap
     public $dontPrintPageInsertIcons = 1;
 
     /**
-     * Page tree implementation class name
-     *
-     * @var string
-     */
-    protected $pageTreeClassName = PageTreeView::class;
-
-    /**
      * Wrapping page title.
      *
      * @param string $str Page title.

@@ -30,13 +30,6 @@ class PageMovingPagePositionMap extends PagePositionMap
     public $l_insertNewPageHere = 'movePageToHere';
 
     /**
-     * Page tree implementation class name
-     *
-     * @var string
-     */
-    protected $pageTreeClassName = PageTreeView::class;
-
-    /**
      * Creates the onclick event for the insert-icons.
      *
      * @param int $pid The pid.

@@ -41,61 +41,15 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class MoveElementController
 {
-    /**
-     * @var int
-     */
-    protected $sys_language = 0;
+    protected int $sys_language = 0;
+    protected int $page_id = 0;
+    protected string $table = '';
+    protected string $R_URI = '';
+    protected int $moveUid = 0;
+    protected int $makeCopy = 0;
+    protected string $perms_clause = '';
 
-    /**
-     * @var int
-     */
-    protected $page_id;
-
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @var string
-     */
-    protected $R_URI;
-
-    /**
-     * @var int
-     */
-    protected $input_moveUid;
-
-    /**
-     * @var int
-     */
-    protected $moveUid;
-
-    /**
-     * @var int
-     */
-    protected $makeCopy;
-
-    /**
-     * Pages-select clause
-     *
-     * @var string
-     */
-    protected $perms_clause;
-
-    /**
-     * Content for module accumulated here.
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    protected ?ModuleTemplate $moduleTemplate = null;
 
     protected IconFactory $iconFactory;
     protected PageRenderer $pageRenderer;
@@ -111,70 +65,59 @@ class MoveElementController
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
-    /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $this->init($request);
-        $this->renderContent();
-        return new HtmlResponse($this->content);
-    }
-
-    /**
-     * Constructor, initializing internal variables.
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function init(ServerRequestInterface $request)
-    {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        // Setting internal vars:
         $this->sys_language = (int)($parsedBody['sys_language'] ?? $queryParams['sys_language'] ?? 0);
         $this->page_id = (int)($parsedBody['uid'] ?? $queryParams['uid'] ?? 0);
-        $this->table = $parsedBody['table'] ?? $queryParams['table'] ?? null;
+        $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-        $this->input_moveUid = $parsedBody['moveUid'] ?? $queryParams['moveUid'] ?? null;
-        $this->moveUid = $this->input_moveUid ?: $this->page_id;
-        $this->makeCopy = $parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0;
-        // Select-pages where clause for read-access:
+        $this->moveUid = (int)(($parsedBody['moveUid'] ?? $queryParams['moveUid'] ?? false) ?: $this->page_id);
+        $this->makeCopy = (int)($parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0);
+        // Select-pages where clause for read-access
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+
+        // Setting up the buttons and markers for docheader
+        $this->getButtons();
+        // Build the <body> for the module
+        $this->moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
+        $this->moduleTemplate->setContent($this->renderContent());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Creating the module output.
      */
-    protected function renderContent(): void
+    protected function renderContent(): string
     {
-        $lang = $this->getLanguageService();
-
-        if ($this->page_id) {
-            $assigns = [];
-            $backendUser = $this->getBackendUser();
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-            // Get record for element:
-            $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
-            // Headerline: Icon, record title:
-            $assigns['table'] = $this->table;
-            $assigns['elRow'] = $elRow;
-            $assigns['recordTooltip'] = BackendUtility::getRecordToolTip($elRow, $this->table);
-            $assigns['recordTitle'] = BackendUtility::getRecordTitle($this->table, $elRow, true);
-            // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-            $assigns['makeCopyChecked'] = $this->makeCopy ? ' checked="checked"' : '';
-            $assigns['makeCopyUrl'] = GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy]);
-            // IF the table is "pages":
-            if ((string)$this->table === 'pages') {
-                // Get page record (if accessible):
-                $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
-                if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
+        if (!$this->page_id) {
+            return '';
+        }
+        $assigns = [];
+        $backendUser = $this->getBackendUser();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        // Get record for element:
+        $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
+        // Headerline: Icon, record title:
+        $assigns['table'] = $this->table;
+        $assigns['elRow'] = $elRow;
+        $assigns['recordTooltip'] = BackendUtility::getRecordToolTip($elRow, $this->table);
+        $assigns['recordTitle'] = BackendUtility::getRecordTitle($this->table, $elRow, true);
+        // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
+        $assigns['makeCopyChecked'] = (bool)$this->makeCopy;
+        $assigns['makeCopyUrl'] = GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy]);
+        // Get page record (if accessible):
+        if ($this->table !== 'pages' && $this->moveUid === $this->page_id) {
+            $this->page_id = $elRow['pid'];
+        }
+        $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
+        $assigns['pageInfo'] = $pageInfo;
+        if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
+            switch ($this->table) {
+                case 'pages':
                     // Initialize the position map:
                     $posMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
@@ -184,38 +127,26 @@ class MoveElementController
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $assigns['pages']['goUpUrl'] = GeneralUtility::linkThisScript([
+                                $assigns['goUpUrl'] = GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
                                     'moveUid' => $this->moveUid
                                 ]);
                             } else {
-                                $assigns['pages']['pidPageInfo'] = $pidPageInfo;
+                                $assigns['pidPageInfo'] = $pidPageInfo;
                             }
-                            $assigns['pages']['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
+                            $assigns['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
                         }
                     }
                     // Create the position tree:
-                    $assigns['pages']['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
-                }
-            }
-            // IF the table is "tt_content":
-            if ((string)$this->table === 'tt_content') {
-                // First, get the record:
-                $tt_content_rec = BackendUtility::getRecord('tt_content', $this->moveUid);
-                // ?
-                if (!$this->input_moveUid) {
-                    $this->page_id = $tt_content_rec['pid'];
-                }
-                // Checking if the parent page is readable:
-                $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
-                if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
+                    $assigns['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    break;
+                case 'tt_content':
                     // Initialize the position map:
                     $posMap = GeneralUtility::makeInstance(ContentMovingPagePositionMap::class);
                     $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
                     $posMap->moveUid = $this->moveUid;
                     $posMap->cur_sys_language = $this->sys_language;
                     // Headerline for the parent page: Icon, record title:
-                    $assigns['ttContent']['pageInfo'] = $pageInfo;
                     $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo, 'pages');
                     $assigns['ttContent']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
                     $colPosArray = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getColPosListItemsParsed', $this->page_id, $this);
@@ -226,44 +157,42 @@ class MoveElementController
                     // Removing duplicates, if any
                     $colPosList = implode(',', array_unique($colPosIds));
                     // Adding parent page-header and the content element columns from position-map:
-                    $assigns['ttContent']['contentElementColumns'] = $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);
+                    $assigns['contentElementColumns'] = $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, $this->R_URI);
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
-                    if ($pageInfo['pid']) {
+                    if ($pageInfo['pid'] > 0) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
                         if (is_array($pidPageInfo)) {
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                                $assigns['ttContent']['goUpUrl'] = GeneralUtility::linkThisScript([
+                                $assigns['goUpUrl'] = GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
                                     'moveUid' => $this->moveUid
                                 ]);
                             } else {
-                                $assigns['ttContent']['pidPageInfo'] = $pidPageInfo;
+                                $assigns['pidPageInfo'] = $pidPageInfo;
                             }
-                            $assigns['ttContent']['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
+                            $assigns['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
                         }
                     }
                     // Create the position tree (for pages):
-                    $assigns['ttContent']['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                 }
-            }
-            // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-            $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-                'EXT:backend/Resources/Private/Templates/ContentElement/MoveElement.html'
-            ));
-            $view->assignMultiple($assigns);
-            $this->content .= $view->render();
         }
 
-        // Setting up the buttons and markers for docheader
-        $this->getButtons();
-        // Build the <body> for the module
-        $this->moduleTemplate->setTitle($lang->getLL('movingElement'));
-        $this->moduleTemplate->setContent($this->content);
+        // Rendering of the output via fluid
+        $view = $this->initializeView();
+        $view->assignMultiple($assigns);
+        return $view->render();
+    }
 
-        $this->content = $this->moduleTemplate->renderContent();
+    protected function initializeView(): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
+            'EXT:backend/Resources/Private/Templates/ContentElement/MoveElement.html'
+        ));
+        return $view;
     }
 
     /**
@@ -273,12 +202,12 @@ class MoveElementController
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
-            if ((string)$this->table === 'pages') {
+            if ($this->table === 'pages') {
                 $cshButton = $buttonBar->makeHelpButton()
                     ->setModuleName('xMOD_csh_corebe')
                     ->setFieldName('move_el_pages');
                 $buttonBar->addButton($cshButton);
-            } elseif ((string)$this->table === 'tt_content') {
+            } elseif ($this->table === 'tt_content') {
                 $cshButton = $buttonBar->makeHelpButton()
                     ->setModuleName('xMOD_csh_corebe')
                     ->setFieldName('move_el_cs');
@@ -288,24 +217,19 @@ class MoveElementController
             if ($this->R_URI) {
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref($this->R_URI)
-                    ->setTitle($this->getLanguageService()->getLL('goBack'))
+                    ->setShowLabelText(true)
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:goBack'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
                 $buttonBar->addButton($backButton);
             }
         }
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

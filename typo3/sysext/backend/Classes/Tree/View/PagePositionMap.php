@@ -350,11 +350,10 @@ class PagePositionMap
      * @param int $pid page id onto which to insert content element.
      * @param int $moveUid Move-uid (tt_content element uid?)
      * @param string $colPosList List of columns to show
-     * @param bool $showHidden If not set, then hidden/starttime/endtime records are filtered out.
      * @param string $R_URI Request URI
      * @return string HTML
      */
-    public function printContentElementColumns($pid, $moveUid, $colPosList, $showHidden, $R_URI)
+    public function printContentElementColumns($pid, $moveUid, $colPosList, $R_URI)
     {
         $this->R_URI = $R_URI;
         $this->moveUid = $moveUid;
@@ -362,13 +361,11 @@ class PagePositionMap
         $lines = [];
         foreach ($colPosArray as $kk => $vv) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
-            if ($showHidden) {
-                $queryBuilder->getRestrictions()
-                    ->removeByType(HiddenRestriction::class)
-                    ->removeByType(StartTimeRestriction::class)
-                    ->removeByType(EndTimeRestriction::class);
-            }
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace))
+                ->removeByType(HiddenRestriction::class)
+                ->removeByType(StartTimeRestriction::class)
+                ->removeByType(EndTimeRestriction::class);
             $queryBuilder
                 ->select('*')
                 ->from('tt_content')
@@ -435,12 +432,12 @@ class PagePositionMap
                 }
                 $table .= '<tr>';
                 for ($col = 1; $col <= $colCount; $col++) {
-                    $columnConfig = $rowConfig['columns.'][$col . '.'];
-                    if (!isset($columnConfig)) {
+                    $columnConfig = $rowConfig['columns.'][$col . '.'] ?? false;
+                    if (!$columnConfig) {
                         continue;
                     }
                     // Which tt_content colPos should be displayed inside this cell
-                    $columnKey = (int)$columnConfig['colPos'];
+                    $columnKey = (int)($columnConfig['colPos'] ?? 0);
                     $head = '';
                     foreach ($tcaItems as $item) {
                         if ($item[1] == $columnKey) {
@@ -458,7 +455,7 @@ class PagePositionMap
                     $table .= '<p>';
                     if (isset($columnConfig['colPos']) && $head) {
                         $table .= '<strong>' . $head . '</strong>';
-                    } elseif ($columnConfig['colPos']) {
+                    } elseif (isset($columnConfig['colPos'])) {
                         $table .= '<em>' . $this->getLanguageService()->getLL('noAccess') . '</em>';
                     } else {
                         $table .= '<em>' . ($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')' . '</em>';
