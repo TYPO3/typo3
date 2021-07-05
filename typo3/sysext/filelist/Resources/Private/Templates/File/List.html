@@ -1,0 +1,58 @@
+<f:comment><!-- identifier initializes tree state --></f:comment>
+<div class="filelist-main" data-filelist-current-folder-hash="{currentIdentifier -> f:format.htmlspecialchars()}" data-filelist-current-identifier="{currentIdentifier}">
+    <f:if condition="{folderIdentifier}">
+        <f:render section="headline" arguments="{_all}" />
+        <f:render section="content" arguments="{_all}" />
+    </f:if>
+</div>
+
+<f:if condition="{drapUploader}">
+    <div class="t3js-drag-uploader" data-target-folder="{folderIdentifier}" data-progress-container="#typo3-filelist"
+        data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".t3js-module-body h1:first"
+        data-file-deny-pattern="{drapUploader.fileDenyPattern}" data-max-file-size="{drapUploader.maxFileSize}"
+        data-default-action="{drapUploader.defaultDuplicationBehaviourAction}"
+    ></div>
+</f:if>
+
+<f:section name="headline">
+    <h1>
+        <f:if condition="{searchTerm}">
+            <f:then>
+                <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:search" arguments="{0: searchTerm, 1: headline}" />
+            </f:then>
+            <f:else>
+                {headline}
+            </f:else>
+        </f:if>
+    </h1>
+</f:section>
+
+<f:section name="content">
+    <form method="post" name="fileListForm">
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="input-group">
+                    <input type="hidden" name="pointer" value="0" />
+                    <button class="btn btn-default" type="submit" name="search">
+                        <core:icon identifier="actions-search" size="small" />
+                    </button>
+                    <label for="search_field" class="visually-hidden">
+                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                    </label>
+                    <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                </div>
+            </div>
+        </div>
+
+        {listHtml -> f:format.raw()}
+        <input type="hidden" name="cmd"/>
+    </form>
+
+    <f:if condition="{listHtml}">
+        <f:render partial="ListOptions" arguments="{checkboxes:checkboxes}" />
+        <f:if condition="{clipBoardHtml}">
+            {clipBoardHtml -> f:format.raw()}
+            <f:be.buttons.csh table="xMOD_csh_corebe" field="filelist_clipboard" wrap="<span class='btn btn-sm btn-default'>|</span>" />
+        </f:if>
+    </f:if>
+</f:section>

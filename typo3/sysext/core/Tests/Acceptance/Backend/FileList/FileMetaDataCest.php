@@ -43,7 +43,7 @@ class FileMetaDataCest
         $I->switchToContentFrame();
         $I->canSee('fileadmin');
 
-        $I->fillField('tx_filelist_file_filelistlist[searchWord]', 'bus');
+        $I->fillField('input[name="searchTerm"]', 'bus');
         $I->click('button[type="submit"]');
         $I->waitForElementVisible('table.table-striped');
 

@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="search" resname="search">
-				<source>Search</source>
+				<source>Search "%s" in %s</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.no_results" resname="flashmessage.no_results">
 				<source>No results found</source>

@@ -19,11 +19,22 @@ import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
+enum Selectors {
+  fileListFormSelector = 'form[name="fileListForm"]',
+  commandSelector = 'input[name="cmd"]',
+  searchFieldSelector = 'input[name="searchTerm"]'
+}
+
 /**
  * Module: TYPO3/CMS/Filelist/Filelist
  * @exports TYPO3/CMS/Filelist/Filelist
  */
 class Filelist {
+  private fileListForm: HTMLFormElement = document.querySelector(Selectors.fileListFormSelector);
+  private command: HTMLInputElement = this.fileListForm.querySelector(Selectors.commandSelector)
+  private searchField: HTMLInputElement = this.fileListForm.querySelector(Selectors.searchFieldSelector);
+  private activeSearch: boolean = (this.searchField.value !== '');
+
   protected static openInfoPopup(type: string, identifier: string): void {
     InfoWindow.showItem(type, identifier);
   }
@@ -68,12 +79,6 @@ class Filelist {
     broadcastService.post(message);
   }
 
-  private static submitClipboardFormWithCommand(cmd: string): void {
-    const form = document.querySelector('form[name="dblistForm"]') as HTMLFormElement
-    (form.querySelector('input[name="cmd"]') as HTMLInputElement).value = cmd;
-    form.submit();
-  }
-
   constructor() {
     Filelist.processTriggers();
     DocumentService.ready().then((): void => {
@@ -113,16 +118,28 @@ class Filelist {
       if (clipboardCmd !== null) {
         new RegularEvent('filelist:clipboard:cmd', (event: ModalResponseEvent, target: HTMLElement): void => {
           if (event.detail.result) {
-            Filelist.submitClipboardFormWithCommand(event.detail.payload);
+            this.submitClipboardFormWithCommand(event.detail.payload);
           }
         }).bindTo(clipboardCmd);
       }
 
       new RegularEvent('click', (event: ModalResponseEvent, target: HTMLElement): void => {
         const cmd = target.dataset.filelistClipboardCmd;
-        Filelist.submitClipboardFormWithCommand(cmd);
+        this.submitClipboardFormWithCommand(cmd);
       }).delegateTo(document, '[data-filelist-clipboard-cmd]:not([data-filelist-clipboard-cmd=""])');
     });
+
+    // Respond to browser related clearable event
+    new RegularEvent('search', (): void => {
+      if (this.searchField.value === '' && this.activeSearch) {
+        this.fileListForm.submit();
+      }
+    }).bindTo(this.searchField);
+  }
+
+  private submitClipboardFormWithCommand(cmd: string): void {
+    this.command.value = cmd;
+    this.fileListForm.submit();
   }
 }
 

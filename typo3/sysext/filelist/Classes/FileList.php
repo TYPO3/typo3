@@ -26,12 +26,15 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -183,6 +186,8 @@ class FileList
      */
     protected $uriBuilder;
 
+    protected string $searchTerm = '';
+
     public function __construct()
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
@@ -199,6 +204,7 @@ class FileList
         $this->clipObj->fileMode = true;
         $this->clipObj->initializeClipboard();
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
@@ -256,42 +262,75 @@ class FileList
     /**
      * Returns a table with directories and files listed.
      *
+     * @param FileSearchDemand|null $searchDemand
      * @return string HTML-table
      */
-    public function getTable()
+    public function getTable(?FileSearchDemand $searchDemand = null): string
     {
-        // @todo use folder methods directly when they support filters
-        $storage = $this->folderObject->getStorage();
-        $storage->resetFileAndFolderNameFiltersToDefault();
+        if ($searchDemand !== null) {
+            // Search currently only works for files
+            $folders = [];
+            // Find files by the given search demand
+            $files = iterator_to_array($this->folderObject->searchFiles($searchDemand));
+            // @todo Currently files, which got deleted in the file system, are still found.
+            //       Therefore we have to ask their parent folder if it still contains the file.
+            $files = array_filter($files, static function (FileInterface $file): bool {
+                try {
+                    if ($file->getParentFolder()->hasFile($file->getName())) {
+                        return true;
+                    }
+                } catch (ResourceDoesNotExistException $e) {
+                    // Nothing to do, file does not longer exist in folder
+                }
+                return false;
+            });
 
-        // Only render the contents of a browsable storage
-        if (!$this->folderObject->getStorage()->isBrowsable()) {
-            return '';
-        }
-        try {
-            $foldersCount = $storage->countFoldersInFolder($this->folderObject);
-            $filesCount = $storage->countFilesInFolder($this->folderObject);
-        } catch (InsufficientFolderAccessPermissionsException $e) {
-            $foldersCount = 0;
-            $filesCount = 0;
-        }
+            // @todo We have to manually slice the search result, since it may
+            //       contain invalid files, which were manually filtered out above.
+            //       This should be fixed, so we can use the $firstResult and $maxResults
+            //       properties of the search demand directly.
+            $this->totalItems = count($files);
+            $filesNum = $this->firstElementNumber + $this->iLimit > $this->totalItems
+                ? $this->totalItems - $this->firstElementNumber
+                : $this->iLimit;
+            $files = array_slice($files, $this->firstElementNumber, $filesNum);
 
-        if ($foldersCount <= $this->firstElementNumber) {
-            $foldersFrom = false;
-            $foldersNum = false;
+            // Add special "Path" field for the search result
+            array_unshift($this->fieldArray, '_PATH_');
+            // Add search term so it can be added to return urls
+            $this->searchTerm = $searchDemand->getSearchTerm() ?? '';
         } else {
-            $foldersFrom = $this->firstElementNumber;
-            if ($this->firstElementNumber + $this->iLimit > $foldersCount) {
-                $foldersNum = $foldersCount - $this->firstElementNumber;
-            } else {
-                $foldersNum = $this->iLimit;
+            // @todo use folder methods directly when they support filters
+            $storage = $this->folderObject->getStorage();
+            $storage->resetFileAndFolderNameFiltersToDefault();
+
+            // Only render the contents of a browsable storage
+            if (!$this->folderObject->getStorage()->isBrowsable()) {
+                return '';
             }
-        }
-        if ($foldersCount >= $this->firstElementNumber + $this->iLimit) {
-            $filesFrom = false;
-            $filesNum  = false;
-        } else {
-            if ($this->firstElementNumber <= $foldersCount) {
+            try {
+                $foldersCount = $storage->countFoldersInFolder($this->folderObject);
+                $filesCount = $storage->countFilesInFolder($this->folderObject);
+            } catch (InsufficientFolderAccessPermissionsException $e) {
+                $foldersCount = 0;
+                $filesCount = 0;
+            }
+
+            if ($foldersCount <= $this->firstElementNumber) {
+                $foldersFrom = false;
+                $foldersNum = false;
+            } else {
+                $foldersFrom = $this->firstElementNumber;
+                if ($this->firstElementNumber + $this->iLimit > $foldersCount) {
+                    $foldersNum = $foldersCount - $this->firstElementNumber;
+                } else {
+                    $foldersNum = $this->iLimit;
+                }
+            }
+            if ($foldersCount >= $this->firstElementNumber + $this->iLimit) {
+                $filesFrom = false;
+                $filesNum  = false;
+            } elseif ($this->firstElementNumber <= $foldersCount) {
                 $filesFrom = 0;
                 $filesNum  = $this->iLimit - $foldersNum;
             } else {
@@ -302,14 +341,14 @@ class FileList
                     $filesNum = $this->iLimit;
                 }
             }
+
+            $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum, true, false, trim($this->sort), (bool)$this->sortRev);
+            $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false, trim($this->sort), (bool)$this->sortRev);
+            $this->totalItems = $foldersCount + $filesCount;
+
+            // Adds the code of files/dirs
+            $folders = ListUtility::resolveSpecialFolderNames($folders);
         }
-
-        $folders = $storage->getFoldersInFolder($this->folderObject, $foldersFrom, $foldersNum, true, false, trim($this->sort), (bool)$this->sortRev);
-        $files = $this->folderObject->getFiles($filesFrom, $filesNum, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, false, trim($this->sort), (bool)$this->sortRev);
-        $this->totalItems = $foldersCount + $filesCount;
-        // Adds the code of files/dirs
-
-        $folders = ListUtility::resolveSpecialFolderNames($folders);
 
         $iOut = '';
         // Directories are added
@@ -332,6 +371,8 @@ class FileList
                 $theData[$v] = $this->renderClipboardHeaderRow(!empty($iOut));
             } elseif ($v === '_REF_') {
                 $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_'));
+            } elseif ($v === '_PATH_') {
+                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_'));
             } else {
                 // Normal row
                 $theData[$v]  = $this->linkWrapSort($this->folderObject->getCombinedIdentifier(), $v);
@@ -432,7 +473,7 @@ class FileList
         // Traverse field array which contains the data to present:
         foreach ($fields as $vKey) {
             if (isset($data[$vKey])) {
-                if ($lastKey) {
+                if ($lastKey && isset($data[$lastKey])) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
                     $out .= '
 						<' . $colType . ' class="' . $cssClass . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
@@ -674,12 +715,12 @@ class FileList
      *
      * @return string URL
      */
-    public function listURL()
+    public function listURL(): string
     {
-        return GeneralUtility::linkThisScript([
+        return GeneralUtility::linkThisScript(array_filter([
             'target' => rawurlencode($this->folderObject->getCombinedIdentifier()),
-            'imagemode' => $this->thumbs
-        ]);
+            'searchTerm' => rawurlencode($this->searchTerm)
+        ]));
     }
 
     protected function getAvailableSystemLanguages(): array
@@ -785,6 +826,13 @@ class FileList
                     case '_REF_':
                         $theData[$field] = $this->makeRef($fileObject);
                         break;
+                    case '_PATH_':
+                        $theData[$field] = '';
+                        $method = 'getReadablePath';
+                        if (is_callable([$fileObject->getParentFolder(), $method])) {
+                            $theData[$field] = htmlspecialchars($fileObject->getParentFolder()->$method());
+                        }
+                        break;
                     case 'file':
                         // Edit metadata of file
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
@@ -850,30 +898,6 @@ class FileList
             $translations[$record[$GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField']]] = $record;
         }
         return $translations;
-    }
-
-    /**
-     * Returns TRUE if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-     * Use the AbstractFile->isImage() method if you're using File objects directly
-     *
-     * @param string $ext File extension
-     * @return bool
-     */
-    public function isImage($ext)
-    {
-        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($ext));
-    }
-
-    /**
-     * Returns TRUE if $ext is a media-extension according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
-     * Use the AbstractFile->isMediaFile() method if you're using File objects directly
-     *
-     * @param string $ext File extension
-     * @return bool
-     */
-    public function isMediaFile($ext)
-    {
-        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($ext));
     }
 
     /**
