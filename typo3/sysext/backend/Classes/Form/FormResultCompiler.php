@@ -89,7 +89,7 @@ class FormResultCompiler
      */
     public function mergeResult(array $resultArray)
     {
-        $this->doSaveFieldName = $resultArray['doSaveFieldName'];
+        $this->doSaveFieldName = $resultArray['doSaveFieldName'] ?? '';
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
             $this->additionalJavaScriptPost[] = $element;
         }
