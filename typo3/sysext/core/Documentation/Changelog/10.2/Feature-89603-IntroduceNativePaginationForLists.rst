@@ -36,6 +36,7 @@ Code-Example for the :php:`ArrayPaginator`:
 .. code-block:: php
 
    // use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+   // use TYPO3\CMS\Core\Pagination\SimplePagination;
 
    $itemsToBePaginated = ['apple', 'banana', 'strawberry', 'raspberry', 'ananas'];
    $itemsPerPage = 2;
@@ -46,5 +47,12 @@ Code-Example for the :php:`ArrayPaginator`:
    $paginator->getCurrentPageNumber(); // returns 3, basically just returns the input value
    $paginator->getKeyOfFirstPaginatedItem(); // returns 4
    $paginator->getKeyOfLastPaginatedItem(); // returns 4
+
+   $pagination = new SimplePagination($paginator);
+   $pagination->getAllPageNumbers(); // returns [1, 2, 3]
+   $pagination->getPreviousPageNumber(); // returns 2
+   $pagination->getNextPageNumber(); // returns null
+
+   // …
 
 .. index:: PHP-API, ext:core
