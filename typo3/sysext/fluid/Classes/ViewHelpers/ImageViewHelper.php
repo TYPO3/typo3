@@ -96,19 +96,6 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'img';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Service\ImageService
-     */
-    protected $imageService;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\ImageService $imageService
-     */
-    public function injectImageService(ImageService $imageService)
-    {
-        $this->imageService = $imageService;
-    }
-
-    /**
      * Initialize arguments.
      */
     public function initializeArguments()
@@ -168,7 +155,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
             }
         } else {
             try {
-                $image = $this->imageService->getImage($src, $this->arguments['image'], (bool)$this->arguments['treatIdAsReference']);
+                $imageService = $this->getImageService();
+                $image = $imageService->getImage($src, $this->arguments['image'], (bool)$this->arguments['treatIdAsReference']);
                 $cropString = $this->arguments['crop'];
                 if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                     $cropString = $image->getProperty('crop');
@@ -188,8 +176,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
                 if (!empty($this->arguments['fileExtension'] ?? '')) {
                     $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
                 }
-                $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-                $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+                $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
+                $imageUri = $imageService->getImageUri($processedImage, $this->arguments['absolute']);
 
                 if (!$this->tag->hasAttribute('data-focus-area')) {
                     $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
@@ -225,5 +213,10 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
             }
         }
         return $this->tag->render();
+    }
+
+    protected function getImageService(): ImageService
+    {
+        return GeneralUtility::makeInstance(ImageService::class);
     }
 }

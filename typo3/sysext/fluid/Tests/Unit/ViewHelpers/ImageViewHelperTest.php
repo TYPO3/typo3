@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
@@ -182,8 +183,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $imageService->expects(self::once())->method('getImage')->willReturn($image);
         $imageService->expects(self::once())->method('applyProcessingInstructions')->with($image, self::anything())->willReturn($processedFile);
         $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn($expected['src']);
-
-        $this->viewHelper->injectImageService($imageService);
+        GeneralUtility::setSingletonInstance(ImageService::class, $imageService);
 
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['addAttribute', 'render'])
@@ -296,8 +296,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $imageService->expects(self::once())->method('getImage')->willReturn($image);
         $imageService->expects(self::once())->method('applyProcessingInstructions')->with($image, self::anything())->willReturn($processedFile);
         $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
-
-        $this->viewHelper->injectImageService($imageService);
+        GeneralUtility::setSingletonInstance(ImageService::class, $imageService);
 
         $tagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['addAttribute', 'render'])
