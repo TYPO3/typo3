@@ -139,6 +139,9 @@ class ImageService implements SingletonInterface
             $image = $image->getOriginalResource();
         }
 
+        if ($image === null) {
+            throw new \UnexpectedValueException('Supplied file is NULL, but must be File or FileReference.', 1625585157);
+        }
         if (!($image instanceof File || $image instanceof FileReference)) {
             throw new \UnexpectedValueException('Supplied file object type ' . get_class($image) . ' for ' . $src . ' must be File or FileReference.', 1382687163);
         }
@@ -151,9 +154,9 @@ class ImageService implements SingletonInterface
      *
      * @param string $src
      * @param bool $treatIdAsReference
-     * @return FileInterface|FileReference|\TYPO3\CMS\Core\Resource\Folder
+     * @return FileInterface|null
      */
-    protected function getImageFromSourceString(string $src, bool $treatIdAsReference): object
+    protected function getImageFromSourceString(string $src, bool $treatIdAsReference): ?FileInterface
     {
         if ($this->environmentService->isEnvironmentInBackendMode() && strpos($src, '../') === 0) {
             $src = substr($src, 3);
@@ -173,7 +176,9 @@ class ImageService implements SingletonInterface
             // We have a combined identifier or legacy (storage 0) path
             $image = $this->resourceFactory->retrieveFileOrFolderObject($src);
         }
-        return $image;
+
+        // Check the resolved image as this could also be a FolderInterface
+        return $image instanceof FileInterface ? $image : null;
     }
 
     /**
