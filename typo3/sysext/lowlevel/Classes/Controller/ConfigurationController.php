@@ -101,7 +101,7 @@ class ConfigurationController
         if ($searchString) {
             $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($configurationArray, '', $searchString, []);
         } elseif (is_array($node)) {
-            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleState['node_' . $configurationProviderIdentifier]);
+            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleState['node_' . $configurationProviderIdentifier] ?? []);
             $arrayBrowser->depthKeys = $newExpandCollapse;
             $moduleState['node_' . $configurationProviderIdentifier] = $newExpandCollapse;
         } else {

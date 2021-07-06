@@ -68,4 +68,48 @@ class ConfigurationModuleProviderCest
         $I->seeCheckboxIsChecked('#lowlevel-regexSearch');
         $I->seeElement('li.active');
     }
+
+    /**
+     * @param BackendTester $I
+     */
+    public function canOpenTreeNodeAndScrollTo(BackendTester $I): void
+    {
+        $I->selectOption('select[name=tree]', '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)');
+        $I->click('.list-tree > li:first-child .list-tree-control');
+        $I->see('checkStoredRecordsLoose', '.list-tree-group');
+        $I->see('BE', '.active > .list-tree-group');
+    }
+
+    /**
+     * @param BackendTester $I
+     */
+    public function seeAllPagesInDropDown(BackendTester $I): void
+    {
+        foreach ($this->dropDownPagesDataProvider() as $item) {
+            $I->selectOption('select[name=tree]', $item);
+            $I->see($item, 'h2');
+        }
+    }
+
+    protected function dropDownPagesDataProvider(): array
+    {
+        return [
+            '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',
+            '$GLOBALS[\'TCA\'] (Table configuration array)',
+            '$GLOBALS[\'TCA_DESCR\'] (Table Help Description)',
+            '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
+            '$GLOBALS[\'TBE_MODULES\'] (BE Modules)',
+            '$GLOBALS[\'TBE_MODULES_EXT\'] (BE Modules Extensions)',
+            '$GLOBALS[\'TBE_STYLES\'] (Skinning Styles)',
+            '$GLOBALS[\'TYPO3_USER_SETTINGS\'] (User Settings Configuration)',
+            '$GLOBALS[\'PAGES_TYPES\'] (Table permissions by page type)',
+            '$GLOBALS[\'BE_USER\']->uc (User Settings)',
+            '$GLOBALS[\'BE_USER\']->getTSConfig() (User TSconfig)',
+            'Backend Routes',
+            'HTTP Middlewares (PSR-15)',
+            'Site Configuration',
+            'Event Listeners (PSR-14)',
+            'MFA providers'
+        ];
+    }
 }
