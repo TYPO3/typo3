@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 
 /**
@@ -46,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
             // @deprecated since v11, will be removed in v12
             Service\EnvironmentService::class => [ static::class, 'getEnvironmentService' ],
             Service\ExtensionService::class => [ static::class, 'getExtensionService' ],
+            Service\ImageService::class => [ static::class, 'getImageService' ],
             Security\Cryptography\HashService::class => [ static::class, 'getHashService' ],
         ];
     }
@@ -96,6 +98,13 @@ class ServiceProvider extends AbstractServiceProvider
         $extensionService = self::new($container, Service\ExtensionService::class);
         $extensionService->injectConfigurationManager($container->get(Configuration\ConfigurationManager::class));
         return $extensionService;
+    }
+
+    public static function getImageService(ContainerInterface $container): Service\ImageService
+    {
+        return self::new($container, Service\ImageService::class, [
+            $container->get(ResourceFactory::class)
+        ]);
     }
 
     public static function getHashService(ContainerInterface $container): Security\Cryptography\HashService

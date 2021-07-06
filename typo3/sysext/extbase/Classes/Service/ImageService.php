@@ -43,11 +43,11 @@ class ImageService implements SingletonInterface
     /**
      * ImageService constructor.
      *
-     * @param ResourceFactory|null $resourceFactory
+     * @param ResourceFactory $resourceFactory
      */
-    public function __construct(ResourceFactory $resourceFactory = null)
+    public function __construct(ResourceFactory $resourceFactory)
     {
-        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->resourceFactory = $resourceFactory;
     }
 
     /**
