@@ -18,7 +18,6 @@ import {customElement} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import './SelectTree';
-import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import {TreeNode} from 'TYPO3/CMS/Backend/Tree/TreeNode';
 
 const toolbarComponentName: string = 'typo3-backend-form-selecttree-toolbar';
@@ -109,11 +108,6 @@ export class SelectTreeElement {
       return node;
     });
     this.calculateIndeterminate(this.tree.nodes);
-
-    // Initialise "value" attribute of input field after load and revalidate form engine fields
-    this.saveCheckboxes();
-    // @todo Unsure if this has ever worked before from `TYPO3.FormEngine.Validation`
-    FormEngineValidation.validateField(this.recordField);
   }
 
   /**
