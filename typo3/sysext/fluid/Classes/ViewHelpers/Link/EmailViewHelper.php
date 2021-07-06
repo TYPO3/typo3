@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -82,7 +81,7 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
     {
         $email = $this->arguments['email'];
 
-        if ($this->isFrontendAvailable()) {
+        if (ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()) {
             [$linkHref, $linkText] = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
             $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
         } else {
@@ -98,14 +97,5 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
         $this->tag->forceClosingTag(true);
         return $this->tag->render();
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isFrontendAvailable(): bool
-    {
-        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
     }
 }

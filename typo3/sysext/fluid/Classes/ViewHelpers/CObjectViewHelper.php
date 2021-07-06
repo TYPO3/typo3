@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -136,7 +136,7 @@ class CObjectViewHelper extends AbstractViewHelper
         $typoscriptObjectPath = $arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
-        $contentObjectRenderer = static::getContentObjectRenderer();
+        $contentObjectRenderer = static::getContentObjectRenderer($renderingContext->getRequest());
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             static::simulateFrontendEnvironment();
         }
@@ -209,21 +209,21 @@ class CObjectViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @param ServerRequestInterface $request
      * @return ContentObjectRenderer
      */
-    protected static function getContentObjectRenderer()
+    protected static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
             $tsfe = $GLOBALS['TSFE'];
         } else {
-            $globalRequest = $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
-            $site = $globalRequest->getAttribute('site');
+            $site = $request->getAttribute('site');
             if (!($site instanceof SiteInterface)) {
                 $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
                 $site = reset($sites);
             }
-            $language = $globalRequest->getAttribute('language') ?? $site->getDefaultLanguage();
-            $pageArguments = $globalRequest->getAttribute('routing') ?? new PageArguments(0, '0', []);
+            $language = $request->getAttribute('language') ?? $site->getDefaultLanguage();
+            $pageArguments = $request->getAttribute('routing') ?? new PageArguments(0, '0', []);
             $tsfe = GeneralUtility::makeInstance(
                 TypoScriptFrontendController::class,
                 GeneralUtility::makeInstance(Context::class),

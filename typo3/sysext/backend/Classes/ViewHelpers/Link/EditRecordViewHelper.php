@@ -84,7 +84,7 @@ class EditRecordViewHelper extends AbstractTagBasedViewHelper
             throw new \InvalidArgumentException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526127158);
         }
         if (empty($this->arguments['returnUrl'])) {
-            $this->arguments['returnUrl'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri();
+            $this->arguments['returnUrl'] = $this->renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

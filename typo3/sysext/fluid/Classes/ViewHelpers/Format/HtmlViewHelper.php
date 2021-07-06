@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -112,8 +111,7 @@ class HtmlViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
-        $isBackendRequest = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+        $isBackendRequest = ApplicationType::fromRequest($renderingContext->getRequest())->isBackend();
         if ($isBackendRequest) {
             self::simulateFrontendEnvironment();
         }

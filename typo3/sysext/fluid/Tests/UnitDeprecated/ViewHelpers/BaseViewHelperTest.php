@@ -15,10 +15,11 @@
 
 namespace TYPO3\CMS\Fluid\Tests\UnitDeprecated\ViewHelpers;
 
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -30,15 +31,16 @@ class BaseViewHelperTest extends ViewHelperBaseTestcase
     public function renderTakesBaseUriFromServerRequest()
     {
         $baseUri = 'http://typo3.org/';
-
-        /** @var NormalizedParams|ObjectProphecy $normalizedParams */
         $normalizedParams = $this->prophesize(NormalizedParams::class);
         $normalizedParams->getSiteUrl()->willReturn($baseUri);
-        /** @var ServerRequestInterface|ObjectProphecy $request */
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $request->getAttribute('normalizedParams')->willReturn($normalizedParams->reveal());
-        $GLOBALS['TYPO3_REQUEST'] = $request->reveal();
+        $this->renderingContext->setRequest(
+            new Request(
+                (new ServerRequest())
+                    ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+                    ->withAttribute('extbase', new ExtbaseRequestParameters())
+                    ->withAttribute('normalizedParams', $normalizedParams->reveal())
+            )
+        );
 
         $viewHelper = new BaseViewHelper();
         $this->injectDependenciesIntoViewHelper($viewHelper);

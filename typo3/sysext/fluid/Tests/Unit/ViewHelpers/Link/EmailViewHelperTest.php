@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -42,6 +46,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = $this->createMock(ContentObjectRenderer::class);
         $this->viewHelper = $this->getAccessibleMock(EmailViewHelper::class, ['renderChildren']);
+        $this->renderingContext->setRequest($this->getPreparedRequest());
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
@@ -150,17 +155,27 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         ];
         $GLOBALS['TSFE'] = $tsfe;
         $viewHelper = $this->getMockBuilder(EmailViewHelper::class)
-            ->setMethods(['isFrontendAvailable', 'renderChildren'])
+            ->setMethods(['renderChildren'])
             ->getMock();
-        $viewHelper->expects(self::once())->method('isFrontendAvailable')->willReturn(true);
         $viewHelper->expects(self::once())->method('renderChildren')->willReturn(null);
         $viewHelper->setArguments([
             'email' => $email,
         ]);
+        $this->renderingContext->setRequest($this->getPreparedRequest(SystemEnvironmentBuilder::REQUESTTYPE_FE));
+        $viewHelper->setRenderingContext($this->renderingContext);
         $viewHelper->initialize();
         self::assertSame(
             $expected,
             $viewHelper->render()
+        );
+    }
+
+    protected function getPreparedRequest($applicationType = SystemEnvironmentBuilder::REQUESTTYPE_BE): Request
+    {
+        return new Request(
+            (new ServerRequest())
+                ->withAttribute('applicationType', $applicationType)
+                ->withAttribute('extbase', new ExtbaseRequestParameters())
         );
     }
 }

@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -68,7 +67,7 @@ class BaseViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
-        $request = static::getRequest();
+        $request = $renderingContext->getRequest();
         /** @var NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
         $baseUri = $normalizedParams->getSiteUrl();
@@ -76,13 +75,5 @@ class BaseViewHelper extends AbstractViewHelper
             $baseUri .= TYPO3_mainDir;
         }
         return '<base href="' . htmlspecialchars($baseUri) . '" />';
-    }
-
-    /**
-     * @todo Drop this when $renderingContext->getRequest() returns an implementation of ServerRequestInterface
-     */
-    protected static function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

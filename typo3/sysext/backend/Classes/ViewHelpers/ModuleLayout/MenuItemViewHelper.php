@@ -71,6 +71,7 @@ class MenuItemViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
+        $request = $renderingContext->getRequest();
         $viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
         self::ensureProperNesting($viewHelperVariableContainer);
 
@@ -79,7 +80,7 @@ class MenuItemViewHelper extends AbstractViewHelper
         $menuItem = $menu->makeMenuItem();
         $menuItem->setTitle($arguments['label']);
         $menuItem->setHref($arguments['uri']);
-        $menuItem->setActive(self::isCurrentUri($arguments['uri']));
+        $menuItem->setActive($request->getAttribute('normalizedParams')->getRequestUri() === $arguments['uri']);
         $menu->addMenuItem($menuItem);
     }
 
@@ -92,14 +93,5 @@ class MenuItemViewHelper extends AbstractViewHelper
         if (!$viewHelperVariableContainer->exists(ModuleLayoutViewHelper::class, Menu::class)) {
             throw new Exception(sprintf('%s must be nested in <f.be.moduleLayout.menu> ViewHelper', self::class), 1531235592);
         }
-    }
-
-    /**
-     * @param string $uri
-     * @return bool
-     */
-    protected static function isCurrentUri(string $uri): bool
-    {
-        return $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() === $uri;
     }
 }

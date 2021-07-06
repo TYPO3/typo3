@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
 
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -40,6 +44,14 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsFirstResultOfGetMailTo()
     {
+        $this->renderingContext->setRequest(
+            new Request(
+                (new ServerRequest())
+                    ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+                    ->withAttribute('extbase', new ExtbaseRequestParameters())
+            )
+        );
+
         $this->setArgumentsUnderTest(
             $this->viewHelper,
             [
