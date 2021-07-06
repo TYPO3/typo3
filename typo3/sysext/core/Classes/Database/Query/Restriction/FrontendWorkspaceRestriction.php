@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Restriction to filter records for fronted workspaces preview
+ * @deprecated will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.
  */
 class FrontendWorkspaceRestriction implements QueryRestrictionInterface
 {
@@ -50,6 +51,7 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
      */
     public function __construct(int $workspaceId = null, bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
     {
+        trigger_error('FrontendWorkspaceRestriction will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.', E_USER_DEPRECATED);
         $globalWorkspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
         $this->workspaceId = $workspaceId ?? $globalWorkspaceId;
         $this->includeRowsForWorkspacePreview = $includeRowsForWorkspacePreview ?? $globalWorkspaceId > 0;

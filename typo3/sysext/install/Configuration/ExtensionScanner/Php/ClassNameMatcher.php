@@ -2192,4 +2192,14 @@ return [
             'Deprecation-97536-LinkResultFactory.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction' => [
+        'restFiles' => [
+            'Deprecation-98996-DoctrineDBALBackendWorkspaceRestrictionAndFrontendWorkspaceRestriction.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction' => [
+        'restFiles' => [
+            'Deprecation-98996-DoctrineDBALBackendWorkspaceRestrictionAndFrontendWorkspaceRestriction.rst',
+        ],
+    ],
 ];

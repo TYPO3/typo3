@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
@@ -665,14 +664,12 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
                         $queryBuilder->getRestrictions()->removeByType(StartTimeRestriction::class);
                         $queryBuilder->getRestrictions()->removeByType(EndTimeRestriction::class);
-                        // We remove the FrontendWorkspaceRestriction in this case, because we need to get the LIVE record
+                        // We keep the WorkspaceRestriction in this case, because we need to get the LIVE record
                         // of the language record before doing the version overlay of the language again. WorkspaceRestriction
                         // does this for us, PLUS we need to ensure to get a possible LIVE record first (that's why
                         // the "orderBy" query is there, so the LIVE record is found first), as there might only be a
                         // versioned record (e.g. new version) or both (common for modifying, moving etc).
                         if ($this->hasTableWorkspaceSupport($table)) {
-                            $queryBuilder->getRestrictions()->removeByType(FrontendWorkspaceRestriction::class);
-                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->versioningWorkspaceId));
                             $queryBuilder->orderBy('t3ver_wsid', 'ASC');
                         }
                     }
@@ -1724,8 +1721,8 @@ class PageRepository implements LoggerAwareInterface
             // as well:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
-            // Remove the frontend workspace restriction because we are testing a version record
-            $queryBuilder->getRestrictions()->removeByType(FrontendWorkspaceRestriction::class);
+            // Remove the workspace restriction because we are testing a version record
+            $queryBuilder->getRestrictions()->removeByType(WorkspaceRestriction::class);
             $queryBuilder->select('uid')
                 ->from($table)
                 ->setMaxResults(1);

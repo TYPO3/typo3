@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Restriction to make queries in TYPO3 backend context versioning/ workspace aware
+ * @deprecated will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.
  */
 class BackendWorkspaceRestriction implements QueryRestrictionInterface
 {
@@ -44,6 +45,7 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
      */
     public function __construct(int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
     {
+        trigger_error('BackendWorkspaceRestriction will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.', E_USER_DEPRECATED);
         if ($workspaceId === null) {
             $this->workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
         } else {

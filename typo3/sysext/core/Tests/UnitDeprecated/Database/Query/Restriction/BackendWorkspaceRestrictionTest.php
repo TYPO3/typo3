@@ -15,9 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction\AbstractRestrictionTestCase;
 
 class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {

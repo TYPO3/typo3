@@ -31,9 +31,9 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
     /**
      * @var string[]
      */
-    protected $defaultRestrictionTypes = [
+    protected array $defaultRestrictionTypes = [
         DeletedRestriction::class,
-        FrontendWorkspaceRestriction::class,
+        WorkspaceRestriction::class,
         HiddenRestriction::class,
         StartTimeRestriction::class,
         EndTimeRestriction::class,
@@ -93,5 +93,13 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
             }
         }
         return $expressionBuilder->and(...$constraints);
+    }
+
+    protected function createRestriction($restrictionClass): QueryRestrictionInterface
+    {
+        if ($restrictionClass === WorkspaceRestriction::class) {
+            return GeneralUtility::makeInstance($restrictionClass, (int)$this->context->getPropertyFromAspect('workspace', 'id', 0));
+        }
+        return parent::createRestriction($restrictionClass);
     }
 }
