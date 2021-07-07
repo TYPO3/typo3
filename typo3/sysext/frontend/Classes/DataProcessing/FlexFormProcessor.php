@@ -23,14 +23,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * This data processor converts the XML structure of a given FlexForm field
  * into a fluid readable array.
  *
  * Options:
- * fieldname - The name of the field containing the FlexForm to be converted
- * as        - The variable, the generated array should be assigned to
+ * fieldname      - The name of the field containing the FlexForm to be converted
+ * references     - A key / value list for fields with file references to process
+ * dataProcessing - Additional sub DataProcessors to process
+ * as             - The variable, the generated array should be assigned to
  *
  * Example of a minimal TypoScript configuration, which processes the field
  * `pi_flexform` and assigns the array to the `flexFormData` variable:
@@ -38,11 +41,21 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  * 10 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
  *
  * Example of an advanced TypoScript configuration, which processes the field
- * `my_flexform_field` and assigns the array to the `myOutputVariable` variable:
+ * `my_flexform_field`, resolves its FAL references and assigns the array to the
+ * `myOutputVariable` variable:
  *
  * 10 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
  * 10 {
  *   fieldName = my_flexform_field
+ *   references {
+ *       my_flex_form_group.my_flex_form_field = my_field_reference
+ *   }
+ *   dataProcessing {
+ *     10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+ *     10 {
+ *        references.fieldName = media
+ *     }
+ *   }
  *   as = myOutputVariable
  * }
  */
@@ -76,18 +89,45 @@ class FlexFormProcessor implements DataProcessorInterface
         $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)
             ->convertFlexFormContentToArray($originalValue);
 
-        // Set the target variable
-        $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'flexFormData');
+        // Process FAL references
+        if (isset($processorConfiguration['references.']) && is_array($processorConfiguration['references.'])) {
+            $this->processFileReferences($cObj, $flexFormData, $processorConfiguration['references.']);
+        }
 
+        // Process additional DataProcessors
         if (isset($processorConfiguration['dataProcessing.']) && is_array($processorConfiguration['dataProcessing.'])) {
             // @todo: It looks as if data processors should retrieve the current request from the outside,
             //        this would avoid $cObj->getRequest() here.
             $flexFormData = $this->processAdditionalDataProcessors($flexFormData, $processorConfiguration, $cObj->getRequest());
         }
 
+        // Set the target variable
+        $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'flexFormData');
         $processedData[$targetVariableName] = $flexFormData;
 
         return $processedData;
+    }
+
+    /**
+     * Recursively process FAL references and replace them by FAL objects.
+     */
+    protected function processFileReferences(ContentObjectRenderer $cObj, array &$data, array $fields): void
+    {
+        foreach ($fields as $key => $field) {
+            $key = rtrim($key, '.');
+
+            if (!isset($data[$key])) {
+                continue;
+            }
+            if (is_array($field)) {
+                $this->processFileReferences($cObj, $data[$key], $field);
+            } else {
+                $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
+                $fileCollector->addFilesFromRelation($cObj->getCurrentTable(), $field, $cObj->data);
+
+                $data[$key] = $fileCollector->getFiles();
+            }
+        }
     }
 
     /**

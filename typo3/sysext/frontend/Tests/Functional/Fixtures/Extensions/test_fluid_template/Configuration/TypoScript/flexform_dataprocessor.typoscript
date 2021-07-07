@@ -1,0 +1,33 @@
+tt_content {
+  testfluidtemplate_flexformdataprocessor = FLUIDTEMPLATE
+  testfluidtemplate_flexformdataprocessor {
+    templateName = FlexformDataProcessor
+
+    templateRootPaths {
+      0 = EXT:test_fluid_template/Resources/Private/Templates/ContentElements
+    }
+
+    dataProcessing {
+      1 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
+      1 {
+        fieldName = pi_flexform
+        references {
+          settings.my_flexform_field = settings.my_flexform_field
+        }
+        as = flexform
+      }
+    }
+  }
+}
+
+page = PAGE
+page {
+  1 = CONTENT
+  1 {
+    table = tt_content
+    select {
+      orderBy = sorting
+      where = {#colPos}=0
+    }
+  }
+}

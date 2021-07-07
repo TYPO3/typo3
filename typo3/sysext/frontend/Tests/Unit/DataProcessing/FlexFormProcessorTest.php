@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlexFormProcessorTest extends UnitTestCase
@@ -231,20 +232,72 @@ final class FlexFormProcessorTest extends UnitTestCase
         self::assertSame(array_merge($processedData, ['flexFormData' => $renderedDataFromProcessors]), $actual);
     }
 
+    /**
+     * @test
+     */
+    public function falReferenceIsResolved(): void
+    {
+        $this->prepareFlexFormServiceWithFalReferences();
+
+        $processorConfiguration = [];
+        $processorConfiguration['references.']['options.'] = [
+            'image' => 'my_flexform_image',
+        ];
+
+        $renderedDataFromProcessors = [
+            'options' => [
+                'hotels' => 0,
+                'image' => [
+                    0 => 'img/foo.jpg',
+                ],
+            ],
+        ];
+
+        $this->contentObjectRendererMock->method('stdWrapValue')->willReturnMap([
+            ['fieldName', $processorConfiguration, 'pi_flexform', 'pi_flexform'],
+            ['as', $processorConfiguration, 'flexFormData', 'flexFormData'],
+        ]);
+        $this->contentObjectRendererMock->method('getCurrentTable')->willReturn('tt_content');
+        $fileCollectorMock = $this->getMockBuilder(FileCollector::class)->disableOriginalConstructor()->getMock();
+        $fileCollectorMock
+            ->expects(self::exactly(1))
+            ->method('addFilesFromRelation')
+            ->with('tt_content', $processorConfiguration['references.']['options.']['image'], []);
+        $fileCollectorMock->method('getFiles')->willReturn($renderedDataFromProcessors['options']['image']);
+
+        GeneralUtility::addInstance(FileCollector::class, $fileCollectorMock);
+
+        $processedData = [
+            'data' => [
+                'pi_flexform' => $this->getFlexFormStructure(),
+            ],
+        ];
+        $subject = new FlexFormProcessor();
+        $actual = $subject->process(
+            $this->contentObjectRendererMock,
+            [],
+            $processorConfiguration,
+            $processedData
+        );
+
+        self::assertIsArray($actual['flexFormData']);
+        self::assertSame(array_merge($processedData, ['flexFormData' => $renderedDataFromProcessors]), $actual);
+    }
+
     private function getFlexFormStructure(): string
     {
         return '<![CDATA[<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'
             . '<T3FlexForms>
-                        <data>
-                            <sheet index="options">
-                                <language index="lDEF">
-                                    <field index="hotels">
-                                        <value index="vDEF">0</value>
-                                    </field>
-                                </language>
-                            </sheet>
-                        </data>
-                    </T3FlexForms>'
+                <data>
+                    <sheet index="options">
+                        <language index="lDEF">
+                            <field index="hotels">
+                                <value index="vDEF">0</value>
+                            </field>
+                        </language>
+                    </sheet>
+                </data>
+            </T3FlexForms>'
             . ']]>';
     }
 
@@ -271,6 +324,20 @@ final class FlexFormProcessorTest extends UnitTestCase
         ];
 
         $flexFormService = $this->getMockBuilder(FlexFormService::class)->disableOriginalConstructor()->getMock();
+        $flexFormService->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService);
+    }
+
+    private function prepareFlexFormServiceWithFalReferences(): void
+    {
+        $convertedFlexFormData = [
+            'options' => [
+                'hotels' => 0,
+                'image' => 123,
+            ],
+        ];
+
+        $flexFormService = $this->getMockBuilder(FlexFormService::class)->getMock();
         $flexFormService->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
         GeneralUtility::setSingletonInstance(FlexFormService::class, $flexFormService);
     }

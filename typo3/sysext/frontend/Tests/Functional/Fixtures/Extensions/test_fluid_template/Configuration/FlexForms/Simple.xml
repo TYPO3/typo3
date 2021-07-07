@@ -1,0 +1,62 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>Sheet Title</sheetTitle>
+                <type>array</type>
+                <el>
+                    <settings.my_flexform_field>
+                        <label>my_flexform_field</label>
+                        <config>
+                            <type>file</type>
+                            <maxitems>9</maxitems>
+                            <foreign_selector_fieldTcaOverride>
+                                <config>
+                                    <appearance>
+                                        <elementBrowserType>file</elementBrowserType>
+                                        <elementBrowserAllowed>gif,jpg,jpeg,png,svg</elementBrowserAllowed>
+                                    </appearance>
+                                </config>
+                            </foreign_selector_fieldTcaOverride>
+                            <foreign_types type="array">
+                                <numIndex index="0">
+                                    <showitem>--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette</showitem>
+                                </numIndex>
+                                <numIndex index="2">
+                                    <showitem>--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette</showitem>
+                                </numIndex>
+                            </foreign_types>
+                            <appearance type="array">
+                                <headerThumbnail>
+                                    <height>64</height>
+                                    <width>64</width>
+                                </headerThumbnail>
+                                <enabledControls>
+                                    <info>1</info>
+                                    <dragdrop>0</dragdrop>
+                                    <sort>1</sort>
+                                    <hide>0</hide>
+                                    <delete>1</delete>
+                                    <localize>1</localize>
+                                </enabledControls>
+                                <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
+                            </appearance>
+                            <behaviour>
+                                <localizationMode>select</localizationMode>
+                                <localizeChildrenAtParentLocalization>1</localizeChildrenAtParentLocalization>
+                            </behaviour>
+                            <overrideChildTca>
+                                <types type="array">
+                                    <numIndex index="2">
+                                        <showitem>--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette</showitem>
+                                    </numIndex>
+                                </types>
+                            </overrideChildTca>
+                            <allowed>jpg,png,svg,jpeg,gif</allowed>
+                        </config>
+                    </settings.my_flexform_field>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>
