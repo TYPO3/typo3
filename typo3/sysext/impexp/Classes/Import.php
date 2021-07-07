@@ -956,14 +956,10 @@ class Import extends ImportExport
     public function unlinkTempFiles()
     {
         foreach ($this->unlinkFiles as $fileName) {
-            if (GeneralUtility::isFirstPartOfStr($fileName, Environment::getPublicPath() . '/typo3temp/')) {
-                GeneralUtility::unlink_tempfile($fileName);
-                clearstatcache();
-                if (is_file($fileName)) {
-                    $this->error('Error: ' . $fileName . ' was NOT unlinked as it should have been!');
-                }
-            } else {
-                $this->error('Error: ' . $fileName . ' was not in temp-path. Not removed!');
+            GeneralUtility::unlink_tempfile($fileName);
+            clearstatcache();
+            if (is_file($fileName)) {
+                $this->error('Error: ' . $fileName . ' was NOT unlinked as it should have been!');
             }
         }
         $this->unlinkFiles = [];
