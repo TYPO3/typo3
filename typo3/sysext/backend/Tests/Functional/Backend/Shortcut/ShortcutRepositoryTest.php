@@ -150,7 +150,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'edit',
                 'label' => 'Edit Content',
                 'icon' => 'data-identifier="mimetypes-x-content-text"',
-                'action' => '\u0026edit%5Btt_content%5D%5B113%5D=edit\',\'record_edit\',\'record_edit\', 0);'
+                'action' => '\u0026edit%5Btt_content%5D%5B113%5D=edit\',\'record_edit\',\'record_edit\', 321);'
             ],
             6 => [
                 'table' => null,

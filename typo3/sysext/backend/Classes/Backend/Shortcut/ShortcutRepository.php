@@ -28,8 +28,11 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -214,8 +217,10 @@ class ShortcutRepository
                         break;
                 }
             }
-            // Check if given id is a combined identifier
-            if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
+
+            $moduleName = $this->getModuleNameFromRouteIdentifier($routeIdentifier);
+            $id = (string)($queryParameters['id'] ?? '');
+            if ($moduleName === 'file_FilelistList' && $id !== '') {
                 try {
                     $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                     $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
@@ -228,7 +233,7 @@ class ShortcutRepository
                 }
             } else {
                 // Lookup the title of this page and use it as default description
-                $pageId = $pageId ?: $recordId ?: (int)($queryParameters['id'] ?? 0);
+                $pageId = $pageId ?: $recordId ?: (int)$id;
                 $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
 
                 if (!empty($page)) {
@@ -465,12 +470,13 @@ class ShortcutRepository
             ->execute();
 
         while ($row = $result->fetch()) {
+            $pageId = 0;
             $shortcut = ['raw' => $row];
             $routeIdentifier = $row['route'] ?? '';
             $arguments = json_decode($row['arguments'] ?? '', true) ?? [];
 
             if ($routeIdentifier === 'record_edit' && is_array($arguments['edit'])) {
-                $shortcut['table'] = key($arguments['edit']);
+                $shortcut['table'] = (string)(key($arguments['edit']) ?? '');
                 $shortcut['recordid'] = key($arguments['edit'][$shortcut['table']]);
 
                 if ($arguments['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
@@ -498,15 +504,55 @@ class ShortcutRepository
             if ($routeIdentifier !== 'record_edit' && !is_array($this->moduleLoader->checkMod($moduleName))) {
                 continue;
             }
-            if (($pageId = ((int)($arguments['id'] ?? 0))) > 0 && !$backendUser->isAdmin()) {
-                // Check for webmount access
-                if ($backendUser->isInWebMount($pageId) === null) {
-                    continue;
+
+            if ($moduleName === 'file_FilelistList') {
+                $combinedIdentifier = (string)($arguments['id'] ?? '');
+                if ($combinedIdentifier !== '') {
+                    $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByCombinedIdentifier($combinedIdentifier);
+                    if ($storage === null || $storage->getUid() === 0) {
+                        // Continue, if invalid storage or disallowed fallback storage
+                        continue;
+                    }
+                    $folderIdentifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
+                    try {
+                        // By using $storage->getFolder() we implicitly check whether the folder
+                        // still exists and the user has necessary permissions to access it.
+                        $storage->getFolder($folderIdentifier);
+                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                        // Continue, since current user does not have access to the folder
+                        continue;
+                    } catch (FolderDoesNotExistException $e) {
+                        // Folder does not longer exists. However, the shortcut
+                        // is still displayed, allowing the user to remove it.
+                    }
                 }
-                // Check for record access
-                $pageRow = BackendUtility::getRecord('pages', $pageId);
-                if ($pageRow === null || !$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
-                    continue;
+            } else {
+                if ($moduleName === 'record_edit' && isset($shortcut['table'], $shortcut['recordid'])) {
+                    // Check if user is allowed to edit the requested record
+                    if (!$backendUser->check('tables_modify', $shortcut['table'])) {
+                        continue;
+                    }
+                    $record = BackendUtility::getRecord($shortcut['table'], (int)$shortcut['recordid']);
+                    // Check if requested record exists
+                    if ($record === null || $record === []) {
+                        continue;
+                    }
+                    // Store the page id of the record in question
+                    $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid']));
+                } else {
+                    // In case this is no record edit shortcut, treat a possible "id" as page id
+                    $pageId = (int)($arguments['id'] ?? 0);
+                }
+                if ($pageId > 0 && !$backendUser->isAdmin()) {
+                    // Check for webmount access
+                    if ($backendUser->isInWebMount($pageId) === null) {
+                        continue;
+                    }
+                    // Check for record access
+                    $pageRow = BackendUtility::getRecord('pages', $pageId);
+                    if ($pageRow === null || !$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
+                        continue;
+                    }
                 }
             }
 
