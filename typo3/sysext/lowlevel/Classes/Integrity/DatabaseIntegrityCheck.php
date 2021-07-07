@@ -147,9 +147,19 @@ class DatabaseIntegrityCheck
             if ($row['deleted']) {
                 $this->recStats['deleted']['pages'][$newID] = $newID;
             }
+
+            if (!isset($this->recStats['hidden'])) {
+                $this->recStats['hidden'] = 0;
+            }
+
             if ($row['hidden']) {
                 $this->recStats['hidden']++;
             }
+
+            if (!is_array($this->recStats['doktype'][$row['doktype']] ?? false)) {
+                $this->recStats['doktype'][$row['doktype']] = 0;
+            }
+
             $this->recStats['doktype'][$row['doktype']]++;
             // If all records should be shown, do so:
             if ($this->genTreeIncludeRecords) {
@@ -436,7 +446,7 @@ class DatabaseIntegrityCheck
 
             while ($row = $queryResult->fetch()) {
                 foreach ($fields as $field) {
-                    if (trim($row[$field])) {
+                    if (trim($row[$field] ?? '')) {
                         $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                         if ($fieldConf['type'] === 'group' && $fieldConf['internal_type'] === 'db') {
                             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);

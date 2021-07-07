@@ -360,11 +360,11 @@ class DatabaseIntegrityController
         }
         $submenu .= '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->getLL('showSQL') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->getLL('useFormattedStrings') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->getLL('dontUseOrigValues') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'], '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
-            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
+            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', '', '', 'id="checkSearch_query_smallparts"') . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->getLL('showSQL') . '</label></div>';
+            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', '', '', 'id="checkSearch_result_labels"') . '<label class="form-check-label" for="checkSearch_result_labels">' . $lang->getLL('useFormattedStrings') . '</label></div>';
+            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'] ?? '', '', '', 'id="checkLabels_noprefix"') . '<label class="form-check-label" for="checkLabels_noprefix">' . $lang->getLL('dontUseOrigValues') . '</label></div>';
+            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
+            $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
         }
         $this->view->assign('submenu', $submenu);
         $this->view->assign('searchMode', $searchMode);
@@ -441,7 +441,7 @@ class DatabaseIntegrityController
         $countArr = $admin->countRecords($id_list);
         if (is_array($GLOBALS['TCA'])) {
             foreach ($GLOBALS['TCA'] as $t => $value) {
-                if ($GLOBALS['TCA'][$t]['ctrl']['hideTable']) {
+                if ($GLOBALS['TCA'][$t]['ctrl']['hideTable'] ?? false) {
                     continue;
                 }
                 if ($t === 'pages' && $admin->getLostPagesList() !== '') {
@@ -449,13 +449,13 @@ class DatabaseIntegrityController
                 } else {
                     $lostRecordCount = isset($admin->getLRecords()[$t]) ? count($admin->getLRecords()[$t]) : 0;
                 }
-                if ($countArr['all'][$t]) {
+                if ($countArr['all'][$t] ?? false) {
                     $theNumberOfRe = (int)$countArr['non_deleted'][$t] . '/' . $lostRecordCount;
                 } else {
                     $theNumberOfRe = '';
                 }
                 $lr = '';
-                if (is_array($admin->getLRecords()[$t])) {
+                if (is_array($admin->getLRecords()[$t] ?? false)) {
                     foreach ($admin->getLRecords()[$t] as $data) {
                         if (!GeneralUtility::inList($admin->getLostPagesList(), $data['pid'])) {
                             $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid']) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';

@@ -318,7 +318,7 @@ class QueryGenerator
         $markup = [];
         $markup[] = '<div class="form-group">';
         $markup[] = '<input placeholder="Search Word" class="form-control" type="search" name="SET[sword]" value="'
-            . htmlspecialchars($this->settings['sword']) . '">';
+            . htmlspecialchars($this->settings['sword'] ?? '') . '">';
         $markup[] = '</div>';
         $markup[] = '<div class="form-group">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="Search All Records">';
@@ -337,13 +337,13 @@ class QueryGenerator
         $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
         $msg = $this->procesStoreControl();
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
-        if (!$userTsConfig['mod.']['dbint.']['disableStoreControl']) {
+        if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
             $output .= '<h2>Load/Save Query</h2>';
             $output .= '<div>' . $this->makeStoreControl() . '</div>';
             $output .= $msg;
         }
         // Query Maker:
-        $this->init('queryConfig', $this->settings['queryTable'], '', $this->settings);
+        $this->init('queryConfig', $this->settings['queryTable'] ?? '', '', $this->settings);
         if ($this->formName) {
             $this->setFormName($this->formName);
         }
@@ -379,7 +379,7 @@ class QueryGenerator
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
                     }
-                    if (!$userTsConfig['mod.']['dbint.']['disableShowSQLQuery']) {
+                    if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
                     }
                     $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table);
@@ -405,7 +405,7 @@ class QueryGenerator
      */
     public function search()
     {
-        $swords = $this->settings['sword'];
+        $swords = $this->settings['sword'] ?? '';
         $out = '';
         if ($swords) {
             foreach ($GLOBALS['TCA'] as $table => $value) {
@@ -547,7 +547,7 @@ class QueryGenerator
         $storeArray = [
             '0' => '[New]'
         ];
-        $savedStoreArray = unserialize($this->settings['storeArray'], ['allowed_classes' => false]);
+        $savedStoreArray = unserialize($this->settings['storeArray'] ?? '', ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
         }
@@ -667,14 +667,14 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         $flashMessage = null;
         $storeArray = $this->initStoreArray();
-        $storeQueryConfigs = unserialize($this->settings['storeQueryConfigs'], ['allowed_classes' => false]);
+        $storeQueryConfigs = unserialize($this->settings['storeQueryConfigs'] ?? '', ['allowed_classes' => false]);
         $storeControl = GeneralUtility::_GP('storeControl');
-        $storeIndex = (int)$storeControl['STORE'];
+        $storeIndex = (int)($storeControl['STORE'] ?? 0);
         $saveStoreArray = 0;
         $writeArray = [];
         $msg = '';
         if (is_array($storeControl)) {
-            if ($storeControl['LOAD']) {
+            if ($storeControl['LOAD'] ?? false) {
                 if ($storeIndex > 0) {
                     $writeArray = $this->loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray);
                     $saveStoreArray = 1;
@@ -698,7 +698,7 @@ class QueryGenerator
                         );
                     }
                 }
-            } elseif ($storeControl['SAVE']) {
+            } elseif ($storeControl['SAVE'] ?? false) {
                 if ($storeIndex < 0) {
                     $qOK = $this->saveQueryInAction(abs($storeIndex));
                     if ($qOK) {
@@ -731,7 +731,7 @@ class QueryGenerator
                         );
                     }
                 }
-            } elseif ($storeControl['REMOVE']) {
+            } elseif ($storeControl['REMOVE'] ?? false) {
                 if ($storeIndex > 0) {
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,
@@ -788,7 +788,7 @@ class QueryGenerator
                 foreach ($dataRows as $dataRow) {
                     $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table);
                 }
-                if (is_array($this->hookArray['beforeResultTable'])) {
+                if (is_array($this->hookArray['beforeResultTable'] ?? false)) {
                     foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
                         $out .= GeneralUtility::callUserFunction($_funcRef, $this->settings);
                     }
@@ -882,12 +882,12 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         $out = '<tr>';
         foreach ($row as $fieldName => $fieldValue) {
-            if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
-                || !$this->settings['queryFields']
+            if (GeneralUtility::inList($this->settings['queryFields'] ?? '', $fieldName)
+                || !($this->settings['queryFields'] ?? false)
                 && $fieldName !== 'pid'
                 && $fieldName !== 'deleted'
             ) {
-                if ($this->settings['search_result_labels']) {
+                if ($this->settings['search_result_labels'] ?? false) {
                     $fVnew = $this->getProcessedValueExtra($table, $fieldName, $fieldValue, $conf, '<br />');
                 } else {
                     $fVnew = htmlspecialchars($fieldValue);
@@ -898,7 +898,7 @@ class QueryGenerator
         $out .= '<td>';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
-        if (!$row['deleted']) {
+        if (!($row['deleted'] ?? false)) {
             $out .= '<div class="btn-group" role="group">';
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
@@ -955,7 +955,7 @@ class QueryGenerator
             $out .= '</div>';
         }
         $_params = [$table => $row];
-        if (is_array($this->hookArray['additionalButtons'])) {
+        if (is_array($this->hookArray['additionalButtons'] ?? false)) {
             foreach ($this->hookArray['additionalButtons'] as $_funcRef) {
                 $out .= GeneralUtility::callUserFunction($_funcRef, $_params);
             }
@@ -1357,12 +1357,12 @@ class QueryGenerator
         $tableHeader[] = '<thead><tr>';
         // Iterate over given columns
         foreach ($row as $fieldName => $fieldValue) {
-            if (GeneralUtility::inList($this->settings['queryFields'], $fieldName)
-                || !$this->settings['queryFields']
+            if (GeneralUtility::inList($this->settings['queryFields'] ?? '', $fieldName)
+                || !($this->settings['queryFields'] ?? false)
                 && $fieldName !== 'pid'
                 && $fieldName !== 'deleted'
             ) {
-                if ($this->settings['search_result_labels']) {
+                if ($this->settings['search_result_labels'] ?? false) {
                     $title = $languageService->sL($conf['columns'][$fieldName]['label']
                         ?: $fieldName);
                 } else {
@@ -1411,7 +1411,7 @@ class QueryGenerator
             if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id']) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['sortby'];
             }
         }
@@ -1429,25 +1429,25 @@ class QueryGenerator
     protected function init($name, $table, $fieldList = '', array $settings = [])
     {
         // Analysing the fields in the table.
-        if (is_array($GLOBALS['TCA'][$table])) {
+        if (is_array($GLOBALS['TCA'][$table] ?? false)) {
             $this->name = $name;
             $this->table = $table;
             $this->fieldList = $fieldList ?: $this->makeFieldList();
             $this->settings = $settings;
             $fieldArr = GeneralUtility::trimExplode(',', $this->fieldList, true);
             foreach ($fieldArr as $fieldName) {
-                $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];
-                $this->fields[$fieldName] = $fC['config'];
-                $this->fields[$fieldName]['exclude'] = $fC['exclude'];
-                if ($this->fields[$fieldName]['type'] === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
-                    || $this->fields[$fieldName]['type'] === 'none'
+                $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName] ?? [];
+                $this->fields[$fieldName] = $fC['config'] ?? [];
+                $this->fields[$fieldName]['exclude'] = $fC['exclude'] ?? '';
+                if (($this->fields[$fieldName]['type'] ?? '') === 'user' && !isset($this->fields[$fieldName]['type']['userFunc'])
+                    || ($this->fields[$fieldName]['type'] ?? '') === 'none'
                 ) {
                     // Do not list type=none "virtual" fields or query them from db,
                     // and if type is user without defined userFunc
                     unset($this->fields[$fieldName]);
                     continue;
                 }
-                if (is_array($fC) && $fC['label']) {
+                if (is_array($fC) && ($fC['label'] ?? false)) {
                     $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fC['label'])), ':');
                     switch ($this->fields[$fieldName]['type']) {
                         case 'input':
@@ -1473,10 +1473,10 @@ class QueryGenerator
                             break;
                         case 'select':
                             $this->fields[$fieldName]['type'] = 'multiple';
-                            if ($this->fields[$fieldName]['foreign_table']) {
+                            if ($this->fields[$fieldName]['foreign_table'] ?? false) {
                                 $this->fields[$fieldName]['type'] = 'relation';
                             }
-                            if ($this->fields[$fieldName]['special']) {
+                            if ($this->fields[$fieldName]['special'] ?? false) {
                                 $this->fields[$fieldName]['type'] = 'text';
                             }
                             break;
@@ -1583,7 +1583,7 @@ class QueryGenerator
         $this->queryConfig = $qC;
         $POST = GeneralUtility::_POST();
         // If delete...
-        if ($POST['qG_del']) {
+        if ($POST['qG_del'] ?? false) {
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_del']);
             $workArr = &$this->queryConfig;
@@ -1601,7 +1601,7 @@ class QueryGenerator
             }
         }
         // If insert...
-        if ($POST['qG_ins']) {
+        if ($POST['qG_ins'] ?? false) {
             // Initialize array to work on, save special parameters
             $ssArr = $this->getSubscript($POST['qG_ins']);
             $workArr = &$this->queryConfig;
@@ -1620,7 +1620,7 @@ class QueryGenerator
             $workArr[$ssArr[$i] + 1]['type'] = 'FIELD_';
         }
         // If move up...
-        if ($POST['qG_up']) {
+        if ($POST['qG_up'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_up']);
             $workArr = &$this->queryConfig;
@@ -1635,7 +1635,7 @@ class QueryGenerator
             $workArr[$ssArr[$i] - 1] = $qG_tmp;
         }
         // If new level...
-        if ($POST['qG_nl']) {
+        if ($POST['qG_nl'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_nl']);
             $workArr = &$this->queryConfig;
@@ -1657,7 +1657,7 @@ class QueryGenerator
             }
         }
         // If collapse level...
-        if ($POST['qG_remnl']) {
+        if ($POST['qG_remnl'] ?? false) {
             // Initialize array to work on
             $ssArr = $this->getSubscript($POST['qG_remnl']);
             $workArr = &$this->queryConfig;
@@ -2535,7 +2535,7 @@ class QueryGenerator
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
 
         // Make output
-        if (in_array('table', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectATable']) {
+        if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
             $out[] = '<div class="form-group">';
             $out[] = '	<label for="SET[queryTable]">Select a table:</label>';
             $out[] =    $this->mkTableSelect('SET[queryTable]', $this->table);
@@ -2543,16 +2543,16 @@ class QueryGenerator
         }
         if ($this->table) {
             // Init fields:
-            $this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'], 'uid,' . $this->getLabelCol());
-            $this->setAndCleanUpExternalLists('queryGroup', $modSettings['queryGroup']);
-            $this->setAndCleanUpExternalLists('queryOrder', $modSettings['queryOrder'] . ',' . $modSettings['queryOrder2']);
+            $this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'] ?? '', 'uid,' . $this->getLabelCol());
+            $this->setAndCleanUpExternalLists('queryGroup', $modSettings['queryGroup'] ?? '');
+            $this->setAndCleanUpExternalLists('queryOrder', ($modSettings['queryOrder'] ?? '') . ',' . ($modSettings['queryOrder2'] ?? ''));
             // Limit:
-            $this->extFieldLists['queryLimit'] = $modSettings['queryLimit'];
+            $this->extFieldLists['queryLimit'] = $modSettings['queryLimit'] ?? '';
             if (!$this->extFieldLists['queryLimit']) {
                 $this->extFieldLists['queryLimit'] = 100;
             }
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
-            if ($parts[1]) {
+            if ($parts[1] ?? false) {
                 $this->limitBegin = $parts[0];
                 $this->limitLength = $parts[1];
             } else {
@@ -2570,35 +2570,35 @@ class QueryGenerator
                 $this->extFieldLists['queryOrder_SQL'] = implode(',', $reList);
             }
             // Query Generator:
-            $this->procesData($modSettings['queryConfig'] ? unserialize($modSettings['queryConfig'], ['allowed_classes' => false]) : []);
+            $this->procesData(($modSettings['queryConfig'] ?? false) ? unserialize($modSettings['queryConfig'] ?? '', ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
             $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
-            if (in_array('fields', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableSelectFields']) {
+            if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
                 $out[] = '<div class="form-group form-group-with-button-addon">';
                 $out[] = '	<label for="SET[queryFields]">Select fields:</label>';
                 $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
-            if (in_array('query', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableMakeQuery']) {
+            if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
                 $out[] = '<div class="form-group">';
                 $out[] = '	<label>Make Query:</label>';
                 $out[] =    $queryCode;
                 $out[] = '</div>';
             }
-            if (in_array('group', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableGroupBy']) {
+            if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
                 $out[] = '<div class="form-group form-inline">';
                 $out[] = '	<label for="SET[queryGroup]">Group By:</label>';
                 $out[] =     $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
-            if (in_array('order', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableOrderBy']) {
+            if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
                 $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
                 $orderBy[] = '<div class="form-check">';
-                $orderBy[] =    BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] =    BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', '', '', 'id="checkQueryOrderDesc"');
                 $orderBy[] = '	<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
                 $orderBy[] = '</div>';
 
@@ -2614,7 +2614,7 @@ class QueryGenerator
                 $out[] =     implode(LF, $orderBy);
                 $out[] = '</div>';
             }
-            if (in_array('limit', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableLimit']) {
+            if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
                 $limit[] = '	<span class="input-group-btn">';

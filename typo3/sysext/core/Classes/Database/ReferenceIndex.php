@@ -408,7 +408,7 @@ class ReferenceIndex implements LoggerAwareInterface
         foreach ($keys as $spKey => $elements) {
             if (is_array($elements)) {
                 foreach ($elements as $subKey => $el) {
-                    if (is_array($el['subst'])) {
+                    if (is_array($el['subst'] ?? false)) {
                         switch ((string)$el['subst']['type']) {
                             case 'db':
                                 [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
