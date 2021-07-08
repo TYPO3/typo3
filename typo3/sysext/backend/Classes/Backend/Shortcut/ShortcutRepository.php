@@ -28,11 +28,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Repository for backend shortcuts
@@ -232,11 +233,13 @@ class ShortcutRepository
             }
         }
 
-        // Check if given id is a combined identifier
-        if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
+        $moduleName = $module ?: $parentModule;
+        $id = $this->extractIdFromShortcutUrl($moduleName, $url);
+        if ($moduleName === 'file_FilelistList' && $id !== '') {
+            // If filelist module, check if the id is a valid module identifier
             try {
                 $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
+                $resource = $resourceFactory->getObjectFromCombinedIdentifier($id);
                 $title = trim(sprintf(
                     '%s (%s)',
                     $titlePrefix,
@@ -246,7 +249,7 @@ class ShortcutRepository
             }
         } else {
             // Lookup the title of this page and use it as default description
-            $pageId = $pageId ?: $recordId ?: $this->extractPageIdFromShortcutUrl($url);
+            $pageId = $pageId ?: $recordId ?: (int)$id;
             $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
 
             if (!empty($page)) {
@@ -484,6 +487,7 @@ class ShortcutRepository
             ->execute();
 
         while ($row = $result->fetch()) {
+            $pageId = 0;
             $shortcut = ['raw' => $row];
 
             [$row['module_name'], $row['M_module_name']] = explode('|', $row['module_name']);
@@ -519,22 +523,53 @@ class ShortcutRepository
                 continue;
             }
 
-            $pageId = $this->extractPageIdFromShortcutUrl($row['url']);
-
-            if (!$backendUser->isAdmin()) {
-                if (MathUtility::canBeInterpretedAsInteger($pageId)) {
+            if ($moduleName === 'file_FilelistList') {
+                $combinedIdentifier = $this->extractIdFromShortcutUrl($moduleName, $row['url'] ?? '');
+                if ($combinedIdentifier !== '') {
+                    try {
+                        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                        $storage = $resourceFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+                        if ($storage === null || $storage->getUid() === 0) {
+                            // Continue, if invalid storage or disallowed fallback storage
+                            continue;
+                        }
+                        $folderIdentifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
+                        // By using $storage->getFolder() we implicitly check whether the folder
+                        // still exists and the user has necessary permissions to access it.
+                        $storage->getFolder($folderIdentifier);
+                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                        // Continue, since current user does not have access to the folder
+                        continue;
+                    } catch (FolderDoesNotExistException $e) {
+                        // Folder does not longer exists. However, the shortcut
+                        // is still displayed, allowing the user to remove it.
+                    }
+                }
+            } else {
+                if ($moduleName === 'xMOD_alt_doc.php' && isset($shortcut['table'], $shortcut['recordid'])) {
+                    // Check if user is allowed to edit the requested record
+                    if (!$backendUser->check('tables_modify', $shortcut['table'])) {
+                        continue;
+                    }
+                    $record = BackendUtility::getRecord($shortcut['table'], (int)$shortcut['recordid']);
+                    // Check if requested record exists
+                    if ($record === null || $record === []) {
+                        continue;
+                    }
+                    // Store the page id of the record in question
+                    $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid']));
+                } else {
+                    // In case this is no record edit shortcut, treat a possible "id" as page id
+                    $pageId = (int)$this->extractIdFromShortcutUrl($moduleName, $row['url'] ?? '');
+                }
+                if ($pageId > 0 && !$backendUser->isAdmin()) {
                     // Check for webmount access
                     if ($backendUser->isInWebMount($pageId) === null) {
                         continue;
                     }
                     // Check for record access
                     $pageRow = BackendUtility::getRecord('pages', $pageId);
-
-                    if ($pageRow === null) {
-                        continue;
-                    }
-
-                    if (!$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
+                    if ($pageRow === null || !$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
                         continue;
                     }
                 }
@@ -558,7 +593,7 @@ class ShortcutRepository
             $shortcut['group'] = $shortcutGroup;
             $shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
             $shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
-            $shortcut['action'] = 'jump(' . GeneralUtility::quoteJSvalue($this->getTokenUrl($row['url'])) . ',' . GeneralUtility::quoteJSvalue($moduleName) . ',' . GeneralUtility::quoteJSvalue($moduleParts[0]) . ', ' . (int)$pageId . ');';
+            $shortcut['action'] = 'jump(' . GeneralUtility::quoteJSvalue($this->getTokenUrl($row['url'])) . ',' . GeneralUtility::quoteJSvalue($moduleName) . ',' . GeneralUtility::quoteJSvalue($moduleParts[0]) . ', ' . $pageId . ');';
 
             $shortcuts[] = $shortcut;
         }
@@ -679,14 +714,28 @@ class ShortcutRepository
     }
 
     /**
-     * Return the ID of the page in the URL if found.
+     * Get the id from the shortcut url. This could
+     * either be the page id or the combined identifier.
      *
-     * @param string $url The URL of the current shortcut link
-     * @return int If a page ID was found, it is returned. Otherwise: 0
+     * @param string $moduleName
+     * @param string $shortcutUrl
+     * @return string
      */
-    protected function extractPageIdFromShortcutUrl(string $url): int
+    protected function extractIdFromShortcutUrl(string $moduleName, string $shortcutUrl): string
     {
-        return (int)preg_replace('/.*[\\?&]id=([^&]+).*/', '$1', $url);
+        $parsedUrl = parse_url($shortcutUrl);
+        $queryParams = [];
+        parse_str($parsedUrl['query'] ?? '', $queryParams);
+        $id = (string)($queryParams['id'] ?? '');
+
+        if ($id === '' && $moduleName === 'xMOD_alt_doc.php' && ($queryParams['returnUrl'] ?? '') !== '') {
+            $parsedReturlUrl = parse_url($queryParams['returnUrl']);
+            $returnUrlQueryParams = [];
+            parse_str($parsedReturlUrl['query'] ?? '', $returnUrlQueryParams);
+            $id = (string)($returnUrlQueryParams['id'] ?? '');
+        }
+
+        return $id;
     }
 
     /**
