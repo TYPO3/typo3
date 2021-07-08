@@ -64,6 +64,7 @@ class FileListController implements LoggerAwareInterface
     protected string $id = '';
     protected string $cmd = '';
     protected string $searchTerm = '';
+    protected int $pointer = 0;
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
 
@@ -108,6 +109,7 @@ class FileListController implements LoggerAwareInterface
         $this->id = (string)($parsedBody['id'] ?? $queryParams['id'] ?? '');
         $this->cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
         $this->searchTerm = (string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? '');
+        $this->pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
         $this->overwriteExistingFiles = DuplicationBehavior::cast(
             $parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null
         );
@@ -364,7 +366,7 @@ class FileListController implements LoggerAwareInterface
         // Start up the file list by including processed settings.
         $this->filelist->start(
             $this->folderObject,
-            MathUtility::forceIntegerInRange((int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0), 0, 100000),
+            MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
             (string)($this->MOD_SETTINGS['sort'] ?? ''),
             (bool)($this->MOD_SETTINGS['reverse'] ?? false),
             (bool)($this->MOD_SETTINGS['clipBoard'] ?? false)
@@ -427,7 +429,10 @@ class FileListController implements LoggerAwareInterface
         $addParams = '';
 
         if ($this->searchTerm) {
-            $addParams = '&searchTerm=' . htmlspecialchars($this->searchTerm);
+            $addParams .= '&searchTerm=' . htmlspecialchars($this->searchTerm);
+        }
+        if ($this->pointer) {
+            $addParams .= '&pointer=' . $this->pointer;
         }
 
         $this->view->assign('checkboxes', [

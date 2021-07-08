@@ -19,10 +19,13 @@ import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
+type QueryParameters = {[key: string]: string};
+
 enum Selectors {
   fileListFormSelector = 'form[name="fileListForm"]',
   commandSelector = 'input[name="cmd"]',
-  searchFieldSelector = 'input[name="searchTerm"]'
+  searchFieldSelector = 'input[name="searchTerm"]',
+  pointerFieldSelector = 'input[name="pointer"]'
 }
 
 /**
@@ -33,6 +36,7 @@ class Filelist {
   private fileListForm: HTMLFormElement = document.querySelector(Selectors.fileListFormSelector);
   private command: HTMLInputElement = this.fileListForm.querySelector(Selectors.commandSelector)
   private searchField: HTMLInputElement = this.fileListForm.querySelector(Selectors.searchFieldSelector);
+  private pointerField: HTMLInputElement = this.fileListForm.querySelector(Selectors.pointerFieldSelector);
   private activeSearch: boolean = (this.searchField.value !== '');
 
   protected static openInfoPopup(type: string, identifier: string): void {
@@ -77,6 +81,18 @@ class Filelist {
       {type: 'folder', identifier: identifier}
     );
     broadcastService.post(message);
+  }
+
+  private static parseQueryParameters (location: Location): QueryParameters {
+    let queryParameters: QueryParameters = {};
+    if (location && Object.prototype.hasOwnProperty.call(location, 'search')) {
+      let parameters = location.search.substr(1).split('&');
+      for (let i = 0; i < parameters.length; i++) {
+        const parameter = parameters[i].split('=');
+        queryParameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
+      }
+    }
+    return queryParameters;
   }
 
   constructor() {
@@ -139,6 +155,15 @@ class Filelist {
 
   private submitClipboardFormWithCommand(cmd: string): void {
     this.command.value = cmd;
+    // In case we just copy elements to the clipboard, we try to fetch a possible pointer from the query
+    // parameters, so after the form submit, we get to the same view as before. This is not done for delete
+    // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
+    if (cmd === 'setCB') {
+      const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
+      if (pointerValue) {
+        this.pointerField.value = pointerValue;
+      }
+    }
     this.fileListForm.submit();
   }
 }

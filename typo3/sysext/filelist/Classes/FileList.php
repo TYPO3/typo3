@@ -123,13 +123,6 @@ class FileList
     public $counter = 0;
 
     /**
-     * Counting the elements no matter what
-     *
-     * @var int
-     */
-    public $eCounter = 0;
-
-    /**
      * @var TranslationConfigurationProvider
      */
     public $translateTools;
@@ -186,7 +179,7 @@ class FileList
      */
     protected $uriBuilder;
 
-    protected string $searchTerm = '';
+    protected ?FileSearchDemand $searchDemand = null;
 
     public function __construct()
     {
@@ -256,7 +249,7 @@ class FileList
             $attributes['data-filelist-clipboard-cmd'] = $cmd;
         }
 
-        return '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $string . '</a>';
+        return '<button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $string . '</button>';
     }
 
     /**
@@ -268,10 +261,12 @@ class FileList
     public function getTable(?FileSearchDemand $searchDemand = null): string
     {
         if ($searchDemand !== null) {
+            // Store given search demand
+            $this->searchDemand = $searchDemand;
             // Search currently only works for files
             $folders = [];
             // Find files by the given search demand
-            $files = iterator_to_array($this->folderObject->searchFiles($searchDemand));
+            $files = iterator_to_array($this->folderObject->searchFiles($this->searchDemand));
             // @todo Currently files, which got deleted in the file system, are still found.
             //       Therefore we have to ask their parent folder if it still contains the file.
             $files = array_filter($files, static function (FileInterface $file): bool {
@@ -297,8 +292,6 @@ class FileList
 
             // Add special "Path" field for the search result
             array_unshift($this->fieldArray, '_PATH_');
-            // Add search term so it can be added to return urls
-            $this->searchTerm = $searchDemand->getSearchTerm() ?? '';
         } else {
             // @todo use folder methods directly when they support filters
             $storage = $this->folderObject->getStorage();
@@ -352,17 +345,16 @@ class FileList
 
         $iOut = '';
         // Directories are added
-        $this->eCounter = $this->firstElementNumber;
-        $iOut .= $this->fwd_rwd_nav();
+        $iOut .= $this->fwd_rwd_nav($this->firstElementNumber);
 
         $iOut .= $this->formatDirList($folders);
         // Files are added
         $iOut .= $this->formatFileList($files);
 
-        $this->eCounter = $this->firstElementNumber + $this->iLimit < $this->totalItems
+        $amountOfItemsShownOnCurrentPage = $this->firstElementNumber + $this->iLimit < $this->totalItems
             ? $this->firstElementNumber + $this->iLimit
             : -1;
-        $iOut .= $this->fwd_rwd_nav();
+        $iOut .= $this->fwd_rwd_nav($amountOfItemsShownOnCurrentPage);
 
         // Header line is drawn
         $theData = [];
@@ -375,7 +367,7 @@ class FileList
                 $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_'));
             } else {
                 // Normal row
-                $theData[$v]  = $this->linkWrapSort($this->folderObject->getCombinedIdentifier(), $v);
+                $theData[$v]  = $this->linkWrapSort($v);
             }
         }
 
@@ -433,7 +425,10 @@ class FileList
             $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_deleteMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span>', 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
             $cells[] = '<a class="btn btn-default t3js-toggle-all-checkboxes" data-checkboxes-names="' . htmlspecialchars(implode(',', $this->CBnames)) . '" rel="" href="#" title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_markRecords')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
         }
-        return implode('', $cells);
+        if (!empty($cells)) {
+            return '<div class="btn-group">' . implode('', $cells) . '</div>';
+        }
+        return '';
     }
 
     /**
@@ -508,55 +503,33 @@ class FileList
      *
      * @return string the table-row code for the element
      */
-    public function fwd_rwd_nav()
+    public function fwd_rwd_nav(int $currentItemCount): string
     {
         $code = '';
-        if ($this->eCounter >= $this->firstElementNumber && $this->eCounter < $this->firstElementNumber + $this->iLimit) {
-            if ($this->firstElementNumber && $this->eCounter == $this->firstElementNumber) {
+        if ($currentItemCount >= $this->firstElementNumber && $currentItemCount < $this->firstElementNumber + $this->iLimit) {
+            if ($this->firstElementNumber && $currentItemCount == $this->firstElementNumber) {
                 // 	Reverse
                 $theData = [];
-                $theData['file'] = $this->fwd_rwd_HTML('fwd', $this->eCounter);
+                $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
+                $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                    'actions-move-up',
+                    Icon::SIZE_SMALL
+                )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
                 $code = $this->addElement('', $theData);
             }
             return $code;
         }
-        if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
+        if ($currentItemCount === $this->firstElementNumber + $this->iLimit) {
             // 	Forward
             $theData = [];
-            $theData['file'] = $this->fwd_rwd_HTML('rwd', $this->eCounter);
+            $href = $this->listURL(['pointer' => $currentItemCount]);
+            $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                'actions-move-down',
+                Icon::SIZE_SMALL
+            )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
             $code = $this->addElement('', $theData);
         }
         return $code;
-    }
-
-    /**
-     * Creates the button with link to either forward or reverse
-     *
-     * @param string $type Type: "fwd" or "rwd
-     * @param int $pointer Pointer
-     * @return string
-     * @internal
-     */
-    public function fwd_rwd_HTML($type, $pointer)
-    {
-        $content = '';
-        switch ($type) {
-            case 'fwd':
-                $href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit);
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-up',
-                    Icon::SIZE_SMALL
-                )->render() . ' <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i></a>';
-                break;
-            case 'rwd':
-                $href = $this->listURL() . '&pointer=' . $pointer;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-down',
-                    Icon::SIZE_SMALL
-                )->render() . ' <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i></a>';
-                break;
-        }
-        return $content;
     }
 
     /**
@@ -666,7 +639,7 @@ class FileList
      */
     public function linkWrapDir($title, Folder $folderObject)
     {
-        $href = (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
+        $href = $this->listURL(['id' => $folderObject->getCombinedIdentifier(), 'searchTerm' => '', 'pointer' => 0]);
         $triggerTreeUpdateAttribute = sprintf(
             ' data-tree-update-request="%s"',
             htmlspecialchars($folderObject->getCombinedIdentifier())
@@ -710,17 +683,18 @@ class FileList
 
     /**
      * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
-     * The URL however is not relative, otherwise GeneralUtility::sanitizeLocalUrl() would say that
-     * the URL would be invalid.
      *
      * @return string URL
      */
-    public function listURL(): string
+    public function listURL(array $params = []): string
     {
-        return GeneralUtility::linkThisScript(array_filter([
-            'target' => rawurlencode($this->folderObject->getCombinedIdentifier()),
-            'searchTerm' => rawurlencode($this->searchTerm)
-        ]));
+        $params = array_replace_recursive([
+            'pointer' => $this->firstElementNumber,
+            'id' => $this->folderObject->getCombinedIdentifier(),
+            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : ''
+        ], $params);
+        $params = array_filter($params);
+        return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
     }
 
     protected function getAvailableSystemLanguages(): array
@@ -903,14 +877,13 @@ class FileList
     /**
      * Wraps the directory-titles ($code) in a link to filelist/Modules/Filelist/index.php (id=$path) and sorting commands...
      *
-     * @param string $folderIdentifier ID (path)
      * @param string $col Sorting column
      * @return string HTML
      */
-    public function linkWrapSort($folderIdentifier, $col)
+    public function linkWrapSort($col)
     {
         $code = htmlspecialchars($this->getLanguageService()->getLL('c_' . $col));
-        $params = ['id' => $folderIdentifier, 'SET' => ['sort' => $col]];
+        $params = ['SET' => ['sort' => $col], 'pointer' => 0];
 
         if ($this->sort === $col) {
             // Check reverse sorting
@@ -920,7 +893,7 @@ class FileList
             $params['SET']['reverse'] = 0;
             $sortArrow = '';
         }
-        $href = (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
+        $href = $this->listURL($params);
         return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
     }
 
