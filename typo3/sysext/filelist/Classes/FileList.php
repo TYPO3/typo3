@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -620,6 +621,9 @@ class FileList
                         case '_REF_':
                             $theData[$field] = $this->makeRef($folderObject);
                             break;
+                        case '_PATH_':
+                            $theData[$field] = $this->makePath($folderObject);
+                            break;
                         default:
                             $theData[$field] = GeneralUtility::fixed_lgd_cs($theData[$field] ?? '', $this->fixedL);
                     }
@@ -801,11 +805,7 @@ class FileList
                         $theData[$field] = $this->makeRef($fileObject);
                         break;
                     case '_PATH_':
-                        $theData[$field] = '';
-                        $method = 'getReadablePath';
-                        if (is_callable([$fileObject->getParentFolder(), $method])) {
-                            $theData[$field] = htmlspecialchars($fileObject->getParentFolder()->$method());
-                        }
+                        $theData[$field] = $this->makePath($fileObject);
                         break;
                     case 'file':
                         // Edit metadata of file
@@ -1192,6 +1192,30 @@ class FileList
             ->fetchColumn();
 
         return $this->generateReferenceToolTip($referenceCount, $fileOrFolderObject);
+    }
+
+    /**
+     * Generate readable path
+     *
+     * @param ResourceInterface $resource
+     * @return string
+     */
+    protected function makePath(ResourceInterface $resource): string
+    {
+        $folder = null;
+        $method = 'getReadablePath';
+
+        if ($resource instanceof FileInterface) {
+            $folder = $resource->getParentFolder();
+        } elseif ($resource instanceof FolderInterface) {
+            $folder = $resource;
+        }
+
+        if ($folder === null || !is_callable([$folder, $method])) {
+            return '';
+        }
+
+        return htmlspecialchars($folder->$method());
     }
 
     /**
