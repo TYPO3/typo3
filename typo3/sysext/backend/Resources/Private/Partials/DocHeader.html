@@ -32,9 +32,16 @@
         </f:if>
         <div class="{columnCssClass}">
             <f:if condition="{docHeader.metaInformation.recordInformation}">
-                <span class="typo3-docheader-pagePath">
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path"/>: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
-                </span>
+                <f:if condition="{docHeader.metaInformation.fileOrFolder}">
+                    <f:then>
+                        <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
+                    </f:then>
+                    <f:else>
+                        <span class="typo3-docheader-pagePath">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path"/>: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
+                        </span>
+                    </f:else>
+                </f:if>
                 <strong>
                     <f:format.raw>
                         {docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle} <f:if condition="{docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>

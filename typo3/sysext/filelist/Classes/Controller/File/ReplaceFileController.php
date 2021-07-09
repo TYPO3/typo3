@@ -151,10 +151,7 @@ class ReplaceFileController
             }
         }
 
-        $pathInfo = [
-            'combined_identifier' => $this->fileOrFolderObject->getCombinedIdentifier(),
-        ];
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->fileOrFolderObject);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileReplace');
     }

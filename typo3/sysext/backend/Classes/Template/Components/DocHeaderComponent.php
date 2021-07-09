@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -66,6 +67,11 @@ class DocHeaderComponent
     public function setMetaInformation(array $metaInformation)
     {
         $this->metaInformation->setRecordArray($metaInformation);
+    }
+
+    public function setMetaInformationForResource(ResourceInterface $resource): void
+    {
+        $this->metaInformation->setResource($resource);
     }
 
     /**

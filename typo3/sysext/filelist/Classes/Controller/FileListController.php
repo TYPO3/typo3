@@ -244,8 +244,8 @@ class FileListController implements LoggerAwareInterface
         // Additional doc header information: current path and folder info
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([
             '_additional_info' => $this->filelist->getFolderInfo(),
-            'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
         ]);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
 
         // Render view and return the response
         return $this->htmlResponse(

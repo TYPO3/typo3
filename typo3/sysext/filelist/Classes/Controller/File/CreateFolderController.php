@@ -152,11 +152,7 @@ class CreateFolderController
             );
         }
 
-        $pathInfo = [
-            'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
-        ];
-
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/CreateFolder');
     }

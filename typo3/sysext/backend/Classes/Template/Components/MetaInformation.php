@@ -22,11 +22,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * MetaInformation
+ * Shows the path to the current record or file / folder.
  */
 class MetaInformation
 {
@@ -37,6 +37,13 @@ class MetaInformation
      * @var array
      */
     protected $recordArray = [];
+
+    protected ?ResourceInterface $resource = null;
+
+    public function setResource(ResourceInterface $resource): void
+    {
+        $this->resource = $resource;
+    }
 
     /**
      * Set the RecordArray
@@ -57,20 +64,19 @@ class MetaInformation
     {
         $pageRecord = $this->recordArray;
         $title = '';
-        // Is this a real page
-        if (is_array($pageRecord) && !empty($pageRecord['uid'])) {
+        if ($this->resource) {
+            try {
+                $title = $this->resource->getStorage()->getName();
+                $title .= $this->resource->getParentFolder()->getReadablePath();
+            } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
+            }
+        } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
+            // Is this a real page
             $title = substr($pageRecord['_thePathFull'] ?? '', 0, -1);
             // Remove current page title
             $pos = strrpos($title, $pageRecord['title']);
             if ($pos !== false) {
                 $title = substr($title, 0, $pos);
-            }
-        } elseif (!empty($pageRecord['combined_identifier'] ?? '')) {
-            try {
-                $resourceObject = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
-                $title = $resourceObject->getStorage()->getName() . ':';
-                $title .= $resourceObject->getParentFolder()->getReadablePath();
-            } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
             }
         }
         // Setting the path of the page
@@ -167,6 +173,11 @@ class MetaInformation
         return $recordInformations['additionalInfo'] ?? '';
     }
 
+    public function isFileOrFolder(): bool
+    {
+        return $this->resource !== null;
+    }
+
     /**
      * Setting page array
      *
@@ -175,60 +186,59 @@ class MetaInformation
     protected function getRecordInformations()
     {
         $pageRecord = $this->recordArray;
-        if (empty($pageRecord)) {
+        if (empty($pageRecord) && $this->resource === null) {
             return [];
         }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $uid = '';
         $title = '';
-        $additionalInfo = (!empty($pageRecord['_additional_info']) ? $pageRecord['_additional_info'] : '');
+        $additionalInfo = (!empty($pageRecord['_additional_info'] ?? '') ? $pageRecord['_additional_info'] : '');
         // Add icon with context menu, etc:
-        // If there IS a real page
-        if (is_array($pageRecord) && !empty($pageRecord['uid'])) {
-            $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
-            $iconImg = '<span ' . $toolTip . '>' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
-            // Make Icon:
-            $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
-            $uid = $pageRecord['uid'];
-            $title = BackendUtility::getRecordTitle('pages', $pageRecord);
-        } elseif (is_array($pageRecord) && !empty($pageRecord['combined_identifier'])) {
-            // If the module is about a FAL resource
+        // If the module is about a FAL resource
+        if ($this->resource) {
             try {
-                $resourceObject = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
-                $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'] ?? '';
-                $title = $fileMountTitle ?: $resourceObject->getName();
+                $fileMountTitle = $this->resource->getStorage()->getFileMounts()[$this->resource->getIdentifier()]['title'] ?? '';
+                $title = $fileMountTitle ?: $this->resource->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder
-                if ($resourceObject instanceof FolderInterface && !$resourceObject->getStorage()->isWithinFileMountBoundaries($resourceObject)) {
-                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
-                        $resourceObject,
+                if ($this->resource instanceof FolderInterface && !$this->resource->getStorage()->isWithinFileMountBoundaries($this->resource)) {
+                    $theIcon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
+                        $this->resource,
                         Icon::SIZE_SMALL,
                         null,
                         ['mount-root' => true]
                     )->render() . '</span>';
                 } else {
-                    $iconImg = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
-                        $resourceObject,
+                    $theIcon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForResource(
+                        $this->resource,
                         Icon::SIZE_SMALL
                     )->render() . '</span>';
                 }
-                $tableName = ($resourceObject->getIdentifier() === $resourceObject->getStorage()->getRootLevelFolder()->getIdentifier())
+                $tableName = ($this->resource->getIdentifier() === $this->resource->getStorage()->getRootLevelFolder()->getIdentifier())
                     ? 'sys_filemounts' : 'sys_file';
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, $tableName, $pageRecord['combined_identifier']);
-            } catch (ResourceDoesNotExistException $e) {
+                if (method_exists($this->resource, 'getCombinedIdentifier')) {
+                    $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, $tableName, $this->resource->getCombinedIdentifier());
+                }
+            } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
                 $theIcon = '';
             }
+        } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
+            // If there IS a real page
+            $toolTip = BackendUtility::getRecordToolTip($pageRecord, 'pages');
+            $theIcon = '<span ' . $toolTip . '>' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
+            // Make Icon:
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
+            $uid = $pageRecord['uid'];
+            $title = BackendUtility::getRecordTitle('pages', $pageRecord);
         } else {
             // On root-level of page tree
             // Make Icon
-            $iconImg = '<span title="' .
+            $theIcon = '<span title="' .
                 htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) .
                 '">' .
                 $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
             if ($this->getBackendUser()->isAdmin()) {
-                $theIcon = BackendUtility::wrapClickMenuOnIcon($iconImg, 'pages');
-            } else {
-                $theIcon = $iconImg;
+                $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages');
             }
             $uid = '0';
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];

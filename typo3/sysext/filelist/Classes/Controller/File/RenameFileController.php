@@ -149,10 +149,7 @@ class RenameFileController
         }
 
         // building pathInfo for metaInformation
-        $pathInfo = [
-            'combined_identifier' => $this->fileOrFolderObject->getCombinedIdentifier(),
-        ];
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->fileOrFolderObject);
 
         // Setting up the context sensitive menu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');

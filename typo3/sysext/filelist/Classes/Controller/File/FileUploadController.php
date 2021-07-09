@@ -150,10 +150,7 @@ class FileUploadController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // building pathInfo for metaInformation
-        $pathInfo = [
-            'combined_identifier' => $this->folderObject->getCombinedIdentifier(),
-        ];
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pathInfo);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
     }
 
     /**

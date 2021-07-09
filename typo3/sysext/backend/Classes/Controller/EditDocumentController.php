@@ -51,6 +51,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1023,10 +1027,8 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
-        if ($this->pageinfo !== []) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-        }
         // Setting up the buttons and markers for doc header
+        $this->resolveMetaInformation();
         $this->getButtons($request);
 
         // Create language switch options if the record is already persisted
@@ -1038,6 +1040,24 @@ class EditDocumentController
             );
         }
         $this->moduleTemplate->setContent($body);
+    }
+
+    protected function resolveMetaInformation(): void
+    {
+        $file = null;
+        if (($this->firstEl['table'] ?? '') === 'sys_file_metadata' && (int)($this->firstEl['uid'] ?? 0) > 0) {
+            $fileUid = (int)(BackendUtility::getRecord('sys_file_metadata', (int)$this->firstEl['uid'], 'file')['file'] ?? 0);
+            try {
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
+            } catch (FileDoesNotExistException|InsufficientUserPermissionsException $e) {
+                // do nothing when file is not accessible
+            }
+        }
+        if ($file instanceof FileInterface) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($file);
+        } elseif ($this->pageinfo !== []) {
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+        }
     }
 
     /**
