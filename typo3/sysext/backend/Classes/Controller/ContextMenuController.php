@@ -69,7 +69,8 @@ class ContextMenuController
         $clipboard->initializeClipboard();
         $clipboard->lockToNormal();
 
-        $clipboard->setCmd($request->getQueryParams()['CB']);
+        $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
+        $clipboard->setCmd($CB);
         $clipboard->cleanCurrent();
 
         $clipboard->endClipboard();

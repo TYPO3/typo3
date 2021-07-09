@@ -25,10 +25,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
  */
 class FileClipboardCest extends AbstractFileCest
 {
-    protected string $modeSelector = '#copymodeSelector';
-    protected string $modeDropDownSelector = 'ul[aria-labelledby="copymodeSelector"]';
-    protected string $alertContainer = '#alert-container';
-    protected string $withinTree = '#typo3-filestoragetree .nodes';
+    protected string $copyModeCopy = '#clipboard-copymode-copy';
+    protected string $copyModeMove = '#clipboard-copymode-move';
 
     /**
      * @param BackendTester $I
@@ -44,13 +42,11 @@ class FileClipboardCest extends AbstractFileCest
      */
     public function seeSwitchModes(BackendTester $I)
     {
-        $I->click($this->modeSelector);
-        $I->click('Copy elements', $this->modeDropDownSelector);
-        $I->see('Copy elements', $this->modeSelector);
-
-        $I->click($this->modeSelector);
-        $I->click('Move elements', $this->modeDropDownSelector);
-        $I->see('Move elements', $this->modeSelector);
+        $I->seeCheckboxIsChecked($this->copyModeMove);
+        $I->dontSeeCheckboxIsChecked($this->copyModeCopy);
+        $I->click('//*/label[@for="clipboard-copymode-copy"]');
+        $I->dontSeeCheckboxIsChecked($this->copyModeMove);
+        $I->seeCheckboxIsChecked($this->copyModeCopy);
     }
 
     /**

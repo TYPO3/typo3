@@ -344,11 +344,11 @@ class ElementInformationController
         $propertiesForTable['extraFields'] = $this->getExtraFields();
 
         // Traverse the list of fields to display for the record:
-        $fieldList = $this->getFieldList($this->table, (int)$this->row['uid']);
+        $fieldList = $this->getFieldList($this->table, (int)($this->row['uid'] ?? 0));
 
         foreach ($fieldList as $name) {
             $name = trim($name);
-            $uid = $this->row['uid'];
+            $uid = $this->row['uid'] ?? 0;
 
             if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
                 continue;
@@ -476,7 +476,7 @@ class ElementInformationController
             $fieldList = [];
         }
 
-        $searchFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields']);
+        $searchFields = GeneralUtility::trimExplode(',', ($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''));
 
         return array_unique(array_merge($fieldList, $searchFields));
     }

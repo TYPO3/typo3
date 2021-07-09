@@ -377,7 +377,7 @@ class RecordListController
         $clipboard->initializeClipboard();
         // Clipboard actions are handled:
         // CB is the clipboard command array
-        $CB = $request->getQueryParams()['CB'] ?? [];
+        $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
         if ($cmd === 'setCB') {
             // CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked.
             // By merging we get a full array of checked/unchecked elements

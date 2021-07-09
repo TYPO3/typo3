@@ -172,7 +172,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      */
     public function valid(): bool
     {
-        $key = array_keys($this->metaData)[$this->indexPosition];
+        $key = array_keys($this->metaData)[$this->indexPosition] ?? '';
         return array_key_exists($key, $this->metaData);
     }
 

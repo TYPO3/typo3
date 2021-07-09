@@ -322,7 +322,7 @@ class FileListController implements LoggerAwareInterface
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->MOD_SETTINGS['displayThumbs'] ?? false);
 
         // Create clipboard object and initialize it
-        $CB = $request->getQueryParams()['CB'] ?? null;
+        $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
         if ($this->cmd === 'setCB') {
             $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(
                 (array)($request->getParsedBody()['CBH'] ?? []),

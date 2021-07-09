@@ -14,11 +14,12 @@
                         {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')}
                     </f:else>
                 </f:if>
-                )</strong>
+            )</strong>
         </f:if>
         <f:if condition="{content.thumb}">
-            <br>
-            <img src="{content.thumb.image}" title="{content.thumb.title}" />
+            <div class="d-block">
+                <f:format.raw>{content.thumb}</f:format.raw>
+            </div>
         </f:if>
     </td>
     <td class="col-control nowrap">
@@ -28,9 +29,7 @@
                     data-dispatch-action="{content.infoDataDispatch.action}"
                     data-dispatch-args="{content.infoDataDispatch.args}"
                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info')}">
-                    <f:format.raw>
-                        <core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
-                    </f:format.raw>
+                    <core:icon identifier="actions-document-info" alternativeMarkupIdentifier="inline"/>
                 </a>
             </div>
         </f:if>
@@ -38,9 +37,8 @@
             <div class="btn-group">
                 <a class="btn btn-default" href="{content.removeLink}#clip_head"
                     title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}">
-                    <f:format.raw>
-                        <core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
-                    </f:format.raw>
+                    <core:icon identifier="actions-remove" alternativeMarkupIdentifier="inline"/>
+                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.removeItem')}
                 </a>
             </div>
         </f:if>

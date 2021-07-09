@@ -929,7 +929,7 @@ class FileList
             if ($fileOrFolderObject->checkActionPermission('copy')) {
                 $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
                     $fullIdentifier,
-                    1,
+                    true,
                     $isSel === 'copy'
                 )) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
             } else {
@@ -939,7 +939,7 @@ class FileList
             if ($fileOrFolderObject->checkActionPermission('move')) {
                 $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
                     $fullIdentifier,
-                    0,
+                    false,
                     $isSel === 'cut'
                 )) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
             } else {
