@@ -369,7 +369,7 @@ class FileList
             <div class="mb-4 mt-2">
                 <div class="table-fit mb-0">
                     <table class="table table-striped table-hover" id="typo3-filelist">
-                        <thead>' . $this->addElement('', $theData, 'th') . '</thead>
+                        <thead>' . $this->addElement('', $theData, true) . '</thead>
                         <tbody>' . $iOut . '</tbody>
                     </table>
                 </div>
@@ -431,65 +431,59 @@ class FileList
      *
      * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
      * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
-     * @param string $colType Defines the tag being used for the columns. Default is td.
+     * @param bool $isTableHeader Whether the element to be added is a table header
      *
      * @return string HTML content for the table row
      */
-    public function addElement($icon, $data, $colType = 'td')
+    public function addElement(string $icon, array $data, bool $isTableHeader = false): string
     {
-        $colType = ($colType === 'th') ? 'th' : 'td';
-        // Start up:
-        $l10nParent = (int)($data['_l10nparent_'] ?? 0);
-        $out = '
-		<tr data-uid="' . (int)($data['uid'] ?? 0) . '" data-l10nparent="' . $l10nParent . '">';
-        $out .= '
-        <' . $colType . ' class="col-icon nowrap">';
-        if ($icon) {
-            $out .= $icon;
+        // Initialize additional data attributes for the row
+        // Note: To be consistent with the other $data values, the additional data attributes
+        // are not htmlspecialchar'ed before being added to the table row. Therefore it
+        // has to be ensured they are properly escaped when applied to the $data array!
+        $dataAttributes = [];
+        foreach (['type', 'file-uid', 'metadata-uid', 'folder-identifier', 'combined-identifier'] as $dataAttribute) {
+            if (isset($data[$dataAttribute])) {
+                $dataAttributes['data-' . $dataAttribute] = $data[$dataAttribute];
+                // Unset as we don't need them anymore, when building the table cells
+                unset($data[$dataAttribute]);
+            }
         }
-        $out .= '</' . $colType . '>';
-        // Init rendering.
-        $colsp = '';
-        $lastKey = '';
-        $c = 0;
-        $ccount = 0;
-        // __label is used as the label key to circumvent problems with uid used as label (see #67756)
-        // as it was introduced later on, check if it really exists before using it
-        $fields = $this->fieldArray;
-        if ($colType === 'td' && array_key_exists('__label', $data)) {
-            $fields[0] = '__label';
-        }
+
+        // Initialize rendering.
+        $cols = [];
+        $colType = $isTableHeader ? 'th' : 'td';
+        $colspan = '';
+        $colspanCounter = 0;
+        $lastField = '';
         // Traverse field array which contains the data to present:
-        foreach ($fields as $vKey) {
-            if (isset($data[$vKey])) {
-                if ($lastKey && isset($data[$lastKey])) {
-                    $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
-                    $out .= '
-						<' . $colType . ' class="' . $cssClass . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
+        foreach ($this->fieldArray as $fieldName) {
+            if (isset($data[$fieldName])) {
+                if ($lastField && isset($data[$lastField])) {
+                    $cssClass = $this->addElement_tdCssClass[$lastField] ?? '';
+                    $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
                 }
-                $lastKey = $vKey;
-                $c = 1;
-                $ccount++;
+                $lastField = $fieldName;
+                $colspanCounter = 1;
             } else {
-                if (!$lastKey) {
-                    $lastKey = $vKey;
+                if (!$lastField) {
+                    $lastField = $fieldName;
                 }
-                $c++;
+                $colspanCounter++;
             }
-            if ($c > 1) {
-                $colsp = ' colspan="' . $c . '"';
-            } else {
-                $colsp = '';
-            }
+            $colspan = ($colspanCounter > 1) ? ' colspan="' . $colspanCounter . '"' : '';
         }
-        if ($lastKey) {
-            $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
-            $out .= '
-				<' . $colType . ' class="' . $cssClass . '"' . $colsp . '>' . $data[$lastKey] . '</' . $colType . '>';
+        if ($lastField) {
+            $cssClass = $this->addElement_tdCssClass[$lastField] ?? '';
+            $cols[] = '<' . $colType . ' class="' . $cssClass . '"' . $colspan . '>' . $data[$lastField] . '</' . $colType . '>';
         }
-        $out .= '
-		</tr>';
-        return $out;
+
+        // Add the the table row
+        return '
+            <tr ' . GeneralUtility::implodeAttributes($dataAttributes) . '>
+                <' . $colType . ' class="col-icon nowrap">' . ($icon ?: '') . '</' . $colType . '>'
+                . implode(PHP_EOL, $cols) .
+            '</tr>';
     }
 
     /**
@@ -575,7 +569,11 @@ class FileList
             }
 
             // Preparing and getting the data-array
-            $theData = [];
+            $theData = [
+                'type' => 'folder',
+                'folder-identifier' => htmlspecialchars($folderObject->getIdentifier()),
+                'combined-identifier' => htmlspecialchars($folderObject->getCombinedIdentifier()),
+            ];
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
                     $theData[$field] = '';
@@ -658,7 +656,7 @@ class FileList
     public function linkWrapFile($code, File $fileObject)
     {
         try {
-            if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+            if ($this->isEditMetadataAllowed($fileObject)) {
                 $metaData = $fileObject->getMetaData()->get();
                 $urlParameters = [
                     'edit' => [
@@ -720,13 +718,20 @@ class FileList
             $this->counter++;
             $this->totalbytes += $fileObject->getSize();
             $ext = $fileObject->getExtension();
+            $fileUid = $fileObject->getUid();
             $fileName = trim($fileObject->getName());
             // The icon with link
-            $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
+            $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . $fileUid . ']') . '">'
                 . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
             $theIcon = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
             // Preparing and getting the data-array
-            $theData = [];
+            $theData = [
+                'type' => 'file',
+                'file-uid' => $fileUid
+            ];
+            if ($this->isEditMetadataAllowed($fileObject) && $fileObject->getMetaData()->offsetExists('uid')) {
+                $theData['metadata-uid'] = htmlspecialchars((string)$fileObject->getMetaData()->offsetGet('uid'));
+            }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
                     case 'size':
@@ -786,9 +791,9 @@ class FileList
                             }
 
                             // Hide flag button bar when not translated yet
-                            $theData[$field] = ' <div class="localisationData btn-group' . (empty($translations) ? ' hidden' : '') . '" data-fileid="' . $fileObject->getUid() . '">'
+                            $theData[$field] = ' <div class="localisationData btn-group' . (empty($translations) ? ' hidden' : '') . '" data-fileid="' . $fileUid . '">'
                                 . $languageCode . '</div>';
-                            $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
+                            $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileUid . '">' .
                                 '<span title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">'
                                 . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'
                                 . '</a>';
@@ -1002,7 +1007,7 @@ class FileList
         }
 
         // Edit metadata of file
-        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+        if ($fileOrFolderObject instanceof File && $this->isEditMetadataAllowed($fileOrFolderObject)) {
             $metaData = $fileOrFolderObject->getMetaData()->get();
             $urlParameters = [
                 'edit' => [
@@ -1255,5 +1260,12 @@ class FileList
         $htmlCode .= $references;
         $htmlCode .= '</a>';
         return $htmlCode;
+    }
+
+    protected function isEditMetadataAllowed(File $file): bool
+    {
+        return $file->isIndexed()
+            && $file->checkActionPermission('editMeta')
+            && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata');
     }
 }
