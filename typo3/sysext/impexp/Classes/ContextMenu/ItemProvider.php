@@ -50,7 +50,7 @@ class ItemProvider extends AbstractProvider
      */
     public function canHandle(): bool
     {
-        return $this->table !== 'sys_file' && strpos($this->table, '-drag') === false;
+        return $this->table !== 'sys_file';
     }
 
     /**

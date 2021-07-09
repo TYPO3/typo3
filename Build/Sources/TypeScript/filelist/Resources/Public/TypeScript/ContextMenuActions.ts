@@ -228,24 +228,6 @@ class ContextMenuActions {
       Modal.dismiss();
     });
   }
-
-  public static dropInto(table: string, uid: string, mode: string): void {
-    const target = $(this).data('drop-target');
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileCommit.moduleUrl
-      + '&file[' + mode + '][0][data]=' + encodeURIComponent(uid)
-      + '&file[' + mode + '][0][target]=' + encodeURIComponent(target)
-      + '&redirect=' + ContextMenuActions.getReturnUrl(),
-    );
-  }
-
-  public static dropMoveInto(table: string, uid: string): void {
-    ContextMenuActions.dropInto.bind($(this))(table, uid, 'move');
-  }
-
-  public static dropCopyInto(table: string, uid: string): void {
-    ContextMenuActions.dropInto.bind($(this))(table, uid, 'copy');
-  }
 }
 
 export = ContextMenuActions;
