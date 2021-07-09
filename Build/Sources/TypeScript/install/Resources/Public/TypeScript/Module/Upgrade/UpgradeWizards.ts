@@ -50,6 +50,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   private selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
   private selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
   private selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
+  private selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
   private securityUtility: SecurityUtility;
 
   private static removeLoadingMessage($container: JQuery): void {
@@ -95,6 +96,12 @@ class UpgradeWizards extends AbstractInteractableModule {
     // Execute one upgrade wizard
     currentModal.on('click', this.selectorWizardsInputPerform, (e: JQueryEventObject): void => {
       this.wizardExecute((<HTMLElement>e.target).dataset.identifier, (<HTMLElement>e.target).dataset.title);
+    });
+
+    // Abort upgrade wizard
+    currentModal.on('click', this.selectorWizardsInputAbort, (e: JQueryEventObject): void => {
+      this.findInModal(this.selectorOutputWizardsContainer).empty();
+      this.wizardsList();
     });
   }
 
