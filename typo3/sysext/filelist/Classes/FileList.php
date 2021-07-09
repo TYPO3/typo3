@@ -656,12 +656,13 @@ class FileList
     public function linkWrapFile($code, File $fileObject)
     {
         try {
-            if ($this->isEditMetadataAllowed($fileObject)) {
-                $metaData = $fileObject->getMetaData()->get();
+            if ($this->isEditMetadataAllowed($fileObject)
+                && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
+            ) {
                 $urlParameters = [
                     'edit' => [
                         'sys_file_metadata' => [
-                            $metaData['uid'] => 'edit'
+                            $metaDataUid => 'edit'
                         ]
                     ],
                     'returnUrl' => $this->listURL()
@@ -729,8 +730,10 @@ class FileList
                 'type' => 'file',
                 'file-uid' => $fileUid
             ];
-            if ($this->isEditMetadataAllowed($fileObject) && $fileObject->getMetaData()->offsetExists('uid')) {
-                $theData['metadata-uid'] = htmlspecialchars((string)$fileObject->getMetaData()->offsetGet('uid'));
+            if ($this->isEditMetadataAllowed($fileObject)
+                && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
+            ) {
+                $theData['metadata-uid'] = htmlspecialchars((string)$metaDataUid);
             }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
@@ -775,15 +778,14 @@ class FileList
                                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                     $languageCode .= '<a href="' . htmlspecialchars($url) . '" class="btn btn-default" title="' . $title . '">'
                                         . $flagButtonIcon . '</a>';
-                                } else {
+                                } elseif ($metaDataRecord['uid'] ?? false) {
                                     $parameters = [
                                         'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
                                         'returnUrl' => $this->listURL()
                                     ];
-                                    $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                                     $href = BackendUtility::getLinkToDataHandlerAction(
                                         '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-                                        $returnUrl
+                                        (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters)
                                     );
                                     $flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new')->render() . '</span>';
                                     $languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn btn-default">' . $flagButtonIcon . '</a> ';
@@ -855,7 +857,7 @@ class FileList
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($metaDataRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($metaDataRecord['uid'] ?? 0, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'],
@@ -1007,12 +1009,14 @@ class FileList
         }
 
         // Edit metadata of file
-        if ($fileOrFolderObject instanceof File && $this->isEditMetadataAllowed($fileOrFolderObject)) {
-            $metaData = $fileOrFolderObject->getMetaData()->get();
+        if ($fileOrFolderObject instanceof File
+            && $this->isEditMetadataAllowed($fileOrFolderObject)
+            && ($metaDataUid = $fileOrFolderObject->getMetaData()->offsetGet('uid'))
+        ) {
             $urlParameters = [
                 'edit' => [
                     'sys_file_metadata' => [
-                        $metaData['uid'] => 'edit'
+                        $metaDataUid => 'edit'
                     ]
                 ],
                 'returnUrl' => $this->listURL()

@@ -309,7 +309,7 @@ abstract class ImportExport
         // Traverse header:
         $this->remainHeader = $this->dat['header'];
         // If there is a page tree set, show that:
-        if (is_array($this->dat['header']['pagetree'])) {
+        if (is_array($this->dat['header']['pagetree'] ?? null)) {
             reset($this->dat['header']['pagetree']);
             $lines = [];
             $this->traversePageTree($this->dat['header']['pagetree'], $lines);
@@ -320,7 +320,11 @@ abstract class ImportExport
             if (!empty($lines)) {
                 foreach ($lines as &$r) {
                     $r['controls'] = $this->renderControls($r);
-                    $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
+                    if (($r['msg'] ?? false) && !$this->doesImport) {
+                        $r['message'] = '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>';
+                    } else {
+                        $r['message'] = '';
+                    }
                 }
                 $viewData['pagetreeLines'] = $lines;
             } else {
@@ -328,16 +332,20 @@ abstract class ImportExport
             }
         }
         // Print remaining records that were not contained inside the page tree:
-        if (is_array($this->remainHeader['records'])) {
+        if (is_array($this->remainHeader['records'] ?? null)) {
             $lines = [];
-            if (is_array($this->remainHeader['records']['pages'])) {
+            if (is_array($this->remainHeader['records']['pages'] ?? null)) {
                 $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
             }
             $this->traverseAllRecords($this->remainHeader['records'], $lines);
             if (!empty($lines)) {
                 foreach ($lines as &$r) {
                     $r['controls'] = $this->renderControls($r);
-                    $r['message'] = ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '');
+                    if (($r['msg'] ?? false) && !$this->doesImport) {
+                        $r['message'] = '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>';
+                    } else {
+                        $r['message'] = '';
+                    }
                 }
                 $viewData['remainingRecords'] = $lines;
             }
@@ -389,13 +397,11 @@ abstract class ImportExport
      * @param int $uid Database uid of the record
      * @return bool true if the record is active, false otherwise
      */
-    protected function isActive($table, $uid)
+    protected function isActive($table, $uid): bool
     {
-        return
-            !isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])
-            || !(bool)$this->dat['records'][$table . ':' . $uid]['data'][
-                $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled']
-            ];
+        return !($this->dat['records'][$table . ':' . $uid]['data'][
+            $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? ''
+        ] ?? false);
     }
 
     /**
@@ -604,12 +610,12 @@ abstract class ImportExport
         }
         $pInfo['type'] = 'record';
         $lines[] = $pInfo;
-        // File relations:
-        if (is_array($record['filerefs'])) {
+        // File relations
+        if (is_array($record['filerefs'] ?? null)) {
             $this->addFiles($record['filerefs'], $lines, $preCode);
         }
         // DB relations
-        if (is_array($record['rels'])) {
+        if (is_array($record['rels'] ?? null)) {
             $this->addRelations($record['rels'], $lines, $preCode);
         }
         // Soft ref
@@ -677,9 +683,9 @@ abstract class ImportExport
             $staticFixed = false;
             $record = null;
             if ($uid > 0) {
-                $record = $this->dat['header']['records'][$table][$uid];
+                $record = $this->dat['header']['records'][$table][$uid] ?? null;
                 if (!is_array($record)) {
-                    if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
+                    if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || (($dat['tokenID'] ?? '') && !$this->includeSoftref($dat['tokenID'] ?? ''))) {
                         $pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
                         $iconClass = 'text-info';
                         $staticFixed = true;
@@ -992,7 +998,7 @@ abstract class ImportExport
     public function isTableStatic($table)
     {
         if (is_array($GLOBALS['TCA'][$table])) {
-            return $GLOBALS['TCA'][$table]['ctrl']['is_static'] || in_array($table, $this->relStaticTables) || in_array('_ALL', $this->relStaticTables);
+            return ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false) || in_array($table, $this->relStaticTables) || in_array('_ALL', $this->relStaticTables);
         }
         return false;
     }
@@ -1019,7 +1025,7 @@ abstract class ImportExport
      */
     public function isExcluded($table, $uid)
     {
-        return (bool)$this->excludeMap[$table . ':' . $uid];
+        return (bool)($this->excludeMap[$table . ':' . $uid] ?? false);
     }
 
     /**

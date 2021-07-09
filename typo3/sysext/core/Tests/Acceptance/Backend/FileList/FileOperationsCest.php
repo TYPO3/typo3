@@ -23,18 +23,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 /**
  * Cases concerning sys_file_metadata records
  */
-class FileOperationsCest
+class FileOperationsCest extends AbstractFileCest
 {
-    /**
-     * @param BackendTester $I
-     */
-    public function _before(BackendTester $I)
-    {
-        $I->useExistingSession('admin');
-        $I->amOnPage('/typo3/module/file/FilelistList');
-        $I->switchToContentFrame();
-    }
-
     /**
      * @param BackendTester $I
      */
@@ -76,5 +66,24 @@ class FileOperationsCest
         $I->switchToContentFrame();
         $I->see('File deleted', $flashMessageSelector);
         $I->dontSee($fileName, '.col-title');
+    }
+
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
+    public function seeUploadFile(BackendTester $I)
+    {
+        $alertContainer = '#alert-container';
+        $fileName = 'blue_mountains.jpg';
+        $this->uploadFile($I, $fileName);
+
+        $I->switchToMainFrame();
+        $I->waitForText($fileName, 10, $alertContainer);
+        $I->click('.close', $alertContainer);
+        $I->switchToContentFrame();
+        $I->see($fileName, '.upload-queue-item');
+        $I->click('a[title="Reload"]');
+        $I->see($fileName, '.responsive-title');
     }
 }

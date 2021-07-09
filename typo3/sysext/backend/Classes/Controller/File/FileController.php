@@ -220,7 +220,7 @@ class FileController
         } else {
             $mode = key($this->file);
             $elementKey = key($this->file[$mode]);
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect']);
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect'] ?? '');
         }
         $this->CB = $parsedBody['CB'] ?? $queryParams['CB'] ?? null;
 
@@ -247,7 +247,7 @@ class FileController
                 $clipObj->setCurrentPad($this->CB['pad']);
                 $this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
             }
-            if ($this->CB['delete']) {
+            if ($this->CB['delete'] ?? false) {
                 $clipObj->setCurrentPad($this->CB['pad']);
                 $this->file = $clipObj->makeDeleteCmdArray_file($this->file);
             }

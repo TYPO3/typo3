@@ -231,10 +231,10 @@ class Export extends ImportExport
     {
         if (is_array($idH)) {
             foreach ($idH as $k => $v) {
-                if ($this->excludeMap['pages:' . $idH[$k]['uid']]) {
+                if ($this->isExcluded('pages', (int)($v['uid'] ?? 0))) {
                     unset($idH[$k]);
-                } elseif (is_array($idH[$k]['subrow'])) {
-                    $idH[$k]['subrow'] = $this->unsetExcludedSections($idH[$k]['subrow']);
+                } elseif (is_array($v['subrow'] ?? null)) {
+                    $idH[$k]['subrow'] = $this->unsetExcludedSections($v['subrow']);
                 }
             }
         }
@@ -286,7 +286,7 @@ class Export extends ImportExport
         if ($this->excludeDisabledRecords && !$this->isActive($table, $row['uid'])) {
             return;
         }
-        if ((string)$table !== '' && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[$table . ':' . $row['uid']]) {
+        if ((string)$table !== '' && is_array($row) && (int)($row['uid'] ?? 0) > 0 && !$this->isExcluded($table, (int)$row['uid'])) {
             if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
                 if (!isset($this->dat['records'][$table . ':' . $row['uid']])) {
                     // Prepare header info:
@@ -458,7 +458,7 @@ class Export extends ImportExport
                     }
                 }
                 // In any case, if there are soft refs:
-                if (is_array($vR['softrefs']['keys'])) {
+                if (is_array($vR['softrefs']['keys'] ?? false)) {
                     foreach ($vR['softrefs']['keys'] as $spKey => $elements) {
                         foreach ($elements as $el) {
                             if ($el['subst']['type'] === 'db' && $this->includeSoftref($el['subst']['tokenID'])) {
@@ -593,7 +593,7 @@ class Export extends ImportExport
                     }
                 }
                 // In any case, if there are soft refs:
-                if (is_array($vR['softrefs']['keys'])) {
+                if (is_array($vR['softrefs']['keys'] ?? false)) {
                     foreach ($vR['softrefs']['keys'] as $spKey => $elements) {
                         foreach ($elements as $subKey => $el) {
                             if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
@@ -832,7 +832,7 @@ class Export extends ImportExport
     {
         $list = [];
         foreach ($dbrels as $field => $dat) {
-            if (is_array($dat['softrefs']['keys'])) {
+            if (is_array($dat['softrefs']['keys'] ?? false)) {
                 foreach ($dat['softrefs']['keys'] as $spKey => $elements) {
                     if (is_array($elements)) {
                         foreach ($elements as $subKey => $el) {

@@ -1406,9 +1406,9 @@ class GeneralUtility
             // If the value is an array then we will call this function recursively:
             if (is_array($v)) {
                 // Sub elements:
-                if (isset($options['alt_options']) && $options['alt_options'][($stackData['path'] ?? '') . '/' . $tagName]) {
-                    $subOptions = $options['alt_options'][$stackData['path'] . '/' . $tagName];
-                    $clearStackPath = $subOptions['clearStackPath'];
+                if (isset($options['alt_options']) && ($options['alt_options'][($stackData['path'] ?? '') . '/' . $tagName] ?? false)) {
+                    $subOptions = $options['alt_options'][($stackData['path'] ?? '') . '/' . $tagName];
+                    $clearStackPath = (bool)($subOptions['clearStackPath'] ?? false);
                 } else {
                     $subOptions = $options;
                     $clearStackPath = false;
@@ -1443,7 +1443,7 @@ class GeneralUtility
                         if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $v) {
                             $content = '<![CDATA[' . $v . ']]>';
                         }
-                    } elseif (!$options['disableTypeAttrib']) {
+                    } elseif (!($options['disableTypeAttrib'] ?? false)) {
                         $attr .= ' type="' . $dType . '"';
                     }
                 }

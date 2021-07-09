@@ -101,7 +101,7 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      */
     public function offsetGet($offset)
     {
-        return $this->get()[$offset];
+        return $this->get()[$offset] ?? null;
     }
 
     /**

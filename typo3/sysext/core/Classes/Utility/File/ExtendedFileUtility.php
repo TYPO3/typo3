@@ -643,7 +643,7 @@ class ExtendedFileUtility extends BasicFileUtility
             return false;
         }
         // If this is TRUE, we append _XX to the file name if
-        $appendSuffixOnConflict = (string)$cmds['altName'];
+        $appendSuffixOnConflict = (string)($cmds['altName'] ?? '');
         $resultObject = null;
         $conflictMode = $appendSuffixOnConflict !== '' ? DuplicationBehavior::RENAME : DuplicationBehavior::CANCEL;
         // Copying the file
@@ -731,7 +731,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->addMessageToFlashMessageQueue('FileUtility.DestinationWasNotADirectory', [$cmds['target']]);
             return false;
         }
-        $alternativeName = (string)$cmds['altName'];
+        $alternativeName = (string)($cmds['altName'] ?? '');
         $resultObject = null;
         // Moving the file
         if ($sourceFileObject instanceof File) {
@@ -1144,7 +1144,7 @@ class ExtendedFileUtility extends BasicFileUtility
             return false;
         }
 
-        $keepFileName = ($cmdArr['keepFilename'] == 1) ? true : false;
+        $keepFileName = (bool)($cmdArr['keepFilename'] ?? false);
         $resultObjects = [];
 
         try {

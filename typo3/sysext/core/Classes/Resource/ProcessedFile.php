@@ -498,7 +498,7 @@ class ProcessedFile extends AbstractFile
      */
     public function getUid()
     {
-        return $this->properties['uid'];
+        return $this->properties['uid'] ?? 0;
     }
 
     /**

@@ -445,7 +445,7 @@ class ExportController extends ImportExportController
     {
         $nameSuggestion = '';
         // Page tree export options:
-        if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'])) {
+        if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'] ?? '')) {
             $this->standaloneView->assign('treeHTML', $this->treeHTML);
 
             $opt = [
@@ -460,10 +460,10 @@ class ExportController extends ImportExportController
             ];
             $this->standaloneView->assign('levelSelectOptions', $opt);
             $this->standaloneView->assign('tableSelectOptions', $this->getTableSelectOptions('pages'));
-            $nameSuggestion .= 'tree_PID' . $inData['pagetree']['id'] . '_L' . $inData['pagetree']['levels'];
+            $nameSuggestion .= 'tree_PID' . ($inData['pagetree']['id'] ?? 0) . '_L' . ($inData['pagetree']['levels'] ?? 0);
         }
         // Single record export:
-        if (is_array($inData['record'])) {
+        if (is_array($inData['record'] ?? null)) {
             $records = [];
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
@@ -483,7 +483,7 @@ class ExportController extends ImportExportController
         }
 
         // Single tables/pids:
-        if (is_array($inData['list'])) {
+        if (is_array($inData['list'] ?? false)) {
             // Display information about pages from which the export takes place
             $tableList = [];
             foreach ($inData['list'] as $reference) {
@@ -534,7 +534,7 @@ class ExportController extends ImportExportController
      */
     protected function makeSaveForm(array $inData): void
     {
-        $opt = $this->presetRepository->getPresets((int)$inData['pagetree']['id']);
+        $opt = $this->presetRepository->getPresets((int)($inData['pagetree']['id'] ?? 0));
 
         $this->standaloneView->assign('presetSelectOptions', $opt);
 

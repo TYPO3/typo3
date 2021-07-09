@@ -191,7 +191,7 @@ class Clipboard
             $this->changed = 1;
         }
         // Set copy mode of the tab
-        if ($cmd['setCopyMode'] ?? false) {
+        if (isset($cmd['setCopyMode'])) {
             $this->clipData[$this->current]['mode'] = $cmd['setCopyMode'] ? 'copy' : '';
             $this->changed = 1;
         }
