@@ -132,21 +132,45 @@ class ImageService implements SingletonInterface
      */
     public function getImage(string $src, $image, bool $treatIdAsReference): FileInterface
     {
-        if ($image === null) {
-            $image = $this->getImageFromSourceString($src, $treatIdAsReference);
-        } elseif (is_callable([$image, 'getOriginalResource'])) {
+        if ($image instanceof File || $image instanceof FileReference) {
+            // We already received a valid file and therefore just return it
+            return $image;
+        }
+
+        if (is_callable([$image, 'getOriginalResource'])) {
             // We have a domain model, so we need to fetch the FAL resource object from there
-            $image = $image->getOriginalResource();
+            $originalResource = $image->getOriginalResource();
+            if (!($originalResource instanceof File || $originalResource instanceof FileReference)) {
+                throw new \UnexpectedValueException('No original resource could be resolved for supplied file ' . get_class($image), 1625838481);
+            }
+            return $originalResource;
         }
 
-        if ($image === null) {
-            throw new \UnexpectedValueException('Supplied file is NULL, but must be File or FileReference.', 1625585157);
-        }
-        if (!($image instanceof File || $image instanceof FileReference)) {
-            throw new \UnexpectedValueException('Supplied file object type ' . get_class($image) . ' for ' . $src . ' must be File or FileReference.', 1382687163);
+        if ($image !== null) {
+            // Some value is given for $image, but it's not a valid type
+            throw new \UnexpectedValueException(
+                'Supplied file must be File or FileReference, ' . (($type = gettype($image)) === 'object' ? get_class($image) : $type) . ' given.',
+                1625585157
+            );
         }
 
-        return $image;
+        // Since image is not given, try to resolve an image from the source string
+        $resolvedImage = $this->getImageFromSourceString($src, $treatIdAsReference);
+
+        if ($resolvedImage instanceof File || $resolvedImage instanceof FileReference) {
+            return $resolvedImage;
+        }
+
+        if ($resolvedImage === null) {
+            // No image could be resolved using the given source string
+            throw new \UnexpectedValueException('Supplied ' . $src . ' could not be resolved to a File or FileReference.', 1625585158);
+        }
+
+        // A FileInterface was found, however only File and FileReference are valid
+        throw new \UnexpectedValueException(
+            'Resolved file object type ' . get_class($resolvedImage) . ' for ' . $src . ' must be File or FileReference.',
+            1382687163
+        );
     }
 
     /**
