@@ -348,6 +348,7 @@ class UpgradeWizardsService
         $result = [
             'identifier' => $identifier,
             'title' => $updateObject->getTitle(),
+            'description' => $updateObject->getDescription(),
             'wizardHtml' => $wizardHtml,
         ];
 
