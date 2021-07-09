@@ -8,9 +8,9 @@ return [
         'path' => '/wizard/record/browse',
         'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserController::class . '::mainAction'
     ],
-    'record_export' => [
-        'path' => '/record/export',
+    'record_download' => [
+        'path' => '/record/download',
         'methods' => ['POST'],
-        'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::handleExportRequest'
+        'target' => \TYPO3\CMS\Recordlist\Controller\RecordDownloadController::class . '::handleDownloadRequest'
     ],
 ];

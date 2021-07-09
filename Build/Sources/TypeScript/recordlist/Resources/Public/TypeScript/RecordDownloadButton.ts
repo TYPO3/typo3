@@ -19,20 +19,20 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 
 enum Selectors {
-  formatSelector = '.t3js-record-export-format-selector',
-  formatOptions = '.t3js-record-export-format-option'
+  formatSelector = '.t3js-record-download-format-selector',
+  formatOptions = '.t3js-record-download-format-option'
 }
 
 /**
- * Module: TYPO3/CMS/Recordlist/RecordExportButton
+ * Module: TYPO3/CMS/Recordlist/RecordDownloadButton
  *
  * @example
- * <typo3-recordlist-record-export-button url="/url/to/configuration/form" title="Export records" ok="Export" close="Cancel">
- *   <button>Export records/button>
- * </typo3-recordlist-record-export-button>
+ * <typo3-recordlist-record-download-button url="/url/to/configuration/form" title="Download records" ok="Download" close="Cancel">
+ *   <button>Download records/button>
+ * </typo3-recordlist-record-download-button>
  */
-@customElement('typo3-recordlist-record-export-button')
-class RecordExportButton extends LitElement {
+@customElement('typo3-recordlist-record-download-button')
+class RecordDownloadButton extends LitElement {
   @property({type: String}) url: string;
   @property({type: String}) title: string;
   @property({type: String}) ok: string;
@@ -42,7 +42,7 @@ class RecordExportButton extends LitElement {
     super();
     this.addEventListener('click', (e: Event): void => {
       e.preventDefault();
-      this.showExportConfigurationModal();
+      this.showDownloadConfigurationModal();
     });
   }
 
@@ -50,7 +50,7 @@ class RecordExportButton extends LitElement {
     return html`<slot></slot>`;
   }
 
-  private showExportConfigurationModal(): void {
+  private showDownloadConfigurationModal(): void {
     if (!this.url) {
       // Don't render modal in case no url is given
       return;
@@ -58,7 +58,7 @@ class RecordExportButton extends LitElement {
 
     Modal.advanced({
       content: this.url,
-      title: this.title || 'Export record',
+      title: this.title || 'Download records',
       severity: SeverityEnum.notice,
       size: Modal.sizes.small,
       type: Modal.types.ajax,
@@ -71,9 +71,9 @@ class RecordExportButton extends LitElement {
           trigger: (): void => Modal.dismiss(),
         },
         {
-          text: this.ok || lll('button.ok') || 'Export',
+          text: this.ok || lll('button.ok') || 'Download',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
-          name: 'export',
+          name: 'download',
           trigger: (): void => {
             const form: HTMLFormElement = Modal.currentModal[0].querySelector('form');
             form && form.submit();

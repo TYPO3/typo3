@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
- * Cases concerning the record export functionality
+ * Cases concerning the record download functionality
  */
-class RecordExportCest
+class RecordDownloadCest
 {
     /**
      * @param BackendTester $I
@@ -41,25 +41,25 @@ class RecordExportCest
      */
     public function recordsCanBeExported(BackendTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
-        $I->wantToTest('whether records can be exported in the recordlist');
+        $I->wantToTest('whether records can be downloaded in the recordlist');
 
-        $I->amGoingTo('export a record');
+        $I->amGoingTo('download a record');
         $I->click('List');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->wait(0.2);
         $I->switchToContentFrame();
-        $I->canSee('Export');
-        $I->click('typo3-recordlist-record-export-button button');
+        $I->canSee('Download');
+        $I->click('typo3-recordlist-record-download-button button');
         $modalDialog->canSeeDialog();
-        $I->canSee('Export Page:', ModalDialog::$openedModalSelector . ' .modal-title');
-        $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-export');
+        $I->canSee('Download Page:', ModalDialog::$openedModalSelector . ' .modal-title');
+        $I->fillField(ModalDialog::$openedModalSelector . ' input[name="filename"]', 'test-download');
         $I->canSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h5');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="format"]', 'json');
         $I->dontSee('CSV options', ModalDialog::$openedModalSelector . ' .modal-body h5');
         $I->see('JSON options', ModalDialog::$openedModalSelector . ' .modal-body h5');
         $I->selectOption(ModalDialog::$openedModalSelector . ' select[name="json[meta]"]', 'full');
-        $I->click('button[name="export"]', ModalDialog::$openedModalButtonContainerSelector);
+        $I->click('button[name="download"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
     }
 }

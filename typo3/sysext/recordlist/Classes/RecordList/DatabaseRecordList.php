@@ -669,8 +669,8 @@ class DatabaseRecordList
             }
             // Show the select box
             $tableActions .= $this->columnSelector($table);
-            // Create the CSV Export button
-            $tableActions .= $this->createExportButtonForTable($table, $totalItems);
+            // Create the Download button
+            $tableActions .= $this->createDownloadButtonForTable($table, $totalItems);
         }
         // Render table rows only if in multi table view or if in single table view
         $rowOutput = '';
@@ -870,39 +870,39 @@ class DatabaseRecordList
             . '</a>';
     }
 
-    protected function createExportButtonForTable(string $table, int $totalItems): string
+    protected function createDownloadButtonForTable(string $table, int $totalItems): string
     {
-        // Do not render the export button for page translations or in case export is disabled
+        // Do not render the download button for page translations or in case it is disabled
         if (($this->modTSconfig['noExportRecordsLinks'] ?? false) || $this->showOnlyTranslatedRecords) {
             return '';
         }
 
-        $exportButtonLabel = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:export');
-        $exportButtonTitle = sprintf($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecord' : 'exportRecords')), $totalItems);
-        $exportCancelTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel');
-        $exportSettingsUrl = $this->uriBuilder->buildUriFromRoute(
-            'ajax_record_export_settings',
+        $downloadButtonLabel = $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:download');
+        $downloadButtonTitle = sprintf($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:' . ($totalItems === 1 ? 'downloadRecord' : 'downloadRecords')), $totalItems);
+        $downloadCancelTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel');
+        $downloadSettingsUrl = $this->uriBuilder->buildUriFromRoute(
+            'ajax_record_download_settings',
             ['id' => $this->id, 'table' => $table, 'searchString' => $this->searchString, 'searchLevels' => $this->searchLevels]
         );
-        $exportSettingsTitle = sprintf(
-            $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_export.xlf:' . ($totalItems === 1 ? 'exportRecordSettings' : 'exportRecordsSettings')),
+        $downloadSettingsTitle = sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:' . ($totalItems === 1 ? 'downloadRecordSettings' : 'downloadRecordsSettings')),
             $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
             $totalItems
         );
 
         return '
             <div class="pull-right">
-                <typo3-recordlist-record-export-button
-                    url="' . htmlspecialchars($exportSettingsUrl) . '"
-                    title="' . htmlspecialchars($exportSettingsTitle) . '"
-                    ok="' . htmlspecialchars($exportButtonTitle) . '"
-                    close="' . htmlspecialchars($exportCancelTitle) . '"
+                <typo3-recordlist-record-download-button
+                    url="' . htmlspecialchars($downloadSettingsUrl) . '"
+                    title="' . htmlspecialchars($downloadSettingsTitle) . '"
+                    ok="' . htmlspecialchars($downloadButtonTitle) . '"
+                    close="' . htmlspecialchars($downloadCancelTitle) . '"
                 >
-                    <button type="button" class="btn btn-default btn-sm me-2" title="' . htmlspecialchars($exportButtonTitle) . '">' .
-                        $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL) . ' ' .
-                        htmlspecialchars($exportButtonLabel) .
+                    <button type="button" class="btn btn-default btn-sm me-2" title="' . htmlspecialchars($downloadButtonTitle) . '">' .
+                        $this->iconFactory->getIcon('actions-database-export', Icon::SIZE_SMALL) . ' ' .
+                        htmlspecialchars($downloadButtonLabel) .
                     '</button>
-                </typo3-recordlist-record-export-button>
+                </typo3-recordlist-record-download-button>
             </div>';
     }
 

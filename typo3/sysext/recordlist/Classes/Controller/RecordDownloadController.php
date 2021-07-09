@@ -30,16 +30,16 @@ use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
-use TYPO3\CMS\Recordlist\RecordList\ExportRecordList;
+use TYPO3\CMS\Recordlist\RecordList\DownloadRecordList;
 
 /**
- * Controller for handling exports of records, typically executed from the list module.
+ * Controller for handling download of records, typically executed from the list module.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class RecordExportController
+class RecordDownloadController
 {
-    private const EXPORT_FORMATS = [
+    private const DOWNLOAD_FORMATS = [
         'csv' => [
             'options' => [
                 'delimiter' => [
@@ -88,24 +88,24 @@ class RecordExportController
     }
 
     /**
-     * Handle record export request by evaluating the provided arguments,
+     * Handle record download request by evaluating the provided arguments,
      * checking access, initializing the record list, fetching records and
-     * finally calling the requested export format action (e.g. csv).
+     * finally calling the requested download format action (e.g. csv).
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function handleExportRequest(ServerRequestInterface $request): ResponseInterface
+    public function handleDownloadRequest(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
 
         $this->table = (string)($parsedBody['table'] ?? '');
         if ($this->table === '') {
-            throw new \RuntimeException('No table was given for exporting records', 1623941276);
+            throw new \RuntimeException('No table was given for downloading records', 1623941276);
         }
         $this->format = (string)($parsedBody['format'] ?? '');
-        if ($this->format === '' || !isset(self::EXPORT_FORMATS[$this->format])) {
-            throw new \RuntimeException('No or an invalid export format given', 1624562166);
+        if ($this->format === '' || !isset(self::DOWNLOAD_FORMATS[$this->format])) {
+            throw new \RuntimeException('No or an invalid download format given', 1624562166);
         }
 
         $this->filename = $this->generateFilename((string)($parsedBody['filename'] ?? ''));
@@ -121,7 +121,7 @@ class RecordExportController
         $searchString = (string)($parsedBody['searchString'] ?? '');
         $searchLevels = (int)($parsedBody['searchLevels'] ?? 0);
         if (!is_array($pageinfo) && !($this->id === 0 && $searchString !== '' && $searchLevels !== 0)) {
-            throw new AccessDeniedException('Insufficient permissions for accessing this export', 1623941361);
+            throw new AccessDeniedException('Insufficient permissions for accessing this download', 1623941361);
         }
 
         // Initialize database record list
@@ -137,16 +137,16 @@ class RecordExportController
         $hideTranslations = ($this->modTSconfig['hideTranslations'] ?? '') === '*'
             || GeneralUtility::inList($this->modTSconfig['hideTranslations'] ?? '', $this->table);
 
-        // Initialize the exporter
-        $exporter = GeneralUtility::makeInstance(
-            ExportRecordList::class,
+        // Initialize the downloader
+        $downloader = GeneralUtility::makeInstance(
+            DownloadRecordList::class,
             $recordList,
             GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
         );
 
         // Fetch and process the header row and the records
-        $headerRow = $exporter->getHeaderRow($columnsToRender);
-        $records = $exporter->getRecords(
+        $headerRow = $downloader->getHeaderRow($columnsToRender);
+        $records = $downloader->getRecords(
             $this->table,
             $this->id,
             $columnsToRender,
@@ -155,38 +155,38 @@ class RecordExportController
             (bool)($parsedBody['rawValues'] ?? false)
         );
 
-        $exportAction = $this->format . 'ExportAction';
-        return $this->{$exportAction}($request, $headerRow, $records);
+        $downloadAction = $this->format . 'DownloadAction';
+        return $this->{$downloadAction}($request, $headerRow, $records);
     }
 
     /**
-     * Generate settings form for the export request
+     * Generate settings form for the download request
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function exportSettingsAction(ServerRequestInterface $request): ResponseInterface
+    public function downloadSettingsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $exportArguments = $request->getQueryParams();
+        $downloadArguments = $request->getQueryParams();
 
-        $this->table = (string)($exportArguments['table'] ?? '');
+        $this->table = (string)($downloadArguments['table'] ?? '');
         if ($this->table === '') {
-            throw new \RuntimeException('No table was given for exporting records', 1624551586);
+            throw new \RuntimeException('No table was given for downloading records', 1624551586);
         }
 
-        $this->id = (int)($exportArguments['id'] ?? 0);
+        $this->id = (int)($downloadArguments['id'] ?? 0);
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:recordlist/Resources/Private/Templates/RecordExportSettings.html'
+            'EXT:recordlist/Resources/Private/Templates/RecordDownloadSettings.html'
         ));
 
         $view->assignMultiple([
-            'formUrl' => $this->uriBuilder->buildUriFromRoute('record_export'),
+            'formUrl' => $this->uriBuilder->buildUriFromRoute('record_download'),
             'table' => $this->table,
-            'exportArguments' => $exportArguments,
-            'formats' => array_keys(self::EXPORT_FORMATS),
+            'downloadArguments' => $downloadArguments,
+            'formats' => array_keys(self::DOWNLOAD_FORMATS),
             'formatOptions' => $this->getFormatOptionsWithResolvedDefaults(),
         ]);
 
@@ -198,14 +198,14 @@ class RecordExportController
     }
 
     /**
-     * Generating an export in CSV format
+     * Generating an download in CSV format
      *
      * @param ServerRequestInterface $request
      * @param array $headerRow
      * @param array $records
      * @return ResponseInterface
      */
-    protected function csvExportAction(
+    protected function csvDownloadAction(
         ServerRequestInterface $request,
         array $headerRow,
         array $records
@@ -220,19 +220,18 @@ class RecordExportController
             $result[] = CsvUtility::csvValues($record, $csvDelimiter, $csvQuote);
         }
 
-        return $this->generateExportResponse(implode(CRLF, $result));
+        return $this->generateDownloadResponse(implode(CRLF, $result));
     }
 
     /**
-     * Generating an export in JSON format
+     * Generating an download in JSON format
      *
      * @param ServerRequestInterface $request
      * @param array $headerRow
      * @param array $records
-     *
      * @return ResponseInterface
      */
-    protected function jsonExportAction(
+    protected function jsonDownloadAction(
         ServerRequestInterface $request,
         array $headerRow,
         array $records
@@ -274,7 +273,7 @@ class RecordExportController
                 break;
         }
 
-        return $this->generateExportResponse(json_encode($result) ?: '');
+        return $this->generateDownloadResponse(json_encode($result) ?: '');
     }
 
     /**
@@ -322,7 +321,7 @@ class RecordExportController
      */
     protected function getFormatOptionsWithResolvedDefaults(): array
     {
-        $formatOptions = self::EXPORT_FORMATS;
+        $formatOptions = self::DOWNLOAD_FORMATS;
 
         if ($this->modTSconfig === []) {
             return $formatOptions;
@@ -361,7 +360,7 @@ class RecordExportController
             ?? $default;
     }
 
-    protected function generateExportResponse(string $result): ResponseInterface
+    protected function generateDownloadResponse(string $result): ResponseInterface
     {
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/octet-stream')

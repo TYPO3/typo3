@@ -7,9 +7,9 @@ return [
         'path' => '/web/list/clearpagecache',
         'target' => \TYPO3\CMS\Recordlist\Controller\ClearPageCacheController::class . '::mainAction'
     ],
-    'record_export_settings' => [
-        'path' => '/record/export/settings',
-        'target' => \TYPO3\CMS\Recordlist\Controller\RecordExportController::class . '::exportSettingsAction'
+    'record_download_settings' => [
+        'path' => '/record/download/settings',
+        'target' => \TYPO3\CMS\Recordlist\Controller\RecordDownloadController::class . '::downloadSettingsAction'
     ],
     'record_show_columns' => [
         'path' => '/record/show/columns',

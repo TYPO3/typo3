@@ -1,0 +1,84 @@
+<form action="{formUrl}" method="post" id="downloadSettingsForm">
+
+    <div class="row row-cols-auto">
+        <div class="col-12">
+            <h5><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.generalSettings"/></h5>
+        </div>
+        <div class="col">
+            <p>
+                <strong><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.columnsToDownload"/></strong><br/>
+                <span class="text-muted">
+                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.default"
+                        arguments="{0: '{f:translate(key: \'LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.selectedColumns\')}'}"/>
+                </span>
+            </p>
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="allColumns">
+                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.allColumns"/>
+                </label>
+                <input type="checkbox" class="form-check-input" name="allColumns" value="1" data-empty-value="0" id="allColumns">
+            </div>
+        </div>
+        <div class="col">
+            <p>
+                <strong><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.valueFormat"/></strong><br/>
+                <span class="text-muted">
+                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.default"
+                        arguments="{0: '{f:translate(key: \'LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.processedValues\')}'}"/>
+                </span>
+            </p>
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="rawValues">
+                    <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.rawValues"/>
+                </label>
+                <input type="checkbox" class="form-check-input" name="rawValues" value="1" data-empty-value="0" id="rawValues"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-auto mt-2">
+        <div class="col">
+            <label for="filename">
+                <strong><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.filename"/></strong>
+            </label>
+            <input type="text" id="filename" placeholder="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.filename.placeholder', arguments: '{0: table}')}" class="form-control" name="filename" size="30">
+        </div>
+        <div class="col">
+            <label for="format">
+                <strong><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.format"/></strong>
+            </label>
+            <select class="form-select t3js-record-download-format-selector" id="format" name="format">
+                <f:for each="{formats}" as="format" iteration="i">
+                    <option value="{format}" {f:if(condition: i.isFirst, then: 'selected')}><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.format.{format}"/></option>
+                </f:for>
+            </select>
+        </div>
+    </div>
+
+    <f:if condition="{formatOptions}">
+        <f:for each="{formatOptions}" key="formatName" as="format" iteration="i">
+            <div class="row row-cols-auto mt-4 {f:if(condition: '!{i.isFirst}', then: 'hide')} t3js-record-download-format-option" data-formatName="{formatName}">
+                <div class="col-12">
+                    <h5><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.formatOptions.{formatName}"/></h5>
+                </div>
+                <f:for each="{format.options}" key="formatOptionName" as="formatOption">
+                    <div class="col">
+                        <label for="{formatName}-{formatOptionName}">
+                            <strong><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.formatOptions.{formatName}.{formatOptionName}"/></strong>
+                        </label>
+                        <select class="form-select" id="{formatName}-{formatOptionName}" name="{formatName}[{formatOptionName}]">
+                            <f:for each="{formatOption}" key="optionName" as="option">
+                                <option value="{option}" {f:if(condition: '{format.defaults.{formatOptionName}} == {option}', then: 'selected')}>{option} ({f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang_download.xlf:downloadSettings.formatOptions.{formatName}.{formatOptionName}.{optionName}')})</option>
+                            </f:for>
+                        </select>
+                    </div>
+                </f:for>
+            </div>
+        </f:for>
+    </f:if>
+
+    <input type="hidden" name="table" value="{downloadArguments.table}"/>
+    <input type="hidden" name="id" value="{downloadArguments.id}"/>
+    <input type="hidden" name="searchString" value="{downloadArguments.searchString}"/>
+    <input type="hidden" name="searchLevels" value="{downloadArguments.searchLevels}"/>
+</form>

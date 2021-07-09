@@ -24,14 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Fetches all records like in the list module but returns them as array in order to allow
- * exports (e.g. CSV) in the Controller with prepared data.
+ * downloads (e.g. CSV) in the Controller with prepared data.
  *
  * This class acts as a composition-based wrapper for DatabaseRecordList for creating records
- * ready to be exported.
+ * ready to be downloaded.
  *
  * @internal this class is not part of the TYPO3 Core API due to its nature as being a wrapper for DatabaseRecordList and a very specific implementation.
  */
-class ExportRecordList
+class DownloadRecordList
 {
     protected DatabaseRecordList $recordList;
     protected TranslationConfigurationProvider $translationConfigurationProvider;
@@ -125,7 +125,7 @@ class ExportRecordList
      *
      * @param string $table Table name
      * @param mixed[] $row Current record
-     * @param string[] $columnsToRender the columns to be displayed / exported
+     * @param string[] $columnsToRender the columns to be displayed / downloaded
      * @param int $pageId used for the legacy hook
      * @param bool $rawValues Whether the field values should not be processed
      * @return array the prepared row

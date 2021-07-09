@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
-use TYPO3\CMS\Recordlist\RecordList\ExportRecordList;
+use TYPO3\CMS\Recordlist\RecordList\DownloadRecordList;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ExportRecordListTest extends FunctionalTestCase
+class DownloadRecordListTest extends FunctionalTestCase
 {
     private ?BackendUserAuthentication $user;
 
@@ -38,7 +38,7 @@ class ExportRecordListTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function exportReturnsAListOfAllBackendUsers(): void
+    public function downloadReturnsAListOfAllBackendUsers(): void
     {
         $recordList = new DatabaseRecordList();
         $recordList->start(0, 'be_users', 0);
@@ -49,7 +49,7 @@ class ExportRecordListTest extends FunctionalTestCase
             'admin',
             'crdate'
         ];
-        $subject = new ExportRecordList($recordList, new TranslationConfigurationProvider());
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
         $contentRows = $subject->getRecords('be_users', 0, $recordList->setFields['be_users'], $this->user);
         $result = array_merge([$headerRow], $contentRows);
@@ -74,7 +74,7 @@ class ExportRecordListTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function exportReturnsAListOfSubpages(): void
+    public function downloadReturnsAListOfSubpages(): void
     {
         $this->importDataSet('EXT:recordlist/Tests/Functional/RecordList/Fixtures/pages.xml');
         $recordList = new DatabaseRecordList();
@@ -85,7 +85,7 @@ class ExportRecordListTest extends FunctionalTestCase
             'title',
             'sys_language_uid',
         ];
-        $subject = new ExportRecordList($recordList, new TranslationConfigurationProvider());
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['pages']);
         $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user);
         $result = array_merge([$headerRow], $contentRows);
@@ -163,7 +163,7 @@ class ExportRecordListTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function exportReturnsRawValues(): void
+    public function downloadReturnsRawValues(): void
     {
         $recordList = new DatabaseRecordList();
         $recordList->start(0, 'be_users', 0);
@@ -174,7 +174,7 @@ class ExportRecordListTest extends FunctionalTestCase
             'admin',
             'crdate'
         ];
-        $subject = new ExportRecordList($recordList, new TranslationConfigurationProvider());
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
         $contentRows = $subject->getRecords('be_users', 0, $recordList->setFields['be_users'], $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);

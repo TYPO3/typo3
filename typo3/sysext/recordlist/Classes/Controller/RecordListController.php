@@ -109,7 +109,7 @@ class RecordListController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordExportButton');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
