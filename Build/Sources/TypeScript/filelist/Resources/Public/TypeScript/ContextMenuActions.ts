@@ -40,6 +40,18 @@ class ContextMenuActions {
     );
   }
 
+  public static editMetadata(): void {
+    const metadataUid: string = $(this).data('metadata-uid');
+    if (!metadataUid) {
+      return;
+    }
+    top.TYPO3.Backend.ContentContainer.setUrl(
+      top.TYPO3.settings.FormEngine.moduleUrl
+      + '&edit[sys_file_metadata][' + parseInt(metadataUid, 10) + ']=edit'
+      + '&returnUrl=' + ContextMenuActions.getReturnUrl()
+    );
+  }
+
   public static editFileStorage(table: string, uid: string): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.FormEngine.moduleUrl

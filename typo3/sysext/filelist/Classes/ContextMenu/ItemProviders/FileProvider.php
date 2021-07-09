@@ -41,9 +41,14 @@ class FileProvider extends AbstractProvider
      */
     protected $itemsConfiguration = [
         'edit' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent',
             'iconIdentifier' => 'actions-page-open',
             'callbackAction' => 'editFile'
+        ],
+        'editMetadata' => [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata',
+            'iconIdentifier' => 'actions-open',
+            'callbackAction' => 'editMetadata'
         ],
         'rename' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename',
@@ -150,6 +155,9 @@ class FileProvider extends AbstractProvider
             case 'edit':
                 $canRender = $this->canBeEdited();
                 break;
+            case 'editMetadata':
+                $canRender = $this->canEditMetadata();
+                break;
             case 'info':
                 $canRender = $this->canShowInfo();
                 break;
@@ -197,6 +205,18 @@ class FileProvider extends AbstractProvider
         return $this->isFile()
            && $this->record->checkActionPermission('write')
            && $this->record->isTextFile();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function canEditMetadata(): bool
+    {
+        return $this->isFile()
+           && $this->record->isIndexed()
+           && $this->record->checkActionPermission('editMeta')
+           && $this->record->getMetaData()->offsetExists('uid')
+           && $this->backendUser->check('tables_modify', 'sys_file_metadata');
     }
 
     /**
@@ -399,6 +419,11 @@ class FileProvider extends AbstractProvider
                 'data-message' => htmlspecialchars($confirmMessage),
                 'data-button-close-text' => htmlspecialchars($closeText),
                 'data-button-ok-text' => htmlspecialchars($okText),
+            ];
+        }
+        if ($itemName === 'editMetadata') {
+            $attributes += [
+                'data-metadata-uid' => htmlspecialchars((string)$this->record->getMetaData()->offsetGet('uid'))
             ];
         }
 
