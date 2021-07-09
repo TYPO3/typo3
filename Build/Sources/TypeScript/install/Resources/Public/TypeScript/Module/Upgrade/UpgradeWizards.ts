@@ -48,6 +48,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   private selectorWizardsListRowExecute: string = '.t3js-upgradeWizards-list-row-execute';
   private selectorWizardsInputTemplate: string = '.t3js-upgradeWizards-input';
   private selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
+  private selectorWizardsInputDescription: string = '.t3js-upgradeWizards-input-description';
   private selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
   private selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
   private selectorWizardsInputAbort: string = '.t3js-upgradeWizards-input-abort';
@@ -349,6 +350,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               input.find(this.selectorWizardsInputHtml).html(data.userInput.wizardHtml);
             }
             input.find(this.selectorWizardsInputTitle).text(data.userInput.title);
+            input.find(this.selectorWizardsInputDescription).html(this.securityUtility.stripHtml(data.userInput.description).replace(/\n/g, '<br>'));
             input.find(this.selectorWizardsInputPerform)
               .attr('data-identifier', data.userInput.identifier)
               .attr('data-title', data.userInput.title);
