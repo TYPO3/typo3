@@ -70,6 +70,20 @@ class PathUtilityTest extends UnitTestCase
             ],
             [
                 [
+                    '/var/www/myhost.com/typo3/',
+                    '/var/www/myhost.com/typo3'
+                ],
+                '/var/www/myhost.com/typo3/'
+            ],
+            [
+                [
+                    '/var/www/myhost.com/typo3',
+                    '/var/www/myhost.com/typo3'
+                ],
+                '/var/www/myhost.com/typo3/'
+            ],
+            [
+                [
                     '/var/www/myhost.com/uploads/',
                     '/var/www/myhost.com/typo3/',
                     '/var/www/myhost.com/t3lib/'
