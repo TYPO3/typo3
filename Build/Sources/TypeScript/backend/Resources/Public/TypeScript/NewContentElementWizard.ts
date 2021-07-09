@@ -91,16 +91,17 @@ export default class NewContentElementWizard {
   }
 
   private switchTabIfNecessary(tabContainer: Element): void {
-    const currentActiveTab = tabContainer.querySelector('.active');
-    const siblings = Array.from(currentActiveTab.parentNode.children);
+    const currentActiveTab = tabContainer.querySelector('.active').parentElement;
+    const siblings = Array.from(currentActiveTab.parentElement.children);
 
     for (let sibling of siblings) {
       const siblingTabIdentifier = NewContentElementWizard.getTabIdentifier(sibling);
-      sibling.classList.toggle('disabled', !this.hasTabContent(siblingTabIdentifier));
-      if (sibling.classList.contains('disabled')) {
-        sibling.children[0].setAttribute('tabindex', '-1');
+      const navLink = sibling.querySelector('a');
+      navLink.classList.toggle('disabled', !this.hasTabContent(siblingTabIdentifier));
+      if (navLink.classList.contains('disabled')) {
+        navLink.setAttribute('tabindex', '-1');
       } else {
-        sibling.children[0].removeAttribute('tabindex');
+        navLink.removeAttribute('tabindex');
       }
     }
 
@@ -136,10 +137,10 @@ export default class NewContentElementWizard {
     const tabElement = tabContainerWrapper.querySelector(`a[href="#${tabIdentifier}"]`);
     const tabContentElement = this.context.querySelector(`#${tabIdentifier}`);
 
-    tabContainerWrapper.querySelector('.t3js-tabmenu-item.active').classList.remove('active');
+    tabContainerWrapper.querySelector('a.active').classList.remove('active');
     tabContainerWrapper.querySelector('.tab-pane.active').classList.remove('active');
 
-    tabElement.parentElement.classList.add('active');
+    tabElement.classList.add('active');
     tabContentElement.classList.add('active');
   }
 }
