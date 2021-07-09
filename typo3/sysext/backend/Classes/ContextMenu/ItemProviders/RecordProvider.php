@@ -156,7 +156,7 @@ class RecordProvider extends AbstractProvider
      */
     public function canHandle(): bool
     {
-        if (in_array($this->table, ['sys_file', 'sys_filemounts', 'sys_file_storage', 'pages'], true)
+        if (in_array($this->table, ['sys_file', 'pages'], true)
             || strpos($this->table, '-drag') !== false) {
             return false;
         }

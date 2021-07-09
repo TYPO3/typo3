@@ -52,14 +52,6 @@ class ContextMenuActions {
     );
   }
 
-  public static editFileStorage(table: string, uid: string): void {
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl
-      + '&edit[sys_file_storage][' + parseInt(uid, 10) + ']=edit&returnUrl='
-      + ContextMenuActions.getReturnUrl(),
-    );
-  }
-
   public static openInfoPopUp(table: string, uid: string): void {
     if (table === 'sys_file_storage') {
       top.TYPO3.InfoWindow.showItem(table, uid);
