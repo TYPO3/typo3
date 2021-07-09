@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -88,40 +89,45 @@ class StorageRepositoryTest extends UnitTestCase
                 0
             ],
             'NoMatchReturnsDefaultStorage' => [
-                [1 => 'fileadmin/', 2 => 'fileadmin2/public/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin2/public/']),
                 'my/dummy/Image.png',
                 0
             ],
             'MatchReturnsTheMatch' => [
-                [1 => 'fileadmin/', 2 => 'other/public/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'other/public/']),
                 'fileadmin/dummy/Image.png',
                 1
             ],
             'TwoFoldersWithSameStartReturnsCorrect' => [
-                [1 => 'fileadmin/', 2 => 'fileadmin/public/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/dummy/Image.png',
                 1
             ],
             'NestedStorageReallyReturnsTheBestMatching' => [
-                [1 => 'fileadmin/', 2 => 'fileadmin/public/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/public/Image.png',
                 2
             ],
             'CommonPrefixButWrongPath' => [
-                [1 => 'fileadmin/', 2 => 'uploads/test/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/bogus/dummy.png',
                 0
             ],
             'CommonPrefixRightPath' => [
-                [1 => 'fileadmin/', 2 => 'uploads/test/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/test/dummy.png',
                 2
             ],
             'FindStorageFromWindowsPath' => [
-                [1 => 'fileadmin/', 2 => 'uploads/test/'],
+                array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads\\test\\dummy.png',
                 2
             ],
         ];
+    }
+
+    private function asRelativePath(string $value): LocalPath
+    {
+        return new LocalPath($value, LocalPath::TYPE_RELATIVE);
     }
 }
