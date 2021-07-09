@@ -435,31 +435,29 @@ class FileListController implements LoggerAwareInterface
             $addParams .= '&pointer=' . $this->pointer;
         }
 
-        $this->view->assign('checkboxes', [
-            'displayThumbs' => [
-                'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] === 'selectable',
-                'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')),
-                'html' => BackendUtility::getFuncCheck(
-                    $this->id,
-                    'SET[displayThumbs]',
-                    $this->MOD_SETTINGS['displayThumbs'] ?? '',
-                    '',
-                    $addParams,
-                    'id="checkDisplayThumbs"'
-                ),
-            ],
-            'enableClipBoard' => [
-                'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
-                'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
-                'html' => BackendUtility::getFuncCheck(
-                    $this->id,
-                    'SET[clipBoard]',
-                    $this->MOD_SETTINGS['clipBoard'] ?? '',
-                    '',
-                    $addParams,
-                    'id="checkClipBoard"'
-                ),
-            ]
+        $this->view->assign('displayThumbs', [
+            'enabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] === 'selectable',
+            'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')),
+            'html' => BackendUtility::getFuncCheck(
+                $this->id,
+                'SET[displayThumbs]',
+                $this->MOD_SETTINGS['displayThumbs'] ?? '',
+                '',
+                $addParams,
+                'id="checkDisplayThumbs"'
+            )
+        ]);
+        $this->view->assign('enableClipBoard', [
+            'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
+            'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
+            'html' => BackendUtility::getFuncCheck(
+                $this->id,
+                'SET[clipBoard]',
+                $this->MOD_SETTINGS['clipBoard'] ?? '',
+                '',
+                $addParams,
+                'id="checkClipBoard"'
+            ),
         ]);
     }
 
@@ -495,6 +493,7 @@ class FileListController implements LoggerAwareInterface
                             ['id' => $parentFolder->getCombinedIdentifier()]
                         )
                     )
+                    ->setShowLabelText(true)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'))
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -530,9 +529,10 @@ class FileListController implements LoggerAwareInterface
                     ]
                 ))
                 ->setClasses('t3js-drag-uploader-trigger')
+                ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'))
                 ->setIcon($this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL));
-            $buttonBar->addButton($uploadButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+            $buttonBar->addButton($uploadButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         }
 
         // New folder button
@@ -550,9 +550,10 @@ class FileListController implements LoggerAwareInterface
                         'returnUrl' => $this->filelist->listURL(),
                     ]
                 ))
+                ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new'))
                 ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
-            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+            $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
         // Add paste button if clipboard is initialized
@@ -585,9 +586,10 @@ class FileListController implements LoggerAwareInterface
                             'bs-content' => $confirmText,
                             'title' => $pastButtonTitle
                         ])
+                        ->setShowLabelText(true)
                         ->setTitle($pastButtonTitle)
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
-                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                    $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
                 }
             }
         }

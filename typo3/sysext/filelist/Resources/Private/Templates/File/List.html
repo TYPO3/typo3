@@ -29,7 +29,7 @@
 
 <f:section name="content">
     <form method="post" name="fileListForm">
-        <div class="row mb-4">
+        <div class="row">
             <div class="col-6">
                 <div class="input-group">
                     <input type="hidden" name="pointer" value="0" />
@@ -43,13 +43,35 @@
                 </div>
             </div>
         </div>
-
+        <div class="row justify-content-end">
+            <f:if condition="{listHtml} && {displayThumbs.enabled}">
+                <div class="col-6">
+                    <div class="float-end">
+                        <div class="form-check form-switch">
+                            {displayThumbs.html -> f:format.raw()}
+                            <label for="checkDisplayThumbs" class="form-check-label">
+                                {displayThumbs.label}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </f:if>
+        </div>
         {listHtml -> f:format.raw()}
         <input type="hidden" name="cmd"/>
     </form>
 
     <f:if condition="{listHtml}">
-        <f:render partial="ListOptions" arguments="{checkboxes:checkboxes}" />
+        <div class="mb-3">
+            <f:if condition="{enableClipBoard.enabled}">
+                <div class="form-check form-switch">
+                    {enableClipBoard.html -> f:format.raw()}
+                    <label for="checkClipBoard" class="form-check-label">
+                        {enableClipBoard.label}
+                    </label>
+                </div>
+            </f:if>
+        </div>
         <f:if condition="{clipBoardHtml}">
             {clipBoardHtml -> f:format.raw()}
             <f:be.buttons.csh table="xMOD_csh_corebe" field="filelist_clipboard" wrap="<span class='btn btn-sm btn-default'>|</span>" />

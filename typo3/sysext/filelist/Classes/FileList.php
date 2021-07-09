@@ -41,7 +41,6 @@ use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
 
 /**
  * Class for rendering of File>Filelist (basically used in FileListController)
@@ -171,11 +170,6 @@ class FileList
     protected $id = 0;
 
     /**
-     * @var ThumbnailConfiguration
-     */
-    protected $thumbnailConfiguration;
-
-    /**
      * @var UriBuilder
      */
     protected $uriBuilder;
@@ -188,7 +182,6 @@ class FileList
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen'] ?? 1);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-        $this->thumbnailConfiguration = GeneralUtility::makeInstance(ThumbnailConfiguration::class);
         $this->iLimit = MathUtility::forceIntegerInRange(
             $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,
             1
@@ -373,7 +366,7 @@ class FileList
         }
 
         return '
-            <div class="mb-4 mt-4">
+            <div class="mb-4 mt-2">
                 <div class="table-fit mb-0">
                     <table class="table table-striped table-hover" id="typo3-filelist">
                         <thead>' . $this->addElement('', $theData, 'th') . '</thead>
@@ -820,8 +813,8 @@ class FileList
                             $processedFile = $fileObject->process(
                                 ProcessedFile::CONTEXT_IMAGEPREVIEW,
                                 [
-                                    'width' => $this->thumbnailConfiguration->getWidth(),
-                                    'height' => $this->thumbnailConfiguration->getHeight(),
+                                    'width' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['width'] ?? 64),
+                                    'height' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['height'] ?? 64),
                                 ]
                             );
                             $theData[$field] .= '<br /><img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '')) . '" ' .

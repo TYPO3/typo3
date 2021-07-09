@@ -318,20 +318,16 @@ class RecordListController
             $body .= '<div class="row">' . $beforeOutput . '</div>';
         }
         $body .= $output;
-        // If a listing was produced, create the page footer with search form etc:
+        // If a listing was produced, create the page footer
         if ($tableOutput) {
-            // Adding checkbox options for extended listing and clipboard display:
+            // Adding checkbox option for clipboard display
             $body .= '
-
-					<!--
-						Listing options for extended view and clipboard view
-					-->
-					<div class="typo3-listOptions">
+					<div class="mb-3">
 						<form action="" method="post">';
 
             // Add "clipboard" checkbox:
             if ($this->modTSconfig['enableClipBoard'] === 'selectable') {
-                $body .= '<div class="form-check">' .
+                $body .= '<div class="form-check form-switch">' .
                     BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', ($MOD_SETTINGS['clipBoard'] ?? ''), '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
                     '<label class="form-check-label" for="checkShowClipBoard">' .
                     BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
