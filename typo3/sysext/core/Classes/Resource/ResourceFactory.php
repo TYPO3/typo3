@@ -74,7 +74,7 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
     /**
      * A list of the base paths of "local" driver storages. Used to make the detection of base paths easier.
      *
-     * @var array
+     * @var array<int, LocalPath>|null
      */
     protected $localDriverStorageCache;
 
@@ -209,19 +209,39 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
             $this->initializeLocalStorageCache();
         }
 
+        // normalize path information (`//`, `../`)
+        $localPath = PathUtility::getCanonicalPath($localPath);
+        if ($localPath[0] !== '/') {
+            $localPath = '/' . $localPath;
+        }
         $bestMatchStorageUid = 0;
         $bestMatchLength = 0;
         foreach ($this->localDriverStorageCache as $storageUid => $basePath) {
-            $matchLength = strlen(PathUtility::getCommonPrefix([$basePath, $localPath]) ?? '');
-            $basePathLength = strlen($basePath);
-
-            if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
-                $bestMatchStorageUid = (int)$storageUid;
-                $bestMatchLength = $matchLength;
+            // try to match (resolved) relative base-path
+            if ($basePath->getRelative() !== null
+                && null !== $commonPrefix = PathUtility::getCommonPrefix([$basePath->getRelative(), $localPath])
+            ) {
+                $matchLength = strlen($commonPrefix);
+                $basePathLength = strlen($basePath->getRelative());
+                if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
+                    $bestMatchStorageUid = $storageUid;
+                    $bestMatchLength = $matchLength;
+                }
+            }
+            // try to match (resolved) absolute base-path
+            if (null !== $commonPrefix = PathUtility::getCommonPrefix([$basePath->getAbsolute(), $localPath])) {
+                $matchLength = strlen($commonPrefix);
+                $basePathLength = strlen($basePath->getAbsolute());
+                if ($matchLength >= $basePathLength && $matchLength > $bestMatchLength) {
+                    $bestMatchStorageUid = $storageUid;
+                    $bestMatchLength = $matchLength;
+                }
             }
         }
-        if ($bestMatchStorageUid !== 0) {
-            $localPath = substr($localPath, $bestMatchLength);
+        if ($bestMatchLength > 0) {
+            // $commonPrefix always has trailing slash, which needs to be excluded
+            // (commonPrefix: /some/path/, localPath: /some/path/file.png --> /file.png; keep leading slash)
+            $localPath = substr($localPath, $bestMatchLength - 1);
         }
         return $bestMatchStorageUid;
     }
@@ -236,12 +256,28 @@ class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
         /** @var ResourceStorage[] $storageObjects */
         $storageObjects = $storageRepository->findByStorageType('Local');
 
-        $storageCache = [];
+        $this->localDriverStorageCache = [
+            // implicit legacy storage in project's public path
+            0 => new LocalPath('/', LocalPath::TYPE_RELATIVE)
+        ];
         foreach ($storageObjects as $localStorage) {
             $configuration = $localStorage->getConfiguration();
-            $storageCache[$localStorage->getUid()] = $configuration['basePath'];
+            if (!isset($configuration['basePath']) || !isset($configuration['pathType'])) {
+                continue;
+            }
+            if ($configuration['pathType'] === 'relative') {
+                $pathType = LocalPath::TYPE_RELATIVE;
+            } elseif ($configuration['pathType'] === 'absolute') {
+                $pathType = LocalPath::TYPE_ABSOLUTE;
+            } else {
+                continue;
+            }
+            $this->localDriverStorageCache[$localStorage->getUid()] = GeneralUtility::makeInstance(
+                LocalPath::class,
+                $configuration['basePath'],
+                $pathType
+            );
         }
-        $this->localDriverStorageCache = $storageCache;
     }
 
     /**
