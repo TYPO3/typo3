@@ -94,7 +94,6 @@ class PageResolverTest extends UnitTestCase
     public function properSiteConfigurationLoadsPageRouter()
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
-        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
         /** @var MockObject|Site $site */
         $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
             'lotus-flower', 13, [
@@ -136,7 +135,6 @@ class PageResolverTest extends UnitTestCase
     public function properSiteConfigurationLoadsPageRouterWithRedirect()
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
-        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
         /** @var MockObject|Site $site */
         $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
             'lotus-flower', 13, [
@@ -176,7 +174,6 @@ class PageResolverTest extends UnitTestCase
     public function properSiteConfigurationLoadsPageRouterWithRedirectWithoutTrailingSlash()
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
-        $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom/'];
         /** @var MockObject|Site $site */
         $site = $this->getMockBuilder(Site::class)->setConstructorArgs([
             'lotus-flower', 13, [

@@ -928,12 +928,12 @@ class ConnectionMigrator
             $tableDiff = GeneralUtility::makeInstance(
                 TableDiff::class,
                 $removedTable->getQuotedName($this->connection->getDatabasePlatform()),
-                $addedColumns = [],
-                $changedColumns = [],
-                $removedColumns = [],
-                $addedIndexes = [],
-                $changedIndexes = [],
-                $removedIndexes = [],
+                [], // added columns
+                [], // changed columns
+                [], // removed columns
+                [], // added indexes
+                [], // changed indexes
+                [], // removed indexed
                 $this->buildQuotedTable($removedTable)
             );
 
@@ -989,7 +989,7 @@ class ConnectionMigrator
                     ColumnDiff::class,
                     $removedColumn->getQuotedName($this->connection->getDatabasePlatform()),
                     $renamedColumn,
-                    $changedProperties = [],
+                    [], // changed properties
                     $this->buildQuotedColumn($removedColumn)
                 );
 

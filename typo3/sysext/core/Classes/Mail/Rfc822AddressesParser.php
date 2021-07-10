@@ -632,7 +632,6 @@ class Rfc822AddressesParser
      */
     protected function _validateRouteAddr($route_addr)
     {
-        $route = '';
         $return = [];
         // Check for colon.
         if (strpos($route_addr, ':') !== false) {

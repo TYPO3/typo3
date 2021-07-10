@@ -769,7 +769,6 @@ abstract class ActionController implements ControllerInterface
      */
     protected function forwardToReferringRequest(): ?ResponseInterface
     {
-        $referringRequest = null;
         $referringRequestArguments = $this->request->getInternalArguments()['__referrer'] ?? null;
         if (is_string($referringRequestArguments['@request'] ?? null)) {
             $referrerArray = json_decode(

@@ -2069,7 +2069,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return;
         }
         foreach ($linkVars as $linkVar) {
-            $test = $value = '';
+            $test = '';
             if (preg_match('/^(.*)\\((.+)\\)$/', $linkVar, $match)) {
                 $linkVar = trim($match[1]);
                 $test = trim($match[2]);

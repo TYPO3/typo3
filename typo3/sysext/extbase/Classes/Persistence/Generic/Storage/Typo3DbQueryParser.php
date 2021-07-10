@@ -406,7 +406,6 @@ class Typo3DbQueryParser
     {
         $value = $comparison->getOperand2();
         $fieldName = $this->parseOperand($comparison->getOperand1(), $source);
-        $expr = null;
         $exprBuilder = $this->queryBuilder->expr();
         switch ($comparison->getOperator()) {
             case QueryInterface::OPERATOR_IN:

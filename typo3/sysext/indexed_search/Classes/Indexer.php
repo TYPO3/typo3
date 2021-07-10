@@ -700,7 +700,6 @@ class Indexer
      */
     protected function createLocalPath($sourcePath)
     {
-        $localPath = '';
         $pathFunctions = [
             'createLocalPathUsingAbsRefPrefix',
             'createLocalPathUsingDomainURL',

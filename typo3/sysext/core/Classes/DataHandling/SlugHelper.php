@@ -605,7 +605,6 @@ class SlugHelper
      */
     protected function resolveParentPageRecord(int $pid, int $languageId): ?array
     {
-        $parentPageRecord = null;
         $rootLine = BackendUtility::BEgetRootLine($pid, '', true, ['nav_title']);
         $excludeDokTypes = [
             PageRepository::DOKTYPE_SPACER,

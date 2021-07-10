@@ -318,7 +318,7 @@ class DataMapperTest extends UnitTestCase
         $psrContainer->expects(self::any())->method('has')->willReturn(false);
         $container = new Container($psrContainer);
 
-        $session = new Session(new Container($psrContainer));
+        $session = new Session($container);
         $session->registerObject($child, $identifier);
 
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)

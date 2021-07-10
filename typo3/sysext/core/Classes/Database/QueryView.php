@@ -1065,7 +1065,7 @@ class QueryView
                                     $webMountPageTreePrefix = ',';
                                 }
                                 $webMountPageTree .= $webMountPageTreePrefix
-                                    . $this->getTreeList($webMount, 999, $begin = 0, $perms_clause);
+                                    . $this->getTreeList($webMount, 999, 0, $perms_clause);
                             }
                             if ($from_table === 'pages') {
                                 $queryBuilder->where(

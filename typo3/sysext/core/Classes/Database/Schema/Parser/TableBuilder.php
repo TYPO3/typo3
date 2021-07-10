@@ -328,7 +328,6 @@ class TableBuilder
      */
     protected function getDoctrineColumnTypeName(AbstractDataType $dataType): string
     {
-        $doctrineType = null;
         switch (get_class($dataType)) {
             case TinyIntDataType::class:
                 // TINYINT is MySQL specific and mapped to a standard SMALLINT

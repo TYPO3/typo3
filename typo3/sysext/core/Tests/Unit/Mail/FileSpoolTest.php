@@ -57,7 +57,7 @@ class FileSpoolTest extends UnitTestCase
     public function spoolsMessagesCorrectly(int $count)
     {
         for ($i = 1; $i <= $count; $i++) {
-            $sentMessage = $this->subject->send(
+            $this->subject->send(
                 new RawMessage('test message ' . $i),
                 new Envelope(new Address('sender@example.com'), [new Address('recipient@example.com')])
             );

@@ -553,7 +553,7 @@ class SoftReferenceIndex implements SingletonInterface
                     // Output content will be the token instead:
                     $content = '{softref:' . $tokenID . '}';
                 } elseif ($tLP['identifier']) {
-                    [$linkHandlerKeyword, $linkHandlerValue] = explode(':', trim($tLP['identifier']), 2);
+                    $linkHandlerValue = explode(':', trim($tLP['identifier']), 2)[1];
                     if (MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
                         // Token and substitute value
                         $elements[$tokenID . ':' . $idx]['subst'] = [

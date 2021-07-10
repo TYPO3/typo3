@@ -906,7 +906,6 @@ class DataHandler implements LoggerAwareInterface
                 // Checking access to the record
                 // ******************************
                 $createNewVersion = false;
-                $recordAccess = false;
                 $old_pid_value = '';
                 // Is it a new record? (Then Id is a string)
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
@@ -5449,7 +5448,6 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Gather versioned record
-        $versionRecord = null;
         if ((int)$record['t3ver_wsid'] === 0) {
             $record = BackendUtility::getWorkspaceVersionOfRecord($userWorkspace, $table, $uid);
         }

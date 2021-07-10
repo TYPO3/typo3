@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Form\Element\SelectTreeElement;
 use TYPO3\CMS\Backend\Form\Element\UnknownElement;
 use TYPO3\CMS\Backend\Form\Exception;
 use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Backend\Form\NodeInterface;
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\BarElement;
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeElements\FooElement;
 use TYPO3\CMS\Backend\Tests\Unit\Form\Fixtures\NodeFactory\NodeResolvers\BarResolver;
@@ -431,7 +430,6 @@ class NodeFactoryTest extends UnitTestCase
                 'class' => FooElement::class,
             ],
         ];
-        $mockNode = $this->createMock(NodeInterface::class);
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433156887 => [

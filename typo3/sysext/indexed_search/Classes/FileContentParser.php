@@ -461,7 +461,6 @@ class FileContentParser
      */
     public function readFileContent($ext, $absFile, $cPKey)
     {
-        $cmd = null;
         $contentArr = null;
         // Return immediately if initialization didn't set support up:
         if (!$this->supportedExtensions[$ext]) {

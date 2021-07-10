@@ -1661,7 +1661,7 @@ class QueryGenerator
                     $webMountPageTreePrefix = ',';
                 }
                 $webMountPageTree .= $webMountPageTreePrefix
-                    . $this->getTreeList($webMount, 999, $begin = 0, $perms_clause);
+                    . $this->getTreeList($webMount, 999, 0, $perms_clause);
             }
             // createNamedParameter() is not used here because the SQL fragment will only include
             // the :dcValueX placeholder when the query is returned as a string. The value for the

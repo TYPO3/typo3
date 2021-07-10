@@ -73,7 +73,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
             throw new \InvalidArgumentException('Mail transport can not be set to "spool"', 1469363238);
         }
 
-        $transport = null;
         $transportType = isset($mailSettings['transport_spool_type'])
             && !empty($mailSettings['transport_spool_type'])
             ? 'spool' : $mailSettings['transport'];
@@ -190,7 +189,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
      */
     protected function createSpool(array $mailSettings): DelayedTransportInterface
     {
-        $spool = null;
         switch ($mailSettings['transport_spool_type']) {
             case self::SPOOL_FILE:
                 $path = GeneralUtility::getFileAbsFileName($mailSettings['transport_spool_filepath']);

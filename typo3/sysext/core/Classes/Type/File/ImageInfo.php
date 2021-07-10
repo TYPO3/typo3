@@ -117,8 +117,6 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
      */
     protected function extractSvgImageSizes()
     {
-        $imagesSizes = [];
-
         $fileContent = file_get_contents($this->getPathname());
         if ($fileContent === false) {
             return false;

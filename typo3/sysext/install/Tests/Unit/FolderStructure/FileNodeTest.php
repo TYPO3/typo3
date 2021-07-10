@@ -521,7 +521,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->expects(self::any())->method('exists')->willReturn(true);
         $node->expects(self::once())->method('isFile')->willReturn(false);
         $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
-        $resultArray = $node->_call('fixSelf');
+        $node->_call('fixSelf');
     }
 
     /**

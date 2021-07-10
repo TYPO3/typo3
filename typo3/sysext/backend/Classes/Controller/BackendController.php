@@ -437,7 +437,6 @@ class BackendController
      */
     protected function getStartupModule(ServerRequestInterface $request): array
     {
-        $startModule = null;
         $redirectRoute = $request->getQueryParams()['redirect'] ?? '';
         // Check if the route has been registered
         if ($redirectRoute !== '' && $redirectRoute !== 'main' && isset(GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute])) {

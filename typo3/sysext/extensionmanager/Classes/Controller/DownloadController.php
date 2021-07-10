@@ -206,7 +206,7 @@ class DownloadController extends AbstractController
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return (new ForwardResponse('distributions'))->withControllerName('List');
         }
-        [$result, $errorMessages] = $this->installFromTer($extension);
+        $errorMessages = $this->installFromTer($extension)[1];
         if ($errorMessages) {
             foreach ($errorMessages as $extensionKey => $messages) {
                 foreach ($messages as $message) {

@@ -757,7 +757,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable()
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
-        $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989428);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
         $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);

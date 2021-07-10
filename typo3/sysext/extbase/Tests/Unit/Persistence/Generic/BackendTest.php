@@ -129,7 +129,6 @@ class BackendTest extends UnitTestCase
     {
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $parentObject = new \stdClass();
         $proxy = $this->getMockBuilder(LazyLoadingProxy::class)
             ->setMethods(['_loadRealInstance'])
             ->disableOriginalConstructor()

@@ -416,7 +416,7 @@ class DataMapItem
             return $idValue;
         }
         // @todo Handle if $tableName does not match $this->tableName
-        [$tableName, $id] = BackendUtility::splitTable_Uid($idValue);
+        $id = BackendUtility::splitTable_Uid($idValue)[1];
         return $id;
     }
 

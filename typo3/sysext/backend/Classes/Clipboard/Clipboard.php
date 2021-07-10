@@ -1026,7 +1026,7 @@ class Clipboard
      */
     public function makePasteCmdArray_file($ref, $FILE)
     {
-        [$pTable, $pUid] = explode('|', $ref);
+        $pUid = explode('|', $ref)[1];
         $elements = $this->elFromTable('_FILE');
         $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
         // Traverse elements and make CMD array

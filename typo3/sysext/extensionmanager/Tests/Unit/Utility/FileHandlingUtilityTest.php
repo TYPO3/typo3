@@ -272,7 +272,7 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
             ]
         ];
-        $rootPath = ($extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath']);
+        $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
         self::assertTrue(file_exists($rootPath . 'ChangeLog'));

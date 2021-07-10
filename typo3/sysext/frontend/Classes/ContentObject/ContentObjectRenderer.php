@@ -3793,7 +3793,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $parts = [];
         $aTagParams = $this->getATagParams($conf);
-        $textstr = '';
         foreach (['http://', 'https://'] as $scheme) {
             $textpieces = explode($scheme, $data);
             $pieces = count($textpieces);

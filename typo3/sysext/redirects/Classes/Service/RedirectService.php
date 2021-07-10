@@ -324,7 +324,7 @@ class RedirectService implements LoggerAwareInterface
             $site,
             $site->getDefaultLanguage(),
             new PageArguments($site->getRootPageId(), '0', []),
-            $frontendUserAuthentication = $originalRequest->getAttribute('frontend.user')
+            $originalRequest->getAttribute('frontend.user')
         );
         $controller->determineId($originalRequest);
         $controller->calculateLinkVars($queryParams);

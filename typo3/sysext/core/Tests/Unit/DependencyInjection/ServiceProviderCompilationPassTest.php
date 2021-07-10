@@ -188,7 +188,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('A registered extension for the service "serviceA" requires the service to be available, which is missing.');
 
-        $container = $this->getContainer([
+        $this->getContainer([
             TestServiceProviderOverride::class,
         ]);
     }
