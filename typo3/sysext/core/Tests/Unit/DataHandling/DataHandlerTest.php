@@ -289,7 +289,7 @@ class DataHandlerTest extends UnitTestCase
         return [
             '"0" returns zero as string' => [
                 '0',
-                '0'
+                '0.00'
             ],
             '"-0.5" is interpreted correctly as -0.5 but is lower than 0 and set to 0' => [
                 '-0.5',
@@ -297,11 +297,11 @@ class DataHandlerTest extends UnitTestCase
             ],
             '"0.5" is interpreted correctly as 0.5 and is equal to 0.5' => [
                 '0.5',
-                '0.5'
+                '0.50'
             ],
             '"39.9" is interpreted correctly as 39.9 and is equal to 39.9' => [
                 '39.9',
-                '39.9'
+                '39.90'
             ],
             '"42.3" is interpreted correctly as 42.3 but is greater then 42 and set to 42' => [
                 '42.3',
@@ -320,7 +320,7 @@ class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'input' => [],
-            'eval' => 'double',
+            'eval' => 'double2',
             'range' => [
                 'lower' => '0',
                 'upper' => '42'
@@ -340,7 +340,7 @@ class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'input' => [],
-            'eval' => 'double',
+            'eval' => 'double2',
             'range' => [
                 'lower' => '0',
                 'upper' => '42'
