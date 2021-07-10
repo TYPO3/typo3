@@ -7,24 +7,27 @@
         </h1>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div id="t3-install-box-body">
-                <form method="post" class="form-inline" id="t3-install-form-login" data-login-token="{loginToken}">
-                    <div class="form-group">
+        <div class="col-lg-8 col-xl-6">
+            <div id="t3-install-box-body" class="mb-4">
+                <form method="post" class="row align-items-end" id="t3-install-form-login" data-login-token="{loginToken}">
+                    <div class="col-12 col-md-auto mb-2 mb-md-0">
                         <label for="t3-install-form-password">Password</label>
                         <input id="t3-install-form-password" type="password" name="install[password]" class="t3-install-form-input-text form-control" autofocus="autofocus" />
                     </div>
-                    <button type="button" class="btn btn-default btn-success t3js-login-login">
-                        Login
-                    </button>
-                    <f:if condition="!{installToolEnableFilePermanent}">
-                        <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool">
-                            <i class="fa fa-lock"></i> Lock Install Tool again
+                    <div class="col-4 col-md-auto">
+                        <button type="button" class="btn btn-default btn-success t3js-login-login">
+                            Login
                         </button>
-                    </f:if>
+                    </div>
+                    <div class="col-8 col-md-auto ms-auto">
+                        <f:if condition="!{installToolEnableFilePermanent}">
+                            <button type="button" class="btn btn-default btn-danger pull-right t3js-login-lockInstallTool">
+                                <i class="fa fa-lock"></i> Lock Install Tool again
+                            </button>
+                        </f:if>
+                    </div>
                 </form>
             </div>
-            <div id="t3-install-box-border-bottom">&nbsp;</div>
 
             <div class="t3js-login-output"></div>
 
