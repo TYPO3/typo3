@@ -1742,16 +1742,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Checking range of value:
-        // @todo: The "checkbox" option was removed for type=input, this check could be probably relaxed?
-        if (
-            isset($tcaFieldConf['range']) && $tcaFieldConf['range']
-            && (!isset($tcaFieldConf['checkbox']) || $res['value'] != $tcaFieldConf['checkbox'])
-            && (
-                !isset($tcaFieldConf['default'])
-                || floor($res['value']) !== (int)$tcaFieldConf['default']
-                || ceil($res['value']) !== (int)$tcaFieldConf['default']
-            )
-        ) {
+        if (isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
             if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
                 $res['value'] = (int)$tcaFieldConf['range']['upper'];
             }
