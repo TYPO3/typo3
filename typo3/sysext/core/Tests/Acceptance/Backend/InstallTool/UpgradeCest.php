@@ -73,7 +73,7 @@ class UpgradeCest extends AbstractCest
      */
     public function seeViewUpgradeDocumentation(BackendTester $I, ModalDialog $modalDialog)
     {
-        $versionPanel = '#version-0 .t3js-changelog-list > div:first-child';
+        $versionPanel = '#version-1 .t3js-changelog-list > div:first-child';
 
         $I->click('View Upgrade Documentation');
         $modalDialog->canSeeDialog();
@@ -82,8 +82,9 @@ class UpgradeCest extends AbstractCest
         $I->see('View Upgrade Documentation', ModalDialog::$openedModalSelector);
 
         $I->amGoingTo('mark an item as read');
-        $I->click('Version: master', '.panel-title');
-        $I->waitForElement('#version-0', 5, ModalDialog::$openedModalSelector);
+        // pick first named version, master might be empty
+        $I->click('#heading-1 > h2:nth-child(1) > a:nth-child(1) > strong:nth-child(2)');
+        $I->waitForElement('#version-1', 5, ModalDialog::$openedModalSelector);
 
         $textCurrentFirstPanelHeading = $I->grabTextFrom($versionPanel . ' .panel-heading');
 
@@ -99,7 +100,7 @@ class UpgradeCest extends AbstractCest
         $I->executeJS('document.querySelector("#collapseRead").scrollIntoView();');
         $I->see($textCurrentFirstPanelHeading, '#collapseRead');
         $I->click('#collapseRead .t3js-changelog-list > div:first-child .t3js-upgradeDocs-unmarkRead');
-        $I->see($textCurrentFirstPanelHeading, '#version-0');
+        $I->see($textCurrentFirstPanelHeading, '#version-1');
 
         $I->click('.t3js-modal-close');
     }
