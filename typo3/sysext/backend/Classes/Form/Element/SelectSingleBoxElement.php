@@ -139,8 +139,8 @@ class SelectSingleBoxElement extends AbstractFormElement
                 $html[] =       '<div class="form-wizards-items-aside">';
                 $html[] =           $fieldControlHtml;
                 $html[] =       '</div>';
-                $html[] =   '</div>';
             }
+            $html[] = '</div>'; // Close form-wizards-aside
             $html[] =   '<p>';
             $html[] =       '<em>' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>';
             $html[] =   '</p>';
@@ -149,6 +149,8 @@ class SelectSingleBoxElement extends AbstractFormElement
                 $html[] = $fieldWizardHtml;
                 $html[] = '</div>';
             }
+        } else {
+            $html[] = '</div>'; // Close form-wizards-aside
         }
         $html[] =   '</div>';
         $html[] = '</div>';
