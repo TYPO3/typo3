@@ -24,6 +24,7 @@
 		"doctrine/dbal": "~2.10.0 || ~2.11.2",
 		"doctrine/instantiator": "^1.1",
 		"doctrine/lexer": "^1.0",
+		"enshrined/svg-sanitize": "^0.14.0",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"guzzlehttp/psr7": "^1.4.0",
 		"nikic/php-parser": "^4.3.0",

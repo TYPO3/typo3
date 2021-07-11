@@ -20,7 +20,28 @@ $signalSlotDispatcher->connect(
     \TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect::class,
     'addUserPermissionsToStorage'
 );
+// FAL SVG file handling
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileAdd,
+    \TYPO3\CMS\Core\Resource\Security\SvgFileSlot::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileAdd
+);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileReplace,
+    \TYPO3\CMS\Core\Resource\Security\SvgFileSlot::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PreFileReplace
+);
+$signalSlotDispatcher->connect(
+    \TYPO3\CMS\Core\Resource\ResourceStorage::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileSetContents,
+    \TYPO3\CMS\Core\Resource\Security\SvgFileSlot::class,
+    \TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileSetContents
+);
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'][] = \TYPO3\CMS\Core\Resource\Security\SvgHookHandler::class . '->processMoveUploadedFile';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'][] = \TYPO3\CMS\Core\Resource\Security\SvgHookHandler::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserPasswordCheck::class;
