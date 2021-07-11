@@ -187,6 +187,27 @@ services:
         identifier: 'synchronize-filemounts-after-folder-renamed'
         method: 'synchronizeFilemountsAfterRename'
 
+  TYPO3\CMS\Core\Resource\Security\SvgEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'svg-resource-storage-listener-before-file-added'
+        method: 'beforeFileAdded'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
+      - name: event.listener
+        identifier: 'svg-resource-storage-listener-before-file-replaced'
+        method: 'beforeFileReplaced'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
+      - name: event.listener
+        identifier: 'svg-resource-storage-listener-after-file-content-set'
+        method: 'afterFileContentsSet'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent
+
+  TYPO3\CMS\Core\Resource\Security\SvgHookHandler:
+    public: true
+
+  TYPO3\CMS\Core\Resource\Security\SvgTypeCheck:
+    public: true
+
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
