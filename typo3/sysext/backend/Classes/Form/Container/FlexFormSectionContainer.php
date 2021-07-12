@@ -72,6 +72,7 @@ class FlexFormSectionContainer extends AbstractContainer
 
         $containerId = sprintf('flexform-section-container-%s-%s', $this->data['fieldName'], $flexFormFieldName);
         $sectionContainerId = sprintf('flexform-section-%s-%s', $this->data['fieldName'], $flexFormFieldName);
+        $hashedSectionContainerId = 'section-' . md5($sectionContainerId);
 
         // "New container" handling: Creates buttons for each possible container with all relevant information for the ajax call.
         $containerTemplatesHtml = [];
@@ -95,7 +96,7 @@ class FlexFormSectionContainer extends AbstractContainer
             $containerTemplateHtml[] =     'data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
             $containerTemplateHtml[] =     'data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
             $containerTemplateHtml[] =     'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
-            $containerTemplateHtml[] =     'data-target="#' . htmlspecialchars($sectionContainerId) . '"';
+            $containerTemplateHtml[] =     'data-target="#' . htmlspecialchars($hashedSectionContainerId) . '"';
             $containerTemplateHtml[] = '>';
             $containerTemplateHtml[] =    $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $containerTemplateHtml[] =    htmlspecialchars(GeneralUtility::fixed_lgd_cs($containerTitle, 30));
@@ -122,7 +123,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $html = [];
         $html[] = '<div class="panel panel-tab">';
         $html[] =     '<div class="panel-body">';
-        $html[] =         '<div class="t3-form-field-container t3-form-flex" id="' . htmlspecialchars($containerId) . '" data-section="#' . htmlspecialchars($sectionContainerId) . '">';
+        $html[] =         '<div class="t3-form-field-container t3-form-flex" id="' . htmlspecialchars($containerId) . '" data-section="#' . htmlspecialchars($hashedSectionContainerId) . '">';
         $html[] =             '<div class="t3-form-field-label-flexsection">';
         $html[] =                 '<h4>';
         $html[] =                     htmlspecialchars($sectionTitle);
@@ -134,7 +135,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $html[] =                 '</button>';
         $html[] =             '</div>';
         $html[] =             '<div';
-        $html[] =                 'id="' . htmlspecialchars($sectionContainerId) . '"';
+        $html[] =                 'id="' . htmlspecialchars($hashedSectionContainerId) . '"';
         $html[] =                 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
         $html[] =                 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
         $html[] =             '>';
