@@ -48,7 +48,7 @@ class CodeViewHelper extends AbstractViewHelper
     public function render()
     {
         $content = $this->renderChildren();
-        $_lines = explode(chr(10), $content);
+        $_lines = explode("\n", $content);
         $lines = [];
         foreach ($_lines as $line) {
             $line = preg_replace('/(\s)/', ' ', $line);
