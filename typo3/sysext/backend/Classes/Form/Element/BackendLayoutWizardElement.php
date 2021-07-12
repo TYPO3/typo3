@@ -212,7 +212,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
                 $columns = $row['columns.'];
                 for ($j = 1; $j <= $colCount; $j++) {
                     $cellData = [];
-                    if (!$spannedMatrix[$i][$j]) {
+                    if (!($spannedMatrix[$i][$j] ?? false)) {
                         if (is_array($columns) && !empty($columns)) {
                             $column = array_shift($columns);
                             if (isset($column['colspan'])) {

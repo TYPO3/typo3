@@ -585,9 +585,9 @@ class Import extends ImportExport
             if (is_array($this->dat['header']['pagetree'])) {
                 $pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
                 foreach ($pagesFromTree as $uid) {
-                    $thisRec = $this->dat['header']['records']['pages'][$uid];
+                    $thisRec = $this->dat['header']['records']['pages'][$uid] ?? 0;
                     // PID: Set the main $pid, unless a NEW-id is found
-                    $setPid = $this->import_newId_pids[$thisRec['pid']] ?? $pid;
+                    $setPid = $this->import_newId_pids[$thisRec['pid'] ?? null] ?? $pid;
                     $this->addSingle('pages', $uid, $setPid);
                     unset($pageRecords[$uid]);
                 }
@@ -808,10 +808,10 @@ class Import extends ImportExport
      */
     public function addSingle($table, $uid, $pid)
     {
-        if ($this->import_mode[$table . ':' . $uid] === 'exclude') {
+        if (($this->import_mode[$table . ':' . $uid] ?? '') === 'exclude') {
             return;
         }
-        $record = $this->dat['records'][$table . ':' . $uid]['data'];
+        $record = $this->dat['records'][$table . ':' . $uid]['data'] ?? null;
         if (is_array($record)) {
             if ($this->update && $this->doesRecordExist($table, $uid) && $this->import_mode[$table . ':' . $uid] !== 'as_new') {
                 $ID = $uid;
@@ -873,14 +873,14 @@ class Import extends ImportExport
             } else {
                 // Inserts:
                 $this->import_data[$table][$ID]['pid'] = $pid;
-                if (($this->import_mode[$table . ':' . $uid] === 'force_uid' && $this->update || $this->force_all_UIDS) && $this->getBackendUser()->isAdmin()) {
+                if ((($this->import_mode[$table . ':' . $uid] ?? '') === 'force_uid' && $this->update || $this->force_all_UIDS) && $this->getBackendUser()->isAdmin()) {
                     $this->import_data[$table][$ID]['uid'] = $uid;
                     $this->suggestedInsertUids[$table . ':' . $uid] = 'DELETE';
                 }
             }
             // Setting db/file blank:
             foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
-                switch ((string)$config['type']) {
+                switch ((string)($config['type'] ?? '')) {
                     case 'db':
 
                     case 'file':
@@ -995,7 +995,7 @@ class Import extends ImportExport
                         if ($table === 'sys_file_reference' && $field === 'uid_local') {
                             continue;
                         }
-                        switch ((string)$config['type']) {
+                        switch ((string)($config['type'] ?? '')) {
                             case 'db':
                                 if (is_array($config['itemArray']) && !empty($config['itemArray'])) {
                                     $itemConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -1137,7 +1137,7 @@ class Import extends ImportExport
             $thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
             // Traverse relation fields of each record
             foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
-                switch ((string)$config['type']) {
+                switch ((string)($config['type'] ?? '')) {
                     case 'flex':
                         // Get XML content and set as default value (string, non-processed):
                         $updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
@@ -1210,14 +1210,14 @@ class Import extends ImportExport
         // Extract parameters:
         [, , , $config] = $pParams;
         // In case the $path is used as index without a trailing slash we will remove that
-        if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][rtrim($path, '/')])) {
+        if (!is_array($config['flexFormRels']['db'][$path] ?? false) && is_array($config['flexFormRels']['db'][rtrim($path, '/')] ?? false)) {
             $path = rtrim($path, '/');
         }
-        if (is_array($config['flexFormRels']['db'][$path])) {
+        if (is_array($config['flexFormRels']['db'][$path] ?? false)) {
             $valArray = $this->setRelations_db($config['flexFormRels']['db'][$path], $dsConf);
             $dataValue = implode(',', $valArray);
         }
-        if (is_array($config['flexFormRels']['file'][$path])) {
+        if (is_array($config['flexFormRels']['file'][$path] ?? false)) {
             $valArr = [];
             foreach ($config['flexFormRels']['file'][$path] as $fI) {
                 $valArr[] = $this->import_addFileNameToBeCopied($fI);
@@ -1365,7 +1365,7 @@ class Import extends ImportExport
             // Default is current token value:
             $insertValue = $cfg['subst']['tokenValue'];
             // Based on mode:
-            switch ((string)$this->softrefCfg[$tokenID]['mode']) {
+            switch ((string)($this->softrefCfg[$tokenID]['mode'] ?? '')) {
                 case 'exclude':
                     // Exclude is a simple passthrough of the value
                     break;
@@ -1383,7 +1383,7 @@ class Import extends ImportExport
                         case 'db':
                         default:
                             // Trying to map database element if found in the mapID array:
-                            [$tempTable, $tempUid] = explode(':', $cfg['subst']['recordRef']);
+                            [$tempTable, $tempUid] = explode(':', ($cfg['subst']['recordRef'] ?? ''));
                             if (isset($this->import_mapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
                                 if (strpos($cfg['subst']['tokenValue'], ':') !== false) {

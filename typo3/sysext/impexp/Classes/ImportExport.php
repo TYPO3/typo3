@@ -981,7 +981,7 @@ abstract class ImportExport
             $idH = array_reverse($idH);
             foreach ($idH as $k => $v) {
                 $a[$v['uid']] = $v['uid'];
-                if (is_array($v['subrow'])) {
+                if (is_array($v['subrow'] ?? false)) {
                     $a = $this->flatInversePageTree($v['subrow'], $a);
                 }
             }

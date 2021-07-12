@@ -56,7 +56,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
 
         if (empty($taskInfo['configuration'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['configuration'] = $taskInfo['linkvalidator']['configuration'];
+                $taskInfo['configuration'] = $taskInfo['linkvalidator']['configuration'] ?? '';
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['configuration'] = $task->getConfiguration();
             } else {
@@ -65,7 +65,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['depth'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['depth'] = $taskInfo['linkvalidator']['depth'];
+                $taskInfo['depth'] = $taskInfo['linkvalidator']['depth'] ?? 0;
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['depth'] = $task->getDepth();
             } else {
@@ -74,7 +74,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['page'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['page'] = $taskInfo['linkvalidator']['page'];
+                $taskInfo['page'] = $taskInfo['linkvalidator']['page'] ?? 0;
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['page'] = $task->getPage();
             } else {
@@ -83,7 +83,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['languages'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['languages'] = $taskInfo['linkvalidator']['languages'];
+                $taskInfo['languages'] = $taskInfo['linkvalidator']['languages'] ?? '';
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['languages'] = $task->getLanguages();
             } else {
@@ -92,7 +92,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['email'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['email'] = $taskInfo['linkvalidator']['email'];
+                $taskInfo['email'] = $taskInfo['linkvalidator']['email'] ?? '';
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['email'] = $task->getEmail();
             } else {
@@ -101,7 +101,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['emailOnBrokenLinkOnly'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['emailOnBrokenLinkOnly'] = $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ?: 1;
+                $taskInfo['emailOnBrokenLinkOnly'] = ($taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ?? false) ? (bool)$taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] : true;
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
             } else {
@@ -110,7 +110,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['emailTemplateName'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['emailTemplateName'] = $taskInfo['linkvalidator']['emailTemplateName'] ?: '';
+                $taskInfo['emailTemplateName'] = ($taskInfo['linkvalidator']['emailTemplateName'] ?? false) ? $taskInfo['linkvalidator']['emailTemplateName'] : '';
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['emailTemplateName'] = $task->getEmailTemplateName();
             } else {

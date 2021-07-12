@@ -46,6 +46,9 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
         $I->click($editRecordLinkCssPath);
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');
+
+        // scroll up all the way to get a clean shot to the tab panel
+        $this->ensureTopOfFrameIsUsedAndClickTab($I, 'input', 'input_23');
     }
 
     /**

@@ -521,7 +521,7 @@ class ValidatorTask extends AbstractTask
     protected function setCliArguments(): self
     {
         $_SERVER['argv'] = [
-            $_SERVER['argv'][0],
+            ($_SERVER['argv'][0] ?? null),
             'tx_link_scheduler_link',
             '0',
             '-ss',

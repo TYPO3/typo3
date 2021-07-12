@@ -566,7 +566,7 @@ class ExtendedTemplateService extends TemplateService
         foreach ($keyArr as $key => $value) {
             $HTML = '';
             $a++;
-            $deeper = is_array($arr[$key . '.']);
+            $deeper = is_array($arr[$key . '.'] ?? false);
             $row = $arr[$key];
             $LN = $a == $c ? 'blank' : 'line';
             $BTM = $a == $c ? 'top' : '';
@@ -630,7 +630,7 @@ class ExtendedTemplateService extends TemplateService
             unset($this->clearList_setup_temp[$row['templateID']]);
             unset($this->clearList_const_temp[$row['templateID']]);
             $this->templateTitles[$row['templateID']] = $row['title'];
-            if ($row['templateID'] == $this->hierarchyInfo[$pointer - 1]['templateParent']) {
+            if ($row['templateID'] == ($this->hierarchyInfo[$pointer - 1]['templateParent'] ?? '')) {
                 $depthDataArr[$row['templateID'] . '.'] = $this->ext_process_hierarchyInfo([], $pointer);
             }
         }
@@ -832,10 +832,10 @@ class ExtendedTemplateService extends TemplateService
             foreach ($this->categories[$category] as $name => $type) {
                 $params = $theConstants[$name];
                 if (is_array($params)) {
-                    if ($subcat != $params['subcat_name']) {
+                    if ($subcat !== (string)($params['subcat_name'] ?? '')) {
                         $categoryLoop++;
-                        $subcat = $params['subcat_name'];
-                        $subcat_name = $params['subcat_name'] ? $this->constantParser->getSubCategories()[$params['subcat_name']][0] : 'Others';
+                        $subcat = (string)($params['subcat_name'] ?? '');
+                        $subcat_name = $subcat ? (string)($this->constantParser->getSubCategories()[$subcat][0] ?? '') : 'Others';
                         $groupedOutput[$categoryLoop] = [
                             'label' => $subcat_name,
                             'fields' => []

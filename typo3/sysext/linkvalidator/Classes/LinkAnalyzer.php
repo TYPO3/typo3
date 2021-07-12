@@ -190,7 +190,7 @@ class LinkAnalyzer
     protected function checkLinks(array $links, array $linkTypes)
     {
         foreach ($this->hookObjectsArr as $key => $hookObj) {
-            if (!is_array($links[$key]) || (!in_array($key, $linkTypes, true))) {
+            if (!is_array($links[$key] ?? false) || (!in_array($key, $linkTypes, true))) {
                 continue;
             }
 
@@ -203,7 +203,7 @@ class LinkAnalyzer
                 $record['record_uid'] = $entryValue['uid'];
                 $record['table_name'] = $table;
                 $record['link_type'] = $key;
-                $record['link_title'] = $entryValue['link_title'];
+                $record['link_title'] = $entryValue['link_title'] ?? '';
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
                 $typeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? false;
@@ -223,6 +223,15 @@ class LinkAnalyzer
                     $url = $entryValue['substr']['tokenValue'];
                 }
                 $record['url'] = $url;
+
+                if (!($this->linkCounts[$table] ?? false)) {
+                    $this->linkCounts[$table] = 0;
+                }
+
+                if (!($this->brokenLinkCounts[$table] ?? false)) {
+                    $this->brokenLinkCounts[$table] = 0;
+                }
+
                 $this->linkCounts[$table]++;
                 $checkUrl = $hookObj->checkLink($url, $entryValue, $this);
 
@@ -323,7 +332,7 @@ class LinkAnalyzer
             $valueField = $record[$field];
 
             // Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
-            if (!$conf['softref'] || (string)$valueField === '') {
+            if (!($conf['softref'] ?? false) || (string)$valueField === '') {
                 continue;
             }
 
@@ -426,12 +435,12 @@ class LinkAnalyzer
                 }
 
                 // Type of referenced record
-                if (strpos($r['recordRef'], 'pages') !== false) {
+                if (strpos($r['recordRef'] ?? '', 'pages') !== false) {
                     $currentR = $r;
                     // Contains number of the page
                     $referencedRecordType = $r['tokenValue'];
                     $wasPage = true;
-                } elseif (strpos($r['recordRef'], 'tt_content') !== false && (isset($wasPage) && $wasPage === true)) {
+                } elseif (strpos($r['recordRef'] ?? '', 'tt_content') !== false && (isset($wasPage) && $wasPage === true)) {
                     $referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
                     $wasPage = false;
                 } else {

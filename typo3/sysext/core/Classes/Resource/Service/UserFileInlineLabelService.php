@@ -57,7 +57,7 @@ class UserFileInlineLabelService
                     try {
                         $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
                         $metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
-                        $fullTitle = $metaData['title'];
+                        $fullTitle = $metaData['title'] ?? '';
                     } catch (InvalidUidException $e) {
                         /**
                          * We just catch the exception here

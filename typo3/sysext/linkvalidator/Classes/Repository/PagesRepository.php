@@ -41,7 +41,7 @@ class PagesRepository
      */
     public function doesRootLineContainHiddenPages(array $pageInfo): bool
     {
-        $pid = (int)($pageInfo['pid']);
+        $pid = (int)($pageInfo['pid'] ?? 0);
         if ($pid === 0) {
             return false;
         }

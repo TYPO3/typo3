@@ -1358,7 +1358,7 @@ class SchedulerModuleController
         }
 
         // Delete
-        if ($this->getCurrentAction()->equals(Action::EDIT)) {
+        if (($queryParams['tx_scheduler']['uid'] ?? false) && $this->getCurrentAction()->equals(Action::EDIT)) {
             $deleteButton = $buttonBar->makeLinkButton()
                 ->setHref($this->moduleUri . '&CMD=' . Action::DELETE . '&tx_scheduler[uid]=' . $queryParams['tx_scheduler']['uid'])
                 ->setClasses('t3js-modal-trigger')

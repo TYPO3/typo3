@@ -258,10 +258,10 @@ class ElementHistoryController
                 $singleLine = [];
                 $elParts = explode(':', $key);
                 // Turn around diff because it should be a "rollback preview"
-                if ((int)$diff['insertsDeletes'][$key] === 1) {
+                if ((int)($diff['insertsDeletes'][$key] ?? 0) === 1) {
                     // insert
                     $singleLine['insertDelete'] = 'delete';
-                } elseif ((int)$diff['insertsDeletes'][$key] === -1) {
+                } elseif ((int)($diff['insertsDeletes'][$key] ?? 0) === -1) {
                     $singleLine['insertDelete'] = 'insert';
                 }
                 // Build up temporary diff array

@@ -212,7 +212,7 @@ class IconFactory
                         unset($recordType[$key]);
                     }
                 }
-                $recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+                $recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'] ?? '';
                 if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])
                     && isset($row[$column]) && is_string($row[$column])
                 ) {

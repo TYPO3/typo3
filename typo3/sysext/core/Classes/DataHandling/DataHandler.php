@@ -2875,7 +2875,15 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($dataValues[$key] as $vKey => $data) {
                     if ($callBackFunc) {
                         if (is_object($this->callBackObj)) {
-                            $res = $this->callBackObj->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->callBackObj->{$callBackFunc}(
+                                $pParams,
+                                $fieldConfiguration,
+                                $dataValues[$key][$vKey] ?? null,
+                                $dataValues_current[$key][$vKey] ?? null,
+                                $uploadedFiles[$key][$vKey] ?? null,
+                                $structurePath . $key . '/' . $vKey . '/',
+                                $workspaceOptions
+                            );
                         } else {
                             $res = $this->{$callBackFunc}(
                                 $pParams,
@@ -4822,7 +4830,7 @@ class DataHandler implements LoggerAwareInterface
         $recordWorkspaceId = 0;
         if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $recordToDelete = BackendUtility::getRecord($table, $uid);
-            $recordWorkspaceId = (int)$recordToDelete['t3ver_wsid'];
+            $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
         }
 
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
