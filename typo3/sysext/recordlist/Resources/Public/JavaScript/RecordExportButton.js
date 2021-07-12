@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+var __decorate=this&&this.__decorate||function(t,e,r,o){var n,s=arguments.length,l=s<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(t,e,r,o);else for(var i=t.length-1;i>=0;i--)(n=t[i])&&(l=(s<3?n(l):s>3?n(e,r,l):n(e,r))||l);return s>3&&l&&Object.defineProperty(e,r,l),l};define(["require","exports","lit","lit/decorators","TYPO3/CMS/Backend/Enum/Severity","TYPO3/CMS/Backend/Severity","TYPO3/CMS/Backend/Modal","TYPO3/CMS/Core/lit-helper"],(function(t,e,r,o,n,s,l,i){"use strict";var a;Object.defineProperty(e,"__esModule",{value:!0}),function(t){t.formatSelector=".t3js-record-export-format-selector",t.formatOptions=".t3js-record-export-format-option"}(a||(a={}));let c=class extends r.LitElement{constructor(){super(),this.addEventListener("click",t=>{t.preventDefault(),this.showExportConfigurationModal()})}render(){return r.html`<slot></slot>`}showExportConfigurationModal(){this.url&&l.advanced({content:this.url,title:this.title||"Export record",severity:n.SeverityEnum.notice,size:l.sizes.small,type:l.types.ajax,buttons:[{text:this.close||i.lll("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>l.dismiss()},{text:this.ok||i.lll("button.ok")||"Export",btnClass:"btn-"+s.getCssClass(n.SeverityEnum.info),name:"export",trigger:()=>{const t=l.currentModal[0].querySelector("form");t&&t.submit(),l.dismiss()}}],ajaxCallback:()=>{const t=l.currentModal[0].querySelector(a.formatSelector),e=l.currentModal[0].querySelectorAll(a.formatOptions);null!==t&&e.length&&t.addEventListener("change",t=>{const r=t.target.value;e.forEach(t=>{t.dataset.formatname!==r?t.classList.add("hide"):t.classList.remove("hide")})})}})}};__decorate([o.property({type:String})],c.prototype,"url",void 0),__decorate([o.property({type:String})],c.prototype,"title",void 0),__decorate([o.property({type:String})],c.prototype,"ok",void 0),__decorate([o.property({type:String})],c.prototype,"close",void 0),c=__decorate([o.customElement("typo3-recordlist-record-export-button")],c)}));

@@ -451,7 +451,6 @@ export class SvgTree extends LitElement {
 
     // delete nodes without corresponding data
     nodes.exit().remove();
-    // delete
     nodesBg.exit().remove();
     nodesActions.exit().remove();
 
@@ -724,6 +723,8 @@ export class SvgTree extends LitElement {
    */
   protected updateNodeActions(nodesActions: TreeNodeSelection): TreeNodeSelection {
     if (this.settings.actions && this.settings.actions.length) {
+      // Remove all existing actions again
+      this.nodesActionsContainer.selectAll('.node-action').selectChildren().remove();
       return nodesActions.enter()
         .append('g')
         .merge(nodesActions as d3selection.Selection<SVGGElement, TreeNode, any, any>)
@@ -734,6 +735,39 @@ export class SvgTree extends LitElement {
         .attr('transform', this.getNodeActionTransform)
     }
     return nodesActions.enter();
+  }
+
+  /**
+   * This is a quick helper function to create custom action icons.
+   */
+  protected createIconAreaForAction(actionItem: any, iconIdentifier: string): void
+  {
+    const icon = actionItem
+      .append('svg')
+      .attr('class', 'node-icon-container')
+      .attr('height', '20')
+      .attr('width', '20')
+      .attr('x', '0')
+      .attr('y', '0');
+    // improve usability by making the click area a 20px square
+    icon
+      .append('rect')
+      .attr('width', '20')
+      .attr('height', '20')
+      .attr('y', '0')
+      .attr('x', '0')
+      .attr('class', 'node-icon-click');
+    const nodeInner = icon
+      .append('svg')
+      .attr('height', '16')
+      .attr('width', '16')
+      .attr('y', '2')
+      .attr('x', '2')
+      .attr('class', 'node-icon-inner');
+    nodeInner
+      .append('use')
+      .attr('class', 'node-icon')
+      .attr('xlink:href', '#icon-' + iconIdentifier);
   }
 
   /**
@@ -942,7 +976,7 @@ export class SvgTree extends LitElement {
    * @param {Node} node
    */
   protected getNodeActionTransform(node: TreeNode): string {
-    return 'translate(0, ' + ((node.y || 0) - 9) + ')';
+    return 'translate(-10, ' + ((node.y || 0) - 10) + ')';
   }
 
   /**

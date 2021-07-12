@@ -59,7 +59,7 @@ class PageBrowserTree extends PageTree {
     if (this.settings.actions.includes('link')) {
       // Check if a node can be linked
       this.fetchIcon('actions-link');
-      const linkAction = nodes
+      const linkAction = this.nodesActionsContainer.selectAll('.node-action')
         .append('g')
         .attr('visibility', (node: TreeNode) => {
           return this.isLinkable(node) ? 'visible' : 'hidden'
@@ -67,14 +67,7 @@ class PageBrowserTree extends PageTree {
         .on('click', (evt: MouseEvent, node: TreeNode) => {
           this.linkItem(node);
         });
-      linkAction
-        // improve usability by making the click area a 16px square
-        .append('path')
-        .attr('d', 'M 0 0 L 18 0 L 18 18 L 0 18 Z')
-        .exit();
-      linkAction
-        .append('use')
-        .attr('xlink:href', '#icon-actions-link');
+      this.createIconAreaForAction(linkAction, 'actions-link');
     } else if (this.settings.actions.includes('select')) {
       // Check if a node can be selected
       this.fetchIcon('actions-link');
@@ -83,14 +76,7 @@ class PageBrowserTree extends PageTree {
         .on('click', (evt: MouseEvent, node: TreeNode) => {
           this.selectItem(node);
         });
-      linkAction
-        // improve usability by making the click area a 16px square
-        .append('path')
-        .attr('d', 'M 0 0 L 18 0 L 18 18 L 0 18 Z')
-        .exit();
-      linkAction
-        .append('use')
-        .attr('xlink:href', '#icon-actions-link');
+      this.createIconAreaForAction(linkAction, 'actions-link');
     }
     return nodes;
   }

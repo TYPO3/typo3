@@ -379,14 +379,14 @@ $svgColors: (
     opacity: 0;
     cursor: pointer;
 
-    path {
+    rect {
         opacity: 0;
     }
 
     &.node-action-over {
         opacity: 1;
 
-        path {
+        rect {
             opacity: 1;
         }
     }
