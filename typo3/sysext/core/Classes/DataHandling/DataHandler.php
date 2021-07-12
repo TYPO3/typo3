@@ -1093,7 +1093,7 @@ class DataHandler implements LoggerAwareInterface
                     // Removing fields which are equal to the current value:
                     $fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] && !empty($fieldArray)) {
+                if (($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) && !empty($fieldArray)) {
                     $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
                 }
                 // Set stage to "Editing" to make sure we restart the workflow
@@ -6217,7 +6217,7 @@ class DataHandler implements LoggerAwareInterface
                 // Update in database (list of children (csv) or number of relations (foreign_field)):
                 if (!empty($field)) {
                     $fieldArray = [$field => $newValue];
-                    if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+                    if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
                         $fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
                     }
                     $this->updateDB($table, $id, $fieldArray);

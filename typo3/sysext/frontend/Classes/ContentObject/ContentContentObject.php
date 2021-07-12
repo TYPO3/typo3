@@ -50,9 +50,9 @@ class ContentContentObject extends AbstractContentObject
         }
         $conf['table'] = trim((string)$this->cObj->stdWrapValue('table', $conf ?? []));
         $conf['select.'] = !empty($conf['select.']) ? $conf['select.'] : [];
-        $renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
-        $renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
-        $renderObjConf = $conf['renderObj.'];
+        $renderObjName = ($conf['renderObj'] ?? false) ? $conf['renderObj'] : '<' . $conf['table'];
+        $renderObjKey = ($conf['renderObj'] ?? false) ? 'renderObj' : '';
+        $renderObjConf = $conf['renderObj.'] ?? [];
         $slide = (int)$this->cObj->stdWrapValue('slide', $conf ?? []);
         if (!$slide) {
             $slide = 0;

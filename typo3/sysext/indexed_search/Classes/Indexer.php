@@ -264,14 +264,14 @@ class Indexer
             $this->initializeExternalParsers();
         }
         // Initialize lexer (class that deconstructs the text into words):
-        $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
+        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? false) ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : Lexer::class;
         /** @var Lexer $lexer */
         $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj = $lexer;
         $this->lexerObj->debug = $this->indexerConfig['debugMode'];
         // Initialize metaphone hook:
         // Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
-        if ($this->enableMetaphoneSearch && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']) {
+        if ($this->enableMetaphoneSearch && ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone'] ?? false)) {
             /** @var DoubleMetaPhoneUtility $metaphoneObj */
             $metaphoneObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
             $this->metaphoneObj = $metaphoneObj;
@@ -405,10 +405,10 @@ class Indexer
             for ($i = 0; isset($meta[$i]); $i++) {
                 // decode HTML entities, meta tag content needs to be encoded later
                 $meta[$i] = GeneralUtility::get_tag_attributes($meta[$i], true);
-                if (stripos($meta[$i]['name'], 'keywords') !== false) {
+                if (stripos(($meta[$i]['name'] ?? ''), 'keywords') !== false) {
                     $contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
                 }
-                if (stripos($meta[$i]['name'], 'description') !== false) {
+                if (stripos(($meta[$i]['name'] ?? ''), 'description') !== false) {
                     $contentArr['description'] .= ',' . $meta[$i]['content'];
                 }
             }
@@ -1093,7 +1093,11 @@ class Indexer
                 $this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
             }
             // Priority used for flagBitMask feature (see extension configuration)
-            $retArr[$val]['cmp'] = $retArr[$val]['cmp'] | 2 ** $offset;
+            $retArr[$val]['cmp'] = ($retArr[$val]['cmp'] ?? 0) | 2 ** $offset;
+            if (!($retArr[$val]['count'] ?? false)) {
+                $retArr[$val]['count'] = 0;
+            }
+
             // Increase number of occurrences
             $retArr[$val]['count']++;
             $this->wordcount++;
@@ -1124,6 +1128,10 @@ class Indexer
             if ($this->storeMetaphoneInfoAsWords) {
                 $this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
             }
+            if (!($retArr[$val]['count'] ?? false)) {
+                $retArr[$val]['count'] = 0;
+            }
+
             // Increase number of occurrences
             $retArr[$val]['count']++;
             $this->wordcount++;
@@ -1792,9 +1800,9 @@ class Indexer
      */
     public function getRootLineFields(array &$fieldArray)
     {
-        $fieldArray['rl0'] = (int)$this->conf['rootline_uids'][0];
-        $fieldArray['rl1'] = (int)$this->conf['rootline_uids'][1];
-        $fieldArray['rl2'] = (int)$this->conf['rootline_uids'][2];
+        $fieldArray['rl0'] = (int)($this->conf['rootline_uids'][0] ?? 0);
+        $fieldArray['rl1'] = (int)($this->conf['rootline_uids'][1] ?? 0);
+        $fieldArray['rl2'] = (int)($this->conf['rootline_uids'][2] ?? 0);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
             $fieldArray[$fieldName] = (int)$this->conf['rootline_uids'][$rootLineLevel];
         }
@@ -1904,7 +1912,7 @@ class Indexer
                 (int)$phash,
                 (int)$val['hash'],
                 (int)$val['count'],
-                (int)$val['first'],
+                (int)($val['first'] ?? 0),
                 $this->freqMap($val['count'] / $this->wordcount),
                 $val['cmp'] & $this->flagBitMask
             ];

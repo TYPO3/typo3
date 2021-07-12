@@ -57,6 +57,10 @@ class RecordsContentObject extends AbstractContentObject
         // If the currentRecord is set, we register, that this record has invoked this function.
         // It's should not be allowed to do this again then!!
         if ($originalRec) {
+            if (!($GLOBALS['TSFE']->recordRegister[$originalRec] ?? false)) {
+                $GLOBALS['TSFE']->recordRegister[$originalRec] = 0;
+            }
+
             ++$GLOBALS['TSFE']->recordRegister[$originalRec];
         }
 
@@ -64,7 +68,7 @@ class RecordsContentObject extends AbstractContentObject
         if ($tables !== '') {
             $tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, true));
             // Add tables which have a configuration (note that this may create duplicate entries)
-            if (is_array($conf['conf.'])) {
+            if (is_array($conf['conf.'] ?? false)) {
                 foreach ($conf['conf.'] as $key => $value) {
                     if (substr($key, -1) !== '.' && !in_array($key, $tablesArray)) {
                         $tablesArray[] = $key;
@@ -107,10 +111,10 @@ class RecordsContentObject extends AbstractContentObject
                             $validPageId = $this->getPageRepository()->filterAccessiblePageIds([$row['pid']]);
                             $row = !empty($validPageId) ? $row : '';
                         }
-                        if ($row && !$GLOBALS['TSFE']->recordRegister[$val['table'] . ':' . $val['id']]) {
-                            $renderObjName = $conf['conf.'][$val['table']] ?: '<' . $val['table'];
-                            $renderObjKey = $conf['conf.'][$val['table']] ? 'conf.' . $val['table'] : '';
-                            $renderObjConf = $conf['conf.'][$val['table'] . '.'];
+                        if ($row && !empty($val['table']) && !($GLOBALS['TSFE']->recordRegister[$val['table'] . ':' . $val['id']] ?? false)) {
+                            $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
+                            $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
+                            $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
                             $this->cObj->currentRecordNumber++;
                             $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                             $GLOBALS['TSFE']->currentRecord = $val['table'] . ':' . $val['id'];

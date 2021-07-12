@@ -118,7 +118,7 @@ class TypoScriptFrontendHook
         // Configuration of behavior
         $configuration['index_externals'] = $tsfe->config['config']['index_externals'];
         // Whether to index external documents like PDF, DOC etc. (if possible)
-        $configuration['index_descrLgd'] = $tsfe->config['config']['index_descrLgd'];
+        $configuration['index_descrLgd'] = $tsfe->config['config']['index_descrLgd'] ?? 0;
         // Length of description text (max 250, default 200)
         $configuration['index_metatags'] = $tsfe->config['config']['index_metatags'] ?? true;
         // Set to zero

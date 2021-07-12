@@ -54,7 +54,7 @@ class ArrayFormFactory extends AbstractFormFactory
         }
         $persistenceIdentifier = $configuration['persistenceIdentifier'] ?? null;
 
-        if ($configuration['invalid'] === true) {
+        if ($configuration['invalid'] ?? false) {
             throw new RenderingException($configuration['label'], 1529710560);
         }
 

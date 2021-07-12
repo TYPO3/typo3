@@ -151,7 +151,7 @@ class Lexer
      *
      * @param string $str Input string (reference)
      * @param int $pos Starting position in input string
-     * @return array 0: start, 1: len or FALSE if no word has been found
+     * @return array|bool 0: start, 1: len or FALSE if no word has been found
      */
     public function get_word(&$str, $pos = 0)
     {
@@ -162,7 +162,7 @@ class Lexer
         }
         // If the return value was FALSE it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
         $pos += $len;
-        if ($str[$pos] == '') {
+        if ((string)($str[$pos] ?? '') === '') {
             // Check end of string before looking for word of course.
             return false;
         }
@@ -188,7 +188,7 @@ class Lexer
         // Letter type
         $letter = true;
         // looking for a letter?
-        if ($str[$pos] == '') {
+        if ((string)($str[$pos] ?? '') === '') {
             // Return FALSE on end-of-string at this stage
             return false;
         }
@@ -225,7 +225,7 @@ class Lexer
             }
             $len += $bc;
             // add byte-length of last found character
-            if ($str[$pos] == '') {
+            if ((string)($str[$pos] ?? '') === '') {
                 // End of string; return status of string till now
                 return $letter;
             }
@@ -234,8 +234,8 @@ class Lexer
             $pos += $bc;
             // Determine the type:
             $cType_prev = $cType;
-            [$cType] = $this->charType($cp);
-            if ($cType) {
+            //[$cType] = $this->charType($cp)[0];
+            if ($this->charType($cp)[0] ?? false) {
                 continue;
             }
             // Setting letter to FALSE if the first char was not a letter!

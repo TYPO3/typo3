@@ -196,10 +196,10 @@ class IndexSearchRepository
         $this->sections = $searchData['sections'];
         $this->searchType = $searchData['searchType'];
         $this->languageUid = $searchData['languageUid'];
-        $this->mediaType = $searchData['mediaType'] ?? false;
+        $this->mediaType = $searchData['mediaType'] ?? 0;
         $this->sortOrder = $searchData['sortOrder'];
-        $this->descendingSortOrderFlag = $searchData['desc'];
-        $this->resultpagePointer = $searchData['pointer'];
+        $this->descendingSortOrderFlag = $searchData['desc'] ?? false;
+        $this->resultpagePointer = $searchData['pointer'] ?? 0;
         if (isset($searchData['numberOfResults']) && is_numeric($searchData['numberOfResults'])) {
             $this->numberOfResults = (int)$searchData['numberOfResults'];
         }
@@ -1266,7 +1266,7 @@ class IndexSearchRepository
     public function hookRequest($functionName)
     {
         // Hook: menuConfig_preProcessModMenu
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? false) {
             $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
             if (method_exists($hookObj, $functionName)) {
                 $hookObj->pObj = $this;

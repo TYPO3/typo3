@@ -265,7 +265,7 @@ class MenuProcessor implements DataProcessorInterface
      */
     protected function getConfigurationValue($key)
     {
-        return $this->cObj->stdWrapValue($key, $this->processorConfiguration, $this->menuDefaults[$key]);
+        return $this->cObj->stdWrapValue($key, $this->processorConfiguration, $this->menuDefaults[$key] ?? '');
     }
 
     /**
@@ -325,7 +325,7 @@ class MenuProcessor implements DataProcessorInterface
      */
     public function prepareLevelLanguageConfiguration()
     {
-        if ($this->menuConfig['special'] === 'language') {
+        if (($this->menuConfig['special'] ?? '') === 'language') {
             $languageUids = $this->menuConfig['special.']['value'];
             if ($this->menuConfig['special.']['value'] === 'auto') {
                 $site = $this->getCurrentSite();
@@ -395,7 +395,7 @@ class MenuProcessor implements DataProcessorInterface
             $this->menuConfig[$i . '.']['CUR.']['stdWrap.']['cObject.']['40.']['value'] = '1';
             $this->menuConfig[$i . '.']['CURIFSUB'] = '1';
             $this->menuConfig[$i . '.']['CURIFSUB.'] = $this->menuConfig[$i . '.']['CUR.'];
-            if ($this->menuConfig['special'] === 'language') {
+            if (($this->menuConfig['special'] ?? '') === 'language') {
                 $this->menuConfig[$i . '.']['USERDEF1'] = $this->menuConfig[$i . '.']['NO'];
                 $this->menuConfig[$i . '.']['USERDEF1.'] = $this->menuConfig[$i . '.']['NO.'];
                 $this->menuConfig[$i . '.']['USERDEF1.']['stdWrap.']['cObject.']['60.']['value'] = '0';
@@ -464,7 +464,7 @@ class MenuProcessor implements DataProcessorInterface
      */
     protected function processAdditionalDataProcessors($page, $processorConfiguration)
     {
-        if (is_array($page['children'])) {
+        if (is_array($page['children'] ?? false)) {
             foreach ($page['children'] as $key => $item) {
                 $page['children'][$key] = $this->processAdditionalDataProcessors($item, $processorConfiguration);
             }

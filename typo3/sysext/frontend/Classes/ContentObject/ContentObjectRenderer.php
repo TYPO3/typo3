@@ -3121,7 +3121,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         // return the amount of elements. No further processing
-        if (!empty($valArr) && ($conf['returnCount'] || $conf['returnCount.'])) {
+        if (!empty($valArr) && (($conf['returnCount'] ?? false) || ($conf['returnCount.'] ?? false))) {
             $returnCount = (bool)$this->stdWrapValue('returnCount', $conf ?? []);
             return $returnCount ? count($valArr) : 0;
         }
@@ -4159,7 +4159,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $sections = GeneralUtility::trimExplode('//', $field, true);
         foreach ($sections as $k) {
-            if ((string)$this->data[$k] !== '') {
+            if ((string)($this->data[$k] ?? '') !== '') {
                 return $this->data[$k];
             }
         }
@@ -4215,7 +4215,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $this->getFileDataKey($key);
                         break;
                     case 'parameters':
-                        $retVal = $this->parameters[$key];
+                        $retVal = $this->parameters[$key] ?? null;
                         break;
                     case 'register':
                         $retVal = $tsfe->register[$key] ?? null;
@@ -5842,7 +5842,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $error = false;
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
-            if (strpos(strtolower($conf['begin'] . $conf['max']), 'total') !== false) {
+            if (strpos(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total') !== false) {
                 $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $countQueryBuilder->getRestrictions()->removeAll();
                 $countQueryBuilder->count('*')
@@ -5864,8 +5864,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
 
             if (!$error) {
-                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'])), 0);
-                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'])), 0);
+                $conf['begin'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['begin'] ?? '')), 0);
+                $conf['max'] = MathUtility::forceIntegerInRange((int)ceil($this->calc($conf['max'] ?? '')), 0);
                 if ($conf['begin'] > 0) {
                     $queryBuilder->setFirstResult($conf['begin']);
                 }

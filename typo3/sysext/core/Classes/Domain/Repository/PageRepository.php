@@ -1123,7 +1123,7 @@ class PageRepository implements LoggerAwareInterface
             $firstPageUid = (int)($pageRec['l10n_parent'] ?: $pageRec['uid']);
         }
         // Look for mount pid value plus other required circumstances:
-        $mount_pid = (int)$pageRec['mount_pid'];
+        $mount_pid = (int)($pageRec['mount_pid'] ?? 0);
         if (is_array($pageRec) && (int)$pageRec['doktype'] === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, true)) {
             // Get the mount point record (to verify its general existence):
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -1327,7 +1327,7 @@ class PageRepository implements LoggerAwareInterface
         $constraints = [];
         if (is_array($ctrl)) {
             // Delete field check:
-            if ($ctrl['delete']) {
+            if ($ctrl['delete'] ?? false) {
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
             if ($this->hasTableWorkspaceSupport($table)) {
@@ -1360,7 +1360,7 @@ class PageRepository implements LoggerAwareInterface
             }
 
             // Enable fields:
-            if (is_array($ctrl['enablecolumns'])) {
+            if (is_array($ctrl['enablecolumns'] ?? false)) {
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
                 if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
@@ -1711,7 +1711,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
-                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->eq(
                                 'uid',
@@ -1749,7 +1749,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->orX(
-                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->eq(
                                 'uid',

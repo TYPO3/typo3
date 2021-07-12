@@ -312,7 +312,7 @@ abstract class AbstractMenuContentObject
             // Set $directoryLevel so the following evaluation of the nextActive will not return
             // an invalid value if .special=directory was set
             $directoryLevel = 0;
-            if ($this->conf['special'] === 'directory') {
+            if (($this->conf['special'] ?? '') === 'directory') {
                 $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
                 if ($value === '') {
                     $value = $tsfe->page['uid'];
@@ -325,7 +325,7 @@ abstract class AbstractMenuContentObject
             $currentLevel = $startLevel + $this->menuNumber;
             if (is_array($this->tmpl->rootLine[$currentLevel] ?? null)) {
                 $nextMParray = $this->MP_array;
-                if (empty($nextMParray) && !$this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] && $currentLevel > 0) {
+                if (empty($nextMParray) && !($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] ?? false) && $currentLevel > 0) {
                     // Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
                     // otherwise automatic expansion will not work
                     $parentRecord = $this->tmpl->rootLine[$currentLevel - 1];
@@ -334,7 +334,7 @@ abstract class AbstractMenuContentObject
                     }
                 }
                 // In overlay mode, add next level MPvars as well:
-                if ($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL']) {
+                if ($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] ?? false) {
                     $nextMParray[] = $this->tmpl->rootLine[$currentLevel]['_MP_PARAM'];
                 }
                 $this->nextActive = $this->tmpl->rootLine[$currentLevel]['uid'] .
@@ -391,7 +391,7 @@ abstract class AbstractMenuContentObject
         // Fill in the menuArr with elements that should go into the menu:
         $this->menuArr = [];
         foreach ($menuItems as $data) {
-            $isSpacerPage = (int)$data['doktype'] === PageRepository::DOKTYPE_SPACER || $data['ITEM_STATE'] === 'SPC';
+            $isSpacerPage = (int)($data['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER || ($data['ITEM_STATE'] ?? '') === 'SPC';
             // if item is a spacer, $spacer is set
             if ($this->filterMenuPages($data, $banUidArray, $isSpacerPage)) {
                 $c_b++;
@@ -499,7 +499,7 @@ abstract class AbstractMenuContentObject
         $additionalWhere .= $this->getDoktypeExcludeWhere();
 
         // ... only for the FIRST level of a HMENU
-        if ($this->menuNumber == 1 && $this->conf['special']) {
+        if ($this->menuNumber == 1 && ($this->conf['special'] ?? false)) {
             $value = (string)$this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
             switch ($this->conf['special']) {
                 case 'userfunction':
@@ -548,7 +548,7 @@ abstract class AbstractMenuContentObject
         } elseif ($this->alternativeMenuTempArray !== []) {
             // Setting $menuItems array if not level 1.
             $menuItems = $this->alternativeMenuTempArray;
-        } elseif ($this->mconf['sectionIndex']) {
+        } elseif ($this->mconf['sectionIndex'] ?? false) {
             $menuItems = $this->sectionIndex($alternativeSortingField);
         } else {
             // Default: Gets a hierarchical menu based on subpages of $this->id
@@ -756,7 +756,7 @@ abstract class AbstractMenuContentObject
                     unset($row);
                 }
             } else {
-                $row = $loadDB->results['pages'][$val['id']];
+                $row = $loadDB->results['pages'][$val['id']] ?? [];
             }
             // Add versioning overlay for current page (to respect workspaces)
             if (isset($row) && is_array($row)) {
@@ -788,21 +788,21 @@ abstract class AbstractMenuContentObject
             $specialValue = $tsfe->page['uid'];
         }
         $items = GeneralUtility::intExplode(',', $specialValue);
-        if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
+        if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'] ?? null)) {
             $depth = MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 1, 20);
         } else {
             $depth = 20;
         }
         // Max number of items
-        $limit = MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
+        $limit = MathUtility::forceIntegerInRange(($this->conf['special.']['limit'] ?? 0), 0, 100);
         $maxAge = (int)$this->parent_cObj->calc($this->conf['special.']['maxAge']);
         if (!$limit) {
             $limit = 10;
         }
         // 'auto', 'manual', 'tstamp'
-        $mode = $this->conf['special.']['mode'];
+        $mode = $this->conf['special.']['mode'] ?? '';
         // Get id's
-        $beginAtLevel = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
+        $beginAtLevel = MathUtility::forceIntegerInRange(($this->conf['special.']['beginAtLevel'] ?? 0), 0, 100);
         $id_list_arr = [];
         foreach ($items as $id) {
             // Exclude the current ID if beginAtLevel is > 0
@@ -814,23 +814,8 @@ abstract class AbstractMenuContentObject
         }
         $id_list = implode(',', $id_list_arr);
         // Get sortField (mode)
-        switch ($mode) {
-            case 'starttime':
-                $sortField = 'starttime';
-                break;
-            case 'lastUpdated':
-            case 'manual':
-                $sortField = 'lastUpdated';
-                break;
-            case 'tstamp':
-                $sortField = 'tstamp';
-                break;
-            case 'crdate':
-                $sortField = 'crdate';
-                break;
-            default:
-                $sortField = 'SYS_LASTCHANGED';
-        }
+        $sortField = $this->getMode($mode);
+
         $extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
         if ($this->conf['special.']['excludeNoSearchPages']) {
             $extraWhere .= ' AND pages.no_search=0';
@@ -878,42 +863,26 @@ abstract class AbstractMenuContentObject
         if (!$specialValue) {
             $specialValue = $tsfe->page['uid'];
         }
-        if ($this->conf['special.']['setKeywords'] || $this->conf['special.']['setKeywords.']) {
+        if (($this->conf['special.']['setKeywords'] ?? false) || ($this->conf['special.']['setKeywords.'] ?? false)) {
             $kw = (string)$this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
         } else {
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage($specialValue);
-            $kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ?: 'keywords';
+            $kfieldSrc = ($this->conf['special.']['keywordsField.']['sourceField'] ?? false) ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
             // keywords.
             $kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc]));
         }
         // *'auto', 'manual', 'tstamp'
-        $mode = $this->conf['special.']['mode'];
-        switch ($mode) {
-            case 'starttime':
-                $sortField = 'starttime';
-                break;
-            case 'lastUpdated':
-            case 'manual':
-                $sortField = 'lastUpdated';
-                break;
-            case 'tstamp':
-                $sortField = 'tstamp';
-                break;
-            case 'crdate':
-                $sortField = 'crdate';
-                break;
-            default:
-                $sortField = 'SYS_LASTCHANGED';
-        }
+        $mode = $this->conf['special.']['mode'] ?? '';
+        $sortField = $this->getMode($mode);
         // Depth, limit, extra where
-        if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
+        if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'] ?? null)) {
             $depth = MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 0, 20);
         } else {
             $depth = 20;
         }
         // Max number of items
-        $limit = MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
+        $limit = MathUtility::forceIntegerInRange(($this->conf['special.']['limit'] ?? 0), 0, 100);
         // Start point
         $eLevel = $this->parent_cObj->getKey(
             $this->parent_cObj->stdWrapValue('entryLevel', $this->conf['special.'] ?? []),
@@ -922,7 +891,7 @@ abstract class AbstractMenuContentObject
         $startUid = (int)$this->tmpl->rootLine[$eLevel]['uid'];
         // Which field is for keywords
         $kfield = 'keywords';
-        if ($this->conf['special.']['keywordsField']) {
+        if ($this->conf['special.']['keywordsField'] ?? false) {
             [$kfield] = explode(' ', trim($this->conf['special.']['keywordsField']));
         }
         // If there are keywords and the startuid is present
@@ -1189,23 +1158,23 @@ abstract class AbstractMenuContentObject
         if (!$includePage) {
             return false;
         }
-        if ($data['_SAFE']) {
+        if ($data['_SAFE'] ?? false) {
             return true;
         }
         // If the spacer-function is not enabled, spacers will not enter the $menuArr
-        if (!$this->mconf['SPC'] && $isSpacerPage) {
+        if (!($this->mconf['SPC'] ?? false) && $isSpacerPage) {
             return false;
         }
         // Page may not be a 'Backend User Section' or any other excluded doktype
-        if (in_array((int)$data['doktype'], $this->excludedDoktypes, true)) {
+        if (in_array((int)($data['doktype'] ?? 0), $this->excludedDoktypes, true)) {
             return false;
         }
         // PageID should not be banned
-        if (in_array((int)$data['uid'], $banUidArray, true)) {
+        if (in_array((int)($data['uid'] ?? 0), $banUidArray, true)) {
             return false;
         }
         // If the page is hide in menu, but the menu does not include them do not show the page
-        if ($data['nav_hide'] && !$this->conf['includeNotInMenu']) {
+        if (($data['nav_hide'] ?? false) && !($this->conf['includeNotInMenu'] ?? false)) {
             return false;
         }
         // Checking if a page should be shown in the menu depending on whether a translation exists or if the default language is disabled
@@ -1318,15 +1287,15 @@ abstract class AbstractMenuContentObject
             $addParams .= $this->menuArr[$key]['_ADD_GETVARS'];
             $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride, $overrideId);
         } else {
-            $addParams .= ($this->I['val']['additionalParams'] ?? '') . $this->menuArr[$key]['_ADD_GETVARS'];
+            $addParams .= ($this->I['val']['additionalParams'] ?? '') . ($this->menuArr[$key]['_ADD_GETVARS'] ?? '');
             $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         }
         // Override default target configuration if option is set
-        if ($this->menuArr[$key]['target']) {
+        if ($this->menuArr[$key]['target'] ?? false) {
             $LD['target'] = $this->menuArr[$key]['target'];
         }
         // Override URL if using "External URL"
-        if ((int)$this->menuArr[$key]['doktype'] === PageRepository::DOKTYPE_LINK) {
+        if ((int)($this->menuArr[$key]['doktype'] ?? 0) === PageRepository::DOKTYPE_LINK) {
             $externalUrl = (string)$this->sys_page->getExtURL($this->menuArr[$key]);
             // Create link using typolink (concerning spamProtectEmailAddresses) for email links
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $externalUrl]);
@@ -1341,7 +1310,7 @@ abstract class AbstractMenuContentObject
 
         // Override url if current page is a shortcut
         $shortcut = null;
-        if ((int)$this->menuArr[$key]['doktype'] === PageRepository::DOKTYPE_SHORTCUT && (int)$this->menuArr[$key]['shortcut_mode'] !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+        if ((int)($this->menuArr[$key]['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT && (int)$this->menuArr[$key]['shortcut_mode'] !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
             $menuItem = $this->menuArr[$key];
             try {
                 $shortcut = $tsfe->sys_page->getPageShortcut(
@@ -1497,7 +1466,7 @@ abstract class AbstractMenuContentObject
      * @param string $objSuffix Object prefix, see ->start()
      * @return string HTML content of the submenu
      */
-    protected function subMenu($uid, $objSuffix)
+    protected function subMenu(int $uid, string $objSuffix)
     {
         // Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
         $altArray = '';
@@ -1516,7 +1485,7 @@ abstract class AbstractMenuContentObject
                 $submenu->entryLevel = $this->entryLevel + 1;
                 $submenu->rL_uidRegister = $this->rL_uidRegister;
                 $submenu->MP_array = $this->MP_array;
-                if ($this->menuArr[$this->I['key']]['_MP_PARAM']) {
+                if ($this->menuArr[$this->I['key']]['_MP_PARAM'] ?? false) {
                     $submenu->MP_array[] = $this->menuArr[$this->I['key']]['_MP_PARAM'];
                 }
                 // Especially scripts that build the submenu needs the parent data
@@ -1680,19 +1649,19 @@ abstract class AbstractMenuContentObject
                     $natVal = (bool)$this->menuArr[$key]['isSpacer'];
                     break;
                 case 'IFSUB':
-                    $natVal = $this->isSubMenu($this->menuArr[$key]['uid']);
+                    $natVal = $this->isSubMenu($this->menuArr[$key]['uid'] ?? 0);
                     break;
                 case 'ACT':
-                    $natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key));
+                    $natVal = $this->isActive(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key));
                     break;
                 case 'ACTIFSUB':
-                    $natVal = $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+                    $natVal = $this->isActive(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
                     break;
                 case 'CUR':
-                    $natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key));
+                    $natVal = $this->isCurrent(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key));
                     break;
                 case 'CURIFSUB':
-                    $natVal = $this->isCurrent($this->menuArr[$key]['uid'], $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+                    $natVal = $this->isCurrent(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
                     break;
                 case 'USR':
                     $natVal = (bool)$this->menuArr[$key]['fe_group'];
@@ -1828,7 +1797,7 @@ abstract class AbstractMenuContentObject
     protected function menuTypoLink($page, $oTarget, $addParams, $typeOverride, ?int $overridePageId = null)
     {
         $conf = [
-            'parameter' => $overridePageId ?? $page['uid']
+            'parameter' => $overridePageId ?? $page['uid'] ?? 0
         ];
         if (MathUtility::canBeInterpretedAsInteger($typeOverride)) {
             $conf['parameter'] .= ',' . (int)$typeOverride;
@@ -2085,5 +2054,32 @@ abstract class AbstractMenuContentObject
         }
 
         return null;
+    }
+
+    /**
+     * @param string $mode
+     * @return string
+     */
+    private function getMode(string $mode = ''): string
+    {
+        switch ($mode) {
+            case 'starttime':
+                $sortField = 'starttime';
+                break;
+            case 'lastUpdated':
+            case 'manual':
+                $sortField = 'lastUpdated';
+                break;
+            case 'tstamp':
+                $sortField = 'tstamp';
+                break;
+            case 'crdate':
+                $sortField = 'crdate';
+                break;
+            default:
+                $sortField = 'SYS_LASTCHANGED';
+        }
+
+        return $sortField;
     }
 }

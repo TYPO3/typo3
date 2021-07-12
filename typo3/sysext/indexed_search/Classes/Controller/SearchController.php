@@ -217,18 +217,18 @@ class SearchController extends ActionController
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
-        if ($searchData['_sections']) {
+        if ($searchData['_sections'] ?? false) {
             $searchData['sections'] = $searchData['_sections'];
         }
         // If "_sections" is set, this value overrides any existing value.
-        if ($searchData['_freeIndexUid'] !== '' && $searchData['_freeIndexUid'] !== '_') {
+        if (($searchData['_freeIndexUid'] ?? '') !== '' && ($searchData['_freeIndexUid'] ?? '') !== '_') {
             $searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
         }
-        $searchData['numberOfResults'] = $this->getNumberOfResults($searchData['numberOfResults']);
+        $searchData['numberOfResults'] = $this->getNumberOfResults($searchData['numberOfResults'] ?? 0);
         // This gets the search-words into the $searchWordArray
-        $this->setSword($searchData['sword']);
+        $this->setSword($searchData['sword'] ?? '');
         // Add previous search words to current
-        if ($searchData['sword_prev_include'] && $searchData['sword_prev']) {
+        if (($searchData['sword_prev_include'] ?? false) && ($searchData['sword_prev'] ?? false)) {
             $this->setSword(trim($searchData['sword_prev']) . ' ' . $this->getSword());
         }
         // This is the id of the site root.
@@ -343,7 +343,7 @@ class SearchController extends ActionController
     protected function getDisplayResults($searchWords, $resultData, $freeIndexUid = -1)
     {
         $result = [
-            'count' => $resultData['count'],
+            'count' => $resultData['count'] ?? 0,
             'searchWords' => $searchWords
         ];
         // Perform display of result rows array
@@ -948,7 +948,8 @@ class SearchController extends ActionController
     {
         $newSearchWords = [];
         // Init lexer (used to post-processing of search words)
-        $lexerObjectClassName = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: Lexer::class;
+        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? false) ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : Lexer::class;
+
         /** @var Lexer $lexer */
         $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj = $lexer;
@@ -1180,7 +1181,7 @@ class SearchController extends ActionController
             '0' => LocalizationUtility::translate('indexingConfigurations.0', 'IndexedSearch')
         ];
         $blindSettings = $this->settings['blind'];
-        if (!$blindSettings['indexingConfigurations']) {
+        if (!($blindSettings['indexingConfigurations'] ?? false)) {
             // add an additional index configuration
             if ($this->settings['defaultFreeIndexUidList']) {
                 $uidList = GeneralUtility::intExplode(',', $this->settings['defaultFreeIndexUidList']);
@@ -1205,7 +1206,7 @@ class SearchController extends ActionController
                 }
             }
             // disable single entries by TypoScript
-            $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)$blindSettings['indexingConfigurations']);
+            $allOptions = $this->removeOptionsFromOptionList($allOptions, (array)($blindSettings['indexingConfigurations'] ?? []));
         } else {
             $allOptions = [];
         }
@@ -1232,7 +1233,7 @@ class SearchController extends ActionController
             }
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sortOrder.']);
+        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['sortOrder.'] ?? []));
         return $allOptions;
     }
 
@@ -1245,14 +1246,14 @@ class SearchController extends ActionController
     {
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
-        if (!$blindSettings['groupBy']) {
+        if (!($blindSettings['groupBy'] ?? false)) {
             $allOptions = [
                 'sections' => LocalizationUtility::translate('groupBy.sections', 'IndexedSearch'),
                 'flat' => LocalizationUtility::translate('groupBy.flat', 'IndexedSearch')
             ];
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['groupBy.']);
+        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['groupBy.'] ?? []));
         return $allOptions;
     }
 
@@ -1265,14 +1266,14 @@ class SearchController extends ActionController
     {
         $allOptions = [];
         $blindSettings = $this->settings['blind'];
-        if (!$blindSettings['descending']) {
+        if (!($blindSettings['descending'] ?? false)) {
             $allOptions = [
                 0 => LocalizationUtility::translate('sortOrders.descending', 'IndexedSearch'),
                 1 => LocalizationUtility::translate('sortOrders.ascending', 'IndexedSearch')
             ];
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['descending.']);
+        $allOptions = $this->removeOptionsFromOptionList($allOptions, ($blindSettings['descending.'] ?? []));
         return $allOptions;
     }
 
@@ -1465,7 +1466,7 @@ class SearchController extends ActionController
     protected function hookRequest($functionName)
     {
         // Hook: menuConfig_preProcessModMenu
-        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName] ?? false) {
             $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
             if (method_exists($hookObj, $functionName)) {
                 $hookObj->pObj = $this;
@@ -1524,7 +1525,7 @@ class SearchController extends ActionController
      */
     protected function loadSettings()
     {
-        if (!is_array($this->settings['results.'])) {
+        if (!is_array($this->settings['results.'] ?? false)) {
             $this->settings['results.'] = [];
         }
         $fullTypoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);

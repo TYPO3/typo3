@@ -816,8 +816,8 @@ class RequestHandler implements RequestHandlerInterface
                 }
                 $pageRenderer->addInlineLanguageLabelFile(
                     $languageFile,
-                    $languageFileConfig['selectionPrefix'] ?: '',
-                    $languageFileConfig['stripFromSelectionName'] ?: ''
+                    ($languageFileConfig['selectionPrefix'] ?? false) ? $languageFileConfig['selectionPrefix'] : '',
+                    ($languageFileConfig['stripFromSelectionName'] ?? false) ? $languageFileConfig['stripFromSelectionName'] : ''
                 );
             }
         }

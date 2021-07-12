@@ -98,7 +98,7 @@ class File extends AbstractFile
             parent::getProperties(),
             array_diff_key($this->getMetaData()->get(), parent::getProperties()),
             [
-                'metadata_uid' => $this->getMetaData()->get()['uid']
+                'metadata_uid' => $this->getMetaData()->get()['uid'] ?? 0
             ]
         );
     }

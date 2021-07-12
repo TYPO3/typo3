@@ -401,7 +401,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             && $currentSiteLanguage === $siteLanguageOfTargetPage
             && $targetPageId === (int)$GLOBALS['TSFE']->id
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
-            && !$GLOBALS['TSFE']->config['config']['baseURL']
+            && !($GLOBALS['TSFE']->config['config']['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
             ) {
             $uri = (new Uri())->withFragment($fragment);

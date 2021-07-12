@@ -70,12 +70,12 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I = [];
             $this->I['key'] = $key;
             $this->I['val'] = $val;
-            $this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
+            $this->I['title'] = $this->getPageTitle(($this->menuArr[$key]['title'] ?? ''), ($this->menuArr[$key]['nav_title'] ?? ''));
             $this->I['title.'] = $this->I['val']['stdWrap.'];
             $this->I['title'] = $this->WMcObj->stdWrapValue('title', $this->I ?? []);
-            $this->I['uid'] = $this->menuArr[$key]['uid'];
-            $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
-            $this->I['pid'] = $this->menuArr[$key]['pid'];
+            $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
+            $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
+            $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
             // Set access key
             if ($this->mconf['accessKey'] ?? false) {
@@ -86,13 +86,13 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // Make link tag
             $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
             $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
-            $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), $this->mconf['forceTypeValue']);
+            $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
             if (empty($this->I['linkHREF'])) {
                 $this->I['val']['doNotLinkIt'] = 1;
             }
             // Title attribute of links:
             $titleAttrValue = $this->WMcObj->stdWrapValue('ATagTitle', $this->I['val']);
-            $titleAttrValue .= $this->I['accessKey']['alt'];
+            $titleAttrValue .= $this->I['accessKey']['alt'] ?? '';
             if ($titleAttrValue !== '') {
                 $this->I['linkHREF']['title'] = $titleAttrValue;
             }
@@ -150,7 +150,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $allWrap = $this->WMcObj->stdWrapValue('allWrap', $this->I['val']);
             $this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
             if ($this->I['val']['subst_elementUid'] ?? false) {
-                $this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
+                $this->I['theItem'] = str_replace('{elementUid}', (string)$this->I['uid'], $this->I['theItem']);
             }
             // allStdWrap:
             if (is_array($this->I['val']['allStdWrap.'] ?? null)) {
