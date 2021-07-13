@@ -322,11 +322,11 @@ class TableController extends AbstractWizardController
                         $this->P['flexFormPath'],
                         $currentFlexFormData
                     );
-                    $configuration = $this->configurationStringToArray($configuration, 0);
+                    $configuration = $this->configurationStringToArray((string)$configuration, 0);
                 } else {
                     // Regular line based table configuration:
                     $columns = $row[$this->colsFieldName] ?? 0;
-                    $configuration = $this->configurationStringToArray($row[$this->P['field']] ?? '', (int)$columns);
+                    $configuration = $this->configurationStringToArray((string)($row[$this->P['field']] ?? ''), (int)$columns);
                 }
             }
             $configuration = is_array($configuration) ? $configuration : [];
