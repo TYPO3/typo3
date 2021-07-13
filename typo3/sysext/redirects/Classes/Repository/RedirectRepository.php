@@ -96,6 +96,16 @@ class RedirectRepository
             );
         }
 
+        if ($demand->hasMaxHits()) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->lt('hitcount', $queryBuilder->createNamedParameter($demand->getMaxHits(), \PDO::PARAM_INT))
+            );
+            // When max hits is set, exclude records which explicitly disabled the hitcount feature
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('disable_hitcount', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+            );
+        }
+
         if (!empty($constraints)) {
             $queryBuilder->where(...$constraints);
         }

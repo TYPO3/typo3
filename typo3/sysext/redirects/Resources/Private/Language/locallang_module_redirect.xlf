@@ -51,6 +51,9 @@
 			<trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode">
 				<source>Status Code</source>
 			</trans-unit>
+			<trans-unit id="filter.neverHit" resname="filter.neverHit">
+				<source>Never hit</source>
+			</trans-unit>
 			<trans-unit id="filter.sendButton" resname="filter.sendButton">
 				<source>Filter</source>
 			</trans-unit>

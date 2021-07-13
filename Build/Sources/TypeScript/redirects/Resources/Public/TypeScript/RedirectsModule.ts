@@ -29,7 +29,7 @@ class RedirectsModule {
   }
 
   private executeSubmit(evt: Event, target: Element): void {
-    if (target instanceof HTMLSelectElement) {
+    if (target instanceof HTMLSelectElement || (target instanceof HTMLInputElement && target.type === 'checkbox')) {
       target.form.submit();
     }
   }

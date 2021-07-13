@@ -131,7 +131,8 @@ class Demand
         $statusCode = (int)($demand['target_statuscode'] ?? 0);
         $statusCodes = $statusCode > 0 ? [$statusCode] : [];
         $target = $demand['target'] ?? '';
-        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes);
+        $maxHits = (int)($demand['max_hits'] ?? 0);
+        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -260,7 +261,9 @@ class Demand
     {
         return $this->hasSourcePath()
             || $this->hasSourceHosts()
-            || $this->hasTarget();
+            || $this->hasTarget()
+            || $this->hasStatusCodes()
+            || $this->hasMaxHits();
     }
 
     /**
@@ -293,6 +296,9 @@ class Demand
         }
         if ($this->hasStatusCodes()) {
             $parameters['target_statuscode'] = $this->getFirstStatusCode();
+        }
+        if ($this->hasMaxHits()) {
+            $parameters['max_hits'] = $this->getMaxHits();
         }
         return $parameters;
     }
