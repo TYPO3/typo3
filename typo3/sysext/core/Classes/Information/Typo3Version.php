@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Core\Information;
 
 class Typo3Version
 {
-    protected const VERSION = '11.3.0';
-    protected const BRANCH = '11.3';
+    protected const VERSION = '11.4.0-dev';
+    protected const BRANCH = '11.4';
 
     /**
      * Define constants used up until TYPO3 v10, this constructor can be removed in TYPO3 v12.
