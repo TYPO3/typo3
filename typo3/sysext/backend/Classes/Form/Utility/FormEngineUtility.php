@@ -46,7 +46,7 @@ class FormEngineUtility
         'input' => ['size', 'max', 'readOnly'],
         'text' => ['cols', 'rows', 'wrap', 'max', 'readOnly'],
         'check' => ['cols', 'readOnly'],
-        'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],
+        'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig', 'fileFolderConfig'],
         'group' => ['size', 'autoSizeMax', 'max_size', 'maxitems', 'minitems', 'readOnly'],
         'inline' => ['appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'],
         'imageManipulation' => ['ratios', 'cropVariants']

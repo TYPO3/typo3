@@ -61,6 +61,7 @@ class TcaMigration
         $tca = $this->migrateLanguageFieldToTcaTypeLanguage($tca);
         $tca = $this->migrateSpecialLanguagesToTcaTypeLanguage($tca);
         $tca = $this->removeShowRemovedLocalizationRecords($tca);
+        $tca = $this->migrateFileFolderConfiguration($tca);
 
         return $tca;
     }
@@ -431,6 +432,49 @@ class TcaMigration
                     . 'defined as type \'inline\' with the \'appearance.showRemovedLocalizationRecords\' option set. '
                     . 'As this option is not evaluated anymore and no replacement exists, it should be removed from TCA.';
                 unset($fieldConfig['config']['appearance']['showRemovedLocalizationRecords']);
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Moves the "fileFolder" configuration of TCA columns type=select
+     * into sub array "fileFolderConfig", while renaming those options.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateFileFolderConfiguration(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'select'
+                    || !isset($fieldConfig['config']['fileFolder'])
+                ) {
+                    continue;
+                }
+                $fieldConfig['config']['fileFolderConfig'] = [
+                    'folder' => $fieldConfig['config']['fileFolder']
+                ];
+                unset($fieldConfig['config']['fileFolder']);
+                if (isset($fieldConfig['config']['fileFolder_extList'])) {
+                    $fieldConfig['config']['fileFolderConfig']['allowedExtensions'] = $fieldConfig['config']['fileFolder_extList'];
+                    unset($fieldConfig['config']['fileFolder_extList']);
+                }
+                if (isset($fieldConfig['config']['fileFolder_recursions'])) {
+                    $fieldConfig['config']['fileFolderConfig']['depth'] = $fieldConfig['config']['fileFolder_recursions'];
+                    unset($fieldConfig['config']['fileFolder_recursions']);
+                }
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' is '
+                    . 'defined as type \'select\' with the \'fileFolder\' configuration option set. To streamline '
+                    . 'the configuration, all \'fileFolder\' related configuration options were moved into a '
+                    . 'dedicated sub array \'fileFolderConfig\', while \'fileFolder\' is now just \'folder\' and '
+                    . 'the other options have been renamed to \'allowedExtensions\' and \'depth\'. '
+                    . 'The TCA configuration should be adjusted accordingly.';
             }
         }
 

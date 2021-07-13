@@ -891,4 +891,155 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function fileFolderConfigurationIsMigrated(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolder' => '',
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+            'eTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolderConfig' => [
+                                'folder' => 'EXT:styleguide/Resources/Public/Icons',
+                                'allowedExtensions' => 'svg',
+                                'depth' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolderConfig' => [
+                                'folder' => 'EXT:styleguide/Resources/Public/Icons',
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolderConfig' => [
+                                'folder' => '',
+                                'allowedExtensions' => 'svg',
+                                'depth' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+            'eTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [['', 0]],
+                            'fileFolder_extList' => 'svg',
+                            'fileFolder_recursions' => 1,
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

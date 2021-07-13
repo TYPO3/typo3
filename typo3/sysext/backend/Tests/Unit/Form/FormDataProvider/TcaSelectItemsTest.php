@@ -389,7 +389,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function addDataAddsFileItemsWithConfiguredFileFolder(): void
     {
-        $directory = StringUtility::getUniqueId('test-') . '/';
+        $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],
@@ -399,35 +399,115 @@ class TcaSelectItemsTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            // use absolute path here to avoid fallback to public path as prefix
-                            'fileFolder' => Environment::getVarPath() . '/' . $directory,
-                            'fileFolder_extList' => 'gif',
-                            'fileFolder_recursions' => 1,
+                            'fileFolderConfig' => [
+                                'folder' => $directory,
+                                'allowedExtensions' => 'gif',
+                                'depth' => 1
+                            ]
                         ],
                     ],
                 ],
             ],
         ];
 
-        mkdir(Environment::getVarPath() . '/' . $directory);
-        $this->testFilesToDelete[] = Environment::getVarPath() . '/' . $directory;
-        touch(Environment::getVarPath() . '/' . $directory . 'anImage.gif');
-        touch(Environment::getVarPath() . '/' . $directory . 'aFile.txt');
-        mkdir(Environment::getVarPath() . '/' . $directory . '/subdir');
-        touch(Environment::getVarPath() . '/' . $directory . '/subdir/anotherImage.gif');
+        mkdir($directory);
+        $this->testFilesToDelete[] = $directory;
+        touch($directory . 'anImage.gif');
+        touch($directory . 'aFile.txt');
+        mkdir($directory . '/subdir');
+        touch($directory . '/subdir/anotherImage.gif');
+        mkdir($directory . '/subdir/subsubdir');
+        touch($directory . '/subdir/subsubdir/anotherImage.gif');
 
         $expectedItems = [
             0 => [
                 0 => 'anImage.gif',
                 1 => 'anImage.gif',
-                2 => Environment::getVarPath() . '/' . $directory . 'anImage.gif',
+                2 => $directory . 'anImage.gif',
                 3 => null,
                 4 => null,
             ],
             1 => [
                 0 => 'subdir/anotherImage.gif',
                 1 => 'subdir/anotherImage.gif',
-                2 => Environment::getVarPath() . '/' . $directory . 'subdir/anotherImage.gif',
+                2 => $directory . 'subdir/anotherImage.gif',
+                3 => null,
+                4 => null,
+            ],
+        ];
+
+        $result = (new TcaSelectItems())->addData($input);
+
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataAddsFileItemsWithOverwrittenFileFolder(): void
+    {
+        $directory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-') . '/';
+        $overriddenDirectory = Environment::getVarPath() . '/' . StringUtility::getUniqueId('test-overridden-') . '/';
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'fileFolderConfig' => [
+                                'folder' => $directory,
+                                'allowedExtensions' => 'gif',
+                                'depth' => 1
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [
+                'TCEFORM.' => [
+                    'aTable.' => [
+                        'aField.' => [
+                            'config.' => [
+                                'fileFolderConfig.' => [
+                                    'folder' => $overriddenDirectory,
+                                    'allowedExtensions' => 'svg',
+                                    'depth' => 0,
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        mkdir($directory);
+        $this->testFilesToDelete[] = $directory;
+        touch($directory . 'anImage.gif');
+        touch($directory . 'aFile.txt');
+        touch($directory . 'aIcon.svg');
+        mkdir($directory . '/subdir');
+        touch($directory . '/subdir/anotherImage.gif');
+        touch($directory . '/subdir/anotherFile.txt');
+        touch($directory . '/subdir/anotherIcon.txt');
+
+        mkdir($overriddenDirectory);
+        $this->testFilesToDelete[] = $overriddenDirectory;
+        touch($overriddenDirectory . 'anOverriddenImage.gif');
+        touch($overriddenDirectory . 'anOverriddenFile.txt');
+        touch($overriddenDirectory . 'anOverriddenIcon.svg');
+        mkdir($overriddenDirectory . '/subdir');
+        touch($overriddenDirectory . '/subdir/anotherOverriddenImage.gif');
+        touch($overriddenDirectory . '/subdir/anotherOverriddenFile.txt');
+        touch($overriddenDirectory . '/subdir/anotherOverriddenIcon.svg');
+
+        $expectedItems = [
+            0 => [
+                0 => 'anOverriddenIcon.svg',
+                1 => 'anOverriddenIcon.svg',
+                2 => $overriddenDirectory . 'anOverriddenIcon.svg',
                 3 => null,
                 4 => null,
             ],
@@ -452,7 +532,9 @@ class TcaSelectItemsTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'fileFolder' => 'EXT:non_existing/Resources/Public/',
+                            'fileFolderConfig' => [
+                                'folder' => 'EXT:non_existing/Resources/Public/'
+                            ],
                         ],
                     ],
                 ],

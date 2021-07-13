@@ -245,38 +245,52 @@ abstract class AbstractItemProvider
      */
     protected function addItemsFromFolder(array $result, $fieldName, array $items)
     {
-        if (empty($result['processedTca']['columns'][$fieldName]['config']['fileFolder'])
-            || !is_string($result['processedTca']['columns'][$fieldName]['config']['fileFolder'])
+        if (empty($result['processedTca']['columns'][$fieldName]['config']['fileFolderConfig']['folder'])
+            || !is_string($result['processedTca']['columns'][$fieldName]['config']['fileFolderConfig']['folder'])
         ) {
             return $items;
         }
 
-        $fileFolderRaw = $result['processedTca']['columns'][$fieldName]['config']['fileFolder'];
-        $fileFolder = GeneralUtility::getFileAbsFileName($fileFolderRaw);
-        if ($fileFolder === '') {
+        $tableName = $result['tableName'];
+        $fileFolderConfig = $result['processedTca']['columns'][$fieldName]['config']['fileFolderConfig'];
+        $fileFolderTSconfig = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['config.']['fileFolderConfig.'] ?? [];
+
+        if (is_array($fileFolderTSconfig) && $fileFolderTSconfig !== []) {
+            if ($fileFolderTSconfig['folder'] ?? false) {
+                $fileFolderConfig['folder'] = $fileFolderTSconfig['folder'];
+            }
+            if (isset($fileFolderTSconfig['allowedExtensions'])) {
+                $fileFolderConfig['allowedExtensions'] = $fileFolderTSconfig['allowedExtensions'];
+            }
+            if (isset($fileFolderTSconfig['depth'])) {
+                $fileFolderConfig['depth'] = (int)$fileFolderTSconfig['depth'];
+            }
+        }
+
+        $folderRaw = $fileFolderConfig['folder'];
+        $folder = GeneralUtility::getFileAbsFileName($folderRaw);
+        if ($folder === '') {
             throw new \RuntimeException(
-                'Invalid folder given for item processing: ' . $fileFolderRaw . ' for table ' . $result['tableName'] . ', field ' . $fieldName,
+                'Invalid folder given for item processing: ' . $folderRaw . ' for table ' . $tableName . ', field ' . $fieldName,
                 1479399227
             );
         }
-        $fileFolder = rtrim($fileFolder, '/') . '/';
+        $folder = rtrim($folder, '/') . '/';
 
-        if (@is_dir($fileFolder)) {
-            $fileExtensionList = '';
-            if (!empty($result['processedTca']['columns'][$fieldName]['config']['fileFolder_extList'])
-                && is_string($result['processedTca']['columns'][$fieldName]['config']['fileFolder_extList'])
-            ) {
-                $fileExtensionList = $result['processedTca']['columns'][$fieldName]['config']['fileFolder_extList'];
+        if (@is_dir($folder)) {
+            $allowedExtensions = '';
+            if (!empty($fileFolderConfig['allowedExtensions']) && is_string($fileFolderConfig['allowedExtensions'])) {
+                $allowedExtensions = $fileFolderConfig['allowedExtensions'];
             }
-            $recursionLevels = isset($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'])
-                ? MathUtility::forceIntegerInRange($result['processedTca']['columns'][$fieldName]['config']['fileFolder_recursions'], 0, 99)
+            $depth = isset($fileFolderConfig['depth'])
+                ? MathUtility::forceIntegerInRange($fileFolderConfig['depth'], 0, 99)
                 : 99;
-            $fileArray = GeneralUtility::getAllFilesAndFoldersInPath([], $fileFolder, $fileExtensionList, false, $recursionLevels);
-            $fileArray = GeneralUtility::removePrefixPathFromList($fileArray, $fileFolder);
+            $fileArray = GeneralUtility::getAllFilesAndFoldersInPath([], $folder, $allowedExtensions, false, $depth);
+            $fileArray = GeneralUtility::removePrefixPathFromList($fileArray, $folder);
             foreach ($fileArray as $fileReference) {
                 $fileInformation = pathinfo($fileReference);
                 $icon = GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($fileInformation['extension']))
-                    ? $fileFolder . $fileReference
+                    ? $folder . $fileReference
                     : '';
                 $items[] = [
                     $fileReference,
