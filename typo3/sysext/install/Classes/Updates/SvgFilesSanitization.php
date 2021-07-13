@@ -58,8 +58,7 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
      */
     public function getIdentifier(): string
     {
-        // needs to be static for exact reference
-        return 'TYPO3\CMS\Install\Updates\SvgFilesSanitization';
+        return 'svgFilesSanitization';
     }
 
     /**
