@@ -27,6 +27,9 @@ interface RecordlistIdentifier {
   entity: string;
   toggle: string;
   localize: string;
+  searchboxToolbar: string;
+  searchboxToggle: string;
+  searchField: string;
   icons: IconIdentifier;
 }
 interface DataHandlerEventPayload {
@@ -46,6 +49,9 @@ class Recordlist {
     entity: '.t3js-entity',
     toggle: '.t3js-toggle-recordlist',
     localize: '.t3js-action-localize',
+    searchboxToolbar: '#db_list-searchbox-toolbar',
+    searchboxToggle: '.t3js-toggle-search-toolbox',
+    searchField: '#search_field',
     icons: {
       collapse: 'actions-view-list-collapse',
       expand: 'actions-view-list-expand',
@@ -57,6 +63,7 @@ class Recordlist {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
+    $(document).on('click', this.identifier.searchboxToggle, this.toggleSearchbox);
     DocumentService.ready().then((): void => {
       Tooltip.initialize('.table-fit a[title]');
       this.registerPaginationEvents();
@@ -172,6 +179,14 @@ class Recordlist {
 
     $me.prop('disable', true).addClass('disabled');
   }
+
+  private toggleSearchbox = (): void => {
+    const toolbar: JQuery = $(this.identifier.searchboxToolbar);
+    toolbar.toggle();
+    if (toolbar.is(':visible')) {
+      $(this.identifier.searchField).focus();
+    }
+  };
 
   private handleDataHandlerResult(e: CustomEvent): void {
     const payload = e.detail.payload;

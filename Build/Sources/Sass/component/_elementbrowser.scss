@@ -54,7 +54,7 @@ $elementbrowser-breakpoint: 600px;
 }
 
 .element-browser-body {
-    overflow: auto;
+    overflow: unset;
     padding: ($grid-gutter-width / 2);
 
     > *:first-child {

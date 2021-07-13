@@ -112,6 +112,7 @@ class RecordListController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordSearch');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
@@ -407,7 +408,6 @@ class RecordListController
             ->setSearchLevel($searchLevels)
             ->render($dblist->listURL('', '-1', 'pointer,search_field'));
 
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $searchButton = $buttonBar->makeLinkButton();
         $searchButton
