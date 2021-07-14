@@ -17,6 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -49,10 +54,6 @@ class FormViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $source
-     * @param array $variables
-     * @param string $expectation
-     *
      * @test
      * @dataProvider isRenderedDataProvider
      */
@@ -62,12 +63,124 @@ class FormViewHelperTest extends FunctionalTestCase
         $view->setTemplateSource($source);
         $view->assignMultiple($variables);
         $body = $view->render();
-
         $actual = null;
         if (preg_match('#<input[^>]+name=".+\[@extension\]"[^>]+>#m', $body, $matches)) {
             $actual = $matches[0];
         }
-
         self::assertSame($expectation, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID(): void
+    {
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function setFormActionUriRespectsOverriddenArgument(): void
+    {
+        $view = new StandaloneView();
+        $view->setTemplateSource('<f:form actionUri="foobar" />');
+        $expected = '<form action="foobar" method="post">';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function nameArgumentIsUsedFormHiddenIdentityName(): void
+    {
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
+        $expected = '<input type="hidden" name="prefix[formName][__identity]" value="123" />';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function objectNameArgumentOverrulesNameArgument(): void
+    {
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
+    {
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $expected = '<form action="" method="post">' . chr(10) . '<div>';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
+    {
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $expected = '<form action="" method="post">' . chr(10) . '<div class="hidden">';
+        self::assertStringContainsString($expected, $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields(): void
+    {
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerActionName('controllerActionName');
+        $extbaseRequestParameters->setControllerName('controllerName');
+        $extbaseRequestParameters->setControllerExtensionName('extensionName');
+        $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
+        $extbaseRequest = new Request($psr7Request);
+        GeneralUtility::addInstance(Request::class, $extbaseRequest);
+
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $view = new StandaloneView();
+        $view->assign('object', $extendsAbstractEntity);
+        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $expected = '<form action="" method="post">
+<div>
+<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />
+
+<input type="hidden" name="prefix[__referrer][@extension]" value="extensionName" />
+<input type="hidden" name="prefix[__referrer][@controller]" value="controllerName" />
+<input type="hidden" name="prefix[__referrer][@action]" value="controllerActionName" />
+<input type="hidden" name="prefix[__referrer][arguments]" value="YTowOnt97e22094095b617b0604f3fe5b48446b0dfa46c8c" />
+<input type="hidden" name="prefix[__referrer][@request]" value="{&quot;@extension&quot;:&quot;extensionName&quot;,&quot;@controller&quot;:&quot;controllerName&quot;,&quot;@action&quot;:&quot;controllerActionName&quot;}a85f8e01ed64daa6bd0910d3c3fafe3519eed791" />
+<input type="hidden" name="prefix[__trustedProperties]" value="{&quot;myObjectName&quot;:{&quot;__identity&quot;:1}}c5603abb8f2ebaef799efd6ba9f46ea7edc650ea" />
+</div>
+</form>';
+        self::assertSame($expected, $view->render());
     }
 }

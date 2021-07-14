@@ -17,110 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
-use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TypolinkViewHelperTest
- */
-class TypolinkViewHelperTest extends ViewHelperBaseTestcase
+class TypolinkViewHelperTest extends UnitTestCase
 {
-    /**
-     * @var TypolinkViewHelper|MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected $subject;
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function setUp(): void
-    {
-        $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
-        /** @var VariableProviderInterface|MockObject $variableProvider */
-        $variableProvider = $this->getMockBuilder(VariableProviderInterface::class)->getMock();
-        /** @var RenderingContext|MockObject $renderingContext */
-        $renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
-        $renderingContext->expects(self::any())->method('getVariableProvider')->willReturn($variableProvider);
-        $this->subject->setRenderingContext($renderingContext);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        unset($this->subject);
-    }
-
-    /**
-     * @test
-     */
-    public function renderReturnsResultOfContentObjectRenderer()
-    {
-        $this->subject->expects(self::any())->method('renderChildren')->willReturn('innerContent');
-        $this->subject->setArguments([
-            'parameter' => '42',
-            'target' => '',
-            'class' => '',
-            'title' => '',
-            'additionalParams' => '',
-            'additionalAttributes' => [],
-        ]);
-        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $contentObjectRendererMock->expects(self::once())->method('stdWrap')->willReturn('foo');
-        GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        self::assertEquals('foo', $this->subject->render());
-    }
-
-    /**
-     * @test
-     */
-    public function renderCallsStdWrapWithRightParameters()
-    {
-        $addQueryString = true;
-        $addQueryStringExclude = 'cHash';
-        $textWrap = '<span>|</span>';
-
-        $this->subject->expects(self::any())->method('renderChildren')->willReturn('innerContent');
-        $this->subject->setArguments([
-            'parameter' => '42',
-            'target' => '',
-            'class' => '',
-            'title' => '',
-            'additionalParams' => '',
-            'additionalAttributes' => [],
-            'addQueryString' => $addQueryString,
-            'addQueryStringExclude' => $addQueryStringExclude,
-            'absolute' => false,
-            'textWrap' => $textWrap
-        ]);
-        $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $contentObjectRendererMock->expects(self::once())
-            ->method('stdWrap')
-            ->with(
-                'innerContent',
-                [
-                    'typolink.' => [
-                        'parameter' => '42',
-                        'ATagParams' => '',
-                        'addQueryString' => $addQueryString,
-                        'addQueryString.' => [
-                            'exclude' => $addQueryStringExclude,
-                        ],
-                        'forceAbsoluteUrl' => false,
-                        'ATagBeforeWrap' => true,
-                        'wrap' => $textWrap
-                    ],
-                ]
-            )
-            ->willReturn('foo');
-        GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        self::assertEquals('foo', $this->subject->render());
-    }
-
     public function decodedConfigurationAndFluidArgumentDataProvider(): array
     {
         return [
@@ -314,9 +215,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * @param array $decodedConfiguration
-     * @param array $viewHelperArguments
-     * @param array $expectation
      * @test
      * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
      */
@@ -324,8 +222,9 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
         array $decodedConfiguration,
         array $viewHelperArguments,
         array $expectation
-    ) {
-        $result = $this->subject->_call(
+    ): void {
+        $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
+        $result = $subject->_call(
             'mergeTypoLinkConfiguration',
             $decodedConfiguration,
             $viewHelperArguments

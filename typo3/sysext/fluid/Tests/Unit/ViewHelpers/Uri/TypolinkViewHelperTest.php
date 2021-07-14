@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,12 +18,9 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
 
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper;
-use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TypolinkViewHelperTest
- */
-class TypolinkViewHelperTest extends ViewHelperBaseTestcase
+class TypolinkViewHelperTest extends UnitTestCase
 {
     public function plainDecodedConfigurationDataProvider(): array
     {
@@ -78,12 +77,10 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * @param array $decodedConfiguration
-     *
      * @test
      * @dataProvider plainDecodedConfigurationDataProvider
      */
-    public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration)
+    public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration): void
     {
         /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
@@ -179,14 +176,10 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * @param array $decodedConfiguration
-     * @param array $viewHelperArguments
-     * @param array $expected
-     *
      * @test
      * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
      */
-    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expected)
+    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expected): void
     {
         /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);

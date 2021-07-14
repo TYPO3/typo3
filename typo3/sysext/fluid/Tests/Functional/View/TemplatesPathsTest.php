@@ -40,13 +40,6 @@ class TemplatesPathsTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'fluid',
-    ];
-
-    /**
-     * @var array
-     */
     protected $configurationToUseInTestInstance = [
         'EXTCONF' => [
             'extbase' => [
@@ -78,7 +71,7 @@ class TemplatesPathsTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, 'https://website.local/'),

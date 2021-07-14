@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,9 +24,7 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
 {
     protected $testExtensionsToLoad = ['typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test'];
 
-    protected $coreExtensionsToLoad = ['fluid'];
-
-    public function viewHelperTemplateSourcesDataProvider()
+    public function viewHelperTemplateSourcesDataProvider(): array
     {
         return [
             'EscapeChildrenEnabledAndEscapeOutputDisabled: Tag syntax with children, properly encodes variable value' =>
@@ -113,20 +113,15 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $viewHelperTemplate
-     * @param string $expectedOutput
-     *
      * @test
      * @dataProvider viewHelperTemplateSourcesDataProvider
      */
-    public function renderingTest($viewHelperTemplate, $expectedOutput)
+    public function renderingTest(string $viewHelperTemplate, string $expectedOutput): void
     {
         $view = new StandaloneView();
+        $view->setTemplateSource($viewHelperTemplate);
         $view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
-        $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
-
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
-
         self::assertSame($expectedOutput, $view->render());
     }
 }
