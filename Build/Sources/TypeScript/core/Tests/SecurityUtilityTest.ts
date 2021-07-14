@@ -40,4 +40,9 @@ describe('TYPO3/CMS/Core/SecurityUtility', (): void => {
   it('encodes HTML', (): void => {
     expect((new SecurityUtility).encodeHtml('<>"\'&')).toBe('&lt;&gt;&quot;&apos;&amp;');
   });
+
+  it('removes HTML from string', (): void => {
+    expect((new SecurityUtility).stripHtml('<img src="" onerror="alert(\'1\')">oh noes')).toBe('oh noes');
+    expect((new SecurityUtility).encodeHtml('<>"\'&')).toBe('&lt;&gt;&quot;&apos;&amp;');
+  });
 });

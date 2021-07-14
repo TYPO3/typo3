@@ -64,6 +64,11 @@ class SecurityUtility {
       .replace(/'/g, '&apos;');
   }
 
+  public stripHtml(html: string): string {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  }
+
   /**
    * @param {string} value
    */
