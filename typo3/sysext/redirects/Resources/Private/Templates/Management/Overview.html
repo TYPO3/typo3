@@ -28,6 +28,13 @@
                             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
                         </be:link.newRecord>
                     </f:be.infobox>
+
+                    <f:variable name="gotToPageUrl">
+                        <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" />
+                    </f:variable>
+                    <form data-on-submit="processNavigate">
+                        <f:form.hidden data="{number-of-pages: 1, url: gotToPageUrl}" name="paginator-target-page" value="1" />
+                    </form>
                 </f:then>
                 <f:else>
                     <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
