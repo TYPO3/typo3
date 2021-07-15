@@ -1,0 +1,33 @@
+<span id="{elementId}">
+    <select name="new_page_owner" id="new_page_owner">
+        <f:if condition="{addCurrentUser}">
+            <f:then><option value="{ownerUid}" selected>{username}</option></f:then>
+            <f:else><option value="0"></option></f:else>
+        </f:if>
+        <f:for each="{users}" key="uid" as="user">
+            <option value="{uid}" {f:if(condition: '{uid} == {ownerUid}', then: 'selected')}>{user.username}</option>
+        </f:for>
+    </select>
+    <span class="btn-group">
+        <button type="button"
+                class="saveowner btn btn-default"
+                title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:changeOwner')}"
+                data-page="{pageId}"
+                data-owner="{ownerUid}"
+                data-element-id="{elementId}"
+        >
+            <core:icon identifier="actions-document-save" size="small"/>
+        </button>
+        <button type="button"
+                class="restoreowner btn btn-default"
+                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                data-page="{pageId}"
+                data-owner="{ownerUid}"
+                data-element-id="{elementId}"
+                data-if-not-set="[not set]"
+                {f:if(condition: username, then: 'data-username="{username}"')}
+        >
+            <core:icon identifier="actions-close" size="small"/>
+        </button>
+    </span>
+</span>

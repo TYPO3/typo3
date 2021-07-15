@@ -1,0 +1,33 @@
+<span id="{elementId}">
+    <select name="new_page_group" id="new_page_group">
+        <f:if condition="{addCurrentGroup}">
+            <f:then><option value="{groupUid}" selected>{groupname}</option></f:then>
+            <f:else><option value="0"></option></f:else>
+        </f:if>
+        <f:for each="{groups}" key="uid" as="group">
+            <option value="{uid}" {f:if(condition: '{uid} == {groupUid}', then: 'selected')}>{group.title}</option>
+        </f:for>
+    </select>
+    <span class="btn-group">
+        <button type="button"
+                class="savegroup btn btn-default"
+                title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:changeGroup')}"
+                data-page="{pageId}"
+                data-group-id="{groupUid}"
+                data-element-id="{elementId}"
+        >
+            <core:icon identifier="actions-document-save" size="small"/>
+        </button>
+        <button type="button"
+                class="restoregroup btn btn-default"
+                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                data-page="{pageId}"
+                data-group-id="{groupUid}"
+                data-element-id="{elementId}"
+                data-if-not-set="[not set]"
+                {f:if(condition: groupname, then: 'data-groupname="{groupname}"')}
+        >
+            <core:icon identifier="actions-close" size="small"/>
+        </button>
+    </span>
+</span>

@@ -48,7 +48,7 @@ class Permissions {
     for (let permissionCheckbox of checkedPermissionCheckboxes) {
       permissionValue |= parseInt(permissionCheckbox.value, 10);
     }
-    document.forms.namedItem('editform')[varname].value = permissionValue | (checknames === 'tx_beuser_system_beusertxpermission[check][perms_user]' ? 1 : 0);
+    document.forms.namedItem('editform')[varname].value = permissionValue | (checknames === 'check[perms_user]' ? 1 : 0);
   }
 
   constructor() {
@@ -62,6 +62,9 @@ class Permissions {
   private setPermissions(element: HTMLElement): void {
     let page = element.dataset.page;
     let who = element.dataset.who;
+
+    // Hide all Tooltips to avoid permanent visible/never hidden Tooltips
+    Tooltip.hide(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 
     (new AjaxRequest(this.ajaxUrl)).post({
       page: page,

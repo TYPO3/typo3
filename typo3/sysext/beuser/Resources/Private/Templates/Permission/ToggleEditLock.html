@@ -1,0 +1,26 @@
+<f:if condition="{editLockState}">
+    <f:then>
+        <span id="{elementId}">
+            <button type="button"
+                    class="editlock btn btn-default"
+                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr')}"
+                    data-page="{pageId}"
+                    data-lockstate="1"
+            >
+                <core:icon identifier="actions-lock" size="small" />
+            </button>
+        </span>
+    </f:then>
+    <f:else>
+        <span id="{elementId}">
+            <button type="button"
+                    class="editlock btn btn-default"
+                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr2')}"
+                    data-page="{pageId}"
+                    data-lockstate="0"
+            >
+                <core:icon identifier="actions-unlock" size="small" />
+            </button>
+        </span>
+    </f:else>
+</f:if>

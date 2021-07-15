@@ -1525,9 +1525,7 @@ class DatabaseRecordList
                 } else {
                     $params = [
                         'id' => $row['uid'],
-                        'tx_beuser_system_beusertxpermission' => [
-                            'action' => 'edit'
-                        ],
+                        'action' => 'edit',
                         'returnUrl' => $this->listURL()
                     ];
                     $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', $params);

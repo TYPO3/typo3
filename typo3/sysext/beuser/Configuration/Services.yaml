@@ -6,3 +6,6 @@ services:
 
   TYPO3\CMS\Beuser\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Beuser\Controller\PermissionController:
+    tags: ['backend.controller']

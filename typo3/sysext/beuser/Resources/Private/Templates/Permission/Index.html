@@ -11,11 +11,15 @@
     <div class="row row-cols-auto align-items-end g-3">
         <div class="col">
             <label for="depth" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" /></label>
-            <f:form.select class="form-select" id="depth" value="{depth}" options="{depthOptions}" additionalAttributes="{data-global-event: 'change', data-action-navigate: '$data=~s/$value/', data-navigate-value:depthBaseUrl}" />
+            <select class="form-select" id="depth" name="depth" data-global-event="change" data-action-navigate="$data=~s/$value/" data-navigate-value="{depthBaseUrl}">
+                <f:for each="{depthOptions}" key="value" as="option">
+                    <option value="{value}" {f:if(condition: '{value} == {depth}', then: 'selected')}>{option}</option>
+                </f:for>
+            </select>
         </div>
     </div>
 
-    <div class="panel panel-default panel-space">
+    <div class="panel panel-default mt-3">
         <div class="table-fit">
             <table class="table table-striped table-hover" id="typo3-permissionList">
                 <thead>
@@ -31,39 +35,36 @@
                     <tr>
                         <f:if condition="{data.row.uid}">
                             <f:then>
+                                <f:variable name="editUrl">
+                                    <be:moduleLink route="system_BeuserTxPermission" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
+                                </f:variable>
+
                                 <f:comment>
                                     A "normal" page row is rendered, not the root page
                                 </f:comment>
 
                                 <td align="left" class="nowrap">
-                                    <f:link.action
-                                        action="edit"
-                                        arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: \'{id: currentId, depth: depth}\')}'}"
-                                        title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-                                    >
+                                    <a href="{editUrl}">
                                         <f:format.raw>{data.depthData}{data.HTML}</f:format.raw>
                                         {data.row.title -> f:format.crop(maxCharacters:20)}
-                                    </f:link.action>
+                                    </a>
                                 </td>
 
                                 <td>
                                     <f:comment>
                                         Edit link is workspace aware: If in ws, link to edit the ws overlay record is rendered
                                     </f:comment>
-                                    <f:link.action
-                                        action="edit"
-                                        arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: \'{id: currentId, depth: depth}\')}'}"
+                                    <a href="{editUrl}"
                                         class="btn btn-default"
-                                        title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-                                    >
+                                        title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}">
                                         <core:icon identifier="actions-open" />
-                                    </f:link.action>
+                                    </a>
                                 </td>
 
                                 <td class="nowrap">
                                     <bu:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
                                     <f:render
-                                        partial="Permission/Ownername"
+                                        partial="Ownername"
                                         arguments="{
                                             pageId: '{data.row.uid}',
                                             userId: '{data.row.perms_userid}',
@@ -75,7 +76,7 @@
                                 <td class="nowrap">
                                     <bu:permissions permission="{data.row.perms_group}" scope="group" pageId="{data.row.uid}" />
                                     <f:render
-                                        partial="Permission/Groupname"
+                                        partial="Groupname"
                                         arguments="{
                                             pageId: '{data.row.uid}',
                                             groupId: '{data.row.perms_groupid}',

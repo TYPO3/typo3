@@ -18,16 +18,14 @@ defined('TYPO3') or die();
     ]
 );
 
-// Module System > Access
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'Beuser',
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
     'system',
-    'tx_Permission',
+    'BeuserTxPermission',
     'top',
+    '',
     [
-        \TYPO3\CMS\Beuser\Controller\PermissionController::class => 'index, edit, update'
-    ],
-    [
+        'routeTarget' => \TYPO3\CMS\Beuser\Controller\PermissionController::class . '::handleRequest',
+        'name' => 'system_BeuserTxPermission',
         'access' => 'admin',
         'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.svg',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',

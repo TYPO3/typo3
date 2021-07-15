@@ -66,6 +66,12 @@
 			<trans-unit id="User" resname="User">
 				<source>User</source>
 			</trans-unit>
+			<trans-unit id="changeOwner" resname="changeOwner">
+				<source>Change owner</source>
+			</trans-unit>
+			<trans-unit id="changeGroup" resname="changeGroup">
+				<source>Change group</source>
+			</trans-unit>
 			<trans-unit id="def" resname="def">
 				<source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
 			</trans-unit>
