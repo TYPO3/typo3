@@ -173,14 +173,10 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface
             );
         }
         $selectorFieldName = $result['inlineParentConfig']['foreign_selector'];
-        if (!isset($result['processedTca']['columns'][$selectorFieldName]['config']['type'])
-            || (
-                $result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'select'
-                && $result['processedTca']['columns'][$selectorFieldName]['config']['type'] !== 'group'
-            )
-        ) {
+        $fieldType = (string)($result['processedTca']['columns'][$selectorFieldName]['config']['type'] ?? '');
+        if (!in_array($fieldType, ['select', 'category', 'group'], true)) {
             throw new \UnexpectedValueException(
-                $selectorFieldName . ' is target type of a foreign_selector field to table ' . $result['tableName'] . ' and must be either a select or group type field',
+                $selectorFieldName . ' is target type of a foreign_selector field to table ' . $result['tableName'] . ' and must be either a select, category or group type field',
                 1444434104
             );
         }

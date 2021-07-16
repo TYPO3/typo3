@@ -254,20 +254,14 @@ return [
         'category_perms' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectTree',
-                'foreign_table' => 'sys_category',
-                'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0)',
+                'type' => 'category',
+                'relationship' => 'oneToMany',
                 'treeConfig' => [
-                    'parentField' => 'parent',
                     'appearance' => [
                         'expandAll' => false,
                         'showHeader' => false,
-                        'maxLevels' => 99,
                     ],
                 ],
-                'size' => 20,
-                'minitems' => 0,
             ]
         ]
     ],

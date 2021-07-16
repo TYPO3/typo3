@@ -491,7 +491,7 @@ class DataMapProcessor
         $manyToManyTable = $configuration['config']['MM'];
         if ($type === 'group' && $configuration['config']['internal_type'] === 'db') {
             $tableNames = trim($configuration['config']['allowed'] ?? '');
-        } elseif ($configuration['config']['type'] === 'select') {
+        } elseif ($configuration['config']['type'] === 'select' || $configuration['config']['type'] === 'category') {
             $tableNames = ($specialTableName ?? $configuration['config']['foreign_table'] ?? '');
         } else {
             return;
@@ -1476,7 +1476,7 @@ class DataMapProcessor
                 && !empty($configuration['allowed'])
             )
             || (
-                $configuration['type'] === 'select'
+                ($configuration['type'] === 'select' || $configuration['type'] === 'category')
                 && !empty($configuration['foreign_table'])
                 && !empty($GLOBALS['TCA'][$configuration['foreign_table']])
             )

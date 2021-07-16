@@ -132,7 +132,6 @@ CREATE TABLE tt_content (
 	accessibility_title varchar(30) DEFAULT '' NOT NULL,
 	accessibility_bypass tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	accessibility_bypass_text varchar(30) DEFAULT '' NOT NULL,
-	selected_categories text,
 	category_field varchar(64) DEFAULT '' NOT NULL,
 	table_class varchar(60) DEFAULT '' NOT NULL,
 	table_caption varchar(255) DEFAULT NULL,

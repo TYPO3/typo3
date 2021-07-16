@@ -406,26 +406,23 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function getChildrenUidsFromParentRelation(array $row)
     {
         $uid = $row['uid'];
-        switch ($this->columnConfiguration['type'] ?? '') {
-            case 'inline':
-
-            case 'select':
-                if ($this->columnConfiguration['MM'] ?? null) {
-                    /** @var \TYPO3\CMS\Core\Database\RelationHandler $dbGroup */
-                    $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
-                    // Dummy field for setting "look from other site"
-                    $this->columnConfiguration['MM_oppositeField'] = 'children';
-                    $dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
-                    $relatedUids = $dbGroup->tableArray[$this->getTableName()];
-                } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
-                    $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
-                } else {
-                    $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
-                }
-                break;
-            default:
+        if (in_array($this->columnConfiguration['type'] ?? '', ['select', 'category', 'inline'], true)) {
+            if ($this->columnConfiguration['MM'] ?? null) {
+                /** @var \TYPO3\CMS\Core\Database\RelationHandler $dbGroup */
+                $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
+                // Dummy field for setting "look from other site"
+                $this->columnConfiguration['MM_oppositeField'] = 'children';
+                $dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
+                $relatedUids = $dbGroup->tableArray[$this->getTableName()];
+            } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
+                $relatedUids = $this->listFieldQuery($this->columnConfiguration['foreign_field'], $uid);
+            } else {
                 $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
+            }
+        } else {
+            $relatedUids = $this->listFieldQuery($this->getLookupField(), $uid);
         }
+
         return $relatedUids;
     }
 
@@ -444,6 +441,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             case 'inline':
                 // Intentional fall-through
             case 'select':
+            case 'category':
                 if ($this->columnConfiguration['MM']) {
                     $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                     $dbGroup->start(

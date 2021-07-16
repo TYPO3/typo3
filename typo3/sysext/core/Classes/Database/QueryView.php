@@ -801,6 +801,7 @@ class QueryView
                         $fields['type'] = 'multiple';
                         break;
                     case 'select':
+                    case 'category':
                         $fields['type'] = 'multiple';
                         if ($fields['foreign_table']) {
                             $fields['type'] = 'relation';

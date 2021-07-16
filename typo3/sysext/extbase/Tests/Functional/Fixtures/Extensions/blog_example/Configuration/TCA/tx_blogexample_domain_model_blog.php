@@ -26,6 +26,11 @@ return [
                 'type' => 'language'
             ]
         ],
+        'categories' => [
+            'config'=> [
+                'type' => 'category',
+            ]
+        ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
@@ -151,7 +156,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator']
+        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator, categories']
     ],
     'palettes' => [
         '1' => ['showitem' => '']

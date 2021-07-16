@@ -317,6 +317,7 @@ define([
           }
           break;
         case 'select':
+        case 'category':
           if (rule.minItems || rule.maxItems) {
             $relatedField = $(document).find('[name="' + field.dataset.relatedfieldname + '"]');
             if ($relatedField.length) {

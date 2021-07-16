@@ -364,10 +364,13 @@ class DatabaseIntegrityCheck
         foreach ($GLOBALS['TCA'] as $table => $tableConf) {
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
-                if (($config['config']['type'] ?? '') === 'group' && ($config['config']['internal_type'] ?? false) === 'db') {
+                $fieldType = $config['config']['type'] ?? '';
+                if ($fieldType === 'group' && ($config['config']['internal_type'] ?? false) === 'db') {
                     $result[$table][] = $field;
                 }
-                if (($config['config']['type'] ?? '') === 'select' && ($config['config']['foreign_table'] ?? false)) {
+                if (($fieldType === 'select' || $fieldType === 'category')
+                    && ($config['config']['foreign_table'] ?? false)
+                ) {
                     $result[$table][] = $field;
                 }
             }
@@ -462,7 +465,9 @@ class DatabaseIntegrityCheck
                                 $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
                             }
                         }
-                        if ($fieldConf['type'] === 'select' && $fieldConf['foreign_table']) {
+                        if (($fieldConf['foreign_table'] ?? false)
+                            && ($fieldConf['type'] === 'select' || $fieldConf['type'] === 'category')
+                        ) {
                             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                             $dbAnalysis->start(
                                 $row[$field],

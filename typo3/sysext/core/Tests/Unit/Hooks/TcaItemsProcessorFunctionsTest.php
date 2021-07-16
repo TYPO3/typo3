@@ -684,4 +684,128 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         (new TcaItemsProcessorFunctions())->populateCustomPermissionOptions($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
+
+    /**
+     * @test
+     */
+    public function populateAvailableCategoryFieldsThrowsExceptionOnMissingTable(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1627565458);
+
+        $fieldDefinition = ['items' => [], 'config' => []];
+        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
+    }
+
+    /**
+     * @test
+     */
+    public function populateAvailableCategoryFieldsThrowsExceptionOnInvalidTable(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1627565459);
+
+        $fieldDefinition = ['items' => [], 'config' => ['itemsProcConfig' => ['table' => 'aTable']]];
+        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
+    }
+
+    /**
+     * @test
+     * @dataProvider populateAvailableCategoryFieldsDataProvider
+     */
+    public function populateAvailableCategoryFields(array $itemsProcConfig, array $expectedItems): void
+    {
+        $GLOBALS['TCA']['aTable']['columns'] = [
+            'aField' => [
+                'label' => 'aField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'manyToMany'
+                ]
+            ],
+            'bField' => [
+                'label' => 'bField label',
+                'config' => [
+                    'type' => 'category',
+                ]
+            ],
+            'cField' => [
+                'label' => 'cField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'oneToMany'
+                ]
+            ],
+            'dField' => [
+                'label' => 'dField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'manyToMany'
+                ]
+            ]
+        ];
+        $fieldDefinition = ['items' => [], 'config' => ['itemsProcConfig' => $itemsProcConfig]];
+        $expected = $fieldDefinition;
+        $expected['items'] = $expectedItems;
+        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
+    }
+
+    public function populateAvailableCategoryFieldsDataProvider(): \Generator
+    {
+        yield 'falls back to default relationship (manyToMany)' => [
+            [
+                'table' => 'aTable'
+            ],
+            [
+                0 => [
+                    0 => 'aField label',
+                    1 => 'aField',
+                ],
+                1 => [
+                    0 => 'dField label',
+                    1 => 'dField',
+                ]
+            ]
+        ];
+        yield 'relationship oneToMany given' => [
+            [
+                'table' => 'aTable',
+                'allowedRelationships' => ['oneToMany']
+            ],
+            [
+                0 => [
+                    0 => 'cField label',
+                    1 => 'cField',
+                ],
+            ]
+        ];
+        yield 'relationship oneToOne given' => [
+            [
+                'table' => 'aTable',
+                'allowedRelationships' => ['oneToOne']
+            ],
+            []
+        ];
+        yield 'multiple relationships given' => [
+            [
+                'table' => 'aTable',
+                'allowedRelationships' => ['oneToOne', 'oneToMany', 'manyToMany']
+            ],
+            [
+                0 => [
+                    0 => 'aField label',
+                    1 => 'aField',
+                ],
+                1 => [
+                    0 => 'cField label',
+                    1 => 'cField',
+                ],
+                2 => [
+                    0 => 'dField label',
+                    1 => 'dField',
+                ]
+            ]
+        ];
+    }
 }

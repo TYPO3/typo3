@@ -419,7 +419,10 @@ class DataMapFactory implements SingletonInterface
 
         if (isset($columnConfiguration['MM'])) {
             $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
-            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+            // check if foreign_table is set, which usually won't be the case for type "group" fields
+            if (!empty($columnConfiguration['foreign_table'])) {
+                $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+            }
             // todo: don't update column map if value(s) isn't/aren't set.
             $columnMap->setRelationTableName($columnConfiguration['MM']);
             if (isset($columnConfiguration['MM_match_fields']) && is_array($columnConfiguration['MM_match_fields'])) {

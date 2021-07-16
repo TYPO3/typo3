@@ -25,7 +25,7 @@ return [
         'maxSingleDBListItems' => 500
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments']
+        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories']
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -33,6 +33,11 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language'
+            ]
+        ],
+        'categories' => [
+            'config'=> [
+                'type' => 'category',
             ]
         ],
         'l18n_parent' => [

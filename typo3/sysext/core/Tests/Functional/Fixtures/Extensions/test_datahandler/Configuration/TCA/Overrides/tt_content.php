@@ -5,6 +5,22 @@ defined('TYPO3') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
     [
+        'tx_testdatahandler_category' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Category',
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToOne',
+            ],
+        ],
+        'tx_testdatahandler_categories' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Categories',
+            'config' => [
+                'type' => 'category',
+                'relationship' => 'oneToMany',
+            ],
+        ],
         'tx_testdatahandler_select' => [
             'exclude' => true,
             'label' => 'DataHandler Test Select',

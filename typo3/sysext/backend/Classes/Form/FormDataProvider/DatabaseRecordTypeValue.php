@@ -73,10 +73,10 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 // used as type field. This was introduced for some FAL scenarios.
                 [$pointerField, $foreignTableTypeField] = explode(':', $tcaTypeField);
 
-                $relationType = $result['processedTca']['columns'][$pointerField]['config']['type'];
-                if ($relationType !== 'select' && $relationType !== 'group') {
+                $relationType = (string)($result['processedTca']['columns'][$pointerField]['config']['type'] ?? '');
+                if (!in_array($relationType, ['select', 'category', 'group'], true)) {
                     throw new \UnexpectedValueException(
-                        'TCA foreign field pointer fields are only allowed to be used with group or select field types.'
+                        'TCA foreign field pointer fields are only allowed to be used with group, select or category field types.'
                         . ' Handling field ' . $pointerField . ' with type configured as ' . $tcaTypeField,
                         1325862241
                     );
@@ -86,7 +86,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 // Resolve the foreign record only if there is a uid, otherwise fall back 0
                 if (!empty($foreignUid)) {
                     // Determine table name to fetch record from
-                    if ($relationType === 'select') {
+                    if ($relationType === 'select' || $relationType === 'category') {
                         $foreignTable = $result['processedTca']['columns'][$pointerField]['config']['foreign_table'] ?? '';
                     } else {
                         $allowedTables = explode(',', $result['processedTca']['columns'][$pointerField]['config']['allowed']);

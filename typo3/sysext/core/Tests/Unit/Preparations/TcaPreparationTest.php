@@ -27,6 +27,324 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaPreparationTest extends UnitTestCase
 {
+    /**
+     * @test
+     * @dataProvider configureCategoryRelationsDataProvider
+     *
+     * @param array $input
+     * @param array $expected
+     */
+    public function configureCategoryRelations(array $input, array $expected): void
+    {
+        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
+    }
+
+    public function configureCategoryRelationsDataProvider(): \Generator
+    {
+        yield 'No category field' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'select',
+                                'foreign_table' => 'sys_category'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'select',
+                                'foreign_table' => 'sys_category'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ];
+        yield 'category field without relationship given (falls back to manyToMany)' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'minitems' => 1
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'minitems' => 1,
+                                'size' => 20,
+                                'default' => 0,
+                                'foreign_table' => 'sys_category',
+                                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                'relationship' => 'manyToMany',
+                                'maxitems' => 99999,
+                                'MM' => 'sys_category_record_mm',
+                                'MM_opposite_field' => 'items',
+                                'MM_match_fields' => [
+                                    'tablenames' => 'aTable',
+                                    'fieldname' => 'aField',
+                                ],
+                            ],
+                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
+                            'exclude' => true
+                        ],
+                    ],
+                ],
+                'sys_category' => [
+                    'columns' => [
+                        'items' => [
+                            'config' => [
+                                'MM_oppositeUsage' => [
+                                    'aTable' => [
+                                        'aField'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        yield 'category field with oneToOne relationship' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToOne',
+                                'minitems' => 1
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToOne',
+                                'minitems' => 1,
+                                'size' => 20,
+                                'default' => 0,
+                                'foreign_table' => 'sys_category',
+                                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                'maxitems' => 1
+                            ],
+                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
+                        ],
+                    ],
+                ],
+            ]
+        ];
+        yield 'categoryField with oneToMany relationship' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToMany',
+                                'size' => 123,
+                                'maxitems' => 0
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToMany',
+                                'size' => 123,
+                                'foreign_table' => 'sys_category',
+                                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                'maxitems' => 99999
+                            ],
+                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories'
+                        ],
+                    ],
+                ],
+            ]
+        ];
+        yield 'categoryField with manyToMany relationship' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'exclude' => false,
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'manyToMany',
+                                'default' => 123,
+                                'maxitems' => 123,
+                                'foreign_table' => 'will_be_overwritten',
+                                'MM' => 'will_be_overwritten',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'manyToMany',
+                                'size' => 20,
+                                'default' => 123,
+                                'foreign_table' => 'sys_category',
+                                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                'maxitems' => 123,
+                                'MM' => 'sys_category_record_mm',
+                                'MM_opposite_field' => 'items',
+                                'MM_match_fields' => [
+                                    'tablenames' => 'aTable',
+                                    'fieldname' => 'aField',
+                                ]
+                            ],
+                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
+                            'exclude' => false
+                        ],
+                    ],
+                ],
+                'sys_category' => [
+                    'columns' => [
+                        'items' => [
+                            'config' => [
+                                'MM_oppositeUsage' => [
+                                    'aTable' => [
+                                        'aField'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider
+     *
+     * @param array $input
+     * @param int $excpetionCode
+     */
+    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $excpetionCode): void
+    {
+        $this->expectExceptionCode($excpetionCode);
+        $this->expectException(\RuntimeException::class);
+        (new TcaPreparation())->prepare($input);
+    }
+
+    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
+    {
+        yield 'No relationship with maxitems=1 (falls back to manyToMany)' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'category',
+                                'maxitems' => 1
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            1627335017
+        ];
+        yield 'oneToOne relationship with maxitems=2' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToOne',
+                                'maxitems' => 2
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            1627335016
+        ];
+        yield 'oneToMany relationship with maxitems=1' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToMany',
+                                'maxitems' => 1
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            1627335017
+        ];
+        yield 'manyToMany relationship with maxitems=1' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'category',
+                                'relationship' => 'oneToMany',
+                                'maxitems' => 1
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            1627335017
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider prepareQuotingOfTableNamesAndColumnNamesDataProvider
+     */
+    public function prepareQuotingOfTableNamesAndColumnNames(array $input, array $expected)
+    {
+        $connection = $this->prophesize(Connection::class);
+        $connection->quoteIdentifier('tt_content')->willReturn('`tt_content`');
+        $connection->quoteIdentifier('CType')->willReturn('`CType`');
+        $connection->quoteIdentifier('uid_local')->willReturn('`uid_local`');
+        $connection->quoteIdentifier('title')->willReturn('`title`');
+        $connectionPool = $this->prophesize(ConnectionPool::class);
+        $connectionPool->getConnectionForTable(Argument::any())->willReturn($connection->reveal());
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
+        $subject = new TcaPreparation();
+        self::assertEquals($expected, $subject->prepare($input));
+    }
+
     public function prepareQuotingOfTableNamesAndColumnNamesDataProvider()
     {
         return [
@@ -69,19 +387,22 @@ class TcaPreparationTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider prepareQuotingOfTableNamesAndColumnNamesDataProvider
      */
-    public function prepareQuotingOfTableNamesAndColumnNames(array $input, array $expected)
+    public function configureCategoryRelationsThrowsExceptionOnInvalidRelationship(): void
     {
-        $connection = $this->prophesize(Connection::class);
-        $connection->quoteIdentifier('tt_content')->willReturn('`tt_content`');
-        $connection->quoteIdentifier('CType')->willReturn('`CType`');
-        $connection->quoteIdentifier('uid_local')->willReturn('`uid_local`');
-        $connection->quoteIdentifier('title')->willReturn('`title`');
-        $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getConnectionForTable(Argument::any())->willReturn($connection->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
-        $subject = new TcaPreparation();
-        self::assertEquals($expected, $subject->prepare($input));
+        $this->expectExceptionCode(1627898896);
+        $this->expectException(\RuntimeException::class);
+        (new TcaPreparation())->prepare([
+            'aTable' => [
+                'columns' => [
+                    'foo' => [
+                        'config' => [
+                            'type' => 'category',
+                            'relationship' => 'invalid',
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
 }

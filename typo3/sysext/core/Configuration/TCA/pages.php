@@ -299,6 +299,11 @@ return [
                 'type' => 'language'
             ]
         ],
+        'categories' => [
+            'config'=> [
+                'type' => 'category',
+            ]
+        ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',

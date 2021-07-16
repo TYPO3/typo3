@@ -831,10 +831,9 @@ class ReferenceIndex implements LoggerAwareInterface
         return
             ($configuration['type'] === 'group' && $configuration['internal_type'] === 'db')
             || (
-                ($configuration['type'] === 'select' || $configuration['type'] === 'inline')
+                in_array($configuration['type'], ['select', 'category', 'inline'], true)
                 && !empty($configuration['foreign_table'])
-            )
-            ;
+            );
     }
 
     /**

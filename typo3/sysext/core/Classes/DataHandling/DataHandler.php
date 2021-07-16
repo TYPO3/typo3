@@ -1550,6 +1550,9 @@ class DataHandler implements LoggerAwareInterface
             case 'language':
                 $res = $this->checkValueForLanguage((int)$value, $table, $field);
                 break;
+            case 'category':
+                $res = $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field);
+                break;
             case 'check':
                 $res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
                 break;
@@ -1839,6 +1842,62 @@ class DataHandler implements LoggerAwareInterface
         // @todo Should we also check if the language is allowed for the current site - if record has site context?
 
         return ['value' => $value];
+    }
+
+    /**
+     * Evaluate 'category' type values
+     *
+     * @param array $result The result array. The processed value (if any!) is set in the 'value' key.
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int|string $id uid of record
+     * @param string $status The status - 'update' or 'new' flag
+     * @param string $field Field name
+     * @return array
+     */
+    protected function checkValueForCategory(
+        array $result,
+        string $value,
+        array $tcaFieldConf,
+        string $table,
+        $id,
+        string $status,
+        string $field
+    ): array {
+        // Exploded comma-separated values and remove duplicates
+        $valueArray = array_unique(GeneralUtility::trimExplode(',', $value, true));
+        // If an exclusive key is found, discard all others:
+        if ($tcaFieldConf['exclusiveKeys'] ?? false) {
+            $exclusiveKeys = GeneralUtility::trimExplode(',', $tcaFieldConf['exclusiveKeys']);
+            foreach ($valueArray as $index => $key) {
+                if (in_array($key, $exclusiveKeys, true)) {
+                    $valueArray = [$index => $key];
+                    break;
+                }
+            }
+        }
+        $unsetResult = false;
+        if (strpos($value, 'NEW') !== false) {
+            $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
+            $this->addNewValuesToRemapStackChildIds($valueArray);
+            $this->remapStack[] = [
+                'func' => 'checkValue_category_processDBdata',
+                'args' => [$valueArray, $tcaFieldConf, $id, $status, $table, $field],
+                'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 4],
+                'field' => $field
+            ];
+            $unsetResult = true;
+        } else {
+            $valueArray = $this->checkValue_category_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field);
+        }
+        if ($unsetResult) {
+            unset($result['value']);
+        } else {
+            $newVal = implode(',', $this->checkValue_checkMax($tcaFieldConf, $valueArray));
+            $result['value'] = $newVal !== '' ? $newVal : 0;
+        }
+        return $result;
     }
 
     /**
@@ -2687,6 +2746,53 @@ class DataHandler implements LoggerAwareInterface
             -1,
             [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
         );
+    }
+
+    /**
+     * Returns processed data for category fields
+     *
+     * @param array $valueArray Current value array
+     * @param array $tcaFieldConf TCA field config
+     * @param string|int $id Record id, used for look-up of MM relations (local_uid)
+     * @param string $status Status string ('update' or 'new')
+     * @param string $table Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
+     * @param string $field field name, needs to be set for writing to sys_history
+     * @return array Modified value array
+     * @internal should only be used from within DataHandler
+     */
+    public function checkValue_category_processDBdata(
+        array $valueArray,
+        array $tcaFieldConf,
+        $id,
+        string $status,
+        string $table,
+        string $field
+    ): array {
+        $newRelations = implode(',', $valueArray);
+        $relationHandler = $this->createRelationHandlerInstance();
+        $relationHandler->start($newRelations, $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
+        if ($tcaFieldConf['MM'] ?? false) {
+            $relationHandler->convertItemArray();
+            if ($status === 'update') {
+                $relationHandleForOldRelations = $this->createRelationHandlerInstance();
+                $relationHandleForOldRelations->start('', $tcaFieldConf['foreign_table'], $tcaFieldConf['MM'], $id, $table, $tcaFieldConf);
+                $oldRelations = implode(',', $relationHandleForOldRelations->getValueArray());
+                $relationHandler->writeMM($tcaFieldConf['MM'], $id);
+                if ($oldRelations !== $newRelations) {
+                    $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$field] = $oldRelations;
+                    $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$field] = $newRelations;
+                } else {
+                    $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$field] = '';
+                    $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$field] = '';
+                }
+            } else {
+                $this->dbAnalysisStore[] = [$relationHandler, $tcaFieldConf['MM'], $id, '', $table];
+            }
+            $valueArray = $relationHandler->countItems();
+        } else {
+            $valueArray = $relationHandler->getValueArray();
+        }
+        return $valueArray;
     }
 
     /**
@@ -5930,6 +6036,7 @@ class DataHandler implements LoggerAwareInterface
                         switch ($conf['type']) {
                             case 'group':
                             case 'select':
+                            case 'category':
                                 $vArray = $this->remapListedDBRecords_procDBRefs($conf, $value, $theUidToUpdate, $table);
                                 if (is_array($vArray)) {
                                     $newData[$fieldName] = implode(',', $vArray);
@@ -8193,8 +8300,12 @@ class DataHandler implements LoggerAwareInterface
      */
     public function isReferenceField($conf)
     {
-        return isset($conf['type'], $conf['internal_type']) && $conf['type'] === 'group' && $conf['internal_type'] === 'db'
-            || isset($conf['type'], $conf['foreign_table']) && $conf['type'] === 'select' && $conf['foreign_table'];
+        if (!isset($conf['type'])) {
+            return false;
+        }
+
+        return ($conf['type'] === 'group' && ($conf['internal_type'] ?? '') === 'db')
+            || (($conf['type'] === 'select' || $conf['type'] === 'category') && !empty($conf['foreign_table']));
     }
 
     /**

@@ -329,6 +329,7 @@ class QueryGenerator
                             $this->fields[$fieldName]['type'] = 'multiple';
                             break;
                         case 'select':
+                        case 'category':
                             $this->fields[$fieldName]['type'] = 'multiple';
                             if ($this->fields[$fieldName]['foreign_table']) {
                                 $this->fields[$fieldName]['type'] = 'relation';

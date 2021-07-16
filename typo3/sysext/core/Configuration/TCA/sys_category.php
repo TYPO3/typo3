@@ -141,21 +141,8 @@ return [
         'parent' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.parent',
             'config' => [
-                'minitems' => 0,
-                'maxitems' => 1,
-                'type' => 'select',
-                'renderType' => 'selectTree',
-                'foreign_table' => 'sys_category',
-                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0)',
-                'treeConfig' => [
-                    'parentField' => 'parent',
-                    'appearance' => [
-                        'expandAll' => true,
-                        'showHeader' => true,
-                        'maxLevels' => 99,
-                    ],
-                ],
-                'default' => 0
+                'type' => 'category',
+                'relationship' => 'oneToOne',
             ]
         ],
         'items' => [

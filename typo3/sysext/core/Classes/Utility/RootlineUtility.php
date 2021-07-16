@@ -373,11 +373,14 @@ class RootlineUtility
      */
     protected function columnHasRelationToResolve(array $configuration)
     {
-        $configuration = $configuration['config'] ?? null;
+        $configuration = $configuration['config'] ?? [];
         if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
             return true;
         }
         if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline'])) {
+            return true;
+        }
+        if (($configuration['type'] ?? '') === 'category' && ($configuration['relationship'] ?? '') === 'manyToMany') {
             return true;
         }
         return false;

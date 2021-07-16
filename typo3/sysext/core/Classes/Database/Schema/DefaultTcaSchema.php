@@ -428,6 +428,37 @@ class DefaultTcaSchema
             ) {
                 $tables[$tablePosition]->addIndex(['t3ver_oid', 't3ver_wsid'], 't3ver_oid');
             }
+
+            // Add category fields for all tables, defining category columns (TCA type=category)
+            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
+                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'category'
+                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                    ) {
+                        continue;
+                    }
+
+                    if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            'text',
+                            [
+                                'notnull' => false,
+                            ]
+                        );
+                    } else {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            'integer',
+                            [
+                                'default' => 0,
+                                'notnull' => true,
+                                'unsigned' => true,
+                            ]
+                        );
+                    }
+                }
+            }
         }
 
         return $tables;

@@ -121,17 +121,16 @@ class TcaFlexProcess implements FormDataProviderInterface
                                         );
                                     }
 
-                                    // Nesting type="select" and type="group" within section containers is not supported,
-                                    // the data storage can not deal with that and in general it is not supported to add a
-                                    // named reference to the anonymous section container structure.
-                                    if (is_array($singleFieldConfiguration)
-                                        && isset($singleFieldConfiguration['config']['type'])
-                                        && ($singleFieldConfiguration['config']['type'] === 'group' || $singleFieldConfiguration['config']['type'] === 'select')
-                                        && array_key_exists('MM', $singleFieldConfiguration['config'])
+                                    // Nesting type="select", type="category" and type="group" within section
+                                    // containers is not supported, the data storage can not deal with that and in
+                                    // general it is not supported to add a named reference to the anonymous section
+                                    // container structure.
+                                    if (isset($singleFieldConfiguration['config']['MM'])
+                                        && in_array($singleFieldConfiguration['config']['type'] ?? '', ['select', 'category', 'group'], true)
                                     ) {
                                         throw new \UnexpectedValueException(
                                             'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                            . ' in section container "' . $containerName . '": Nesting select and group elements in flex form'
+                                            . ' in section container "' . $containerName . '": Nesting select, category and group elements in flex form'
                                             . ' sections is not allowed with MM relations.',
                                             1481647089
                                         );

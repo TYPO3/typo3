@@ -644,7 +644,7 @@ class BackendUtility
                 if ($foreignUid) {
                     $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$pointerField]['config'];
                     $relationType = $fieldConfig['type'];
-                    if ($relationType === 'select') {
+                    if ($relationType === 'select' || $relationType === 'category') {
                         $foreignTable = $fieldConfig['foreign_table'];
                     } elseif ($relationType === 'group') {
                         $allowedTables = explode(',', $fieldConfig['allowed']);
@@ -1577,6 +1577,7 @@ class BackendUtility
                 }
                 break;
             case 'select':
+            case 'category':
                 if (!empty($theColConf['MM'])) {
                     if ($uid) {
                         $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);

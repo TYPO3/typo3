@@ -1555,6 +1555,184 @@ class FlexFormToolsTest extends UnitTestCase
     /**
      * @test
      */
+    public function parseDataStructureByIdentifierPreparesCategoryField(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <TCEforms>
+                        <sheetTitle>aTitle</sheetTitle>
+                    </TCEforms>
+                    <type>array</type>
+                    <el>
+                        <category>
+                            <TCEforms>
+                                <label>Single category</label>
+                                <config>
+                                    <type>category</type>
+                                    <relationship>oneToOne</relationship>
+                                </config>
+                            </TCEforms>
+                        </category>
+                        <categories>
+                            <TCEforms>
+                                <config>
+                                    <type>category</type>
+                                </config>
+                            </TCEforms>
+                        </categories>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $expected = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'el' => [
+                            'category' => [
+                                'TCEforms' => [
+                                    'label' => 'Single category',
+                                    'config' => [
+                                        'type' => 'category',
+                                        'relationship' => 'oneToOne',
+                                        'foreign_table' => 'sys_category',
+                                        'foreign_table_where' =>  ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                        'maxitems' => 1,
+                                        'size' => 20,
+                                        'default' => 0,
+                                    ],
+                                ],
+                            ],
+                            'categories' => [
+                                'TCEforms' => [
+                                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
+                                    'config' => [
+                                        'type' => 'category',
+                                        'relationship' => 'oneToMany',
+                                        'foreign_table' => 'sys_category',
+                                        'foreign_table_where' =>  ' AND sys_category.sys_language_uid IN (-1, 0)',
+                                        'maxitems' => 99999,
+                                        'size' => 20,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'TCEforms' => [
+                            'sheetTitle' => 'aTitle',
+                        ],
+                    ],
+                ],
+            ]
+        ];
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+    }
+
+    /**
+     * @test
+     */
+    public function parseDataStructureByIdentifierThrowsExceptionOnInvalidCategoryRelationship(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <TCEforms>
+                        <sheetTitle>aTitle</sheetTitle>
+                    </TCEforms>
+                    <type>array</type>
+                    <el>
+                        <categories>
+                            <TCEforms>
+                                <config>
+                                    <type>category</type>
+                                    <relationship>manyToMany</relationship>
+                                </config>
+                            </TCEforms>
+                        </categories>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1627640208);
+
+        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function parseDataStructureByIdentifierThrowsEsxceptionOnInvalidMaxitemsForOneToOne(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <TCEforms>
+                        <sheetTitle>aTitle</sheetTitle>
+                    </TCEforms>
+                    <type>array</type>
+                    <el>
+                        <categories>
+                            <TCEforms>
+                                <config>
+                                    <type>category</type>
+                                    <relationship>oneToOne</relationship>
+                                    <maxitems>12</maxitems>
+                                </config>
+                            </TCEforms>
+                        </categories>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1627640209);
+
+        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function parseDataStructureByIdentifierThrowsEsxceptionOnInvalidMaxitems(): void
+    {
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <ROOT>
+                    <TCEforms>
+                        <sheetTitle>aTitle</sheetTitle>
+                    </TCEforms>
+                    <type>array</type>
+                    <el>
+                        <categories>
+                            <TCEforms>
+                                <config>
+                                    <type>category</type>
+                                    <maxitems>1</maxitems>
+                                </config>
+                            </TCEforms>
+                        </categories>
+                    </el>
+                </ROOT>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1627640210);
+
+        (new FlexFormTools())->parseDataStructureByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
     public function traverseFlexFormXmlDataRecurseDoesNotFailOnNotExistingField(): void
     {
         $dataStruct = [

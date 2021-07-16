@@ -635,9 +635,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => [
@@ -780,6 +785,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
+                        ],
+                    ],
                 ],
                 'flexFormSegment' => [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
@@ -830,9 +840,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [
@@ -906,9 +921,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => [

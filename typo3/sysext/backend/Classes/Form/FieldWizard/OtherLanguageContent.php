@@ -41,15 +41,15 @@ class OtherLanguageContent extends AbstractNode
 
         $fieldName = $this->data['fieldName'];
         $fieldConfig = $this->data['processedTca']['columns'][$fieldName];
+        $fieldType = $fieldConfig['config']['type'];
         $l10nDisplay = $this->data['parameterArray']['fieldConf']['l10n_display'] ?? '';
         $defaultLanguageRow = $this->data['defaultLanguageRow'] ?? null;
         if (!is_array($defaultLanguageRow)
             || GeneralUtility::inList($l10nDisplay, 'hideDiff')
             || GeneralUtility::inList($l10nDisplay, 'defaultAsReadonly')
-            || $fieldConfig['config']['type'] === 'inline'
-            || $fieldConfig['config']['type'] === 'flex'
-            || ($fieldConfig['config']['type'] === 'group' && isset($fieldConfig['config']['MM']))
-            || ($fieldConfig['config']['type'] === 'select' && isset($fieldConfig['config']['MM']))
+            || $fieldType === 'inline'
+            || $fieldType === 'flex'
+            || (in_array($fieldType, ['select', 'category', 'group'], true) && isset($fieldConfig['config']['MM']))
         ) {
             // Early return if there is no default language row or the display is disabled
             return $result;

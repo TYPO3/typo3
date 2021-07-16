@@ -732,6 +732,10 @@ class FlexFormTools
                     }
                 }
                 $dataStructure['sheets'][$sheetName] = $sheetStructure;
+
+                if (is_array($dataStructure['sheets'][$sheetName])) {
+                    $dataStructure['sheets'][$sheetName] = $this->prepareCategoryFields($dataStructure['sheets'][$sheetName]);
+                }
             }
         }
 
@@ -1000,5 +1004,91 @@ class FlexFormTools
             $output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
         }
         return $output;
+    }
+
+    /**
+     * Prepare type=category fields if given.
+     *
+     * NOTE: manyToMany relationships are not supported!
+     *
+     * @param array $dataStructurSheets
+     * @return array The processed $dataStructureSheets
+     */
+    protected function prepareCategoryFields(array $dataStructurSheets): array
+    {
+        if ($dataStructurSheets === []) {
+            // Early return in case the no sheets are given
+            return $dataStructurSheets;
+        }
+
+        foreach ($dataStructurSheets as &$structure) {
+            if (!is_array($structure['el'] ?? false) || $structure['el'] === []) {
+                // Skip if no elements (fields) are defined
+                continue;
+            }
+            foreach ($structure['el'] as $fieldName => &$fieldConfig) {
+                if (($fieldConfig['TCEforms']['config']['type'] ?? '') !== 'category') {
+                    // Skip if type is not "category"
+                    continue;
+                }
+
+                // Add a default label if none is defined
+                if (!isset($fieldConfig['TCEforms']['label'])) {
+                    $fieldConfig['TCEforms']['label'] = 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
+                }
+
+                // Initialize default column configuration and merge it with already defined
+                $fieldConfig['TCEforms']['config']['size'] ??= 20;
+
+                // Force foreign_table_* fields for type category
+                $fieldConfig['TCEforms']['config']['foreign_table'] = 'sys_category';
+                $fieldConfig['TCEforms']['config']['foreign_table_where'] = ' AND sys_category.sys_language_uid IN (-1, 0)';
+
+                if (empty($fieldConfig['TCEforms']['config']['relationship'])) {
+                    // Fall back to "oneToMany" when no relationship is given
+                    $fieldConfig['TCEforms']['config']['relationship'] = 'oneToMany';
+                }
+
+                if (!in_array($fieldConfig['TCEforms']['config']['relationship'], ['oneToOne', 'oneToMany'], true)) {
+                    throw new \UnexpectedValueException(
+                        '"relationship" must be one of "oneToOne" or "oneToMany", "manyToMany" is not supported as "relationship"' .
+                        ' for field ' . $fieldName . ' of type "category" in flexform.',
+                        1627640208
+                    );
+                }
+
+                // Set the maxitems value (necessary for DataHandling and FormEngine)
+                if ($fieldConfig['TCEforms']['config']['relationship'] === 'oneToOne') {
+                    // In case relationship is set to "oneToOne", maxitems must be 1.
+                    if ((int)($fieldConfig['TCEforms']['config']['maxitems'] ?? 0) > 1) {
+                        throw new \UnexpectedValueException(
+                            $fieldName . ' is defined as type category with an "oneToOne" relationship. ' .
+                            'Therefore maxitems must be 1. Otherwise, use oneToMany as relationship instead.',
+                            1627640209
+                        );
+                    }
+                    $fieldConfig['TCEforms']['config']['maxitems'] = 1;
+                } elseif ($fieldConfig['TCEforms']['config']['relationship'] === 'oneToMany') {
+                    // In case maxitems is not set or set to 0, set the default value "99999"
+                    if (!($fieldConfig['TCEforms']['config']['maxitems'] ?? false)) {
+                        $fieldConfig['TCEforms']['config']['maxitems'] = 99999;
+                    } elseif ((int)($fieldConfig['TCEforms']['config']['maxitems'] ?? 0) === 1) {
+                        throw new \UnexpectedValueException(
+                            'Can not use maxitems=1 for field ' . $fieldName . ' with "relationship" set to "oneToMany". Use "oneToOne" instead.',
+                            1627640210
+                        );
+                    }
+                }
+
+                // Add the default value if not set
+                if (!isset($fieldConfig['TCEforms']['config']['default'])
+                    && $fieldConfig['TCEforms']['config']['relationship'] !== 'oneToMany'
+                ) {
+                    $fieldConfig['TCEforms']['config']['default'] = 0;
+                }
+            }
+        }
+
+        return $dataStructurSheets;
     }
 }

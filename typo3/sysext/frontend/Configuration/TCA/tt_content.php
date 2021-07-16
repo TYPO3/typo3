@@ -335,6 +335,11 @@ return [
                 'type' => 'language'
             ]
         ],
+        'categories' => [
+            'config'=> [
+                'type' => 'category',
+            ]
+        ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
@@ -1190,18 +1195,8 @@ return [
         'selected_categories' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:selected_categories',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectTree',
-                'foreign_table' => 'sys_category',
-                'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1)',
-                'size' => 20,
-                'treeConfig' => [
-                    'parentField' => 'parent',
-                    'appearance' => [
-                        'expandAll' => true,
-                        'showHeader' => true,
-                    ],
-                ],
+                'type' => 'category',
+                'relationship' => 'oneToMany'
             ]
         ],
         'category_field' => [
@@ -1212,7 +1207,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-                'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldsForTable',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableCategoryFields',
                 'itemsProcConfig' => [
                     'table' => 'tt_content'
                 ],

@@ -162,6 +162,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 );
                 break;
             case 'select':
+            case 'category':
                 $recordTitle = $this->getRecordTitleForSelectType($rawValue, $fieldConfig);
                 break;
             case 'group':

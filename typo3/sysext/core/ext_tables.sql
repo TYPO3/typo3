@@ -18,8 +18,7 @@ CREATE TABLE be_groups (
 	file_permissions text,
 	TSconfig text,
 	subgroup text,
-	workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
-	category_perms text
+	workspace_perms tinyint(3) DEFAULT '1' NOT NULL
 );
 
 #
@@ -58,7 +57,6 @@ CREATE TABLE be_users (
 	TSconfig text,
 	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	workspace_id int(11) DEFAULT '0' NOT NULL,
-	category_perms text,
 	mfa mediumblob,
 	KEY username (username)
 );
@@ -297,9 +295,6 @@ CREATE TABLE sys_file_collection (
 	storage int(11) DEFAULT '0' NOT NULL,
 	folder text,
 	recursive tinyint(4) DEFAULT '0' NOT NULL,
-
-	# for type=category:
-	category int(11) DEFAULT '0' NOT NULL
 );
 
 #
@@ -410,7 +405,6 @@ CREATE TABLE sys_language (
 #
 CREATE TABLE sys_category (
 	title tinytext NOT NULL,
-	parent int(11) DEFAULT '0' NOT NULL,
 	items int(11) DEFAULT '0' NOT NULL,
 
 	KEY category_parent (parent),
