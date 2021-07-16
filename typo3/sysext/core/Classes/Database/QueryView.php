@@ -331,7 +331,7 @@ class QueryView
                         if (is_array($dA['qC'])) {
                             $dbSC[0] = $dA['qC'];
                         }
-                        $writeArray = $this->loadStoreQueryConfigs($dbSC, '0', $writeArray);
+                        $writeArray = $this->loadStoreQueryConfigs($dbSC, 0, $writeArray);
                         $saveStoreArray = 1;
                         $flashMessage = GeneralUtility::makeInstance(
                             FlashMessage::class,

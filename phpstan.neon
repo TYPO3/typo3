@@ -135,34 +135,6 @@ parameters:
 
     # Ignored errors for level 5
     -
-      message: "#^Parameter \\#2 \\$suffix of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryGenerator\\:\\:cleanInputVal\\(\\) expects string, int given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#3 \\$draw of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryGenerator\\:\\:mkOperatorSelect\\(\\) expects bool, int given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$first of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryGenerator\\:\\:getQuerySingle\\(\\) expects bool, int given\\.$#"
-      count: 2
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$item of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:inList\\(\\) expects string, \\(float\\|int\\) given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$first of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryGenerator\\:\\:getUserDefQuery\\(\\) expects bool, int given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$replace of function str_replace expects array\\|string, int given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryGenerator.php
-    -
-      message: "#^Parameter \\#2 \\$storeIndex of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\QueryView\\:\\:loadStoreQueryConfigs\\(\\) expects int, string given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryView.php
-    -
       message: "#^Parameter \\#1 \\$constraint of static method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryHelper\\:\\:stripLogicalOperatorPrefix\\(\\) expects string, string\\|null given\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Database/QueryView.php
@@ -250,10 +222,6 @@ parameters:
       message: "#^Parameter \\#1 \\$node of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\Renderer\\\\UnorderedListTreeRenderer\\:\\:renderNode\\(\\) expects TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeRepresentationNode, TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode given\\.$#"
       count: 1
       path: typo3/sysext/backend/Classes/Tree/Renderer/UnorderedListTreeRenderer.php
-    -
-      message: "#^Parameter \\#1 \\$result of method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\File\\\\FileController\\:\\:flattenResultDataValue\\(\\) expects bool\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ProcessedFile given\\.$#"
-      count: 1
-      path: typo3/sysext/backend/Classes/Controller/File/FileController.php
     -
       # Obsolete in v12, when either entire Request or __construct() are declared final
       message: "#^Unsafe usage of new static\\(\\)\\.$#"

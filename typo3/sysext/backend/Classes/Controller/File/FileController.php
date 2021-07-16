@@ -300,7 +300,7 @@ class FileController
      *
      * The value can be a File, Folder or boolean
      *
-     * @param bool|File|Folder $result
+     * @param bool|File|Folder|ProcessedFile $result
      *
      * @return bool|string|array
      */

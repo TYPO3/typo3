@@ -588,7 +588,7 @@ class QueryGenerator
                     }
                     $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
                     $queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
-                    $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], 1);
+                    $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
         }
         return $queryConfig;
@@ -615,7 +615,7 @@ class QueryGenerator
             $fieldName = '';
             $subscript = $parent . '[' . $key . ']';
             $lineHTML = [];
-            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] !== 'FIELD_');
+            $lineHTML[] = $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c > 0, $conf['type'] !== 'FIELD_');
             if (strpos($conf['type'], 'FIELD_') === 0) {
                 $fieldName = substr($conf['type'], 6);
                 $this->fieldName = $fieldName;
@@ -732,7 +732,7 @@ class QueryGenerator
                 }
                 $lineHTML[] = '</div>';
                 $codeArr[$arrCount]['html'] = implode(LF, $lineHTML);
-                $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c > 0 ? 0 : 1);
+                $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c === 0);
                 $arrCount++;
                 $c++;
             }
@@ -779,22 +779,23 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         if ($fieldSetup['type'] === 'multiple') {
             $optGroupOpen = false;
-            foreach ($fieldSetup['items'] as $key => $val) {
+            foreach ($fieldSetup['items'] as $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
                     $value = $val[0];
                 }
-                if ($val[1] === '--div--') {
+                $itemVal = (string)($val[1] ?? '');
+                if ($itemVal === '--div--') {
                     if ($optGroupOpen) {
                         $out[] = '</optgroup>';
                     }
                     $optGroupOpen = true;
                     $out[] = '<optgroup label="' . htmlspecialchars($value) . '">';
-                } elseif (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
+                } elseif (GeneralUtility::inList($conf['inputValue'], $itemVal)) {
+                    $out[] = '<option value="' . htmlspecialchars($itemVal) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . htmlspecialchars($itemVal) . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
             if ($optGroupOpen) {
@@ -808,10 +809,11 @@ class QueryGenerator
                 } else {
                     $value = $val[0];
                 }
-                if (GeneralUtility::inList($conf['inputValue'], 2 ** $key)) {
-                    $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
+                $itemVal = (string)(2 ** $key);
+                if (GeneralUtility::inList($conf['inputValue'], $itemVal)) {
+                    $out[] = '<option value="' . $itemVal . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . 2 ** $key . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . $itemVal . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
         }
@@ -819,16 +821,17 @@ class QueryGenerator
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
             if ($fieldSetup['items']) {
-                foreach ($fieldSetup['items'] as $key => $val) {
+                foreach ($fieldSetup['items'] as $val) {
                     if (strpos($val[0], 'LLL:') === 0) {
                         $value = $languageService->sL($val[0]);
                     } else {
                         $value = $val[0];
                     }
-                    if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-                        $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
+                    $outputValue = (string)($val[1] ?? '');
+                    if ($outputValue && GeneralUtility::inList($conf['inputValue'], $outputValue)) {
+                        $out[] = '<option value="' . htmlspecialchars($outputValue) . '" selected>' . htmlspecialchars($value) . '</option>';
                     } else {
-                        $out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
+                        $out[] = '<option value="' . htmlspecialchars($outputValue) . '">' . htmlspecialchars($value) . '</option>';
                     }
                 }
             }
@@ -976,6 +979,7 @@ class QueryGenerator
                 }
             }
             foreach ($outArray as $key2 => $val2) {
+                $key2 = (string)$key2;
                 if (GeneralUtility::inList($conf['inputValue'], $key2)) {
                     $out[] = '<option value="' . htmlspecialchars($key2) . '" selected>[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
                 } else {
@@ -1245,7 +1249,7 @@ class QueryGenerator
         $qs = '';
         // Since we don't traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean
         ksort($queryConfig);
-        $first = 1;
+        $first = true;
         foreach ($queryConfig as $key => $conf) {
             $conf = $this->convertIso8601DatetimeStringToUnixTimestamp($conf);
             switch ($conf['type']) {
@@ -1261,7 +1265,7 @@ class QueryGenerator
                 default:
                     $qs .= LF . $pad . $this->getQuerySingle($conf, $first);
             }
-            $first = 0;
+            $first = false;
         }
         return $qs;
     }
@@ -1335,7 +1339,7 @@ class QueryGenerator
             foreach ($inputValArray as $fileName) {
                 $inputVal += (int)$fileName;
             }
-            $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
+            $qsTmp = str_replace('#VALUE#', (string)$inputVal, $qsTmp);
         } else {
             if (is_array($inputVal)) {
                 $inputVal = $inputVal[0];
