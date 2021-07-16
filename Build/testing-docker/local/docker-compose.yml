@@ -714,6 +714,8 @@ services:
     - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: "11.3"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -731,6 +733,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: "11.3"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -750,6 +754,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: "11.3"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
