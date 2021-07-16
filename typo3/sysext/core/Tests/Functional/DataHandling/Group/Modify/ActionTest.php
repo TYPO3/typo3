@@ -336,6 +336,15 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
+    {
+        parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
+        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+    }
+
+    /**
+     * @test
      * See DataSet/localizeContentChainOfRelationWSynchronizationSource.csv
      */
     public function localizeContentChainOfRelationWithLanguageSynchronizationSource(): void

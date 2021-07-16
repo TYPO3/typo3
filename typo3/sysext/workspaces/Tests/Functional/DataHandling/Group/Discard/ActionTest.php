@@ -216,4 +216,14 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['movedContentId']);
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
     }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
+    {
+        parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+    }
 }
