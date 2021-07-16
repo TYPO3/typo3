@@ -11,9 +11,9 @@
 "tt_content",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_group","l10n_state"
 ,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1","1,2",
-,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2","1,2",
-,299,89,768,0,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2","1,2","{""tx_testdatahandler_group"":""parent""}"
-,300,89,1024,0,2,298,299,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #2","1,2","{""tx_testdatahandler_group"":""source""}"
+,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2","2,3",
+,299,89,768,0,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2","2,3","{""tx_testdatahandler_group"":""parent""}"
+,300,89,1024,0,2,298,299,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #2","2,3","{""tx_testdatahandler_group"":""source""}"
 "tx_testdatahandler_element",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,
 ,1,89,256,0,0,0,0,0,0,0,0,"Element #1",,
@@ -21,13 +21,13 @@
 ,3,89,768,0,0,0,0,0,0,0,0,"Element #3",,
 "sys_refindex",,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
-,"046ea816212b65933569c5ddd4ccf8f4","tt_content",299,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",2,,,
-,"101be57236654368f05f7f37b9567efd","tt_content",299,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",1,,,
-,"280780e3263dc9cd420566817f0bd27b","tt_content",300,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",1,,,
+,9eb90715dba7cc8415acb68cae5b38f9,"tt_content",299,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",3,,,
+,ed4feb7ada13109df48aaeeac6150c84,"tt_content",299,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",2,,,
+,5405681b7527ffd77e8daca34d6b80f6,"tt_content",300,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",2,,,
 ,"3f113b20cdf1b3be96048a257872a178","tt_content",297,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",2,,,
 ,"6dc66af7d395e5be3c87fc4e13c0455c","tt_content",299,"l18n_parent",,,,0,0,"tt_content",298,,,
 ,"70386199b2e7d7e3be07ec7b501f411d","tt_content",297,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",1,,,
-,"8fd1113882e17f70b90f06e0f7bf8eb3","tt_content",300,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",2,,,
+,ffe917af30a97f9098f41150254be672,"tt_content",300,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",3,,,
 ,"96c729dcc96a40a04fd5591a442b68b5","tt_content",300,"l18n_parent",,,,0,0,"tt_content",298,,,
-,"bb9b288fb00e6db0399217994909e7b9","tt_content",298,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",1,,,
-,"f980c388fcb1079179a66bc0580332ab","tt_content",298,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",2,,,
+,0c81d9b3f27460380a2e442fdfa0649d,"tt_content",298,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",2,,,
+,8f3d6a0de293045066188fc790f4805f,"tt_content",298,"tx_testdatahandler_group",,,,1,0,"tx_testdatahandler_element",3,,,
