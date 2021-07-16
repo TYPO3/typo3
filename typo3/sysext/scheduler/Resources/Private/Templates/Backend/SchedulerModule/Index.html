@@ -1,0 +1,11 @@
+<form name="tx_scheduler_form" id="tx_scheduler_form" method="post">
+    <h1>{headline}</h1>
+    <f:if condition="{sectionTitle}">
+        <h2>{sectionTitle}</h2>
+    </f:if>
+    <div class="tx_scheduler_mod1">
+        <f:format.raw>{content}</f:format.raw>
+    </div>
+    <div id="extraFieldsSection"></div>
+</form>
+<div id="extraFieldsHidden"></div>

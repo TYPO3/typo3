@@ -169,19 +169,23 @@ class SchedulerModuleController
         $settings = $parsedBody['SET'] ?? $queryParams['SET'] ?? null;
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $settings, 'system_txschedulerM1', '', '', '');
 
-        // Set the form
-        $content = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
-
-        // Prepare main content
-        $content .= '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
         $previousCMD = Action::cast($parsedBody['previousCMD'] ?? $queryParams['previousCMD'] ?? null);
-        $content .= $this->getModuleContent($previousCMD, $request->getAttribute('normalizedParams')->getRequestUri());
-        $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
+        // Prepare main content
+        $content = $this->getModuleContent($previousCMD, $request->getAttribute('normalizedParams')->getRequestUri());
+
+        $this->view->setTemplatePathAndFilename(
+            GeneralUtility::getFileAbsFileName('EXT:scheduler/Resources/Private/Templates/Backend/SchedulerModule/Index.html')
+        );
+        $this->view->assignMultiple([
+           'headline' =>  $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']),
+           'sectionTitle' => $this->getSectionTitle(),
+           'content' => $content,
+        ]);
 
         $this->getButtons($request);
         $this->getModuleMenu();
 
-        $this->moduleTemplate->setContent($content);
+        $this->moduleTemplate->setContent($this->view->render());
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function'])
@@ -239,7 +243,6 @@ class SchedulerModuleController
     protected function getModuleContent(Action $previousAction, string $requestUri): string
     {
         $content = '';
-        $sectionTitle = '';
         // Get submitted data
         $this->submittedData = GeneralUtility::_GPmerged('tx_scheduler');
         $this->submittedData['uid'] = (int)($this->submittedData['uid'] ?? 0);
@@ -283,7 +286,6 @@ class SchedulerModuleController
                         try {
                             // Try adding or editing
                             $content .= $this->editTaskAction($requestUri);
-                            $sectionTitle = $this->getLanguageService()->getLL('action.' . $this->getCurrentAction());
                         } catch (\LogicException|\UnexpectedValueException|\OutOfBoundsException $e) {
                             // Catching all types of exceptions that were previously handled and
                             // converted to messages
@@ -326,8 +328,8 @@ class SchedulerModuleController
                 $content .= $this->infoScreenAction();
                 break;
         }
-        // Wrap the content
-        return '<h2>' . $sectionTitle . '</h2><div class="tx_scheduler_mod1">' . $content . '</div>';
+
+        return $content;
     }
 
     /**
@@ -1407,6 +1409,15 @@ class SchedulerModuleController
     {
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
         return date($dateFormat) . ', GMT ' . date('P') . ')';
+    }
+
+    protected function getSectionTitle(): string
+    {
+        $currentAction = (string)$this->getCurrentAction();
+
+        return ($this->MOD_SETTINGS['function'] ?? '') === 'scheduler' && ($currentAction === Action::ADD || $currentAction === Action::EDIT)
+            ? $this->getLanguageService()->getLL('action.' . $currentAction)
+            : '';
     }
 
     /**
