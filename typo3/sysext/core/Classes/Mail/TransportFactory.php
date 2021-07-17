@@ -112,6 +112,11 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                     $this->dispatcher,
                     $this->logManager->getLogger(EsmtpTransport::class)
                 );
+                $streamOptions = (array)($mailSettings['transport_smtp_stream_options'] ?? []);
+                if (!empty($streamOptions)) {
+                    $stream = $transport->getStream();
+                    $stream->setStreamOptions(array_merge_recursive($stream->getStreamOptions(), $streamOptions));
+                }
                 // Need authentication?
                 $username = (string)($mailSettings['transport_smtp_username'] ?? '');
                 if ($username !== '') {
@@ -124,6 +129,19 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 $mailDomain = (string)($mailSettings['transport_smtp_domain'] ?? '');
                 if ($mailDomain !== '') {
                     $transport->setLocalDomain($mailDomain);
+                }
+                $restartThreshold = (int)($mailSettings['transport_smtp_restart_threshold'] ?? 0);
+                $restartThresholdSleep = (int)($mailSettings['transport_smtp_restart_threshold_sleep'] ?? 0);
+                if ($restartThreshold > 0) {
+                    if ($restartThresholdSleep < 0) {
+                        // invalid, use default for threshold sleep
+                        $restartThresholdSleep = 0;
+                    }
+                    $transport->setRestartThreshold($restartThreshold, $restartThresholdSleep);
+                }
+                $pingThreshold = (int)($mailSettings['transport_smtp_ping_threshold'] ?? 0);
+                if ($pingThreshold > 0) {
+                    $transport->setPingThreshold($pingThreshold);
                 }
                 break;
             case 'sendmail':
@@ -181,6 +199,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                             but must implement that interface to be used as a mail transport.', 1323006478);
                 }
         }
+
         return $transport;
     }
 

@@ -607,6 +607,20 @@ MAIL:
         transport_smtp_domain:
           type: text
           description: '<em>only with transport=smtp</em>: Mail domain under which emails will be sent.'
+        transport_smtp_restart_threshold:
+            type: text
+            description: '<em>only with transport=smtp</em>: Sets the maximum number of messages to send before re-starting the transport.'
+        transport_smtp_restart_threshold_sleep:
+          type: text
+          description: '<em>only with transport=smtp</em>: The number of seconds to sleep between stopping and re-starting the transport.'
+        transport_smtp_ping_threshold:
+          type: text
+          description: '<em>only with transport=smtp</em>: Sets the minimum number of seconds required between two messages, before the server is pinged.'
+        transport_smtp_stream_options:
+          type: mixed
+          description: |
+            <em>only with transport=smtp</em>: Sets the stream context options for the smtp stream<br />
+            The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.<br />
         transport_sendmail_command:
             type: text
             description: '<em>only with transport=sendmail</em>: The command to call to send a mail locally.'
