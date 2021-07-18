@@ -9,7 +9,7 @@ See :issue:`82909`
 Description
 ===========
 
-The TypoScript option :ts:`config.typolinkCheckRootline` is now always active.
+The TypoScript option :typoscript:`config.typolinkCheckRootline` is now always active.
 
 
 Impact

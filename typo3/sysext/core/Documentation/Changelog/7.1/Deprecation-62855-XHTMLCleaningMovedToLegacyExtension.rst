@@ -15,15 +15,15 @@ according functionality has been moved to the legacy extension EXT:compatibility
 
 The following TypoScript option has been marked for deprecation:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
-	config.xhtml_cleaning
+   config.xhtml_cleaning
 
 The following PHP method has been marked for deprecation:
 
 .. code-block:: php
 
-	TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::doXHTML_cleaning()
+   TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::doXHTML_cleaning()
 
 Impact
 ======
@@ -34,7 +34,8 @@ The content output of the TYPO3 frontend is not cleaned anymore unless EXT:compa
 Affected installations
 ======================
 
-Any installation having the TypoScript option `config.xhtml_cleaning` set will have different behaviour in the
+Any installation having the TypoScript option :typoscript:`config.xhtml_cleaning`
+set will have different behaviour in the
 frontend rendering.
 
 Migration

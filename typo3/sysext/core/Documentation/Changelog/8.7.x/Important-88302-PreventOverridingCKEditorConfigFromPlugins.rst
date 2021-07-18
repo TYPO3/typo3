@@ -20,14 +20,14 @@ Input
 .. code-block:: yaml
 
    editor:
-      externalPlugins:
-         myplugin:
-            resource: "EXT:my_extension/Resources/Public/JavaScript/Contrib/plugins/myplugin/"
-            route: "myroute"
-            configName: "super_config"
-            option1: "value1"
-            option2: "value2"
-            option3: "value3"
+     externalPlugins:
+       myplugin:
+         resource: "EXT:my_extension/Resources/Public/JavaScript/Contrib/plugins/myplugin/"
+         route: "myroute"
+         configName: "super_config"
+         option1: "value1"
+         option2: "value2"
+         option3: "value3"
 
 Output
 
@@ -38,15 +38,16 @@ Output
       'typo3conf/ext/my_extension/Resources/Public/JavaScript/Contrib/plugins/myplugin/'
    );
 
-.. code-block:: json
+.. code-block:: yaml
 
    editor:
-      config:
-         super_config:
-            route: "myroute"
-            routeUrl: "/typo3/index.php?route=myroute"
-            option1: "value1"
-            option2: "value2"
-            option3: "value3"
+     config:
+       super_config:
+         route: "myroute"
+         routeUrl: "/typo3/index.php?route=myroute"
+         option1: "value1"
+         option2: "value2"
+         option3: "value3"
+         option3: "value3"
 
 .. index:: JavaScript, RTE, ext:rte_ckeditor

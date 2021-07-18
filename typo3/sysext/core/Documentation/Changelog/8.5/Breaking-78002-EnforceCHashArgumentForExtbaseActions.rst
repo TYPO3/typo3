@@ -36,7 +36,7 @@ Either one of the following:
   :html:`noCacheHash="1"` argument from link view-helpers
 + disable the :ts:`requireCHashArgumentForActionArguments` feature, e.g. for EXT:indexed_search:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    plugin {
      tx_indexedsearch {

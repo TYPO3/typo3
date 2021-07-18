@@ -31,6 +31,6 @@ TYPO3 instances using the `templateFile` option via FlexForms in Frontend Login 
 Migration
 =========
 
-Use the TypoScript setting :ts:`plugin.tx_felogin.templateFile` to set an alternative template file.
+Use the TypoScript setting :typoscript:`plugin.tx_felogin.templateFile` to set an alternative template file.
 
 .. index:: Frontend, ext:felogin, TypoScript

@@ -12,7 +12,7 @@ Description
 
 It was possible to retrieve the local path of a FAL file via TypoScript
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    a = TEXT
    a.value.data = file:current:localPath
