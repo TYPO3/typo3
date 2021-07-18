@@ -38,8 +38,11 @@ entities:
     - self: {id: 2, title: 'Swiss German', code: 'de'}
     - self: {id: 3, title: 'Dutch', code: 'nl'}
     - self: {id: 4, title: 'French', code: 'fr'}
+    - self: {id: 5, title: 'French', code: 'da'}
   page:
     - self: {id: *idAcmeRootPage, title: 'EN: Root', root: true, slug: '/'}
+      languageVariants:
+        - self: {id: 1001, title: 'DE-CH: Root', language: 2, slug: '/'}
       children:
         - self: {id: 1100, title: 'EN: Welcome', slug: '/hello'}
           languageVariants:
@@ -57,3 +60,10 @@ entities:
           languageVariants:
             - self: {id: 1401, title: 'DE: Produkte', language: 1, slug: '/produkte'}
             - self: {id: 1402, title: 'DE-CH: Produkte', language: 2, slug: '/produkte'}
+        - self: {id: 1500, title: 'EN: No hreflang', slug: '/no-hreflang'}
+          languageVariants:
+            - self: {id: 1501, title: 'DE: Kein hreflang', language: 1, slug: '/kein-hreflang'}
+            - self: {id: 1502, title: 'DE-CH: Kein hreflang', language: 2, slug: '/kein-hreflang'}
+        - self: {id: 1600, title: 'EN: No translation', slug: '/no-translation'}
+          languageVariants:
+            - self: {id: 1601, title: 'DK: Hidden page', language: 5, hidden: 1, slug: '/no-translation'}

@@ -70,8 +70,12 @@ class HrefLangGenerator
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
                 $page = $this->getTranslatedPageRecord($pageId, $language['languageId'], $event->getRequest());
+                // do not set hreflang if a page is not translated explicitly
+                if (empty($page)) {
+                    continue;
+                }
+                // do not set hreflang when canonical is set explicitly
                 if (!empty($page['canonical_link'])) {
-                    // do not set hreflang when canonical is set
                     continue;
                 }
 
