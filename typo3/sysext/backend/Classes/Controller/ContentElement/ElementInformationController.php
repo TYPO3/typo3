@@ -312,8 +312,8 @@ class ElementInformationController
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
             $preview['url'] = $this->fileObject->getPublicUrl(true);
 
-            $width = '590m';
-            $height = '400m';
+            $width = min(590, $this->fileObject->getMetaData()['width'] ?? 590) . 'm';
+            $height = min(400, $this->fileObject->getMetaData()['height'] ?? 400) . 'm';
 
             // Check if there is a FileRenderer
             if ($fileRenderer !== null) {
