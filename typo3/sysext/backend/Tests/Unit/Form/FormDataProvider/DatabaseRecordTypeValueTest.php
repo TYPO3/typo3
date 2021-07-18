@@ -143,7 +143,8 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
     public function addDataSetsRecordTypeValueToValueOfDatabaseField(): void
     {
         $input = [
-            'recordTypeValue' => '',
+            'tableName' => 'aTable',
+            'recordTypeValue' => '3',
             'processedTca' => [
                 'ctrl' => [
                     'type' => 'aField',
@@ -167,6 +168,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
     public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsNotDefinedInTca(): void
     {
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [
@@ -191,6 +193,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
     public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsEmptyString(): void
     {
         $input = [
+            'tableName' => 'aTable',
             'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [

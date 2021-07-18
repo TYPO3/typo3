@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Determine the final TCA type value
  */
-class DatabaseRecordTypeValue implements FormDataProviderInterface
+class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataProviderInterface
 {
     /**
      * TCA type value depends on several parameters. The simple case is
@@ -65,6 +65,12 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                     );
                 }
                 $recordTypeValue = $result['databaseRow'][$tcaTypeField];
+                $validItems = $this->removeItemsByUserAuthMode($result, $tcaTypeField, $result['processedTca']['columns'][$tcaTypeField]['config']['items'] ?? []);
+                $validItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $tcaTypeField, $validItems);
+                $typeList = $this->getValidTypeValues($validItems);
+                if (empty($recordTypeValue) || ($typeList !== [] && !in_array($recordTypeValue, $typeList, false))) {
+                    $recordTypeValue = array_shift($typeList);
+                }
             } else {
                 // If type is configured as localField:foreignField, fetch the type value from
                 // a foreign table. localField then point to a group or select field in the own table,
@@ -145,5 +151,13 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         $row = BackendUtility::getRecord($tableName, $uid, $fieldName);
 
         return $row ?: [];
+    }
+
+    protected function getValidTypeValues(array $items): array
+    {
+        return array_filter(array_map(static function (array $item) {
+            $type = $item['value'] ?? '';
+            return $type !== '--div--' ? $type : '';
+        }, $items));
     }
 }
