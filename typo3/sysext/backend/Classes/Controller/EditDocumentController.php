@@ -1308,7 +1308,7 @@ class EditDocumentController
             $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
 
-        $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2, $request);
         $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
         $this->registerCshButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 4);
     }
@@ -1757,13 +1757,14 @@ class EditDocumentController
      * @param string $position
      * @param int $group
      */
-    protected function registerOpenInNewWindowButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group)
+    protected function registerOpenInNewWindowButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request)
     {
         $closeUrl = $this->getCloseUrl();
         if ($this->returnUrl !== $closeUrl) {
-            $requestUri = GeneralUtility::linkThisScript([
-                'returnUrl' => $closeUrl,
-            ]);
+            // Generate a URL to the current edit form
+            $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
+            $arguments['returnUrl'] = $closeUrl;
+            $requestUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $arguments);
             $openInNewWindowButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()
                 ->makeLinkButton()
                 ->setHref('#')
@@ -1793,21 +1794,7 @@ class EditDocumentController
     protected function registerShortcutButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request)
     {
         if ($this->returnUrl !== $this->getCloseUrl()) {
-            $queryParams = $request->getQueryParams();
-            $potentialArguments = [
-                'edit',
-                'defVals',
-                'overrideVals',
-                'columnsOnly',
-                'returnNewPageId',
-                'noView'
-            ];
-            $arguments = [];
-            foreach ($potentialArguments as $argument) {
-                if (!empty($queryParams[$argument])) {
-                    $arguments[$argument] = $queryParams[$argument];
-                }
-            }
+            $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
             $shortCutButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
             $shortCutButton
                 ->setRouteIdentifier('record_edit')
@@ -1815,6 +1802,26 @@ class EditDocumentController
                 ->setArguments($arguments);
             $buttonBar->addButton($shortCutButton, $position, $group);
         }
+    }
+
+    protected function getUrlQueryParamsForCurrentRequest(ServerRequestInterface $request): array
+    {
+        $queryParams = $request->getQueryParams();
+        $potentialArguments = [
+            'edit',
+            'defVals',
+            'overrideVals',
+            'columnsOnly',
+            'returnNewPageId',
+            'noView'
+        ];
+        $arguments = [];
+        foreach ($potentialArguments as $argument) {
+            if (!empty($queryParams[$argument])) {
+                $arguments[$argument] = $queryParams[$argument];
+            }
+        }
+        return $arguments;
     }
 
     /**

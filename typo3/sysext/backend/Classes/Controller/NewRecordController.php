@@ -339,8 +339,9 @@ class NewRecordController
             // New page
             if ($this->isRecordCreationAllowedForTable('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
-                    ->setHref(GeneralUtility::linkThisScript(['pagesOnly' => '1']))
+                    ->setHref($this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->returnUrl]))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
+                    ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
@@ -359,6 +360,7 @@ class NewRecordController
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -505,7 +507,7 @@ class NewRecordController
         // New pages at selection position
         if ($this->newPagesSelectPosition && $this->isRecordCreationAllowedForTable('pages')) {
             // Link to page-wizard:
-            $newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(['pagesOnly' => 1])) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
+            $newPageLinks[] = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->returnUrl])) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
         }
         // Assemble all new page links
         $numPageLinks = count($newPageLinks);

@@ -523,9 +523,9 @@ class RecordListController
         ) {
             // Export
             if (ExtensionManagementUtility::isLoaded('impexp')) {
-                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export');
+                $url = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export', ['tx_impexp' => ['list' => [$table . ':' . $this->id]]]);
                 $exportButton = $buttonBar->makeLinkButton()
-                    ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($table . ':' . $this->id))
+                    ->setHref($url)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))
                     ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);

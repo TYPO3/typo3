@@ -324,7 +324,7 @@ class PageLayoutController
             $menuItem = $actionMenu
                 ->makeMenuItem()
                 ->setTitle($action)
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute($this->moduleName) . '&id=' . $this->id . '&SET[function]=' . $key);
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'SET' => ['function' => $key]]));
 
             if (!$foundDefaultKey) {
                 $defaultKey = $key;
@@ -405,9 +405,9 @@ class PageLayoutController
                 }
                 $message = htmlspecialchars($message);
                 if ($targetPage !== [] && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-                    $linkToPid = GeneralUtility::linkThisScript(['id' => $targetPage['uid']]);
+                    $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $targetPage['id']]);
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 1000);
-                    $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($path) . '</a>';
+                    $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($lang->getLL('pageIsInternalLinkMessage')), $linkedPath);
                     $message .= ' (' . htmlspecialchars($lang->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', (string)$shortcutMode))) . ')';
                     $state = InfoboxViewHelper::STATE_INFO;
@@ -448,9 +448,9 @@ class PageLayoutController
         // If content from different pid is displayed
         if ($this->pageinfo['content_from_pid']) {
             $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
-            $linkToPid = GeneralUtility::linkThisScript(['id' => $this->pageinfo['content_from_pid']]);
+            $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->pageinfo['content_from_pid']]);
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
-            $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
+            $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $message = sprintf($lang->getLL('content_from_pid_title'), $link);
             $view->assignMultiple([
                 'title' => $title,
@@ -493,9 +493,9 @@ class PageLayoutController
         $rows = $queryBuilder->execute()->fetchAllAssociative();
         if (!empty($rows)) {
             foreach ($rows as $row) {
-                $linkToPid = GeneralUtility::linkThisScript(['id' => $row['uid']]);
+                $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' =>  $row['uid']]);
                 $title = BackendUtility::getRecordTitle('pages', $row);
-                $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$row['uid'] . ')</a>';
+                $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$row['uid'] . ')</a>';
                 $links[] = $link;
             }
         }
@@ -1016,7 +1016,7 @@ class PageLayoutController
                 $menuItem = $languageMenu
                     ->makeMenuItem()
                     ->setTitle($language)
-                    ->setHref((string)$this->uriBuilder->buildUriFromRoute($this->moduleName) . '&id=' . $this->id . '&SET[language]=' . $key);
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'SET' => ['language' => $key]]));
                 if ((int)$this->current_sys_language === $key) {
                     $menuItem->setActive(true);
                 }

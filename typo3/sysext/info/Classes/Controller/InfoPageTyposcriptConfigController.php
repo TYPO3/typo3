@@ -363,7 +363,7 @@ class InfoPageTyposcriptConfigController
             $line = [];
             $line['padding'] = ($pageDepth * 20) + 10;
             if (isset($pageArray[$identifier . '_'])) {
-                $line['link'] = GeneralUtility::linkThisScript(['id' => $identifier]);
+                $line['link'] = $this->uriBuilder->buildUriFromRoute('web_info', ['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = 'ID: ' . $identifier;
                 $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
