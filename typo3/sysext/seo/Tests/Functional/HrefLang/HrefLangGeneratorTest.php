@@ -42,6 +42,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
         'NL' => ['id' => 3, 'title' => 'Dutch', 'locale' => 'nl_NL.UTF8', 'iso' => 'nl', 'hrefLang' => '', 'direction' => ''],
         'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
+        'DK' => ['id' => 5, 'title' => 'Danish', 'locale' => 'da_DK.UTF8', 'iso' => 'da', 'hrefLang' => 'da-DK', 'direction' => ''],
     ];
 
     protected function setUp(): void
@@ -57,6 +58,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('DE-CH', '/de-ch', ['DE'], 'fallback'),
                 $this->buildLanguageConfiguration('NL', '/nl'),
                 $this->buildLanguageConfiguration('FR', '/fr'),
+                $this->buildLanguageConfiguration('DK', '/dk', ['EN'], 'free'),
             ]
         );
 
@@ -64,13 +66,10 @@ class HrefLangGeneratorTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $url
-     * @param array $expected
-     *
      * @test
      * @dataProvider checkHrefLangOutputDataProvider
      */
-    public function checkHrefLangOutput($url, $expectedTags, $notExpectedTags): void
+    public function checkHrefLangOutput(string $url, array $expectedTags, array $notExpectedTags): void
     {
         $this->setUpFrontendRootPage(
             1000,
@@ -201,6 +200,13 @@ class HrefLangGeneratorTest extends FunctionalTestCase
             ],
             'Translated pages with disabled hreflang generation in original language should not render any hreflang tag' => [
                 'https://acme.com/de/kein-hreflang',
+                [],
+                [
+                    '<link rel="alternate" hreflang="',
+                ],
+            ],
+            'Languages with fallback type free should not have hreflang when page record is not translated' => [
+                'https://acme.com/no-translation',
                 [],
                 [
                     '<link rel="alternate" hreflang="',
