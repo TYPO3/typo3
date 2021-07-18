@@ -18,7 +18,7 @@ A good value for the `customWidgetId` is the {contentObjectData.uid} to ensure n
 
 Example:
 
-.. code-block:: xml
+.. code-block:: none
 
    <f:widget.paginate customWidgetId="{contentObjectData.uid}" ...></f:widget.paginate>
 

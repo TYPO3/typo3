@@ -15,7 +15,7 @@ Method :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->addTScomme
 Impact
 ======
 
-The method has been used to add comments to :ts:`TSconfig` at runtime, those
+The method has been used to add comments to :typoscript:`TSconfig` at runtime, those
 comments however are never shown in the TYPO3 backend.
 Calling the method directly will trigger a PHP :php:`E_USER_DEPRECATED` error.
 

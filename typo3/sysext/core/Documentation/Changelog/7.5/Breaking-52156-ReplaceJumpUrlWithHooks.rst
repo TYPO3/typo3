@@ -98,7 +98,7 @@ Migration
 If you  want to use the JumpURL features you need to install the jumpurl extension. Your configuration should
 work as before.
 
-Please note that the configuration of the :ref:`filelink <t3tsref:filelink>` TypoScript function has changed.
+Please note that the configuration of the :ref:`filelink <t3tsref:typolink-resource_references>` TypoScript function has changed.
 Passing the :code:`jumpurl` parameter in the configuration has been marked as deprecated and will be removed in future versions.
 
 You can now pass arbitrary configuration options for the typolink call that is used to generate
@@ -106,12 +106,12 @@ the file link in the :code:`typolinkConfiguration` parameter:
 
 .. code-block:: typoscript
 
-	lib.myfilelink = TEXT
-	lib.myfilelink.value = fileadmin/myfile.txt
-	lib.myfilelink.filelink {
-		typolinkConfiguration.jumpurl = 1
-		typolinkConfiguration.jumpurl.secure = 1
-	}
+   lib.myfilelink = TEXT
+   lib.myfilelink.value = fileadmin/myfile.txt
+   lib.myfilelink.filelink {
+     typolinkConfiguration.jumpurl = 1
+     typolinkConfiguration.jumpurl.secure = 1
+   }
 
 
 .. index:: PHP-API, ext:jumpurl, TypoScript, Frontend

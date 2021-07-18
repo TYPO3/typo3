@@ -9,7 +9,7 @@ See :issue:`83265`
 Description
 ===========
 
-The functionality to add the possible page :ts:`typeNum` to the "id" GET/POST Parameter has been removed.
+The functionality to add the possible page :typoscript:`typeNum` to the "id" GET/POST Parameter has been removed.
 
 Previously it was possible to call TYPO3 Frontend via `index.php?id=23.13` (separated with a dot)
 which resolved in the page ID being "23" and the typeNum set to 13.

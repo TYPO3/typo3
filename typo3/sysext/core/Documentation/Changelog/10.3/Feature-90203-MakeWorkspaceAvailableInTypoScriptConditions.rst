@@ -19,7 +19,7 @@ Examples
 
 Match the current workspace id:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    [workspace.workspaceId === 3]
        # Current workspace id equals: 3
@@ -27,7 +27,7 @@ Match the current workspace id:
 
 Match against current workspace state:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    [workspace.isLive]
        # Current workspace is live

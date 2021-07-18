@@ -21,18 +21,18 @@ Example
 
 An example usage could look like this:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    hideDefaultLanguageOfPage = TEXT
    hideDefaultLanguageOfPage {
-       value = 0
-       value {
-           override = 1
-           override.if {
-               bitAnd.field = l18n_cfg
-               value = 1
-           }
+     value = 0
+     value {
+       override = 1
+       override.if {
+         bitAnd.field = l18n_cfg
+         value = 1
        }
+     }
    }
 
 .. index:: ext:frontend, TypoScript

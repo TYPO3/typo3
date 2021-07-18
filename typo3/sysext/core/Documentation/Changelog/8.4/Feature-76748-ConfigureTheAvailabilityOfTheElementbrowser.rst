@@ -15,10 +15,10 @@ The button can be disabled by the following TCA setting:
 :php:`[table_name]['columns'][field_name]['config']['appearance']['elementBrowserEnabled'] = false;`
 
 The button can be disabled by the following pageTs setting:
-:ts:`TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
+:typoscript:`TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
 
 The button can be disabled by the following userTs setting:
-:ts:`page.TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
+:typoscript:`page.TCEFORM.table_name.field_name.config.appearance.elementBrowserEnabled = 0`
 
 
 Impact

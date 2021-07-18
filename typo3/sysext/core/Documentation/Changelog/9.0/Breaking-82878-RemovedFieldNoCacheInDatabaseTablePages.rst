@@ -32,7 +32,7 @@ Migration
 =========
 
 The "no cache" option which should be avoided or otherwise used carefully by integrators via
-TypoScript through :ts:`config.no_cache = 1` in conjunction with a condition on a per-page basis.
+TypoScript through :typoscript:`config.no_cache = 1` in conjunction with a condition on a per-page basis.
 
 However, it is better to set a very low cache timeout, or investigate why caching is configured
 wrongly in an extension or plugin.
@@ -42,7 +42,7 @@ If not, it is not necessary to migrate anything:
 
 .. code-block:: sql
 
-  SELECT uid,title FROM pages WHERE no_cache = 1
+   SELECT uid,title FROM pages WHERE no_cache = 1
 
 
 .. index:: Database, Frontend, NotScanned

@@ -9,7 +9,7 @@ See :issue:`82701`
 Description
 ===========
 
-The TSconfig option :ts:`options.workspaces.considerReferences` to disable references when publishing
+The TSconfig option :typoscript:`options.workspaces.considerReferences` to disable references when publishing
 records from a workspace has been removed.
 
 The according method :php:`TYPO3\CMS\Version\DataHandler\CommandMap::setWorkspacesConsiderReferences()`

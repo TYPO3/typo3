@@ -10,38 +10,38 @@ Description
 ===========
 
 Overriding page TSconfig properties on a backend user or group basis is usually
-done by prefixing the page TSconfig path with :ts:`page.` in user TSconfig.
+done by prefixing the page TSconfig path with :typoscript:`page.` in user TSconfig.
 
-As an exception, properties within the page TSconfig top level object :ts:`mod.` could
-sometimes also be overridden in user TSconfig using :ts:`mod.` and omitting :ts:`page.`. This
-has been deprecated: :ts:`mod.` now needs to be overridden in user TSconfig by prefixing
-the path with :ts:`page.`, too.
+As an exception, properties within the page TSconfig top level object :typoscript:`mod.` could
+sometimes also be overridden in user TSconfig using :typoscript:`mod.` and omitting :typoscript:`page.`. This
+has been deprecated: :typoscript:`mod.` now needs to be overridden in user TSconfig by prefixing
+the path with :typoscript:`page.`, too.
 
 
 Impact
 ======
 
-User TSconfig paths that start with :ts:`mod.` will trigger a PHP :php:`E_USER_DEPRECATED` error and will
+User TSconfig paths that start with :typoscript:`mod.` will trigger a PHP :php:`E_USER_DEPRECATED` error and will
 stop working with core v10.
 
 
 Affected Installations
 ======================
 
-Instances that set TSconfig on backend user or group basis starting with :ts:`mod.`.
+Instances that set TSconfig on backend user or group basis starting with :typoscript:`mod.`.
 
 
 Migration
 =========
 
-Simply prefix the user TSconfig path with :ts:`page.` as usual if overriding page TSconfig
+Simply prefix the user TSconfig path with :typoscript:`page.` as usual if overriding page TSconfig
 on user TSconfig level. Example:
 
 .. code-block:: typoscript
 
-    // Before
-    mod.web_list.disableSingleTableView = 1
-    // After
-    page.mod.web_list.disableSingleTableView = 1
+   // Before
+   mod.web_list.disableSingleTableView = 1
+   // After
+   page.mod.web_list.disableSingleTableView = 1
 
 .. index:: Backend, TSConfig, NotScanned

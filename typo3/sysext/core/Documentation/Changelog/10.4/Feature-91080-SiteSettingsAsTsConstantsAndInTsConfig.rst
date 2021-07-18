@@ -30,22 +30,22 @@ An example configuration in the :file:`config/sites/<site-name>/config.yml`:
 
    settings:
      categoryPid: 658
-     styles:
-       content:
-         loginform:
-           pid: 23
+     styles:
+       content:
+         loginform:
+           pid: 23
 
 This will make these constants available in the template and in page TSconfig:
 
-* :ts:`{$categoryPid}`
-* :ts:`{$styles.content.loginform.pid}`
+*  :typoscript:`{$categoryPid}`
+*  :typoscript:`{$styles.content.loginform.pid}`
 
 The newly introduced constants for page TSconfig can be used just like constants
 in TypoScript.
 
 In page TSconfig this can be used like this:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    # store tx_ext_data records on the given storage page by default (e.g. through IRRE)
    TCAdefaults.tx_ext_data.pid = {$categoryPid}

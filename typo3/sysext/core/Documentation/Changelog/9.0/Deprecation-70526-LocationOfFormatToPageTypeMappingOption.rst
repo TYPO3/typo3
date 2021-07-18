@@ -9,19 +9,19 @@ See :issue:`70526`
 Description
 ===========
 
-Since its introduction, the option :ts:`formatToPageTypeMapping` had to be configured in :ts:`settings.view.formatToPageTypeMapping` instead of :ts:`view.formatToPageTypeMapping`. This has been marked as deprecated.
+Since its introduction, the option :typoscript:`formatToPageTypeMapping` had to be configured in :typoscript:`settings.view.formatToPageTypeMapping` instead of :typoscript:`view.formatToPageTypeMapping`. This has been marked as deprecated.
 
 
 Impact
 ======
 
-Defining :ts:`settings.view.formatToPageTypeMapping` will trigger a deprecation log entry.
+Defining :typoscript:`settings.view.formatToPageTypeMapping` will trigger a deprecation log entry.
 
 
 Affected Installations
 ======================
 
-Installations containing plugins that define :ts:`settings.view.formatToPageTypeMapping` instead of :ts:`view.formatToPageTypeMapping`.
+Installations containing plugins that define :typoscript:`settings.view.formatToPageTypeMapping` instead of :typoscript:`view.formatToPageTypeMapping`.
 
 
 Migration
@@ -31,12 +31,12 @@ Move
 
 .. code-block:: typoscript
 
-    plugin.tx_myextension.settings.view.formatToPageTypeMapping
+   plugin.tx_myextension.settings.view.formatToPageTypeMapping
 
 to
 
 .. code-block:: typoscript
 
-    plugin.tx_myextension.view.formatToPageTypeMapping
+   plugin.tx_myextension.view.formatToPageTypeMapping
 
 .. index:: Frontend, TypoScript, NotScanned
