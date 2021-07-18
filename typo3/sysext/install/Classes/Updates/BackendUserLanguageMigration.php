@@ -88,7 +88,7 @@ class BackendUserLanguageMigration implements UpgradeWizardInterface
         return (bool)$queryBuilder
             ->count('uid')
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
     }
 
     protected function getRecordsToUpdate(): array

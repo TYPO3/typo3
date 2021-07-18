@@ -291,7 +291,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     'ref_uid',
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
-            )->execute()->fetchColumn(0);
+            )->execute()->fetchOne();
     }
 
     /**
@@ -996,7 +996,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
 
             if ($lostIndexes > 0) {
                 $error = 'Table ' . $tableName . ' has ' . $lostIndexes . ' lost indexes which are now deleted';
@@ -1061,7 +1061,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
                 )
             )->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         return (int)$lostTables;
     }
 

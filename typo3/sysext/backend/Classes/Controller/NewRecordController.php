@@ -413,7 +413,7 @@ class NewRecordController
             ->count('*')
             ->from('pages')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         if ($numberOfPages > 0) {
             $this->code .= '<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>';

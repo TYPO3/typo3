@@ -72,7 +72,7 @@ class ConfigurationStatus implements StatusProviderInterface
             ->count('*')
             ->from('sys_refindex')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
@@ -244,7 +244,7 @@ class ConfigurationStatus implements StatusProviderInterface
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         $severity = ReportStatus::OK;
         $statusValue = $this->getLanguageService()->getLL('status_ok');

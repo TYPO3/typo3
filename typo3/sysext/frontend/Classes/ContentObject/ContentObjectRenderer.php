@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Statement;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -2642,7 +2642,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $conf['select.']['selectFields'] = 'count(*)';
         $statement = $this->exec_getQuery($conf['table'], $conf['select.']);
 
-        return (int)$statement->fetchColumn(0);
+        return (int)$statement->fetchOne();
     }
 
     /**
@@ -5854,7 +5854,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
 
                 try {
-                    $count = $countQueryBuilder->execute()->fetchColumn(0);
+                    $count = $countQueryBuilder->execute()->fetchOne();
                     $conf['max'] = str_ireplace('total', $count, $conf['max']);
                     $conf['begin'] = str_ireplace('total', $count, $conf['begin']);
                 } catch (DBALException $e) {

@@ -184,7 +184,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         return (bool)$count;
     }
 

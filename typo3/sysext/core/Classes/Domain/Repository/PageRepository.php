@@ -940,7 +940,7 @@ class PageRepository implements LoggerAwareInterface
                     QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
                 )
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
 
             if (!$count) {
                 $page = [];
@@ -1245,7 +1245,7 @@ class PageRepository implements LoggerAwareInterface
                                 )
                             )
                             ->execute()
-                            ->fetchColumn();
+                            ->fetchOne();
                         if ($numRows > 0) {
                             return $row;
                         }
@@ -1766,7 +1766,7 @@ class PageRepository implements LoggerAwareInterface
                         )
                     )
                 );
-                if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
+                if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchOne()) {
                     // Return offline version, tested for its enableFields.
                     return $newrow;
                 }
@@ -1778,7 +1778,7 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             );
-            if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
+            if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchOne()) {
                 // Means search was done, but no version found.
                 return 1;
             }

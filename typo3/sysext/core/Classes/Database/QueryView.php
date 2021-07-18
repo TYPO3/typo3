@@ -259,7 +259,7 @@ class QueryView
                 $rowCount = $queryBuilder->count('*')
                     ->from($queryGenerator->table)
                     ->where(QueryHelper::stripLogicalOperatorPrefix($queryString))
-                    ->execute()->fetchColumn(0);
+                    ->execute()->fetchOne();
 
                 $t2DataValue = [
                     'qC' => $saveArr,
@@ -454,7 +454,7 @@ class QueryView
                             ->from($queryGenerator->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
                         $fullQueryString = $queryBuilder->getSQL();
-                        $dataRows = [$queryBuilder->execute()->fetchColumn(0)];
+                        $dataRows = [$queryBuilder->execute()->fetchOne()];
                     } else {
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
@@ -620,7 +620,7 @@ class QueryView
                         $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                     );
                 }
-                $count = $queryBuilder->orWhere(...$likes)->execute()->fetchColumn(0);
+                $count = $queryBuilder->orWhere(...$likes)->execute()->fetchOne();
 
                 if ($count > 0) {
                     $queryBuilder = $connection->createQueryBuilder();

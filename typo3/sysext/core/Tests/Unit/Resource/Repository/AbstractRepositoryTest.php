@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;

@@ -76,7 +76,7 @@ class PasswordReset implements LoggerAwareInterface
             ->from('be_users')
             ->setMaxResults(1)
             ->execute();
-        return (int)$statement->fetchColumn() > 0;
+        return (int)$statement->fetchOne() > 0;
     }
 
     /**
@@ -96,7 +96,7 @@ class PasswordReset implements LoggerAwareInterface
             )
             ->setMaxResults(1)
             ->execute();
-        return $statement->fetchColumn() > 0;
+        return $statement->fetchOne() > 0;
     }
 
     /**
@@ -490,6 +490,6 @@ class PasswordReset implements LoggerAwareInterface
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($since->getTimestamp(), \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 }

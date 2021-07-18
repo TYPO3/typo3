@@ -371,7 +371,7 @@ class FileIndexRepository implements SingletonInterface
             ->from($this->table)
             ->where(...$constraints)
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         return (bool)$count;
     }

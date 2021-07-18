@@ -562,7 +562,7 @@ class RootlineUtility
             )
             ->execute();
 
-        $movePointerId = $statement->fetchColumn();
+        $movePointerId = $statement->fetchOne();
         return $movePointerId ? (int)$movePointerId : null;
     }
 

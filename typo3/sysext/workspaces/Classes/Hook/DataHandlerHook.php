@@ -1154,7 +1154,7 @@ class DataHandlerHook
                     ->orderBy('uid')
                     ->execute();
 
-                while (($recordId = $result->fetchColumn()) !== false) {
+                while (($recordId = $result->fetchOne()) !== false) {
                     $command[$tcaTable][$recordId]['version']['action'] = 'flush';
                 }
             }

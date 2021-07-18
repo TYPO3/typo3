@@ -346,7 +346,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             }
 
             try {
-                $count = $queryBuilder->execute()->fetchColumn(0);
+                $count = $queryBuilder->execute()->fetchOne();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379, $e);
             }
@@ -402,7 +402,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         try {
             $uid = (int)$queryBuilder
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
             if ($uid > 0) {
                 return $uid;
             }

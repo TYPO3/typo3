@@ -88,7 +88,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $newPostTitle = 'sdufhisdhuf';
         $newPost = new Post();
@@ -109,7 +109,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
@@ -142,7 +142,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -172,7 +172,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
@@ -219,7 +219,7 @@ class RelationTest extends FunctionalTestCase
         ->count('*')
         ->from('tx_blogexample_domain_model_post')
         ->execute()
-        ->fetchColumn(0);
+        ->fetchOne();
 
         /** @var Post $newPost */
         $newPost = new Post();
@@ -245,7 +245,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
         //last post
@@ -295,7 +295,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $posts = clone $this->blog->getPosts();
         $counter = 1;
@@ -312,7 +312,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
         $queryBuilder->resetQueryParts();
@@ -345,7 +345,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $posts = clone $this->blog->getPosts();
         $postsArray = $posts->toArray();
@@ -371,7 +371,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countPostsOriginal, $countPosts);
 
         $queryBuilder->getRestrictions()->removeAll();
@@ -422,7 +422,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $newTagTitle = 'sdufhisdhuf';
 
@@ -440,7 +440,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countOriginal + 1, $count);
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
@@ -474,7 +474,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -494,7 +494,7 @@ class RelationTest extends FunctionalTestCase
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countOriginal, $countTags);
 
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
@@ -551,7 +551,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -580,7 +580,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals($countTagsOriginal + 1, $countTags);
 
         $queryBuilder->resetQueryParts();
@@ -632,7 +632,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(10, $countTags);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -657,7 +657,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(9, $countTags);
 
         $queryBuilder->resetQueryParts();
@@ -710,7 +710,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(10, $countTags);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -745,7 +745,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(10, $countTags);
 
         $queryBuilder->resetQueryParts();
@@ -860,7 +860,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(4, $countCategories);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -908,7 +908,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(4, $countCategories);
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -940,7 +940,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(5, $countCategories);
     }
 
@@ -986,7 +986,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         // one category is hidden, so the expected count has to be one less
         $newBlogCategoryCount--;

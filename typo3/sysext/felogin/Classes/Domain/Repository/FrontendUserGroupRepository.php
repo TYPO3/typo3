@@ -73,7 +73,7 @@ class FrontendUserGroupRepository
             ->setMaxResults(1)
         ;
 
-        $column = $query->execute()->fetchColumn();
+        $column = $query->execute()->fetchOne();
         return $column === false ? null : (int)$column;
     }
 }

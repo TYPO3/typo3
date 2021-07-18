@@ -146,7 +146,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
             ->from('be_users')
             ->where($queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter('_cli_')))
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         return (bool)$count;
     }
 

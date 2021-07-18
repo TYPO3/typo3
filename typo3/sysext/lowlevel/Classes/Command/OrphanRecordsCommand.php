@@ -119,7 +119,7 @@ Manual repair suggestions:
                 ->orderBy('uid')
                 ->execute();
 
-            $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
+            $rowCount = $queryBuilder->count('uid')->execute()->fetchOne();
             if ($rowCount) {
                 $orphans[$tableName] = [];
                 while ($orphanRecord = $result->fetch()) {

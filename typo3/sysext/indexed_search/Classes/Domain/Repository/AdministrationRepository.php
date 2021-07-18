@@ -76,7 +76,7 @@ class AdministrationRepository
         $numberOfRows = $queryBuilder
             ->count('uniqid')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         $allRows = [];
         while ($row = $result->fetch()) {
             $row['pcount'] = $numberOfRows;
@@ -104,7 +104,7 @@ class AdministrationRepository
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**
@@ -126,7 +126,7 @@ class AdministrationRepository
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**
@@ -223,7 +223,7 @@ class AdministrationRepository
                 ->count('*')
                 ->from($tableName)
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
         }
         return $recordList;
     }
@@ -311,7 +311,7 @@ class AdministrationRepository
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**
@@ -420,7 +420,7 @@ class AdministrationRepository
         $count = (int)$countQueryBuilder
             ->count('uid')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         $result->closeCursor();
 
         // exist several statistics for this page?
@@ -593,7 +593,7 @@ class AdministrationRepository
                 $row['wordCount'] = $queryBuilder
                     ->count('index_rel.wid')
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
                 $wordCountResult->closeCursor();
 
                 if ($mode === 'content') {

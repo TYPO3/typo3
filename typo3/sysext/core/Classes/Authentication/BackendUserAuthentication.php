@@ -2371,7 +2371,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
         }
         return $isUserAllowedToLogin;
     }

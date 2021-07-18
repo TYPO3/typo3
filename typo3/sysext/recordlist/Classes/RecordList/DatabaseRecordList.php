@@ -549,7 +549,7 @@ class DatabaseRecordList
         $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
         $totalItems = (int)$queryBuilderTotalItems->count('*')
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
         if ($totalItems === 0) {
             return '';
         }

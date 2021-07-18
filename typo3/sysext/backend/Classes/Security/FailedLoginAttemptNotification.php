@@ -122,7 +122,7 @@ class FailedLoginAttemptNotification
             ->orderBy('tstamp', 'DESC')
             ->setMaxResults(1)
             ->execute();
-        if ($lastTimeANotificationWasSent = $statement->fetchColumn()) {
+        if ($lastTimeANotificationWasSent = $statement->fetchOne()) {
             $earliestTimeToCheckForFailures = (int)$lastTimeANotificationWasSent;
         }
         $queryBuilder = $this->createPreparedQueryBuilder($earliestTimeToCheckForFailures, SystemLogLoginAction::ATTEMPT);

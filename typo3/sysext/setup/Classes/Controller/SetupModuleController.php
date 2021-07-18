@@ -920,7 +920,7 @@ class SetupModuleController
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
         return (int)$file;
     }
 

@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;

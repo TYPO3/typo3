@@ -382,7 +382,7 @@ class WorkspacePreview implements MiddlewareInterface
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
         return (string)($title !== false ? $title : '');
     }
 

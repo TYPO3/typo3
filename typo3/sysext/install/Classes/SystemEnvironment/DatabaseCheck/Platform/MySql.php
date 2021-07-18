@@ -160,7 +160,7 @@ class MySql extends AbstractPlatform
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         if (!in_array($defaultDatabaseCharset, $this->databaseCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(

@@ -76,7 +76,7 @@ class AddTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(1, $newBlogCount);
     }
 

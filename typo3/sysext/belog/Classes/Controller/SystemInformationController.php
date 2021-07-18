@@ -65,7 +65,7 @@ final class SystemInformationController
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         if ($count > 0) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

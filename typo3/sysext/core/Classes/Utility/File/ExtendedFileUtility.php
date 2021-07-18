@@ -547,7 +547,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     'tablename',
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
                 )
-            )->execute()->fetchColumn(0);
+            )->execute()->fetchOne();
 
         $hasReferences = $numberOfReferences > 0;
         if ($hasReferences) {

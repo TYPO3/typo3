@@ -70,7 +70,7 @@ class PDOStatement extends DoctrineDbalPDOStatement
     /**
      * {@inheritdoc}
      */
-    public function fetchColumn($columnIndex = 0)
+    public function fetchOne($columnIndex = 0)
     {
         try {
             $record = parent::fetchColumn($columnIndex);
@@ -79,5 +79,13 @@ class PDOStatement extends DoctrineDbalPDOStatement
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fetchColumn($columnIndex = 0)
+    {
+        return $this->fetchOne($columnIndex);
     }
 }

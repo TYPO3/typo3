@@ -1449,7 +1449,7 @@ class Indexer
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         if ($count === 0) {
             $this->submit_grlist($hash, $hash);
@@ -1483,7 +1483,7 @@ class Indexer
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         if ($count === 0) {
             $this->submit_section($hash, $this->hash['phash']);
@@ -1837,7 +1837,7 @@ class Indexer
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         if ($count !== $wordListArrayCount) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_words');

@@ -55,7 +55,7 @@ class Tables
                         )
                     )
                     ->execute()
-                    ->fetchColumn();
+                    ->fetchOne();
 
                 if ($deletedCount) {
                     /* @var DeletedRecords $deletedDataObject */

@@ -50,7 +50,7 @@ class BrokenLinkRepository
                 );
             return (bool)$queryBuilder
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
         } catch (TableNotFoundException $e) {
             return false;
         }

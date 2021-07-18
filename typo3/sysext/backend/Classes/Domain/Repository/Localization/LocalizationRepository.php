@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -116,7 +116,7 @@ class LocalizationRepository
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         return (int)$rowCount;
     }
@@ -205,7 +205,7 @@ class LocalizationRepository
             )
             ->execute();
 
-        while ($origUid = $originalUidsStatement->fetchColumn(0)) {
+        while ($origUid = $originalUidsStatement->fetchOne()) {
             $originalUids[] = (int)$origUid;
         }
 

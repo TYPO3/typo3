@@ -59,7 +59,7 @@ class FileSearchResult implements FileSearchResultInterface
             return $this->resultCount;
         }
 
-        $this->resultCount = (int)FileSearchQuery::createCountForSearchDemand($this->searchDemand)->execute()->fetchColumn(0);
+        $this->resultCount = (int)FileSearchQuery::createCountForSearchDemand($this->searchDemand)->execute()->fetchOne();
 
         return $this->resultCount;
     }

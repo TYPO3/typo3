@@ -118,7 +118,7 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
             $numberOfEntries = $queryBuilder->count('*')
                 ->from('sys_collection')
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
             return (bool)$numberOfEntries;
         }
 

@@ -945,7 +945,7 @@ class PageLayoutController
 
         $count = $queryBuilder
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         return (int)$count;
     }

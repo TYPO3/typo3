@@ -86,7 +86,7 @@ class FalStatus implements StatusProviderInterface
                     )
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
         }
 
         if ($count) {

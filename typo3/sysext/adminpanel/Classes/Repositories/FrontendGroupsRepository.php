@@ -69,7 +69,7 @@ class FrontendGroupsRepository
                 $beUser->getPagePermsClause(Permission::PAGE_SHOW)
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         return (int)$optionCount;
     }

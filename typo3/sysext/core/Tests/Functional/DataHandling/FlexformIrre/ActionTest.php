@@ -61,7 +61,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->from('sys_file_reference')
             ->where($queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(20, \PDO::PARAM_INT)))
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         self::assertEquals(2, $referenceCount);
     }

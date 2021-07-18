@@ -155,7 +155,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
                 $this->getFlexformConstraints($queryBuilder)
             );
 
-        return (bool)$queryBuilder->execute()->fetchColumn();
+        return (bool)$queryBuilder->execute()->fetchOne();
     }
 
     /**

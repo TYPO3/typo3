@@ -45,7 +45,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
             ->from('sys_history')
             ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter((string)$correlationId)))
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**

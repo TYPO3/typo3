@@ -174,7 +174,7 @@ class DeletedRecords
                     )
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
 
             // split the limit
             [$offset, $rowCount] = GeneralUtility::intExplode(',', $this->limit, true);

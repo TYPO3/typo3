@@ -103,7 +103,7 @@ class FrontendUserRepository
             )
         ;
 
-        return (bool)$query->execute()->fetchColumn();
+        return (bool)$query->execute()->fetchOne();
     }
 
     /**
@@ -184,7 +184,7 @@ class FrontendUserRepository
             $query->andWhere($queryBuilder->expr()->in('pid', $pages));
         }
 
-        $column = $query->execute()->fetchColumn();
+        $column = $query->execute()->fetchOne();
         return $column === false || $column === '' ? null : (string)$column;
     }
 
@@ -239,7 +239,7 @@ class FrontendUserRepository
             ->setMaxResults(1)
         ;
 
-        $column = $query->execute()->fetchColumn();
+        $column = $query->execute()->fetchOne();
         return $column === false ? null : (int)$column;
     }
 }

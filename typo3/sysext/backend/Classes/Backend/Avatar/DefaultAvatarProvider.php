@@ -94,7 +94,7 @@ class DefaultAvatarProvider implements AvatarProviderInterface
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         return (int)$fileUid;
     }

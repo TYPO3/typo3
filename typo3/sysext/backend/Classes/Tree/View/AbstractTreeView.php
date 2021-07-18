@@ -488,7 +488,7 @@ abstract class AbstractTreeView
                     QueryHelper::stripLogicalOperatorPrefix($this->clause)
                 )
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
 
         return (int)$count;
     }

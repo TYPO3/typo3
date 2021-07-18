@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\DBAL\Driver\Mysqli\MysqliConnection;
+use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Statement;
@@ -493,18 +494,16 @@ class ConnectionTest extends UnitTestCase
      */
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters)
     {
-        $resultStatement = $this->createMock(Statement::class);
+        $resultStatement = $this->createMock(ResultStatement::class);
 
         $resultStatement->expects(self::once())
-            ->method('fetchColumn')
-            ->with(0)
-            ->willReturn(0);
-
+            ->method('fetch')
+            ->with(\PDO::FETCH_NUM)
+            ->willReturn(false);
         $this->connection->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
             ->willReturn($resultStatement);
-
         $this->connection->count(...$args);
     }
 

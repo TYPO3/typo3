@@ -93,7 +93,7 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
     }
 
     protected function calculateDataForLastDays(): void

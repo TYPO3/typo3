@@ -168,7 +168,7 @@ class BackendLayoutView implements SingletonInterface
                         )
                     )
                     ->execute()
-                    ->fetchColumn();
+                    ->fetchOne();
             } else {
                 $pageId = $data['pid'];
             }

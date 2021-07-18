@@ -105,7 +105,7 @@ class RedirectRepositoryTest extends FunctionalTestCase
             ->count('uid')
             ->from('sys_redirect')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     private function getDemand(

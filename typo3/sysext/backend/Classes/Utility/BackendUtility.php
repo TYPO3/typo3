@@ -3180,7 +3180,7 @@ class BackendUtility
                 }
             }
 
-            $count = $queryBuilder->execute()->fetchColumn(0);
+            $count = $queryBuilder->execute()->fetchOne();
         }
 
         if ($count) {
@@ -3222,7 +3222,7 @@ class BackendUtility
                     )
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
         }
 
         if ($count > 0) {
@@ -3645,7 +3645,7 @@ class BackendUtility
             $activeFeGroupId = $queryBuilder->select('uid')
                 ->from('fe_groups')
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
 
             if ($activeFeGroupId) {
                 $simUser = '&ADMCMD_simUser=' . $activeFeGroupId;

@@ -284,7 +284,7 @@ class RecyclerAjaxController
             )
             ->setMaxResults(1);
 
-        return (int)$queryBuilder->execute()->fetchColumn(0);
+        return (int)$queryBuilder->execute()->fetchOne();
     }
 
     /**

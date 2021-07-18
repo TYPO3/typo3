@@ -166,7 +166,7 @@ class DeletedRecordsCommand extends Command
             $rowCount = $queryBuilderForPages
                 ->count('uid')
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
             // Register if page itself is deleted
             if ($rowCount > 0) {
                 $deletedRecords['pages'][$pageId] = $pageId;

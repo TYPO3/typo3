@@ -173,7 +173,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
             ))
         ;
 
-        self::assertSame($newPasswordHash, $query->execute()->fetchColumn());
+        self::assertSame($newPasswordHash, $query->execute()->fetchOne());
     }
 
     /**

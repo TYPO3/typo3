@@ -352,7 +352,7 @@ class PageInformationController
 
         if ($depth >= 0) {
             $result = $queryBuilder->execute();
-            $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
+            $rowCount = $queryBuilder->count('uid')->execute()->fetchOne();
             $count = 0;
             while ($row = $result->fetch()) {
                 BackendUtility::workspaceOL('pages', $row);
@@ -533,7 +533,7 @@ class PageInformationController
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
                 )
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
         }
 
         return $count;

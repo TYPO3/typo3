@@ -256,7 +256,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         $actualErrorLogEntries = (int)$queryBuilder
             ->count('uid')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
 
         $entryMessages = array_map(
             function (array $entry) {

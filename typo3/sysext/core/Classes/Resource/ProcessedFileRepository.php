@@ -164,7 +164,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**

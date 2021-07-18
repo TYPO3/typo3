@@ -255,7 +255,7 @@ If you want to get more detailed information, use the --verbose option.')
                 ->orderBy('sorting', 'DESC')
                 ->execute();
 
-            $rowCount = $queryBuilder->count('hash')->execute()->fetchColumn(0);
+            $rowCount = $queryBuilder->count('hash')->execute()->fetchOne();
             // We conclude that the file is lost
             if ($rowCount === 0) {
                 $lostFiles[] = $value;

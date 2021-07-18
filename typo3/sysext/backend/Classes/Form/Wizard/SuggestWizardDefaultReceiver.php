@@ -162,7 +162,7 @@ class SuggestWizardDefaultReceiver
             ->count('uid')
             ->resetQueryPart('orderBy')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         if ($allRowsCount) {
             while ($row = $result->fetch()) {
                 // check if we already have collected the maximum number of records

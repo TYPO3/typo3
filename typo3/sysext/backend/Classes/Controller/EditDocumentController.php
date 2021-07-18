@@ -1851,7 +1851,7 @@ class EditDocumentController
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**
@@ -1874,7 +1874,7 @@ class EditDocumentController
                 )
             )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 
     /**

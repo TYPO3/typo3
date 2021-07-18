@@ -2325,7 +2325,7 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
         $statement = $queryBuilder->execute();
-        if ($statement->fetchColumn()) {
+        if ($statement->fetchOne()) {
             for ($counter = 0; $counter <= 100; $counter++) {
                 $newValue = $value . $counter;
                 if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
@@ -2333,7 +2333,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 $statement->bindValue(1, $newValue);
                 $statement->execute();
-                if (!$statement->fetchColumn()) {
+                if (!$statement->fetchOne()) {
                     break;
                 }
             }
@@ -6832,7 +6832,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
                 ))
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
             if ($count) {
                 $tableList[] = $table;
             }
@@ -8246,7 +8246,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle, \PDO::PARAM_STR))
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
             if ($rowCount) {
                 return $this->getCopyHeader($table, $pid, $field, $value, $count + 1, $checkTitle);
             }
@@ -8336,7 +8336,7 @@ class DataHandler implements LoggerAwareInterface
                         $query->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                     ))
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
                 if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
                     $disallowedTables[] = $table;
                 }

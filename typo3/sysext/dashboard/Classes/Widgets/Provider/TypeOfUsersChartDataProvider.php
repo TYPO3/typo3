@@ -71,6 +71,6 @@ class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
     }
 }

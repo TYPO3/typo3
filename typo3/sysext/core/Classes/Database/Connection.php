@@ -365,7 +365,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $query->andWhere($query->expr()->eq($identifier, $query->createNamedParameter($value)));
         }
 
-        return (int)$query->execute()->fetchColumn(0);
+        return (int)$query->execute()->fetchOne();
     }
 
     /**

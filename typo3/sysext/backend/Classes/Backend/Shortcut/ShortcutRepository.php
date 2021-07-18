@@ -166,7 +166,7 @@ class ShortcutRepository
                 $queryBuilder->expr()->eq('arguments', $queryBuilder->createNamedParameter($arguments))
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         return (bool)$uid;
     }

@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;

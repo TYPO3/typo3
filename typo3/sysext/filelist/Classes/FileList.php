@@ -1191,7 +1191,7 @@ class FileList
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         return $this->generateReferenceToolTip($referenceCount, $fileOrFolderObject);
     }

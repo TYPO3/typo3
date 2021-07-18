@@ -325,7 +325,7 @@ class DatabaseIntegrityCheck
                         )
                     )
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
                 if ($count) {
                     $list[$table] = $count;
                 }
@@ -344,7 +344,7 @@ class DatabaseIntegrityCheck
                         )
                     )
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
                 if ($count) {
                     $list_n[$table] = $count;
                 }

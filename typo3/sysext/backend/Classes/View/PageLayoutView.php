@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Backend\View;
 
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Statement;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

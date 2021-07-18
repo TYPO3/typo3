@@ -149,7 +149,7 @@ final class ToolbarItemProvider
             ->where(
                 $queryBuilder->expr()->eq('deleted', 0)
             );
-        return $queryBuilder->execute()->fetchColumn() > 0;
+        return $queryBuilder->execute()->fetchOne() > 0;
     }
 
     /**

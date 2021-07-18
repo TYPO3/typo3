@@ -121,7 +121,7 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
 
     protected function hasRecordsToUpdate(): bool
     {
-        return (bool)$this->getPreparedQueryBuilder()->count('uid')->execute()->fetchColumn();
+        return (bool)$this->getPreparedQueryBuilder()->count('uid')->execute()->fetchOne();
     }
 
     protected function getRecordsToUpdate(): array

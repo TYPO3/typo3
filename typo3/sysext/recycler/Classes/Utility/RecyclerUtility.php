@@ -152,7 +152,7 @@ class RecyclerUtility
             ->from('pages')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         return (bool)$deleted;
     }
@@ -174,7 +174,7 @@ class RecyclerUtility
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
 
         return (int)$pid;
     }

@@ -306,7 +306,7 @@ class FlexFormTools
                 $rowCount = $queryBuilder
                     ->count('uid')
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
                 if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
@@ -647,7 +647,7 @@ class FlexFormTools
                         )
                     )
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne();
             } elseif ($identifier['type'] === 'tca') {
                 // Handle "tca" type, see getDataStructureIdentifierFromTcaArray
                 if (empty($identifier['tableName']) || empty($identifier['fieldName']) || empty($identifier['dataStructureKey'])) {

@@ -53,6 +53,6 @@ class NumberOfFailedLoginsDataProvider implements NumberWithIconDataProviderInte
                 )
             )
             ->execute()
-            ->fetchColumn();
+            ->fetchOne();
     }
 }
