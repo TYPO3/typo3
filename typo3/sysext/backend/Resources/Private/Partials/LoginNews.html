@@ -37,6 +37,6 @@
 <f:section name="Item">
     <p id="loginNewsItem-{item.uid}" class="typo3-login-news-heading">{item.header}</p>
     <f:format.html>{item.content}</f:format.html>
-    <p class="text-muted"><span class="sr-only"><f:translate key="login.news.date"/></span>{item.date}</p>
+    <f:if condition="{item.date}"><p class="text-muted"><span class="sr-only"><f:translate key="login.news.date"/></span>{item.date}</p></f:if>
 </f:section>
 </html>
