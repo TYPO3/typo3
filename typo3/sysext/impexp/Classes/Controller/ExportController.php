@@ -578,6 +578,7 @@ class ExportController extends ImportExportController
                 $optValues[$table] = $table;
             }
         }
+        natsort($optValues);
         return $optValues;
     }
 
