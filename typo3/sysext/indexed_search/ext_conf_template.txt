@@ -54,3 +54,6 @@ indexExternalURLs = 0
 
   # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.useMysqlFulltext
 useMysqlFulltext = 0
+
+    # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.deleteFromIndexAfterEditing
+deleteFromIndexAfterEditing = 1

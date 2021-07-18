@@ -11,6 +11,7 @@ defined('TYPO3') or die();
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached']['indexed_search'] = \TYPO3\CMS\IndexedSearch\Hook\TypoScriptFrontendHook::class . '->indexPageContent';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval']['indexed_search'] = \TYPO3\CMS\IndexedSearch\Hook\DeleteIndexedData::class . '->delete';
 
 // Configure default document parsers:
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [

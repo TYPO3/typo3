@@ -488,89 +488,11 @@ class AdministrationRepository
         }
 
         foreach ($tree->tree as $singleLine) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
-            $result = $queryBuilder->select(
-                'ISEC.phash_t3',
-                'ISEC.rl0',
-                'ISEC.rl1',
-                'ISEC.rl2',
-                'ISEC.page_id',
-                'ISEC.uniqid',
-                'IP.phash',
-                'IP.phash_grouping',
-                'IP.static_page_arguments',
-                'IP.data_filename',
-                'IP.data_page_id',
-                'IP.data_page_type',
-                'IP.data_page_mp',
-                'IP.gr_list',
-                'IP.item_type',
-                'IP.item_title',
-                'IP.item_description',
-                'IP.item_mtime',
-                'IP.tstamp',
-                'IP.item_size',
-                'IP.contentHash',
-                'IP.crdate',
-                'IP.parsetime',
-                'IP.sys_language_uid',
-                'IP.item_crdate',
-                'IP.externalUrl',
-                'IP.recordUid',
-                'IP.freeIndexUid',
-                'IP.freeIndexSetId'
-            )
-            ->addSelectLiteral($queryBuilder->expr()->count('*', 'count_val'))
-            ->from('index_phash', 'IP')
-            ->from('index_section', 'ISEC')
-            ->where(
-                $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash')),
-                $queryBuilder->expr()->eq(
-                    'ISEC.page_id',
-                    $queryBuilder->createNamedParameter($singleLine['row']['uid'], \PDO::PARAM_INT)
-                )
-            )
-            ->groupBy(
-                'IP.phash',
-                'IP.phash_grouping',
-                'IP.static_page_arguments',
-                'IP.data_filename',
-                'IP.data_page_id',
-                'IP.data_page_type',
-                'IP.data_page_mp',
-                'IP.gr_list',
-                'IP.item_type',
-                'IP.item_title',
-                'IP.item_description',
-                'IP.item_mtime',
-                'IP.tstamp',
-                'IP.item_size',
-                'IP.contentHash',
-                'IP.crdate',
-                'IP.parsetime',
-                'IP.sys_language_uid',
-                'IP.item_crdate',
-                'ISEC.phash',
-                'ISEC.phash_t3',
-                'ISEC.rl0',
-                'ISEC.rl1',
-                'ISEC.rl2',
-                'ISEC.page_id',
-                'ISEC.uniqid',
-                'IP.externalUrl',
-                'IP.recordUid',
-                'IP.freeIndexUid',
-                'IP.freeIndexSetId'
-            )
-            ->orderBy('IP.item_type')
-            ->addOrderBy('IP.tstamp')
-            ->setMaxResults(11)
-            ->execute();
-
+            $rows = $this->getPhashRowsForPageId($singleLine['row']['uid']);
             $lines = [];
             // Collecting phash values (to remove local indexing for)
             // Traverse the result set of phash rows selected:
-            while ($row = $result->fetchAssociative()) {
+            foreach ($rows as $row) {
                 $row['icon'] = $this->makeItemTypeIcon($row['item_type']);
                 $this->allPhashListed[] = $row['phash'];
 
@@ -646,6 +568,96 @@ class AdministrationRepository
         return $allLines;
     }
 
+    protected function getPhashRowsForPageId(int $pageId): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
+        $result = $queryBuilder->select(
+            'ISEC.phash_t3',
+            'ISEC.rl0',
+            'ISEC.rl1',
+            'ISEC.rl2',
+            'ISEC.page_id',
+            'ISEC.uniqid',
+            'IP.phash',
+            'IP.phash_grouping',
+            'IP.static_page_arguments',
+            'IP.data_filename',
+            'IP.data_page_id',
+            'IP.data_page_type',
+            'IP.data_page_mp',
+            'IP.gr_list',
+            'IP.item_type',
+            'IP.item_title',
+            'IP.item_description',
+            'IP.item_mtime',
+            'IP.tstamp',
+            'IP.item_size',
+            'IP.contentHash',
+            'IP.crdate',
+            'IP.parsetime',
+            'IP.sys_language_uid',
+            'IP.item_crdate',
+            'IP.externalUrl',
+            'IP.recordUid',
+            'IP.freeIndexUid',
+            'IP.freeIndexSetId'
+        )
+            ->addSelectLiteral($queryBuilder->expr()->count('*', 'count_val'))
+            ->from('index_phash', 'IP')
+            ->from('index_section', 'ISEC')
+            ->where(
+                $queryBuilder->expr()->eq('IP.phash', $queryBuilder->quoteIdentifier('ISEC.phash')),
+                $queryBuilder->expr()->eq(
+                    'ISEC.page_id',
+                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                )
+            )
+            ->groupBy(
+                'IP.phash',
+                'IP.phash_grouping',
+                'IP.static_page_arguments',
+                'IP.data_filename',
+                'IP.data_page_id',
+                'IP.data_page_type',
+                'IP.data_page_mp',
+                'IP.gr_list',
+                'IP.item_type',
+                'IP.item_title',
+                'IP.item_description',
+                'IP.item_mtime',
+                'IP.tstamp',
+                'IP.item_size',
+                'IP.contentHash',
+                'IP.crdate',
+                'IP.parsetime',
+                'IP.sys_language_uid',
+                'IP.item_crdate',
+                'ISEC.phash',
+                'ISEC.phash_t3',
+                'ISEC.rl0',
+                'ISEC.rl1',
+                'ISEC.rl2',
+                'ISEC.page_id',
+                'ISEC.uniqid',
+                'IP.externalUrl',
+                'IP.recordUid',
+                'IP.freeIndexUid',
+                'IP.freeIndexSetId'
+            )
+            ->orderBy('IP.item_type')
+            ->addOrderBy('IP.tstamp')
+            ->setMaxResults(11)
+            ->execute();
+
+        $usedResults = [];
+        // Collecting phash values (to remove local indexing for)
+        // Traverse the result set of phash rows selected
+        while ($row = $result->fetchAssociative()) {
+            $usedResults[] = $row;
+        }
+        return $usedResults;
+    }
+
     /**
      * Generates a list of Page-uid's from $id.
      * The only pages excluded from the list are deleted pages.
@@ -710,9 +722,14 @@ class AdministrationRepository
     public function removeIndexedPhashRow($phashList, $pageId, $depth = 4)
     {
         if ($phashList === 'ALL') {
-            $this->getTree($pageId, $depth, '');
-            $phashRows = $this->allPhashListed;
-            $this->allPhashListed = [];
+            if ($depth === 0) {
+                $phashRows = $this->getPhashRowsForPageId((int)$pageId);
+                $phashRows = array_column($phashRows, 'phash');
+            } else {
+                $this->getTree($pageId, $depth, '');
+                $phashRows = $this->allPhashListed;
+                $this->allPhashListed = [];
+            }
         } else {
             $phashRows = GeneralUtility::trimExplode(',', $phashList, true);
         }
