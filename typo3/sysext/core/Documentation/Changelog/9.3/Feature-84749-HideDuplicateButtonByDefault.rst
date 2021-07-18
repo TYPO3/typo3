@@ -11,8 +11,8 @@ Description
 
 The "duplicate" button visibility can now be managed with userTsConfig using:
 
-- :ts:`options.showDuplicate = 1`
-- :ts:`options.showDuplicate.[table] = 1`
+-  :typoscript:`options.showDuplicate = 1`
+-  :typoscript:`options.showDuplicate.[table] = 1`
 
 
 Impact

@@ -18,7 +18,7 @@ syntax now allows the LLL prefix for the use of language labels.
 Example
 =======
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    options.bookmarkGroups.2 = LLL:EXT:sitepackage/Resources/Private/Language/locallang_be.xlf:bookmarkGroups.2
 

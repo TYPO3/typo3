@@ -9,13 +9,13 @@ See :issue:`83124`
 Description
 ===========
 
-The stdWrap options :ts:`space`, :ts:`spaceBefore`, :ts:`spaceAfter` are rarely used and should be better done completely by CSS.
+The stdWrap options :typoscript:`space`, :typoscript:`spaceBefore`, :typoscript:`spaceAfter` are rarely used and should be better done completely by CSS.
 
 
 Impact
 ======
 
-The stdWrap options :ts:`space`, :ts:`spaceBefore`, :ts:`spaceAfter` do not work anymore. The following calls to :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` will trigger an error:
+The stdWrap options :typoscript:`space`, :typoscript:`spaceBefore`, :typoscript:`spaceAfter` do not work anymore. The following calls to :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` will trigger an error:
 
 - :php:`stdWrap_spaceBefore`
 - :php:`stdWrap_spaceAfter`
@@ -25,7 +25,7 @@ The stdWrap options :ts:`space`, :ts:`spaceBefore`, :ts:`spaceAfter` do not work
 Affected Installations
 ======================
 
-Any instance using the stdWrap option :ts:`space`, :ts:`spaceBefore`, :ts:`spaceAfter` or calls to :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` :
+Any instance using the stdWrap option :typoscript:`space`, :typoscript:`spaceBefore`, :typoscript:`spaceAfter` or calls to :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer` :
 
 - :php:`stdWrap_spaceBefore`
 - :php:`stdWrap_spaceAfter`

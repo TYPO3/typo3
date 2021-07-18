@@ -9,9 +9,9 @@ See :issue:`84775`
 Description
 ===========
 
-This feature extends the :ts:`HMENU` content object to support the auto filling of
-:ts:`special.value` for language menus with the site languages available for the
-current site. Setting :ts:`special.value` to :ts:`auto` will include all available
+This feature extends the :typoscript:`HMENU` content object to support the auto filling of
+:typoscript:`special.value` for language menus with the site languages available for the
+current site. Setting :typoscript:`special.value` to :ts:`auto` will include all available
 languages from the current site.
 
 In case of :ts:`special.value = auto` the register :ts:`languages_HMENU` will be set

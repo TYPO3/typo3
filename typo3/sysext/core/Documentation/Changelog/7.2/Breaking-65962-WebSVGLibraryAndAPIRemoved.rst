@@ -17,19 +17,19 @@ The following PHP methods within PageRenderer have been removed:
 
 .. code-block:: php
 
-	$pageRenderer->setSvgPath()
-	$pageRenderer->getSvgPath()
-	$pageRenderer->loadSvg()
-	$pageRenderer->enableSvgDebug()
-	$pageRenderer->svgForceFlash()
+   $pageRenderer->setSvgPath()
+   $pageRenderer->getSvgPath()
+   $pageRenderer->loadSvg()
+   $pageRenderer->enableSvgDebug()
+   $pageRenderer->svgForceFlash()
 
 The following TypoScript options are removed:
 
-.. code-block:: ts
+.. code-block:: typoscript
 
-	page.javascriptLibs.SVG
-	page.javascriptLibs.SVG.debug
-	page.javascriptLibs.SVG.forceFlash
+   page.javascriptLibs.SVG
+   page.javascriptLibs.SVG.debug
+   page.javascriptLibs.SVG.forceFlash
 
 
 Impact

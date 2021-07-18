@@ -12,9 +12,9 @@ Description
 
 Due to the wrong approach of removeBadHTML it is not 100% complete and does not keep its promise.
 
-- :php:`ContentObjectRenderer::stdWrap_removeBadHTML()`
-- :php:`ContentObjectRenderer::removeBadHTML()`
-- :ts:`stdWrap.removeBadHTML`
+-  :php:`ContentObjectRenderer::stdWrap_removeBadHTML()`
+-  :php:`ContentObjectRenderer::removeBadHTML()`
+-  :typoscript:`stdWrap.removeBadHTML`
 
 
 Impact
@@ -32,8 +32,8 @@ Instances that use the method or stdWrap property.
 Migration
 =========
 
-Implement a proper encoding by yourself. Use :php:`htmlspecialchars()` or :ts:`stdWrap.htmlSpecialChars`
-in the context of HTML, :php:`GeneralUtility::quoteJSvalue()` or :ts:`stdWrap.encodeForJavaScriptValue`
+Implement a proper encoding by yourself. Use :php:`htmlspecialchars()` or :typoscript:`stdWrap.htmlSpecialChars`
+in the context of HTML, :php:`GeneralUtility::quoteJSvalue()` or :typoscript:`stdWrap.encodeForJavaScriptValue`
 in the context of JavaScript.
 
 .. index:: Frontend, TypoScript, PHP-API

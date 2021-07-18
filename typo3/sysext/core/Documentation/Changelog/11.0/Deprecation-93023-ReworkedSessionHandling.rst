@@ -18,8 +18,8 @@ out of the user authentication classes.
 Therefore some properties and methods within :php:`AbstractUserAuthentication`
 and its subclasses have been marked as deprecated:
 
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->createSessionId()`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserSession()`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->createSessionId()`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserSession()`
 
 
 Impact
@@ -63,7 +63,8 @@ access this information from an user authentication object, call
 Related
 =======
 
-- :ref:`changelog-Breaking-93023-ReworkedSessionHandling`
-- :ref:`changelog-Feature-93023-IntroduceUserSessionAndUserSessionManager`
+*  :ref:`changelog-Breaking-93023-ReworkedSessionHandling`
+*  :ref:`changelog-Feature-93023-IntroduceUserSessionAndUserSessionManager`
+
 
 .. index:: PHP-API, FullyScanned, ext:core

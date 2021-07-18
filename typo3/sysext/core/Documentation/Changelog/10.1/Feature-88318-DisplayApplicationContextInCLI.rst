@@ -14,8 +14,8 @@ This makes it easier to check if the correct context is provided.
 
 Output example:
 
-.. code-block:: plain
+.. code-block:: none
 
-  TYPO3 CMS 10.1.0-dev (Application Context: Development/Docker)
+   TYPO3 CMS 10.1.0-dev (Application Context: Development/Docker)
 
 .. index:: CLI, ext:core

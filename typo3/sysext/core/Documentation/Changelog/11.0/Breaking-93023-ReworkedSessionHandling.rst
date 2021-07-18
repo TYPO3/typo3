@@ -38,41 +38,41 @@ the functionality. Instead, all session properties are placed inside the
 The following public properties within :php:`AbstractUserAuthentication` and
 its subclasses have been removed:
 
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->id`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->hash_length`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->sessionTimeout`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_time`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_probability`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->newSessionID`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->id`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->hash_length`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->sessionTimeout`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_time`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->gc_probability`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->newSessionID`
 
 The following public methods within :php:`AbstractUserAuthentication` and its
 subclasses have been removed:
 
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getNewSessionRecord()`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getSessionId()`
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isExistingSessionRecord()`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getNewSessionRecord()`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getSessionId()`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->isExistingSessionRecord()`
 
 The following public property within :php:`AbstractUserAuthentication` has
 changed their visibility to :php:`protected`:
 
-* :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lifetime`
+*  :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->lifetime`
 
 The following public methods within :php:`AbstractUserAuthentication` and its
 subclasses have changed their return type:
 
-* :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->createUserSession()`
-now returns :php:`TYPO3\CMS\Core\Session\UserSession` and the first parameter
-:php:`$tempuser` is now type-hinted :php:`array`.
+*  :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->createUserSession()`
+   now returns :php:`TYPO3\CMS\Core\Session\UserSession` and the first parameter
+   :php:`$tempuser` is now type-hinted :php:`array`.
 
 The following public properties within :php:`FrontendUserAuthentication` have
 been removed:
 
-* :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->sesData_change`
+*  :php:`TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->sesData_change`
 
 The following database fields have been removed:
 
-* :sql:`be_sessions.ses_backuserid`
-* :sql:`fe_sessions.ses_anonymous`
+*  :sql:`be_sessions.ses_backuserid`
+*  :sql:`fe_sessions.ses_anonymous`
 
 
 Impact
@@ -148,7 +148,7 @@ If a session is anonymous can furthermore be checked using
 Related
 =======
 
-- :ref:`changelog-Deprecation-93023-ReworkedSessionHandling`
-- :ref:`changelog-Feature-93023-IntroduceUserSessionAndUserSessionManager`
+-  :ref:`changelog-Deprecation-93023-ReworkedSessionHandling`
+-  :ref:`changelog-Feature-93023-IntroduceUserSessionAndUserSessionManager`
 
 .. index:: PHP-API, FullyScanned, ext:core

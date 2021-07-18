@@ -9,34 +9,34 @@ See :issue:`81223`
 Description
 ===========
 
-A property :ts:`.inline` has been added to :ts:`page.includeCSS`. 
-If :ts:`.inline` is set, the content of the css-file is inlined using <style>-tags.
+A property :typoscript:`.inline` has been added to :typoscript:`page.includeCSS`.
+If :typoscript:`.inline` is set, the content of the css-file is inlined using <style>-tags.
 
 
 Impact
 ======
 
-Example: 
+Example:
 
 .. code-block:: typoscript
 
-	page.includeCSS {
-		inline = EXT:test/Resources/Public/Css/inline.css
-		inline {
-			inline = 1
-			forceOnTop = 1
-			media = all
-		}
-		other = EXT:test/Resources/Public/Css/other.css
-	}
+   page.includeCSS {
+      inline = EXT:test/Resources/Public/Css/inline.css
+      inline {
+         inline = 1
+         forceOnTop = 1
+         media = all
+      }
+      other = EXT:test/Resources/Public/Css/other.css
+   }
 
 
 Some notes on the implementation:
 
 External files are not inlined.
-The inline-css is compressed if :ts:`config.compressCss` is set.
-Most other properties (:ts:`.allWrap`, :ts:`.disableCompression`, :ts:`.forceOnTop`, :ts:`.if`,
-:ts:`.media`, :ts:`.title`) work even if :ts:`.inline` is set.
-If :ts:`.import` and :ts:`.inline` are both set , the file is loaded via @import.
+The inline-css is compressed if :typoscript:`config.compressCss` is set.
+Most other properties (:typoscript:`.allWrap`, :typoscript:`.disableCompression`, :typoscript:`.forceOnTop`, :typoscript:`.if`,
+:typoscript:`.media`, :typoscript:`.title`) work even if :typoscript:`.inline` is set.
+If :typoscript:`.import` and :typoscript:`.inline` are both set , the file is loaded via @import.
 
 .. index:: Frontend, TypoScript

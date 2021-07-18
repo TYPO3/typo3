@@ -29,7 +29,7 @@ changes ever since - had several downsides:
 *  The database field :sql:`be_users.lang` was not really needed
 *  Administrators did not see available language packs when changing the language
 *  Administrators could only change an editor's preferred language by
-   switching to the user (:pn:`Switch User Mode`).
+   switching to the user (:guilabel:`Switch User Mode`).
 *  Administrators could not filter / sort editors to see what languages the
    users had chosen
 *  Fetching the user's preferred language always meant to fetch the whole

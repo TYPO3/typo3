@@ -11,10 +11,10 @@ Description
 
 The following edge-case TSconfig options have been removed:
 
-- :ts:`options.pageTree.disableIconLinkToContextmenu` (Icons are always linked)
-- :ts:`options.pageTree.searchInAlias` (the pages.alias DB field is now always respected when filtering)
-- :ts:`options.pageTree.excludeDoktypes` (there is no restriction to doctypes in the filter anymore)
-- :ts:`options.pageTree.hideFilter` (filter is now always visible)
+-  :typoscript:`options.pageTree.disableIconLinkToContextmenu` (Icons are always linked)
+-  :typoscript:`options.pageTree.searchInAlias` (the pages.alias DB field is now always respected when filtering)
+-  :typoscript:`options.pageTree.excludeDoktypes` (there is no restriction to doctypes in the filter anymore)
+-  :typoscript:`options.pageTree.hideFilter` (filter is now always visible)
 
 
 Impact

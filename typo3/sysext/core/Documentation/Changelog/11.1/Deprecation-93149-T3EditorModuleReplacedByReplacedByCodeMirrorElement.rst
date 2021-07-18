@@ -37,7 +37,7 @@ Migration
 Use the new :js:`TYPO3/CMS/T3editor/Element/CodeMirrorElement` module and adapt
 your markup to read:
 
-.. block:: html
+.. code-block:: html
 
    <typo3-t3editor-codemirror mode="..." addons="[..]" options="{..}">
        <textarea name="foo">..</textarea>

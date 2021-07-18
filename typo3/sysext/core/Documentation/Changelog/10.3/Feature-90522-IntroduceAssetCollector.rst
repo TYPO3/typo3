@@ -15,10 +15,10 @@ AssetCollector is a concept to allow custom CSS/JS code, inline or external, to 
 times in e.g. a Fluid template (via :html:`<f:asset.script>` or :html:`<f:asset.css>` ViewHelpers) but only rendered once
 in the output.
 
-The :php:`priority` flag (default: :php:`false`) controls where the asset is included: 
+The :php:`priority` flag (default: :php:`false`) controls where the asset is included:
 
-- JavaScript will be output inside :html:`<head>` (:php:`priority`=true) or at the bottom of the :html:`<body>` tag (:php:`priority`=false)
-- CSS will always be output inside :html:`<head>`, yet grouped by :php:`priority`.
+* JavaScript will be output inside :html:`<head>` (:php:`priority=true`) or at the bottom of the :html:`<body>` tag (:php:`priority=false`)
+* CSS will always be output inside :html:`<head>`, yet grouped by :javascript:`priority`.
 
 By including assets per-component, it can leverage the adoption of HTTP/2 multiplexing which removes the necessity of having all CSS/JavaScript
 concatenated into one file.
