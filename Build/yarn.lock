@@ -1652,9 +1652,9 @@ character-reference-invalid@^1.0.0:
   integrity sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==
 
 chart.js@^2.9.3:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
-  integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.4.tgz#0827f9563faffb2dc5c06562f8eb10337d5b9684"
+  integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
@@ -1727,9 +1727,9 @@ ckeditor-wordcount-plugin@^1.17.6:
   integrity sha512-73Q0/W445UoToQ8fyaBhXxhsZXMOxoeGGaIZ1HyiPc1nisK1gbIGAFi1ksgKoavQhri0+sOfpnYSFXDEC608EQ==
 
 ckeditor4@^4.16.0:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.16.0.tgz#b1027df210ccb66ad5430de2988bea36a775c2fc"
-  integrity sha512-ya5M1+MN53tdfDc2vY2JfV6KrFMyuJolhcTAKCv5S6YarwgMXOpj7zEO1rwVgEX4aaNJrBp6CjxPuiN2qzYs5g==
+  version "4.16.1"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.16.1.tgz#c1d34d032085d33e2efe3c12b30431b5f9230c16"
+  integrity sha512-dfclP3QDQfXMOrPex3s/l6b5E+MBSxhMpW3+nUM6lFX3ax1u/1tl2ETpe7iYJRtoN4TdvddL5XFweQT17woN5A==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -1848,9 +1848,9 @@ code-point-at@^1.0.0:
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
 codemirror@^5.58.1:
-  version "5.58.1"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.1.tgz#ec6bf38ad2a17f74c61bd00cc6dc5a69bd167854"
-  integrity sha512-UGb/ueu20U4xqWk8hZB3xIfV2/SFqnSLYONiM3wTMDqko0bsYrsAkGGhqUzbRkYm89aBKPyHtuNEbVWF9FTFzw==
+  version "5.62.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.62.0.tgz#e9ecd012e6f9eaf2e05ff4a449ff750f51619e22"
+  integrity sha512-Xnl3304iCc8nyVZuRkzDVVwc794uc9QNX0UcPGeNic1fbzkSrO4l4GVXho9tRNKBgPYZXgocUqXyfIv3BILhCQ==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -6328,10 +6328,15 @@ moment-timezone@^0.5.31:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.10.2, moment@^2.29.0:
+"moment@>= 2.9.0", moment@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.0.tgz#fcbef955844d91deb55438613ddcec56e86a3425"
   integrity sha512-z6IJ5HXYiuxvFTI6eiQ9dm77uE0gyy1yXNApVHqTcnIKfY9tIwEjlzsZ6u1LQXvVgKeTnv9Xm7NDvJ7lso3MtA==
+
+moment@^2.10.2:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
