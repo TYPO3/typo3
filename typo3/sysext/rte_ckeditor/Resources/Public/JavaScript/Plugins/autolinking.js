@@ -114,7 +114,7 @@ CKEDITOR.plugins.add('autolinking', {
             a.href = a.innerHTML;
           }
           href = a.getAttribute('href').replace(new RegExp(fillChar, 'g'), '');
-          href = /^(?:https?:\/\/)/ig.test(href) ? href : 'http://' + href;
+          href = /^(?:https?:\/\/)/ig.test(href) || /^(?:http?:\/\/)/ig.test(href) ? href : 'https://' + href;
           a.href = html(href);
 
           let textNode = document.createTextNode(endChar);
