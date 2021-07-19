@@ -4,7 +4,7 @@
 <f:section name="Main">
 Follow the link below to reset your backend user password at "{typo3.sitename}" (this link expires in 2 hours).
 
-{resetLink}
+{resetLink -> f:format.raw()}
 
 <f:render partial="Email/PasswordReset/ClosingParagraph" arguments="{normalizedParams: normalizedParams}" />
 </f:section>
