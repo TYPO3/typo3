@@ -30,11 +30,6 @@ class WorkspaceVersionRecordMigrationTest extends FunctionalTestCase
      */
     private $subject;
 
-    /**
-     * @var string[]
-     */
-    protected $coreExtensionsToLoad = ['frontend'];
-
     protected function setUp(): void
     {
         parent::setUp();

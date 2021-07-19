@@ -41,11 +41,7 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'extbase',
-        'fluid',
-        'workspaces',
-    ];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var BlogRepository

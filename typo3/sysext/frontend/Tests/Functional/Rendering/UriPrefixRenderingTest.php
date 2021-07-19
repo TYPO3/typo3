@@ -58,9 +58,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = [
-        'core', 'frontend', 'backend', 'rte_ckeditor',
-    ];
+    protected $coreExtensionsToLoad = ['rte_ckeditor'];
 
     /**
      * @var string[]

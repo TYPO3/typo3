@@ -32,11 +32,6 @@ class ImplementationClassNameTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/b',
     ];
 
-    /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
     public function setUp(): void
     {
         parent::setUp();

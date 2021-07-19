@@ -33,8 +33,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class PageRepositoryTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['frontend'];
-
     protected function setUp(): void
     {
         parent::setUp();

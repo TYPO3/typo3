@@ -28,11 +28,6 @@ class QueryParserTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
      * Sets up this test suite.
      */
     protected function setUp(): void

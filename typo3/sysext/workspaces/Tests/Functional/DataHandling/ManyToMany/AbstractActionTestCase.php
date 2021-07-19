@@ -31,10 +31,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'fluid',
-        'workspaces',
-    ];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     protected function setUp(): void
     {

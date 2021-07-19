@@ -19,9 +19,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 
 class ActionTest extends AbstractDataHandlerActionTestCase
 {
-    protected $coreExtensionsToLoad = [
-        'workspaces',
-    ];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var array

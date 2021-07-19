@@ -24,11 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class RequestHandlerConfigurationFactoryTest extends FunctionalTestCase
 {
     /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
      * @test
      */
     public function requestHandlerConfigurationFactoryLoadsRequestHandlersOfExtbaseAndFluid(): void

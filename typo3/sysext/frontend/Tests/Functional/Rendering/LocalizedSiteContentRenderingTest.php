@@ -112,7 +112,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['frontend', 'workspaces'];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var array

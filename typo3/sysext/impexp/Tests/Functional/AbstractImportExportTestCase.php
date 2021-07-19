@@ -37,9 +37,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'impexp',
-    ];
+    protected $coreExtensionsToLoad = ['impexp'];
 
     /**
      * Absolute path to files that must be removed

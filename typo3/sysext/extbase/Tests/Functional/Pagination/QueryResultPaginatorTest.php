@@ -26,11 +26,6 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

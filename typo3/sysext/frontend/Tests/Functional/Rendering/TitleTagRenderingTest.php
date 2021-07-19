@@ -30,9 +30,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = [
-        'core', 'frontend', 'seo'
-    ];
+    protected $coreExtensionsToLoad = ['seo'];
 
     /**
      * @var string[]

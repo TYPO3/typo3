@@ -53,7 +53,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['frontend', 'workspaces'];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var string[]

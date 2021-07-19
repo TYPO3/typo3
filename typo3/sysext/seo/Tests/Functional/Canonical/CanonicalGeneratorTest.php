@@ -49,9 +49,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = [
-        'core', 'frontend', 'seo'
-    ];
+    protected $coreExtensionsToLoad = ['seo'];
 
     /**
      * Used for dynamic TypoScript injection with InternalRequest object.

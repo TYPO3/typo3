@@ -22,8 +22,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['install'];
-
     /**
      * @return array
      */

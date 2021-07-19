@@ -34,9 +34,7 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/';
 
-    protected $coreExtensionsToLoad = [
-        'workspaces'
-    ];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var array
