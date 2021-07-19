@@ -152,6 +152,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             'pageTreeMountPoints' => GeneralUtility::intExplode(',', $this->configuration['pageTreeMountPoints'] ?? ''),
             'recordList' => $recordList,
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
+            'treeActions' => ['link'],
         ]);
 
         $this->view->setTemplate('Record');
