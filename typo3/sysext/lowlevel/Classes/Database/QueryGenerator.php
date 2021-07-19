@@ -275,16 +275,6 @@ class QueryGenerator
     protected $enableQueryParts = false;
 
     /**
-     * @var int
-     */
-    protected $limitBegin;
-
-    /**
-     * @var int
-     */
-    protected $limitLength;
-
-    /**
      * @var string
      */
     protected $fieldName;
@@ -1107,10 +1097,13 @@ class QueryGenerator
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0),
-                    QueryHelper::stripLogicalOperatorPrefix($permsClause)
+                    $queryBuilder->expr()->eq('sys_language_uid', 0)
                 )
-                ->execute();
+                ->orderBy('uid');
+            if ($permsClause !== '') {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permsClause));
+            }
+            $statement = $queryBuilder->execute();
             while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
@@ -1398,17 +1391,17 @@ class QueryGenerator
     {
         $fieldListArr = [];
         if (is_array($GLOBALS['TCA'][$this->table])) {
-            $fieldListArr = array_keys($GLOBALS['TCA'][$this->table]['columns']);
+            $fieldListArr = array_keys($GLOBALS['TCA'][$this->table]['columns'] ?? []);
             $fieldListArr[] = 'uid';
             $fieldListArr[] = 'pid';
             $fieldListArr[] = 'deleted';
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['tstamp']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['tstamp'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['tstamp'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['crdate']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['crdate'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['crdate'];
             }
-            if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id']) {
+            if ($GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'] ?? false) {
                 $fieldListArr[] = $GLOBALS['TCA'][$this->table]['ctrl']['cruser_id'];
             }
             if ($GLOBALS['TCA'][$this->table]['ctrl']['sortby'] ?? false) {
@@ -2552,11 +2545,11 @@ class QueryGenerator
                 $this->extFieldLists['queryLimit'] = 100;
             }
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
-            if ($parts[1] ?? false) {
-                $this->limitBegin = $parts[0];
-                $this->limitLength = $parts[1];
-            } else {
-                $this->limitLength = $this->extFieldLists['queryLimit'];
+            $limitBegin = 0;
+            $limitLength = (int)($this->extFieldLists['queryLimit'] ?? 0);
+            if ($parts[1]) {
+                $limitBegin = (int)$parts[0];
+                $limitLength = (int)$parts[1];
             }
             $this->extFieldLists['queryLimit'] = implode(',', array_slice($parts, 0, 2));
             // Insert Descending parts
@@ -2623,23 +2616,23 @@ class QueryGenerator
                 $limit[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
                 $limit[] = '</div>';
 
-                $prevLimit = $this->limitBegin - $this->limitLength < 0 ? 0 : $this->limitBegin - $this->limitLength;
+                $prevLimit = $limitBegin - $limitLength < 0 ? 0 : $limitBegin - $limitLength;
                 $prevButton = '';
                 $nextButton = '';
 
-                if ($this->limitBegin) {
-                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $this->limitLength) . '">';
+                if ($limitBegin) {
+                    $prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $limitLength) . '">';
                 }
-                if (!$this->limitLength) {
-                    $this->limitLength = 100;
+                if (!$limitLength) {
+                    $limitLength = 100;
                 }
 
-                $nextLimit = $this->limitBegin + $this->limitLength;
+                $nextLimit = $limitBegin + $limitLength;
                 if ($nextLimit < 0) {
                     $nextLimit = 0;
                 }
                 if ($nextLimit) {
-                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $this->limitLength) . '">';
+                    $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
                 }
 
                 $out[] = '<div class="form-group">';

@@ -241,7 +241,7 @@ class QueryGenerator
      */
     protected $settings = [];
 
-    public function __contruct()
+    public function __construct()
     {
         trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
     }

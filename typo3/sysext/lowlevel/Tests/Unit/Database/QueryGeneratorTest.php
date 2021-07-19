@@ -15,9 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database;
+namespace TYPO3\CMS\Lowlevel\Tests\Unit\Database;
 
-use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -113,12 +113,10 @@ class QueryGeneratorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getSubscriptReturnsExpectedValuesDataProvider
-     * @param $input
-     * @param array $expectedArray
      */
     public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
-        $subject = new QueryGenerator();
-        self::assertSame($expectedArray, $subject->getSubscript($input));
+        $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
+        self::assertSame($expectedArray, $subject->_call('getSubscript', $input));
     }
 }

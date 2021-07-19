@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
+ *
+ * @deprecated since v11, will be removed in v12
  */
 class QueryView
 {
@@ -103,7 +105,7 @@ class QueryView
      */
     public function __construct(array $settings = null, $menuItems = null, $moduleName = null)
     {
-        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11.', E_USER_DEPRECATED);
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $this->backendUserAuthentication = $GLOBALS['BE_USER'];
         $this->languageService = $GLOBALS['LANG'];
         $this->languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf');
