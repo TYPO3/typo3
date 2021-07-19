@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -497,7 +498,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function canBeViewed(): bool
     {
-        return $this->table === 'tt_content';
+        return $this->table === 'tt_content' && $this->parentPageCanBeViewed();
     }
 
     /**
@@ -718,6 +719,26 @@ class RecordProvider extends AbstractProvider
     {
         return $this->table === 'be_users'
             && (int)($this->record['uid'] ?? 0) === (int)$this->backendUser->user[$this->backendUser->userid_column];
+    }
+
+    /**
+     * Check whether the elements' parent page can be viewed
+     *
+     * @return bool
+     */
+    protected function parentPageCanBeViewed(): bool
+    {
+        if (!isset($this->pageRecord['uid']) || !($this->pageRecord['doktype'] ?? false)) {
+            // In case parent page record is invalid, the element can not be viewed
+            return false;
+        }
+
+        // Finally, we check whether the parent page has a "no view doktype" assigned
+        return !in_array((int)$this->pageRecord['doktype'], [
+            PageRepository::DOKTYPE_SPACER,
+            PageRepository::DOKTYPE_SYSFOLDER,
+            PageRepository::DOKTYPE_RECYCLER
+        ], true);
     }
 
     /**

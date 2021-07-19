@@ -1838,9 +1838,16 @@ class DatabaseRecordList
 
         // "Show" link (only pages and tt_content elements)
         $tsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        if (
-            ($table === 'pages' && !in_array($row['doktype'] ?? null, $this->getNoViewWithDokTypes($tsConfig)))
-            || $table === 'tt_content'
+        if ((
+            $table === 'pages'
+                && isset($row['doktype'])
+                && !in_array((int)$row['doktype'], $this->getNoViewWithDokTypes($tsConfig), true)
+        )
+            || (
+                $table === 'tt_content'
+                && isset($this->pageRow['doktype'])
+                && !in_array((int)$this->pageRow['doktype'], $this->getNoViewWithDokTypes($tsConfig), true)
+            )
         ) {
             if (!$isDeletePlaceHolder) {
                 $onClick = $this->getOnClickForRow($table, $row);
@@ -4139,9 +4146,10 @@ class DatabaseRecordList
     protected function getNoViewWithDokTypes(array $tsConfig): array
     {
         if (isset($tsConfig['noViewWithDokTypes'])) {
-            $noViewDokTypes = GeneralUtility::trimExplode(',', $tsConfig['noViewWithDokTypes'], true);
+            $noViewDokTypes = GeneralUtility::intExplode(',', $tsConfig['noViewWithDokTypes'], true);
         } else {
             $noViewDokTypes = [
+                PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
                 PageRepository::DOKTYPE_RECYCLER
             ];
