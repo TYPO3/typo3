@@ -72,8 +72,9 @@ class VimeoHelper extends AbstractOEmbedHelper
         // Try to get the Vimeo code from given url.
         // Next formats are supported with and without http(s)://
         // - vimeo.com/<code>/<optionalPrivateCode> # Share URL
+        // - vimeo.com/event/<code>
         // - player.vimeo.com/video/<code>/<optionalPrivateCode> # URL form iframe embed code, can also get code from full iframe snippet
-        if (preg_match('/vimeo\.com\/(?:video\/)?([0-9a-z\/]+)/i', $url, $matches)) {
+        if (preg_match('/vimeo\.com\/(?:video|event\/)?([0-9a-z\/]+)/i', $url, $matches)) {
             $videoId = $matches[1];
         }
         if (empty($videoId)) {
