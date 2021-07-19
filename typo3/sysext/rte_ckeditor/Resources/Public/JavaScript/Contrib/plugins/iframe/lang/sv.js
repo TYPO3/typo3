@@ -1,1 +1,1 @@
-﻿CKEDITOR.plugins.setLang("iframe","sv",{border:"Visa ramkant",noUrl:"Skriv in URL för iFrame",scrolling:"Aktivera rullningslister",title:"iFrame-egenskaper",toolbar:"iFrame",tabindex:"Remove from tabindex"});
+﻿CKEDITOR.plugins.setLang("iframe","sv",{border:"Visa ramkant",noUrl:"Skriv in URL för iFrame",scrolling:"Aktivera rullningslister",title:"iFrame-egenskaper",toolbar:"iFrame",tabindex:"Ta bort från tabindex"});

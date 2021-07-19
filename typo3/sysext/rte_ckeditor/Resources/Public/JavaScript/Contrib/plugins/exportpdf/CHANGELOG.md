@@ -1,5 +1,11 @@
 # CKEditor 4 Export to PDF Plugin Changelog
 
+## ckeditor4-plugin-exportpdf 1.0.3
+
+Other Changes:
+
+*   Updated test files.
+
 ## ckeditor4-plugin-exportpdf 1.0.2
 
 Other Changes:
