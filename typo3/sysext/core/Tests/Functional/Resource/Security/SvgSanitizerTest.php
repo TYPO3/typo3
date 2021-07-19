@@ -51,7 +51,7 @@ class SvgSanitizerTest extends FunctionalTestCase
     public function svgContentIsSanitized($filePath, $sanitizedFilePath)
     {
         // @todo re-enable test once https://github.com/darylldoyle/svg-sanitizer/pull/53 is merged
-        if ($filePath === 'DirtySVG/entity.svg') {
+        if ($filePath === 'DirtySVG/entity.svg' || $filePath === 'DirtySVG/entity_2.svg') {
             self::markTestSkipped('Skipped due experienced segmentation faults');
         }
         $basePath = dirname(__FILE__, 2) . '/Fixtures/';
