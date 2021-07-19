@@ -25,7 +25,9 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ReportInterface;
@@ -59,13 +61,16 @@ class ReportController
 
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected IconRegistry $iconRegistry;
 
     public function __construct(
         UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        IconRegistry $iconRegistry
     ) {
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->iconRegistry = $iconRegistry;
     }
 
     /**
@@ -152,7 +157,20 @@ class ReportController
             $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
             $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview')
         );
-        $this->view->assign('reports', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']);
+
+        $reports = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'];
+
+        foreach ($reports as $extension => $reportModules) {
+            foreach ($reportModules as $module => $configuration) {
+                if (!isset($configuration['icon']) || !$configuration['icon']) {
+                    $fallbackIconPath = ExtensionManagementUtility::extPath('reports');
+                    $reports[$extension][$module]['icon'] = ExtensionManagementUtility::getExtensionIcon($fallbackIconPath, true);
+                }
+                $reports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($configuration['icon']);
+            }
+        }
+
+        $this->view->assign('reports', $reports);
         $this->saveState();
     }
 
