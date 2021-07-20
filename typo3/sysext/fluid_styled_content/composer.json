@@ -13,9 +13,9 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "9.5.*@dev",
-		"typo3/cms-fluid": "9.5.*@dev",
-		"typo3/cms-frontend": "9.5.*@dev"
+		"typo3/cms-core": "9.5.28",
+		"typo3/cms-fluid": "9.5.28",
+		"typo3/cms-frontend": "9.5.28"
 	},
 	"conflict": {
 		"typo3/cms": "*"
