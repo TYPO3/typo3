@@ -484,7 +484,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             }
             $this->logger->debug(
                 ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ')
-                . $this->id . ($cookieDomain ? ', ' . $cookieDomain : '')
+                . sha1($this->id) . ($cookieDomain ? ', ' . $cookieDomain : '')
             );
         }
     }
@@ -575,14 +575,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
-        $this->logger->debug('Login data', $loginData);
+        $this->logger->debug('Login data', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
-            $this->logger->info('User logged out. Id: ' . $this->id);
+            $this->logger->info('User logged out. Id: ' . sha1($this->id));
             $this->logoff();
         }
         // Determine whether we need to skip session update.
@@ -687,7 +687,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // Use 'auth' service to authenticate the user
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
-                $this->logger->debug('Auth user', $tempuser);
+                $this->logger->debug('Auth user', $this->removeSensitiveLoginDataForLoggingInfo($tempuser, true));
                 $subType = 'authUser' . $this->loginType;
 
                 /** @var AuthenticationService $serviceObj */
@@ -784,7 +784,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->loginFailure = true;
                 if (empty($tempuserArr) && $activeLogin) {
                     $logData = [
-                        'loginData' => $loginData
+                        'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData)
                     ];
                     $this->logger->debug('Login failed', $logData);
                 }
@@ -897,7 +897,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function createUserSession($tempuser)
     {
-        $this->logger->debug('Create session ses_id = ' . $this->id);
+        $this->logger->debug('Create session ses_id = ' . sha1($this->id));
         // Delete any session entry first
         $this->getSessionBackend()->remove($this->id);
         // Re-create session entry
@@ -953,7 +953,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function fetchUserSession($skipSessionUpdate = false)
     {
-        $this->logger->debug('Fetch session ses_id = ' . $this->id);
+        $this->logger->debug('Fetch session ses_id = ' . sha1($this->id));
         try {
             $sessionRecord = $this->getSessionBackend()->get($this->id);
         } catch (SessionNotFoundException $e) {
@@ -1016,7 +1016,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function logoff()
     {
-        $this->logger->debug('logoff: ses_id = ' . $this->id);
+        $this->logger->debug('logoff: ses_id = ' . sha1($this->id));
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
@@ -1268,7 +1268,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     {
         $this->sessionData[$key] = $data;
         $this->user['ses_data'] = serialize($this->sessionData);
-        $this->logger->debug('setAndSaveSessionData: ses_id = ' . $this->id);
+        $this->logger->debug('setAndSaveSessionData: ses_id = ' . sha1($this->id));
         $updatedSession = $this->getSessionBackend()->update(
             $this->id,
             ['ses_data' => $this->user['ses_data']]
@@ -1314,7 +1314,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     {
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
-        $this->logger->debug('Login data before processing', $loginData);
+        $this->logger->debug('Login data before processing', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         $subType = 'processLoginData' . $this->loginType;
         $authInfo = $this->getAuthInfoArray();
         $isLoginDataProcessed = false;
@@ -1332,9 +1332,37 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
-            $this->logger->debug('Processed login data', $processedLoginData);
+            $this->logger->debug('Processed login data', $this->removeSensitiveLoginDataForLoggingInfo($processedLoginData));
         }
         return $loginData;
+    }
+
+    /**
+     * Removes any sensitive data from the incoming data (either from loginData, processedLogin data
+     * or the user record from the DB).
+     *
+     * No type hinting is added because it might be possible that the incoming data is of any other type.
+     *
+     * @param mixed|array $data
+     * @param bool $isUserRecord
+     * @return mixed
+     */
+    protected function removeSensitiveLoginDataForLoggingInfo($data, bool $isUserRecord = false)
+    {
+        if ($isUserRecord && is_array($data)) {
+            $fieldNames = ['uid', 'pid', 'tstamp', 'crdate', 'cruser_id', 'deleted', 'disabled', 'starttime', 'endtime', 'username', 'admin', 'usergroup', 'db_mountpoints', 'file_mountpoints', 'file_permissions', 'workspace_perms', 'lastlogin', 'workspace_id', 'category_perms'];
+            $data = array_intersect_key($data, array_combine($fieldNames, $fieldNames));
+        }
+        if (isset($data['uident'])) {
+            $data['uident'] = '********';
+        }
+        if (isset($data['uident_text'])) {
+            $data['uident_text'] = '********';
+        }
+        if (isset($data['password'])) {
+            $data['password'] = '********';
+        }
+        return $data;
     }
 
     /**
