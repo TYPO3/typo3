@@ -1074,7 +1074,10 @@ class ExtensionManagementUtility
                     $serviceSubType = key($info['serviceSubTypes']);
                 }
                 // This matches empty subtype too
-                if ($info['available'] && ($info['subtype'] == $serviceSubType || $info['serviceSubTypes'][$serviceSubType]) && $info['priority'] >= $priority) {
+                if (($info['available'] ?? false)
+                    && (($info['subtype'] ?? null) == $serviceSubType || ($info['serviceSubTypes'][$serviceSubType] ?? false))
+                    && ($info['priority'] ?? 0) >= $priority
+                ) {
                     // Has a lower quality than the already found, therefore we skip this service
                     if ($info['priority'] == $priority && $info['quality'] < $quality) {
                         continue;
