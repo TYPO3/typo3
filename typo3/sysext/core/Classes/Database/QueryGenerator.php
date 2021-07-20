@@ -1585,7 +1585,7 @@ class QueryGenerator
         } else {
             $theList = '';
         }
-        if ($id && $depth > 0) {
+        if ($depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryBuilder->select('uid')
