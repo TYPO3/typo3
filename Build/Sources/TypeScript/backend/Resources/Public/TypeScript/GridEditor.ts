@@ -15,6 +15,7 @@ import {SeverityEnum} from './Enum/Severity';
 import 'bootstrap';
 import $ from 'jquery';
 import Modal = require('./Modal');
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
 
 /**
  * GridEditorConfigurationInterface
@@ -75,8 +76,8 @@ export class GridEditor {
    * @returns {string}
    */
   public static stripMarkup(input: string): string {
-    input = input.replace(/<(.*)>/gi, '');
-    return $('<p>' + input + '</p>').text();
+    const securityUtility = new SecurityUtility();
+    return securityUtility.stripHtml(input);
   }
 
   /**
@@ -894,9 +895,10 @@ export class GridEditor {
         const cell = this.getCell(col, row);
         if (cell) {
           if (!cell.spanned) {
+            const cellName: string = GridEditor.stripMarkup(cell.name) || '';
             colIndex++;
             result += '\t\t\t\t' + (colIndex) + ' {\n';
-            result += '\t\t\t\t\tname = ' + ((!cell.name) ? col + 'x' + row : cell.name) + '\n';
+            result += '\t\t\t\t\tname = ' + ((!cellName) ? col + 'x' + row : cellName) + '\n';
             if (cell.colspan > 1) {
               result += '\t\t\t\t\tcolspan = ' + cell.colspan + '\n';
             }

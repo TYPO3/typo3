@@ -9,13 +9,10 @@
             {column.title}
         </f:then>
         <f:else if="{column.unassigned}">
-            {column.title} (<f:format.raw>{column.titleUnassigned}</f:format.raw>)
-        </f:else>
-        <f:else if="!{hideRestrictedColumns}">
-            <f:format.raw>{column.titleInaccessible}</f:format.raw>
+            {column.titleUnassigned}
         </f:else>
         <f:else>
-            <f:format.raw>{column.titleInaccessible}</f:format.raw>
+            {column.titleInaccessible}
         </f:else>
     </f:if>
 </div>

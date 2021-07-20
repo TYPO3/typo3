@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/GridEditor"],(function(r,t,e){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/GridEditorTest:",()=>{describe("tests for stripMarkup",()=>{it("works with string which contains html markup only",()=>{expect(e.GridEditor.stripMarkup("<b>foo</b>")).toBe("")}),it("works with string which contains html markup and normal text",()=>{expect(e.GridEditor.stripMarkup("<b>foo</b> bar")).toBe(" bar")})})})}));
+define(["require","exports","TYPO3/CMS/Backend/GridEditor"],(function(r,t,e){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/GridEditorTest:",()=>{describe("tests for stripMarkup",()=>{it("works with string which contains html markup only",()=>{expect(e.GridEditor.stripMarkup("<b>'formula': \"x > y\"</b>")).toBe("'formula': \"x > y\"")}),it("works with string which contains html markup and normal text",()=>{expect(e.GridEditor.stripMarkup("<b>foo</b> bar")).toBe("foo bar")})})})}));
