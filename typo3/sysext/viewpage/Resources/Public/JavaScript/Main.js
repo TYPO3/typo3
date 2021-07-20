@@ -17,8 +17,9 @@
 define([
   'jquery',
   'TYPO3/CMS/Backend/Storage/Persistent',
+  'TYPO3/CMS/Core/SecurityUtility',
   'jquery-ui/resizable'
-], function($, PersistentStorage) {
+], function($, PersistentStorage, SecurityUtility) {
   'use strict';
 
   /**
@@ -114,7 +115,7 @@ define([
   }
 
   ViewPage.setLabel = function(label) {
-    $(ViewPage.currentLabelSelector).html(label);
+    $(ViewPage.currentLabelSelector).html((new SecurityUtility()).encodeHtml(label));
   }
 
   ViewPage.getCurrentLabel = function() {
