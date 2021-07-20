@@ -17,10 +17,10 @@ describe('TYPO3/CMS/Backend/GridEditorTest:', () => {
 
   describe('tests for stripMarkup', () => {
     it('works with string which contains html markup only', () => {
-      expect(GridEditor.stripMarkup('<b>foo</b>')).toBe('');
+      expect(GridEditor.stripMarkup('<b>\'formula\': "x > y"</b>')).toBe('\'formula\': "x > y"');
     });
     it('works with string which contains html markup and normal text', () => {
-      expect(GridEditor.stripMarkup('<b>foo</b> bar')).toBe(' bar');
+      expect(GridEditor.stripMarkup('<b>foo</b> bar')).toBe('foo bar');
     });
   });
 

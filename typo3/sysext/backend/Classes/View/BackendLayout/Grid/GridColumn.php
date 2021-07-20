@@ -213,7 +213,7 @@ class GridColumn extends AbstractGridObject
 
     public function getTitleUnassigned(): string
     {
-        return $this->getLanguageService()->getLL('notAssigned');
+        return $this->getTitle() . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')';
     }
 
     public function isUnassigned(): bool
