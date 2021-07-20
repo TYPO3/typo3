@@ -299,7 +299,6 @@ class SearchController extends ActionController
                 if ($freeIndexUid > 0) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('index_config');
-                    $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                     $indexCfgRec = $queryBuilder
                         ->select('title')
                         ->from('index_config')
