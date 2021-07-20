@@ -335,7 +335,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             );
             $message = $isRefreshTimeBasedCookie ? 'Updated Cookie: {session}, {domain}' : 'Set Cookie: {session}, {domain}';
             $this->logger->debug($message, [
-                'session' => $sessionId,
+                'session' => sha1($sessionId),
                 'domain' => $cookieDomain,
             ]);
         }
@@ -440,14 +440,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
         $loginData = $this->getLoginFormData();
-        $this->logger->debug('Login data', $loginData);
+        $this->logger->debug('Login data', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
                 $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
-            $this->logger->info('User logged out. Id: {session}', ['session' => $this->userSession->getIdentifier()]);
+            $this->logger->info('User logged out. Id: {session}', ['session' => sha1($this->userSession->getIdentifier())]);
             $this->logoff();
         }
         // Determine whether we need to skip session update.
@@ -556,7 +556,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // Use 'auth' service to authenticate the user
                 // If one service returns FALSE then authentication failed
                 // a service might return 100 which means there's no reason to stop but the user can't be authenticated by that service
-                $this->logger->debug('Auth user', $tempuser);
+                $this->logger->debug('Auth user', $this->removeSensitiveLoginDataForLoggingInfo($tempuser, true));
                 $subType = 'authUser' . $this->loginType;
 
                 /** @var AuthenticationService $serviceObj */
@@ -641,7 +641,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Mark the current login attempt as failed
             if (empty($tempuserArr) && $activeLogin) {
                 $this->logger->debug('Login failed', [
-                    'loginData' => $loginData
+                    'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData)
                 ]);
             } elseif (!empty($tempuserArr)) {
                 $this->logger->debug('Login failed', [
@@ -861,7 +861,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function logoff()
     {
-        $this->logger->debug('logoff: ses_id = {session}', ['session' => $this->userSession->getIdentifier()]);
+        $this->logger->debug('logoff: ses_id = {session}', ['session' => sha1($this->userSession->getIdentifier())]);
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] ?? [] as $_funcRef) {
@@ -1094,7 +1094,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function setAndSaveSessionData($key, $data)
     {
         $this->userSession->set($key, $data);
-        $this->logger->debug('setAndSaveSessionData: ses_id = {session}', ['session' => $this->userSession->getIdentifier()]);
+        $this->logger->debug('setAndSaveSessionData: ses_id = {session}', ['session' => sha1($this->userSession->getIdentifier())]);
         $this->userSession = $this->userSessionManager->updateSession($this->userSession);
     }
 
@@ -1138,7 +1138,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function processLoginData($loginData)
     {
-        $this->logger->debug('Login data before processing', $loginData);
+        $this->logger->debug('Login data before processing', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         $subType = 'processLoginData' . $this->loginType;
         $authInfo = $this->getAuthInfoArray();
         $isLoginDataProcessed = false;
@@ -1156,9 +1156,37 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
-            $this->logger->debug('Processed login data', $processedLoginData);
+            $this->logger->debug('Processed login data', $this->removeSensitiveLoginDataForLoggingInfo($processedLoginData));
         }
         return $loginData;
+    }
+
+    /**
+     * Removes any sensitive data from the incoming data (either from loginData, processedLogin data
+     * or the user record from the DB).
+     *
+     * No type hinting is added because it might be possible that the incoming data is of any other type.
+     *
+     * @param mixed|array $data
+     * @param bool $isUserRecord
+     * @return mixed
+     */
+    protected function removeSensitiveLoginDataForLoggingInfo($data, bool $isUserRecord = false)
+    {
+        if ($isUserRecord && is_array($data)) {
+            $fieldNames = ['uid', 'pid', 'tstamp', 'crdate', 'cruser_id', 'deleted', 'disabled', 'starttime', 'endtime', 'username', 'admin', 'usergroup', 'db_mountpoints', 'file_mountpoints', 'file_permissions', 'workspace_perms', 'lastlogin', 'workspace_id', 'category_perms'];
+            $data = array_intersect_key($data, array_combine($fieldNames, $fieldNames));
+        }
+        if (isset($data['uident'])) {
+            $data['uident'] = '********';
+        }
+        if (isset($data['uident_text'])) {
+            $data['uident_text'] = '********';
+        }
+        if (isset($data['password'])) {
+            $data['password'] = '********';
+        }
+        return $data;
     }
 
     /**
