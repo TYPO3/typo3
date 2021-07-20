@@ -1,31 +1,41 @@
+<f:comment>
+    Styling requires the colpos to be set to the string 'unused'. To preserve type safty in the
+    controller, the string is only used in the template by setting the below "colpos" variable.
+</f:comment>
+<f:variable name="colpos" value="{f:if(condition: column.unused, then: 'unused', else: column.columnNumber)}"/>
+
 <td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
-    data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
-    class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{column.columnNumber}
-        {f:if(condition: column.active, else: 't3-grid-cell-unassigned')}
+    data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
+    class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{colpos}
+        {f:if(condition: column.unassigned, then: 't3-grid-cell-unassigned')}
+        {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
+        {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
         t3-gridCell-width{column.colSpan}
         t3-gridCell-height{column.rowSpan}">
     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
     <f:if condition="{column.unassigned}">
-        <div class="t3-page-ce">
-            <div class="t3-page-ce-header">Empty Colpos</div>
-            <div class="t3-page-ce-body">
-                <div class="t3-page-ce-body-inner">
-                    <div class="row">
-                        <div class="col-12">
-                            This column has no "colPos". This is only for display Purposes.
+        <f:then>
+            <div class="t3-page-ce">
+                <div class="t3-page-ce-header"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos" /></div>
+                <div class="t3-page-ce-body">
+                    <div class="t3-page-ce-body-inner">
+                        <div class="row">
+                            <div class="col-12">
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos.message" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </f:if>
-    <f:if condition="{column.items}">
-        <div data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
-            class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
-                {f:if(condition: column.items, else: 't3-page-ce-empty')}">
-            <f:for each="{column.items}" as="item">
-                <f:render partial="PageLayout/Record" arguments="{_all}" />
-            </f:for>
-        </div>
+        </f:then>
+        <f:else if="{column.active} || {column.unused}">
+            <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
+                class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
+            {f:if(condition: column.items, else: 't3-page-ce-empty')}">
+                <f:for each="{column.items}" as="item">
+                    <f:render partial="PageLayout/Record" arguments="{_all}" />
+                </f:for>
+            </div>
+        </f:else>
     </f:if>
 </td>

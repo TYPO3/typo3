@@ -159,6 +159,15 @@
 			<trans-unit id="notAssigned" resname="notAssigned">
 				<source>Not assigned</source>
 			</trans-unit>
+			<trans-unit id="emptyColPos" resname="emptyColPos">
+				<source>Empty Colpos</source>
+			</trans-unit>
+			<trans-unit id="emptyColPos.message" resname="emptyColPos.message">
+				<source>This column has no "colPos". This is only for display Purposes.</source>
+			</trans-unit>
+			<trans-unit id="unusedColPos" resname="unusedColPos">
+				<source>Unused</source>
+			</trans-unit>
 			<trans-unit id="undoLastChange" resname="undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>

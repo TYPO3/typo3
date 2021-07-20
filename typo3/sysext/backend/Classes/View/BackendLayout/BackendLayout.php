@@ -220,6 +220,9 @@ class BackendLayout
         return $this->structure;
     }
 
+    /**
+     * @return string[]
+     */
     public function getColumnPositionNumbers(): array
     {
         return $this->structure['__colPosList'];

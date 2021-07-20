@@ -8,6 +8,9 @@
             </div>
             {column.title}
         </f:then>
+        <f:else if="{column.unused}">
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unusedColPos"/>
+        </f:else>
         <f:else if="{column.unassigned}">
             {column.titleUnassigned}
         </f:else>
@@ -16,7 +19,7 @@
         </f:else>
     </f:if>
 </div>
-<f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent}">
+<f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
         <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{column.context.pageId}-{column.uniqueId}">
             <a href="{column.newContentUrl}" title="{newContentTitle}" data-title="{newContentTitle}"

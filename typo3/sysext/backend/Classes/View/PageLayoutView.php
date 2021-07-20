@@ -514,7 +514,7 @@ class PageLayoutView implements LoggerAwareInterface
                             $queue = $service->getMessageQueueByIdentifier();
                             $queue->addMessage($unusedElementsMessage);
                         }
-                        $colTitle = $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.unused');
+                        $colTitle = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unusedColPos');
                         $editParam = '';
                     } else {
                         $colTitle = '';

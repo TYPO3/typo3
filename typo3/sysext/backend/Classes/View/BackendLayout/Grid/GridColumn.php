@@ -72,7 +72,7 @@ class GridColumn extends AbstractGridObject
     public function __construct(PageLayoutContext $context, array $columnDefinition)
     {
         parent::__construct($context);
-        $this->columnNumber = isset($columnDefinition['colPos']) ? (int)$columnDefinition['colPos'] : $this->columnNumber;
+        $this->columnNumber = isset($columnDefinition['colPos']) ? (int)$columnDefinition['colPos'] : null;
         $this->columnName = $columnDefinition['name'] ?? $this->columnName;
         $this->icon = $columnDefinition['icon'] ?? $this->icon;
         $this->colSpan = (int)($columnDefinition['colspan'] ?? $this->colSpan);
@@ -213,12 +213,17 @@ class GridColumn extends AbstractGridObject
 
     public function getTitleUnassigned(): string
     {
-        return $this->getTitle() . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')';
+        return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')';
     }
 
     public function isUnassigned(): bool
     {
-        return $this->columnNumber === null;
+        return $this->columnName !== 'unused' && $this->columnNumber === null;
+    }
+
+    public function isUnused(): bool
+    {
+        return $this->columnName === 'unused' && $this->columnNumber === null;
     }
 
     public function isContentEditable(): bool
