@@ -469,7 +469,7 @@ class QueryView
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
                     }
                     $out = '<p><strong>Error: <span class="text-danger">'
-                        . $e->getMessage()
+                        . htmlspecialchars($e->getMessage())
                         . '</span></strong></p>';
                     $output .= '<h2>SQL error</h2><div>' . $out . '</div>';
                 }
