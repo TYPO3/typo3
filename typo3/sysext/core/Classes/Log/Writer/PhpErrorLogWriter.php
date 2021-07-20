@@ -48,7 +48,7 @@ class PhpErrorLogWriter extends AbstractWriter
             strtoupper($record->getLevel()),
             $record->getRequestId(),
             $record->getComponent(),
-            $this->interpolate($record->getMessage(), $context),
+            $this->interpolate($message, $context),
             $data
         );
         if (false === error_log($message)) {

@@ -726,7 +726,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if (!empty($serviceChain)) {
             $this->logger->debug('{subtype} auth services called: {chain}', [
                 'subtype' => $subType,
-                'chain' => $serviceChain,
+                'chain' => implode(',', $serviceChain),
             ]);
         }
     }

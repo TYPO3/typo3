@@ -345,7 +345,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $this->updateOnlineTimestamp();
         }
 
-        $this->logger->debug('Valid frontend usergroups: {groups}', ['groups' => $userGroups]);
+        $this->logger->debug('Valid frontend usergroups: {groups}', ['groups' => implode(',', $userGroups)]);
         return GeneralUtility::makeInstance(UserAspect::class, $this, $userGroups);
     }
     /**
