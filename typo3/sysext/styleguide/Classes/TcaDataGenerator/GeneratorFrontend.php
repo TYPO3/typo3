@@ -134,7 +134,12 @@ class GeneratorFrontend extends AbstractGenerator
         $this->write($data);
 
         // Create site configuration for frontend
-        $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . '/';
+        if($GLOBALS['TYPO3_REQUEST']) {
+            $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . '/';
+        } else {
+            // On cli there is not TYPO3_REUQEST object, therefore use only slash
+            $domain = '/';
+        }
         $topPageUid = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
         $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo');
 
@@ -438,7 +443,7 @@ class GeneratorFrontend extends AbstractGenerator
     }
 
     /**
-     * Append PIDs to tt_content for menu_* ctype
+     * Append PIDs to tt_content field for menu_* ctype
      */
     protected function populateTtContentPages(string $field = 'pages', int $count = 5): void
     {

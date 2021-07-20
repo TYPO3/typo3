@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -210,11 +211,18 @@ abstract class AbstractGenerator
         if (!empty($data) || !empty($commands)) {
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->enableLogging = false;
+            $dataHandler->bypassAccessCheckForRecords = true;
+            $dataHandler->bypassWorkspaceRestrictions = true;
             $dataHandler->start($data, $commands);
+            $dataHandler->clear_cacheCmd('all');
+
             empty($data) ?: $dataHandler->process_datamap();
             empty($commands) ?:$dataHandler->process_cmdmap();
 
-            BackendUtility::setUpdateSignal('updatePageTree');
+            // Update signal only if not running in cli mode
+            if(!Environment::isCli()) {
+                BackendUtility::setUpdateSignal('updatePageTree');
+            }
         }
     }
 }
