@@ -14,6 +14,7 @@
 import $ from 'jquery';
 import 'jquery-ui/resizable';
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',
@@ -58,7 +59,7 @@ class ViewPage {
   }
 
   private static setLabel(label: string): void {
-    $(Selectors.currentLabelSelector).html(label);
+    $(Selectors.currentLabelSelector).html((new SecurityUtility()).encodeHtml(label));
   }
 
   private static getCurrentLabel(): string {
