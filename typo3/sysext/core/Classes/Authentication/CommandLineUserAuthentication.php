@@ -90,7 +90,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     {
         // check if a _CLI_ user exists, if not, create one
         $this->setBeUserByName($this->username);
-        if (!$this->user['uid']) {
+        if (empty($this->user['uid'])) {
             // create a new BE user in the database
             if (!$this->checkIfCliUserExists()) {
                 $this->createCliUser();
@@ -99,7 +99,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
             }
             $this->setBeUserByName($this->username);
         }
-        if (!$this->user['uid']) {
+        if (empty($this->user['uid'])) {
             throw new \RuntimeException('No backend user named "_cli_" could be created.', 1476107195);
         }
         // The groups are fetched and ready for permission checking in this initialization.
@@ -159,8 +159,8 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
             'username' => $this->username,
             'password' => $this->generateHashedPassword(),
             'admin'    => 1,
-            'tstamp'   => $GLOBALS['EXEC_TIME'],
-            'crdate'   => $GLOBALS['EXEC_TIME']
+            'tstamp'   => $GLOBALS['EXEC_TIME'] ?? time(),
+            'crdate'   => $GLOBALS['EXEC_TIME'] ?? time(),
         ];
 
         $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)

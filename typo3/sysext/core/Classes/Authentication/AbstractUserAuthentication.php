@@ -1241,7 +1241,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function setBeUserByName($name)
     {
-        $this->user = $this->getRawUserByName($name);
+        $this->user = $this->getRawUserByName($name) ?: null;
     }
 
     /**
