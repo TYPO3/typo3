@@ -90,12 +90,25 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        php -dxdebug.mode=off \
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          php -dxdebug.mode=off \
+            .Build/bin/php-cs-fixer fix \
+              -v \
+              ${CGLCHECK_DRY_RUN} \
+              --config=.Build/vendor/typo3/coding-standards/templates/extension_php_cs.dist \
+              --using-cache=no .
+        else
+          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          PHP_CS_FIXER_ALLOW_XDEBUG=1 \
           .Build/bin/php-cs-fixer fix \
             -v \
             ${CGLCHECK_DRY_RUN} \
             --config=.Build/vendor/typo3/coding-standards/templates/extension_php_cs.dist \
             --using-cache=no .
+        fi
       "
 
   composer_install:
