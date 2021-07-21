@@ -32,7 +32,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  */
 class GeneratorCommand extends Command
 {
-
     protected function configure(): void
     {
         $this->addArgument('type', InputArgument::OPTIONAL, 'Create page tree data, valid arguments are "tca", "frontend" and "all"', 'all');
@@ -50,38 +49,38 @@ class GeneratorCommand extends Command
         // Make sure the _cli_ user is loaded
         Bootstrap::initializeBackendAuthentication();
 
-        if(!$input->getOption('create') && !$input->getOption('delete') ) {
+        if (!$input->getOption('create') && !$input->getOption('delete')) {
             $output->writeln('<info>Please specify an option "--create" or "--delete"</info>');
         }
 
         switch ($input->getArgument('type')) {
             case 'tca':
-                if($input->getOption('create')) {
+                if ($input->getOption('create')) {
                     $this->createTca($output);
                 }
 
-                if($input->getOption('delete')) {
+                if ($input->getOption('delete')) {
                     $this->deleteTca($output);
                 }
                 break;
 
             case 'frontend':
-                if($input->getOption('create')) {
+                if ($input->getOption('create')) {
                     $this->createFrontend($output);
                 }
 
-                if($input->getOption('delete')) {
+                if ($input->getOption('delete')) {
                     $this->deleteFrontend($output);
                 }
                 break;
 
             case 'all':
-                if($input->getOption('create')) {
+                if ($input->getOption('create')) {
                     $this->createTca($output);
                     $this->createFrontend($output);
                 }
 
-                if($input->getOption('delete')) {
+                if ($input->getOption('delete')) {
                     $this->deleteTca($output);
                     $this->deleteFrontend($output);
                 }

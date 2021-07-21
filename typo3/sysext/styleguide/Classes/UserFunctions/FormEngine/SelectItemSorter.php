@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
@@ -31,7 +32,7 @@ class SelectItemSorter
         @usort(
             $items,
             function ($item1, $item2) {
-                return strcasecmp(strrev((string) $item1[0]), strrev((string) $item2[0]));
+                return strcasecmp(strrev((string)$item1[0]), strrev((string)$item2[0]));
             }
         );
     }

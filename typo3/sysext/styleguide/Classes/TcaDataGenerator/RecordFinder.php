@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class contains helper methods to locate uids or pids of specific records
@@ -298,7 +297,7 @@ class RecordFinder
                 )
             );
 
-        if(!empty($types)) {
+        if (!empty($types)) {
             $orX = $queryBuilder->expr()->orX();
             foreach ($types as $type) {
                 $orX->add($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($type)));

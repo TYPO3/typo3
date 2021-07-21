@@ -220,7 +220,7 @@ abstract class AbstractGenerator
             empty($commands) ?:$dataHandler->process_cmdmap();
 
             // Update signal only if not running in cli mode
-            if(!Environment::isCli()) {
+            if (!Environment::isCli()) {
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
         }

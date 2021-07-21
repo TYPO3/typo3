@@ -107,7 +107,7 @@ class GeneratorFrontend extends AbstractGenerator
             ];
 
             // Set keyword for menu_related_pages to show up
-            if (substr($type, 0, 5) === "menu_") {
+            if (substr($type, 0, 5) === 'menu_') {
                 $data['pages'][$newIdOfPage]['keywords'] = 'Bacon';
             }
 
@@ -118,12 +118,12 @@ class GeneratorFrontend extends AbstractGenerator
                 $data['tt_content'][$newIdOfContent]['pid'] = $newIdOfPage;
                 $data['tt_content'][$newIdOfContent]['categories'] = $newIdOfCategory;
 
-                if($type === 'menu_categorized_content') {
+                if ($type === 'menu_categorized_content') {
                     $data['tt_content'][$newIdOfContent]['selected_categories'] = $newIdOfCategory;
                     $data['tt_content'][$newIdOfContent]['category_field'] = 'categories';
                 }
 
-                if($type === 'menu_categorized_pages') {
+                if ($type === 'menu_categorized_pages') {
                     $data['tt_content'][$newIdOfContent]['selected_categories'] = $newIdOfCategory;
                 }
 
@@ -134,7 +134,7 @@ class GeneratorFrontend extends AbstractGenerator
         $this->write($data);
 
         // Create site configuration for frontend
-        if($GLOBALS['TYPO3_REQUEST']) {
+        if ($GLOBALS['TYPO3_REQUEST']) {
             $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . '/';
         } else {
             // On cli there is not TYPO3_REUQEST object, therefore use only slash
@@ -165,7 +165,7 @@ class GeneratorFrontend extends AbstractGenerator
         try {
             $rootUid = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root']);
 
-            if(!empty($rootUid)) {
+            if (!empty($rootUid)) {
                 $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($rootUid[0]);
                 $identifier = $site->getIdentifier();
                 GeneralUtility::makeInstance(SiteConfiguration::class)->delete($identifier);

@@ -172,7 +172,6 @@ return [
             ),
         ],
 
-
         'inline_flex_1' => [
             'exclude' => 1,
             'label' => 'flex_1',

@@ -57,6 +57,6 @@ class TypeGroupDbAllowedSysFiles extends AbstractFieldGenerator implements Field
         if ($image != null) {
             $ret = $image->getUid();
         }
-        return (string) $ret;
+        return (string)$ret;
     }
 }

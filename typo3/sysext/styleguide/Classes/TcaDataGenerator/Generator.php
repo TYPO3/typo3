@@ -199,7 +199,7 @@ class Generator extends AbstractGenerator
         $this->deleteFalFolder('styleguide');
 
         // Delete site configuration
-        if($topUids[0] ?? false) {
+        if ($topUids[0] ?? false) {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topUids[0]);
             GeneralUtility::makeInstance(SiteConfiguration::class)->delete($site->getIdentifier());
         }

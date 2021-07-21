@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
@@ -28,7 +29,7 @@ class DisplayConditionUserFunc
      */
     public function lessThen($parameter): bool
     {
-        return (int) $parameter['record'][$parameter['conditionParameters'][0]] <
-            (int) $parameter['record'][$parameter['conditionParameters'][1]];
+        return (int)$parameter['record'][$parameter['conditionParameters'][0]] <
+            (int)$parameter['record'][$parameter['conditionParameters'][1]];
     }
 }
