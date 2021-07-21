@@ -463,7 +463,7 @@ class LoginController
             ->from($systemNewsTable)
             ->orderBy('crdate', 'DESC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = [
                 'uid' => $systemNewsRecord['uid'],

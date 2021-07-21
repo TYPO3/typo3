@@ -167,7 +167,7 @@ class GroupResolver
                 $queryBuilder->expr()->orX(...$constraints)
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         return !empty($users) ? $users : [];
     }
 

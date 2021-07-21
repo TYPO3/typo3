@@ -2452,7 +2452,7 @@ class DataHandler implements LoggerAwareInterface
             );
         }
 
-        $result = $queryBuilder->execute()->fetchAll();
+        $result = $queryBuilder->execute()->fetchAllAssociative();
 
         return $result;
     }
@@ -3887,14 +3887,14 @@ class DataHandler implements LoggerAwareInterface
         // If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid) ?? 0;
         // Get the localized records to be copied
-        $l10nRecords = $queryBuilder->execute()->fetchAll();
+        $l10nRecords = $queryBuilder->execute()->fetchAllAssociative();
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
             // If $destPid < 0, then it is the uid of the original language record we are inserting after
             if ($destPid < 0) {
                 // Get the localized records of the record we are inserting after
                 $queryBuilder->setParameter('pointer', abs($destPid), \PDO::PARAM_INT);
-                $destL10nRecords = $queryBuilder->execute()->fetchAll();
+                $destL10nRecords = $queryBuilder->execute()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -4312,7 +4312,7 @@ class DataHandler implements LoggerAwareInterface
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
@@ -4320,7 +4320,7 @@ class DataHandler implements LoggerAwareInterface
             if ($originalRecordDestinationPid < 0) {
                 // Get the localized records of the record we are inserting after
                 $queryBuilder->setParameter('pointer', abs($originalRecordDestinationPid), \PDO::PARAM_INT);
-                $destL10nRecords = $queryBuilder->execute()->fetchAll();
+                $destL10nRecords = $queryBuilder->execute()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -7487,7 +7487,7 @@ class DataHandler implements LoggerAwareInterface
 
                 $subResults = $queryBuilder
                     ->execute()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
                 // Fetches the next record in order to calculate the in-between sortNumber
                 // There was a record afterwards
                 if (count($subResults) === 2) {

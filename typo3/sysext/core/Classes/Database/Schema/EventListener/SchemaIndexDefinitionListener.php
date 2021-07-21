@@ -62,7 +62,7 @@ class SchemaIndexDefinitionListener
             $sql .= ' AND ' . $connection->quoteIdentifier('INDEX_NAME') . ' = ' . $connection->quote($indexName);
         }
 
-        $tableIndexes = $event->getConnection()->fetchAll($sql);
+        $tableIndexes = $event->getConnection()->fetchAllAssociative($sql);
 
         $subPartColumns = array_filter(
             $tableIndexes,

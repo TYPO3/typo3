@@ -490,7 +490,7 @@ class PageLayoutController
             ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
 
         $links = [];
-        $rows = $queryBuilder->execute()->fetchAll();
+        $rows = $queryBuilder->execute()->fetchAllAssociative();
         if (!empty($rows)) {
             foreach ($rows as $row) {
                 $linkToPid = GeneralUtility::linkThisScript(['id' => $row['uid']]);

@@ -250,7 +250,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $queryBuilder->setMaxResults($query->getLimit());
             }
             try {
-                $rows = $queryBuilder->execute()->fetchAll();
+                $rows = $queryBuilder->execute()->fetchAllAssociative();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074485, $e);
             }
@@ -283,14 +283,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721, $e);
             }
-            $rows = $result->fetchAll();
+            $rows = $result->fetchAllAssociative();
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
                 $realStatement->execute($parameters);
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404, $e);
             }
-            $rows = $realStatement->fetchAll();
+            $rows = $realStatement->fetchAllAssociative();
         } else {
             // Do a real raw query. This is very stupid, as it does not allow to use DBAL's real power if
             // several tables are on different databases, so this is used with caution and could be removed
@@ -302,7 +302,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064775, $e);
             }
 
-            $rows = $statement->fetchAll();
+            $rows = $statement->fetchAllAssociative();
         }
 
         return $rows;
@@ -590,7 +590,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         if (!empty($movedRecords)) {
             $rows = $movedRecords;
         }

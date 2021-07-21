@@ -400,7 +400,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     )
                 )
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
             $deleteFile = true;
             if (!empty($refIndexRecords)) {
                 $shortcutContent = [];

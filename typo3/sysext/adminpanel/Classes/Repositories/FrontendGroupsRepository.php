@@ -98,7 +98,7 @@ class FrontendGroupsRepository
             )
             ->orderBy('fe_groups.title')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**

@@ -130,7 +130,7 @@ class FailedLoginAttemptNotification
             ->select('*')
             ->orderBy('tstamp')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         return is_array($previousFailures) ? $previousFailures : [];
     }
 

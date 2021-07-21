@@ -67,7 +67,7 @@ class DatabaseService
                 $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter('tt_content', \PDO::PARAM_STR))
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -132,6 +132,6 @@ class DatabaseService
             ->where(...$constraints)
             ->groupBy($column)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 }

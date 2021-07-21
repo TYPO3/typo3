@@ -261,7 +261,7 @@ class SlugHelper
         $statement = $queryBuilder->execute();
 
         $records = $this->resolveVersionOverlays(
-            $statement->fetchAll()
+            $statement->fetchAllAssociative()
         );
         return count($records) === 0;
     }
@@ -294,7 +294,7 @@ class SlugHelper
         $statement = $queryBuilder->execute();
 
         $records = $this->resolveVersionOverlays(
-            $statement->fetchAll()
+            $statement->fetchAllAssociative()
         );
         if (count($records) === 0) {
             return true;
@@ -354,7 +354,7 @@ class SlugHelper
         $statement = $queryBuilder->execute();
 
         $records = $this->resolveVersionOverlays(
-            $statement->fetchAll()
+            $statement->fetchAllAssociative()
         );
 
         return count($records) === 0;

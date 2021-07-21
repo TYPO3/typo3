@@ -232,7 +232,7 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, array $expectedResult): void
     {
         $result = $this->subject->getRecordsToCopyDatabaseResult($pageId, $destLanguageId, $languageId, 'uid');
-        $result = $result->fetchAll();
+        $result = $result->fetchAllAssociative();
         self::assertEquals($expectedResult, $result);
     }
 }

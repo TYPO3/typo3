@@ -214,7 +214,7 @@ class SlugService implements LoggerAwareInterface
             )
             ->orderBy('uid', 'ASC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // if the language is not the default language, resolve the language related records.
         if ($languageUid > 0) {
@@ -228,7 +228,7 @@ class SlugService implements LoggerAwareInterface
                 )
                 ->orderBy('uid', 'ASC')
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
         }
         $results = [];
         if (!empty($subPages)) {

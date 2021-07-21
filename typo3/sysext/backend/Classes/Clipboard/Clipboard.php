@@ -444,7 +444,7 @@ class Clipboard
                     GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId)
                 );
             }
-            $rows = $queryBuilder->execute()->fetchAll();
+            $rows = $queryBuilder->execute()->fetchAllAssociative();
             if (is_array($rows)) {
                 foreach ($rows as $rec) {
                     $lines[] = [

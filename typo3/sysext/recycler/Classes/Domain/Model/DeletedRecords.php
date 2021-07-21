@@ -240,7 +240,7 @@ class DeletedRecords
                 )
                 ->orderBy('uid')
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
 
             if ($recordsToCheck !== false) {
                 $this->checkRecordAccess($table, $recordsToCheck);

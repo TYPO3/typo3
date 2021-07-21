@@ -1291,7 +1291,7 @@ class SchedulerModuleController
             ->from('tx_scheduler_task_group')
             ->orderBy('sorting')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**

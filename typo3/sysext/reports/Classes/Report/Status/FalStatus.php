@@ -109,7 +109,7 @@ class FalStatus implements StatusProviderInterface
                 )
                 ->setMaxResults($maxFilesToShow)
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
 
             $message = '<p>' . $this->getLanguageService()->getLL('status_missingFilesMessage') . '</p>';
             foreach ($files as $file) {

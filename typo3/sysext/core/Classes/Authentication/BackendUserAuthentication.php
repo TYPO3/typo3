@@ -728,7 +728,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     )
                 )
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
 
             foreach ($recordLocalizations as $recordLocalization) {
                 if (!$this->checkLanguageAccess($recordLocalization[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
@@ -1363,7 +1363,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $readablePagesOfWebMounts = array_column(($readablePagesOfWebMounts ?: []), 'uid', 'uid');
         foreach ($allWebMounts as $key => $mountPointUid) {
             // If the mount ID is NOT found among selected pages, unset it:
@@ -1527,7 +1527,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $queryBuilder->addOrderBy(...$fieldAndDirection);
             }
 
-            $fileMountRecords = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
+            $fileMountRecords = $queryBuilder->execute()->fetchAllAssociative();
             if ($fileMountRecords !== false) {
                 foreach ($fileMountRecords as $fileMount) {
                     $fileMountRecordCache[$fileMount['base'] . $fileMount['path']] = $fileMount;

@@ -120,7 +120,7 @@ class FileSearchResult implements FileSearchResultInterface
         if ($this->result !== null) {
             return;
         }
-        $this->result = FileSearchQuery::createForSearchDemand($this->searchDemand)->execute()->fetchAll();
+        $this->result = FileSearchQuery::createForSearchDemand($this->searchDemand)->execute()->fetchAllAssociative();
         $this->resultCount = count($this->result);
         $this->result = array_map(
             function (array $fileRow) {

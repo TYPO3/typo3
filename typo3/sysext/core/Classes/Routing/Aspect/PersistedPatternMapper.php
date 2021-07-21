@@ -230,7 +230,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             ->select('*')
             ->where(...$this->createRouteFieldConstraints($queryBuilder, $values))
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         // limit results to be contained in rootPageId of current Site
         // (which is defining the route configuration currently being processed)
         if ($this->slugUniqueInSite) {

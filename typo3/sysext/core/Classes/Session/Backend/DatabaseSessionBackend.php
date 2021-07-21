@@ -225,7 +225,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     {
         $query = $this->getQueryBuilder();
         $query->select('*')->from($this->configuration['table']);
-        return $query->execute()->fetchAll();
+        return $query->execute()->fetchAllAssociative();
     }
 
     /**

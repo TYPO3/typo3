@@ -356,7 +356,7 @@ class QueryGenerator
                         // EXPLAIN is no ANSI SQL, for now this is only executed on mysql
                         // @todo: Move away from getSelectQuery() or model differently
                         $fullQueryString = 'EXPLAIN ' . $selectQueryString;
-                        $dataRows = $connection->executeQuery('EXPLAIN ' . $selectQueryString)->fetchAll();
+                        $dataRows = $connection->executeQuery('EXPLAIN ' . $selectQueryString)->fetchAllAssociative();
                     } elseif ($mQ === 'count') {
                         $queryBuilder = $connection->createQueryBuilder();
                         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -367,7 +367,7 @@ class QueryGenerator
                         $dataRows = [$queryBuilder->execute()->fetchOne()];
                     } else {
                         $fullQueryString = $selectQueryString;
-                        $dataRows = $connection->executeQuery($selectQueryString)->fetchAll();
+                        $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
                     }
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';

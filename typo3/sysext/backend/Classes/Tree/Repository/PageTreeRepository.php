@@ -220,7 +220,7 @@ class PageTreeRepository
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // This is necessary to resolve all IDs in a workspace
         if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
@@ -259,7 +259,7 @@ class PageTreeRepository
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
                     )
                     ->execute()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
 
                 foreach ($pageRecords as &$pageRecord) {
                     if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER && !empty($movedPages[$pageRecord['t3ver_oid']])) {
@@ -330,7 +330,7 @@ class PageTreeRepository
             );
         }
 
-        $pageRecords = $query->execute()->fetchAll();
+        $pageRecords = $query->execute()->fetchAllAssociative();
 
         $ids = array_column($pageRecords, 'uid');
         foreach ($dbMounts as $mount) {
@@ -380,7 +380,7 @@ class PageTreeRepository
                     $queryBuilder->expr()->in('uid', $recordIds)
                 )
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
         }
 
         // Now set up sorting, nesting (tree-structure) for all pages based on pid+sorting fields
@@ -523,7 +523,7 @@ class PageTreeRepository
         $queryBuilder->andWhere($searchParts);
         $pageRecords = $queryBuilder
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $livePagePids = [];
         if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
@@ -565,7 +565,7 @@ class PageTreeRepository
                 $queryBuilder->andWhere($searchParts);
                 $pageRecords = $queryBuilder
                     ->execute()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
             }
         }
 

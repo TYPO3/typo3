@@ -865,7 +865,7 @@ class FileList
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $translations = [];
         foreach ($translationRecords as $record) {

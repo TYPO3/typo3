@@ -182,7 +182,7 @@ class TranslationConfigurationProvider
         }
         $translationRecords = $queryBuilder
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $translations = [];
         $translationsErrors = [];

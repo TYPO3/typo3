@@ -253,7 +253,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             )
             ->groupBy($languageField, 'uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (!empty($possibleRecords)) {
             // Either only one record or first record matches language

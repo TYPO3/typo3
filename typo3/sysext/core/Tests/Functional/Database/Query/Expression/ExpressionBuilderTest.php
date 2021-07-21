@@ -47,7 +47,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 1,
@@ -118,7 +118,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 1,
@@ -155,7 +155,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 6,
@@ -192,7 +192,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 11,
@@ -229,7 +229,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 16,
@@ -266,7 +266,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 21,
@@ -303,7 +303,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 26,
@@ -340,7 +340,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 31,
@@ -377,7 +377,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             )
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $expected = [
             0 => [
                 'uid' => 36,

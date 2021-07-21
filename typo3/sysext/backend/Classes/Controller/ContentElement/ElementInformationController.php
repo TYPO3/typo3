@@ -685,7 +685,7 @@ class ElementInformationController
             ->from('sys_refindex')
             ->where(...$predicates)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // Compile information for title tag:
         foreach ($rows as $row) {
@@ -776,7 +776,7 @@ class ElementInformationController
             ->from('sys_refindex')
             ->where(...$predicates)
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // Compile information for title tag:
         foreach ($rows as $row) {

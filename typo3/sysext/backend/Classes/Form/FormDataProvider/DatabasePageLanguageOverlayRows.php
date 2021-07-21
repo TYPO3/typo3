@@ -69,7 +69,7 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
                 $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
             ))
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $rows;
     }

@@ -468,7 +468,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                             )
                         )
                         ->execute()
-                        ->fetchAll();
+                        ->fetchAllAssociative();
 
                     if (!empty($records)) {
                         $relatedUids = array_column($records, 'uid');
@@ -511,7 +511,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             );
         }
 
-        $records = $queryBuilder->execute()->fetchAll();
+        $records = $queryBuilder->execute()->fetchAllAssociative();
         $uidArray = is_array($records) ? array_column($records, 'uid') : [];
 
         return $uidArray;

@@ -110,7 +110,7 @@ class FileCollectionRepository
             $queryBuilder->where(...$conditions);
         }
 
-        $data = $queryBuilder->execute()->fetchAll();
+        $data = $queryBuilder->execute()->fetchAllAssociative();
         if (!empty($data)) {
             $result = $this->createMultipleDomainObjects($data);
         }

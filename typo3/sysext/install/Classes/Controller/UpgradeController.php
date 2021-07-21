@@ -1266,7 +1266,7 @@ class UpgradeController extends AbstractController
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $hashesMarkedAsRead = [];
         foreach ($filesMarkedAsRead as $file) {
             $hashesMarkedAsRead[] = $file['entry_key'];
@@ -1282,7 +1282,7 @@ class UpgradeController extends AbstractController
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $hashesMarkedAsNotAffected = [];
         foreach ($fileMarkedAsNotAffected as $file) {
             $hashesMarkedAsNotAffected[] = $file['entry_key'];

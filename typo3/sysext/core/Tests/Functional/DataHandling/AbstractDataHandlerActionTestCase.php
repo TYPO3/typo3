@@ -263,7 +263,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 $entryData = (array)unserialize($entry['log_data'], ['allowed_classes' => false]);
                 return vsprintf($entry['details'], $entryData);
             },
-            $statement->fetchAll()
+            $statement->fetchAllAssociative()
         );
 
         if ($expectedMessages !== null) {

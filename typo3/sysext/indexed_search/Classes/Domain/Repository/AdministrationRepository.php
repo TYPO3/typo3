@@ -287,7 +287,7 @@ class AdministrationRepository
             )
             ->groupBy('phash_grouping')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return count($items);
     }
@@ -438,7 +438,7 @@ class AdministrationRepository
             );
         }
 
-        return $queryBuilder->execute()->fetchAll();
+        return $queryBuilder->execute()->fetchAllAssociative();
     }
 
     /**
@@ -629,7 +629,7 @@ class AdministrationRepository
                         ->groupBy('index_words.baseword')
                         ->orderBy('index_words.baseword')
                         ->execute()
-                        ->fetchAll();
+                        ->fetchAllAssociative();
 
                     if (is_array($wordRecords)) {
                         $row['allWords'] = array_column($wordRecords, 'baseword');

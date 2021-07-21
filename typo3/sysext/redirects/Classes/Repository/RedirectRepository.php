@@ -38,7 +38,7 @@ class RedirectRepository
             ->setMaxResults($demand->getLimit())
             ->setFirstResult($demand->getOffset())
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     public function countRedirectsByByDemand(Demand $demand): int
@@ -125,7 +125,7 @@ class RedirectRepository
             ->orderBy('source_host')
             ->groupBy('source_host')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -139,7 +139,7 @@ class RedirectRepository
             ->orderBy('target_statuscode')
             ->groupBy('target_statuscode')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     protected function getQueryBuilder(): QueryBuilder

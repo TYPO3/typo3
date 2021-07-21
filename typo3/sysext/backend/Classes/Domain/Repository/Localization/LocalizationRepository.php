@@ -146,7 +146,7 @@ class LocalizationRepository
             ->groupBy('sys_language_uid');
 
         $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser());
-        $languages = $queryBuilder->execute()->fetchAll();
+        $languages = $queryBuilder->execute()->fetchAllAssociative();
         return $languages ?: [];
     }
 

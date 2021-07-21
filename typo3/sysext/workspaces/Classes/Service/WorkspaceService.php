@@ -400,7 +400,7 @@ class WorkspaceService implements SingletonInterface
             ->where(...$constraints)
             ->orderBy('B.uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $rows;
     }
@@ -521,7 +521,7 @@ class WorkspaceService implements SingletonInterface
             ->where(...$constraints)
             ->orderBy('uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -622,7 +622,7 @@ class WorkspaceService implements SingletonInterface
             ->where(...$constraints)
             ->orderBy('C.uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $rows;
     }

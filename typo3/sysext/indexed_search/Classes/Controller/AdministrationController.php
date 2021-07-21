@@ -338,7 +338,7 @@ class AdministrationController extends ActionController
             )
             ->orderBy('index_words.baseword')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         foreach ($wordRecords as $id => $row) {
             if (isset($keywords[$row['baseword']])) {
                 $wordRecords[$id]['is_keyword'] = true;
@@ -374,7 +374,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // top words
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
@@ -399,7 +399,7 @@ class AdministrationController extends ActionController
             )
             ->orderBy('index_rel.count', 'DESC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // top frequency
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
@@ -424,7 +424,7 @@ class AdministrationController extends ActionController
             )
             ->orderBy('index_rel.freq', 'DESC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $this->view->assignMultiple([
             'phash' => (int)$pageHash,
@@ -495,7 +495,7 @@ class AdministrationController extends ActionController
             )
             ->orderBy('index_rel.freq', 'desc')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $this->view->assignMultiple([
             'rows' => $rows,

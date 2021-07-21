@@ -76,7 +76,7 @@ class DashboardRepository
                 $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($userId))
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $results = [];
         foreach ($rows as $row) {
             $results[] = $this->createFromRow($row);
@@ -165,7 +165,7 @@ class DashboardRepository
             ->from(self::TABLE)
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         if (count($row)) {
             return $this->createFromRow($row[0]);
         }

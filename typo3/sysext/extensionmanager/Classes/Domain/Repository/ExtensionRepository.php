@@ -199,7 +199,7 @@ class ExtensionRepository extends Repository
             )
             ->orderBy('position', 'DESC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         return $dataMapper->map(Extension::class, $result);

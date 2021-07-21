@@ -233,7 +233,7 @@ class LocalizationController
             'uid'
         );
 
-        return array_intersect(array_unique($transmittedUidList), array_column($validUidList->fetchAll(), 'uid'));
+        return array_intersect(array_unique($transmittedUidList), array_column($validUidList->fetchAllAssociative(), 'uid'));
     }
 
     /**

@@ -172,7 +172,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 ->orderBy('colPos')
                 ->addOrderBy('sorting')
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
 
             // Enrich list of records
             foreach ($contentElements as &$contentElement) {

@@ -310,7 +310,7 @@ class PlainDataResolver
         // We thus add a general explicit order by uid here to force deterministic row returns.
         $queryBuilder->addOrderBy('uid');
 
-        $sortedIds = $queryBuilder->execute()->fetchAll();
+        $sortedIds = $queryBuilder->execute()->fetchAllAssociative();
 
         return array_map('intval', array_column($sortedIds, 'uid'));
     }

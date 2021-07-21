@@ -176,7 +176,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $resultRows;
     }
@@ -436,7 +436,7 @@ class FileIndexRepository implements SingletonInterface
             )
             ->orderBy('tstamp', 'ASC')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $rows;
     }
@@ -471,7 +471,7 @@ class FileIndexRepository implements SingletonInterface
             );
         }
 
-        $rows = $queryBuilder->execute()->fetchAll();
+        $rows = $queryBuilder->execute()->fetchAllAssociative();
 
         return $rows;
     }

@@ -84,7 +84,7 @@ class RecordService implements SingletonInterface
                 )
                 ->groupBy($createUserIdFieldName)
                 ->execute()
-                ->fetchAll();
+                ->fetchAllAssociative();
 
             $records = array_column($records, $createUserIdFieldName);
 

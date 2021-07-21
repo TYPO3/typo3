@@ -258,7 +258,7 @@ class BrokenLinkRepository
             ->orderBy('tx_linkvalidator_link.record_uid')
             ->addOrderBy('tx_linkvalidator_link.uid')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         foreach ($records as &$record) {
             $response = json_decode($record['url_response'], true);
             // Fallback mechanism to still support the old serialized data, could be removed in TYPO3 v12 or later

@@ -318,7 +318,7 @@ class BackendUtility
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($andWhereClause));
             }
 
-            $recordLocalization = $queryBuilder->execute()->fetchAll();
+            $recordLocalization = $queryBuilder->execute()->fetchAllAssociative();
         }
 
         return $recordLocalization;
@@ -3319,7 +3319,7 @@ class BackendUtility
                 );
             }
 
-            $rows = $queryBuilder->execute()->fetchAll();
+            $rows = $queryBuilder->execute()->fetchAllAssociative();
 
             // Add rows to output array:
             if (is_array($rows)) {
