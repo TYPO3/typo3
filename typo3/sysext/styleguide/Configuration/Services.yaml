@@ -1,4 +1,12 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Styleguide\:
+    resource: '../Classes/*'
+
   TYPO3\CMS\Styleguide\Command\KauderwelschCommand:
     tags:
       - name: 'console.command'
