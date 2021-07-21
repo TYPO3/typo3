@@ -25,7 +25,7 @@ class ForwardResponse extends Response
     private string $actionName;
     private ?string $controllerName = null;
     private ?string $extensionName = null;
-    private array $arguments = [];
+    private ?array $arguments = null;
     private Result $argumentsValidationResult;
 
     public function __construct(string $actionName)
@@ -73,7 +73,7 @@ class ForwardResponse extends Response
     public function withoutArguments(): self
     {
         $clone = clone $this;
-        $this->arguments = [];
+        $this->arguments = null;
         return $clone;
     }
 
@@ -99,7 +99,7 @@ class ForwardResponse extends Response
         return $this->extensionName;
     }
 
-    public function getArguments(): array
+    public function getArguments(): ?array
     {
         return $this->arguments;
     }
