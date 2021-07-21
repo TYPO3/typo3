@@ -240,7 +240,7 @@ cd "$THIS_SCRIPT_DIR" || exit 1
 cd ../testing-docker/local || exit 1
 
 # Option defaults
-CORE_ROOT="${PWD}/../../../"
+CORE_ROOT=`realpath ${PWD}/../../../`
 TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="7.2"

@@ -20,7 +20,7 @@ services:
   mssql2019latest:
     image: typo3/core-testing-mssql2019:latest
     environment:
-      ACCEPT_EULA: Y
+      ACCEPT_EULA: "Y"
       SA_PASSWORD: "Test1234!"
       MSSQL_PID: Developer
 
@@ -34,7 +34,7 @@ services:
 
   web:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     stop_grace_period: 1s
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -48,7 +48,7 @@ services:
 
   acceptance_split:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
@@ -73,7 +73,7 @@ services:
       "
   acceptance_backend_mariadb:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     environment:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
@@ -120,7 +120,7 @@ services:
       "
   acceptance_backend_mysql:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     environment:
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
@@ -167,7 +167,7 @@ services:
       "
   acceptance_backend_postgres:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -217,7 +217,7 @@ services:
       "
   acceptance_install_mysql:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     environment:
       typo3InstallMysqlDatabaseHost: mysql
       typo3InstallMysqlDatabaseName: func_test
@@ -257,7 +257,7 @@ services:
       "
   acceptance_install_mariadb:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     environment:
       typo3InstallMysqlDatabaseHost: mariadb
       typo3InstallMysqlDatabaseName: func_test
@@ -297,7 +297,7 @@ services:
       "
   acceptance_install_postgres:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     environment:
       typo3InstallPostgresqlDatabaseHost: postgres
       typo3InstallPostgresqlDatabaseName: ${HOST_USER}
@@ -329,7 +329,7 @@ services:
       "
   acceptance_install_sqlite:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -347,7 +347,7 @@ services:
 
   build_css:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -365,7 +365,7 @@ services:
 
   build_javascript:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -383,7 +383,7 @@ services:
 
   cgl_git:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -400,7 +400,7 @@ services:
 
   cgl_all:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -418,7 +418,7 @@ services:
 
   check_annotations:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -435,7 +435,7 @@ services:
 
   check_bom:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -452,7 +452,7 @@ services:
 
   check_composer:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -469,7 +469,7 @@ services:
 
   check_csv_fixtures:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -486,7 +486,7 @@ services:
 
   fix_csv_fixtures:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -503,7 +503,7 @@ services:
 
   check_exception_codes:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -520,7 +520,7 @@ services:
 
   check_extension_scanner_rst:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -537,7 +537,7 @@ services:
 
   check_file_path_length:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -554,7 +554,7 @@ services:
 
   check_git_submodule:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -574,7 +574,7 @@ services:
 
   check_grunt_clean:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -596,7 +596,7 @@ services:
 
   check_permissions:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -613,7 +613,7 @@ services:
 
   check_rst:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -630,7 +630,7 @@ services:
 
   check_xlf:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -647,7 +647,7 @@ services:
 
   composer_install:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -667,7 +667,7 @@ services:
 
   composer_install_max:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -692,7 +692,7 @@ services:
 
   composer_install_min:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -714,7 +714,7 @@ services:
 
   composer_validate:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -731,7 +731,7 @@ services:
 
   functional_split:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
@@ -756,7 +756,7 @@ services:
       "
   functional_mariadb:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -813,7 +813,7 @@ services:
       "
   functional_mysql:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -871,7 +871,7 @@ services:
       "
   functional_mssql2019latest:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -930,7 +930,7 @@ services:
       "
   functional_postgres:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -979,7 +979,7 @@ services:
       "
   functional_sqlite:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -1015,7 +1015,7 @@ services:
 
   lint:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${PASSWD_PATH}:/etc/passwd:ro
@@ -1032,7 +1032,7 @@ services:
 
   lint_scss:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -1050,7 +1050,7 @@ services:
 
   lint_typescript:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
     - ${HOST_HOME}:${HOST_HOME}
@@ -1068,7 +1068,7 @@ services:
 
   list_exception_codes:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -1085,7 +1085,7 @@ services:
 
   unit:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -1112,7 +1112,7 @@ services:
 
   unitDeprecated:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -1139,7 +1139,7 @@ services:
 
   unitJavascript:
     image: typo3/core-testing-js-node8:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
@@ -1158,7 +1158,7 @@ services:
 
   unitRandom:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: ${HOST_UID}
+    user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
       - ${HOST_HOME}:${HOST_HOME}
