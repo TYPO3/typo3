@@ -87,7 +87,8 @@ class DownloadRecordListTest extends FunctionalTestCase
         ];
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['pages']);
-        $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user);
+        // Get records with raw values
+        $contentRows = $subject->getRecords('pages', 1, $recordList->setFields['pages'], $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
         self::assertEquals([
             [
@@ -143,19 +144,19 @@ class DownloadRecordListTest extends FunctionalTestCase
                'uid' => '2',
                'pid' => '1',
                'title' => 'Dummy 1-2',
-               'sys_language_uid' => '0'
+               'sys_language_uid' => 'Default'
            ],
            [
                'uid' => '3',
                'pid' => '1',
                'title' => 'Dummy 1-3',
-               'sys_language_uid' => '0'
+               'sys_language_uid' => 'Default'
            ],
            [
                'uid' => '4',
                'pid' => '1',
                'title' => 'Dummy 1-4',
-               'sys_language_uid' => '0'
+               'sys_language_uid' => 'Default'
            ]
        ], $this->prepareRecordsForDbCompatAssertions($result));
     }

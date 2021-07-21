@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Utility;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -1915,6 +1916,17 @@ class BackendUtility
                 break;
             case 'flex':
                 $l = strip_tags($value);
+                break;
+            case 'language':
+                $l = $value;
+                if ($uid) {
+                    $pageId = (int)($table === 'pages' ? $uid : (static::getRecordWSOL($table, (int)$uid, 'pid')['pid'] ?? 0));
+                    $languageTitle = GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
+                        ->getSystemLanguages($pageId)[(int)$value]['title'] ?? '';
+                    if ($languageTitle !== '') {
+                        $l = $languageTitle;
+                    }
+                }
                 break;
             default:
                 if ($defaultPassthrough) {
