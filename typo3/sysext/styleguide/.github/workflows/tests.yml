@@ -27,7 +27,7 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
       - name: CGL
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s cgl
+        run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s cgl
 
       - name: phpstan
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s phpstan
