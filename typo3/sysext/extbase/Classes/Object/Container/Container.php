@@ -138,6 +138,10 @@ class Container implements SingletonInterface, LoggerAwareInterface
      */
     protected function getInstanceInternal(string $className, ...$givenConstructorArguments): object
     {
+        if ($className === ContainerInterface::class) {
+            return $this->psrContainer;
+        }
+
         $className = $this->getImplementationClassName($className);
 
         if ($givenConstructorArguments === [] && $this->psrContainer->has($className)) {
