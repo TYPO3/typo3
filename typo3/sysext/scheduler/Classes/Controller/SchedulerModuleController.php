@@ -370,18 +370,18 @@ class SchedulerModuleController
         $this->view->assign('lastRunMessage', $message);
         $this->view->assign('lastRunSeverity', $severity);
 
-        if (Environment::isComposerMode()) {
+        $script = $this->determineExecutablePath();
+        if (!$script && Environment::isComposerMode()) {
             $this->view->assign('composerMode', true);
         } else {
             // Check if CLI script is executable or not
-            $script = GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
             $this->view->assign('script', $script);
             // Skip this check if running Windows, as rights do not work the same way on this platform
             // (i.e. the script will always appear as *not* executable)
             if (Environment::isWindows()) {
                 $isExecutable = true;
             } else {
-                $isExecutable = is_executable($script);
+                $isExecutable = $script ? is_executable($script) : false;
             }
             if ($isExecutable) {
                 $message = $this->getLanguageService()->getLL('msg.cliScriptExecutable');
@@ -397,6 +397,25 @@ class SchedulerModuleController
         $this->view->assign('now', $this->getServerTime());
 
         return $this->view->render();
+    }
+
+    private function determineExecutablePath(): ?string
+    {
+        if (!Environment::isComposerMode()) {
+            return GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3');
+        }
+        $composerJsonFile = getenv('TYPO3_PATH_COMPOSER_ROOT') . '/composer.json';
+        if (!file_exists($composerJsonFile) || !($jsonContent = file_get_contents($composerJsonFile))) {
+            return null;
+        }
+        $jsonConfig = @json_decode($jsonContent, true);
+        if (empty($jsonConfig) || !is_array($jsonConfig)) {
+            return null;
+        }
+        $vendorDir = trim($jsonConfig['config']['vendor-dir'] ?? 'vendor', '/');
+        $binDir = trim($jsonConfig['config']['bin-dir'] ?? $vendorDir . '/bin', '/');
+
+        return sprintf('%s/%s/typo3', getenv('TYPO3_PATH_COMPOSER_ROOT'), $binDir);
     }
 
     /**
