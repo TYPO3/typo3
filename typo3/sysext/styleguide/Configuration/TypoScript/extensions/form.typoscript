@@ -1,0 +1,11 @@
+plugin.tx_form {
+  settings {
+    yamlConfigurations {
+      100 = EXT:styleguide/Configuration/Yaml/FormSetup.yaml
+    }
+  }
+}
+
+module.tx_form.settings.yamlConfigurations {
+  100 = EXT:styleguide/Configuration/Yaml/FormSetup.yaml
+}

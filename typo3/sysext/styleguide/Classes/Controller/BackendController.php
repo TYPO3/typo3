@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Styleguide\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -33,12 +32,13 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Backend module for Styleguide
  */
-class StyleguideController extends ActionController
+class BackendController extends ActionController
 {
 
     /**
@@ -97,7 +97,7 @@ class StyleguideController extends ActionController
                 LocalizationUtility::translate($this->languageFilePrefix . 'styleguide', 'styleguide'),
                 LocalizationUtility::translate($this->languageFilePrefix . ($arguments['action'] ?? 'index'), 'styleguide')
             ))
-            ->setRouteIdentifier('help_StyleguideStyleguide')
+            ->setRouteIdentifier('help_StyleguideBackend')
             ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);
     }
@@ -149,7 +149,11 @@ class StyleguideController extends ActionController
     {
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
-        $this->view->assign('demoExists', $demoExists);
+        $demoFrontendExists = count($finder->findUidsOfFrontendPages());
+        $this->view->assignMultiple([
+            'demoExists' => $demoExists,
+            'demoFrontendExists' => $demoFrontendExists,
+        ]);
         return $this->htmlResponse($this->view->render());
     }
 
@@ -360,5 +364,47 @@ class StyleguideController extends ActionController
         ]);
 
         return $this->htmlResponse($this->view->render());
+    }
+
+    public function frontendCreateAction(): ResponseInterface
+    {
+
+        /** @var RecordFinder $recordFinder */
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+        if (count($recordFinder->findUidsOfFrontendPages())) {
+            // Tell something was done here
+            $this->addFlashMessage(
+                LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedBody', 'styleguide'),
+                LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedTitle', 'styleguide'),
+                AbstractMessage::ERROR
+            );
+        } else {
+            /** @var GeneratorFrontend $frontend */
+            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
+            $frontend->create();
+            // Tell something was done here
+            $this->addFlashMessage(
+                LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkBody', 'styleguide'),
+                LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkTitle', 'styleguide')
+            );
+        }
+
+        // And redirect to display action
+        return new ForwardResponse('tca');
+    }
+
+    public function frontendDeleteAction(): ResponseInterface
+    {
+        /** @var GeneratorFrontend $frontend */
+        $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
+        $frontend->delete();
+
+        $this->addFlashMessage(
+            LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
+            LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide')
+        );
+
+        // And redirect to display action
+        return new ForwardResponse('tca');
     }
 }

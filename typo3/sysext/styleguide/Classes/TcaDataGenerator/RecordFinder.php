@@ -17,11 +17,13 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class contains helper methods to locate uids or pids of specific records
@@ -214,12 +216,12 @@ class RecordFinder
      *
      * @return File[]
      */
-    public function findDemoFileObjects(): array
+    public function findDemoFileObjects(string $path = 'styleguide'): array
     {
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
-        $folder = $folder->getSubfolder('styleguide');
+        $folder = $folder->getSubfolder($path);
         return $folder->getFiles();
     }
 
@@ -234,5 +236,76 @@ class RecordFinder
         $storage = $storageRepository->findByUid(1);
         $folder = $storage->getRootLevelFolder();
         return $folder->getSubfolder('styleguide');
+    }
+
+    /**
+     * Get all styleguide frontend page UIDs
+     *
+     * @param array|string[] $types
+     * @return array
+     */
+    public function findUidsOfFrontendPages(array $types = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend']): array
+    {
+        $allowedTypes = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder->select('uid')
+            ->from('pages');
+
+        foreach ($types as $type) {
+            if (!in_array($type, $allowedTypes)) {
+                continue;
+            }
+
+            $queryBuilder->orWhere(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter((string)$type)
+                )
+            );
+        }
+
+        $rows = $queryBuilder->orderBy('pid', 'DESC')->execute()->fetchAll();
+        $result = [];
+        if (is_array($rows)) {
+            $result = array_column($rows, 'uid');
+            sort($result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Find tt_content by ctype and identifier
+     *
+     * @param array|string[] $types
+     * @param string $identifier
+     * @return array
+     */
+    public function findTtContent(array $types = ['textmedia', 'textpic', 'image', 'uploads'], string $identifier = 'tx_styleguide_frontend'): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder->select('uid', 'pid', 'CType')
+            ->from('tt_content')->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter($identifier)
+                )
+            );
+
+        if(!empty($types)) {
+            $orX = $queryBuilder->expr()->orX();
+            foreach ($types as $type) {
+                $orX->add($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($type)));
+            }
+            $queryBuilder->andWhere((string)$orX);
+        }
+
+        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAll();
     }
 }

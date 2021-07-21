@@ -1,0 +1,85 @@
+// Extensions default config
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:form/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:indexed_search/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:felogin/Configuration/TypoScript/setup.typoscript'
+
+// Local extension config
+@import 'EXT:styleguide/Configuration/TypoScript/extensions/form.typoscript'
+@import 'EXT:styleguide/Configuration/TypoScript/extensions/felogin.typoscript'
+
+// Define template paths for fluid_styled_content
+lib.contentElement {
+  templateName = Default
+  templateRootPaths {
+    10 = EXT:styleguide/Resources/Private/Templates/Content/
+  }
+
+  partialRootPaths {
+    10 = EXT:styleguide/Resources/Private/Partials/Content/
+  }
+
+  layoutRootPaths {
+    10 = EXT:styleguide/Resources/Private/Layouts/Content/
+  }
+}
+
+lib.dynamicContent = COA
+lib.dynamicContent {
+  10 = LOAD_REGISTER
+  10.colPos.cObject = TEXT
+  10.colPos.cObject {
+    field = colPos
+    ifEmpty.cObject = TEXT
+    ifEmpty.cObject {
+      value.current = 1
+      ifEmpty = 0
+    }
+  }
+
+  20 = CONTENT
+  20 {
+    table = tt_content
+    select {
+      orderBy = sorting
+      where = {#colPos}={register:colPos}
+      where.insertData = 1
+    }
+  }
+  90 = RESTORE_REGISTER
+}
+
+
+page = PAGE
+page {
+  typeNum = 0
+  10 = FLUIDTEMPLATE
+  10 {
+    templateName = StyleguideFrontend
+    #templateName.value = StyleguideFrontend
+
+    // Define template paths
+    templateRootPaths {
+      10 = EXT:styleguide/Resources/Private/Templates/Frontend/
+    }
+
+    partialRootPaths {
+      10 = EXT:styleguide/Resources/Private/Partials/Frontend/
+    }
+
+    layoutRootPaths {
+      10 = EXT:styleguide/Resources/Private/Layouts/Frontend/
+    }
+
+    // Configure main menu
+    dataProcessing {
+      10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+      10 {
+        expandAll = 1
+        levels = 2
+        includeSpacer = 1
+        as = mainNavigation
+      }
+    }
+  }
+}

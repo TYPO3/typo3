@@ -16,25 +16,18 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Resource\DuplicationBehavior;
-use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Manage a page tree with all test / demo styleguide data
  */
-class Generator
+class Generator extends AbstractGenerator
 {
 
     /**
@@ -125,14 +118,11 @@ class Generator
         }
 
         // Populate page tree via DataHandler
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->enableLogging = false;
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-        BackendUtility::setUpdateSignal('updatePageTree');
+        $this->write($data);
 
         // Create a site configuration on root page
-        $this->createSiteConfiguration();
+        $topPageUid = $recordFinder->findUidsOfStyleguideEntryPages()[0];
+        $this->createSiteConfiguration($topPageUid);
 
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
@@ -202,134 +192,15 @@ class Generator
             }
         }
 
-        // Do the thing
-        if (!empty($commands)) {
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->enableLogging = false;
-            $dataHandler->start([], $commands);
-            $dataHandler->process_cmdmap();
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
+        // Process commands to delete records
+        $this->write([], $commands);
 
         // Delete demo images in fileadmin again
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $storage = $storageRepository->findByUid(1);
-        $folder = $storage->getRootLevelFolder();
-        try {
-            $folder = $folder->getSubfolder('styleguide');
-            $folder->delete(true);
-        } catch (\InvalidArgumentException $e) {
-            // No op if folder does not exist
-        }
+        $this->deleteFalFolder('styleguide');
 
         // Delete site configuration
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topUids[0]);
         GeneralUtility::makeInstance(SiteConfiguration::class)->delete($site->getIdentifier());
-    }
-
-    /**
-     * Create a site configuration on new styleguide root page
-     */
-    protected function createSiteConfiguration(): void
-    {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        // There can be only one entry page at this point since it has been checked in create() early.
-        $topPageUid = $recordFinder->findUidsOfStyleguideEntryPages()[0];
-        // When the DataHandler created the page tree, a default site configuration has been added. Fetch,  rename, update.
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topPageUid);
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
-        $siteIdentifier = 'styleguide-demo-' . $topPageUid;
-        $siteConfiguration->rename($site->getIdentifier(), $siteIdentifier);
-        $styleguideSysLanguages = $recordFinder->findUidsOfDemoLanguages();
-        $configuration = [
-            'base' => 'http://localhost/styleguide-demo-' . $topPageUid,
-            'rootPageId' => $topPageUid,
-            'routes' => [],
-            'websiteTitle' => 'styleguide demo ' . $topPageUid,
-            'baseVariants' => [],
-            'errorHandling' => [],
-            'languages' => [
-                [
-                    'title' => 'English',
-                    'enabled' => true,
-                    'languageId' => 0,
-                    'base' => '/',
-                    'typo3Language' => 'default',
-                    'locale' => 'en_US.UTF-8',
-                    'iso-639-1' => 'en',
-                    'navigationTitle' => 'English',
-                    'hreflang' => 'en-us',
-                    'direction' => 'ltr',
-                    'flag' => 'us',
-                    'websiteTitle' => '',
-                ],
-                [
-                    'title' => 'styleguide demo language danish',
-                    'enabled' => true,
-                    'base' => '/da/',
-                    'typo3Language' => 'da',
-                    'locale' => 'da_DK.UTF-8',
-                    'iso-639-1' => 'da',
-                    'websiteTitle' => '',
-                    'navigationTitle' => '',
-                    'hreflang' => '',
-                    'direction' => '',
-                    'fallbackType' => 'strict',
-                    'fallbacks' => '',
-                    'flag' => 'dk',
-                    'languageId' => $styleguideSysLanguages[0],
-                ],
-                [
-                    'title' => 'styleguide demo language german',
-                    'enabled' => true,
-                    'base' => '/de/',
-                    'typo3Language' => 'de',
-                    'locale' => 'de_DE.UTF-8',
-                    'iso-639-1' => 'de',
-                    'websiteTitle' => '',
-                    'navigationTitle' => '',
-                    'hreflang' => '',
-                    'direction' => '',
-                    'fallbackType' => 'strict',
-                    'fallbacks' => '',
-                    'flag' => 'de',
-                    'languageId' => $styleguideSysLanguages[1],
-                ],
-                [
-                    'title' => 'styleguide demo language french',
-                    'enabled' => true,
-                    'base' => '/fr/',
-                    'typo3Language' => 'fr',
-                    'locale' => 'fr_FR.UTF-8',
-                    'iso-639-1' => 'fr',
-                    'websiteTitle' => '',
-                    'navigationTitle' => '',
-                    'hreflang' => '',
-                    'direction' => '',
-                    'fallbackType' => 'strict',
-                    'fallbacks' => '',
-                    'flag' => 'fr',
-                    'languageId' => $styleguideSysLanguages[2],
-                ],
-                [
-                    'title' => 'styleguide demo language spanish',
-                    'enabled' => true,
-                    'base' => '/es/',
-                    'typo3Language' => 'es',
-                    'locale' => 'es_ES.UTF-8',
-                    'iso-639-1' => 'es',
-                    'websiteTitle' => '',
-                    'navigationTitle' => '',
-                    'hreflang' => '',
-                    'direction' => '',
-                    'fallbackType' => 'strict',
-                    'fallbacks' => '',
-                    'flag' => 'es',
-                    'languageId' => $styleguideSysLanguages[3],
-                ]
-            ]
-        ];
-        $siteConfiguration->write($siteIdentifier, $configuration);
     }
 
     /**
@@ -408,24 +279,11 @@ class Generator
         }
 
         // Add 3 files from resources directory to default storage
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $storage = $storageRepository->findByUid(1);
-        $folder = $storage->getRootLevelFolder();
-        try {
-            $folder->createFolder('styleguide');
-            $folder = $folder->getSubfolder('styleguide');
-            $files = [
-                'bus_lane.jpg',
-                'telephone_box.jpg',
-                'underground.jpg',
-            ];
-            foreach ($files as $fileName) {
-                $sourceLocation = GeneralUtility::getFileAbsFileName('EXT:styleguide/Resources/Public/Images/Pictures/' . $fileName);
-                $storage->addFile($sourceLocation, $folder, $fileName, DuplicationBehavior::RENAME, false);
-            }
-        } catch (ExistingTargetFolderException $e) {
-            // No op if folder exists. This code assumes file exist, too.
-        }
+        $this->addToFal([
+            'bus_lane.jpg',
+            'telephone_box.jpg',
+            'underground.jpg',
+        ], 'EXT:styleguide/Resources/Public/Images/Pictures/', 'styleguide');
     }
 
     /**
@@ -487,29 +345,5 @@ class Generator
         // created data already. This is a bit hacky but a quick workaround.
         array_unshift($result, 'tx_styleguide_staticdata');
         return $result;
-    }
-
-    /**
-     * Returns the uid of the last "top level" page (has pid 0)
-     * in the page tree. This is either a positive integer or 0
-     * if no page exists in the page tree at all.
-     *
-     * @return int
-     */
-    protected function getUidOfLastTopLevelPage(): int
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $lastPage = $queryBuilder->select('uid')
-            ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
-            ->orderBy('sorting', 'DESC')
-            ->execute()
-            ->fetchColumn(0);
-        $uid = 0;
-        if (MathUtility::canBeInterpretedAsInteger($lastPage) && $lastPage > 0) {
-            $uid = (int)$lastPage;
-        }
-        return $uid;
     }
 }

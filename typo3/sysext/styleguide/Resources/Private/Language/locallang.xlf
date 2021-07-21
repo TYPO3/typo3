@@ -28,7 +28,7 @@
 				<source>Typography</source>
 			</trans-unit>
 			<trans-unit id="tca" xml:space="preserve">
-				<source>TCA / Records</source>
+				<source>TCA / Records / Frontend</source>
 			</trans-unit>
 			<trans-unit id="tab" xml:space="preserve">
 				<source>Tab</source>
@@ -95,6 +95,30 @@
 			</trans-unit>
 			<trans-unit id="pagination" xml:space="preserve">
 				<source>Pagination / Filter</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateButton" xml:space="preserve">
+				<source>Create styleguide frontend</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteButton" xml:space="preserve">
+				<source>Delete styleguide frontend</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkTitle" xml:space="preserve">
+				<source>Frontend data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkBody" xml:space="preserve">
+				<source>A page tree with styleguide frontend test records was created.</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedTitle" xml:space="preserve">
+				<source>No frontend data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedBody" xml:space="preserve">
+				<source>A styleguide frontend demo tree exists already. Please delete that first.</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkTitle" xml:space="preserve">
+				<source>Frontend data deleted</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkBody" xml:space="preserve">
+				<source>The styleguide frontend page tree and all styleguide frontend records were deleted.</source>
 			</trans-unit>
 		</body>
 	</file>

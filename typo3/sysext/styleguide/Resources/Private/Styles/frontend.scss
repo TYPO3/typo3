@@ -1,0 +1,58 @@
+/** Frontend styles only for EXT: styleguide */
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/containers";
+@import "../../../node_modules/bootstrap/scss/reboot";
+@import "../../../node_modules/bootstrap/scss/navbar";
+@import "../../../node_modules/bootstrap/scss/utilities";
+@import "../../../node_modules/bootstrap/scss/forms";
+@import "../../../node_modules/bootstrap/scss/root";
+@import "../../../node_modules/bootstrap/scss/list-group";
+@import "../../../node_modules/bootstrap/scss/tables";
+@import "../../../node_modules/bootstrap/scss/buttons";
+
+.navbar-dark {
+    background: $black;
+}
+
+
+.ce__gallery {
+    .ce__row {
+        @include make-row();
+    }
+    .ce-column {
+        @include make-col-ready();
+        @include make-col(6);
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.ce-textpic {
+    &.ce-right {
+        flex-direction: row-reverse;
+    }
+
+    &.ce-intext {
+        @include make-row();
+
+        .ce-gallery {
+            @include make-col-ready();
+            @include make-col(4);
+        }
+        .ce-bodytext {
+            @include make-col-ready();
+            @include make-col(8);
+        }
+    }
+}
+
+.content {
+    margin-top: map-get($spacers, 3);
+    margin-bottom: map-get($spacers, 4);
+}

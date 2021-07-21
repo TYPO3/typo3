@@ -1,0 +1,15 @@
+plugin.tx_felogin_login {
+  view {
+    templateRootPaths {
+      100 = EXT:styleguide/Resources/Private/Templates/Content/
+    }
+
+    partialRootPaths {
+      100 = EXT:styleguide/Resources/Private/Partials/Content/
+    }
+
+    layoutRootPaths {
+      100 = EXT:styleguide/Resources/Private/Layouts/Content/
+    }
+  }
+}

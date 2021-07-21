@@ -22,4 +22,22 @@
 			<f:translate key="tcaDeleteButton" />
 		</f:link.action>
 	</p>
+
+    <h2>Create a frontend page tree including FE elements</h2>
+
+    <p class="lead">
+        This creates a frontend with a page for each content element a site configuration and files
+    </p>
+
+    <p>
+        <f:link.action action="frontendCreate" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}">
+            <i class="fa fa-plus fa-fw"></i>
+            <f:translate key="frontendCreateButton" />
+        </f:link.action>
+
+        <f:link.action action="frontendDelete" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}">
+            <i class="fa fa-trash fa-fw"></i>
+            <f:translate key="frontendDeleteButton" />
+        </f:link.action>
+    </p>
 </f:section>
