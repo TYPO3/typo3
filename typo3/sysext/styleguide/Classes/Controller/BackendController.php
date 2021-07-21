@@ -368,8 +368,6 @@ class BackendController extends ActionController
 
     public function frontendCreateAction(): ResponseInterface
     {
-
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($recordFinder->findUidsOfFrontendPages())) {
             // Tell something was done here
@@ -379,7 +377,6 @@ class BackendController extends ActionController
                 AbstractMessage::ERROR
             );
         } else {
-            /** @var GeneratorFrontend $frontend */
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
             $frontend->create();
             // Tell something was done here
@@ -395,10 +392,8 @@ class BackendController extends ActionController
 
     public function frontendDeleteAction(): ResponseInterface
     {
-        /** @var GeneratorFrontend $frontend */
         $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
         $frontend->delete();
-
         $this->addFlashMessage(
             LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
             LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide')

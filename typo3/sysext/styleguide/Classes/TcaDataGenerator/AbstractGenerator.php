@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,6 +15,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,9 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Manage a page tree with all test / demo styleguide data
+ * Manage a page tree with all test / demo styleguide data.
  */
-class AbstractGenerator
+abstract class AbstractGenerator
 {
     /**
      * Create a site configuration on new styleguide root page

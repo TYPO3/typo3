@@ -30,9 +30,7 @@ class GeneratorFrontend extends AbstractGenerator
 {
     public function create(): void
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        /** @var KauderwelschService $kauderWelsch */
         $kauderWelsch = GeneralUtility::makeInstance(KauderwelschService::class);
 
         // Create should not be called if demo frontend data exists already
@@ -147,7 +145,6 @@ class GeneratorFrontend extends AbstractGenerator
 
     public function delete(): void
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $commands = [];
 
@@ -467,7 +464,6 @@ class GeneratorFrontend extends AbstractGenerator
      */
     protected function populateTtContentRecords(string $field = 'records'): void
     {
-        /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
         $shortcutToElement = $recordFinder->findTtContent(['text'])[0]['uid'];
