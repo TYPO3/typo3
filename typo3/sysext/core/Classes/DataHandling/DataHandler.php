@@ -4836,7 +4836,7 @@ class DataHandler implements LoggerAwareInterface
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
         [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
-        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
+        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? false;
         $databaseErrorMessage = '';
         if ($recordWorkspaceId > 0) {
             // If this is a workspace record, use discard
