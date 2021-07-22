@@ -31,9 +31,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ::
  *
- *    <f:uri.external uri="http://www.typo3.org" />
+ *    <f:uri.external uri="https://www.typo3.org" />
  *
- * ``http://www.typo3.org``
+ * ``https://www.typo3.org``
  *
  * Custom default scheme
  * ---------------------
@@ -56,7 +56,7 @@ class ExternalViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('uri', 'string', 'target URI', true);
-        $this->registerArgument('defaultScheme', 'string', 'scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'http');
+        $this->registerArgument('defaultScheme', 'string', 'scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'https');
     }
 
     /**

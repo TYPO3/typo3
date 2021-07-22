@@ -28,11 +28,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * ::
  *
- *    <f:link.external uri="http://www.typo3.org" target="_blank">external link</f:link.external>
+ *    <f:link.external uri="https://www.typo3.org" target="_blank">external link</f:link.external>
  *
  * Output::
  *
- *    <a href="http://www.typo3.org" target="_blank">external link</a>
+ *    <a href="https://www.typo3.org" target="_blank">external link</a>
  *
  * Custom default scheme
  * ---------------------
@@ -59,7 +59,7 @@ class ExternalViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('uri', 'string', 'The URI that will be put in the href attribute of the rendered link tag', true);
-        $this->registerArgument('defaultScheme', 'string', 'Scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'http');
+        $this->registerArgument('defaultScheme', 'string', 'Scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'https');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');

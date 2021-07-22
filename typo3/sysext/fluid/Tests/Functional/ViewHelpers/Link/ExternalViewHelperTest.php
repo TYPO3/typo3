@@ -25,9 +25,9 @@ class ExternalViewHelperTest extends FunctionalTestCase
     public function renderDataProvider(): array
     {
         return [
-            'renderAddsHttpPrefixIfSpecifiedUriDoesNotContainScheme' => [
+            'renderAddsHttpsPrefixIfSpecifiedUriDoesNotContainScheme' => [
                 '<f:link.external uri="www.some-domain.tld">some content</f:link.external>',
-                '<a href="http://www.some-domain.tld">some content</a>',
+                '<a href="https://www.some-domain.tld">some content</a>',
             ],
             'renderAddsSpecifiedSchemeIfUriDoesNotContainScheme' => [
                 '<f:link.external uri="www.some-domain.tld" defaultScheme="ftp">some content</f:link.external>',

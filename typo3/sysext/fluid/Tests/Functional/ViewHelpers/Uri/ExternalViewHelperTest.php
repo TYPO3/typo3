@@ -31,7 +31,7 @@ class ExternalViewHelperTest extends FunctionalTestCase
             ],
             'renderAddsSchemeIfUriDoesNotContainScheme' => [
                 '<f:uri.external uri="www.some-domain.tld" />',
-                'http://www.some-domain.tld',
+                'https://www.some-domain.tld',
             ],
             'renderAddsSpecifiedSchemeIfUriDoesNotContainScheme' => [
                 '<f:uri.external uri="some-domain.tld" defaultScheme="ftp" />',
