@@ -61,13 +61,13 @@ Basically, you can manually create a ``FormDefinition`` domain model just
 by calling the API methods on it, or you can use a ``FormFactory`` to build
 the form from a different representation format such as YAML::
 
-   $formDefinition = $this->objectManager->get(FormDefinition::class, 'myForm');
+   $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm');
 
-   $page1 = $this->objectManager->get(Page::class, 'page1');
+   $page1 = GeneralUtility::makeInstance(Page::class, 'page1');
    $formDefinition->addPage($page);
 
    // second argument is the <formElementTypeIdentifier> of the form element
-   $element1 = $this->objectManager->get(GenericFormElement::class, 'title', 'Text');
+   $element1 = GeneralUtility::makeInstance(GenericFormElement::class, 'title', 'Text');
    $page1->addElement($element1);
 
 
@@ -91,7 +91,7 @@ shown above should be rewritten as follows::
    // we will come back to this later on
    $prototypeConfiguration = [];
 
-   $formDefinition = $this->objectManager->get(FormDefinition::class, 'myForm', $prototypeConfiguration);
+   $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'myForm', $prototypeConfiguration);
    $page1 = $formDefinition->createPage('page1');
    $element1 = $page1->addElement('title', 'Text');
 

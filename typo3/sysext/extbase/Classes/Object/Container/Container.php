@@ -33,6 +33,9 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 /**
  * Internal TYPO3 Dependency Injection container
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @deprecated since v11, will be removed in v12. Use symfony DI and GeneralUtility::makeInstance() instead.
+ *             See TYPO3 explained documentation for more information.
+ *             Does not trigger_error since the ObjectManager->get() call does that.
  */
 class Container implements SingletonInterface, LoggerAwareInterface
 {

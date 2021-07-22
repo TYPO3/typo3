@@ -82,7 +82,8 @@ final class RenderingContextFactory
                     /** @var TemplateProcessorInterface[] $processors */
                     $processors[] = $this->container->get($className);
                 } else {
-                    // @deprecated: Layer for processors that can't be instantiated by symfony-DI yet,
+                    // @deprecated since v11, will be removed with 12.
+                    // Layer for processors that can't be instantiated by symfony-DI yet,
                     // probably due to a missing Services.yaml in the providing extension. Fall back to ObjectManager,
                     // which logs a deprecation. If condition and else can be dropped in v12.
                     $objectManager = $this->container->get(ObjectManager::class);

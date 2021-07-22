@@ -110,6 +110,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
     protected ContainerInterface $container;
+    // @deprecated since v11, will be removed in v12
     protected ObjectManagerInterface $objectManager;
     protected ?FormDefinition $formDefinition = null;
     protected ?Request $request = null;

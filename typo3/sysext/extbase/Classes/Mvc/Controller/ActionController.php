@@ -143,6 +143,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * @var ObjectManagerInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed in v12
      */
     protected $objectManager;
 
@@ -217,16 +218,19 @@ abstract class ActionController implements ControllerInterface
      *
      * @param ObjectManagerInterface $objectManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed in v12
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
+        // @todo: Move elsewhere
         $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed in v12
      */
     public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
     {

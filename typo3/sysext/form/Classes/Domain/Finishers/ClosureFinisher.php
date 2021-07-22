@@ -28,7 +28,7 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
  *
  * Usage:
  * //...
- * $closureFinisher = $this->objectManager->get(ClosureFinisher::class);
+ * $closureFinisher = GeneralUtility::makeInstance(ClosureFinisher::class);
  * $closureFinisher->setOption('closure', function($finisherContext) {
  *   $formRuntime = $finisherContext->getFormRuntime();
  *   // ...

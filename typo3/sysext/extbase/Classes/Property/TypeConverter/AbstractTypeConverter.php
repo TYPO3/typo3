@@ -55,12 +55,14 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @deprecated since v11, will be removed in v12
      */
     protected $objectManager;
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed in v12
      */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {

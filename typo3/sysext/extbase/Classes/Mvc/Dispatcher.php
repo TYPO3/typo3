@@ -38,6 +38,7 @@ class Dispatcher implements SingletonInterface
 {
     /**
      * @var ObjectManagerInterface A reference to the object manager
+     * @deprecated since v11, will be removed in v12
      */
     protected $objectManager;
 
@@ -68,6 +69,7 @@ class Dispatcher implements SingletonInterface
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher
     ) {
+        // @deprecated since v11, will be removed in v12
         $this->objectManager = $objectManager;
         $this->container = $container;
         $this->eventDispatcher = $eventDispatcher;

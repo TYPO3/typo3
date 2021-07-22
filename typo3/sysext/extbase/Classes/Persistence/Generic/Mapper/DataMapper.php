@@ -53,6 +53,7 @@ class DataMapper
     protected Session $persistenceSession;
     protected DataMapFactory $dataMapFactory;
     protected QueryFactoryInterface $queryFactory;
+    // @deprecated since v11, will be removed in v12
     protected ObjectManagerInterface $objectManager;
     protected EventDispatcherInterface $eventDispatcher;
 

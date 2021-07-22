@@ -37,7 +37,7 @@ use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
  *
  * Usage:
  * //...
- * $flashMessageFinisher = $this->objectManager->get(FlashMessageFinisher::class);
+ * $flashMessageFinisher = GeneralUtility::makeInstance(FlashMessageFinisher::class);
  * $flashMessageFinisher->setOptions(
  *   [
  *     'messageBody' => 'Some message body',

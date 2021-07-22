@@ -35,7 +35,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * Usage:
  * //...
- * $confirmationFinisher = $this->objectManager->get(ConfirmationFinisher::class);
+ * $confirmationFinisher = GeneralUtility::makeInstance(ConfirmationFinisher::class);
  * $confirmationFinisher->setOptions(
  *   [
  *     'message' => 'foo',

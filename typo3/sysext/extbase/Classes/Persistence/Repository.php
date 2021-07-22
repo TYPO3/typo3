@@ -34,6 +34,7 @@ class Repository implements RepositoryInterface, SingletonInterface
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @deprecated since v11, will be removed in v12
      */
     protected $objectManager;
 
@@ -70,6 +71,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      */
     public function __construct(ObjectManagerInterface $objectManager)
     {
+        // @deprecated since v11, will be removed in v12
         $this->objectManager = $objectManager;
         $this->objectType = ClassNamingUtility::translateRepositoryNameToModelName($this->getRepositoryClassName());
     }

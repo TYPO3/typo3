@@ -38,9 +38,9 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  * <pre>
  * class MyFooBarFactory extends AbstractFormFactory {
  *   public function build(array $configuration, $prototypeName) {
- *     $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
+ *     $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
  *     $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
- *     $formDefinition = GeneralUtility::makeInstance(ObjectManager::class)->get(FormDefinition::class, 'nameOfMyForm', $prototypeConfiguration);
+ *     $formDefinition = GeneralUtility::makeInstance(FormDefinition::class, 'nameOfMyForm', $prototypeConfiguration);
  *
  *     // now, you should call methods on $formDefinition to add pages and form elements
  *

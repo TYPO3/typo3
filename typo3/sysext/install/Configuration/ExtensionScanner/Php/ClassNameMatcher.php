@@ -1669,4 +1669,49 @@ return [
             'Deprecation-94367-ExtbaseReferringRequest.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Object\ObjectManager' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\ObjectManagerInterface' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Container\Container' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Object\Exception' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException' => [
+        'restFiles' => [
+            'Deprecation-94619-ExtbaseObjectManager.rst'
+        ],
+    ],
 ];

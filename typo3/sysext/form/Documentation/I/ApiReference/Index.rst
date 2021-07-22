@@ -228,7 +228,6 @@ Implement a ``FormFactory`` and build the form::
    namespace VENDOR\MySitePackage\Domain\Factory;
 
    use TYPO3\CMS\Core\Utility\GeneralUtility;
-   use TYPO3\CMS\Extbase\Object\ObjectManager;
    use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
    use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
    use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -250,21 +249,21 @@ Implement a ``FormFactory`` and build the form::
        public function build(array $configuration, string $prototypeName = null): FormDefinition
        {
            $prototypeName = 'standard';
-           $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
+           $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
            $prototypeConfiguration = $configurationService->getPrototypeConfiguration($prototypeName);
 
-           $form = GeneralUtility::makeInstance(ObjectManager::class)->get(FormDefinition::class, 'MyCustomForm', $prototypeConfiguration);
+           $form = GeneralUtility::makeInstance(FormDefinition::class, 'MyCustomForm', $prototypeConfiguration);
            $form->setRenderingOption('controllerAction', 'index');
 
            $page1 = $form->createPage('page1');
            $name = $page1->createElement('name', 'Text');
            $name->setLabel('Name');
-           $name->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(NotEmptyValidator::class));
+           $name->addValidator(GeneralUtility::makeInstance(NotEmptyValidator::class));
 
            $page2 = $form->createPage('page2');
            $message = $page2->createElement('message', 'Textarea');
            $message->setLabel('Message');
-           $message->addValidator(GeneralUtility::makeInstance(ObjectManager::class)->get(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
+           $message->addValidator(GeneralUtility::makeInstance(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
 
            // Creating a RadioButton/MultiCheckbox
            $page3 = $form->createPage('page3');
@@ -1717,7 +1716,7 @@ declare this finisher.
 
 Usage through code::
 
-   $closureFinisher = $this->objectManager->get(ClosureFinisher::class);
+   $closureFinisher = GeneralUtility::makeInstance(ClosureFinisher::class);
    $closureFinisher->setOption('closure', function($finisherContext) {
        $formRuntime = $finisherContext->getFormRuntime();
        // ...
@@ -1776,7 +1775,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $confirmationFinisher = $this->objectManager->get(ConfirmationFinisher::class);
+   $confirmationFinisher = GeneralUtility::makeInstance(ConfirmationFinisher::class);
    $confirmationFinisher->setOptions([
        'message' => 'foo',
    ]);
@@ -1832,7 +1831,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $deleteUploadsFinisher = $this->objectManager->get(DeleteUploadsFinisher::class);
+   $deleteUploadsFinisher = GeneralUtility::makeInstance(DeleteUploadsFinisher::class);
    $formDefinition->addFinisher($deleteUploadsFinisher);
 
 
@@ -1876,7 +1875,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $emailFinisher = $this->objectManager->get(EmailFinisher::class);
+   $emailFinisher = GeneralUtility::makeInstance(EmailFinisher::class);
    $emailFinisher->setOptions([
        'subject' => 'Your message',
        'recipientAddress' => 'your.company@example.com',
@@ -2262,7 +2261,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $flashMessageFinisher = $this->objectManager->get(FlashMessageFinisher::class);
+   $flashMessageFinisher = GeneralUtility::makeInstance(FlashMessageFinisher::class);
    $flashMessageFinisher->setOptions([
        'messageTitle' => 'Merci',
        'messageCode' => 201905041245,
@@ -2396,7 +2395,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $redirectFinisher = $this->objectManager->get(RedirectFinisher::class);
+   $redirectFinisher = GeneralUtility::makeInstance(RedirectFinisher::class);
    $redirectFinisher->setOptions([
        'pageUid' => 1,
        'additionalParameters' => 'param1=value1&param2=value2',
@@ -2547,7 +2546,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
+   $saveToDatabaseFinisher = GeneralUtility::makeInstance(SaveToDatabaseFinisher::class);
    $saveToDatabaseFinisher->setOptions([
        'table' => 'fe_users',
        'mode' => 'update',
@@ -2624,7 +2623,7 @@ Usage through code::
 
 or create manually (not preferred)::
 
-   $saveToDatabaseFinisher = $this->objectManager->get(SaveToDatabaseFinisher::class);
+   $saveToDatabaseFinisher = GeneralUtility::makeInstance(SaveToDatabaseFinisher::class);
    $saveToDatabaseFinisher->setOptions([
        1 => [
            'table' => 'my_table',

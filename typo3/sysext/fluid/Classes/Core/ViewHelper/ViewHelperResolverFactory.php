@@ -44,6 +44,7 @@ final class ViewHelperResolverFactory
         ObjectManagerInterface $objectManager
     ) {
         $this->container = $container;
+        // @deprecated since v11, will be removed with 12. Drop in fluid ServiceProvider.php, too.
         $this->objectManager = $objectManager;
     }
 

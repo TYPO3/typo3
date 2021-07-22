@@ -21,6 +21,8 @@ use TYPO3\CMS\Extbase\Object\Exception;
 
 /**
  * "Unknown Object" Exception
+ *
+ * @deprecated since v11, will be removed in v12. Drop along with ObjectManager / Container.
  */
 class UnknownObjectException extends Exception
 {

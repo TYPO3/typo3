@@ -37,7 +37,9 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
+            // @deprecated since v11, will be removed in v12
             Object\Container\Container::class => [ static::class, 'getObjectContainer' ],
+            // @deprecated since v11, will be removed in v12
             Object\ObjectManager::class => [ static::class, 'getObjectManager' ],
             // @deprecated since v11, will be removed in v12
             SignalSlot\Dispatcher::class => [ static::class, 'getSignalSlotDispatcher' ],
@@ -52,16 +54,25 @@ class ServiceProvider extends AbstractServiceProvider
         ];
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public static function getObjectContainer(ContainerInterface $container): Object\Container\Container
     {
         return self::new($container, Object\Container\Container::class, [$container]);
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public static function getObjectManager(ContainerInterface $container): Object\ObjectManager
     {
         return self::new($container, Object\ObjectManager::class, [$container, $container->get(Object\Container\Container::class)]);
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public static function getSignalSlotDispatcher(ContainerInterface $container): SignalSlot\Dispatcher
     {
         $logger = $container->get(LogManager::class)->getLogger(SignalSlot\Dispatcher::class);

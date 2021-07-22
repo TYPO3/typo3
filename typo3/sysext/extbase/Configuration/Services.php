@@ -33,6 +33,7 @@ return function (ContainerConfigurator $containerConfigurator, ContainerBuilder 
             // 'aliasDefinitions' is a private property of the Symfony ContainerBuilder class
             // but as 'alias' statements an not be tagged, that is the only way to retrieve
             // these aliases to map them to the extbase container
+            // @deprecated since v11, will be removed in v12. Drop everything below.
             $reflection = new \ReflectionClass(get_class($container));
             $aliasDefinitions = $reflection->getProperty('aliasDefinitions');
             $aliasDefinitions->setAccessible(true);

@@ -23,6 +23,9 @@ use TYPO3\CMS\Extbase\Object\Container\Container as ExtbaseContainer;
 
 /**
  * Implementation of the default Extbase Object Manager
+ *
+ * @deprecated since v11, will be removed in v12. Use symfony DI and GeneralUtility::makeInstance() instead.
+ *              See TYPO3 explained documentation for more information.
  */
 class ObjectManager implements ObjectManagerInterface
 {
@@ -94,8 +97,7 @@ class ObjectManager implements ObjectManagerInterface
      */
     public function get(string $objectName, ...$constructorArguments): object
     {
-        // todo: This method needs to trigger a deprecation error as soon as the core does not use this method any more.
-
+        trigger_error('Class ' . __CLASS__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
         if ($objectName === \DateTime::class) {
             return GeneralUtility::makeInstance($objectName, ...$constructorArguments);
         }

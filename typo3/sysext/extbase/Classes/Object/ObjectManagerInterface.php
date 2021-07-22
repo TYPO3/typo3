@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Interface for the TYPO3 Object Manager
+ *
+ * @deprecated since v11, will be removed in v12. Use symfony DI and GeneralUtility::makeInstance() instead.
+ *              See TYPO3 explained documentation for more information.
  */
 interface ObjectManagerInterface extends SingletonInterface
 {
