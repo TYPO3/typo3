@@ -20,7 +20,9 @@ setUpDockerComposeDotEnv() {
     # Your local home directory for composer and npm caching
     echo "HOST_HOME=${HOME}" >> .env
     # Your local user
-    echo "ROOT_DIR"=${ROOT_DIR} >> .env
+    echo "ROOT_DIR=${ROOT_DIR}" >> .env
+    # Set home directory for composer, otherwise install from source will not work
+    echo "COMPOSER_HOME=${ROOT_DIR}/.Build/.composer" >> .env
     echo "HOST_USER=${USER}" >> .env
     echo "TEST_FILE=${TEST_FILE}" >> .env
     echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}" >> .env
@@ -120,7 +122,7 @@ cd "$THIS_SCRIPT_DIR" || exit 1
 cd ../testing-docker || exit 1
 
 # Option defaults
-ROOT_DIR=`readlink -f ${PWD}/../../`
+ROOT_DIR=`realpath ${PWD}/../../`
 TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="7.4"
