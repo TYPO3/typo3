@@ -8,7 +8,7 @@ finishers:
     options:
       subject: 'Your message: {subject}'
       recipients:
-        your.company@example.com: Your Company name'
+        your.company@example.com: 'Your Company name'
       senderAddress: '{email}'
       senderName: '{name}'
       replyToRecipients: {}

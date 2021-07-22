@@ -232,7 +232,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $dependentExtensions = [];
         foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
             if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === true) {
-                if (is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
+                if (is_array($availableAndInstalledExtension['constraints'] ?? false) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
                     $dependentExtensions[] = $availableAndInstalledExtensionKey;
                 }
             }

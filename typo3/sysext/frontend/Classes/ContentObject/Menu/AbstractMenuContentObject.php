@@ -896,7 +896,7 @@ abstract class AbstractMenuContentObject
         }
         // If there are keywords and the startuid is present
         if ($kw && $startUid) {
-            $bA = MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
+            $bA = MathUtility::forceIntegerInRange(($this->conf['special.']['beginAtLevel'] ?? 0), 0, 100);
             $id_list = $this->parent_cObj->getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
             $kwArr = GeneralUtility::trimExplode(',', $kw, true);
             $keyWordsWhereArr = [];

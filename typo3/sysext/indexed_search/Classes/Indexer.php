@@ -552,17 +552,17 @@ class Indexer
             // Parse URL:
             $qParts = parse_url($linkSource);
             // Check for jumpurl (TYPO3 specific thing...)
-            if ($qParts['query'] && strpos($qParts['query'], 'jumpurl=') !== false) {
+            if (($qParts['query'] ?? false) && strpos($qParts['query'] ?? '', 'jumpurl=') !== false) {
                 parse_str($qParts['query'], $getP);
                 $linkSource = $getP['jumpurl'];
                 $qParts = parse_url($linkSource);
             }
-            if (!$linkInfo['localPath'] && $qParts['scheme']) {
+            if (!$linkInfo['localPath'] && ($qParts['scheme'] ?? false)) {
                 if ($this->indexerConfig['indexExternalURLs']) {
                     // Index external URL (http or otherwise)
                     $this->indexExternalUrl($linkSource);
                 }
-            } elseif (!$qParts['query']) {
+            } elseif (!($qParts['query'] ?? false)) {
                 $linkSource = urldecode($linkSource);
                 if (GeneralUtility::isAllowedAbsPath($linkSource)) {
                     $localFile = $linkSource;
@@ -1914,7 +1914,7 @@ class Indexer
                 (int)$val['count'],
                 (int)($val['first'] ?? 0),
                 $this->freqMap($val['count'] / $this->wordcount),
-                $val['cmp'] & $this->flagBitMask
+                ($val['cmp'] ?? 0) & $this->flagBitMask
             ];
         }
 

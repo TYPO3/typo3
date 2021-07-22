@@ -1120,7 +1120,7 @@ class PageRepository implements LoggerAwareInterface
         }
         // Set first Page uid:
         if (!$firstPageUid) {
-            $firstPageUid = (int)($pageRec['l10n_parent'] ?: $pageRec['uid']);
+            $firstPageUid = (int)($pageRec['l10n_parent'] ?? false) ?: $pageRec['uid'] ?? 0;
         }
         // Look for mount pid value plus other required circumstances:
         $mount_pid = (int)($pageRec['mount_pid'] ?? 0);

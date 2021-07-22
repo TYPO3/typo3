@@ -1166,11 +1166,11 @@ class ExtendedTemplateService extends TemplateService
     {
         $data = $http_post_vars['data'];
         $check = $http_post_vars['check'];
-        $Wdata = $http_post_vars['Wdata'];
-        $W2data = $http_post_vars['W2data'];
-        $W3data = $http_post_vars['W3data'];
-        $W4data = $http_post_vars['W4data'];
-        $W5data = $http_post_vars['W5data'];
+        $Wdata = $http_post_vars['Wdata'] ?? [];
+        $W2data = $http_post_vars['W2data'] ?? [];
+        $W3data = $http_post_vars['W3data'] ?? [];
+        $W4data = $http_post_vars['W4data'] ?? [];
+        $W5data = $http_post_vars['W5data'] ?? [];
         if (is_array($data)) {
             foreach ($data as $key => $var) {
                 if (isset($theConstants[$key])) {
