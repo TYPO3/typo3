@@ -70,4 +70,32 @@ class CompareUserCest
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
     }
+
+    /**
+     * @param ApplicationTester $I
+     */
+    public function accessingBackendUserCompareViewWorks(ApplicationTester $I): void
+    {
+        $I->amGoingTo('Switch to user group listing');
+        $I->see('Backend User Listing', 'h1');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Backend user groups');
+        $I->see('Backend User Group Listing', 'h1');
+
+        $I->amGoingTo('Add three groups to compare');
+        $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(3) > a');
+        $I->waitForElementVisible('table#typo3-backend-user-group-list');
+        $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(2) > td.col-control > div:nth-child(3) > a');
+        $I->waitForElementVisible('table#typo3-backend-user-group-list');
+        $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(3) > td.col-control > div:nth-child(3) > a');
+
+        $I->amGoingTo('Access the user group compare view');
+        $I->waitForElementVisible('table#typo3-backend-user-list-compare', 20);
+        $I->canSeeNumberOfElements('#typo3-backend-user-list-compare tbody tr', 3);
+        $I->click('Compare backend usergroups');
+
+        $I->amGoingTo('Check compare view is loaded with the correct number of groups');
+        $I->see('Compare backend usergroups', 'h1');
+        // We expect four header columns, since the first one is used for the row labels
+        $I->canSeeNumberOfElements('#tx_beuser_compare > thead > tr > th', 4);
+    }
 }

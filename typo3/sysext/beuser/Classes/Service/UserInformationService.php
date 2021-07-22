@@ -57,12 +57,18 @@ class UserInformationService
         $user->enablecolumns = [
             'deleted' => true,
         ];
+
         // Setup dummy user to allow fetching all group data
         // @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::fetchGroups
         $user->user = [
             'uid' => PHP_INT_MAX,
             'options' => 3,
-            'workspace_id' => -99,
+            // The below admin flag is required to prevent workspace access checks,
+            // triggered by workspaceInit() in fetchGroupData(). Those would fail
+            // due to insufficient permissions of the dummy user and therefore might
+            // result in generating superfluous log entries.
+            'admin' => 1,
+            'workspace_id' => 0,
             'realName' => 'fakeUser',
             'email' => 'fake.user@typo3.org',
             'TSconfig' => '',
