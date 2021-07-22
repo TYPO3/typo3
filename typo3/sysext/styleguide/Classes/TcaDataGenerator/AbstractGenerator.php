@@ -154,7 +154,7 @@ abstract class AbstractGenerator
             ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         $uid = 0;
         if (MathUtility::canBeInterpretedAsInteger($lastPage) && $lastPage > 0) {
             $uid = (int)$lastPage;

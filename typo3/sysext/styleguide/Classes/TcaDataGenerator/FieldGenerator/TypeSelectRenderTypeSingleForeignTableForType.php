@@ -54,6 +54,6 @@ class TypeSelectRenderTypeSingleForeignTableForType extends AbstractFieldGenerat
             ->select('uid')
             ->from('tx_styleguide_type')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
     }
 }
