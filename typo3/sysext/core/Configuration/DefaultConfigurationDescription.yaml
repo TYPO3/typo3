@@ -312,7 +312,7 @@ BE:
             description: 'Session time out for backend users in seconds. The value must be at least 180 to avoid side effects. Default is 28.800 seconds = 8 hours.'
         IPmaskList:
             type: list
-            description: 'Lets you define a list of IP-numbers (with *-wildcards) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP())</code>'
+            description: 'Lets you define a list of IP-numbers (in CIDR-notation, e.g. 194.168.0.0/16,2002::1234:abcd:ffff:c0a8:101/64) that are the ONLY ones allowed access to ANY backend activity. On error an error header is sent and the script exits. Works like IP masking for users configurable through TSconfig. See syntax for that (or look up syntax for the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP())</code>'
         lockBeUserToDBmounts:
             type: bool
             description: 'If set, the backend user is allowed to work only within his page-mount. It''s advisable to leave this on because it makes security easy to manage.'

@@ -224,7 +224,7 @@ class GeneralUtility
      * Dispatcher method for switching into specialised IPv4 and IPv6 methods.
      *
      * @param string $baseIP Is the current remote IP address for instance, typ. REMOTE_ADDR
-     * @param string $list Is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
+     * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation should be used. For IPv4 addresses only, the *-wildcard is also allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
     public static function cmpIP($baseIP, $list)
@@ -246,7 +246,7 @@ class GeneralUtility
      * Match IPv4 number with list of numbers with wildcard
      *
      * @param string $baseIP Is the current remote IP address for instance, typ. REMOTE_ADDR
-     * @param string $list Is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168), could also contain IPv6 addresses
+     * @param string $list Is a comma-list of IP-addresses to match with. CIDR-notation, *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.0.0/16 equals 192.168.*.* equals 192.168), could also contain IPv6 addresses
      * @return bool TRUE if an IP-mask from $list matches $baseIP
      */
     public static function cmpIPv4($baseIP, $list)
@@ -294,7 +294,8 @@ class GeneralUtility
      * Match IPv6 address with a list of IPv6 prefixes
      *
      * @param string $baseIP Is the current remote IP address for instance
-     * @param string $list Is a comma-list of IPv6 prefixes, could also contain IPv4 addresses
+     * @param string $list Is a comma-list of IPv6 prefixes, could also contain IPv4 addresses. IPv6 addresses
+     *   must be specified in CIDR-notation, not with * wildcard, otherwise self::validIPv6() will fail.
      * @return bool TRUE If a baseIP matches any prefix
      */
     public static function cmpIPv6($baseIP, $list)
