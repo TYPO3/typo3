@@ -6,6 +6,27 @@ return [
     \TYPO3\CMS\Beuser\Domain\Model\BackendUser::class => [
         'tableName' => 'be_users',
         'properties' => [
+            'userName' => [
+                'fieldName' => 'username'
+            ],
+            'isAdministrator' => [
+                'fieldName' => 'admin'
+            ],
+            'isDisabled' => [
+                'fieldName' => 'disable'
+            ],
+            'realName' => [
+                'fieldName' => 'realName'
+            ],
+            'startDateAndTime' => [
+                'fieldName' => 'starttime'
+            ],
+            'endDateAndTime' => [
+                'fieldName' => 'endtime'
+            ],
+            'lastLoginDateAndTime' => [
+                'fieldName' => 'lastlogin'
+            ],
             'allowedLanguages' => [
                 'fieldName' => 'allowed_languages'
             ],
