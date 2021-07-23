@@ -21,6 +21,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * This model represents a backend usergroup.
+ *
+ * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
 class BackendUserGroup extends AbstractEntity
 {

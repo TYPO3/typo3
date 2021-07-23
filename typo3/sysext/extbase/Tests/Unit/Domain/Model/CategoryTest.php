@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,71 +20,63 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CategoryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Model\Category
+     * @test
      */
-    protected $fixture;
-
-    protected function setUp(): void
+    public function getTitleInitiallyReturnsEmptyString(): void
     {
-        parent::setUp();
-        $this->fixture = new Category();
+        $subject = new Category();
+        self::assertSame('', $subject->getTitle());
     }
 
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsEmptyString()
+    public function setTitleSetsTitle(): void
     {
-        self::assertSame('', $this->fixture->getTitle());
+        $subject = new Category();
+        $subject->setTitle('foo bar');
+        self::assertSame('foo bar', $subject->getTitle());
     }
 
     /**
      * @test
      */
-    public function setTitleSetsTitle()
+    public function getDescriptionInitiallyReturnsEmptyString(): void
     {
-        $this->fixture->setTitle('foo bar');
-        self::assertSame('foo bar', $this->fixture->getTitle());
+        $subject = new Category();
+        self::assertSame('', $subject->getDescription());
     }
 
     /**
      * @test
      */
-    public function getDescriptionInitiallyReturnsEmptyString()
+    public function setDescriptionSetsDescription(): void
     {
-        self::assertSame('', $this->fixture->getDescription());
+        $subject = new Category();
+        $subject->setDescription('foo bar');
+        self::assertSame('foo bar', $subject->getDescription());
     }
 
     /**
      * @test
      */
-    public function setDescriptionSetsDescription()
+    public function getParentInitiallyReturnsNull(): void
     {
-        $this->fixture->setDescription('foo bar');
-        self::assertSame('foo bar', $this->fixture->getDescription());
+        $subject = new Category();
+        self::assertNull($subject->getParent());
     }
 
     /**
      * @test
      */
-    public function getParentInitiallyReturnsNull()
-    {
-        self::assertNull($this->fixture->getParent());
-    }
-
-    /**
-     * @test
-     */
-    public function setParentSetsParent()
+    public function setParentSetsParent(): void
     {
         $parent = new Category();
-        $this->fixture->setParent($parent);
-        self::assertSame($parent, $this->fixture->getParent());
+        $subject = new Category();
+        $subject->setParent($parent);
+        self::assertSame($parent, $subject->getParent());
     }
 }

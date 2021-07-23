@@ -15,11 +15,11 @@
 
 namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * A repository for administrators
  */
-class AdministratorRepository extends FrontendUserRepository
+class AdministratorRepository extends Repository
 {
 }

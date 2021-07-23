@@ -1714,4 +1714,49 @@ return [
             'Deprecation-94619-ExtbaseObjectManager.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Domain\Model\BackendUser' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Model\FrontendUser' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository' => [
+        'restFiles' => [
+            'Deprecation-94654-GenericExtbaseDomainClasses.rst',
+        ],
+    ],
 ];

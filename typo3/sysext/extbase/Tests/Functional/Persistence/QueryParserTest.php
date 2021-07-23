@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use ExtbaseTeam\BlogExample\Domain\Repository\AdministratorRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class QueryParserTest extends FunctionalTestCase
@@ -91,14 +91,14 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult()
     {
-        $frontendUserRepository = $this->getContainer()->get(FrontendUserRepository::class);
-        $query = $frontendUserRepository->createQuery();
+        $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
+        $query = $administratorRepository->createQuery();
         $query->matching(
             $query->equals('usergroup.title', 'Group A')
         );
 
         $result = $query->execute()->toArray();
-        self::assertCount(3, $result);
+        self::assertCount(2, $result);
     }
 
     /**
@@ -158,12 +158,12 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithFindInSetReturnsExpectedResult()
     {
-        $frontendUserRepository = $this->getContainer()->get(FrontendUserRepository::class);
-        $query = $frontendUserRepository->createQuery();
+        $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
+        $query = $administratorRepository->createQuery();
 
         $result = $query->matching($query->contains('usergroup', 1))
             ->execute();
-        self::assertCount(3, $result);
+        self::assertCount(2, $result);
     }
 
     /**

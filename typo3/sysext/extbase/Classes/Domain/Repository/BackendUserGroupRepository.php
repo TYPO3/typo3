@@ -23,6 +23,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
+ *
+ * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
 class BackendUserGroupRepository extends Repository
 {

@@ -13,15 +13,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Domain\Model;
+namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * A Frontend User Group
- *
- * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
 class FrontendUserGroup extends AbstractEntity
 {

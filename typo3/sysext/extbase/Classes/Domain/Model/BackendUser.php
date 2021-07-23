@@ -20,6 +20,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * This model represents a back-end user.
+ *
+ * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
 class BackendUser extends AbstractEntity
 {

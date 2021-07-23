@@ -15,13 +15,13 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
+use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -42,7 +42,7 @@ class DataMapFactoryTest extends UnitTestCase
     {
         return [
             ['Tx_Myext_Domain_Model_Foo'],
-            [FrontendUser::class]
+            [Administrator::class]
         ];
     }
 
@@ -459,7 +459,7 @@ class DataMapFactoryTest extends UnitTestCase
         $configuration = [
             'persistence' => [
                 'classes' => [
-                    FrontendUser::class => [
+                    Administrator::class => [
                         'subclasses' => [
                             'Tx_SampleExt_Domain_Model_LevelOne1' => 'Tx_SampleExt_Domain_Model_LevelOne1',
                             'Tx_SampleExt_Domain_Model_LevelOne2' => 'Tx_SampleExt_Domain_Model_LevelOne2'
@@ -494,7 +494,7 @@ class DataMapFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(VariableFrontend::class);
         $cacheMock->expects(self::any())->method('get')->willReturn(false);
         $dataMapFactory->_set('dataMapCache', $cacheMock);
-        $dataMap = $dataMapFactory->buildDataMap(FrontendUser::class);
+        $dataMap = $dataMapFactory->buildDataMap(Administrator::class);
         self::assertSame($expectedSubclasses, $dataMap->getSubclasses());
     }
 

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 
-use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -34,6 +34,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PropertyMapperTest extends FunctionalTestCase
 {
+    // @todo: Switch to a simple test extension that contains a test model, instead.
+    protected $coreExtensionsToLoad = ['beuser'];
+
     /**
      * @test
      */
@@ -182,7 +185,7 @@ class PropertyMapperTest extends FunctionalTestCase
 
         $result = $this->getContainer()->get(PropertyMapper::class)->convert(
             $objectStorage,
-            '\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\BackendUser>'
+            '\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>'
         );
 
         self::assertSame($objectStorage, $result);

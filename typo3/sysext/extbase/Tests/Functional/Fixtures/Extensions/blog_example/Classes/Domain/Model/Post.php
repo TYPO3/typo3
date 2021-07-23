@@ -16,7 +16,6 @@
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -42,17 +41,17 @@ class Post extends AbstractEntity
     protected $date;
 
     /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @var Person
      */
     protected $author;
 
     /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @var Person
      */
     protected $secondAuthor;
 
     /**
-     * @var \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @var Person
      */
     protected $reviewer;
 
@@ -63,24 +62,24 @@ class Post extends AbstractEntity
     protected $content = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tag>
      */
     protected $tags;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Category>
      */
     protected $categories;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Comment>
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
     protected $comments;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Post>
      * @Extbase\ORM\Lazy
      */
     protected $relatedPosts;
@@ -99,7 +98,7 @@ class Post extends AbstractEntity
 
     /**
      * 1:n relation stored as CSV value
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Comment>
      * @Extbase\ORM\Lazy
      */
     protected $additionalComments;
@@ -230,7 +229,7 @@ class Post extends AbstractEntity
     /**
      * Add category to a post
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function addCategory(Category $category)
     {
@@ -260,7 +259,7 @@ class Post extends AbstractEntity
     /**
      * Remove category from post
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function removeCategory(Category $category)
     {
@@ -270,7 +269,7 @@ class Post extends AbstractEntity
     /**
      * Sets the author for this post
      *
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $author
+     * @param Person $author
      */
     public function setAuthor(Person $author)
     {
@@ -280,7 +279,7 @@ class Post extends AbstractEntity
     /**
      * Getter for author
      *
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @return Person
      */
     public function getAuthor()
     {
@@ -288,7 +287,7 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @return Person
      */
     public function getSecondAuthor(): ?Person
     {
@@ -296,7 +295,7 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $secondAuthor
+     * @param Person $secondAuthor
      */
     public function setSecondAuthor(Person $secondAuthor): void
     {
@@ -304,7 +303,7 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Person
+     * @return Person
      */
     public function getReviewer()
     {
@@ -312,7 +311,7 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param \ExtbaseTeam\BlogExample\Domain\Model\Person $reviewer
+     * @param Person $reviewer
      */
     public function setReviewer(Person $reviewer)
     {

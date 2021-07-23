@@ -15,10 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,35 +26,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class BackendUserRepositoryTest extends UnitTestCase
+class CategoryRepositoryTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
+        /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $subject = new BackendUserGroupRepository($objectManager);
+        $subject = new CategoryRepository($objectManager);
         $querySettings = $this->createMock(Typo3QuerySettings::class);
         $querySettings->expects(self::once())->method('setRespectStoragePage')->with(false);
         GeneralUtility::addInstance(Typo3QuerySettings::class, $querySettings);
-        $subject->initializeObject();
-    }
-
-    /**
-     * @test
-     */
-    public function initializeObjectSetsDefaultQuerySettings(): void
-    {
-        $objectManager = $this->createMock(ObjectManagerInterface::class);
-        /** @var $subject \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
-        $subject = $this->getMockBuilder(BackendUserGroupRepository::class)
-            ->setMethods(['setDefaultQuerySettings'])
-            ->setConstructorArgs([$objectManager])
-            ->getMock();
-        $querySettings = $this->createMock(Typo3QuerySettings::class);
-        GeneralUtility::addInstance(Typo3QuerySettings::class, $querySettings);
-        $subject->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);
         $subject->initializeObject();
     }
 }

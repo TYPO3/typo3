@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -83,16 +82,12 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
         if (method_exists($object, 'getHidden')) {
             $row['hidden'] = $object->getHidden();
         }
-        if ($table === 'be_users' && $object instanceof BackendUser) {
-            $row['admin'] = $object->getIsAdministrator();
-        }
         if (method_exists($object, 'getStartDateAndTime')) {
             $row['startTime'] = $object->getStartDateAndTime();
         }
         if (method_exists($object, 'getEndDateAndTime')) {
             $row['endTime'] = $object->getEndDateAndTime();
         }
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
     }

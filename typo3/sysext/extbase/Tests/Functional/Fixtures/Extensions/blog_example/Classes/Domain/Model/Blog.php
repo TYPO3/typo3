@@ -16,7 +16,6 @@
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -58,14 +57,14 @@ class Blog extends AbstractEntity
     /**
      * The posts of this blog
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Post>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Post>
      * @Extbase\ORM\Lazy
      * @Extbase\ORM\Cascade("remove")
      */
     protected $posts;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Category>
      */
     protected $categories;
 
@@ -191,7 +190,7 @@ class Blog extends AbstractEntity
     /**
      * Add category to a blog
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function addCategory(Category $category)
     {
@@ -221,7 +220,7 @@ class Blog extends AbstractEntity
     /**
      * Remove category from blog
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function removeCategory(Category $category)
     {

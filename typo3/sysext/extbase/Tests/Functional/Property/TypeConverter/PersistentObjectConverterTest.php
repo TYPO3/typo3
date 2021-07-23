@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
-use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -27,6 +27,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PersistentObjectConverterTest extends FunctionalTestCase
 {
+    // @todo: Switch to a simple test extension that contains a test model, instead.
+    protected $coreExtensionsToLoad = ['beuser'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -63,7 +66,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     {
         static::expectException(TargetNotFoundException::class);
         static::expectExceptionCode(1297933823);
-        static::expectExceptionMessage('Object of type TYPO3\CMS\Extbase\Domain\Model\BackendUser with identity "2" not found.');
+        static::expectExceptionMessage('Object of type TYPO3\CMS\Beuser\Domain\Model\BackendUser with identity "2" not found.');
 
         $this->getContainer()->get(PropertyMapper::class)->convert(2, BackendUser::class);
     }
@@ -164,7 +167,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     {
         static::expectException(Exception::class);
         static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Extbase\Domain\Model\BackendUser".');
+        static::expectExceptionMessage('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser".');
 
         $this->getContainer()->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
     }
@@ -176,7 +179,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     {
         static::expectException(Exception::class);
         static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "integer" could not be set in target object of type "TYPO3\CMS\Extbase\Domain\Model\BackendUser"');
+        static::expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "integer" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
 
         $this->getContainer()->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
     }

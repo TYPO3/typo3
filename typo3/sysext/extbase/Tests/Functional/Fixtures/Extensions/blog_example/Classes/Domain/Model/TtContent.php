@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -55,7 +54,7 @@ class TtContent extends AbstractEntity
     protected $image;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Category>
      */
     protected $categories;
 
@@ -107,7 +106,7 @@ class TtContent extends AbstractEntity
     /**
      * Add category to a CE
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function addCategory(Category $category)
     {
@@ -137,7 +136,7 @@ class TtContent extends AbstractEntity
     /**
      * Remove category from a CE
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+     * @param Category $category
      */
     public function removeCategory(Category $category)
     {

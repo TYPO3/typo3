@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
@@ -47,7 +47,7 @@ class BackendUserGroupRepositoryTest extends UnitTestCase
     public function initializeObjectSetsDefaultQuerySettings(): void
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        /** @var $subject \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
+        /** @var $subject BackendUserGroupRepository */
         $subject = $this->getMockBuilder(BackendUserGroupRepository::class)
             ->setMethods(['setDefaultQuerySettings'])
             ->setConstructorArgs([$objectManager])

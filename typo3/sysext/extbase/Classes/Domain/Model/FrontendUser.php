@@ -20,6 +20,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * A Frontend User
+ *
+ * @deprecated since v11, will be removed in v12. Do not use or extend this model.
  */
 class FrontendUser extends AbstractEntity
 {

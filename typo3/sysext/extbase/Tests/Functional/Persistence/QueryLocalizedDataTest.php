@@ -64,11 +64,6 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
-                'classes' => [
-                    'TYPO3\CMS\Extbase\Domain\Model\Category' => [
-                        'mapping' => ['tableName' => 'sys_category']
-                    ]
-                ]
             ]
         ];
         $configurationManager = $this->getContainer()->get(ConfigurationManager::class);

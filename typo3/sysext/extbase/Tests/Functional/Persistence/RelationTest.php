@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Blog;
+use ExtbaseTeam\BlogExample\Domain\Model\Category;
 use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use ExtbaseTeam\BlogExample\Domain\Model\Tag;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;

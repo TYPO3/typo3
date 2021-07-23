@@ -9,6 +9,7 @@ return [
     \TYPO3\CMS\Extbase\Domain\Model\File::class => [
         'tableName' => 'sys_file',
     ],
+    // @deprecated since v11, will be removed in v12.
     \TYPO3\CMS\Extbase\Domain\Model\BackendUser::class => [
         'tableName' => 'be_users',
         'properties' => [
@@ -35,6 +36,7 @@ return [
             ],
         ],
     ],
+    // @deprecated since v11, will be removed in v12.
     \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup::class => [
         'tableName' => 'be_groups',
         'properties' => [
@@ -76,9 +78,11 @@ return [
             ],
         ],
     ],
+    // @deprecated since v11, will be removed in v12.
     \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class => [
         'tableName' => 'fe_users',
     ],
+    // @deprecated since v11, will be removed in v12.
     \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup::class => [
         'tableName' => 'fe_groups',
     ],
