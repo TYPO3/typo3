@@ -122,6 +122,14 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime Check valid leap year input',
             ],
+            [
+                'label' => 'inputdatetime_11',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_11 eval=datetime range.lower=1627208536 Check range validation is ignored',
+            ],
         ];
     }
 
@@ -170,31 +178,30 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     protected function dbTypeDateEvalTimeDataProvider_DbTypeDateTime()
     {
         return [
-
-                    [
-                        'label' => 'inputdatetime_4',
-                        'inputValue' => '05:23 29-01-2016',
-                        'expectedValue' => '05:23 29-01-2016',
-                        'expectedInternalValue' => '2016-01-29T05:23:00Z',
-                        'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
-                        'comment' => 'inputdatetime_4 dbType=datetime eval=datetime no transformation',
-                    ],
-                    [
-                        'label' => 'inputdatetime_4',
-                        'inputValue' => '05:23 29-02-2016',
-                        'expectedValue' => '05:23 29-02-2016',
-                        'expectedInternalValue' => '2016-02-29T05:23:00Z',
-                        'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
-                        'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check valid leap year input',
-                    ],
-                    [
-                        'label' => 'inputdatetime_6',
-                        'inputValue' => '13:30:00',
-                        'expectedValue' => '13:30:00',
-                        'expectedInternalValue' => '1970-01-01T13:30:00Z',
-                        'expectedValueAfterSave' => '1970-01-01T13:30:00+00:00',
-                        'comment' => 'inputdatetime_6 eval=timesec as time',
-                    ],
+            [
+                'label' => 'inputdatetime_4',
+                'inputValue' => '05:23 29-01-2016',
+                'expectedValue' => '05:23 29-01-2016',
+                'expectedInternalValue' => '2016-01-29T05:23:00Z',
+                'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
+                'comment' => 'inputdatetime_4 dbType=datetime eval=datetime no transformation',
+            ],
+            [
+                'label' => 'inputdatetime_4',
+                'inputValue' => '05:23 29-02-2016',
+                'expectedValue' => '05:23 29-02-2016',
+                'expectedInternalValue' => '2016-02-29T05:23:00Z',
+                'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
+                'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check valid leap year input',
+            ],
+            [
+                'label' => 'inputdatetime_6',
+                'inputValue' => '13:30:00',
+                'expectedValue' => '13:30:00',
+                'expectedInternalValue' => '1970-01-01T13:30:00Z',
+                'expectedValueAfterSave' => '1970-01-01T13:30:00+00:00',
+                'comment' => 'inputdatetime_6 eval=timesec as time',
+            ],
         ];
     }
 

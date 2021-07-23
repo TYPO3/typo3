@@ -1741,8 +1741,15 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
+        // Skip range validation, if the default value equals 0 and the input value is 0, "0" or an empty string.
+        // This is needed for timestamp date fields with ['range']['lower'] set.
+        $skipRangeValidation =
+            isset($tcaFieldConf['default'])
+            && (int)$tcaFieldConf['default'] === 0
+            && ($res['value'] === '' || $res['value'] === '0' || $res['value'] === 0);
+
         // Checking range of value:
-        if (isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
+        if (!$skipRangeValidation && isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
             if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
                 $res['value'] = (int)$tcaFieldConf['range']['upper'];
             }
