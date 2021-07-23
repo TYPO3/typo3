@@ -915,7 +915,7 @@ class QueryGenerator
                         }
                         $selectFields = ['uid', $labelField];
                         if ($altLabelField) {
-                            $selectFields[] = $altLabelField;
+                            $selectFields = array_merge($selectFields, GeneralUtility::trimExplode(',', $altLabelField, true));
                         }
                         $queryBuilder->select(...$selectFields)
                             ->from($from_table)
