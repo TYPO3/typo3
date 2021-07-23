@@ -407,6 +407,61 @@ class DataHandlerTest extends UnitTestCase
         self::assertSame($returnValue['value'], $expected);
     }
 
+    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
+    {
+        return [
+            'Empty string returns empty string or the number zero' => [
+                '',
+                '',
+                0
+            ],
+            'Zero returns zero as a string or the number zero' => [
+                0,
+                '0',
+                0
+            ],
+            'Zero as a string returns zero as a string or the number zero' => [
+                '0',
+                '0',
+                0
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider
+     * @test
+     * @param $inputValue
+     * @param $expected
+     * @param $expectedEvalInt
+     */
+    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty($inputValue, $expected, $expectedEvalInt)
+    {
+        $tcaFieldConf = [
+            'type' => 'input',
+            'eval' => 'datetime',
+            'default' => 0,
+            'range' => [
+                'lower' => 1627077600
+            ]
+        ];
+
+        $tcaFieldConfEvalInt = [
+            'type' => 'input',
+            'eval' => 'datetime,int',
+            'default' => '0',
+            'range' => [
+                'lower' => 1627077600
+            ]
+        ];
+
+        $returnValue = $this->subject->_call('checkValueForInput', $inputValue, $tcaFieldConf, '', 0, 0, '');
+        self::assertSame($expected, $returnValue['value']);
+
+        $returnValue = $this->subject->_call('checkValueForInput', $inputValue, $tcaFieldConfEvalInt, '', 0, 0, '');
+        self::assertSame($expectedEvalInt, $returnValue['value']);
+    }
+
     /**
      * @return array
      */
