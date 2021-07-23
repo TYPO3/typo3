@@ -824,7 +824,7 @@ class NormalizedParams
     protected static function determineSiteUrl(string $requestDir, string $pathThisScript, string $pathSite): string
     {
         $pathThisScriptDir = substr(dirname($pathThisScript), strlen($pathSite)) . '/';
-        $siteUrl = substr($requestDir, 0, -strlen($pathThisScriptDir));
+        $siteUrl = (string)substr($requestDir, 0, -strlen($pathThisScriptDir));
 
         return rtrim($siteUrl, '/') . '/';
     }

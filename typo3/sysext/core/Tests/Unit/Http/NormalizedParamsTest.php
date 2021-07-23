@@ -946,6 +946,19 @@ class NormalizedParamsTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function getSiteUrlReturnsExpectedUrlForCliCommand()
+    {
+        $serverParams = [];
+        $pathThisScript = '/var/www/html/typo3temp/var/tests/acceptance/typo3/sysext/core/bin/typo3';
+        $pathSite = '/var/www/html/typo3temp/var/tests/acceptance/';
+        $expected = '/';
+        $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
+        self::assertSame($expected, $serverRequestParameters->getSiteUrl());
+    }
+
+    /**
      * @return array[]
      */
     public function getSitePathReturnsExpectedPathDataProvider()
