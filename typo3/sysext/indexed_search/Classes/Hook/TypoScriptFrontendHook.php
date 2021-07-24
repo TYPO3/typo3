@@ -40,7 +40,7 @@ class TypoScriptFrontendHook
     public function indexPageContent(array $parameters, TypoScriptFrontendController $tsfe)
     {
         // Determine if page should be indexed, and if so, configure and initialize indexer
-        if (!$tsfe->config['config']['index_enable']) {
+        if (!($tsfe->config['config']['index_enable'] ?? false)) {
             return;
         }
 
