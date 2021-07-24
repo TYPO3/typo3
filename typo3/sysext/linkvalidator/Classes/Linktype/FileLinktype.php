@@ -80,6 +80,6 @@ class FileLinktype extends AbstractLinktype
      */
     public function getBrokenUrl($row)
     {
-        return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . $row['url'];
     }
 }

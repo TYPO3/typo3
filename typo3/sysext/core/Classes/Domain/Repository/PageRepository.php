@@ -1041,7 +1041,7 @@ class PageRepository implements LoggerAwareInterface
                 if (GeneralUtility::validEmail($redirectTo)) {
                     $redirectTo = 'mailto:' . $redirectTo;
                 } elseif ($redirectTo[0] !== '/') {
-                    $redirectTo = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $redirectTo;
+                    $redirectTo = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . $redirectTo;
                 }
             }
             return $redirectTo;

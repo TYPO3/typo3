@@ -725,7 +725,7 @@ class Indexer
     protected function createLocalPathUsingDomainURL($sourcePath)
     {
         $localPath = '';
-        $baseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
         $baseURLLength = strlen($baseURL);
         if (strpos($sourcePath, $baseURL) === 0) {
             $sourcePath = substr($sourcePath, $baseURLLength);

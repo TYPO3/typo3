@@ -117,7 +117,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         $queryParameters = $request->getQueryParams();
 
-        $this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $this->siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
 
         $this->currentLinkParts = $queryParameters['P']['curUrl'] ?? [];
         $this->editorId = $queryParameters['editorId'];

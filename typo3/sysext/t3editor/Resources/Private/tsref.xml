@@ -3180,8 +3180,8 @@ Is the value "global" then true nesting in relation to other tags marked for "gl
 		</property>
 		<property name="prefixLocalAnchors" type="integer">
 			<description><![CDATA[If the first char is a "#" character (anchor of fx. <a> tags) this will prefix either a relative or absolute path.
-If the value is "1" you will get the absolute path (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'))
-If the value is "2" you will get the relative path (stripping of \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
+If the value is "1" you will get the absolute path ($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUrl())
+If the value is "2" you will get the relative path (stripping of $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl())
 
 Example:
 

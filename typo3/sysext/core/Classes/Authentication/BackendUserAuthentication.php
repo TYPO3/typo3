@@ -2120,7 +2120,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         if (empty($this->user['uid'])) {
             if ($proceedIfNoUserIsLoggedIn === false) {
-                $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
+                $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
                 throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
             }
         } else {

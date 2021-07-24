@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Request;
 
@@ -45,7 +44,7 @@ class NotFoundView extends AbstractView
         $template = file_get_contents($this->getTemplatePathAndFilename());
         $template = is_string($template) ? $template : '';
         if ($this->controllerContext->getRequest() instanceof Request) {
-            $template = str_replace('###BASEURI###', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $template);
+            $template = str_replace('###BASEURI###', $this->controllerContext->getRequest()->getAttribute('normalizedParams')->getSiteUrl(), $template);
         }
         foreach ($this->variablesMarker as $variableName => $marker) {
             $variableValue = $this->variables[$variableName] ?? '';

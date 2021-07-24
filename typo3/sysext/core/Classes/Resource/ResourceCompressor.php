@@ -257,11 +257,11 @@ class ResourceCompressor
                 if (GeneralUtility::isOnCurrentHost($filename) &&
                     GeneralUtility::isFirstPartOfStr(
                         $filename,
-                        GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
+                        $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
                     )
                 ) {
                     // attempt to turn it into a local file path
-                    $localFilename = substr($filename, strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+                    $localFilename = substr($filename, strlen($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()));
                     if (@is_file(GeneralUtility::resolveBackPath($this->rootPath . $localFilename))) {
                         $filesToInclude[$key] = $localFilename;
                     } else {

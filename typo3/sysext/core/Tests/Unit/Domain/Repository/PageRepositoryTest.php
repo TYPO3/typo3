@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Domain\Repository;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -81,10 +83,16 @@ class PageRepositoryTest extends UnitTestCase
      */
     public function getExtUrlForDokType3PrependsSiteUrl()
     {
-        self::assertEquals(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
+        $request = (new ServerRequest('https://foo.de', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        self::assertEquals($request->getAttribute('normalizedParams')->getSiteUrl() . 'hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'hello/world/'
         ]));
+        unset($GLOBALS['TYPO3_REQUEST']);
     }
 
     /**
