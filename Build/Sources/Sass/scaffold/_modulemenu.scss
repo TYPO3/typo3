@@ -33,7 +33,6 @@
     margin-top: 1px;
     color: inherit;
     align-items: center;
-    width: 100%;
     overflow: hidden;
     border: none;
     border-radius: 3px;
@@ -174,6 +173,7 @@ button[aria-expanded="true"]:not(:disabled) {
 .scaffold-modulemenu-expanded {
     .modulemenu-action {
         margin-left: 0;
+        width: 100%;
     }
 
     .modulemenu-indicator {
