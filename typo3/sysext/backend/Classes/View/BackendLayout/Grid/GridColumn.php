@@ -69,14 +69,28 @@ class GridColumn extends AbstractGridObject
      */
     protected $rowSpan = 1;
 
-    public function __construct(PageLayoutContext $context, array $columnDefinition)
+    /**
+     * @var array<string, mixed>
+     */
+    protected $definition;
+
+    public function __construct(PageLayoutContext $context, array $definition)
     {
         parent::__construct($context);
-        $this->columnNumber = isset($columnDefinition['colPos']) ? (int)$columnDefinition['colPos'] : null;
-        $this->columnName = $columnDefinition['name'] ?? $this->columnName;
-        $this->icon = $columnDefinition['icon'] ?? $this->icon;
-        $this->colSpan = (int)($columnDefinition['colspan'] ?? $this->colSpan);
-        $this->rowSpan = (int)($columnDefinition['rowspan'] ?? $this->rowSpan);
+        $this->definition = $definition;
+        $this->columnNumber = isset($definition['colPos']) ? (int)$definition['colPos'] : null;
+        $this->columnName = $definition['name'] ?? $this->columnName;
+        $this->icon = $definition['icon'] ?? $this->icon;
+        $this->colSpan = (int)($definition['colspan'] ?? $this->colSpan);
+        $this->rowSpan = (int)($definition['rowspan'] ?? $this->rowSpan);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getDefinition(): array
+    {
+        return $this->definition;
     }
 
     public function isActive(): bool
