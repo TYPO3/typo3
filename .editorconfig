@@ -29,6 +29,11 @@ max_line_length = 80
 [*.{yaml,yml}]
 indent_size = 2
 
+# NEON-Files
+[*.neon]
+indent_size = 2
+indent_style = tab
+
 # package.json
 [package.json]
 indent_size = 2
