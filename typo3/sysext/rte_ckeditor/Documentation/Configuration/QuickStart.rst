@@ -46,7 +46,7 @@ Override the configuration preset "default" by adding this in :file:`<my_extensi
 
 Add the file :file:`Configuration/RTE/Default.yaml` to your extension, use the file
 :file:`EXT:rte_ckeditor/Configuration/RTE/Full.yaml` as example (see latest 10.4
-`Full.yaml <https://github.com/TYPO3/TYPO3.CMS/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml>`__)
+`Full.yaml <https://github.com/typo3/typo3/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml>`__)
 
 .. todo: change url to Full.yaml after branching master to 10.4
 

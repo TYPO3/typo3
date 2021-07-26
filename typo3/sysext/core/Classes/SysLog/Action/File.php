@@ -31,7 +31,7 @@ class File
 
     /*
      * The constant is not in use but the xlf file tells that 7 represents unzip
-     * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/typo3/sysext/belog/Resources/Private/Language/locallang.xlf#L267
+     * @see https://github.com/typo3/typo3/blob/master/typo3/sysext/belog/Resources/Private/Language/locallang.xlf#L267
      */
     public const UNZIP = 7;
     public const NEW_FILE = 8;

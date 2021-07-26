@@ -30,7 +30,7 @@ class Error
 
     /*
      * 100 is a code, which has been introduced by Kasper in his "Todays special" commit:
-     * @see https://github.com/TYPO3/TYPO3.CMS/commit/7496d6d033
+     * @see https://github.com/typo3/typo3/commit/7496d6d033
      *
      * @todo The constant should either be renamed or replaced completely in the future
      */

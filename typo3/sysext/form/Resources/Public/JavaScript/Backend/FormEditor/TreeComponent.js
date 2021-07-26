@@ -476,7 +476,7 @@ define(['jquery',
       _treeDomElement.off().empty().append(renderCompositeFormElementChildsAsSortableList(formElement));
 
       // We make use of the same strategy for db click detection as the current core pagetree implementation.
-      // @see https://github.com/TYPO3/TYPO3.CMS/blob/260226e93c651356545e91a7c55ee63e186766d5/typo3/sysext/backend/Resources/Public/JavaScript/PageTree/PageTree.js#L350
+      // @see https://github.com/typo3/typo3/blob/260226e93c651356545e91a7c55ee63e186766d5/typo3/sysext/backend/Resources/Public/JavaScript/PageTree/PageTree.js#L350
       var clicks = 0;
       _treeDomElement.on("click", function(e) {
         var formElementIdentifierPath;

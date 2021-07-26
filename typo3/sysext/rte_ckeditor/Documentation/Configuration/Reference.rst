@@ -74,7 +74,7 @@ editor.config
       editor.config.contentCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
    This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
-   <https://github.com/TYPO3/TYPO3.CMS/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
+   <https://github.com/typo3/typo3/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
 
 .. todo: change url to Base.yaml after branching master to 10.4
 
@@ -121,6 +121,6 @@ editor.*
    is a list of plugins with their routes and additional configuration options,
    the main “resource” subproperty needs to be set which is a JavaScript file
    using CKEditor’s plugin API, see `rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
-   <https://github.com/TYPO3/TYPO3.CMS/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__.
+   <https://github.com/typo3/typo3/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__.
 
 .. todo: change url to Plugins.yaml after branching master to 10.4
