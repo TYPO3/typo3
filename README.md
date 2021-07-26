@@ -117,7 +117,7 @@ Contributors Walkthrough and Review System:
 > helpful and get you up and running! (Please post your questions in
 > Slack Channel `#typo3-cms-coredev` regarding contribution support)
 
-The [repository at GitHub](https://github.com/TYPO3/TYPO3.CMS) is a
+The [repository at GitHub](https://github.com/typo3/typo3) is a
 synchronized mirror of the primary TYPO3 core git repository:
 
 * https://git.typo3.org/Packages/TYPO3.CMS.git
