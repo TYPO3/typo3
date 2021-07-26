@@ -13,7 +13,7 @@
 		"chat": "https://typo3.org/help",
 		"docs": "https://docs.typo3.org/c/typo3/cms-rte-ckeditor/master/en-us",
 		"issues": "https://forge.typo3.org",
-		"source": "https://github.com/TYPO3/TYPO3.CMS"
+		"source": "https://github.com/typo3/typo3"
 	},
 	"config": {
 		"sort-packages": true
