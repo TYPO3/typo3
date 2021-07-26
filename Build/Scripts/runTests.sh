@@ -271,8 +271,15 @@ cd "$THIS_SCRIPT_DIR" || exit 1
 # Go to directory that contains the local docker-compose.yml file
 cd ../testing-docker/local || exit 1
 
+# Set core root path by checking whether realpath exists
+if ! command -v realpath &> /dev/null; then
+  echo "Consider installing realpath for properly resolving symlinks" >&2
+  CORE_ROOT="${PWD}/../../../"
+else
+  CORE_ROOT=`realpath ${PWD}/../../../`
+fi
+
 # Option defaults
-CORE_ROOT=`realpath ${PWD}/../../../`
 TEST_SUITE="unit"
 DBMS="mariadb"
 PHP_VERSION="7.4"
