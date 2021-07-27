@@ -39,7 +39,7 @@ class ArrayProcessor
      */
     public function __construct(array $data)
     {
-        $this->data = ArrayUtility::flatten($data);
+        $this->data = ArrayUtility::flattenPlain($data);
     }
 
     /**

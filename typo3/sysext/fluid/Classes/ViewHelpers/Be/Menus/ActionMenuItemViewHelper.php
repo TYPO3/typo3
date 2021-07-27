@@ -98,13 +98,13 @@ class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
     protected function evaluateSelectItemState(string $controller, string $action, array $arguments): void
     {
         $currentRequest = $this->renderingContext->getControllerContext()->getRequest();
-        $flatRequestArguments = ArrayUtility::flatten(
+        $flatRequestArguments = ArrayUtility::flattenPlain(
             array_merge([
                 'controller' => $currentRequest->getControllerName(),
                 'action' => $currentRequest->getControllerActionName()
             ], $currentRequest->getArguments())
         );
-        $flatViewHelperArguments = ArrayUtility::flatten(
+        $flatViewHelperArguments = ArrayUtility::flattenPlain(
             array_merge(['controller' => $controller, 'action' => $action], $arguments)
         );
         if (

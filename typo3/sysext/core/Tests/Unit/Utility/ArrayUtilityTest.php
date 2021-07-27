@@ -1365,6 +1365,182 @@ class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, ArrayUtility::flatten($array));
     }
 
+    ///////////////////////
+    // Tests concerning flattenPlain
+    ///////////////////////
+
+    /**
+     * @return array
+     */
+    public function flattenPlainCalculatesExpectedResultDataProvider(): array
+    {
+        return [
+            'plain array' => [
+                [
+                    'first' => 1,
+                    'second' => 2,
+                ],
+                [
+                    'first' => 1,
+                    'second' => 2,
+                ],
+            ],
+            'plain array with trailing dots' => [
+                [
+                    'first.' => 1,
+                    'second.' => 2,
+                ],
+                [
+                    'first\.' => 1,
+                    'second\.' => 2,
+                ],
+            ],
+            'nested array of 2 levels' => [
+                [
+                    'first' => [
+                        'firstSub' => 1,
+                    ],
+                    'second' => [
+                        'secondSub' => 2,
+                    ],
+                ],
+                [
+                    'first.firstSub' => 1,
+                    'second.secondSub' => 2,
+                ],
+            ],
+            'nested array of 2 levels with dots in keys' => [
+                [
+                    'first.el' => [
+                        'firstSub.' => 1,
+                    ],
+                    'second.el' => [
+                        'secondSub.' => 2,
+                    ],
+                ],
+                [
+                    'first\.el.firstSub\.' => 1,
+                    'second\.el.secondSub\.' => 2,
+                ],
+            ],
+            'nested array of 2 levels with dots inside keys' => [
+                [
+                    'first' => [
+                        'first.sub' => 1,
+                    ],
+                    'second' => [
+                        'second.sub' => 2,
+                    ],
+                ],
+                [
+                    'first.first\.sub' => 1,
+                    'second.second\.sub' => 2,
+                ],
+            ],
+            'nested array of 3 levels' => [
+                [
+                    'first' => [
+                        'firstSub' => [
+                            'firstSubSub' => 1,
+                        ],
+                    ],
+                    'second' => [
+                        'secondSub' => [
+                            'secondSubSub' => 2,
+                        ],
+                    ],
+                ],
+                [
+                    'first.firstSub.firstSubSub' => 1,
+                    'second.secondSub.secondSubSub' => 2,
+                ],
+            ],
+            'nested array of 3 levels with dots in keys' => [
+                [
+                    'first.' => [
+                        'firstSub.' => [
+                            'firstSubSub.' => 1,
+                        ],
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
+                            'secondSubSub.' => 2,
+                        ],
+                    ],
+                ],
+                [
+                    'first\..firstSub\..firstSubSub\.' => 1,
+                    'second\..secondSub\..secondSubSub\.' => 2,
+                ],
+            ],
+            'duplicate keys, one with dot, one without' => [
+                [
+                    'foo' => 'node',
+                    'foo.' => [
+                        'bar' => 'bla',
+                    ],
+                ],
+                [
+                    'foo' => 'node',
+                    'foo\..bar' => 'bla',
+                ],
+            ],
+            'duplicate keys, one with dot with scalar value, one without, last wins' => [
+                [
+                    'foo.' => 'dot',
+                    'foo' => 'node',
+                ],
+                [
+                    'foo\.' => 'dot',
+                    'foo' => 'node',
+                ],
+            ],
+            'empty key' => [
+                [
+                    '' => 'node',
+                ],
+                [
+                    '' => 'node',
+                ],
+            ],
+            'dot key' => [
+                [
+                    '.' => 'node',
+                ],
+                [
+                    '\.' => 'node',
+                ],
+            ],
+            'empty array' => [
+                [],
+                [],
+            ],
+            'nested lists' => [
+                [
+                    ['foo', 'bar'],
+                    ['bla', 'baz'],
+                ],
+                [
+                    '0.0' => 'foo',
+                    '0.1' => 'bar',
+                    '1.0' => 'bla',
+                    '1.1' => 'baz',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @param array $array
+     * @param array $expected
+     * @dataProvider flattenPlainCalculatesExpectedResultDataProvider
+     */
+    public function flattenPlainCalculatesExpectedResult(array $array, array $expected): void
+    {
+        self::assertEquals($expected, ArrayUtility::flattenPlain($array));
+    }
+
     /**
      * @return array
      */

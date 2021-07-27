@@ -1241,7 +1241,7 @@ class TemplateService
             if ($site instanceof Site) {
                 $siteSettings = $site->getConfiguration()['settings'] ?? [];
                 if (!empty($siteSettings)) {
-                    $siteSettings = ArrayUtility::flatten($siteSettings);
+                    $siteSettings = ArrayUtility::flattenPlain($siteSettings);
                     foreach ($siteSettings as $k => $v) {
                         $siteConstants .= $k . ' = ' . $v . LF;
                     }

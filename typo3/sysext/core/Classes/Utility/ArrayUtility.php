@@ -449,6 +449,8 @@ class ArrayUtility
 
     /**
      * Converts a multidimensional array to a flat representation.
+     * @todo: The current implementation isn't a generic array flatten method, but tailored for TypoScript flattening
+     * @todo: It should be deprecated and removed and the required specialities should be put under the domain of TypoScript parsing
      *
      * See unit tests for more details
      *
@@ -500,6 +502,33 @@ class ArrayUtility
             }
         }
         return $flatArray;
+    }
+
+    /**
+     * Just like flatten, but not tailored for TypoScript but for plain simple arrays
+     * It is internal for now, as it needs to be decided how to deprecate/ rename flatten
+     *
+     * @param array $array
+     * @return array
+     * @internal
+     */
+    public static function flattenPlain(array $array): array
+    {
+        $flattenRecursive = static function (array $array, string $prefix = '') use (&$flattenRecursive) {
+            $flatArray[] = [];
+            foreach ($array as $key => $value) {
+                $key = addcslashes((string)$key, '.');
+                if (!is_array($value)) {
+                    $flatArray[] = [$prefix . $key => $value];
+                } else {
+                    $flatArray[] = $flattenRecursive($value, $prefix . $key . '.');
+                }
+            }
+
+            return array_merge(...$flatArray);
+        };
+
+        return $flattenRecursive($array);
     }
 
     /**
