@@ -251,7 +251,7 @@ Examples:
     ./Build/Scripts/runTests.sh -d postgres -k 11
 
     # Run restricted set of backend acceptance tests
-    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Backend/Login/BackendLoginCest.php
+    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Backend/Login/BackendLoginCest.php:loginButtonMouseOver
 
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s install -d sqlite
