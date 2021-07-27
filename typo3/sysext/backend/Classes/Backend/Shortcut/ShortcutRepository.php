@@ -551,13 +551,29 @@ class ShortcutRepository
                     if (!$backendUser->check('tables_modify', $shortcut['table'])) {
                         continue;
                     }
-                    $record = BackendUtility::getRecord($shortcut['table'], (int)$shortcut['recordid']);
-                    // Check if requested record exists
-                    if ($record === null || $record === []) {
-                        continue;
+                    // if type new we get the page id in $shortcut['recordid']
+                    if($shortcut['type']=='new'){
+                        if((int)$shortcut['recordid']==0) {
+                            //root page
+                            $pageId = 0;
+                        }else {
+                            $pageRecord = BackendUtility::getRecord('pages', (int)$shortcut['recordid']);
+                            //page exists?
+                            if ($pageRecord === null || $pageRecord === []) {
+                                continue;
+                            }
+                            $pageId = $pageRecord['uid'];
+                        }
+                    }else {
+
+                        $record = BackendUtility::getRecord($shortcut['table'], (int)$shortcut['recordid']);
+                        // Check if requested record exists
+                        if ($record === null || $record === []) {
+                            continue;
+                        }
+                        // Store the page id of the record in question
+                        $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid']));
                     }
-                    // Store the page id of the record in question
-                    $pageId = ($shortcut['table'] === 'pages' ? (int)($record['uid'] ?? 0) : (int)($record['pid']));
                 } else {
                     // In case this is no record edit shortcut, treat a possible "id" as page id
                     $pageId = (int)$this->extractIdFromShortcutUrl($moduleName, $row['url'] ?? '');
