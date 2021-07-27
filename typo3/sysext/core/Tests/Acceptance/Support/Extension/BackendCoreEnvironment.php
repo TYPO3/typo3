@@ -21,6 +21,7 @@ use Codeception\Event\SuiteEvent;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
 
 /**
@@ -56,7 +57,11 @@ class BackendCoreEnvironment extends BackendEnvironment
             'dashboard',
             'workspaces',
             'info',
-            'indexed_search'
+            'fluid_styled_content',
+            'indexed_search',
+            'adminpanel',
+            'form',
+            'felogin'
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide'
@@ -96,5 +101,11 @@ class BackendCoreEnvironment extends BackendEnvironment
 
         $styleguideGenerator = new Generator();
         $styleguideGenerator->create();
+
+        $styleguideGeneratorFrontend = new GeneratorFrontend();
+        // Force basePath for testing environment, required for the frontend!
+        // Otherwise the page can not be found, also do not set root page to
+        // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
+        $styleguideGeneratorFrontend->create('/typo3temp/var/tests/acceptance/', 0);
     }
 }

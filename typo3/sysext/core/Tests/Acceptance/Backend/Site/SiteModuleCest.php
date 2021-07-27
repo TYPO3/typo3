@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Site;
 
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
@@ -179,7 +181,7 @@ class SiteModuleCest
         $I->amGoingTo('Add the PAGE object');
         $I->click('Edit the whole template record');
         $I->waitForElement('#EditDocumentController');
-        $I->fillField('//input[@data-formengine-input-name="data[sys_template][1][title]"]', 'Default Title');
+        $I->fillField($this->getInputByLabel($I, 'Template Title'), 'Default Title');
         $I->click("//button[@name='_savedok']");
         $I->waitForElementNotVisible('#t3js-ui-block', 30);
         $I->waitForElement('#EditDocumentController');
@@ -191,7 +193,7 @@ page.shortcutIcon = fileadmin/styleguide/bus_lane.jpg
 page.10 = TEXT
 page.10.value = This is a default text for default rendering without dynamic content creation
 ';
-        $I->fillField('//textarea[@data-formengine-input-name="data[sys_template][1][config]"]', $config);
+        $I->fillField($this->getInputByLabel($I, 'Setup', 'textarea'), $config);
         $I->click('//button[@name="_savedok"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
 
@@ -254,7 +256,7 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         $I->switchToContentFrame();
-        $I->canSee('Default [0]', 'option');
+        $I->canSee('English [0]', 'option');
         $I->selectOption('.t3js-create-new-selector', '0');
         $I->waitForElementVisible('div.inlineIsNewRecord:nth-child(1)');
         $I->fillField('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[title]")]', 'Homepage');
@@ -287,5 +289,26 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->waitForElementVisible('table.table-striped');
         $I->canSee('Site Configuration', 'h1');
         $I->canSee('SitesTestIdentifier');
+    }
+
+    /**
+     * Find input field by label name
+     *
+     * @param BackendTester $I
+     * @param string $fieldLabel
+     * @return RemoteWebElement
+     */
+    protected function getInputByLabel(BackendTester $I, string $labelName, string $tag = 'input[@type="text"]'): RemoteWebElement
+    {
+        $I->comment('Get input for label "' . $labelName . '"');
+        return $I->executeInSelenium(
+            function (RemoteWebDriver $webDriver) use ($labelName, $tag) {
+                return $webDriver->findElement(
+                    \Facebook\WebDriver\WebDriverBy::xpath(
+                        '//abbr[contains(text(),"' . $labelName . '")]/parent::*/parent::*/following-sibling::div//' . $tag
+                    )
+                );
+            }
+        );
     }
 }

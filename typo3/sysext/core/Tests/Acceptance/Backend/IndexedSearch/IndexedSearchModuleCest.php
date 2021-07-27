@@ -44,9 +44,11 @@ class IndexedSearchModuleCest
         $I->see('Indexing Engine Statistics', '.t3js-module-body');
         $I->see('General statistics', '.t3js-module-body');
         $I->see('Row count by database table', '.t3js-module-body');
-        $rowCount = $I->grabMultiple('table > tbody >tr > td:nth-child(2)');
+        // Select only "Row count by database table"
+        $rowCount = $I->grabMultiple('.row > .col-md-6:first-child > table > tbody >tr > td:nth-child(2)');
         foreach ($rowCount as $count) {
-            $I->assertEquals('0', $count);
+            // Check only for numeric value, coz we can't actually predict the value due to frontend testing
+            $I->assertIsNumeric($count);
         }
 
         $I->selectOption('.t3-js-jumpMenuBox', 'List: Pages');

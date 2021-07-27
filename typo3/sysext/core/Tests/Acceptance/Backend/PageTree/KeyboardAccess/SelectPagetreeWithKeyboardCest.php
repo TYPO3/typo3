@@ -168,12 +168,12 @@ class SelectPagetreeWithKeyboardCest
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
         $I->assertEquals(
-            'styleguide TCA demo',
+            'styleguide frontend demo',
             $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
         $I->assertEquals(
-            'Dummy 1-50',
+            'styleguide TCA demo',
             $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }

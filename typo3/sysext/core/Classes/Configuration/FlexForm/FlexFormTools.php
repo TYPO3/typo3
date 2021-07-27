@@ -807,7 +807,7 @@ class FlexFormTools
                 $PA['field'] = $field;
                 $PA['uid'] = $row['uid'];
                 // Render flexform:
-                $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey]['lDEF'], $PA, 'data/' . $sheetKey . '/lDEF');
+                $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey]['lDEF'] ?? [], $PA, 'data/' . $sheetKey . '/lDEF');
             } else {
                 return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheetKey . '".';
             }
