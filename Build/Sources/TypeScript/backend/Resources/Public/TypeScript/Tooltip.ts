@@ -45,7 +45,12 @@ class Tooltip {
     }
     const elements = document.querySelectorAll(selector);
     for (const element of elements) {
-      new BootstrapTooltip(element, options);
+      // @ts-ignore
+      // todo this method is missing in types/bootstrap.
+      // todo see: https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/54289
+      // todo Remove ts-ignore, when it is added.
+      // Ensure elements are not initialized multiple times.
+      BootstrapTooltip.getOrCreateInstance(element, options);
     }
   }
 

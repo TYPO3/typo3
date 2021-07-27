@@ -1127,7 +1127,7 @@ export class SvgTree extends LitElement {
     this.scrollBottom = this.scrollTop + this.viewportHeight + (this.viewportHeight / 2);
     // wait for the tooltip to appear and disable tooltips when scrolling
     setTimeout(() => {
-      Tooltip.hide(this.querySelectorAll('.bs-tooltip-end'));
+      Tooltip.hide(document.querySelector(<string>this.tooltipOptions.container).querySelectorAll('.bs-tooltip-end'));
     }, <number>this.tooltipOptions.delay)
   }
 
