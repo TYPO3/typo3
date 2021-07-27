@@ -65,7 +65,7 @@ class PageTsConfigParser
         if ($site) {
             $siteSettings = $site->getConfiguration()['settings'] ?? [];
             if (!empty($siteSettings)) {
-                $siteSettings = ArrayUtility::flatten($siteSettings);
+                $siteSettings = ArrayUtility::flattenPlain($siteSettings);
             }
             if (!empty($siteSettings)) {
                 // Recursive substitution of site settings (up to 10 nested levels)

@@ -292,8 +292,8 @@ class TypoScriptParser
                         $objStrName = substr($line, 0, $varL);
                         if ($objStrName !== '') {
                             $r = [];
-                            if (preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
-                                $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."');
+                            if (preg_match('/[^[:alnum:]\\/_\\\\\\.:-]/i', $objStrName, $r)) {
+                                $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-/\\."');
                             } else {
                                 $line = ltrim(substr($line, $varL));
                                 if ($line === '') {

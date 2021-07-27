@@ -385,7 +385,7 @@ class TypoScriptParserTest extends UnitTestCase
 
         $typoScript = '$.10 = invalid';
         $this->typoScriptParser->parse($typoScript);
-        $expected = 'Line 0: Object Name String, "$.10" contains invalid character "$". Must be alphanumeric or one of: "_:-\."';
+        $expected = 'Line 0: Object Name String, "$.10" contains invalid character "$". Must be alphanumeric or one of: "_:-/\."';
         self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
@@ -722,6 +722,12 @@ test.TYPO3Forever.TypoScript = 1
                 'key = value',
                 [
                     'key' => 'value',
+                ],
+            ],
+            'simple assignment with slash in key' => [
+                'lib/key = value',
+                [
+                    'lib/key' => 'value',
                 ],
             ],
             'simple assignment with escaped dot at the beginning' => [
