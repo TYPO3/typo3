@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -720,55 +719,41 @@ abstract class AbstractMenuContentObject
         if ($specialValue == '') {
             $specialValue = $this->id;
         }
-        $skippedEnableFields = [];
-        if (!empty($this->mconf['showAccessRestrictedPages'])) {
-            $skippedEnableFields = ['fe_group' => 1];
-        }
-        /** @var RelationHandler $loadDB*/
-        $loadDB = GeneralUtility::makeInstance(RelationHandler::class);
-        $loadDB->setFetchAllFields(true);
-        $loadDB->start($specialValue, 'pages');
-        $loadDB->additionalWhere['pages'] = $this->sys_page->enableFields('pages', -1, $skippedEnableFields);
-        $loadDB->getFromDB();
+        $pageIds = GeneralUtility::intExplode(',', (string)$specialValue);
+        $disableGroupAccessCheck = !empty($this->mconf['showAccessRestrictedPages']);
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
-        foreach ($loadDB->itemArray as $val) {
-            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$val['id']);
+        foreach ($pageIds as $pageId) {
+            $row = $this->sys_page->getPage($pageId, $disableGroupAccessCheck);
+            if (!is_array($row)) {
+                continue;
+            }
+            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($pageId);
             // Keep mount point?
-            $mount_info = $this->sys_page->getMountPointInfo($val['id']);
-            // There is a valid mount point.
+            $mount_info = $this->sys_page->getMountPointInfo($pageId, $row);
+            // $pageId is a valid mount point
             if (is_array($mount_info) && $mount_info['overlay']) {
+                $mountedPageId = (int)$mount_info['mount_pid'];
                 // Using "getPage" is OK since we need the check for enableFields
                 // AND for type 2 of mount pids we DO require a doktype < 200!
-                $mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
-                if (!empty($mp_row)) {
-                    $row = $mp_row;
-                    $row['_MP_PARAM'] = $mount_info['MPvar'];
-                    // Overlays should already have their full MPvars calculated
-                    if ($mount_info['overlay']) {
-                        $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid']);
-                        if ($MP) {
-                            unset($row['_MP_PARAM']);
-                        }
-                    }
-                } else {
+                $mountedPageRow = $this->sys_page->getPage($mountedPageId, $disableGroupAccessCheck);
+                if (empty($mountedPageRow)) {
                     // If the mount point could not be fetched with respect to
-                    // enableFields, unset the row so it does not become a part of the menu!
-                    unset($row);
+                    // enableFields, the page should not become a part of the menu!
+                    continue;
                 }
-            } else {
-                $row = $loadDB->results['pages'][$val['id']] ?? [];
-            }
-            // Add versioning overlay for current page (to respect workspaces)
-            if (isset($row) && is_array($row)) {
-                $this->sys_page->versionOL('pages', $row, true);
-            }
-            // Add external MP params, then the row:
-            if (isset($row) && is_array($row)) {
+                $row = $mountedPageRow;
+                $row['_MP_PARAM'] = $mount_info['MPvar'];
+                // Overlays should already have their full MPvars calculated, that's why we unset the
+                // existing $row['_MP_PARAM'], as the full $MP will be added again below
+                $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($mountedPageId);
                 if ($MP) {
-                    $row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
+                    unset($row['_MP_PARAM']);
                 }
-                $menuItems[] = $this->sys_page->getPageOverlay($row);
             }
+            if ($MP) {
+                $row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
+            }
+            $menuItems[] = $row;
         }
         return $menuItems;
     }
