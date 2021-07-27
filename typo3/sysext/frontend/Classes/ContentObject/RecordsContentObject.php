@@ -152,7 +152,6 @@ class RecordsContentObject extends AbstractContentObject
     {
         /** @var RelationHandler $loadDB*/
         $loadDB = GeneralUtility::makeInstance(RelationHandler::class);
-        $loadDB->setFetchAllFields(true);
         $loadDB->start($source, implode(',', $tables));
         foreach ($loadDB->tableArray as $table => $v) {
             if (isset($GLOBALS['TCA'][$table])) {

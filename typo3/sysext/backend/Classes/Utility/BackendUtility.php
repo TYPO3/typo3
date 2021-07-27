@@ -1569,77 +1569,18 @@ class BackendUtility
                 $l = $lang->sL($l);
                 break;
             case 'inline':
+                if ($uid) {
+                    $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                    $l = implode(', ', $finalValues);
+                } else {
+                    $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
+                }
+                break;
             case 'select':
                 if (!empty($theColConf['MM'])) {
                     if ($uid) {
-                        // Display the title of MM related records in lists
-                        if ($noRecordLookup) {
-                            $MMfields = [];
-                            $MMfields[] = $theColConf['foreign_table'] . '.uid';
-                        } else {
-                            $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
-                            if (isset($GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'])) {
-                                foreach (GeneralUtility::trimExplode(
-                                    ',',
-                                    $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt'],
-                                    true
-                                ) as $f) {
-                                    $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
-                                }
-                            }
-                        }
-                        /** @var RelationHandler $dbGroup */
-                        $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
-                        $dbGroup->start(
-                            $value,
-                            $theColConf['foreign_table'],
-                            $theColConf['MM'],
-                            $uid,
-                            $table,
-                            $theColConf
-                        );
-                        $selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
-                        if (is_array($selectUids) && !empty($selectUids)) {
-                            $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
-                            $queryBuilder->getRestrictions()
-                                ->removeAll()
-                                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-                            $result = $queryBuilder
-                                ->select('uid', ...$MMfields)
-                                ->from($theColConf['foreign_table'])
-                                ->where(
-                                    $queryBuilder->expr()->in(
-                                        'uid',
-                                        $queryBuilder->createNamedParameter($selectUids, Connection::PARAM_INT_ARRAY)
-                                    )
-                                )
-                                ->execute();
-
-                            $mmlA = [];
-                            while ($MMrow = $result->fetchAssociative()) {
-                                // Keep sorting of $selectUids
-                                $selectedUid = array_search($MMrow['uid'], $selectUids);
-                                $mmlA[$selectedUid] = $MMrow['uid'];
-                                if (!$noRecordLookup) {
-                                    $mmlA[$selectedUid] = static::getRecordTitle(
-                                        $theColConf['foreign_table'],
-                                        $MMrow,
-                                        false,
-                                        $forceResult
-                                    );
-                                }
-                            }
-
-                            if (!empty($mmlA)) {
-                                ksort($mmlA);
-                                $l = implode('; ', $mmlA);
-                            } else {
-                                $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                            }
-                        } else {
-                            $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                        }
+                        $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                        $l = implode(', ', $finalValues);
                     } else {
                         $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                     }
@@ -1656,65 +1597,11 @@ class BackendUtility
                         if ($noRecordLookup) {
                             $l = $value;
                         } else {
-                            $rParts = [];
-                            if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
-                                $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
-                                $queryBuilder->getRestrictions()
-                                    ->removeAll()
-                                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
-                                $constraints = [
-                                    $queryBuilder->expr()->eq(
-                                        $theColConf['foreign_field'],
-                                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                                    )
-                                ];
-
-                                if (!empty($theColConf['foreign_table_field'])) {
-                                    $constraints[] = $queryBuilder->expr()->eq(
-                                        $theColConf['foreign_table_field'],
-                                        $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
-                                    );
-                                }
-
-                                // Add additional where clause if foreign_match_fields are defined
-                                $foreignMatchFields = [];
-                                if (is_array($theColConf['foreign_match_fields'] ?? false)) {
-                                    $foreignMatchFields = $theColConf['foreign_match_fields'];
-                                }
-
-                                foreach ($foreignMatchFields as $matchField => $matchValue) {
-                                    $constraints[] = $queryBuilder->expr()->eq(
-                                        $matchField,
-                                        $queryBuilder->createNamedParameter($matchValue)
-                                    );
-                                }
-
-                                $result = $queryBuilder
-                                    ->select('*')
-                                    ->from($theColConf['foreign_table'])
-                                    ->where(...$constraints)
-                                    ->execute();
-
-                                while ($record = $result->fetchAssociative()) {
-                                    $rParts[] = $record['uid'];
-                                }
+                            $finalValues = [];
+                            if ($uid) {
+                                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
                             }
-                            if (empty($rParts)) {
-                                $rParts = GeneralUtility::trimExplode(',', $value, true);
-                            }
-                            $lA = [];
-                            foreach ($rParts as $rVal) {
-                                $rVal = (int)$rVal;
-                                $r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
-                                if (is_array($r)) {
-                                    $lA[] = $lang->sL($theColConf['foreign_table_prefix'] ?? '')
-                                        . self::getRecordTitle($theColConf['foreign_table'], $r, false, $forceResult);
-                                } else {
-                                    $lA[] = $rVal ? '[' . $rVal . '!]' : '';
-                                }
-                            }
-                            $l = implode(', ', $lA);
+                            $l = implode(', ', $finalValues);
                         }
                     }
                     if (empty($l) && !empty($value)) {
@@ -1726,99 +1613,11 @@ class BackendUtility
             case 'group':
                 // resolve the titles for DB records
                 if (isset($theColConf['internal_type']) && $theColConf['internal_type'] === 'db') {
-                    if (isset($theColConf['MM']) && $theColConf['MM']) {
-                        if ($uid) {
-                            // Display the title of MM related records in lists
-                            if ($noRecordLookup) {
-                                $MMfields = [];
-                                $MMfields[] = $theColConf['foreign_table'] . '.uid';
-                            } else {
-                                $MMfields = [$theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']];
-                                $altLabelFields = explode(
-                                    ',',
-                                    $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt']
-                                );
-                                foreach ($altLabelFields as $f) {
-                                    $f = trim($f);
-                                    if ($f !== '') {
-                                        $MMfields[] = $theColConf['foreign_table'] . '.' . $f;
-                                    }
-                                }
-                            }
-                            /** @var RelationHandler $dbGroup */
-                            $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
-                            $dbGroup->start(
-                                $value,
-                                $theColConf['foreign_table'],
-                                $theColConf['MM'],
-                                $uid,
-                                $table,
-                                $theColConf
-                            );
-                            $selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
-                            if (!empty($selectUids) && is_array($selectUids)) {
-                                $queryBuilder = static::getQueryBuilderForTable($theColConf['foreign_table']);
-                                $queryBuilder->getRestrictions()
-                                    ->removeAll()
-                                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-                                $result = $queryBuilder
-                                    ->select('uid', ...$MMfields)
-                                    ->from($theColConf['foreign_table'])
-                                    ->where(
-                                        $queryBuilder->expr()->in(
-                                            'uid',
-                                            $queryBuilder->createNamedParameter(
-                                                $selectUids,
-                                                Connection::PARAM_INT_ARRAY
-                                            )
-                                        )
-                                    )
-                                    ->execute();
-
-                                $mmlA = [];
-                                while ($MMrow = $result->fetchAssociative()) {
-                                    // Keep sorting of $selectUids
-                                    $selectedUid = array_search($MMrow['uid'], $selectUids);
-                                    $mmlA[$selectedUid] = $MMrow['uid'];
-                                    if (!$noRecordLookup) {
-                                        $mmlA[$selectedUid] = static::getRecordTitle(
-                                            $theColConf['foreign_table'],
-                                            $MMrow,
-                                            false,
-                                            $forceResult
-                                        );
-                                    }
-                                }
-
-                                if (!empty($mmlA)) {
-                                    ksort($mmlA);
-                                    $l = implode('; ', $mmlA);
-                                } else {
-                                    $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                                }
-                            } else {
-                                $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                            }
-                        } else {
-                            $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                        }
-                    } else {
-                        $finalValues = [];
-                        $relationTableName = $theColConf['allowed'];
-                        $explodedValues = GeneralUtility::trimExplode(',', $value, true);
-
-                        foreach ($explodedValues as $explodedValue) {
-                            if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
-                                $relationTableNameForField = $relationTableName;
-                            } else {
-                                [$relationTableNameForField, $explodedValue] = self::splitTable_Uid($explodedValue);
-                            }
-
-                            $relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
-                            $finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
-                        }
+                    $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                    if ($finalValues !== []) {
                         $l = implode(', ', $finalValues);
+                    } else {
+                        $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                     }
                 } else {
                     $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
@@ -1960,6 +1759,53 @@ class BackendUtility
             return GeneralUtility::fixed_lgd_cs($l, $fixed_lgd_chars);
         }
         return $l;
+    }
+
+    /**
+     * Helper method to fetch all labels for all relations of processed Values.
+     *
+     * @param array $theColConf
+     * @param string $table
+     * @param string|int|null $recordId
+     * @param string|int $value
+     * @param bool $noRecordLookup
+     * @return array
+     */
+    protected static function resolveRelationLabels(array $theColConf, string $table, $recordId, $value, bool $noRecordLookup): array
+    {
+        $finalValues = [];
+
+        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+        $relationHandler->registerNonTableValues = (bool)($theColConf['allowNonIdValues'] ?? false);
+        $relationHandler->start(
+            $value,
+            $theColConf['allowed'] ?? $theColConf['foreign_table'] ?? '',
+            $theColConf['MM'] ?? '',
+            $recordId,
+            $table,
+            $theColConf
+        );
+
+        if ($noRecordLookup) {
+            $finalValues = array_column($relationHandler->itemArray, 'id');
+        } else {
+            $relationHandler->getFromDB();
+            foreach ($relationHandler->getResolvedItemArray() as $item) {
+                $relationRecord = $item['record'];
+                static::workspaceOL($item['table'], $relationRecord);
+                if (!is_array($relationRecord)) {
+                    $finalValues[] = '[' . $item['uid'] . ']';
+                } else {
+                    $title = static::getRecordTitle($item['table'], $relationRecord);
+                    if ($theColConf['foreign_table_prefix'] ?? null) {
+                        $title = static::getLanguageService()->sL($theColConf['foreign_table_prefix']) . $title;
+                    }
+                    $finalValues[] = $title;
+                }
+            }
+        }
+
+        return $finalValues;
     }
 
     /**

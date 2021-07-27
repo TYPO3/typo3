@@ -90,8 +90,8 @@ class TcaGroup implements FormDataProviderInterface
                 $relations = $relationHandler->getResolvedItemArray();
                 foreach ($relations as $relation) {
                     $tableName = $relation['table'];
-                    $uid = $relation['uid'];
-                    $record = BackendUtility::getRecordWSOL($tableName, $uid);
+                    $record = $relation['record'];
+                    BackendUtility::workspaceOL($tableName, $record);
                     $title = BackendUtility::getRecordTitle($tableName, $record, false, false);
                     $items[] = [
                         'table' => $tableName,

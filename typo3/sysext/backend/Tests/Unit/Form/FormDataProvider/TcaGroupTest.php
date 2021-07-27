@@ -167,10 +167,16 @@ class TcaGroupTest extends UnitTestCase
             [
                 'table' => 'aForeignTable',
                 'uid' => 1,
+                'record' => [
+                    'uid' => 1
+                ]
             ],
             [
                 'table' => 'aForeignTable',
                 'uid' => 2,
+                'record' => [
+                    'uid' => 2
+                ]
             ],
         ]);
 
@@ -178,15 +184,19 @@ class TcaGroupTest extends UnitTestCase
         $expected['databaseRow']['aField'] = [
             [
                 'table' => 'aForeignTable',
-                'uid' => null,
+                'uid' => 1,
                 'title' => '',
-                'row' => null,
+                'row' => [
+                    'uid' => 1
+                ],
             ],
             [
                 'table' => 'aForeignTable',
-                'uid' => null,
+                'uid' => 2,
                 'title' => '',
-                'row' => null,
+                'row' => [
+                    'uid' => 2
+                ],
             ]
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];

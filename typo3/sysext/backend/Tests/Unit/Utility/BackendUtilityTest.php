@@ -15,26 +15,17 @@
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
-use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
-use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
-use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
-use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -210,9 +201,51 @@ class BackendUtilityTest extends UnitTestCase
                     ],
                 ],
             ],
+            'pages' => [
+                'ctrl' => [
+                    'label' => 'title'
+                ],
+                'columns' => [
+                    'title' => [
+                        'config' => [
+                            'type' => 'input'
+                        ]
+                    ]
+                ]
+            ]
         ];
-        $GLOBALS['LANG'] = [];
-        self::assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+
+        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
+        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
+        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
+        $relationHandlerProphet->getFromDB()->willReturn([]);
+        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+            [
+                'table' => 'pages',
+                'uid' => 1,
+                'record' => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    'title' => 'Page 1'
+                ]
+            ],
+            [
+                'table' => 'pages',
+                'uid' => 2,
+                'record' => [
+                    'uid' => 2,
+                    'pid' => 0,
+                    'title' => 'Page 2'
+                ]
+            ]
+        ]);
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
+
+        self::assertSame('Page 1, Page 2', BackendUtility::getProcessedValue('tt_content', 'pages', '1,2'));
     }
 
     /**
@@ -222,7 +255,15 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['TCA'] = [
             'index_config' => [
+                'ctrl' => [
+                    'label' => 'title'
+                ],
                 'columns' => [
+                    'title' => [
+                        'config' => [
+                            'type' => 'input'
+                        ]
+                    ],
                     'indexcfgs' => [
                         'config' => [
                             'type' => 'group',
@@ -233,49 +274,50 @@ class BackendUtilityTest extends UnitTestCase
                     ],
                 ],
             ],
+            'pages' => [
+                'ctrl' => [
+                    'label' => 'title'
+                ],
+                'columns' => [
+                    'title' => [
+                        'config' => [
+                            'type' => 'input'
+                        ]
+                    ]
+                ]
+            ]
         ];
-        $GLOBALS['LANG'] = [];
-        self::assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
-    }
 
-    /**
-     * Prepare a mock database setup for a Doctrine connection
-     * and return an array of all prophets to set expectations upon.
-     *
-     * @param string $tableName
-     * @return array
-     */
-    protected function mockDatabaseConnection($tableName = 'sys_category')
-    {
-        $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
-            return "'" . $arguments[0] . "'";
-        });
-        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
-            return '`' . $arguments[0] . '`';
-        });
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
-        $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
-        $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());
-        $restrictionProphet->add(Argument::cetera())->willReturn($restrictionProphet->reveal());
-
-        $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $queryBuilderProphet->expr()->willReturn(
-            GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
-        );
-        $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
-        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
-            return '`' . $arguments[0] . '`';
-        });
-
-        $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphet->getConnectionForTable($tableName)
-            ->willReturn($connectionProphet->reveal());
-        $connectionPoolProphet->getQueryBuilderForTable($tableName)
-            ->shouldBeCalled()
-            ->willReturn($queryBuilderProphet->reveal());
-
-        return [$queryBuilderProphet, $connectionPoolProphet, $connectionProphet, $restrictionProphet];
+        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
+        $relationHandlerProphet = $this->prophesize(RelationHandler::class);
+        $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
+        $relationHandlerProphet->getFromDB()->willReturn([]);
+        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+            [
+                'table' => 'pages',
+                'uid' => 1,
+                'record' => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    'title' => 'Page 1'
+                ]
+            ],
+            [
+                'table' => 'index_config',
+                'uid' => 2,
+                'record' => [
+                    'uid' => 2,
+                    'pid' => 0,
+                    'title' => 'Configuration 2'
+                ]
+            ]
+        ]);
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
+        self::assertSame('Page 1, Configuration 2', BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
 
     /**
@@ -286,33 +328,32 @@ class BackendUtilityTest extends UnitTestCase
         /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
         $relationHandlerProphet = $this->prophesize(RelationHandler::class);
         $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
+        $relationHandlerProphet->getFromDB()->willReturn([]);
+        $relationHandlerProphet->getResolvedItemArray()->willReturn([
+            [
+                'table' => 'sys_category',
+                'uid' => 1,
+                'record' => [
+                    'uid' => 2,
+                    'pid' => 0,
+                    'title' => 'Category 1'
+                ]
+            ],
+            [
+                'table' => 'sys_category',
+                'uid' => 2,
+                'record' => [
+                    'uid' => 2,
+                    'pid' => 0,
+                    'title' => 'Category 2'
+                ]
+            ]
+        ]);
 
         $relationHandlerInstance = $relationHandlerProphet->reveal();
         $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
 
-        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_category');
-        $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(
-            [
-                'uid' => 1,
-                'title' => 'Category 1',
-            ],
-            [
-                'uid' => 2,
-                'title' => 'Category 2',
-            ],
-            false
-        );
-
-        /** @var QueryBuilder|ObjectProphecy $queryBuilderProphet */
-        $queryBuilderProphet->select('uid', 'sys_category.title')->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->from('sys_category')->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->where('`uid` IN (:dcValue1)')->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->createNamedParameter([1, 2], Connection::PARAM_INT_ARRAY)->willReturn(':dcValue1');
-        $queryBuilderProphet->execute()->willReturn($statementProphet->reveal());
-
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $GLOBALS['TCA'] = [
             'pages' => [
@@ -334,6 +375,11 @@ class BackendUtilityTest extends UnitTestCase
             'sys_category' => [
                 'ctrl' => ['label' => 'title'],
                 'columns' => [
+                    'title' => [
+                        'config' => [
+                            'type' => 'input'
+                        ]
+                    ],
                     'items' => [
                         'config' => [
                             'type' => 'group',
@@ -346,11 +392,14 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['LANG'] = [];
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
         self::assertSame(
-            'Category 1; Category 2',
-            ProcessedValueForSelectWithMMRelationFixture::getProcessedValue(
+            'Category 1, Category 2',
+            BackendUtility::getProcessedValue(
                 'pages',
                 'categories',
                 '2',

@@ -39,7 +39,7 @@ class RelationHandler
      *
      * @var bool
      */
-    protected $fetchAllFields = false;
+    protected $fetchAllFields = true;
 
     /**
      * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
@@ -57,7 +57,8 @@ class RelationHandler
     public $tableArray = [];
 
     /**
-     * Contains items in a numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
+     * Contains items in a numeric array (table/id for each). Tablenames here might be "_NO_TABLE". Keeps
+     * the sorting of thee retrieved items.
      *
      * @var array<int, array<string, mixed>>
      */
@@ -1201,22 +1202,9 @@ class RelationHandler
                 $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
                 foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
-                    if ($this->fetchAllFields) {
-                        $fields = '*';
-                    } else {
-                        $fields = 'uid,pid';
-                        if ($GLOBALS['TCA'][$table]['ctrl']['label']) {
-                            // Title
-                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
-                        }
-                        if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? false) {
-                            // Alternative Title-Fields
-                            $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label_alt'];
-                        }
-                    }
                     $queryBuilder = $connection->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll();
-                    $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
+                    $queryBuilder->select('*')
                         ->from($table)
                         ->where($queryBuilder->expr()->in(
                             'uid',
@@ -1248,6 +1236,9 @@ class RelationHandler
      * the return array to always contain both table name and uid, and keep incoming
      * "itemArray" sort order and keeps "multiple" selections.
      *
+     * In addition, the item array contains the full record to be used later-on and save database queries.
+     * This method keeps the ordering intact.
+     *
      * @return array
      */
     public function getResolvedItemArray(): array
@@ -1258,6 +1249,7 @@ class RelationHandler
                 $itemArray[] = [
                     'table' => $item['table'],
                     'uid' => $item['id'],
+                    'record' => $this->results[$item['table']][$item['id']]
                 ];
             }
         }
