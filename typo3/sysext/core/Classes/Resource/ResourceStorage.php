@@ -2585,7 +2585,7 @@ class ResourceStorage implements ResourceStorageInterface
     {
         $inProcessingFolder = false;
         foreach ($this->getProcessingFolders() as $processingFolder) {
-            if ($this->driver->isWithin($processingFolder->getIdentifier(), $identifier)) {
+            if ($processingFolder->getStorage()->getDriver()->isWithin($processingFolder->getIdentifier(), $identifier)) {
                 $inProcessingFolder = true;
                 break;
             }
