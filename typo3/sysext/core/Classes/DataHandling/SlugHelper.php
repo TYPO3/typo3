@@ -166,7 +166,7 @@ class SlugHelper
      */
     public function generate(array $recordData, int $pid): string
     {
-        if ($pid === 0 || (!empty($recordData['is_siteroot']) && $this->tableName === 'pages')) {
+        if ($this->tableName === 'pages' && ($pid === 0 || !empty($recordData['is_siteroot']))) {
             return '/';
         }
         $prefix = '';

@@ -690,4 +690,43 @@ class SlugHelperTest extends UnitTestCase
             ], 13)
         );
     }
+
+    /**
+     * @return array
+     */
+    public function generateSlugWithPid0DataProvider(): array
+    {
+        return [
+            'pages' => [
+                ['table' => 'pages', 'title' => 'Products'],
+                '/'
+            ],
+            'dummyTable' => [
+                ['table' => 'dummyTable', 'title' => 'Products'],
+                'products'
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider generateSlugWithPid0DataProvider
+     * @param array $input
+     * @param string $expected
+     * @test
+     */
+    public function generateSlugWithPid0(array $input, string $expected)
+    {
+        if (empty($GLOBALS[$input['table']]['ctrl'])) {
+            $GLOBALS[$input['table']]['ctrl'] = [];
+        }
+        $subject = new SlugHelper(
+            $input['table'],
+            'title',
+            ['generatorOptions' => ['fields' => ['title']]]
+        );
+        self::assertEquals(
+            $expected,
+            $subject->generate(['title' => $input['title'], 'uid' => 13], 0)
+        );
+    }
 }
