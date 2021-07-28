@@ -115,6 +115,7 @@ CREATE TABLE tx_styleguide_elements_basic (
     inputdatetime_8 text,
     inputdatetime_9 text,
     inputdatetime_10 text,
+    inputdatetime_11 text,
 
     text_1 text,
     text_2 text,

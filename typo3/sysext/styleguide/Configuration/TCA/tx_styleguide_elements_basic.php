@@ -623,6 +623,20 @@ return [
                 'readOnly' => true,
             ],
         ],
+        'inputdatetime_11' => [
+            'exclude' => 1,
+            'label' => 'inputdatetime_11',
+            'description' => 'eval=datetime, default=0, range.lower=1627208536',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+                'default' => 0,
+                'range' => [
+                    'lower' => 1627208536
+                ]
+            ],
+        ],
 
         'text_1' => [
             'l10n_mode' => 'prefixLangTitle description',
@@ -1753,6 +1767,7 @@ mod.web_layout.BackendLayouts {
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
+                    inputdatetime_11,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
