@@ -25,7 +25,7 @@ class PasswordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderCorrectlySetsTagName()
+    public function renderCorrectlySetsTagName(): void
     {
         $view = new StandaloneView();
         $view->setTemplateSource('<f:form.password />');
@@ -35,10 +35,20 @@ class PasswordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderCorrectlySetsTypeNameAndValueAttributes()
+    public function renderCorrectlySetsTypeNameAndValueAttributes(): void
     {
         $view = new StandaloneView();
         $view->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
         self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function renderCorrectlySetsAutocompleteTagAttribute(): void
+    {
+        $view = new StandaloneView();
+        $view->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
+        self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', $view->render());
     }
 }

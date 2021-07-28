@@ -54,6 +54,7 @@ class PasswordViewHelper extends AbstractFormFieldViewHelper
         );
         $this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textfield');
         $this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
+        $this->registerTagAttribute('autocomplete', 'string', 'Specify the autocomplete behaviour for password managers');
         $this->registerTagAttribute('size', 'int', 'The size of the input field');
         $this->registerArgument(
             'errorClass',
