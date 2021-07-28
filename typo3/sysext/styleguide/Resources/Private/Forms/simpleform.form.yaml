@@ -20,6 +20,11 @@ finishers:
       useFluidEmail: true
       title: 'Confirmation of your message'
     identifier: EmailToReceiver
+  -
+    options:
+      message: 'E-Mail sent'
+      contentElementUid: ''
+    identifier: Confirmation
 renderables:
   -
     renderingOptions:

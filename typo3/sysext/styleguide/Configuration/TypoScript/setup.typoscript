@@ -8,6 +8,14 @@
 @import 'EXT:styleguide/Configuration/TypoScript/extensions/form.typoscript'
 @import 'EXT:styleguide/Configuration/TypoScript/extensions/felogin.typoscript'
 
+// Configure admin panel
+config.admPanel = 1
+
+page.headerData.1568907945 = TEXT
+page.headerData.1568907945.value (
+  <link rel="shortcut icon" href="typo3conf/ext/styleguide/Resources/Public/Icons/Extension.svg" />
+)
+
 // Define template paths for fluid_styled_content
 lib.contentElement {
   templateName = Default

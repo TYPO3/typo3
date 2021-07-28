@@ -118,7 +118,7 @@ class Generator extends AbstractGenerator
         }
 
         // Populate page tree via DataHandler
-        $this->write($data);
+        $this->executeDataHandler($data);
 
         // Create a site configuration on root page
         $topPageUid = $recordFinder->findUidsOfStyleguideEntryPages()[0];
@@ -193,7 +193,7 @@ class Generator extends AbstractGenerator
         }
 
         // Process commands to delete records
-        $this->write([], $commands);
+        $this->executeDataHandler([], $commands);
 
         // Delete demo images in fileadmin again
         $this->deleteFalFolder('styleguide');
@@ -254,31 +254,7 @@ class Generator extends AbstractGenerator
             $connection->insert('be_users', $fields);
         }
 
-        $demoLanguagesUids = $recordFinder->findUidsOfDemoLanguages();
-        if (empty($demoLanguagesUids)) {
-            // Add four sys_language`s
-            $fields = [
-                'pid' => 0,
-                'tx_styleguide_isdemorecord' => 1,
-                'title' => 'styleguide demo language danish',
-                'language_isocode' => 'da',
-                'flag' => 'dk',
-            ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_language');
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language german';
-            $fields['language_isocode'] = 'de';
-            $fields['flag'] = 'de';
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language french';
-            $fields['language_isocode'] = 'fr';
-            $fields['flag'] = 'fr';
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language spanish';
-            $fields['language_isocode'] = 'es';
-            $fields['flag'] = 'es';
-            $connection->insert('sys_language', $fields);
-        }
+        $this->createSysLanguages();
 
         // Add 3 files from resources directory to default storage
         $this->addToFal([

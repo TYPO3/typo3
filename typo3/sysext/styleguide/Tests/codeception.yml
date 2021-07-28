@@ -7,6 +7,9 @@ paths:
 settings:
   colors: true
   memory_limit: 1024M
+modules:
+  enabled:
+    - Codeception\Module\Cli
 extensions:
   enabled:
     - Codeception\Extension\RunFailed

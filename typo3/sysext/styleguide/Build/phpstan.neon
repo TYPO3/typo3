@@ -8,5 +8,6 @@ parameters:
   excludes_analyse:
     - %currentWorkingDirectory%/Tests/Acceptance/Support/BackendTester.php
     - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
+    - %currentWorkingDirectory%/Tests/Acceptance/Backend/GenerateCommandCest.php
 
   checkMissingIterableValueType: false

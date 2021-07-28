@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Styleguide\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,8 @@ namespace TYPO3\CMS\Styleguide\Command;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Styleguide\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -50,7 +51,7 @@ class GeneratorCommand extends Command
         Bootstrap::initializeBackendAuthentication();
 
         if (!$input->getOption('create') && !$input->getOption('delete')) {
-            $output->writeln('<info>Please specify an option "--create" or "--delete"</info>');
+            $output->writeln('<comment>Please specify an option "--create" or "--delete"</comment>');
         }
 
         switch ($input->getArgument('type')) {
@@ -99,7 +100,7 @@ class GeneratorCommand extends Command
         /** @var RecordFinder $finder */
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($finder->findUidsOfStyleguideEntryPages())) {
-            $output->writeln('<warning>TCA page tree already exists!</warning>');
+            $output->writeln('<comment>TCA page tree already exists!</comment>');
         } else {
             $generator = GeneralUtility::makeInstance(Generator::class);
             $generator->create();

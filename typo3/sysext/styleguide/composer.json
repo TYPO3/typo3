@@ -47,7 +47,8 @@
     "codeception/module-asserts": "^1.2",
     "typo3/coding-standards": "^0.3.0",
     "phpstan/phpstan": "^0.12.37",
-    "typo3/tailor": "^1.2"
+    "typo3/tailor": "^1.2",
+    "codeception/module-cli": "^1.1"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

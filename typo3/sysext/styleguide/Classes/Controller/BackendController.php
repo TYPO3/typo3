@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Styleguide\Controller;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,7 @@ namespace TYPO3\CMS\Styleguide\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+namespace TYPO3\CMS\Styleguide\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;

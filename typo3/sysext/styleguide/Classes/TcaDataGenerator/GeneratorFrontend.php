@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,6 +15,8 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
+
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -28,7 +29,7 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
  */
 class GeneratorFrontend extends AbstractGenerator
 {
-    public function create(): void
+    public function create(string $basePath = '', int $hidden = 1): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $kauderWelsch = GeneralUtility::makeInstance(KauderwelschService::class);
@@ -57,11 +58,11 @@ class GeneratorFrontend extends AbstractGenerator
             'pages' => [
                 $newIdOfEntryPage => [
                     'title' => 'styleguide frontend demo',
-                    'pid' => 0,
+                    'pid' => 0 - $this->getUidOfLastTopLevelPage(),
                     // Define page as styleguide frontend
                     'tx_styleguide_containsdemo' => 'tx_styleguide_frontend_root',
                     'is_siteroot' => 1,
-                    'hidden' => 0,
+                    'hidden' => $hidden,
                 ],
             ],
             'sys_template' => [
@@ -131,16 +132,17 @@ class GeneratorFrontend extends AbstractGenerator
             }
         }
 
-        $this->write($data);
+        $this->executeDataHandler($data);
 
         // Create site configuration for frontend
-        if ($GLOBALS['TYPO3_REQUEST']) {
-            $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . '/';
+        if (isset($GLOBALS['TYPO3_REQUEST']) && empty($basePath)) {
+            $port = $GLOBALS['TYPO3_REQUEST']->getUri()->getPort() ? ':' . $GLOBALS['TYPO3_REQUEST']->getUri()->getPort() : '';
+            $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . $port . '/';
         } else {
-            // On cli there is not TYPO3_REUQEST object, therefore use only slash
-            $domain = '/';
+            // On cli there is no TYPO3_REUQEST object
+            $domain = empty($basePath) ? '/' : $basePath;
         }
-        $topPageUid = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
+        $topPageUid = (int)$recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
         $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo');
 
         $this->populateSysFileReference();
@@ -166,7 +168,7 @@ class GeneratorFrontend extends AbstractGenerator
             $rootUid = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root']);
 
             if (!empty($rootUid)) {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($rootUid[0]);
+                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId((int)$rootUid[0]);
                 $identifier = $site->getIdentifier();
                 GeneralUtility::makeInstance(SiteConfiguration::class)->delete($identifier);
             }
@@ -174,7 +176,7 @@ class GeneratorFrontend extends AbstractGenerator
             // Do not throw a thing if site config does not exist
         }
         // Delete records data
-        $this->write([], $commands);
+        $this->executeDataHandler([], $commands);
 
         // Delete created files
         $this->deleteFalFolder('styleguide_frontend');
@@ -439,7 +441,7 @@ class GeneratorFrontend extends AbstractGenerator
             }
         }
 
-        $this->write($recordData);
+        $this->executeDataHandler($recordData);
     }
 
     /**
@@ -459,7 +461,7 @@ class GeneratorFrontend extends AbstractGenerator
             ];
         }
 
-        $this->write($recordData);
+        $this->executeDataHandler($recordData);
     }
 
     /**
@@ -481,6 +483,6 @@ class GeneratorFrontend extends AbstractGenerator
             ];
         }
 
-        $this->write($recordData);
+        $this->executeDataHandler($recordData);
     }
 }
