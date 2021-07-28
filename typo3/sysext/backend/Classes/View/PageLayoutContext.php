@@ -327,7 +327,7 @@ class PageLayoutContext
                 )
             );
         $statement = $queryBuilder->execute();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
         }
         // If any languages are left, make selector:

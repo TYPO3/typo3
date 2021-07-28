@@ -180,7 +180,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             )
             ->orderBy('sorting')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (empty($rootPage)) {
             return 0;
@@ -213,7 +213,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
             )
             ->orderBy('crdate')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (empty($rootTemplate)) {
             return 0;
@@ -297,7 +297,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
                 )
                 ->orderBy('uid')
                 ->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $children[] = (int)$row['uid'];
                 }

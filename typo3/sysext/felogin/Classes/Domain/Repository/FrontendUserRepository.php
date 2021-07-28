@@ -211,7 +211,7 @@ class FrontendUserRepository
             ->setMaxResults(1)
         ;
 
-        $row = $query->execute()->fetch();
+        $row = $query->execute()->fetchAssociative();
         return is_array($row) ? $row : null;
     }
 

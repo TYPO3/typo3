@@ -152,7 +152,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
         $result = $queryBuilder->execute();
 
         // fetch all records and create objects out of them
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $items[] = $this->createDomainObject($row);
         }
         return $items;
@@ -210,7 +210,7 @@ abstract class AbstractRepository implements RepositoryInterface, SingletonInter
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         if (!is_array($row)) {
             throw new \RuntimeException('Could not find row with UID "' . $uid . '" in table "' . $this->table . '"', 1314354065);
         }

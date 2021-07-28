@@ -559,7 +559,7 @@ class InlineRecordContainer extends AbstractContainer
                     )
                     ->setMaxResults(1)
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
                 if (!empty($recordInDatabase)) {
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [

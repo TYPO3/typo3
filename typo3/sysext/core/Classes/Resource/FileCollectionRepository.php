@@ -61,7 +61,7 @@ class FileCollectionRepository
             ->from($this->table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         if (is_array($data)) {
             $object = $this->createDomainObject($data);
         }

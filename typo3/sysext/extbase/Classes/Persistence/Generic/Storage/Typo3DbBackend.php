@@ -639,7 +639,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                     )
                 )
                 ->execute();
-            if ($row = $result->fetch()) {
+            if ($row = $result->fetchAssociative()) {
                 $storagePage = $row['pid'];
                 $pageIdsToClear[] = $storagePage;
             }

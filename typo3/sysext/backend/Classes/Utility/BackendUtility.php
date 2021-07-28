@@ -117,7 +117,7 @@ class BackendUtility
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
             }
 
-            $row = $queryBuilder->execute()->fetch();
+            $row = $queryBuilder->execute()->fetchAssociative();
             if ($row) {
                 return $row;
             }
@@ -474,8 +474,8 @@ class BackendUtility
                 $statement->bindValue(1, (int)$uid);
                 $statement->execute();
             }
-            $row = $statement->fetch();
-            $statement->closeCursor();
+            $row = $statement->fetchAssociative();
+            $statement->free();
 
             if ($row) {
                 if ($workspaceOL) {
@@ -816,7 +816,7 @@ class BackendUtility
             ->where(QueryHelper::stripLogicalOperatorPrefix($where))
             ->execute();
 
-        while ($record = $res->fetch()) {
+        while ($record = $res->fetchAssociative()) {
             // store the uid, because it might be unset if it's not among the requested $fields
             $recordId = $record['uid'];
             $record[$titleField] = self::getRecordTitle($table, $record);
@@ -1617,7 +1617,7 @@ class BackendUtility
                                 ->execute();
 
                             $mmlA = [];
-                            while ($MMrow = $result->fetch()) {
+                            while ($MMrow = $result->fetchAssociative()) {
                                 // Keep sorting of $selectUids
                                 $selectedUid = array_search($MMrow['uid'], $selectUids);
                                 $mmlA[$selectedUid] = $MMrow['uid'];
@@ -1696,7 +1696,7 @@ class BackendUtility
                                     ->where(...$constraints)
                                     ->execute();
 
-                                while ($record = $result->fetch()) {
+                                while ($record = $result->fetchAssociative()) {
                                     $rParts[] = $record['uid'];
                                 }
                             }
@@ -1777,7 +1777,7 @@ class BackendUtility
                                     ->execute();
 
                                 $mmlA = [];
-                                while ($MMrow = $result->fetch()) {
+                                while ($MMrow = $result->fetchAssociative()) {
                                     // Keep sorting of $selectUids
                                     $selectedUid = array_search($MMrow['uid'], $selectUids);
                                     $mmlA[$selectedUid] = $MMrow['uid'];
@@ -2890,7 +2890,7 @@ class BackendUtility
                 ->execute();
 
             $lang = static::getLanguageService();
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $row += [
                     'userid' => 0,
                     'record_pid' => 0,
@@ -3526,7 +3526,7 @@ class BackendUtility
                         )
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
 
                 return $row;
             }

@@ -411,7 +411,7 @@ abstract class AbstractTask implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if ($row && !empty($row['serialized_executions'])) {
             $isRunning = true;
@@ -437,7 +437,7 @@ abstract class AbstractTask implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $runningExecutions = [];
         if ($row && !empty($row['serialized_executions'])) {
@@ -486,7 +486,7 @@ abstract class AbstractTask implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->taskUid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if ($row && $row['serialized_executions'] !== '') {
             $runningExecutions = unserialize($row['serialized_executions']);

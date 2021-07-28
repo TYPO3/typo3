@@ -293,7 +293,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (!is_array($pageHashRow)) {
             $this->redirect('statistic');
@@ -310,7 +310,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         $debugInfo = [];
         $lexer = '';
         if (is_array($debugRow)) {

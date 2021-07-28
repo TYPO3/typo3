@@ -163,7 +163,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (!empty($row)) {
             try {

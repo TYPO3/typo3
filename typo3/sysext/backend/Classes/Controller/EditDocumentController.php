@@ -2130,7 +2130,7 @@ class EditDocumentController
                             )
                             ->execute();
 
-                        while ($row = $result->fetch()) {
+                        while ($row = $result->fetchAssociative()) {
                             if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
                                 $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
                                 if (!empty($workspaceVersion)) {
@@ -2243,7 +2243,7 @@ class EditDocumentController
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
             $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
             if (is_array($localizedRecord)) {
                 // Create redirect response to self to edit just created record
@@ -2317,7 +2317,7 @@ class EditDocumentController
                 ];
             }
 
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 $languageId = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($allLanguages[$languageId])) {
                     $availableLanguages[$languageId] = $allLanguages[$languageId];

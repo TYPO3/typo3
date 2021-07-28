@@ -203,7 +203,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
                 $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
             ))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         return $result !== false ? $result : null;
     }
 

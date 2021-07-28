@@ -74,7 +74,7 @@ class AbstractRepositoryTest extends UnitTestCase
     public function findByUidAcceptsNumericUidInString()
     {
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->shouldBeCalled()->willReturn(['uid' => 123]);
+        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(['uid' => 123]);
 
         $queryBuilderProphet = $this->createDatabaseMock();
         $queryBuilderProphet->select('*')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());

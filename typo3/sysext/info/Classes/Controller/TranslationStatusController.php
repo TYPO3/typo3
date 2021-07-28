@@ -420,13 +420,13 @@ class TranslationStatusController
             )
             ->execute();
 
-        $row = $result->fetch();
+        $row = $result->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
         if (is_array($row)) {
             $row['_COUNT'] = $queryBuilder->count('uid')->execute()->fetchOne();
             $row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
         }
-        $result->closeCursor();
+        $result->free();
         return $row;
     }
 

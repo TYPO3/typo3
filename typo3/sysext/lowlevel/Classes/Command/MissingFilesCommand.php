@@ -183,7 +183,7 @@ If you want to get more detailed information, use the --verbose option.')
             ->execute();
 
         // Traverse the references and check if the files exists
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             $fileName = $this->getFileNameWithoutAnchor($record['ref_string']);
             if (empty($record['softref_key']) && !@is_file(Environment::getPublicPath() . '/' . $fileName)) {
                 $missingReferences[$fileName][$record['hash']] = $this->formatReferenceIndexEntryToString($record);
@@ -216,7 +216,7 @@ If you want to get more detailed information, use the --verbose option.')
             ->execute();
 
         // Traverse the references and check if the files exists
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             $fileName = $this->getFileNameWithoutAnchor($record['ref_string']);
             if (!@is_file(Environment::getPublicPath() . '/' . $fileName)) {
                 $missingReferences[] = $fileName . ' - ' . $record['hash'] . ' - ' . $this->formatReferenceIndexEntryToString($record);

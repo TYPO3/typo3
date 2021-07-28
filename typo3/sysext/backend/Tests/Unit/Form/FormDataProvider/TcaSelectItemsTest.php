@@ -126,7 +126,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->shouldBeCalled();
+        $statementProphet->fetchAssociative()->shouldBeCalled();
 
         $queryBuilderProphet->select('foreignTable.uid')
             ->shouldBeCalled()
@@ -1228,7 +1228,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -1338,7 +1338,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -1436,7 +1436,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'pid' => 23,
             'icon' => 'foo.jpg',
         ];
-        $statementProphet->fetch()->shouldBeCalled()->willReturn($foreignTableRowResultOne, false);
+        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn($foreignTableRowResultOne, false);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'] = [
@@ -2133,7 +2133,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2256,7 +2256,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2386,7 +2386,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2517,7 +2517,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetch()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;

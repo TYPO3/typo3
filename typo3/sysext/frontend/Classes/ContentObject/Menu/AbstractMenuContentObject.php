@@ -667,7 +667,7 @@ abstract class AbstractMenuContentObject
             }
             // Get sub-pages:
             $statement = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 // When the site language configuration is in "free" mode, then the page without overlay is fetched
                 // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
                 // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
@@ -830,7 +830,7 @@ abstract class AbstractMenuContentObject
             'orderBy' => $sortingField ?: $sortField . ' DESC',
             'max' => $limit
         ]);
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             // When the site language configuration is in "free" mode, then the page without overlay is fetched
             // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
             // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
@@ -956,7 +956,7 @@ abstract class AbstractMenuContentObject
             }
 
             $result = $queryBuilder->execute();
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (is_array($row)) {
                     $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
@@ -1869,7 +1869,7 @@ abstract class AbstractMenuContentObject
             throw new \UnexpectedValueException($message, 1337334849);
         }
         $result = [];
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $this->sys_page->versionOL('tt_content', $row);
             if ($this->getCurrentLanguageAspect()->doOverlays() && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
                 $row = $this->sys_page->getRecordOverlay(

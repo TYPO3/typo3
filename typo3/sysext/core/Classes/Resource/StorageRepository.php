@@ -146,7 +146,7 @@ class StorageRepository implements LoggerAwareInterface
                 ->execute();
 
             $this->storageRowCache = [];
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 if (!empty($row['uid'])) {
                     $this->storageRowCache[$row['uid']] = $row;
                 }

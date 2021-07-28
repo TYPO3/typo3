@@ -259,7 +259,7 @@ class WorkspaceVersionRecordsCommand extends Command
             ->from('pages')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rootID, \PDO::PARAM_INT)))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         // If rootIsVersion is set it means that the input rootID is that of a version of a page. See below where the recursive call is made.
         if ($rootIsVersion) {
@@ -296,7 +296,7 @@ class WorkspaceVersionRecordsCommand extends Command
                             )
                         )
                         ->execute();
-                    while ($rowSub = $result->fetch()) {
+                    while ($rowSub = $result->fetchAssociative()) {
                         // Add any versions of those records
                         $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
                         if (is_array($versions)) {
@@ -339,7 +339,7 @@ class WorkspaceVersionRecordsCommand extends Command
                 ->orderBy('sorting');
 
             $result = $queryBuilder->execute();
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $this->traversePageTreeForVersionedRecords((int)$row['uid'], $depth, $isInsideVersionedPage, false);
             }
         }
@@ -466,7 +466,7 @@ class WorkspaceVersionRecordsCommand extends Command
             ->from('sys_workspace')
             ->execute();
 
-        while ($workspaceRecord = $result->fetch()) {
+        while ($workspaceRecord = $result->fetchAssociative()) {
             $this->allWorkspaces[(int)$workspaceRecord['uid']] = $workspaceRecord['title'];
         }
         return $this->allWorkspaces;

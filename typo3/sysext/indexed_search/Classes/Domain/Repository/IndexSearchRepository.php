@@ -245,7 +245,7 @@ class IndexSearchRepository
             // Now, traverse result and put the rows to be displayed into an array
             // Each row should contain the fields from 'ISEC.*, IP.*' combined
             // + artificial fields "show_resume" (bool) and "result_number" (counter)
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 // Set first row
                 if (!$c) {
                     $firstRow = $row;
@@ -289,7 +289,7 @@ class IndexSearchRepository
                 }
             }
 
-            $result->closeCursor();
+            $result->free();
 
             return [
                 'resultRows' => $resultRows,
@@ -641,7 +641,7 @@ class IndexSearchRepository
             if ($res) {
                 // Get phash list by searching for it:
                 $phashList = [];
-                while ($row = $res->fetch()) {
+                while ($row = $res->fetchAssociative()) {
                     $phashList[] = $row['phash'];
                 }
                 // Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
@@ -912,7 +912,7 @@ class IndexSearchRepository
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (is_array($indexCfgRec)) {
             $refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
@@ -935,7 +935,7 @@ class IndexSearchRepository
                                 )
                             )
                             ->execute()
-                            ->fetch();
+                            ->fetchAssociative();
                         if ($idxRec) {
                             $list[] = $uid;
                         }
@@ -949,7 +949,7 @@ class IndexSearchRepository
                                 )
                             )
                             ->execute();
-                        while ($idxRec = $indexCfgRecordsFromPid->fetch()) {
+                        while ($idxRec = $indexCfgRecordsFromPid->fetchAssociative()) {
                             $list[] = $idxRec['uid'];
                         }
                         break;

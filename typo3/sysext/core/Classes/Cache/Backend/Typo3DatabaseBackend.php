@@ -148,7 +148,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         $content = '';
         if (!empty($cacheRow)) {
             $content = $cacheRow['content'];

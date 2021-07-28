@@ -1287,7 +1287,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ->from($this->user_table)
             ->where($query->expr()->eq('uid', $query->createNamedParameter($uid, \PDO::PARAM_INT)));
 
-        return $query->execute()->fetch();
+        return $query->execute()->fetchAssociative();
     }
 
     /**
@@ -1306,7 +1306,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ->from($this->user_table)
             ->where($query->expr()->eq('username', $query->createNamedParameter($name, \PDO::PARAM_STR)));
 
-        return $query->execute()->fetch();
+        return $query->execute()->fetchAssociative();
     }
 
     /**

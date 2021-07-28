@@ -176,7 +176,7 @@ class LinkAnalyzer
                 ->execute();
 
             // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $this->analyzeRecord($results, $table, $fields, $row);
             }
         }
@@ -287,7 +287,7 @@ class LinkAnalyzer
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (!$row) {
             // missing record: remove existing links

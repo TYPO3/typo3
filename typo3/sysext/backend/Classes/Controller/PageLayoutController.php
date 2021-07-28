@@ -254,7 +254,7 @@ class PageLayoutController
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     )
                 )->execute();
-            while ($pageTranslation = $statement->fetch()) {
+            while ($pageTranslation = $statement->fetchAssociative()) {
                 $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($this->availableLanguages[$languageId])) {
                     $this->MOD_MENU['language'][$languageId] = $this->availableLanguages[$languageId]->getTitle();
@@ -529,7 +529,7 @@ class PageLayoutController
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
             BackendUtility::workspaceOL('pages', $localizedPage);
             return $localizedPage['title'];
         }
@@ -818,7 +818,7 @@ class PageLayoutController
                     )
                     ->setMaxResults(1)
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
                 BackendUtility::workspaceOL('pages', $overlayRecord, (int)$this->getBackendUser()->workspace);
                 // Edit button
                 $urlParameters = [

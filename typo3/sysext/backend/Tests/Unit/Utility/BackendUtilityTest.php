@@ -292,7 +292,7 @@ class BackendUtilityTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_category');
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->shouldBeCalled()->willReturn(
+        $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(
             [
                 'uid' => 1,
                 'title' => 'Category 1',

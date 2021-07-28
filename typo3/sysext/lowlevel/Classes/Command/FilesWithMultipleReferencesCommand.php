@@ -186,7 +186,7 @@ If you want to get more detailed information, use the --verbose option.')
 
         // Traverse the files and put into a large table
         $allReferencesToFiles = [];
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             // Compile info string for location of reference
             $infoString = $this->formatReferenceIndexEntryToString($record);
             $hash = $record['hash'];

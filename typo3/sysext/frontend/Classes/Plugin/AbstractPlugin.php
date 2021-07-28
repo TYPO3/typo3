@@ -729,7 +729,7 @@ class AbstractPlugin
         $tRows[] = $this->pi_list_header();
         // Make list table rows
         $c = 0;
-        while ($this->internal['currentRow'] = $statement->fetch()) {
+        while ($this->internal['currentRow'] = $statement->fetchAssociative()) {
             $tRows[] = $this->pi_list_row($c);
             $c++;
         }
@@ -1246,7 +1246,7 @@ class AbstractPlugin
 
         $result = $queryBuilder->execute();
         $outArr = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $outArr[$row['uid']] = $row;
         }
         return $outArr;

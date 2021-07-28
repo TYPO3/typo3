@@ -104,7 +104,7 @@ class AvatarViewHelper extends AbstractViewHelper
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
         } else {
             $backendUser = $GLOBALS['BE_USER']->user;
         }

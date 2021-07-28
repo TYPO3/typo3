@@ -535,7 +535,7 @@ class Import extends ImportExport
             ->orderBy('uid')
             ->execute();
         $rows = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $rows[$row['uid']] = $row;
         }
         return $rows;
@@ -840,7 +840,7 @@ class Import extends ImportExport
                         )
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
                 // if no record could be found, $this->import_mapId['sys_file'][$record['file']] is pointing
                 // to a file, that was already there, thus a new metadata record should be created
                 if (is_array($recordInDatabase)) {

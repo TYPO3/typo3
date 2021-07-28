@@ -442,7 +442,7 @@ class QueryGenerator
                     $statement = $queryBuilder->orWhere(...$likes)->execute();
                     $lastRow = null;
                     $rowArr = [];
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
                         $lastRow = $row;
                     }
@@ -498,7 +498,7 @@ class QueryGenerator
                 ->orderBy('title')
                 ->execute();
             $opt[] = '<option value="0">__Save to Action:__</option>';
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars($row['title']
                         . ' [' . (int)$row['uid'] . ']') . '</option>';
             }
@@ -1104,7 +1104,7 @@ class QueryGenerator
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permsClause));
             }
             $statement = $queryBuilder->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }
@@ -1190,7 +1190,7 @@ class QueryGenerator
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)->from($table)->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         if (strpos($row[$fieldName], ',') !== false) {
                             $checkContent = explode(',', $row[$fieldName]);
                             foreach ($checkContent as $singleValue) {
@@ -1299,7 +1299,7 @@ class QueryGenerator
                         }
                         $statement = $queryBuilder->execute();
                         $this->tableArray[$from_table] = [];
-                        while ($row = $statement->fetch()) {
+                        while ($row = $statement->fetchAssociative()) {
                             $this->tableArray[$from_table][] = $row;
                         }
                     }
@@ -1976,7 +1976,7 @@ class QueryGenerator
                     $statement = $queryBuilder->select($fieldName)
                         ->from($table)
                         ->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         if (strpos($row[$fieldName], ',') !== false) {
                             $checkContent = explode(',', $row[$fieldName]);
                             foreach ($checkContent as $singleValue) {
@@ -2087,10 +2087,7 @@ class QueryGenerator
                             }
                         }
                         $statement = $queryBuilder->execute();
-                        $this->tableArray[$from_table] = [];
-                        while ($row = $statement->fetch()) {
-                            $this->tableArray[$from_table][] = $row;
-                        }
+                        $this->tableArray[$from_table] = $statement->fetchAllAssociative();
                     }
 
                     foreach ($this->tableArray[$from_table] as $key => $val) {

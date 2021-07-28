@@ -284,7 +284,7 @@ class InfoPageTyposcriptConfigController
 
         $pageArray = [];
 
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             $this->setInPageArray($pageArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
         }
         return $this->getList($pageArray);

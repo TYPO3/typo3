@@ -133,7 +133,7 @@ class PageSlugCandidateProvider
             )
             ->execute();
 
-        $page = $statement->fetch();
+        $page = $statement->fetchAssociative();
         if (empty($page)) {
             return null;
         }
@@ -230,7 +230,7 @@ class PageSlugCandidateProvider
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $isRecursiveCall = !empty($excludeUids);
 
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $mountPageInformation = null;
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
             // When this page was added before via recursion, this page should be skipped

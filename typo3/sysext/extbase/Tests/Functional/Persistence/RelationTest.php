@@ -123,7 +123,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame($newPostTitle, $post['title']);
         self::assertEquals($countPostsOriginal + 1, $post['sorting']);
     }
@@ -155,7 +155,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(10, $post['sorting']);
 
         $posts = $this->blog->getPosts();
@@ -186,7 +186,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertNull($post['uid']);
 
         $queryBuilder->resetQueryParts();
@@ -200,7 +200,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('Post9', $post['title']);
         self::assertEquals(9, $post['sorting']);
     }
@@ -260,7 +260,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('Post10', $post['title']);
         self::assertEquals(11, $post['sorting']);
 
@@ -276,7 +276,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame($newPostTitle, $post['title']);
         self::assertEquals(6, $post['sorting']);
     }
@@ -326,7 +326,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('Post10', $post['title']);
         self::assertEquals(10, $post['sorting']);
     }
@@ -385,7 +385,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('Post9', $post['title']);
         self::assertEquals(10, $post['sorting']);
 
@@ -403,7 +403,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('MOVED POST Post10', $post['title']);
         self::assertEquals(10, $post['uid']);
     }
@@ -456,7 +456,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
 
@@ -510,7 +510,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(9, $tag['uid_foreign']);
 
         $queryBuilder->resetQueryParts();
@@ -530,7 +530,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertNull($tag['uid_foreign']);
     }
 
@@ -594,7 +594,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
 
         $queryBuilder->resetQueryParts();
@@ -611,7 +611,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
 
@@ -671,7 +671,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
         self::assertEquals(10, $tag['sorting']);
 
@@ -689,7 +689,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertNull($tag['uid_foreign']);
     }
 
@@ -759,7 +759,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )->orderBy('sorting', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(9, $tag['uid_foreign']);
         self::assertEquals(10, $tag['sorting']);
 
@@ -781,7 +781,7 @@ class RelationTest extends FunctionalTestCase
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
     }
 
@@ -802,7 +802,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -819,7 +819,7 @@ class RelationTest extends FunctionalTestCase
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         self::assertTrue($rawPost2['tstamp'] > $rawPost['tstamp']);
     }
 

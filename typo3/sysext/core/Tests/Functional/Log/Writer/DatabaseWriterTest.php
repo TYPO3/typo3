@@ -56,7 +56,7 @@ class DatabaseWriterTest extends FunctionalTestCase
                 'sys_log',
                 ['request_id' => $logRecordData['request_id']]
             )
-            ->fetch();
+            ->fetchAssociative();
 
         self::assertEquals($logRecordData, $rowInDatabase);
     }

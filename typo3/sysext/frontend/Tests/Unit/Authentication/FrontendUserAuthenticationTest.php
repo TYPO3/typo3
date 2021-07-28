@@ -302,7 +302,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $queryBuilderFeUserProphecy->where(Argument::cetera())->shouldBeCalled()->willReturn($queryBuilderFeUserProphecyRevelation);
         $statementFeUserProphecy = $this->prophesize(Statement::class);
         $queryBuilderFeUserProphecy->execute()->shouldBeCalled()->willReturn($statementFeUserProphecy->reveal());
-        $statementFeUserProphecy->fetch()->willReturn(
+        $statementFeUserProphecy->fetchAssociative()->willReturn(
             [
                 'uid' => 1,
                 'username' => 'existingUserName',

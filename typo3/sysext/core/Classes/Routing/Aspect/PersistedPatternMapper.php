@@ -217,7 +217,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
                 $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
             ))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         return $result !== false ? $result : null;
     }
 

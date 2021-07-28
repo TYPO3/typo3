@@ -469,7 +469,7 @@ class ShortcutRepository
             ->addOrderBy('sorting')
             ->execute();
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $pageId = 0;
             $shortcut = ['raw' => $row];
             $routeIdentifier = $row['route'] ?? '';

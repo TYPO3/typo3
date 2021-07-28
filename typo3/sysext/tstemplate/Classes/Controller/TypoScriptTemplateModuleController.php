@@ -273,7 +273,7 @@ class TypoScriptTemplateModuleController
                 ->addOrderBy('sys_template.sorting')
                 ->execute();
             $pArray = [];
-            while ($record = $result->fetch()) {
+            while ($record = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('sys_template', $record, $workspaceId, true);
                 if (empty($record) || VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     continue;

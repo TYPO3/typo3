@@ -446,7 +446,7 @@ class DeletedRecords
                 $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         if ($record) {
             $pages[] = $record['uid'];
             if ((int)$record['pid'] !== 0) {
@@ -542,7 +542,7 @@ class DeletedRecords
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList[] = $row['uid'];
                 }

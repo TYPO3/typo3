@@ -99,7 +99,7 @@ class RecyclerUtility
                 ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
-            $row = $queryBuilder->execute()->fetch();
+            $row = $queryBuilder->execute()->fetchAssociative();
             if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {

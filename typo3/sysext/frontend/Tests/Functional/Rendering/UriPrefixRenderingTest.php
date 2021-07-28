@@ -378,7 +378,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
 
-        $template = $connection->select(['uid', 'constants'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
+        $template = $connection->select(['uid', 'constants'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetchAssociative();
         if (empty($template)) {
             self::fail('Cannot find root template on page with id: "' . $pageId . '"');
         }

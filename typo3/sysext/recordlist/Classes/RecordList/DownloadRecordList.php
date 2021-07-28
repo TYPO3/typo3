@@ -89,7 +89,7 @@ class DownloadRecordList
         $l10nEnabled = BackendUtility::isTableLocalizable($table);
         $result = [];
         // Render items
-        while ($row = $queryResult->fetch()) {
+        while ($row = $queryResult->fetchAssociative()) {
             // In offline workspace, look for alternative record
             BackendUtility::workspaceOL($table, $row, $backendUser->workspace, true);
             if (!is_array($row)) {

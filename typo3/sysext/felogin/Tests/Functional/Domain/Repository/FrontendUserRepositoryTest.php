@@ -196,7 +196,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
             ))
         ;
 
-        $user = $query->execute()->fetch();
+        $user = $query->execute()->fetchAssociative();
 
         self::assertSame('new-password', $user['password']);
         self::assertSame('', $user['felogin_forgotHash']);

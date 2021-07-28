@@ -295,7 +295,7 @@ class PreviewUriBuilder
             )
             ->execute();
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $languageId = (int)$row['sys_language_uid'];
             // Only add links to active languages the user has access to
             if (isset($systemLanguages[$languageId]) && $this->getBackendUser()->checkLanguageAccess($languageId)) {

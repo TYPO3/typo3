@@ -844,7 +844,7 @@ class QueryGenerator
                     $statement = $queryBuilder->select($fieldName)
                         ->from($table)
                         ->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         if (strpos($row[$fieldName], ',') !== false) {
                             $checkContent = explode(',', $row[$fieldName]);
                             foreach ($checkContent as $singleValue) {
@@ -957,7 +957,7 @@ class QueryGenerator
                         }
                         $statement = $queryBuilder->execute();
                         $this->tableArray[$from_table] = [];
-                        while ($row = $statement->fetch()) {
+                        while ($row = $statement->fetchAssociative()) {
                             $this->tableArray[$from_table][] = $row;
                         }
                     }
@@ -1602,7 +1602,7 @@ class QueryGenerator
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
             $statement = $queryBuilder->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }

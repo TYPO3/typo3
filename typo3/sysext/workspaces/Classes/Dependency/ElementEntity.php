@@ -248,7 +248,7 @@ class ElementEntity
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
                     $arguments = [
                         'table' => $row['ref_table'],
@@ -310,7 +310,7 @@ class ElementEntity
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $arguments = [
                     'table' => $row['tablename'],
                     'id' => $row['recuid'],
@@ -434,7 +434,7 @@ class ElementEntity
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if (is_array($row)) {
                 $this->record = $row;

@@ -611,7 +611,7 @@ class RecordListController
                 )
             )
             ->execute();
-        while ($pageTranslation = $statement->fetch()) {
+        while ($pageTranslation = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$pageTranslation[$languageField]]);
         }
         // If any languages are left, make selector:

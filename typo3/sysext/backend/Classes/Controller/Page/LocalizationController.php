@@ -156,7 +156,7 @@ class LocalizationController
         );
 
         $flatRecords = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('tt_content', $row, -99, true);
             if (!$row || VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                 continue;

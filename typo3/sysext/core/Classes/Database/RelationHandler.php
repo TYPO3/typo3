@@ -499,7 +499,7 @@ class RelationHandler
                     $queryBuilder->addOrderBy($fieldName, $order);
                 }
                 $statement = $queryBuilder->execute();
-                while ($row = $statement->fetch()) {
+                while ($row = $statement->fetchAssociative()) {
                     $this->itemArray[] = ['id' => $row['uid'], 'table' => $table];
                     $this->tableArray[$table][] = $row['uid'];
                 }
@@ -575,7 +575,7 @@ class RelationHandler
         $queryBuilder->orderBy($sorting_field);
         $queryBuilder->addOrderBy($uidForeign_field);
         $statement = $queryBuilder->execute();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             // Default
             if (!$this->MM_is_foreign) {
                 // If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
@@ -674,7 +674,7 @@ class RelationHandler
             // This is necessary if the "multiple" feature is used for the MM relations.
             // $oldMMs is still needed for the in_array() search used to look if an item from $this->itemArray is in $oldMMs
             $oldMMs_inclUid = [];
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 if (!$this->MM_is_foreign && $prep) {
                     $oldMMs[] = [$row['tablenames'], $row[$uidForeign_field]];
                 } else {
@@ -1010,7 +1010,7 @@ class RelationHandler
         // Get the rows from storage
         $rows = [];
         $result = $queryBuilder->execute();
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $rows[(int)$row['uid']] = $row;
         }
         if (!empty($rows)) {
@@ -1228,7 +1228,7 @@ class RelationHandler
                         );
                     }
                     $statement = $queryBuilder->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         $this->results[$table][$row['uid']] = $row;
                     }
                 }
@@ -1466,7 +1466,7 @@ class RelationHandler
                 ->orderBy('t3ver_state', 'DESC')
                 ->execute();
 
-            while ($version = $result->fetch()) {
+            while ($version = $result->fetchAssociative()) {
                 $versionId = $version['uid'];
                 if (isset($ids[$versionId])) {
                     unset($ids[$versionId]);
@@ -1509,7 +1509,7 @@ class RelationHandler
                 ->orderBy('t3ver_state', 'DESC')
                 ->execute();
 
-            while ($version = $result->fetch()) {
+            while ($version = $result->fetchAssociative()) {
                 $versionId = $version['uid'];
                 $liveId = $version['t3ver_oid'];
                 if (isset($ids[$liveId]) && isset($ids[$versionId])) {
@@ -1562,7 +1562,7 @@ class RelationHandler
                 )
                 ->execute();
 
-            while ($version = $result->fetch()) {
+            while ($version = $result->fetchAssociative()) {
                 $liveId = $version['t3ver_oid'];
                 if (isset($ids[$liveId])) {
                     unset($ids[$liveId]);

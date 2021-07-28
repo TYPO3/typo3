@@ -261,7 +261,7 @@ class ContentFetcher
     protected function getResult($result): array
     {
         $output = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('tt_content', $row, -99, true);
             if ($row && !VersionState::cast($row['t3ver_state'] ?? 0)->equals(VersionState::DELETE_PLACEHOLDER)) {
                 $output[] = $row;

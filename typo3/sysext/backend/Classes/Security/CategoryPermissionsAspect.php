@@ -162,7 +162,7 @@ final class CategoryPermissionsAspect
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $parentUids = [];
         if ($row['parent'] > 0) {

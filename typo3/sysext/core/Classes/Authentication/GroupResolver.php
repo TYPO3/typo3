@@ -122,7 +122,7 @@ class GroupResolver
             )
             ->execute();
         $groups = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $groups[(int)$row['uid']] = $row;
         }
         return $groups;
@@ -225,7 +225,7 @@ class GroupResolver
             ->execute();
 
         $groups = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $groups[(int)$row['uid']] = $row;
         }
         return $groups;

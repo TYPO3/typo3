@@ -121,7 +121,7 @@ class MetaDataRepository implements SingletonInterface
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (empty($record)) {
             return [];

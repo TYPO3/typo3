@@ -63,7 +63,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->shouldBeCalled();
+        $statementProphet->fetchAssociative()->shouldBeCalled();
 
         $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);
         $restrictionProphet->removeAll()->willReturn($restrictionProphet->reveal());

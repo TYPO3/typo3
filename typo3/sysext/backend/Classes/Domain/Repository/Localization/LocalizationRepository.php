@@ -84,7 +84,7 @@ class LocalizationRepository
             ->groupBy('tt_content_orig.sys_language_uid');
         $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser(), 'tt_content_orig');
 
-        return $queryBuilder->execute()->fetch() ?: [];
+        return $queryBuilder->execute()->fetchAssociative() ?: [];
     }
 
     /**

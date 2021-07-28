@@ -200,7 +200,7 @@ class DefaultDataProvider implements DataProviderInterface
         $statement = $queryBuilder->execute();
 
         $results = [];
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             BackendUtility::workspaceOL($this->tableName, $record);
             if (is_array($record)) {
                 $results[$record['t3ver_oid'] ?: $record['uid']] = $record;

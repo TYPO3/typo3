@@ -159,14 +159,13 @@ class PostgreSql extends AbstractPlatform
             'SELECT pg_catalog.pg_encoding_to_char(pg_database.encoding) from pg_database where datname = ?',
             [$connection->getDatabase()],
             [\PDO::PARAM_STR]
-        )
-            ->fetch();
+        )->fetchAssociative();
 
         if (!in_array(strtolower($defaultDatabaseCharset['pg_encoding_to_char']), $this->databaseCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(
                 sprintf(
                     'Checking database character set failed, got key "%s" instead of "%s"',
-                    $defaultDatabaseCharset,
+                    $defaultDatabaseCharset['pg_encoding_to_char'],
                     implode(' or ', $this->databaseCharsetToCheck)
                 ),
                 'PostgreSQL database character set check failed',
@@ -187,13 +186,13 @@ class PostgreSql extends AbstractPlatform
      */
     public function checkDefaultDatabaseServerCharset(Connection $connection): void
     {
-        $defaultServerCharset = $connection->executeQuery('SHOW SERVER_ENCODING')->fetch();
+        $defaultServerCharset = $connection->executeQuery('SHOW SERVER_ENCODING')->fetchAssociative();
 
         if (!in_array(strtolower($defaultServerCharset['server_encoding']), $this->databaseCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(
                 sprintf(
                     'Checking server character set failed, got key "%s" instead of "%s"',
-                    $defaultServerCharset,
+                    $defaultServerCharset['server_encoding'],
                     implode(' or ', $this->databaseServerCharsetToCheck)
                 ),
                 'PostgreSQL database character set check failed',

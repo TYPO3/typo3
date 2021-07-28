@@ -563,7 +563,7 @@ abstract class AbstractTreeView
      */
     public function getDataNext(&$res)
     {
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             BackendUtility::workspaceOL($this->table, $row, $this->getBackendUser()->workspace, true);
             if (is_array($row)) {
                 break;
@@ -580,7 +580,7 @@ abstract class AbstractTreeView
      */
     public function getDataFree(&$res)
     {
-        $res->closeCursor();
+        $res->free();
     }
 
     /**

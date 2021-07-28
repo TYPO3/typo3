@@ -251,7 +251,7 @@ class RootlineUtility
                     $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $this->workspaceUid], Connection::PARAM_INT_ARRAY))
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
             if (empty($row)) {
                 throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
             }
@@ -354,7 +354,7 @@ class RootlineUtility
                         throw new PagePropertyRelationNotFoundException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($table), 1343589452);
                     }
                     $relatedUids = [];
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         $relatedUids[] = $row['uid'];
                     }
                 }

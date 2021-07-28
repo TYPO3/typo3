@@ -464,7 +464,7 @@ class BackendLayoutView implements SingletonInterface
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $page);
 
         return $page;

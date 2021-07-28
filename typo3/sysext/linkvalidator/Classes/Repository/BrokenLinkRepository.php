@@ -106,7 +106,7 @@ class BrokenLinkRepository
         $result = [
             'total' => 0
         ];
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $result[$row['link_type']] = $row['amount'];
             $result['total']+= $row['amount'];
         }

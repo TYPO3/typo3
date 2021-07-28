@@ -86,7 +86,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $collectionRecord['table_name'] = $tableName;
         $collectionRecord['field_name'] = $fieldName;
@@ -157,7 +157,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
         // Get the related records from the database
         $result = $queryBuilder->execute();
 
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             // Overlay the record for workspaces
             $pageRepository->versionOL(
                 $this->getItemTableName(),

@@ -209,7 +209,7 @@ class LiveSearch
         $collect = [];
         $result = $queryBuilder->execute();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {
                 continue;

@@ -388,7 +388,7 @@ class PagePositionMap
             $lines[$vv] = [];
             $lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 
-            while ($row = $res->fetch()) {
+            while ($row = $res->fetchAssociative()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 if (is_array($row)) {
                     $lines[$vv][] = $this->getRecordHeader($row);

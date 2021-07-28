@@ -101,7 +101,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphecy->reveal());
 
-        $statementProphecy->fetch()
+        $statementProphecy->fetchAssociative()
             ->shouldBeCalled()
             ->willReturn(['uid' => 0, 'parent' => '']);
 

@@ -314,7 +314,7 @@ class RecordHistory
             ->from('sys_history')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, \PDO::PARAM_INT)))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (empty($record)) {
             return [];
@@ -382,7 +382,7 @@ class RecordHistory
     {
         $events = [];
         $result = $queryBuilder->orderBy('tstamp', 'DESC')->execute();
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $identifier = (int)$row['uid'];
             $actionType = (int)$row['actiontype'];
             if ($actionType === RecordHistoryStore::ACTION_ADD || $actionType === RecordHistoryStore::ACTION_UNDELETE) {

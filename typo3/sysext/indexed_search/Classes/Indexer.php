@@ -1536,7 +1536,7 @@ class Indexer
                     [],
                     1
                 )
-                ->fetch();
+                ->fetchAssociative();
             // If there was an indexing of the page...:
             if (!empty($row)) {
                 if ($this->tstamp_maxAge && $row['tstamp'] + $this->tstamp_maxAge < $GLOBALS['EXEC_TIME']) {
@@ -1601,7 +1601,7 @@ class Indexer
                     [],
                     1
                 )
-                ->fetch();
+                ->fetchAssociative();
 
             if (!empty($row)) {
                 $result = $row;
@@ -1854,7 +1854,7 @@ class Indexer
                 ->execute();
 
             $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), 1);
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 unset($wordListArray[$row['baseword']]);
             }
 
@@ -1896,7 +1896,7 @@ class Indexer
             ->execute();
 
         $stopWords = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $stopWords[$row['wid']] = $row;
         }
 

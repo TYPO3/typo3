@@ -117,7 +117,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
             )
             ->execute();
         $maxDuration = $this->extConf['maxLifetime'] * 60;
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $executions = [];
             if ($serialized_executions = unserialize($row['serialized_executions'])) {
                 foreach ($serialized_executions as $task) {
@@ -344,7 +344,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
             );
         }
 
-        $row = $queryBuilder->execute()->fetch();
+        $row = $queryBuilder->execute()->fetchAssociative();
         if (empty($row)) {
             if (empty($uid)) {
                 // No uid was passed and no overdue task was found
@@ -397,7 +397,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         // If the task is not found, throw an exception
         if (empty($row)) {
@@ -439,7 +439,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
         }
 
         $result = $queryBuilder->execute();
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             /** @var Task\AbstractTask $task */
             $task = unserialize($row['serialized_task_object']);
             // Add the task to the list only if it is valid

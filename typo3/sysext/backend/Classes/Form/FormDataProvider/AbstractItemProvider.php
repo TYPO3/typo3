@@ -368,7 +368,7 @@ abstract class AbstractItemProvider
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        while ($foreignRow = $queryResult->fetch()) {
+        while ($foreignRow = $queryResult->fetchAssociative()) {
             BackendUtility::workspaceOL($foreignTable, $foreignRow);
             // Only proceed in case the row was not unset and we don't deal with a delete placeholder
             if (is_array($foreignRow)

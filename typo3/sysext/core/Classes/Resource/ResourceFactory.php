@@ -143,7 +143,7 @@ class ResourceFactory implements SingletonInterface
                         )
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
                 if (empty($recordData)) {
                     throw new \InvalidArgumentException('No collection found for given UID: "' . $uid . '"', 1314085992);
                 }
@@ -497,7 +497,7 @@ class ResourceFactory implements SingletonInterface
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
         }
         return $fileReferenceData;
     }

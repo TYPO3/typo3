@@ -5434,7 +5434,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if (is_array($cacheEntry)) {
                 // Cache hit
@@ -5487,7 +5487,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
 
             $result = $queryBuilder->execute();
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 /** @var VersionState $versionState */
                 $versionState = VersionState::cast($row['t3ver_state']);
                 $tsfe->sys_page->versionOL('pages', $row);
@@ -5529,7 +5529,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
                     }
 
-                    $row = $queryBuilder->execute()->fetch();
+                    $row = $queryBuilder->execute()->fetchAssociative();
                     $tsfe->sys_page->versionOL('pages', $row);
                     if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
                         || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
@@ -5692,7 +5692,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $statement = $this->exec_getQuery($tableName, $queryConfiguration);
 
         $tsfe = $this->getTypoScriptFrontendController();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             // Versioning preview:
             $tsfe->sys_page->versionOL($tableName, $row, true);
 

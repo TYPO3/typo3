@@ -172,7 +172,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage()
     {
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
+        $statementProphet->fetchAssociative()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
@@ -246,7 +246,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexFilters($expectedAmount, array $dataRow)
     {
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->willReturn($dataRow, false);
+        $statementProphet->fetchAssociative()->willReturn($dataRow, false);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
@@ -315,7 +315,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function sectionIndexQueriesWithDifferentColPos($configuration, $colPosFromStdWrapValue, $whereClausePrefix)
     {
         $statementProphet = $this->prophesize(Statement::class);
-        $statementProphet->fetch()->willReturn([]);
+        $statementProphet->fetchAssociative()->willReturn([]);
 
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);

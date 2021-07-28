@@ -136,7 +136,7 @@ class InternalLinktype extends AbstractLinktype
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         $this->responsePage = true;
         if ($row) {
             if ($row['deleted'] == '1') {
@@ -183,7 +183,7 @@ class InternalLinktype extends AbstractLinktype
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         $this->responseContent = true;
         // this content element exists
         if ($row) {

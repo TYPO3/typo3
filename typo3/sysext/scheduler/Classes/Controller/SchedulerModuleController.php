@@ -839,7 +839,7 @@ class SchedulerModuleController
 
         // Loop on all tasks
         $temporaryResult = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             if ($row['taskGroupName'] === null || $row['isTaskGroupDeleted'] === '1') {
                 $row['taskGroupName'] = '';
                 $row['taskGroupDescription'] = '';

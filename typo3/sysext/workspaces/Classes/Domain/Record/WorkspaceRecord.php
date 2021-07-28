@@ -133,7 +133,7 @@ class WorkspaceRecord extends AbstractRecord
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($record = $result->fetch()) {
+            while ($record = $result->fetchAssociative()) {
                 $this->addStage(StageRecord::build($this, $record['uid'], $record));
             }
 

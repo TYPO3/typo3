@@ -747,7 +747,7 @@ class SiteConfigurationController
             ->execute();
 
         $pages = [];
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $row['rootline'] = BackendUtility::BEgetRootLine((int)$row['uid']);
             array_pop($row['rootline']);
             $row['rootline'] = array_reverse($row['rootline']);

@@ -78,7 +78,7 @@ class ListSysLogCommand extends Command
             ->orderBy('tstamp', 'DESC')
             ->execute();
 
-        while ($row = $rowIterator->fetch()) {
+        while ($row = $rowIterator->fetchAssociative()) {
             $logData = unserialize($row['log_data']);
             $userInformation = $row['userid'];
             if (!empty($logData['originalUser'])) {

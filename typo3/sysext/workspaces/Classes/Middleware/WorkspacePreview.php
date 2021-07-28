@@ -294,7 +294,7 @@ class WorkspacePreview implements MiddlewareInterface
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**

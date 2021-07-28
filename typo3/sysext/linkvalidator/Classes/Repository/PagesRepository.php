@@ -66,7 +66,7 @@ class PagesRepository
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if ($row !== false) {
             return $this->doesRootLineContainHiddenPages($row);
@@ -115,7 +115,7 @@ class PagesRepository
             )
             ->execute();
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $subpageId = (int)$row['uid'];
             $isHidden = (bool)$row['hidden'];
             if (!$isHidden || $considerHidden) {
@@ -180,7 +180,7 @@ class PagesRepository
             ->execute();
 
         $translatedPages = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $translatedPages[] = (int)$row['uid'];
         }
 

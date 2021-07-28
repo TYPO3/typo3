@@ -443,7 +443,7 @@ class RemoteServer
         /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);
 
-        while ($sysLogRow = $result->fetch()) {
+        while ($sysLogRow = $result->fetchAssociative()) {
             $sysLogEntry = [];
             $data = unserialize($sysLogRow['log_data']);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);

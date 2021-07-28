@@ -551,7 +551,7 @@ class TemplateService
                 ->addOrderBy('sorting')
                 ->setMaxResults(1)
                 ->execute();
-            if ($row = $queryResult->fetch()) {
+            if ($row = $queryResult->fetchAssociative()) {
                 $this->versionOL($row);
                 if (is_array($row)) {
                     $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
@@ -656,7 +656,7 @@ class TemplateService
                     ->execute();
                 // make it an associative array with the UID as key
                 $subTemplates = [];
-                while ($rowItem = $queryResult->fetch()) {
+                while ($rowItem = $queryResult->fetchAssociative()) {
                     $subTemplates[(int)$rowItem['uid']] = $rowItem;
                 }
                 // Traversing list again to ensure the sorting of the templates

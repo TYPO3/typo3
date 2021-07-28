@@ -193,7 +193,7 @@ class DeletedRecordsCommand extends Command
                 )
                 ->execute();
 
-            while ($recordOnPage = $result->fetch()) {
+            while ($recordOnPage = $result->fetchAssociative()) {
                 // Register record as deleted
                 if ($recordOnPage[$deletedField]) {
                     $deletedRecords[$tableName][$recordOnPage['uid']] = $recordOnPage['uid'];
@@ -229,7 +229,7 @@ class DeletedRecordsCommand extends Command
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($subPage = $result->fetch()) {
+            while ($subPage = $result->fetchAssociative()) {
                 $deletedRecords = $this->findAllFlaggedRecordsInPage($subPage['uid'], $depth, $deletedRecords);
             }
         }

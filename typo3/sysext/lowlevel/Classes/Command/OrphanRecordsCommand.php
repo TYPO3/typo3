@@ -122,7 +122,7 @@ Manual repair suggestions:
             $rowCount = $queryBuilder->count('uid')->execute()->fetchOne();
             if ($rowCount) {
                 $orphans[$tableName] = [];
-                while ($orphanRecord = $result->fetch()) {
+                while ($orphanRecord = $result->fetchAssociative()) {
                     $orphans[$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
                 }
 
@@ -183,7 +183,7 @@ Manual repair suggestions:
                     )
                     ->execute();
 
-                while ($rowSub = $result->fetch()) {
+                while ($rowSub = $result->fetchAssociative()) {
                     $allRecords[$tableName][$rowSub['uid']] = $rowSub['uid'];
                     // Add any versions of those records:
                     $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid', null, true);
@@ -217,7 +217,7 @@ Manual repair suggestions:
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $allRecords = $this->findAllConnectedRecordsInPage((int)$row['uid'], $depth, $allRecords);
             }
         }

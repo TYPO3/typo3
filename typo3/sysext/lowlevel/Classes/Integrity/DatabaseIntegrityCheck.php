@@ -135,7 +135,7 @@ class DatabaseIntegrityCheck
         }
         $result = $queryBuilder->execute();
         // Traverse the records selected
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $newID = $row['uid'];
             // Register various data for this item:
             if ($row['sys_language_uid'] === 0) {
@@ -206,7 +206,7 @@ class DatabaseIntegrityCheck
         }
         $queryResult = $queryBuilder->execute();
         // Traverse selected
-        while ($row = $queryResult->fetch()) {
+        while ($row = $queryResult->fetchAssociative()) {
             $newID = $row['uid'];
             // Register various data for this item:
             $this->recIdArray[$table][$newID] = $row;
@@ -254,7 +254,7 @@ class DatabaseIntegrityCheck
                     )
                     ->execute();
                 $lostIdList = [];
-                while ($row = $queryResult->fetch()) {
+                while ($row = $queryResult->fetchAssociative()) {
                     $this->lRecords[$table][$row['uid']] = [
                         'uid' => $row['uid'],
                         'pid' => $row['pid'],
@@ -444,7 +444,7 @@ class DatabaseIntegrityCheck
             }
             $queryResult = $queryBuilder->orWhere(...$whereClause)->execute();
 
-            while ($row = $queryResult->fetch()) {
+            while ($row = $queryResult->fetchAssociative()) {
                 foreach ($fields as $field) {
                     if (trim($row[$field] ?? '')) {
                         $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -512,7 +512,7 @@ class DatabaseIntegrityCheck
                             )
                         )
                         ->execute();
-                    while ($row = $queryResult->fetch()) {
+                    while ($row = $queryResult->fetchAssociative()) {
                         if (isset($dbArr[$row['uid']])) {
                             unset($dbArr[$row['uid']]);
                         } else {

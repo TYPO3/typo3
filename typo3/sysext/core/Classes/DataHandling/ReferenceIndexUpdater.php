@@ -158,7 +158,7 @@ class ReferenceIndexUpdater
                             $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT))
                         )
                         ->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         $this->registerForUpdate($row['tablename'], (int)$row['recuid'], (int)$item['targetWorkspace']);
                     }
                 }

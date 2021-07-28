@@ -123,7 +123,7 @@ class IntegrityService
         $queryBuilder->where(
             $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT))
         );
-        $row = $queryBuilder->execute()->fetch();
+        $row = $queryBuilder->execute()->fetchAssociative();
 
         $subPages = $this->getSlugsOfSubPages($site->getRootPageId());
         $pages = array_merge([$site->getBase()->getPath() . '/', $row['slug']], $subPages);
@@ -147,7 +147,7 @@ class IntegrityService
         );
         $result = $queryBuilder->execute();
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $pages[] = [$row['slug']];
             $pages[] = $this->getSlugsOfSubPages((int)$row['uid']);
         }

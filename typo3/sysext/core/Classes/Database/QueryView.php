@@ -157,7 +157,7 @@ class QueryView
                 ->orderBy('title')
                 ->execute();
             $opt[] = '<option value="0">__Save to Action:__</option>';
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars($row['title']
                         . ' [' . (int)$row['uid'] . ']') . '</option>';
             }
@@ -640,7 +640,7 @@ class QueryView
                     $statement = $queryBuilder->orWhere(...$likes)->execute();
                     $lastRow = null;
                     $rowArr = [];
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         $rowArr[] = $this->resultRowDisplay($row, $conf, $table);
                         $lastRow = $row;
                     }
@@ -905,7 +905,7 @@ class QueryView
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
                 ->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }
@@ -985,7 +985,7 @@ class QueryView
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)->from($table)->execute();
-                    while ($row = $statement->fetch()) {
+                    while ($row = $statement->fetchAssociative()) {
                         if (strpos($row[$fieldName], ',') !== false) {
                             $checkContent = explode(',', $row[$fieldName]);
                             foreach ($checkContent as $singleValue) {
@@ -1094,7 +1094,7 @@ class QueryView
                         }
                         $statement = $queryBuilder->execute();
                         $this->tableArray[$from_table] = [];
-                        while ($row = $statement->fetch()) {
+                        while ($row = $statement->fetchAssociative()) {
                             $this->tableArray[$from_table][] = $row;
                         }
                     }

@@ -186,7 +186,7 @@ class PlainDataResolver
             )
             ->execute();
 
-        while ($version = $result->fetch()) {
+        while ($version = $result->fetchAssociative()) {
             $liveReferenceId = $version['t3ver_oid'];
             $versionId = $version['uid'];
             if (isset($ids[$liveReferenceId])) {
@@ -243,7 +243,7 @@ class PlainDataResolver
             )
             ->execute();
 
-        while ($movedRecord = $result->fetch()) {
+        while ($movedRecord = $result->fetchAssociative()) {
             $liveReferenceId = (int)$movedRecord['t3ver_oid'];
             $movedVersionId = (int)$movedRecord['uid'];
             // Substitute moved record and purge live reference
@@ -349,7 +349,7 @@ class PlainDataResolver
             ->execute();
 
         $versionIds = [];
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             $liveId = $record['uid'];
             $versionIds[$liveId] = $record['t3ver_oid'];
         }

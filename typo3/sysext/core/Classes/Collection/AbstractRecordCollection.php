@@ -333,7 +333,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
             ->from(static::getCollectionDatabaseTable())
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         return self::create($collectionRecord, $fillItems);
     }
 

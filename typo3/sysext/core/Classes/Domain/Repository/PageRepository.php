@@ -296,7 +296,7 @@ class PageRepository implements LoggerAwareInterface
             $this->where_groupAccess = '';
         }
 
-        $row = $queryBuilder->execute()->fetch();
+        $row = $queryBuilder->execute()->fetchAssociative();
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
@@ -337,7 +337,7 @@ class PageRepository implements LoggerAwareInterface
             ->from('pages')
             ->where($queryBuilder->expr()->eq('uid', (int)$uid))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $result = [];
         if ($row) {
@@ -559,7 +559,7 @@ class PageRepository implements LoggerAwareInterface
                 ->execute();
 
             // Create a list of rows ordered by values in $languageUids
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $orderedListByLanguages[$row[$languageField]] = $row;
             }
 
@@ -653,7 +653,7 @@ class PageRepository implements LoggerAwareInterface
                         )
                         ->setMaxResults(1)
                         ->execute()
-                        ->fetch();
+                        ->fetchAssociative();
 
                     $this->versionOL($table, $olrow);
                     // Merge record content by traversing all fields:
@@ -821,7 +821,7 @@ class PageRepository implements LoggerAwareInterface
         $result = $res->execute();
 
         $pages = [];
-        while ($page = $result->fetch()) {
+        while ($page = $result->fetchAssociative()) {
             $originalUid = $page['uid'];
 
             // Versioning Preview Overlay
@@ -1112,7 +1112,7 @@ class PageRepository implements LoggerAwareInterface
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             // Only look for version overlay if page record is not supplied; This assumes
             // that the input record is overlaid with preview version, if any!
@@ -1144,7 +1144,7 @@ class PageRepository implements LoggerAwareInterface
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             $this->versionOL('pages', $mountRec);
             if (is_array($mountRec)) {
@@ -1197,7 +1197,7 @@ class PageRepository implements LoggerAwareInterface
                 )
             )
             ->execute();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $validPageIds[] = (int)$row['uid'];
         }
         return $validPageIds;
@@ -1227,7 +1227,7 @@ class PageRepository implements LoggerAwareInterface
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if ($row) {
                 $this->versionOL($table, $row);
@@ -1280,7 +1280,7 @@ class PageRepository implements LoggerAwareInterface
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if ($row) {
                 $this->versionOL($table, $row);
@@ -1518,7 +1518,7 @@ class PageRepository implements LoggerAwareInterface
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if (is_array($newPidRec)) {
                 $workspaceId = (int)$newPidRec['t3ver_wsid'];
@@ -1579,7 +1579,7 @@ class PageRepository implements LoggerAwareInterface
                     ->from($table)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], \PDO::PARAM_INT)))
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
             }
             if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
                 if (is_array($wsAlt)) {
@@ -1672,7 +1672,7 @@ class PageRepository implements LoggerAwareInterface
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (is_array($row)) {
             return (int)$row['pid'];
@@ -1730,7 +1730,7 @@ class PageRepository implements LoggerAwareInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             // If version found, check if it could have been selected with enableFields on
             // as well:

@@ -245,7 +245,7 @@ If you want to get more detailed information, use the --verbose option.')
             ->execute();
 
         $existingRecords = [];
-        while ($rec = $rowIterator->fetch()) {
+        while ($rec = $rowIterator->fetchAssociative()) {
             $isSoftReference = !empty($rec['softref_key']);
             $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
             // Get referenced record:
@@ -273,7 +273,7 @@ If you want to get more detailed information, use the --verbose option.')
                         )
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
             }
             // Compile info string for location of reference:
             $infoString = $this->formatReferenceIndexEntryToString($rec);

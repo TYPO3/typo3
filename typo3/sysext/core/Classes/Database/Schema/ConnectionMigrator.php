@@ -1235,7 +1235,7 @@ class ConnectionMigrator
             )
             ->execute();
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $index = $row['table'];
             unset($row['table']);
             $tableOptions[$index] = $row;

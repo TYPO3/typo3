@@ -70,7 +70,7 @@ class PresetRepository
         }
 
         $presets = $queryBuilder->execute();
-        while ($presetCfg = $presets->fetch()) {
+        while ($presetCfg = $presets->fetchAssociative()) {
             $options[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
                 . ($presetCfg['public'] ? ' [Public]' : '')
                 . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
@@ -98,7 +98,7 @@ class PresetRepository
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**

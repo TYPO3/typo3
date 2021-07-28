@@ -168,7 +168,7 @@ class Registry implements SingletonInterface
                 'sys_registry',
                 ['entry_namespace' => $namespace]
             );
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $this->entries[$namespace][$row['entry_key']] = unserialize($row['entry_value']);
         }
         $this->loadedNamespaces[$namespace] = true;

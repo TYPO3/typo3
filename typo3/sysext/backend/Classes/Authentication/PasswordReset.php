@@ -289,11 +289,11 @@ class PasswordReset implements LoggerAwareInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->comparison('SHA1(CONCAT(' . $queryBuilder->quoteIdentifier('email') . ', ' . $queryBuilder->quoteIdentifier('uid') . '))', $queryBuilder->expr()::EQ, $queryBuilder->createNamedParameter($identity))
             );
-            $user = $queryBuilder->execute()->fetch();
+            $user = $queryBuilder->execute()->fetchAssociative();
         } else {
             // no native SHA1/ CONCAT functionality, has to be done in PHP
             $stmt = $queryBuilder->execute();
-            while ($row = $stmt->fetch()) {
+            while ($row = $stmt->fetchAssociative()) {
                 if (hash_equals(hash('sha1', $row['email'] . (string)$row['uid']), $identity)) {
                     $user = $row;
                     break;

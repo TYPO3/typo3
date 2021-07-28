@@ -200,7 +200,7 @@ class MySql extends AbstractPlatform
      */
     public function checkDefaultDatabaseServerCharset(Connection $connection): void
     {
-        $defaultServerCharset = $connection->executeQuery('SHOW VARIABLES LIKE \'character_set_server\'')->fetch();
+        $defaultServerCharset = $connection->executeQuery('SHOW VARIABLES LIKE \'character_set_server\'')->fetchAssociative();
 
         if (!in_array($defaultServerCharset['Value'], $this->databaseServerCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(

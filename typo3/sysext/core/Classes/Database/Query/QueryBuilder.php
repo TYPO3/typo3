@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
+use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
@@ -204,7 +206,7 @@ class QueryBuilder
     /**
      * Executes this query using the bound parameters and their types.
      *
-     * @return Statement|int
+     * @return Statement|Result|ResultStatement|int
      */
     public function execute()
     {

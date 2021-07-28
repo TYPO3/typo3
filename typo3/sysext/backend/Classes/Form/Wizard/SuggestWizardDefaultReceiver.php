@@ -164,7 +164,7 @@ class SuggestWizardDefaultReceiver
             ->execute()
             ->fetchOne();
         if ($allRowsCount) {
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 // check if we already have collected the maximum number of records
                 if (count($rows) > $this->maxItems) {
                     break;

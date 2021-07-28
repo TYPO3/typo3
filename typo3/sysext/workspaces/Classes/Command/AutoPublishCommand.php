@@ -75,7 +75,7 @@ class AutoPublishCommand extends Command
         $statement = $this->getAffectedWorkspacesToPublish();
 
         $affectedWorkspaces = 0;
-        while ($workspaceRecord = $statement->fetch()) {
+        while ($workspaceRecord = $statement->fetchAssociative()) {
             // First, clear start/end time so it doesn't get selected once again
             $this->connectionPool
                 ->getConnectionForTable('sys_workspace')

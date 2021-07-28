@@ -98,7 +98,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'cache_pages',
                 ['identifier' => 'myIdentifier']
             )
-            ->fetch();
+            ->fetchAssociative();
 
         // Content comes back uncompressed
         self::assertSame('myCachedContent', gzuncompress($row['content']));

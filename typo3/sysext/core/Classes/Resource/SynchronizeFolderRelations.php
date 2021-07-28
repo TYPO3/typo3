@@ -69,7 +69,7 @@ class SynchronizeFolderRelations
             )
             ->execute();
 
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $folder = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['folder']) ?? '';
             if ($folder !== '') {
                 $queryBuilder = $this->getPreparedQueryBuilder('sys_file_collection');
@@ -110,7 +110,7 @@ class SynchronizeFolderRelations
             )
             ->execute();
 
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $path = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['path']) ?? '';
             if ($path !== '') {
                 $queryBuilder = $this->getPreparedQueryBuilder('sys_filemounts');

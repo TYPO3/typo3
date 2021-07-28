@@ -71,7 +71,7 @@ class WorkspaceService implements SingletonInterface
             ->orderBy('title')
             ->execute();
 
-        while ($workspace = $result->fetch()) {
+        while ($workspace = $result->fetchAssociative()) {
             if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
                 $availableWorkspaces[$workspace['uid']] = $workspace['title'];
             }
@@ -692,7 +692,7 @@ class WorkspaceService implements SingletonInterface
                 ->execute();
 
             $movedAwayPages = [];
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $movedAwayPages[$row['t3ver_oid']] = $row;
             }
 
@@ -728,7 +728,7 @@ class WorkspaceService implements SingletonInterface
                 ->execute();
 
             $pages = [];
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $pages[$row['uid']] = $row;
             }
 
@@ -774,7 +774,7 @@ class WorkspaceService implements SingletonInterface
                     $permsClause
                 )
                 ->execute();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $children[] = (int)$row['uid'];
                 }
@@ -881,7 +881,7 @@ class WorkspaceService implements SingletonInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if ($row !== false) {
                 $isNewPage = VersionState::cast($row['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER);
@@ -1032,7 +1032,7 @@ class WorkspaceService implements SingletonInterface
                 ->execute();
 
             $pageIds = [];
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $pageIds[$row['pid']] = true;
             }
 

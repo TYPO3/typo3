@@ -2117,7 +2117,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             ->from('sys_workspace')
             ->orderBy('title')
             ->execute();
-        while ($workspaceRecord = $result->fetch()) {
+        while ($workspaceRecord = $result->fetchAssociative()) {
             if ($this->checkWorkspace($workspaceRecord)) {
                 $defaultWorkspace = (int)$workspaceRecord['uid'];
                 break;

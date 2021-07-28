@@ -157,7 +157,7 @@ class CleanFlexFormsCommand extends Command
                     )
                     ->execute();
 
-                while ($rowSub = $result->fetch()) {
+                while ($rowSub = $result->fetchAssociative()) {
                     // Traverse flexforms
                     $dirtyFlexFormFields = $this->compareAllFlexFormsInRecord($tableName, $rowSub['uid'], $dirtyFlexFormFields);
                     // Add any versions of those records
@@ -198,7 +198,7 @@ class CleanFlexFormsCommand extends Command
                 ->orderBy('sorting')
                 ->execute();
 
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $dirtyFlexFormFields = $this->findAllDirtyFlexformsInPage($row['uid'], $depth, $dirtyFlexFormFields);
             }
         }
@@ -240,7 +240,7 @@ class CleanFlexFormsCommand extends Command
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
 
                 if ($fullRecord[$columnName]) {
                     // Clean XML and check against the record fetched from the database

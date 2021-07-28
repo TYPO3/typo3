@@ -93,7 +93,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         return is_array($row) ? $row : false;
     }
@@ -120,7 +120,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('identifier_hash', $queryBuilder->createNamedParameter($identifierHash))
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         return is_array($row) ? $row : false;
     }
@@ -208,7 +208,7 @@ class FileIndexRepository implements SingletonInterface
             ->execute();
 
         $resultRows = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $resultRows[$row['identifier']] = $row;
         }
 
@@ -281,7 +281,7 @@ class FileIndexRepository implements SingletonInterface
         $result = $queryBuilder->execute();
 
         $fileRecords = [];
-        while ($fileRecord = $result->fetch()) {
+        while ($fileRecord = $result->fetchAssociative()) {
             $fileRecords[$fileRecord['identifier']] = $fileRecord;
         }
 

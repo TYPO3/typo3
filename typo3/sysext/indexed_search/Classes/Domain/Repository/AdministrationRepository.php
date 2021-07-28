@@ -78,7 +78,7 @@ class AdministrationRepository
             ->execute()
             ->fetchOne();
         $allRows = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $row['pcount'] = $numberOfRows;
             $allRows[] = $row;
         }
@@ -172,7 +172,7 @@ class AdministrationRepository
             ->orderBy('item_type')
             ->execute();
 
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             $this->addAdditionalInformation($row);
 
             $result[] = $row;
@@ -192,7 +192,7 @@ class AdministrationRepository
                         )
                     )
                     ->execute();
-                while ($row2 = $res2->fetch()) {
+                while ($row2 = $res2->fetchAssociative()) {
                     $this->addAdditionalInformation($row2);
                     $result[] = $row2;
                 }
@@ -255,7 +255,7 @@ class AdministrationRepository
             ->orderBy('item_type')
             ->execute();
 
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             $itemType = $row['item_type'];
             $counts[] = [
                 'count' => $row['count'],
@@ -356,7 +356,7 @@ class AdministrationRepository
             ->orderBy('data_page_id')
             ->execute();
 
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             $this->addAdditionalInformation($row);
             $result[] = $row;
 
@@ -375,7 +375,7 @@ class AdministrationRepository
                         )
                     )
                     ->execute();
-                while ($row2 = $res2->fetch()) {
+                while ($row2 = $res2->fetchAssociative()) {
                     $this->addAdditionalInformation($row2);
                     $result[] = $row2;
                 }
@@ -421,7 +421,7 @@ class AdministrationRepository
             ->count('uid')
             ->execute()
             ->fetchOne();
-        $result->closeCursor();
+        $result->free();
 
         // exist several statistics for this page?
         if ($count === 0) {
@@ -570,7 +570,7 @@ class AdministrationRepository
             $lines = [];
             // Collecting phash values (to remove local indexing for)
             // Traverse the result set of phash rows selected:
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $row['icon'] = $this->makeItemTypeIcon($row['item_type']);
                 $this->allPhashListed[] = $row['phash'];
 
@@ -594,7 +594,7 @@ class AdministrationRepository
                     ->count('index_rel.wid')
                     ->execute()
                     ->fetchOne();
-                $wordCountResult->closeCursor();
+                $wordCountResult->free();
 
                 if ($mode === 'content') {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -609,7 +609,7 @@ class AdministrationRepository
                         )
                         ->setMaxResults(1)
                         ->execute()
-                        ->fetch();
+                        ->fetchAssociative();
 
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('index_rel');
@@ -689,7 +689,7 @@ class AdministrationRepository
             ->execute();
 
         $pageIds = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             if ($begin <= 0) {
                 $pageIds[] = (int)$row['uid'];
             }
@@ -733,7 +733,7 @@ class AdministrationRepository
                         )
                     )
                     ->execute();
-                while ($row = $res->fetch()) {
+                while ($row = $res->fetchAssociative()) {
                     $idList[] = (int)$row['page_id'];
                 }
 

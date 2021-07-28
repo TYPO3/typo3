@@ -683,14 +683,14 @@ class DatabaseRecordList
             $prevPrevUid = 0;
             // Get first two rows and initialize prevPrevUid and prevUid if on page > 1
             if ($firstElement > 2 && $itemsPerPage > 0) {
-                $row = $queryResult->fetch();
+                $row = $queryResult->fetchAssociative();
                 $prevPrevUid = -((int)$row['uid']);
-                $row = $queryResult->fetch();
+                $row = $queryResult->fetchAssociative();
                 $prevUid = $row['uid'];
             }
             $accRows = [];
             // Accumulate rows here
-            while ($row = $queryResult->fetch()) {
+            while ($row = $queryResult->fetchAssociative()) {
                 if (!$this->isRowListingConditionFulfilled($table, $row)) {
                     continue;
                 }
@@ -3238,7 +3238,7 @@ class DatabaseRecordList
             )
             ->execute();
         $allowedTranslationsOnPage = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $allowedTranslationsOnPage[] = (int)$row[$languageField];
         }
         return $allowedTranslationsOnPage;

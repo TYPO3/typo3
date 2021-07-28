@@ -80,7 +80,7 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
             ->from($tableName)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         return $row ?: [];
     }

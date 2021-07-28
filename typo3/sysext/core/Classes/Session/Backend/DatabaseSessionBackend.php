@@ -95,7 +95,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query->select('*')
             ->from($this->configuration['table'])
             ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)));
-        $result = $query->execute()->fetch();
+        $result = $query->execute()->fetchAssociative();
         if (!is_array($result)) {
             throw new SessionNotFoundException(
                 'The session with identifier ' . $sessionId . ' was not found ',

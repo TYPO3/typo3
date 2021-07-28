@@ -198,7 +198,7 @@ class ReferenceIndex implements LoggerAwareInterface
             )
         )->execute();
         $currentRelationHashes = [];
-        while ($relation = $queryResult->fetch()) {
+        while ($relation = $queryResult->fetchAssociative()) {
             $currentRelationHashes[$relation['hash']] = true;
         }
 
@@ -642,7 +642,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             // Check if reference existed.
             if (!is_array($referenceRecord)) {
@@ -668,7 +668,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if (is_array($record)) {
                 // Get relation for single field from record
@@ -939,7 +939,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 $progressListener->start($queryResult->rowCount(), $tableName);
             }
             $tableNames[] = $tableName;
-            while ($record = $queryResult->fetch()) {
+            while ($record = $queryResult->fetchAssociative()) {
                 if ($progressListener) {
                     $progressListener->advance();
                 }
@@ -1124,7 +1124,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 )
             );
         }
-        return $queryBuilder->execute()->fetch();
+        return $queryBuilder->execute()->fetchAssociative();
     }
 
     /**

@@ -322,7 +322,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             ->execute();
 
         $extensionUids = [];
-        while ($row = $queryResult->fetch()) {
+        while ($row = $queryResult->fetchAssociative()) {
             $extensionUids[] = $row['uid'];
         }
 

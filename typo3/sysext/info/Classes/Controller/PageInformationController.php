@@ -231,7 +231,7 @@ class PageInformationController
                 $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
         // If there was found a page:
         if (is_array($row)) {
@@ -354,7 +354,7 @@ class PageInformationController
             $result = $queryBuilder->execute();
             $rowCount = $queryBuilder->count('uid')->execute()->fetchOne();
             $count = 0;
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
                     $count++;

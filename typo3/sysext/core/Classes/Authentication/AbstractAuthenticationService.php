@@ -149,7 +149,7 @@ class AbstractAuthenticationService implements LoggerAwareInterface
                 ->from($dbUser['table'])
                 ->where(...$constraints)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
         }
         return $user;
     }

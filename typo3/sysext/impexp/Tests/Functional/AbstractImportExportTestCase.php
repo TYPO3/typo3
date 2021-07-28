@@ -148,7 +148,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
                     $queryBuilder->addOrderBy('uid', 'ASC');
 
                     $result = $queryBuilder->execute();
-                    while ($row = $result->fetch()) {
+                    while ($row = $result->fetchAssociative()) {
                         $export->export_addRecord($table, $this->forceStringsOnRowValues($row));
                     }
                 }

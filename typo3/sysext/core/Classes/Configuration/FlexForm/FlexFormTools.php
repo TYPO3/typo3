@@ -315,7 +315,7 @@ class FlexFormTools
                         1463833794
                     );
                 }
-                $row = $queryStatement->fetch();
+                $row = $queryStatement->fetchAssociative();
                 if (isset($handledUids[$row[$parentFieldName]])) {
                     // Row has been fetched before already -> loop detected!
                     throw new InvalidParentRowLoopException(

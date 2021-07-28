@@ -658,7 +658,7 @@ class FlexFormToolsTest extends UnitTestCase
 
         // First db call returns $secondRow, second returns $thirdRow, which points back to $initialRow -> exception
         $statementProphecy->fetchOne()->willReturn(1);
-        $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
 
         $this->expectException(InvalidParentRowLoopException::class);
         $this->expectExceptionCode(1464110956);
@@ -727,7 +727,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow has pid 0 and still no ds -> exception
-        $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
 
         $this->expectException(InvalidParentRowRootException::class);
         $this->expectExceptionCode(1464112555);
@@ -869,7 +869,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow, second returns $thirdRow. $thirdRow resolves ds
-        $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow, $thirdRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":1,"fieldName":"tx_templavoila_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -928,7 +928,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetch()->willReturn($secondRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -991,7 +991,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetch()->willReturn($secondRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_next_ds"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
@@ -1075,7 +1075,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetchOne()->shouldBeCalled()->willReturn(1);
 
         // First db call returns $secondRow. $secondRow resolves DS and does not look further up
-        $statementProphecy->fetch()->willReturn($secondRow);
+        $statementProphecy->fetchAssociative()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));

@@ -134,7 +134,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                     )
                 )
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
 
             if ($databaseRow) {
                 $processedFileObject = $this->createDomainObject($databaseRow);
@@ -244,7 +244,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         if (is_array($databaseRow)) {
             $processedFile = $this->createDomainObject($databaseRow);
@@ -279,7 +279,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             ->execute();
 
         $itemList = [];
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $itemList[] = $this->createDomainObject($row);
         }
         return $itemList;
@@ -313,7 +313,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
 
         $errorCount = 0;
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             if ($storageUid && (int)$storageUid !== (int)$row['storage']) {
                 continue;
             }

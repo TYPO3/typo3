@@ -835,7 +835,7 @@ class DataHandlerHook
         }
 
         $statement = $queryBuilder->execute();
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             $updateFields = [];
             $dataTypes = [\PDO::PARAM_INT];
             if ((int)$record[$l10nParentFieldName] === $previouslyUsedVersionId) {
@@ -1043,7 +1043,7 @@ class DataHandlerHook
         }
 
         $statement = $queryBuilder->execute();
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             $dataHandler->updateRefIndex($table, $record['uid']);
         }
     }
@@ -1262,7 +1262,7 @@ class DataHandlerHook
                     )
                     ->execute();
 
-                while ($row = $statement->fetch()) {
+                while ($row = $statement->fetchAssociative()) {
                     $elementData[$table][] = [$row['uid'], $row['offlineUid']];
                 }
             }
@@ -1318,7 +1318,7 @@ class DataHandlerHook
                     ->groupBy('A.uid')
                     ->execute();
 
-                while ($row = $statement->fetch()) {
+                while ($row = $statement->fetchAssociative()) {
                     $elementList[$table][] = $row['uid'];
                 }
                 if (is_array($elementList[$table])) {
@@ -1373,7 +1373,7 @@ class DataHandlerHook
             ->groupBy('B.pid')
             ->execute();
 
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $pageIdList[] = $row['pid'];
             // Find ws version
             // Note: cannot use BackendUtility::getRecordWSOL()

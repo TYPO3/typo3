@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Search;
 
+use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -50,7 +53,7 @@ class FileSearchQuery
     private $additionalRestrictions = [];
 
     /**
-     * @var \Doctrine\DBAL\Driver\Statement|int
+     * @var Statement|Result|ResultStatement|int
      */
     private $result;
 

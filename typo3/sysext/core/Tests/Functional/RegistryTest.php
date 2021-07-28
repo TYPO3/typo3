@@ -74,7 +74,7 @@ class RegistryTest extends FunctionalTestCase
                 'sys_registry',
                 ['entry_namespace' => 'myExtension', 'entry_key' => 'myKey']
             )
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('myValue', unserialize($valueInDatabase['entry_value']));
     }
 
@@ -102,7 +102,7 @@ class RegistryTest extends FunctionalTestCase
                 'sys_registry',
                 ['entry_namespace' => 'myExtension', 'entry_key' => 'myKey']
             )
-            ->fetch();
+            ->fetchAssociative();
         self::assertSame('myNewValue', unserialize($valueInDatabase['entry_value']));
     }
 

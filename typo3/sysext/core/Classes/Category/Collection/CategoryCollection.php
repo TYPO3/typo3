@@ -113,7 +113,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         $collectionRecord['table_name'] = $tableName;
         $collectionRecord['field_name'] = $fieldName;
@@ -185,7 +185,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         $queryBuilder = $this->getCollectedRecordsQueryBuilder();
         $result = $queryBuilder->execute();
 
-        while ($record = $result->fetch()) {
+        while ($record = $result->fetchAssociative()) {
             $relatedRecords[] = $record;
         }
 

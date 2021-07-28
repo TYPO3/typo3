@@ -207,7 +207,7 @@ class ExportController extends ImportExportController
                 $rParts = explode(':', $ref);
                 if ($beUser->check('tables_select', $rParts[0])) {
                     $statement = $this->exec_listQueryPid($rParts[0], (int)$rParts[1]);
-                    while ($subTrow = $statement->fetch()) {
+                    while ($subTrow = $statement->fetchAssociative()) {
                         $this->export->export_addRecord($rParts[0], $subTrow);
                     }
                 }
@@ -391,7 +391,7 @@ class ExportController extends ImportExportController
                 && !$GLOBALS['TCA'][$table]['ctrl']['is_static']
             ) {
                 $statement = $this->exec_listQueryPid($table, $k);
-                while ($subTrow = $statement->fetch()) {
+                while ($subTrow = $statement->fetchAssociative()) {
                     $this->export->export_addRecord($table, $subTrow);
                 }
             }

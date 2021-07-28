@@ -835,7 +835,7 @@ class ElementInformationController
                 )
             )
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
 
         return [
             'recuid' => $fileReference['uid_foreign'],

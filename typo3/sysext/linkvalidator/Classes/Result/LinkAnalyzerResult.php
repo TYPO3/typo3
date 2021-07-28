@@ -307,7 +307,7 @@ class LinkAnalyzerResult
             )
             ->setMaxResults(1)
             ->execute()
-            ->fetch()['uid'] ?: 0;
+            ->fetchAssociative()['uid'] ?: 0;
 
         if ($localizedPageId) {
             $this->localizedPages[$identifier] = $localizedPageId;

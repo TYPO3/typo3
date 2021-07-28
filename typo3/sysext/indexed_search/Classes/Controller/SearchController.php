@@ -309,7 +309,7 @@ class SearchController extends ActionController
                             )
                         )
                         ->execute()
-                        ->fetch();
+                        ->fetchAssociative();
                     $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
                     $categoryTitle = $categoryTitle ?: $indexCfgRec['title'];
                 } else {
@@ -752,7 +752,7 @@ class SearchController extends ActionController
                         )
                     )
                     ->execute()
-                    ->fetch();
+                    ->fetchAssociative();
                 if ($ftdrow !== false) {
                     // Cut HTTP references after some length
                     $content = preg_replace('/(http:\\/\\/[^ ]{' . $this->settings['results.']['hrefInSummaryCropAfter'] . '})([^ ]+)/i', '$1...', $ftdrow['fulltextdata']);
@@ -1198,7 +1198,7 @@ class SearchController extends ActionController
                     )
                     ->execute();
 
-                while ($row = $result->fetch()) {
+                while ($row = $result->fetchAssociative()) {
                     $indexId = (int)$row['uid'];
                     $title = LocalizationUtility::translate('indexingConfigurations.' . $indexId, 'IndexedSearch');
                     $allOptions[$indexId] = $title ?: $row['title'];

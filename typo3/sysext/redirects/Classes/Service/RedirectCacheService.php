@@ -69,7 +69,7 @@ class RedirectCacheService
             ->select('*')
             ->from('sys_redirect')
             ->execute();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             $host = $row['source_host'] ?: '*';
             if ($row['is_regexp']) {
                 $redirects[$host]['regexp'][$row['source_path']][$row['uid']] = $row;

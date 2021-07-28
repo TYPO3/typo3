@@ -87,7 +87,7 @@ class UserToolbarItem implements ToolbarItemInterface
             // Flip the array to have a "sorted" list of items
             $mostRecentUsers = array_flip($backendUser->uc['recentSwitchedToUsers']);
 
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 $mostRecentUsers[$row['uid']] = $row;
             }
 

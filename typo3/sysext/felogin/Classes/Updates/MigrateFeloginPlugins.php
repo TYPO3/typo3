@@ -114,7 +114,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
             ->execute();
 
         // Update the found record sets
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             $queryBuilder = $connection->createQueryBuilder();
             $updateResult = $queryBuilder->update('tt_content')
                 ->where(

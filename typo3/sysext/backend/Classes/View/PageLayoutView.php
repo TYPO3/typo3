@@ -1446,7 +1446,7 @@ class PageLayoutView implements LoggerAwareInterface
             // Flip uids:
             $defaultLanguageUids = array_flip($defaultLanguageUids);
             // Traverse any selected elements and unset original UID if any:
-            while ($row = $result->fetch()) {
+            while ($row = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 unset($defaultLanguageUids[$row['l18n_parent']]);
             }
@@ -1585,7 +1585,7 @@ class PageLayoutView implements LoggerAwareInterface
                 )
             );
         $statement = $queryBuilder->execute();
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
         }
         // If any languages are left, make selector:
@@ -1627,7 +1627,7 @@ class PageLayoutView implements LoggerAwareInterface
     {
         $output = [];
         // Traverse the result:
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('tt_content', $row, -99, true);
             if ($row) {
                 // Add the row to the array:
@@ -2022,7 +2022,7 @@ class PageLayoutView implements LoggerAwareInterface
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
             BackendUtility::workspaceOL('pages', $localizedPage);
             return $localizedPage['title'];
         }

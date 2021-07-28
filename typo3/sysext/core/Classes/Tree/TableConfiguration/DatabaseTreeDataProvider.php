@@ -346,7 +346,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch();
+                ->fetchAssociative();
         }
         if (empty($nodeData)) {
             $nodeData = [
