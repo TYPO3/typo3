@@ -18,6 +18,14 @@ CREATE TABLE be_users (
     tx_styleguide_isdemorecord tinyint(1) unsigned DEFAULT '0' NOT NULL
 );
 
+CREATE TABLE fe_groups (
+    tx_styleguide_containsdemo tinyint(1) unsigned DEFAULT '0' NOT NULL
+);
+
+CREATE TABLE fe_users (
+    tx_styleguide_containsdemo tinyint(1) unsigned DEFAULT '0' NOT NULL
+);
+
 
 CREATE TABLE tx_styleguide_ctrl_common (
     title text,

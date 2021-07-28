@@ -51,9 +51,13 @@ class GeneratorFrontend extends AbstractGenerator
 
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
+        $newIdOfUserFolder = StringUtility::getUniqueId('NEW');
         $newIdOfRootTsTemplate = StringUtility::getUniqueId('NEW');
         $newIdOfEntryContent = StringUtility::getUniqueId('NEW');
         $newIdOfCategory = StringUtility::getUniqueId('NEW');
+        $newIdOfFrontendGroup = StringUtility::getUniqueId('NEW');
+        $newIdOfFrontendUser = StringUtility::getUniqueId('NEW');
+
         $data = [
             'pages' => [
                 $newIdOfEntryPage => [
@@ -63,6 +67,14 @@ class GeneratorFrontend extends AbstractGenerator
                     'tx_styleguide_containsdemo' => 'tx_styleguide_frontend_root',
                     'is_siteroot' => 1,
                     'hidden' => $hidden,
+                ],
+                // Storage for for frontend users
+                $newIdOfUserFolder => [
+                    'title' => 'frontend user',
+                    'pid' => $newIdOfEntryPage,
+                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
+                    'hidden' => 0,
+                    'doktype' => 254,
                 ],
             ],
             'sys_template' => [
@@ -89,6 +101,25 @@ class GeneratorFrontend extends AbstractGenerator
                 $newIdOfCategory => [
                     'title' => 'Styleguide Demo Category',
                     'pid' => $newIdOfEntryPage,
+                ]
+            ],
+            'fe_groups' => [
+                $newIdOfFrontendGroup => [
+                    'title' => 'Styleguide Frontend Demo',
+                    'hidden' => 0,
+                    'pid' => $newIdOfUserFolder,
+                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend'
+                ]
+            ],
+            'fe_users' => [
+                $newIdOfFrontendUser => [
+                    'username' => 'styleguide-frontend-demo',
+                    'hidden' => 0,
+                    'usergroups' => $newIdOfFrontendGroup,
+                    // Password of demo frontend user: 'password'
+                    'password' => '$argon2i$v=19$m=65536,t=16,p=1$VjFaWDFGMmh6RlNEWjY2Vw$Vp5lFrbe8/GNwIrlXnUm6m2d9JJPfkQudnD8sBQKG9A',
+                    'pid' => $newIdOfUserFolder,
+                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend'
                 ]
             ]
         ];
@@ -148,6 +179,7 @@ class GeneratorFrontend extends AbstractGenerator
         $this->populateSysFileReference();
         $this->populateTtContentPages();
         $this->populateTtContentRecords();
+        $this->populateFeUserAndGroup();
     }
 
     public function delete(): void
@@ -480,6 +512,44 @@ class GeneratorFrontend extends AbstractGenerator
         foreach ($contentElements as $content) {
             $recordData['tt_content'][$content['uid']] = [
                 $field => $shortcutToElement,
+            ];
+        }
+
+        $this->executeDataHandler($recordData);
+    }
+
+    private function populateFeUserAndGroup(): void
+    {
+        /** @var RecordFinder $recordFinder */
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+
+        $ceFeLogin = $recordFinder->findTtContent(['felogin_login']);
+        $storageFeLogin = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], [254])[0];
+        $feUsers = $recordFinder->findFeUsers();
+        $feGroups = $recordFinder->findFeUserGroups();
+        $feGroupUids = implode(',', array_column($feGroups, 'uid'));
+
+        $recordData = [];
+        foreach ($feUsers as $login) {
+            $recordData['fe_users'][$login['uid']] = [
+                'usergroup' => $feGroupUids,
+            ];
+        }
+
+        // Set storage pid for content element to 'frontend user'
+        foreach ($ceFeLogin as $ce) {
+            $recordData['tt_content'][$ce['uid']] = [
+                'pi_flexform' => [
+                    'data' => [
+                        'sDEF' => [
+                            'lDEF' => [
+                                'settings.pages' => [
+                                    'vDEF' => $storageFeLogin
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
             ];
         }
 

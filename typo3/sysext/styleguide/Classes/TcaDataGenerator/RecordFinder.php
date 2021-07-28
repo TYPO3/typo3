@@ -54,7 +54,7 @@ class RecordFinder
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $uids = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -115,7 +115,7 @@ class RecordFinder
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -143,7 +143,7 @@ class RecordFinder
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -171,7 +171,7 @@ class RecordFinder
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -200,7 +200,7 @@ class RecordFinder
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -243,7 +243,7 @@ class RecordFinder
      * @param array|string[] $types
      * @return array
      */
-    public function findUidsOfFrontendPages(array $types = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend']): array
+    public function findUidsOfFrontendPages(array $types = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], array $doktype = []): array
     {
         $allowedTypes = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -258,15 +258,30 @@ class RecordFinder
                 continue;
             }
 
-            $queryBuilder->orWhere(
-                $queryBuilder->expr()->eq(
-                    'tx_styleguide_containsdemo',
-                    $queryBuilder->createNamedParameter((string)$type)
-                )
-            );
+            if (!empty($doktype)) {
+                $queryBuilder->orWhere(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq(
+                            'tx_styleguide_containsdemo',
+                            $queryBuilder->createNamedParameter((string)$type),
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'doktype',
+                            $queryBuilder->createNamedParameter('254')
+                        )
+                    )
+                );
+            } else {
+                $queryBuilder->orWhere(
+                    $queryBuilder->expr()->eq(
+                        'tx_styleguide_containsdemo',
+                        $queryBuilder->createNamedParameter((string)$type)
+                    )
+                );
+            }
         }
 
-        $rows = $queryBuilder->orderBy('pid', 'DESC')->execute()->fetchAll();
+        $rows = $queryBuilder->orderBy('pid', 'DESC')->execute()->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             $result = array_column($rows, 'uid');
@@ -286,7 +301,6 @@ class RecordFinder
     public function findTtContent(array $types = ['textmedia', 'textpic', 'image', 'uploads'], string $identifier = 'tx_styleguide_frontend'): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll();
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder->select('uid', 'pid', 'CType')
@@ -305,6 +319,38 @@ class RecordFinder
             $queryBuilder->andWhere((string)$orX);
         }
 
-        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAll();
+        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
+    }
+
+    public function findFeUserGroups(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder->select('uid', 'pid', 'title')
+            ->from('fe_groups')->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter('tx_styleguide_frontend')
+                )
+            );
+
+        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
+    }
+
+    public function findFeUsers(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder->select('uid', 'pid', 'username')
+            ->from('fe_users')->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter('tx_styleguide_frontend')
+                )
+            );
+
+        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
     }
 }
