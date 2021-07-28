@@ -667,7 +667,7 @@ class RecordListController
      */
     protected function editLockPermissions(): bool
     {
-        return $this->getBackendUserAuthentication()->isAdmin() || !$this->pageInfo['editlock'];
+        return $this->getBackendUserAuthentication()->isAdmin() || !($this->pageInfo['editlock'] ?? false);
     }
 
     /**

@@ -106,8 +106,8 @@ class InternalLinktype extends AbstractLinktype
             $this->responseContent = $this->checkContent((int)$page, (int)$anchor);
         }
         if (
-            (is_array($this->errorParams['page']) && !$this->responsePage)
-            || (is_array($this->errorParams['content']) && !$this->responseContent)
+            (is_array($this->errorParams['page'] ?? false) && !$this->responsePage)
+            || (is_array($this->errorParams['content'] ?? false) && !$this->responseContent)
         ) {
             $this->setErrorParams($this->errorParams);
         }
@@ -269,7 +269,7 @@ class InternalLinktype extends AbstractLinktype
                     );
             }
         }
-        if (is_array($errorParams['content'])) {
+        if (is_array($errorParams['content'] ?? false)) {
             switch ($errorType['content']) {
                 case self::DELETED:
                     $errorContent = str_replace(

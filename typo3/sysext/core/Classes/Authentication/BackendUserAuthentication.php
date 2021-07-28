@@ -358,12 +358,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 . $GLOBALS['TCA']['pages']['ctrl']['languageField']
             );
         }
-        if ($checkRec['t3ver_oid'] > 0) {
+        if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
             $id = (int)$checkRec['t3ver_oid'];
         }
         // if current rec is a translation then get uid from l10n_parent instead
         // because web mounts point to pages in default language and rootline returns uids of default languages
-        if ((int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField']] !== 0 && (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] !== 0) {
+        if ((int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0) !== 0
+            && (int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0
+        ) {
             $id = (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
         }
         if (!$readPerms) {

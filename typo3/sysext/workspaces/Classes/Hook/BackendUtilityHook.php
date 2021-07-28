@@ -62,7 +62,7 @@ class BackendUtilityHook
     {
         if ($GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($params['table'])) {
             $record = BackendUtility::getRecordWSOL($params['table'], $params['uid']);
-            if (abs($record['t3ver_stage']) > StagesService::STAGE_EDIT_ID) {
+            if (isset($record['t3ver_stage']) && abs($record['t3ver_stage']) > StagesService::STAGE_EDIT_ID) {
                 $stages = GeneralUtility::makeInstance(StagesService::class);
                 $stageName = $stages->getStageTitle($record['t3ver_stage']);
                 $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);

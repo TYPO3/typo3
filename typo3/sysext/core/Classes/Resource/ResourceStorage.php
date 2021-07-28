@@ -2727,7 +2727,7 @@ class ResourceStorage implements ResourceStorageInterface
             if (!empty($this->fileMounts[$identifier]['read_only'])) {
                 $folderRole = FolderInterface::ROLE_READONLY_MOUNT;
             }
-            if ($this->fileMounts[$identifier]['user_mount']) {
+            if ($this->fileMounts[$identifier]['user_mount'] ?? false) {
                 $folderRole = FolderInterface::ROLE_USER_MOUNT;
             }
         }
