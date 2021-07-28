@@ -37,17 +37,17 @@ class ModuleCest
     public function _before(BackendTester $I)
     {
         $I->useExistingSession('admin');
+        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
+        $I->canSee('Styleguide', self::$topBarModuleSelector);
+        $I->click('Styleguide', self::$topBarModuleSelector);
+        $I->switchToContentFrame();
     }
 
     /**
      * @param BackendTester $I
      */
-    public function styleguideInTopbarHelpCanBeCalled(BackendTester $I)
+    public function styleguideInTopbarHelpCanBeCalled(BackendTester $I): void
     {
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
         $I->see('TYPO3 CMS Backend Styleguide', 'h1');
     }
 
@@ -55,33 +55,56 @@ class ModuleCest
      * @depends styleguideInTopbarHelpCanBeCalled
      * @param BackendTester $I
      */
-    public function creatingDemoDataWorks(BackendTester $I)
+    public function creatingTcaDemoDataWorks(BackendTester $I): void
     {
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
-        $I->see('TYPO3 CMS Backend Styleguide', 'h1');
         $I->click('TCA / Records / Frontend');
         $I->waitForText('TCA test records');
         $I->click('Create styleguide page tree with data');
-        $I->waitForText('A page tree with styleguide TCA test records was created.', 300);
+        $this->seeResponse($I, 'A page tree with styleguide TCA test records was created.');
     }
 
     /**
-     * @depends creatingDemoDataWorks
+     * @depends creatingTcaDemoDataWorks
      * @param BackendTester $I
      */
-    public function deletingDemoDataWorks(BackendTester $I)
+    public function deletingTcaDemoDataWorks(BackendTester $I): void
     {
-        $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Styleguide', self::$topBarModuleSelector);
-        $I->click('Styleguide', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
-        $I->see('TYPO3 CMS Backend Styleguide', 'h1');
         $I->click('TCA / Records / Frontend');
         $I->waitForText('TCA test records');
         $I->click('Delete styleguide page tree and all styleguide data records');
-        $I->waitForText('The styleguide page tree and all styleguide records were deleted.', 300);
+        $this->seeResponse($I, 'The styleguide page tree and all styleguide records were deleted.');
+    }
+
+    /**
+     * @depends styleguideInTopbarHelpCanBeCalled
+     * @param BackendTester $I
+     */
+    public function creatingFrontendDemoDataWorks(BackendTester $I): void
+    {
+        $I->click('TCA / Records / Frontend');
+        $I->waitForText('TCA test records');
+        $I->click('Create styleguide frontend');
+        $this->seeResponse($I, 'A page tree with styleguide frontend test records was created.');
+    }
+
+    /**
+     * @depends creatingTcaDemoDataWorks
+     * @param BackendTester $I
+     */
+    public function deletingFrontendDemoDataWorks(BackendTester $I): void
+    {
+        $I->click('TCA / Records / Frontend');
+        $I->waitForText('TCA test records');
+        $I->click('Delete styleguide frontend');
+        $this->seeResponse($I, 'The styleguide frontend page tree and all styleguide frontend records were deleted.');
+    }
+
+    private function seeResponse(BackendTester $I, string $message): void
+    {
+        $I->seeElement('.t3js-generator-action .icon-spinner-circle-dark');
+        $I->switchToMainFrame();
+        $I->waitForText($message, 60, '.alert-message');
+        $I->switchToContentFrame();
+        $I->dontSeeElement('.t3js-generator-action .icon-spinner-circle-dark');
     }
 }

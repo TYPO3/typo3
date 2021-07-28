@@ -126,7 +126,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        composer install --no-progress --no-interaction;
+        COMPOSER_HOME=${ROOT_DIR}/.Build/.composer composer install --no-progress --no-interaction;
       "
 
   composer_validate:
