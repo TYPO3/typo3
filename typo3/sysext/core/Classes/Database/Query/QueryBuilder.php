@@ -204,7 +204,7 @@ class QueryBuilder
     /**
      * Executes this query using the bound parameters and their types.
      *
-     * @return Statement|int
+     * @return Statement|\Doctrine\DBAL\ForwardCompatibility\Result|\Doctrine\DBAL\Driver\ResultStatement|int
      */
     public function execute()
     {

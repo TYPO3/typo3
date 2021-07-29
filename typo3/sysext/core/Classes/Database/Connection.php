@@ -22,7 +22,6 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
@@ -246,7 +245,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param int $limit The maximum number of rows to return.
      * @param int $offset The first result row to select (when used with limit)
      *
-     * @return Statement|Result The executed statement.
+     * @return Statement|\Doctrine\DBAL\ForwardCompatibility\Result|\Doctrine\DBAL\Driver\ResultStatement  The executed statement.
      */
     public function select(
         array $columns,
