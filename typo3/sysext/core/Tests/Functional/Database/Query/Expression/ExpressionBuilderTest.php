@@ -398,4 +398,280 @@ class ExpressionBuilderTest extends FunctionalTestCase
         ];
         self::assertEquals($expected, $result);
     }
+
+    /**
+     * notInSet tests, as they reverse the tests from above, only the count() logic is used to avoid too many
+     * result arrays to be defined.
+     */
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsWithColumn()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $result = $queryBuilder
+            ->select('uid', 'aCsvField')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->quoteIdentifier('aField'), true)
+            )
+            ->orderBy('uid')
+            ->execute()
+            ->fetchAllAssociative();
+        $expected = [
+            0 => [
+                'uid' => 5,
+                'aCsvField' => 'nomatch',
+            ],
+            1 => [
+                'uid' => 10,
+                'aCsvField' => '4',
+            ],
+            2 => [
+                'uid' => 15,
+                'aCsvField' => 'nowild%card',
+            ],
+            3 => [
+                'uid' => 16,
+                'aCsvField' => 'wild[card',
+            ],
+            4 => [
+                'uid' => 17,
+                'aCsvField' => 'wild[card,nowild[card',
+            ],
+            5 => [
+                'uid' => 18,
+                'aCsvField' => 'nowild[card,wild[card',
+            ],
+            6 => [
+                'uid' => 19,
+                'aCsvField' => 'nowild[card1,wild[card,nowild[card2',
+            ],
+            7 => [
+                'uid' => 20,
+                'aCsvField' => 'nowild[card',
+            ],
+            8 => [
+                'uid' => 21,
+                'aCsvField' => 'wild]card',
+            ],
+            9 => [
+                'uid' => 22,
+                'aCsvField' => 'wild]card,nowild]card',
+            ],
+            10 => [
+                'uid' => 23,
+                'aCsvField' => 'nowild]card,wild]card',
+            ],
+            11 => [
+                'uid' => 24,
+                'aCsvField' => 'nowild]card1,wild]card,nowild]card2',
+            ],
+            12 => [
+                'uid' => 25,
+                'aCsvField' => 'nowild]card',
+            ],
+            13 => [
+                'uid' => 26,
+                'aCsvField' => 'wild[]card',
+            ],
+            14 => [
+                'uid' => 27,
+                'aCsvField' => 'wild[]card,nowild[]card',
+            ],
+            15 => [
+                'uid' => 28,
+                'aCsvField' => 'nowild[]card,wild[]card',
+            ],
+            16 => [
+                'uid' => 29,
+                'aCsvField' => 'nowild[]card1,wild[]card,nowild[]card2',
+            ],
+            17 => [
+                'uid' => 30,
+                'aCsvField' => 'nowild[]card',
+            ],
+            18 => [
+                'uid' => 31,
+                'aCsvField' => 'wild[foo]card',
+            ],
+            19 => [
+                'uid' => 32,
+                'aCsvField' => 'wild[foo]card,nowild[foo]card',
+            ],
+            20 => [
+                'uid' => 33,
+                'aCsvField' => 'nowild[foo]card,wild[foo]card',
+            ],
+            21 => [
+                'uid' => 34,
+                'aCsvField' => 'nowild[foo]card1,wild[foo]card,nowild[foo]card2',
+            ],
+            22 => [
+                'uid' => 35,
+                'aCsvField' => 'nowild[foo]card',
+            ],
+            23 => [
+                'uid' => 36,
+                'aCsvField' => 'wild[%]card',
+            ],
+            24 => [
+                'uid' => 37,
+                'aCsvField' => 'wild[%]card,nowild[%]card',
+            ],
+            25 => [
+                'uid' => 38,
+                'aCsvField' => 'nowild[%]card,wild[%]card',
+            ],
+            26 => [
+                'uid' => 39,
+                'aCsvField' => 'nowild[%]card1,wild[%]card,nowild[%]card2',
+            ],
+            27 => [
+                'uid' => 40,
+                'aCsvField' => 'nowild[%]card',
+            ],
+        ];
+        self::assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSets()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest');
+        // Count all rows
+        self::assertEquals(40, $queryBuilder->execute()->fetchOne());
+
+        // Count the ones not in set
+        $queryBuilder->where(
+            $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('match')),
+        );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+
+        // Count the ones in set
+        $queryBuilder->where(
+            $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('match')),
+        );
+        self::assertEquals(4, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsWithInts()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', (string)2)
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsLikeWildcard()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild%card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracket()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsClosingBracket()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild]card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[]card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[foo]card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard()
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder
+            ->count('uid')
+            ->from('tx_expressionbuildertest')
+            ->where(
+                $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[%]card'))
+            );
+        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+    }
 }

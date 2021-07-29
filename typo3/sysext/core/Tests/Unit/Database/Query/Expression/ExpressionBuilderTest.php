@@ -373,7 +373,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1476029421);
 
         $this->subject->inSet('aField', '?');
@@ -390,7 +390,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1476029421);
 
         $this->subject->inSet('aField', ':dcValue1');
@@ -400,6 +400,190 @@ class ExpressionBuilderTest extends UnitTestCase
      * @test
      */
     public function inSetForMssql()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mssql');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
+
+        $this->connectionProphet->quote('1', null)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphet->quote('1,%', null)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphet->quote('%,1', null)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphet->quote('%,1,%', null)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '[' . $args[0] . ']';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->inSet('aField', "'1'");
+
+        self::assertSame("([aField] = '1') OR ([aField] LIKE '1,%') OR ([aField] LIKE '%,1') OR ([aField] LIKE '%,1,%')", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetThrowsExceptionWithEmptyValue()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1627573099);
+        $this->subject->notInSet('aField', '');
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetThrowsExceptionWithInvalidValue()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1627573100);
+        $this->subject->notInSet('aField', 'an,Invalid,Value');
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForMySQL()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('mysql');
+
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '`' . $args[0] . '`';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->notInSet('aField', "'1'");
+
+        self::assertSame('NOT FIND_IN_SET(\'1\', `aField`)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForPostgreSQL()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('postgresql');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote("'1'", null)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->notInSet('aField', "'1'");
+
+        self::assertSame('\'1\' <> ALL(string_to_array("aField"::text, \',\'))', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForPostgreSQLWithColumn()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('postgresql');
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->notInSet('aField', '"testtable"."uid"', true);
+
+        self::assertSame('"testtable"."uid"::text <> ALL(string_to_array("aField"::text, \',\'))', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForSQLite()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('sqlite');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->notInSet('aField', "'1'");
+
+        self::assertSame('instr(\',\'||"aField"||\',\', \'%,1,%\') = 0', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForSQLiteWithQuoteCharactersInValue()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('sqlite');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
+
+        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
+            ->willReturn("',''Some''Value,'");
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            return '"' . $args[0] . '"';
+        });
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $result = $this->subject->notInSet('aField', "'''Some''Value'");
+
+        self::assertSame('instr(\',\'||"aField"||\',\', \',\'\'Some\'\'Value,\') = 0', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('sqlite');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1627573103);
+
+        $this->subject->notInSet('aField', '?');
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder()
+    {
+        $databasePlatform = $this->prophesize(MockPlatform::class);
+        $databasePlatform->getName()->willReturn('sqlite');
+        $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
+
+        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1476029421);
+
+        $this->subject->inSet('aField', ':dcValue1');
+    }
+
+    /**
+     * @test
+     */
+    public function notInSetForMssql()
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mssql');

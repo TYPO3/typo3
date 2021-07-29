@@ -383,6 +383,119 @@ class ExpressionBuilder
     }
 
     /**
+     * Returns a comparison that can find a value in a list field (CSV) but is negated.
+     *
+     * @param string $fieldName The field name. Will be quoted according to database platform automatically.
+     * @param string $value Argument to be used in FIND_IN_SET() comparison. No automatic quoting/escaping is done.
+     * @param bool $isColumn Set when the value to compare is a column on a table to activate casting
+     * @return string
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function notInSet(string $fieldName, string $value, bool $isColumn = false): string
+    {
+        if ($value === '') {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::notInSet() can not be used with an empty string value.',
+                1627573099
+            );
+        }
+
+        if (strpos($value, ',') !== false) {
+            throw new \InvalidArgumentException(
+                'ExpressionBuilder::notInSet() can not be used with values that contain a comma (",").',
+                1627573100
+            );
+        }
+
+        switch ($this->connection->getDatabasePlatform()->getName()) {
+            case 'postgresql':
+            case 'pdo_postgresql':
+                return $this->comparison(
+                    $isColumn ? $value . '::text' : $this->literal($this->unquoteLiteral((string)$value)),
+                    self::NEQ,
+                    sprintf(
+                        'ALL(string_to_array(%s, %s))',
+                        $this->connection->quoteIdentifier($fieldName) . '::text',
+                        $this->literal(',')
+                    )
+                );
+            case 'oci8':
+            case 'pdo_oracle':
+                throw new \RuntimeException(
+                    'negative FIND_IN_SET support for database platform "Oracle" not yet implemented.',
+                    1627573101
+                );
+            case 'sqlsrv':
+            case 'pdo_sqlsrv':
+            case 'mssql':
+                // See unit and functional tests for details
+                if ($isColumn) {
+                    $expression = $this->andX(
+                        $this->neq($fieldName, $value),
+                        $this->notLike($fieldName, $value . ' + \',%\''),
+                        $this->notLike($fieldName, '\'%,\' + ' . $value),
+                        $this->notLike($fieldName, '\'%,\' + ' . $value . ' + \',%\'')
+                    );
+                } else {
+                    $likeEscapedValue = str_replace(
+                        ['[', '%'],
+                        ['[[]', '[%]'],
+                        $this->unquoteLiteral($value)
+                    );
+                    $expression = $this->andX(
+                        $this->neq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
+                        $this->notLike($fieldName, $this->literal($likeEscapedValue . ',%')),
+                        $this->notLike($fieldName, $this->literal('%,' . $likeEscapedValue)),
+                        $this->notLike($fieldName, $this->literal('%,' . $likeEscapedValue . ',%'))
+                    );
+                }
+                return (string)$expression;
+            case 'sqlite':
+            case 'sqlite3':
+            case 'pdo_sqlite':
+                if (strpos($value, ':') === 0 || $value === '?') {
+                    throw new \InvalidArgumentException(
+                        'ExpressionBuilder::inSet() for SQLite can not be used with placeholder arguments.',
+                        1627573103
+                    );
+                }
+                $comparison = sprintf(
+                    'instr(%s, %s) = 0',
+                    implode(
+                        '||',
+                        [
+                            $this->literal(','),
+                            $this->connection->quoteIdentifier($fieldName),
+                            $this->literal(','),
+                        ]
+                    ),
+                    $isColumn ?
+                        implode(
+                            '||',
+                            [
+                                $this->literal(','),
+                                // do not explicitly quote value as it is expected to be
+                                // quoted by the caller
+                                'cast(' . $value . ' as text)',
+                                $this->literal(','),
+                            ]
+                        )
+                        : $this->literal(
+                            ',' . $this->unquoteLiteral($value) . ','
+                        )
+                );
+                return $comparison;
+            default:
+                return sprintf(
+                    'NOT FIND_IN_SET(%s, %s)',
+                    $value,
+                    $this->connection->quoteIdentifier($fieldName)
+                );
+        }
+    }
+
+    /**
      * Creates a bitwise AND expression with the given arguments.
      *
      * @param string $fieldName The fieldname. Will be quoted according to database platform automatically.
