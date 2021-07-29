@@ -32,7 +32,7 @@ An example:
        'queryParam2',
    ]
 
-This example will add query parameters `queryParam1` and `queryParam2` to the canonicalized
+This example will add query parameters :html:`queryParam1` and :html:`queryParam2` to the canonicalized
 URLs if they are provided.
 
 .. important::

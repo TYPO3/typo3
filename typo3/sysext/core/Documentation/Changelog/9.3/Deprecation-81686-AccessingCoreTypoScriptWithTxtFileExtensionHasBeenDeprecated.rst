@@ -11,7 +11,7 @@ Description
 
 TYPO3 Core TypoScript files were renamed from :file:`.txt` extension to :file:`.typoscript` and :file:`.tsconfig`.
 The backward compatibility layer has been introduced for :typoscript:`<INCLUDE_TYPOSCRIPT` inclusion.
-If including file with :file:`.txt` does not exists, then TYPO3 will try to load a file with :file:`.typoscript` extension.
+If including file with :file:`.txt` does not exist, then TYPO3 will try to load a file with :file:`.typoscript` extension.
 
 
 Impact

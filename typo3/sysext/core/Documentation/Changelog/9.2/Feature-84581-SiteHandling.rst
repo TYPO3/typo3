@@ -181,7 +181,7 @@ The example below shows the experimental feature adding a field to site in an ex
         $GLOBALS['SiteConfiguration']['site']['types']['0']['showitem']
     );
 
-The field will be shown in the edit form of the configuration module and it's value stored in the .yml
+The field will be shown in the edit form of the configuration module and it's value stored in the .yaml
 file. Using the site object :php:`TYPO3\CMS\core\Site\Entity\Site`, the value can be fetched using
 :php:`->getConfiguration()['myNewField']`.
 

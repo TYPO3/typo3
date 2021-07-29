@@ -88,7 +88,9 @@ The following variables are available. The values are context related.
 |                     |            |                                                                              |
 | .rootLine           | Array      | array of arrays with uid and pid                                             |
 |                     |            |                                                                              |
-| .rootLineIds        | Array      | an array with UIDs of the rootline                                           |
+| .rootLineIds        | Array      | an array with UIDs of the root line                                          |
+|                     |            |                                                                              |
+| .rootLineParentIds  | Array      | an array with parent UIDs of the root line                                   |
 +---------------------+------------+------------------------------------------------------------------------------+
 | backend             | Object     | object with backend information (available in BE only)                       |
 |                     |            |                                                                              |
@@ -112,13 +114,21 @@ The following variables are available. The values are context related.
 |                     |            |                                                                              |
 | .user.userGroupList | String     | comma list of group UIDs                                                     |
 +---------------------+------------+------------------------------------------------------------------------------+
+| workspace           | Object     | object with workspace information                                            |
+|                     |            |                                                                              |
+| .workspaceId        | Integer    | id of current workspace                                                      |
+|                     |            |                                                                              |
+| .isLive             | Boolean    | true if current workspace is live                                            |
+|                     |            |                                                                              |
+| .isOffline          | Boolean    | true if current workspace is offline                                         |
++---------------------+------------+------------------------------------------------------------------------------+
 | typo3               | Object     | object with TYPO3 related information                                        |
 |                     |            |                                                                              |
 | .version            | String     | TYPO3_version (e.g. 9.4.0-dev)                                               |
 |                     |            |                                                                              |
 | .branch             | String     | TYPO3_branch (e.g. 9.4)                                                      |
 |                     |            |                                                                              |
-| .devIpMask          | String     | :php`$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']`                        |
+| .devIpMask          | String     | :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']`                       |
 +---------------------+------------+------------------------------------------------------------------------------+
 
 
@@ -177,7 +187,7 @@ The following functions are available in **any** context:
 |                        |                       | * `[loginUser('1,3,5')]` // user 1, 3 or 5                              |
 |                        |                       | * `[loginUser('*') == false]` // not logged in                          |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
-| getTSFE                | Object                | TypoScriptFrontendController (`$GLOBALS['TSFE']`)                       |
+| getTSFE                | Object                | TypoScriptFrontendController (:php:`$GLOBALS['TSFE']`)                  |
 |                        |                       |                                                                         |
 |                        |                       | Conditions based on `getTSFE()` used in a context where                 |
 |                        |                       | TSFE is not available will always evaluate to false.                    |
@@ -186,6 +196,7 @@ The following functions are available in **any** context:
 +------------------------+-----------------------+-------------------------------------------------------------------------+
 | usergroup              | String                | value or constraint, wildcard or RegExp possible                        |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
+
 
 The following functions are only available in **frontend** context:
 
@@ -198,7 +209,7 @@ The following functions are only available in **frontend** context:
 |                    |            | `[session("session:foo|bar") == 1234567]`                       |
 +--------------------+------------+-----------------------------------------------------------------+
 | site               | String     | get value from site configuration, or null if                   |
-|                    |            | no site was found or property does not exists                   |
+|                    |            | no site was found or property does not exist                    |
 |                    |            |                                                                 |
 |                    |            | Example, matches if site identifier = foo                       |
 |                    |            | `[site("identifier") == "foo"]`                                 |
@@ -207,7 +218,7 @@ The following functions are only available in **frontend** context:
 |                    |            | `[site("base") == "http://localhost"]`                          |
 +--------------------+------------+-----------------------------------------------------------------+
 | siteLanguage       | String     | get value from siteLanguage configuration, or                   |
-|                    |            | null if no site was found or property not exists                |
+|                    |            | null if no site was found or property does not exist            |
 |                    |            |                                                                 |
 |                    |            | Example, match if siteLanguage locale = foo                     |
 |                    |            | `[siteLanguage("locale") == "de_CH"]`                           |

@@ -10,7 +10,7 @@ Description
 ===========
 
 Two methods related to old plain text or simple md5 related password checking have
-been marked as deprecated after those have been unused or overriden for a while already:
+been marked as deprecated after those have been unused or overridden for a while already:
 
 * :php:`TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->compareUident()`
 * :php:`TYPO3\CMS\Core\Authentication\AbstractAuthenticationService->compareUident()`

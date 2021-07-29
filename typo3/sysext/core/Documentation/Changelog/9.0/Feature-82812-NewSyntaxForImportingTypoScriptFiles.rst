@@ -24,10 +24,7 @@ imports and works as follows:
     # Import multiple files in a single directory, sorted by file name
     @import 'EXT:myproject/Configuration/TypoScript/*.typoscript'
 
-    # Import all files in a directory
-    @import 'EXT:myproject/Configuration/TypoScript/'
-
-    # It's possible to omit the file ending, then "typoscript" is automatically added
+    # It's possible to omit the file ending, then "*.typoscript" is appended automatically
     @import 'EXT:myproject/Configuration/TypoScript/'
 
 The main benefits of `@import` over using `<INCLUDE_TYPOSCRIPT>` are:

@@ -13,8 +13,8 @@ Overriding page TSconfig properties on a backend user or group basis is usually
 done by prefixing the page TSconfig path with :ts:`page.` in user TSconfig.
 
 As an exception, properties within the page TSconfig top level object :ts:`mod.` could
-sometimes also be overriden in user TSconfig using :ts:`mod.` and omitting :ts:`page.`. This
-has been deprecated: :ts:`mod.` now needs to be overriden in user TSconfig by prefixing
+sometimes also be overridden in user TSconfig using :ts:`mod.` and omitting :ts:`page.`. This
+has been deprecated: :ts:`mod.` now needs to be overridden in user TSconfig by prefixing
 the path with :ts:`page.`, too.
 
 

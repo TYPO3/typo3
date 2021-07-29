@@ -35,4 +35,5 @@ You need to "overwrite" the option to set `PDO::ATTR_EMULATE_PREPARES`
        ],
    ],
 
+
 .. index:: Database, ext:core

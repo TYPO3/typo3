@@ -27,7 +27,7 @@ or how low the current traffic is.
 The requests only need to (nearly) arrive at the same time.
 
 Note: In case the increased number of waiting requests has a negative
-impact on highly frequented servers, a additional proxy cache should be
+impact on highly frequented servers, an additional proxy cache should be
 considered in front of the server to make sure clients are served a valid
 response without waiting until new content is ready.
 

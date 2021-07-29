@@ -2,7 +2,7 @@
 .. include:: ../../Includes.txt
 
 =================================================================================================
-Important: #70956 - Behavior of Page TSConfig options keepItems, addItems and removeItems changed
+Important: #70956 - Behavior of Page TSconfig options keepItems, addItems and removeItems changed
 =================================================================================================
 
 See :issue:`70956`

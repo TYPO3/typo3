@@ -50,11 +50,10 @@ These are the typical functions that should be placed inside :file:`ext_tables.p
 Additionally, it is possible to extend TYPO3 in a lot of different ways (adding TCA, Backend Routes,
 Symfony Console Commands etc) which do not need to touch these files.
 
-It is heavily recommended to AVOID any checks on :php:`TYPO3_MODE` or :php:`TYPO3_REQUESTTYPE` constants
-(e.g. `if(TYPO3_MODE === 'BE')`) within these files as it limits the functionality to cache the
+It is heavily recommended to AVOID checks on :php:`TYPO3_MODE` or :php:`TYPO3_REQUESTTYPE` constants which differentiate between contexts (e.g. :php:`if(TYPO3_MODE === 'BE')`) within these files as it limits the functionality to cache the
 whole systems' configuration. Any extension author should remove the checks if not explicitly
 necessary, and re-evaluate if these context-depending checks could go inside the hooks / caller
-function directly.
+function directly. However a check, which isn't context-depending and only checks for TYPO3 like :php:`defined('TYPO3_MODE') or die();` is no problem.
 
 Additionally, it is recommend to use the extension name (e.g. "tt_address") instead of :php:`$_EXTKEY`
 within the two configuration files as this variable will be removed in the future. This also applies

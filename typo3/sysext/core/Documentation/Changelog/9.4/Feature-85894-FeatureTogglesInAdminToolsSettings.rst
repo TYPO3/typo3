@@ -10,7 +10,7 @@ Description
 ===========
 
 Feature toggles registered in :file:`DefaultConfiguration.php` and documented
-in :file:`DefaultConfigurationDescription.yml` can now be toggled using
+in :file:`DefaultConfigurationDescription.yaml` can now be toggled using
 the interface Admin Tools -> Settings -> Feature toggles.
 
 
