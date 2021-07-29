@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Cache\Backend;
 
 use TYPO3\CMS\Core\Cache\Backend\PdoBackend;
 use TYPO3\CMS\Core\Cache\Exception;

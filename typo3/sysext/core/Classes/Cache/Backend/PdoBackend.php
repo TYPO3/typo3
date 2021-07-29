@@ -23,6 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A PDO database cache backend
+ *
+ * @deprecated since v11, will be removed in v12. Use Typo3DatabaseBackend instead.
+ *             Drop Resources/Private/Sql/Cache/Backend/PdoBackendCacheAndTags.sql when class is dropped.
  */
 class PdoBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -50,6 +53,12 @@ class PdoBackend extends AbstractBackend implements TaggableBackendInterface
      * @var string
      */
     protected $pdoDriver;
+
+    public function __construct($context, array $options = [])
+    {
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12, use Typo3DatabaseBackend instead.', E_USER_DEPRECATED);
+        parent::__construct($context, $options);
+    }
 
     /**
      * Sets the DSN to use
