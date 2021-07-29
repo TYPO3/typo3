@@ -28,13 +28,15 @@ class RedirectsModule {
     }
   }
 
-  private executeSubmit(evt: Event, target: Element): void {
+  private executeSubmit(evt: Event): void {
+    const target = evt.target;
     if (target instanceof HTMLSelectElement) {
       target.form.submit();
     }
   }
 
-  private processNavigate(evt: Event, target: Element): void {
+  private processNavigate(evt: Event): void {
+    const target = evt.target;
     if (!(target instanceof HTMLFormElement)) {
       return;
     }
