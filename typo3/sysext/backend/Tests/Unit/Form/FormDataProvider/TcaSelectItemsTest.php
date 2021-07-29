@@ -38,6 +38,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -903,6 +905,52 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'replace SITE:rootPageId' => [
+                'AND fTable.uid = ###SITE:rootPageId###',
+                [
+                    ['fTable.uid = 1'],
+                    [' 1=1'],
+                    ['`pages.uid` = `fTable.pid`'],
+                ],
+                []
+            ],
+            'replace SITE:mySetting.foobar' => [
+                'AND fTable.foo = ###SITE:mySetting.foobar###',
+                [
+                    ['fTable.foo = 4711'],
+                    [' 1=1'],
+                    ['`pages.uid` = `fTable.pid`'],
+                ],
+                []
+            ],
+            'replace SITE:mySetting.doesNotExist' => [
+                'AND fTable.foo = ###SITE:mySetting.doesNotExist###',
+                [
+                    ['fTable.foo = \'\''],
+                    [' 1=1'],
+                    ['`pages.uid` = `fTable.pid`'],
+                ],
+                []
+            ],
+            'replace replace SITE:rootPageId, SITE:mySetting.foobar and PAGE_TSCONFIG_IDLIST' => [
+                'AND fTable.uid = ###SITE:rootPageId### AND fTable.foo = ###SITE:mySetting.foobar### AND fTable.bar IN (###PAGE_TSCONFIG_IDLIST###)',
+                [
+                    ['fTable.uid = 1 AND fTable.foo = 4711 AND fTable.bar IN (471,481)'],
+                    [' 1=1'],
+                    ['`pages.uid` = `fTable.pid`'],
+                ],
+                [
+                    'pageTsConfig' => [
+                        'TCEFORM.' => [
+                            'aTable.' => [
+                                'aField.' => [
+                                    'PAGE_TSCONFIG_IDLIST' => 'a, 471, b, 481, c',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -952,6 +1000,16 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $GLOBALS['TCA']['fTable'] = [];
 
+        $siteProphecy = $this->prophesize(Site::class);
+        $siteProphecy->getConfiguration()->willReturn([
+            'rootPageId' => 1,
+            'mySetting' => [
+                'foobar' => 4711,
+            ],
+        ]);
+        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteFinderProphecy->getSiteByRootPageId(Argument::any())->willReturn($siteProphecy->reveal());
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
