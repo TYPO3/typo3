@@ -9,7 +9,7 @@ See :issue:`73227`
 Description
 ===========
 
-The TSconfig option :typoscript:`altIcons`, introduced in :issue:`#35891`,
+The TSconfig option :typoscript:`altIcons`, introduced in :issue:`35891`,
 allowed to add / override icons for TCA select items. This option was then
 accidentally removed without further notice, while reworking the FormEngine.
 

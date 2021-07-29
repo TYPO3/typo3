@@ -1,5 +1,7 @@
 .. include:: ../../Includes.txt
 
+.. _changelog-Deprecation-90803-ObjectManagerGet:
+
 ===========================================================
 Deprecation: #90803 - ObjectManager::get in Extbase context
 ===========================================================
