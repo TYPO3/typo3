@@ -9,23 +9,21 @@ See :issue:`91806`
 Description
 ===========
 
-Method :php:`BackendUtility::viewOnClick()` has been obsoleted in late v10
-development and is discouraged to be used due to its inline JavaScript.
-
-The method is now deprecated in v11 as advertised with v10 already.
+Method :php:`BackendUtility::viewOnClick()` is discouraged to be used
+due to its inline JavaScript and has been deprecated now.
 
 
 Impact
 ======
 
-Using the class will trigger a PHP :php:`E_USER_DEPRECATED` error.
+Using the method will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
 ======================
 
 Extensions calling this static method will be affected. The extension
-scanner will find all usages as strong match.
+scanner will find usages as strong match.
 
 
 Migration
@@ -33,6 +31,6 @@ Migration
 
 The :php:`\TYPO3\CMS\Backend\Routing\PreviewUriBuilder` should be used
 instead as described in
-:doc:`../10.4.x/Important-91132-AvoidJavaScriptInUserSettingsConfigurationOptions`.
+:doc:`/Changelog/11.0/Important-91123-AvoidUsingBackendUtilityViewOnClick`.
 
 .. index:: Backend, JavaScript, PHP-API, FullyScanned, ext:backend
