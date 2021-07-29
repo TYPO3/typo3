@@ -38,6 +38,8 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  * - MD5 of script path and filename and SAPI name
  * This prefix makes sure that keys from the different installations do not
  * conflict.
+ *
+ * @deprecated since v11, will be removed in v12. A substitution with similar characteristics is the ApcuBackend.
  */
 class WincacheBackend extends AbstractBackend implements TaggableBackendInterface
 {
@@ -60,6 +62,7 @@ class WincacheBackend extends AbstractBackend implements TaggableBackendInterfac
         if (!extension_loaded('wincache')) {
             throw new Exception('The PHP extension "wincache" must be installed and loaded in order to use the wincache backend.', 1343331520);
         }
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v12, use ApcuBackend as substitution with similar characteristics.', E_USER_DEPRECATED);
         parent::__construct($context, $options);
     }
 
