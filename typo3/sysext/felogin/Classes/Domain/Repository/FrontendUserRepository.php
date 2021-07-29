@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Domain\Repository;
 
-use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -149,7 +148,7 @@ class FrontendUserRepository
                 )
             )
         ;
-        $result = $query->execute()->fetch(FetchMode::ASSOCIATIVE);
+        $result = $query->execute()->fetchAssociative();
         if (!is_array($result)) {
             $result = [];
         }

@@ -95,7 +95,7 @@ class SqlSrv extends AbstractPlatform
             [$connection->getDatabase()],
             [\PDO::PARAM_STR]
         )
-            ->fetch(\PDO::FETCH_NUM);
+            ->fetchNumeric();
 
         foreach ($this->databaseCharsetToCheck as $databaseCharsetToCheck) {
             if (!stripos($defaultDatabaseCharset[0], $databaseCharsetToCheck)) {
@@ -125,7 +125,7 @@ class SqlSrv extends AbstractPlatform
     public function checkDefaultDatabaseServerCharset(Connection $connection): void
     {
         $defaultServerCharset = $connection->executeQuery('SELECT SERVERPROPERTY(\'Collation\')')
-            ->fetch(\PDO::FETCH_NUM);
+            ->fetchNumeric();
 
         foreach ($this->databaseServerCharsetToCheck as $databaseServerCharsetToCheck) {
             // is charset part of collation

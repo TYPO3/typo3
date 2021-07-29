@@ -47,7 +47,7 @@ class SchemaColumnDefinitionListener
 
         $column = $this->getEnumerationTableColumnDefinition(
             $tableColumn,
-            $event->getDatabasePlatform()
+            $event->getConnection()->getDatabasePlatform()
         );
 
         $event->setColumn($column);

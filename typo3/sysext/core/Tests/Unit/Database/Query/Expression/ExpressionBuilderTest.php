@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\TrimMode;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
@@ -585,22 +585,22 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         return  [
             'trim leading character' => [
-                AbstractPlatform::TRIM_LEADING,
+                TrimMode::LEADING,
                 'x',
                 'TRIM(LEADING "x" FROM "tableName"."fieldName")'
             ],
             'trim trailing character' => [
-                AbstractPlatform::TRIM_TRAILING,
+                TrimMode::TRAILING,
                 'x',
                 'TRIM(TRAILING "x" FROM "tableName"."fieldName")',
             ],
             'trim character' => [
-                AbstractPlatform::TRIM_BOTH,
+                TrimMode::BOTH,
                 'x',
                 'TRIM(BOTH "x" FROM "tableName"."fieldName")',
             ],
             'trim space' => [
-                AbstractPlatform::TRIM_BOTH,
+                TrimMode::BOTH,
                 ' ',
                 'TRIM(BOTH " " FROM "tableName"."fieldName")',
             ]

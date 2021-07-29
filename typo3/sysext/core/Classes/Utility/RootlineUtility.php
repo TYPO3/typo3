@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Utility;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -529,7 +528,7 @@ class RootlineUtility
             ->setMaxResults(1)
             ->execute();
 
-        $record = $statement->fetch(FetchMode::ASSOCIATIVE);
+        $record = $statement->fetchAssociative();
         return $record ?: null;
     }
 

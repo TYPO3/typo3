@@ -1550,7 +1550,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 )
                 ->setMaxResults(1)
                 ->execute()
-                ->fetch(\PDO::FETCH_ASSOC);
+                ->fetchAssociative();
 
             $readOnlyMountPointArray = GeneralUtility::trimExplode(',', $readOnlyMountPoints);
             foreach ($readOnlyMountPointArray as $readOnlyMountPoint) {
@@ -1977,7 +1977,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                             ->orderBy('title')
                             ->setMaxResults(1)
                             ->execute()
-                            ->fetch(\PDO::FETCH_ASSOC);
+                            ->fetchAssociative();
                     }
             }
         }

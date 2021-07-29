@@ -77,7 +77,7 @@ class PreviewUserAuthentication extends BackendUserAuthentication
                         ->orderBy('title')
                         ->setMaxResults(1)
                         ->execute()
-                        ->fetch(\PDO::FETCH_ASSOC);
+                        ->fetchAssociative();
             }
         }
         // If the workspace exists in the database, the preview user is automatically a member to that workspace

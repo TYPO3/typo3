@@ -188,8 +188,7 @@ class MySql extends AbstractPlatform
      */
     protected function getIncompatibleSqlModes(Connection $connection): array
     {
-        $sqlModes = explode(',', $connection->executeQuery('SELECT @@SESSION.sql_mode;')
-            ->fetch(0)['@@SESSION.sql_mode']);
+        $sqlModes = explode(',', (string)$connection->executeQuery('SELECT @@SESSION.sql_mode;')->fetchOne());
         return array_intersect($this->incompatibleSqlModes, $sqlModes);
     }
 

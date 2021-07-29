@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query\Expression;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\TrimMode;
 use TYPO3\CMS\Core\Database\Connection;
 
 /**
@@ -511,7 +511,7 @@ class ExpressionBuilder
      * @param string $char Character to be trimmed (defaults to space)
      * @return string
      */
-    public function trim(string $fieldName, int $position = AbstractPlatform::TRIM_UNSPECIFIED, string $char = null)
+    public function trim(string $fieldName, int $position = TrimMode::UNSPECIFIED, string $char = null)
     {
         return $this->connection->getDatabasePlatform()->getTrimExpression(
             $this->connection->quoteIdentifier($fieldName),
