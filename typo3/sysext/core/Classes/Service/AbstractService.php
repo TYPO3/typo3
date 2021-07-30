@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Service;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -189,9 +190,8 @@ abstract class AbstractService implements LoggerAwareInterface
     public function errorPush($errNum = self::ERROR_GENERAL, $errMsg = 'Unspecified error occurred')
     {
         $this->error[] = ['nr' => $errNum, 'msg' => $errMsg];
-        /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
         $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-        $timeTracker->setTSlogMessage($errMsg, 2);
+        $timeTracker->setTSlogMessage($errMsg, LogLevel::WARNING);
     }
 
     /**

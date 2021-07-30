@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -312,11 +313,11 @@ class Indexer
         if ($check > 0 || !$is_grlist || $this->forceIndexing) {
             // Setting message:
             if ($this->forceIndexing) {
-                $this->log_setTSlogMessage('Indexing needed, reason: Forced', 1);
+                $this->log_setTSlogMessage('Indexing needed, reason: Forced', LogLevel::NOTICE);
             } elseif ($check > 0) {
-                $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], 1);
+                $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], LogLevel::NOTICE);
             } else {
-                $this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!', 1);
+                $this->log_setTSlogMessage('Indexing needed, reason: Updates gr_list!', LogLevel::NOTICE);
             }
             // Divide into title,keywords,description and body:
             $this->log_push('Split content', '');
@@ -870,9 +871,9 @@ class Indexer
                     $check = $this->checkMtimeTstamp($fileInfo['mtime'], $phash_arr['phash']);
                     if ($check > 0 || $force) {
                         if ($check > 0) {
-                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], 1);
+                            $this->log_setTSlogMessage('Indexing needed, reason: ' . $this->reasons[$check], LogLevel::NOTICE);
                         } else {
-                            $this->log_setTSlogMessage('Indexing forced by flag', 1);
+                            $this->log_setTSlogMessage('Indexing forced by flag', LogLevel::NOTICE);
                         }
                         // Check external file counter:
                         if ($this->externalFileCounter < $this->maxExternalFiles || $force) {
@@ -1556,10 +1557,10 @@ class Indexer
                                 // mtime matched the document, so no changes detected and no content updated
                                 $result = -1;
                                 if ($this->tstamp_maxAge) {
-                                    $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', 1);
+                                    $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
                                 } else {
                                     $this->updateTstamp($phash);
-                                    $this->log_setTSlogMessage('mtime matched, timestamp updated.', 1);
+                                    $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
                                 }
                             }
                         } else {
@@ -1684,7 +1685,7 @@ class Indexer
 
             if ($count === 0) {
                 $this->submit_grlist($phash, $phash_x);
-                $this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', 1);
+                $this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', LogLevel::NOTICE);
             }
         }
     }
@@ -1853,7 +1854,7 @@ class Indexer
                 )
                 ->execute();
 
-            $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), 1);
+            $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), LogLevel::NOTICE);
             while ($row = $result->fetchAssociative()) {
                 unset($wordListArray[$row['baseword']]);
             }
@@ -2017,11 +2018,11 @@ class Indexer
      * Set log message function wrapper for TT logging
      *
      * @param string $msg Message to set
-     * @param int $errorNum Error number
+     * @param int|string $logLevel
      */
-    public function log_setTSlogMessage($msg, $errorNum = 0)
+    public function log_setTSlogMessage($msg, $logLevel = LogLevel::INFO)
     {
-        $this->timeTracker->setTSlogMessage($msg, $errorNum);
+        $this->timeTracker->setTSlogMessage($msg, $logLevel);
         $this->internal_log[] = $msg;
     }
 

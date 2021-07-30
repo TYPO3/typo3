@@ -23,6 +23,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -165,7 +166,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
         }
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
-        $this->timeTracker->setTSlogMessage('The incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($relevantParameters)) . '"', 2);
+        $this->timeTracker->setTSlogMessage('The incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($relevantParameters)) . '"', LogLevel::ERROR);
         return true;
     }
 
@@ -189,7 +190,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
         }
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
-        $this->timeTracker->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
+        $this->timeTracker->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', LogLevel::ERROR);
         return true;
     }
 }

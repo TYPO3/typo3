@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\TypoScript;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -452,11 +453,11 @@ class TemplateService
                 $this->setup_constants = $constantsData;
                 $this->setup = $setupData;
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSlogMessage('Using cached TS template data');
+                    $this->getTimeTracker()->setTSlogMessage('Using cached TS template data', LogLevel::INFO);
                 }
             } else {
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSlogMessage('Not using any cached TS data');
+                    $this->getTimeTracker()->setTSlogMessage('Not using any cached TS data', LogLevel::INFO);
                 }
 
                 // Make configuration
@@ -473,7 +474,7 @@ class TemplateService
                 // This stores the data.
                 $this->setCacheEntry($cacheIdentifier, ['constants' => $this->setup_constants, 'setup' => $this->setup], 'TS_TEMPLATE');
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
+                    $this->getTimeTracker()->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes', LogLevel::INFO);
                 }
                 $rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
                 $this->setCacheEntry($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
@@ -1009,14 +1010,14 @@ class TemplateService
         if ($this->verbose) {
             if (preg_match_all('/\\{\\$.[^}]*\\}/', $all, $constantList) > 0) {
                 if ($this->tt_track) {
-                    $this->getTimeTracker()->setTSlogMessage(implode(', ', $constantList[0]) . ': Constants may remain un-substituted!!', 2);
+                    $this->getTimeTracker()->setTSlogMessage(implode(', ', $constantList[0]) . ': Constants may remain un-substituted!!', LogLevel::WARNING);
                 }
             }
         }
 
         // Logging the textual size of the TypoScript Setup field text with all constants substituted:
         if ($this->tt_track) {
-            $this->getTimeTracker()->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
+            $this->getTimeTracker()->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes', LogLevel::INFO);
         }
         // Finally parse the Setup field TypoScript code (where constants are now substituted)
         $config->parse($all, $matchObj);
@@ -1103,7 +1104,7 @@ class TemplateService
     protected function substituteConstants($all)
     {
         if ($this->tt_track) {
-            $this->getTimeTracker()->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup));
+            $this->getTimeTracker()->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup), LogLevel::INFO);
         }
         $noChange = false;
         // Recursive substitution of constants (up to 10 nested levels)

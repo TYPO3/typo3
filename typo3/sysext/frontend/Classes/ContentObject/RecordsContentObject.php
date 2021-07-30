@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -206,7 +207,7 @@ class RecordsContentObject extends AbstractContentObject
                         $e->getMessage(),
                         $e->getCode()
                     );
-                    $this->getTimeTracker()->setTSlogMessage($message, 2);
+                    $this->getTimeTracker()->setTSlogMessage($message, LogLevel::WARNING);
                 }
             }
             // Store the resulting records into the itemArray and data results array

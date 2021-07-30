@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
@@ -2736,7 +2737,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Splits content with the key.
         $contentSplitByUncacheableMarkers = explode('<!--INT_SCRIPT.', $this->content);
         $this->content = '';
-        $timeTracker->setTSlogMessage('Parts: ' . count($contentSplitByUncacheableMarkers));
+        $timeTracker->setTSlogMessage('Parts: ' . count($contentSplitByUncacheableMarkers), LogLevel::INFO);
         $timeTracker->pull();
         foreach ($contentSplitByUncacheableMarkers as $counter => $contentPart) {
             // If the split had a comment-end after 32 characters it's probably a split-string
@@ -2889,7 +2890,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (is_array($this->fe_user->user)) {
                         $reasonMsg[] = 'Frontend user logged in.';
                     }
-                    $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', 1);
+                    $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', LogLevel::NOTICE);
                 }
             }
         }
@@ -3004,7 +3005,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '')
     {
         $explanationText = $explanation !== '' ? ' - ' . $explanation : '';
-        $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, 2);
+        $this->getTimeTracker()->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, LogLevel::WARNING);
         trigger_error('TypoScript property ' . $typoScriptProperty . ' is deprecated' . $explanationText, E_USER_DEPRECATED);
     }
 
@@ -3103,7 +3104,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         if (!$internal && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
             $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
-            $this->getTimeTracker()->setTSlogMessage($warning, 2);
+            $this->getTimeTracker()->setTSlogMessage($warning, LogLevel::WARNING);
         } else {
             $warning .= ' Caching is disabled!';
             $this->disableCache();

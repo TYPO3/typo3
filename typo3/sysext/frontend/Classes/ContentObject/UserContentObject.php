@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,7 +33,7 @@ class UserContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         if (!is_array($conf) || empty($conf)) {
-            $this->getTimeTracker()->setTSlogMessage('USER without configuration.', 2);
+            $this->getTimeTracker()->setTSlogMessage('USER without configuration.', LogLevel::WARNING);
             return '';
         }
         $content = '';

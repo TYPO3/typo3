@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
@@ -171,7 +172,7 @@ class TypoScriptParser
         $pre = '[GLOBAL]';
         while ($pre) {
             if ($pre === '[]') {
-                $this->error('Empty condition is always false, this does not make sense. At line ' . ($this->lineNumberOffset + $this->rawP - 1), 2);
+                $this->error('Empty condition is always false, this does not make sense. At line ' . ($this->lineNumberOffset + $this->rawP - 1), LogLevel::WARNING);
                 break;
             }
             $preUppercase = strtoupper($pre);
@@ -201,10 +202,10 @@ class TypoScriptParser
             }
         }
         if ($this->inBrace) {
-            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)', 1);
+            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)', LogLevel::INFO);
         }
         if ($this->multiLineEnabled) {
-            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': A multiline value section is not ended with a parenthesis!', 1);
+            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': A multiline value section is not ended with a parenthesis!', LogLevel::INFO);
         }
         $this->lineNumberOffset += count($this->raw) + 1;
     }
@@ -381,7 +382,7 @@ class TypoScriptParser
                         $this->inBrace--;
                         $this->lastComment = '';
                         if ($this->inBrace < 0) {
-                            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': An end brace is in excess.', 1);
+                            $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': An end brace is in excess.', LogLevel::INFO);
                             $this->inBrace = 0;
                         } else {
                             break;
@@ -668,16 +669,13 @@ class TypoScriptParser
      * Stacks errors/messages from the TypoScript parser into an internal array, $this->error
      * If "TT" is a global object (as it is in the frontend when backend users are logged in) the message will be registered here as well.
      *
-     * @param string $err The error message string
-     * @param int $num The error severity (in the scale of TimeTracker::setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
+     * @param string $message The error message string
+     * @param int|string $logLevel The error severity (in the scale of TimeTracker::setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
      */
-    protected function error($err, $num = 2)
+    protected function error($message, $logLevel = LogLevel::WARNING)
     {
-        $tt = $this->getTimeTracker();
-        if ($tt !== null) {
-            $tt->setTSlogMessage($err, $num);
-        }
-        $this->errors[] = [$err, $num, $this->rawP - 1, $this->lineNumberOffset];
+        $this->getTimeTracker()->setTSlogMessage($message, $logLevel);
+        $this->errors[] = [$message, $logLevel, $this->rawP - 1, $this->lineNumberOffset];
     }
 
     /**

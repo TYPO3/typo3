@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -212,7 +213,7 @@ class AuthenticationService extends AbstractAuthenticationService
         $message = str_replace('###IP###', (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'), $message);
         if ($this->pObj->loginType === 'FE') {
             $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-            $timeTracker->setTSlogMessage($message);
+            $timeTracker->setTSlogMessage($message, LogLevel::INFO);
         }
         $this->logger->notice($message);
     }

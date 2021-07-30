@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,7 +33,7 @@ class ContentObjectArrayContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         if (empty($conf)) {
-            $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);
+            $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', LogLevel::WARNING);
             return '';
         }
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {

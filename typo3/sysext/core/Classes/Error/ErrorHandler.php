@@ -61,6 +61,18 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     protected $debugMode = false;
 
+    protected const ERROR_LEVELS = [
+        E_WARNING => 'PHP Warning',
+        E_NOTICE => 'PHP Notice',
+        E_USER_ERROR => 'PHP User Error',
+        E_USER_WARNING => 'PHP User Warning',
+        E_USER_NOTICE => 'PHP User Notice',
+        E_STRICT => 'PHP Runtime Notice',
+        E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
+        E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
+        E_DEPRECATED => 'PHP Runtime Deprecation Notice'
+    ];
+
     /**
      * Registers this class as default error handler
      *
@@ -134,18 +146,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             return true;
         }
 
-        $errorLevels = [
-            E_WARNING => 'PHP Warning',
-            E_NOTICE => 'PHP Notice',
-            E_USER_ERROR => 'PHP User Error',
-            E_USER_WARNING => 'PHP User Warning',
-            E_USER_NOTICE => 'PHP User Notice',
-            E_STRICT => 'PHP Runtime Notice',
-            E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
-            E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
-            E_DEPRECATED => 'PHP Runtime Deprecation Notice'
-        ];
-        $message = $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
+        $message = self::ERROR_LEVELS[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
         if ($errorLevel & $this->exceptionalErrors) {
             throw new Exception($message, 1476107295);
         }
@@ -155,15 +156,18 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             case E_RECOVERABLE_ERROR:
                 // no $flashMessageSeverity, as there will be no flash message for errors
                 $severity = 2;
+                $logLevel = \Psr\Log\LogLevel::ERROR;
                 break;
             case E_USER_WARNING:
             case E_WARNING:
                 $flashMessageSeverity = FlashMessage::WARNING;
                 $severity = 1;
+                $logLevel = \Psr\Log\LogLevel::WARNING;
                 break;
             default:
                 $flashMessageSeverity = FlashMessage::NOTICE;
                 $severity = 0;
+                $logLevel = \Psr\Log\LogLevel::NOTICE;
         }
 
         // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
@@ -183,7 +187,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
 
         try {
             // Write error message to TSlog (admin panel)
-            $this->getTimeTracker()->setTSlogMessage($message, $severity + 1);
+            $this->getTimeTracker()->setTSlogMessage($message, $logLevel);
         } catch (\Throwable $e) {
             // Silently catch in case an error occurs before the DI container is in place
         }
@@ -195,21 +199,18 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             } catch (\Exception $e) {
             }
         }
-        if ($severity === 2) {
+        if ($logLevel === \Psr\Log\LogLevel::ERROR) {
             // Let the internal handler continue. This will stop the script
             return false;
         }
         if ($this->debugMode) {
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $message,
-                $errorLevels[$errorLevel],
+                self::ERROR_LEVELS[$errorLevel],
                 $flashMessageSeverity
             );
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

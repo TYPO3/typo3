@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\IndexedSearch;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -96,7 +97,7 @@ class FileContentParser
         // Ignore extensions
         $ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), true);
         if (in_array($extension, $ignoreExtensions)) {
-            $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ignoreExtensions'), $extension), 1);
+            $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ignoreExtensions'), $extension), LogLevel::WARNING);
             return false;
         }
         // Switch on file extension:
@@ -112,10 +113,10 @@ class FileContentParser
                         $this->pdf_mode = MathUtility::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsNotFound'), $pdfPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsNotFound'), $pdfPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'doc':
@@ -126,10 +127,10 @@ class FileContentParser
                         $this->app['catdoc'] = $catdocPath . 'catdoc' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:catdocNotFound'), $catdocPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:catdocNotFound'), $catdocPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:catdocDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:catdocDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'pps':
@@ -142,10 +143,10 @@ class FileContentParser
                         $this->app['ppthtml'] = $ppthtmlPath . 'ppthtml' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ppthtmlNotFound'), $ppthtmlPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ppthtmlNotFound'), $ppthtmlPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ppthtmlDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ppthtmlDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'xls':
@@ -157,10 +158,10 @@ class FileContentParser
                         $this->app['xlhtml'] = $xlhtmlPath . 'xlhtml' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:xlhtmlNotFound'), $xlhtmlPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:xlhtmlNotFound'), $xlhtmlPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:xlhtmlDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:xlhtmlDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'docx':    // Microsoft Word >= 2007
@@ -176,10 +177,10 @@ class FileContentParser
                         $this->app['unzip'] = $unzipPath . 'unzip' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipNotFound'), $unzipPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipNotFound'), $unzipPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'sxc':
@@ -195,10 +196,10 @@ class FileContentParser
                         $this->app['unzip'] = $unzipPath . 'unzip' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipNotFound'), $unzipPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipNotFound'), $unzipPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'rtf':
@@ -209,10 +210,10 @@ class FileContentParser
                         $this->app['unrtf'] = $unrtfPath . 'unrtf' . $exe;
                         $extOK = true;
                     } else {
-                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unrtfNotFound'), $unrtfPath), 3);
+                        $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unrtfNotFound'), $unrtfPath), LogLevel::ERROR);
                     }
                 } else {
-                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unrtfDisabled'), 1);
+                    $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unrtfDisabled'), LogLevel::NOTICE);
                 }
                 break;
             case 'txt':
@@ -490,7 +491,7 @@ class FileContentParser
                             unlink($tempFileName);
                         } else {
                             $content = '';
-                            $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsFailed'), $absFile), 2);
+                            $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsFailed'), $absFile), LogLevel::WARNING);
                         }
                         if ((string)$content !== '') {
                             $contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));

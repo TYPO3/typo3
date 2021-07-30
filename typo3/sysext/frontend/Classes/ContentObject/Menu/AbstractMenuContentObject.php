@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -347,7 +348,7 @@ abstract class AbstractMenuContentObject
             }
             return true;
         }
-        $this->getTimeTracker()->setTSlogMessage('ERROR in menu', 3);
+        $this->getTimeTracker()->setTSlogMessage('ERROR in menu', LogLevel::ERROR);
         return false;
     }
 

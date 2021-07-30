@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -913,7 +914,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function convertToUserIntObject()
     {
         if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-            $this->getTimeTracker()->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
+            $this->getTimeTracker()->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', LogLevel::WARNING);
         } else {
             $this->doConvertToUserIntObject = true;
         }
@@ -5190,15 +5191,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $classObj->cObj = $this;
                     $content = $callable($content, $conf, $this->getRequest());
                 } else {
-                    $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
+                    $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);
                 }
             } else {
-                $this->getTimeTracker()->setTSlogMessage('Class "' . $parts[0] . '" did not exist', 3);
+                $this->getTimeTracker()->setTSlogMessage('Class "' . $parts[0] . '" did not exist', LogLevel::ERROR);
             }
         } elseif (function_exists($funcName)) {
             $content = $funcName($content, $conf);
         } else {
-            $this->getTimeTracker()->setTSlogMessage('Function "' . $funcName . '" did not exist', 3);
+            $this->getTimeTracker()->setTSlogMessage('Function "' . $funcName . '" did not exist', LogLevel::ERROR);
         }
         return $content;
     }

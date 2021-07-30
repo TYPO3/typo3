@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\TimeTracker;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -76,20 +77,30 @@ class TimeTracker implements SingletonInterface
      * @var array
      */
     public $wrapError = [
+        // the numeric items can be removed in TYPO3 v12.0.
         0 => ['', ''],
         1 => ['<strong>', '</strong>'],
         2 => ['<strong style="color:#ff6600;">', '</strong>'],
-        3 => ['<strong style="color:#ff0000;">', '</strong>']
+        3 => ['<strong style="color:#ff0000;">', '</strong>'],
+        LogLevel::INFO => ['', ''],
+        LogLevel::NOTICE => ['<strong>', '</strong>'],
+        LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
+        LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>']
     ];
 
     /**
      * @var array
      */
     public $wrapIcon = [
+        // the numeric items can be removed in TYPO3 v12.0.
         0 => '',
         1 => 'actions-document-info',
         2 => 'status-dialog-warning',
-        3 => 'status-dialog-error'
+        3 => 'status-dialog-error',
+        LogLevel::INFO => '',
+        LogLevel::NOTICE => 'actions-document-info',
+        LogLevel::WARNING => 'status-dialog-warning',
+        LogLevel::ERROR => 'status-dialog-error'
     ];
 
     /**
@@ -224,10 +235,10 @@ class TimeTracker implements SingletonInterface
      * Logs the TypoScript entry
      *
      * @param string $content The message string
-     * @param int $num Message type: 0: information, 1: message, 2: warning, 3: error
+     * @param string|int $logLevel Message type: 0: information, 1: message, 2: warning, 3: error or the LogLevel constants - will become the LogLevel constants only in TYPO3 v12.0.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
      */
-    public function setTSlogMessage($content, $num = 0)
+    public function setTSlogMessage($content, $logLevel = LogLevel::INFO)
     {
         if (!$this->isEnabled) {
             return;
@@ -240,7 +251,7 @@ class TimeTracker implements SingletonInterface
             $placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
         }
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$num], Icon::SIZE_SMALL)->render() . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
+        $this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$logLevel], Icon::SIZE_SMALL)->render() . $this->wrapError[$logLevel][0] . htmlspecialchars($content) . $this->wrapError[$logLevel][1] . $placeholder;
     }
 
     /**

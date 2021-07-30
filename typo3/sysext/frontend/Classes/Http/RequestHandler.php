@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -744,18 +745,18 @@ class RequestHandler implements RequestHandlerInterface
             $minifyErrorScript = ($minifyErrorInline = '');
             $scriptJsCode = GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
             if ($minifyErrorScript) {
-                $this->timeTracker->setTSlogMessage($minifyErrorScript, 3);
+                $this->timeTracker->setTSlogMessage($minifyErrorScript, LogLevel::ERROR);
             }
             if ($inlineJS) {
                 $inlineJS = GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
                 if ($minifyErrorInline) {
-                    $this->timeTracker->setTSlogMessage($minifyErrorInline, 3);
+                    $this->timeTracker->setTSlogMessage($minifyErrorInline, LogLevel::ERROR);
                 }
             }
             if ($inlineFooterJs) {
                 $inlineFooterJs = GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
                 if ($minifyErrorInline) {
-                    $this->timeTracker->setTSlogMessage($minifyErrorInline, 3);
+                    $this->timeTracker->setTSlogMessage($minifyErrorInline, LogLevel::ERROR);
                 }
             }
         }

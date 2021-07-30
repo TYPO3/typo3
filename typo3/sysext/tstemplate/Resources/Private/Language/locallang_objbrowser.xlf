@@ -135,6 +135,18 @@
 			<trans-unit id="severity.3" resname="severity.3">
 				<source>Error</source>
 			</trans-unit>
+			<trans-unit id="severity.info" resname="severity.info">
+				<source>Info</source>
+			</trans-unit>
+			<trans-unit id="severity.notice" resname="severity.notice">
+				<source>Notice</source>
+			</trans-unit>
+			<trans-unit id="severity.warning" resname="severity.warning">
+				<source>Warning</source>
+			</trans-unit>
+			<trans-unit id="severity.error" resname="severity.error">
+				<source>Error</source>
+			</trans-unit>
 			<trans-unit id="error.1446559458" resname="error.1446559458">
 				<source>Error evaluating regular expression "%s".</source>
 			</trans-unit>
