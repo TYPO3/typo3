@@ -61,7 +61,7 @@ final class CategoryPermissionsAspect
     {
         // Only evaluate this in the backend
         if (!($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            || ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
         ) {
             return;
         }
