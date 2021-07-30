@@ -32,6 +32,10 @@ indent_size = 4
 [*.{yaml,yml}]
 indent_size = 2
 
+# NEON-Files
+[*.neon]
+indent_size = 2
+
 # package.json
 [{package.json}]
 indent_size = 2

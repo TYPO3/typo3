@@ -15,7 +15,7 @@ parameters:
   ignoreErrors:
     # @todo: These should probably be fixed in core?!
     -
-      message: "#^Cannot call method fetchAllAssociative\\(\\) on Doctrine\\\\DBAL\\\\Driver\\\\Statement\\|int\\.$#"
+      message: "#^Cannot call method fetchAllAssociative\\(\\) on Doctrine\\\\DBAL\\\\Driver\\\\ResultStatement\\|int\\.$#"
       count: 4
       path: %currentWorkingDirectory%/Classes/TcaDataGenerator/RecordFinder.php
     -
