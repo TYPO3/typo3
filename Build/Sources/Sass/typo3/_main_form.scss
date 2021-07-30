@@ -567,8 +567,10 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
     background: $white;
 
     a,
-    button {
-        margin: 0.25rem 0.25rem 0.25rem 0;
+    button,
+    input,
+    .input-group-addon {
+        margin: 0.25rem 0;
     }
 }
 

@@ -22,8 +22,10 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 enum Selectors {
-  columnSelectors = '.t3js-record-column-selector',
-  columnSelectorActionsSelector = '.t3js-record-column-selector-actions'
+  columnsSelector = '.t3js-record-column-selector',
+  columnsContainerSelector = '.t3js-column-selector-container',
+  columnsFilterSelector = 'input[name="columns-filter"]',
+  columnsSelectorActionsSelector = '.t3js-record-column-selector-actions'
 }
 
 enum SelectorActions {
@@ -56,25 +58,78 @@ class ColumnSelectorButton extends LitElement {
   @property({type: String}) close: string = lll('button.close') || 'Close';
   @property({type: String}) error: string = 'Could not update columns';
 
-  private static toggleSelectors(
-    columnSelectors: NodeListOf<HTMLInputElement>,
+  /**
+   * Toggle selector actions state (enabled or disabled) depending
+   * on the columns state (checked, unchecked, displayed or hidden)
+   *
+   * @param columns The columns
+   * @param selectAll The "select all" action button
+   * @param selectNone The "select none" action button
+   * @param initialize Whether this is the initialize call - don't check hidden
+   *                   state as all columns are displayed on initialization
+   * @private
+   */
+  private static toggleSelectorActions(
+    columns: NodeListOf<HTMLInputElement>,
     selectAll: HTMLButtonElement,
-    selectNone: HTMLButtonElement
+    selectNone: HTMLButtonElement,
+    initialize: boolean = false
   ) {
     selectAll.classList.add('disabled')
-    for (let i=0; i < columnSelectors.length; i++) {
-      if (!columnSelectors[i].disabled && !columnSelectors[i].checked) {
+    for (let i=0; i < columns.length; i++) {
+      if (!columns[i].disabled
+        && !columns[i].checked
+        && (initialize || !ColumnSelectorButton.isColumnHidden(columns[i]))
+      ) {
         selectAll.classList.remove('disabled')
         break;
       }
     }
     selectNone.classList.add('disabled')
-    for (let i=0; i < columnSelectors.length; i++) {
-      if (!columnSelectors[i].disabled && columnSelectors[i].checked) {
+    for (let i=0; i < columns.length; i++) {
+      if (!columns[i].disabled
+        && columns[i].checked
+        && (initialize || !ColumnSelectorButton.isColumnHidden(columns[i]))
+      ) {
         selectNone.classList.remove('disabled')
         break;
       }
     }
+  }
+
+  /**
+   * Check if the given column is hidden by looking at it's container element
+   *
+   * @param column The column to check for
+   * @private
+   */
+  private static isColumnHidden(column: HTMLInputElement): boolean {
+    return column.closest(Selectors.columnsContainerSelector)?.classList.contains('hidden');
+  }
+
+  /**
+   * Check each column if it matches the current search term.
+   * If not, hide its outer container to not break the grid.
+   *
+   * @param columnsFilter The columns filter
+   * @param columns The columns to check
+   * @private
+   */
+  private static filterColumns(columnsFilter: HTMLInputElement, columns: NodeListOf<HTMLInputElement>): void {
+    columns.forEach((column: HTMLInputElement) => {
+      const columnContainer: HTMLDivElement = column.closest(Selectors.columnsContainerSelector);
+      if (!column.disabled && columnContainer !== null) {
+        const filterValue: string = columnContainer.querySelector('.form-check-label-text')?.textContent;
+        if (filterValue && filterValue.length) {
+          columnContainer.classList.toggle(
+            'hidden',
+            columnsFilter.value !== '' && !RegExp(columnsFilter.value, 'i').test(
+              filterValue.trim().replace(/\[\]/g, '').replace(/\s+/g, ' ')
+            )
+          );
+        }
+      }
+    });
   }
 
   public constructor() {
@@ -151,30 +206,53 @@ class ColumnSelectorButton extends LitElement {
       return;
     }
     // Prevent the form from being submitted as the form data will be send via an ajax request
-    form.addEventListener('submit', (e: Event): void => {e.preventDefault()});
+    form.addEventListener('submit', (e: Event): void => { e.preventDefault() });
 
-    const columnSelectors: NodeListOf<HTMLInputElement> = currentModal.querySelectorAll(Selectors.columnSelectors);
-    const columnSelectorActions: HTMLDivElement = currentModal.querySelector(Selectors.columnSelectorActionsSelector);
-    const selectAll: HTMLButtonElement = columnSelectorActions.querySelector('button[data-action="' + SelectorActions.all + '"]');
-    const selectNone: HTMLButtonElement = columnSelectorActions.querySelector('button[data-action="' + SelectorActions.none + '"]');
+    const columns: NodeListOf<HTMLInputElement> = currentModal.querySelectorAll(Selectors.columnsSelector);
+    const columnsFilter: HTMLInputElement = currentModal.querySelector(Selectors.columnsFilterSelector);
+    const columnsSelectorActions: HTMLDivElement = currentModal.querySelector(Selectors.columnsSelectorActionsSelector);
+    const selectAll: HTMLButtonElement = columnsSelectorActions.querySelector('button[data-action="' + SelectorActions.all + '"]');
+    const selectNone: HTMLButtonElement = columnsSelectorActions.querySelector('button[data-action="' + SelectorActions.none + '"]');
 
-    if (selectAll === null || selectNone === null || !columnSelectors.length) {
+    if (!columns.length || columnsFilter === null || selectAll === null || selectNone === null) {
       // Return in case required elements do not exist in the modal content
       return;
     }
 
-    // Initialize select-all / select-none buttons
-    ColumnSelectorButton.toggleSelectors(columnSelectors, selectAll, selectNone);
+    // First initialize select-all / select-none buttons
+    ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone, true);
 
-    // Add event listener for each column selector to toggle the selector actions after change
-    columnSelectors.forEach((column: HTMLInputElement) => {
+    // Add event listener for each column to toggle the selector actions after change
+    columns.forEach((column: HTMLInputElement) => {
       column.addEventListener('change', (): void => {
-        ColumnSelectorButton.toggleSelectors(columnSelectors, selectAll, selectNone);
+        ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
       });
     });
 
+    // Add event listener for keydown event for the columns filter, so we
+    // can catch the "Escape" key, which would otherwise close the modal.
+    columnsFilter.addEventListener('keydown', (e: KeyboardEvent): void => {
+      const target = e.target as HTMLInputElement;
+      if (e.code === 'Escape') {
+        e.stopImmediatePropagation();
+        target.value = '';
+      }
+    });
+
+    // Add event listener for keydown event for the columns filter, allowing the "live filtering"
+    columnsFilter.addEventListener('keyup', (e: KeyboardEvent): void => {
+      ColumnSelectorButton.filterColumns(e.target as HTMLInputElement, columns);
+      ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
+    });
+
+    // Catch browser specific "search" event, triggered on clicking the "clear" button
+    columnsFilter.addEventListener('search', (e: Event): void => {
+      ColumnSelectorButton.filterColumns(e.target as HTMLInputElement, columns);
+      ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
+    });
+
     // Add event listener for selector actions
-    columnSelectorActions.addEventListener('click', (e: Event): void => {
+    columnsSelectorActions.addEventListener('click', (e: Event): void => {
       e.preventDefault();
 
       const target: HTMLElement = e.target as HTMLElement;
@@ -186,22 +264,22 @@ class ColumnSelectorButton extends LitElement {
       // Perform requested action
       switch (target.dataset.action) {
         case SelectorActions.toggle:
-          columnSelectors.forEach((column: HTMLInputElement) => {
-            if (!column.disabled) {
+          columns.forEach((column: HTMLInputElement) => {
+            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
               column.checked = !column.checked;
             }
           });
           break;
         case SelectorActions.all:
-          columnSelectors.forEach((column: HTMLInputElement) => {
-            if (!column.disabled) {
+          columns.forEach((column: HTMLInputElement) => {
+            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
               column.checked = true;
             }
           });
           break;
         case SelectorActions.none:
-          columnSelectors.forEach((column: HTMLInputElement) => {
-            if (!column.disabled) {
+          columns.forEach((column: HTMLInputElement) => {
+            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
               column.checked = false;
             }
           });
@@ -211,8 +289,8 @@ class ColumnSelectorButton extends LitElement {
           Notification.warning('Unknown selector action');
       }
 
-      // After performing the action always toggle selectors
-      ColumnSelectorButton.toggleSelectors(columnSelectors, selectAll, selectNone);
+      // After performing the action always toggle selector actions
+      ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
     });
   }
 

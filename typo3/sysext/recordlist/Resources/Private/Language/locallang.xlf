@@ -18,6 +18,9 @@
 			<trans-unit id="updateColumnView.error" resname="updateColumnView.error">
 				<source>Could not update columns</source>
 			</trans-unit>
+			<trans-unit id="columnsFilter" resname="columnsFilter">
+				<source>Filter by:</source>
+			</trans-unit>
 			<trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>
 			</trans-unit>
