@@ -5,7 +5,7 @@
                 <div class="item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
                     <h3 class="typo3-login-news-heading">{item.header}</h3>
                     <f:format.html>{item.content}</f:format.html>
-                    <span class="text-muted">{item.date}</span>
+                    <f:if condition="{item.date}"><span class="text-muted">{item.date}</span></f:if>
                 </div>
             </f:for>
         </div>

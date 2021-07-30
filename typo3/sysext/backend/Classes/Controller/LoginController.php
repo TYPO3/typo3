@@ -600,7 +600,7 @@ class LoginController implements LoggerAwareInterface
             ->fetchAll();
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = [
-                'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$systemNewsRecord['crdate']),
+                'date' => $systemNewsRecord['crdate'] ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$systemNewsRecord['crdate']) : '',
                 'header' => $systemNewsRecord['title'],
                 'content' => $systemNewsRecord['content']
             ];
