@@ -27,4 +27,8 @@ class Database
     public const DELETE = 3;
     public const MOVE = 4;
     public const CHECK = 5;
+    public const LOCALIZE = 6;
+    public const VERSIONIZE = 7;
+    public const PUBLISH = 8;
+    public const DISCARD = 9;
 }

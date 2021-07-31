@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Cache as SystemLogCacheAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -847,7 +846,7 @@ class DataHandler implements LoggerAwareInterface
         $this->datamap = $this->unsetElementsToBeDeleted($this->datamap);
         // Editing frozen:
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
-            $this->newlog('All editing in this workspace has been frozen!', SystemLogErrorClassification::USER_ERROR);
+            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen!');
             return false;
         }
         // First prepare user defined objects (if any) for hooks which extend this function:
@@ -956,7 +955,7 @@ class DataHandler implements LoggerAwareInterface
                         $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
                         $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true);
                         if (!$recordAccess) {
-                            $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', SystemLogErrorClassification::USER_ERROR);
+                            $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']');
                         } elseif (!$this->bypassWorkspaceRestrictions && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
                             // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
                             // So, if no live records were allowed in the current workspace, we have to create a new version of this record
@@ -964,7 +963,7 @@ class DataHandler implements LoggerAwareInterface
                                 $createNewVersion = true;
                             } else {
                                 $recordAccess = false;
-                                $this->newlog('Record could not be created in this workspace', SystemLogErrorClassification::USER_ERROR);
+                                $this->log($table, 0, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record could not be created in this workspace');
                             }
                         }
                     }
@@ -985,7 +984,7 @@ class DataHandler implements LoggerAwareInterface
                     // Next check of the record permissions (internals)
                     $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
                     if (!$recordAccess) {
-                        $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', SystemLogErrorClassification::USER_ERROR);
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']');
                     } else {
                         // Here we fetch the PID of the record that we point to...
                         $tempdata = $this->recordInfo($table, $id, 'pid' . (BackendUtility::isTableWorkspaceEnabled($table) ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : ''));
@@ -1040,10 +1039,10 @@ class DataHandler implements LoggerAwareInterface
                                     $id = $this->autoVersionIdMap[$table][$id];
                                     $recordAccess = true;
                                 } else {
-                                    $this->newlog('Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version failed!', SystemLogErrorClassification::USER_ERROR);
+                                    $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version failed!');
                                 }
                             } else {
-                                $this->newlog('Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version not allowed in workspace!', SystemLogErrorClassification::USER_ERROR);
+                                $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version not allowed in workspace!');
                             }
                         }
                     }
@@ -3114,7 +3113,7 @@ class DataHandler implements LoggerAwareInterface
     {
         // Editing frozen:
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
-            $this->newlog('All editing in this workspace has been frozen!', SystemLogErrorClassification::USER_ERROR);
+            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen!');
             return false;
         }
         // Hook initialization:
@@ -4474,19 +4473,19 @@ class DataHandler implements LoggerAwareInterface
 
         $this->registerNestedElementCall($table, $uid, 'localize-' . (string)$language);
         if (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-            $this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table, SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table ' . $table);
             return false;
         }
 
         if (!$this->doesRecordExist($table, $uid, Permission::PAGE_SHOW)) {
-            $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' without permission.', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record ' . $table . ':' . $uid . ' without permission.');
             return false;
         }
 
         // Getting workspace overlay if possible - this will localize versions in workspace if any
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
-            $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' that did not exist!', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record ' . $table . ':' . $uid . ' that did not exist!');
             return false;
         }
 
@@ -4494,7 +4493,7 @@ class DataHandler implements LoggerAwareInterface
         // Try to fetch the site language from the pages' associated site
         $siteLanguage = $this->getSiteLanguageForPage((int)$pageId, (int)$language);
         if ($siteLanguage === null) {
-            $this->newlog('Sys language UID "' . $language . '" not found valid!', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Sys language UID "' . $language . '" not found valid!');
             return false;
         }
 
@@ -4507,7 +4506,7 @@ class DataHandler implements LoggerAwareInterface
                 $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]
             );
             if ((int)$localizationParentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] !== 0) {
-                $this->newlog('Localization failed; Source record ' . $table . ':' . $localizationParentRecord['uid'] . ' contained a reference to an original record that is not a default record (which is strange)!', SystemLogErrorClassification::USER_ERROR);
+                $this->log($table, $localizationParentRecord['uid'], SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed; Source record ' . $table . ':' . $localizationParentRecord['uid'] . ' contained a reference to an original record that is not a default record (which is strange)!');
                 return false;
             }
         }
@@ -4515,20 +4514,28 @@ class DataHandler implements LoggerAwareInterface
         // Default language records must never have a localization parent as they are the origin of any translation.
         if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] !== 0
             && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
-            $this->newlog('Localization failed; Source record ' . $table . ':' . $row['uid'] . ' contained a reference to an original default record but is a default record itself (which is strange)!', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $row['uid'], SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed; Source record ' . $table . ':' . $row['uid'] . ' contained a reference to an original default record but is a default record itself (which is strange)!');
             return false;
         }
 
         $recordLocalizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
 
         if (!empty($recordLocalizations)) {
-            $this->newlog(sprintf(
-                'Localization failed: there already are localizations (%s) for language %d of the "%s" record %d!',
-                implode(', ', array_column($recordLocalizations, 'uid')),
-                $language,
+            $this->log(
                 $table,
-                $uid
-            ), 1);
+                $uid,
+                SystemLogDatabaseAction::LOCALIZE,
+                0,
+                SystemLogErrorClassification::USER_ERROR,
+                'Localization failed: there already are localizations (%s) for language %d of the "%s" record %d!',
+                -1,
+                [
+                    implode(', ', array_column($recordLocalizations, 'uid')),
+                    $language,
+                    $table,
+                    $uid
+                ]
+            );
             return false;
         }
 
@@ -4660,9 +4667,7 @@ class DataHandler implements LoggerAwareInterface
             // based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND t3ver_oid=0');
             if (empty($parentRecordLocalization)) {
-                if ($this->enableLogging) {
-                    $this->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', -1, [], $this->eventPid($table, $id, $parentRecord['pid']));
-                }
+                $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', -1, [], $this->eventPid($table, $id, $parentRecord['pid']));
                 return;
             }
             $parentRecord = $parentRecordLocalization[0];
@@ -5004,7 +5009,7 @@ class DataHandler implements LoggerAwareInterface
                     $propArr['pid']
                 ], $propArr['event_pid']);
             } else {
-                $this->log($table, $uid, $state, 0, SystemLogErrorClassification::TODAYS_SPECIAL, $databaseErrorMessage);
+                $this->log($table, $uid, $state, 0, SystemLogErrorClassification::SYSTEM_ERROR, $databaseErrorMessage);
             }
         }
 
@@ -5030,9 +5035,7 @@ class DataHandler implements LoggerAwareInterface
     {
         $uid = (int)$uid;
         if ($uid === 0) {
-            if ($this->enableLogging) {
-                $this->log('pages', $uid, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
-            }
+            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
             return;
         }
         // Getting list of pages to delete:
@@ -5052,7 +5055,7 @@ class DataHandler implements LoggerAwareInterface
             $this->log(
                 'pages',
                 $uid,
-                SystemLogGenericAction::UNDEFINED,
+                SystemLogDatabaseAction::DELETE,
                 0,
                 SystemLogErrorClassification::SYSTEM_ERROR,
                 $res,
@@ -5570,20 +5573,20 @@ class DataHandler implements LoggerAwareInterface
 
         // User access checks
         if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
-            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: Different workspace', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: Different workspace');
             return;
         }
         if ($errorCode = $this->BE_USER->workspaceCannotEditOfflineVersion($table, $versionRecord['uid'])) {
-            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: ' . $errorCode);
             return;
         }
         if (!$this->checkRecordUpdateAccess($table, $versionRecord['uid'])) {
-            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no edit access', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no edit access');
             return;
         }
         $fullLanguageAccessCheck = !($table === 'pages' && (int)$versionRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] !== 0);
         if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, true, $fullLanguageAccessCheck)) {
-            $this->newlog('Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no delete access', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no delete access');
             return;
         }
 
@@ -5808,7 +5811,7 @@ class DataHandler implements LoggerAwareInterface
             return null;
         }
         if (!BackendUtility::isTableWorkspaceEnabled($table) || $id <= 0) {
-            $this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Versioning is not supported for this table "' . $table . '" / ' . $id);
             return null;
         }
 
@@ -5817,21 +5820,18 @@ class DataHandler implements LoggerAwareInterface
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
-            $this->newlog(
-                'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "' . $table . ':' . $id . '"',
-                SystemLogErrorClassification::USER_ERROR
-            );
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "' . $table . ':' . $id . '"');
             return null;
         }
 
         // Record must be online record, otherwise we would create a version of a version
         if (($row['t3ver_oid'] ?? 0) > 0) {
-            $this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (record has an online ID)!', SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (record has an online ID)!');
             return null;
         }
 
         if ($delete && $this->cannotDeleteRecord($table, $id)) {
-            $this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), SystemLogErrorClassification::USER_ERROR);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id));
             return null;
         }
 
@@ -7297,9 +7297,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     return $id;
                 }
-                if ($this->enableLogging) {
-                    $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: \'%s\' (%s)', 12, [$insertErrorMessage, $table . ':' . $id]);
-                }
+                $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: \'%s\' (%s)', 12, [$insertErrorMessage, $table . ':' . $id]);
             }
         }
         return null;
@@ -8839,20 +8837,6 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Simple logging function meant to be used when logging messages is not yet fixed.
-     *
-     * @param string $message Message string
-     * @param int $error Error code, see log()
-     * @return int Log entry UID
-     * @see log()
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function newlog($message, $error = SystemLogErrorClassification::MESSAGE)
-    {
-        return $this->log('', 0, SystemLogGenericAction::UNDEFINED, 0, $error, $message, -1);
-    }
-
-    /**
      * Print log error messages from the operations of this script instance
      * @internal should only be used from within TYPO3 Core
      */
@@ -8864,8 +8848,7 @@ class DataHandler implements LoggerAwareInterface
             ->select('*')
             ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->lt('action', $queryBuilder->createNamedParameter(256, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(SystemLogType::DB, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq(
                     'userid',
                     $queryBuilder->createNamedParameter($this->BE_USER->user['uid'], \PDO::PARAM_INT)
@@ -8874,7 +8857,7 @@ class DataHandler implements LoggerAwareInterface
                     'tstamp',
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, \PDO::PARAM_INT))
             )
             ->execute();
 
@@ -8882,7 +8865,7 @@ class DataHandler implements LoggerAwareInterface
             $log_data = unserialize($row['log_data']);
             $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
             /** @var FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === 4 ? FlashMessage::WARNING : FlashMessage::ERROR, true);
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
             /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();

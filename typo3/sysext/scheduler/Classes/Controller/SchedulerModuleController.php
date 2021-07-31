@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
+use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -431,7 +431,7 @@ class SchedulerModuleController
                 $this->addMessage($this->getLanguageService()->getLL('msg.maynotDeleteRunningTask'), FlashMessage::ERROR);
             } else {
                 if ($this->scheduler->removeTask($task)) {
-                    $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
+                    $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogDatabaseAction::DELETE, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
                     $this->addMessage($this->getLanguageService()->getLL('msg.deleteSuccess'));
                 } else {
                     $this->addMessage($this->getLanguageService()->getLL('msg.deleteError'), FlashMessage::ERROR);
@@ -1072,7 +1072,7 @@ class SchedulerModuleController
             // Save to database
             $result = $this->scheduler->saveTask($task);
             if ($result) {
-                $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
+                $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogDatabaseAction::UPDATE, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
                 $this->addMessage($this->getLanguageService()->getLL('msg.updateSuccess'));
             } else {
                 $this->addMessage($this->getLanguageService()->getLL('msg.updateError'), FlashMessage::ERROR);
@@ -1106,7 +1106,7 @@ class SchedulerModuleController
             // Add to database
             $result = $this->scheduler->addTask($task);
             if ($result) {
-                $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
+                $this->getBackendUser()->writelog(SystemLogType::EXTENSION, SystemLogDatabaseAction::INSERT, SystemLogErrorClassification::MESSAGE, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]);
                 $this->addMessage($this->getLanguageService()->getLL('msg.addSuccess'));
 
                 // set the uid of the just created task so that we
