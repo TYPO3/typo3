@@ -68,3 +68,8 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'formYamlConfiguration'
         after: 'eventListeners'
+
+  TYPO3\CMS\Form\SoftReference\FormPersistenceIdentifierSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: formPersistenceIdentifier

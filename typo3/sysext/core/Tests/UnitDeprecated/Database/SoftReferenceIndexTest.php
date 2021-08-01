@@ -18,7 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
+use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser;
+use TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkTagSoftReferenceParser;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -31,7 +36,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class SoftReferenceIndexTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
+
     protected $resetSingletonInstances = true;
+
+    protected function createSoftReferenceParserFactory()
+    {
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $runtimeCache = $this->prophesize(FrontendInterface::class);
+
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal());
+        $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser($eventDispatcher->reveal()), 'typolink');
+        $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(), 'typolink_tag');
+
+        return $softReferenceParserFactory;
+    }
+
+    protected function getSoftReferenceParserInstance()
+    {
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+
+        return new SoftReferenceIndex($eventDispatcher->reveal(), $this->createSoftReferenceParserFactory());
+    }
 
     public function findRefReturnsParsedElementsDataProvider(): array
     {
@@ -216,9 +241,8 @@ class SoftReferenceIndexTest extends UnitTestCase
      */
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement)
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
+            $subject = $this->getSoftReferenceParserInstance();
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -336,9 +360,8 @@ class SoftReferenceIndexTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
+            $subject = $this->getSoftReferenceParserInstance();
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -395,9 +418,8 @@ class SoftReferenceIndexTest extends UnitTestCase
         $resourceFactory->getFolderObjectFromCombinedIdentifier('1:/foo/bar/baz')->willReturn($folderObject->reveal())->shouldBeCalledTimes(count($softrefConfiguration));
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
+            $subject = $this->getSoftReferenceParserInstance();
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -435,9 +457,41 @@ class SoftReferenceIndexTest extends UnitTestCase
      */
     public function getTypoLinkPartsThrowExceptionWithPharReferences(string $pharUrl)
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030672);
-        (new SoftReferenceIndex($eventDispatcher->reveal()))->getTypoLinkParts($pharUrl);
+        ($this->getSoftReferenceParserInstance())->getTypoLinkParts($pharUrl);
+    }
+
+    /**
+     * Registration by new DI should not override registration by global array.
+     *
+     * @test
+     */
+    public function mixedRegistrationBehaviour()
+    {
+        $softReferenceParserFactory = $this->createSoftReferenceParserFactory();
+        $softReferenceParserFactory->addParser(new NotifySoftReferenceParser(), 'typolink');
+        $softReferenceParser = $softReferenceParserFactory->getSoftReferenceParser('typolink');
+
+        self::assertTrue(get_class($softReferenceParser) === TypolinkSoftReferenceParser::class);
+    }
+
+    /**
+     * @test
+     */
+    public function softReferenceParserFactoryAddsParserInGlobalsArray()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = [
+            'GLOBAL' => [
+                'softRefParser' => [
+                    'substitute' => \TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser::class,
+                ],
+            ],
+        ];
+        $runtimeCache = $this->prophesize(FrontendInterface::class);
+
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal());
+
+        self::assertIsObject($softReferenceParserFactory->getSoftReferenceParser('substitute'));
     }
 }

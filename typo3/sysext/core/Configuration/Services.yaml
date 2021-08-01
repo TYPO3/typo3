@@ -140,6 +140,42 @@ services:
         identifier: 'category-registry'
         method: 'addCategoryDatabaseSchema'
 
+  # Soft Reference Parsers
+  TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: substitute
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: notify
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: typolink
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkTagSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: typolink_tag
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\ExtensionPathSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: ext_fileref
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\EmailSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: email
+
+  TYPO3\CMS\Core\DataHandling\SoftReference\UrlSoftReferenceParser:
+    tags:
+      - name: softreference.parser
+        parserKey: url
+
   # @internal
   # This service entry is provided for legacy code that instantiates LanguageService
   # using GeneralUtility::makeInstance instead of the factory methods which itself

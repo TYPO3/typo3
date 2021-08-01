@@ -23,10 +23,6 @@ call_user_func(function () {
         \TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook::class
     ] = \TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook::class;
 
-    // Hook to count used forms elements in tt_content
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['formPersistenceIdentifier'] =
-        \TYPO3\CMS\Form\Hooks\SoftReferenceParserHook::class;
-
     // Add new content element wizard entry
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         "@import 'EXT:form/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"

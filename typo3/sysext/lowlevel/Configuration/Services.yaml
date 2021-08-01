@@ -198,6 +198,7 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'eventListeners'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:eventListeners'
+        before: 'mfaProviders'
         after: 'siteConfiguration'
 
   lowlevel.configuration.module.provider.mfaproviders:
@@ -206,4 +207,13 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'mfaProviders'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:mfaProviders'
+        before: 'softReferenceParsers'
         after: 'eventListeners'
+
+  lowlevel.configuration.module.provider.softreferenceparsers:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SoftReferenceParsersProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'softReferenceParsers'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:softReferenceParsers'
+        after: 'mfaproviders'

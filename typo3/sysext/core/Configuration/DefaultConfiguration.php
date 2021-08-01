@@ -1527,18 +1527,11 @@ return [
         ],
     ],
     'USER' => [],
-    'SC_OPTIONS' => [ // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
-        'GLOBAL' => [
-            'softRefParser' => [
-                'substitute' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'notify' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'typolink' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'typolink_tag' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'ext_fileref' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-            ],
-        ],
+    // Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features
+    // supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative
+    // path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and
+    // values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
+    'SC_OPTIONS' => [
         'ext/install' => [
             'update' => [],
         ],

@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,10 +89,16 @@ class LinkAnalyzer
      */
     protected $brokenLinkRepository;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, BrokenLinkRepository $brokenLinkRepository)
-    {
+    protected SoftReferenceParserFactory $softReferenceParserFactory;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        BrokenLinkRepository $brokenLinkRepository,
+        SoftReferenceParserFactory $softReferenceParserFactory
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->brokenLinkRepository = $brokenLinkRepository;
+        $this->softReferenceParserFactory = $softReferenceParserFactory;
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -335,38 +343,19 @@ class LinkAnalyzer
             if (!($conf['softref'] ?? false) || (string)$valueField === '') {
                 continue;
             }
-
-            // Explode the list of soft references/parameters
-            $softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
-            if ($softRefs === false) {
-                continue;
-            }
-
             // Traverse soft references
-            foreach ($softRefs as $spKey => $spParams) {
-                /** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj */
-                $softRefObj = BackendUtility::softRefParserObj($spKey);
-
-                // If there is an object returned...
-                if (!is_object($softRefObj)) {
-                    continue;
-                }
-                $softRefParams = $spParams;
-                if (!is_array($softRefParams)) {
-                    // set subst such that findRef will return substitutes for urls, emails etc
-                    $softRefParams = ['subst' => true];
-                }
-
-                // Do processing
-                $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $softRefParams);
-                if (!is_array($resultArray) || !isset($resultArray['elements']) || !is_array($resultArray['elements'])) {
+            // set subst such that findRef will return substitutes for urls, emails etc
+            $softRefParams = ['subst' => true];
+            foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref'], $softRefParams) as $softReferenceParser) {
+                $parserResult = $softReferenceParser->parse($table, $field, $idRecord, $valueField);
+                if (!$parserResult->hasMatched()) {
                     continue;
                 }
 
-                if ($spKey === 'typolink_tag') {
-                    $this->analyzeTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
+                if ($softReferenceParser->getParserKey() === 'typolink_tag') {
+                    $this->analyzeTypoLinks($parserResult, $results, $htmlParser, $record, $field, $table);
                 } else {
-                    $this->analyzeLinks($resultArray, $results, $record, $field, $table);
+                    $this->analyzeLinks($parserResult, $results, $record, $field, $table);
                 }
             }
         }
@@ -375,15 +364,15 @@ class LinkAnalyzer
     /**
      * Find all supported broken links for a specific link list
      *
-     * @param array $resultArray findRef parsed records
+     * @param SoftReferenceParserResult $parserResult findRef parsed records
      * @param array $results Array of broken links
      * @param array $record UID of the current record
      * @param string $field The current field
      * @param string $table The current table
      */
-    protected function analyzeLinks(array $resultArray, array &$results, array $record, $field, $table)
+    protected function analyzeLinks(SoftReferenceParserResult $parserResult, array &$results, array $record, $field, $table)
     {
-        foreach ($resultArray['elements'] as $element) {
+        foreach ($parserResult->getMatchedElements() as $element) {
             $r = $element['subst'];
             $type = '';
             $idRecord = $record['uid'];
@@ -410,24 +399,24 @@ class LinkAnalyzer
     /**
      * Find all supported broken links for a specific typoLink
      *
-     * @param array $resultArray findRef parsed records
+     * @param SoftReferenceParserResult $parserResult findRef parsed records
      * @param array $results Array of broken links
      * @param HtmlParser $htmlParser Instance of html parser
      * @param array $record The current record
      * @param string $field The current field
      * @param string $table The current table
      */
-    protected function analyzeTypoLinks(array $resultArray, array &$results, $htmlParser, array $record, $field, $table)
+    protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, $htmlParser, array $record, $field, $table)
     {
         $currentR = [];
-        $linkTags = $htmlParser->splitIntoBlock('a,link', $resultArray['content']);
+        $linkTags = $htmlParser->splitIntoBlock('a,link', $parserResult->getContent());
         $idRecord = $record['uid'];
         $type = '';
         $title = '';
         $countLinkTags = count($linkTags);
         for ($i = 1; $i < $countLinkTags; $i += 2) {
             $referencedRecordType = '';
-            foreach ($resultArray['elements'] as $element) {
+            foreach ($parserResult->getMatchedElements() as $element) {
                 $type = '';
                 $r = $element['subst'];
                 if (empty($r['tokenID']) || substr_count($linkTags[$i], $r['tokenID']) === 0) {

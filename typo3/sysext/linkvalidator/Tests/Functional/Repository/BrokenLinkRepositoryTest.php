@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -25,7 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BrokenLinkRepositoryTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var array
      */
@@ -223,10 +221,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            $this->brokenLinksRepository
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
         $result = $this->brokenLinksRepository->getNumberOfBrokenLinksForRecordsOnPages(
@@ -349,10 +344,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            $this->brokenLinksRepository
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -651,10 +643,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            $this->brokenLinksRepository
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -793,10 +782,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            $this->brokenLinksRepository
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 

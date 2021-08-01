@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -122,10 +123,12 @@ class ReferenceIndex implements LoggerAwareInterface
     protected array $tableRelationFieldCache = [];
 
     protected EventDispatcherInterface $eventDispatcher;
+    protected SoftReferenceParserFactory $softReferenceParserFactory;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(EventDispatcherInterface $eventDispatcher = null, SoftReferenceParserFactory $softReferenceParserFactory = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->softReferenceParserFactory = $softReferenceParserFactory ?? GeneralUtility::makeInstance(SoftReferenceParserFactory::class);
     }
 
     /**
@@ -488,16 +491,12 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ((string)$value !== '') {
                     $softRefValue = $value;
                     if (!empty($conf['softref'])) {
-                        $softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
-                        foreach ($softRefs as $spKey => $spParams) {
-                            $softRefObj = BackendUtility::softRefParserObj($spKey);
-                            if (is_object($softRefObj)) {
-                                $resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
-                                if (is_array($resultArray)) {
-                                    $outRow[$field]['softrefs']['keys'][$spKey] = $resultArray['elements'];
-                                    if ((string)$resultArray['content'] !== '') {
-                                        $softRefValue = $resultArray['content'];
-                                    }
+                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref']) as $softReferenceParser) {
+                            $parserResult = $softReferenceParser->parse($table, $field, $uid, $softRefValue);
+                            if ($parserResult->hasMatched()) {
+                                $outRow[$field]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                                if ($parserResult->hasContent()) {
+                                    $softRefValue = $parserResult->getContent();
                                 }
                             }
                         }
@@ -545,18 +544,12 @@ class ReferenceIndex implements LoggerAwareInterface
         // Soft References:
         if (is_array($dataValue) || (string)$dataValue !== '') {
             $softRefValue = $dataValue;
-            $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'] ?? '');
-            if ($softRefs !== false) {
-                foreach ($softRefs as $spKey => $spParams) {
-                    $softRefObj = BackendUtility::softRefParserObj($spKey);
-                    if (is_object($softRefObj)) {
-                        $resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
-                        if (is_array($resultArray) && is_array($resultArray['elements'])) {
-                            $this->temp_flexRelations['softrefs'][$structurePath]['keys'][$spKey] = $resultArray['elements'];
-                            if ((string)$resultArray['content'] !== '') {
-                                $softRefValue = $resultArray['content'];
-                            }
-                        }
+            foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($dsConf['softref'] ?? '') as $softReferenceParser) {
+                $parserResult = $softReferenceParser->parse($table, $field, $uid, $softRefValue, $structurePath);
+                if ($parserResult->hasMatched()) {
+                    $this->temp_flexRelations['softrefs'][$structurePath]['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                    if ($parserResult->hasContent()) {
+                        $softRefValue = $parserResult->getContent();
                     }
                 }
             }

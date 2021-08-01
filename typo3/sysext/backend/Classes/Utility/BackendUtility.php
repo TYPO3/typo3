@@ -37,6 +37,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
+use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -2920,12 +2922,47 @@ class BackendUtility
      * @param string $spKey softRef parser key
      * @return mixed If available, returns Soft link parser object, otherwise false.
      * @internal should only be used from within TYPO3 Core
+     * @deprecated will be removed in TYPO3 v12.0. Use SoftReferenceParserFactory->getParserByKey instead.
      */
     public static function softRefParserObj($spKey)
     {
+        trigger_error(
+            'BackendUtility::softRefParserObj will be removed in TYPO3 v12.0, use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory->getParserByKey instead.',
+            E_USER_DEPRECATED
+        );
+
         $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] ?? false;
+        $obj = null;
         if ($className) {
-            return GeneralUtility::makeInstance($className);
+            $obj = GeneralUtility::makeInstance($className);
+        }
+        if (!$obj) {
+            try {
+                $obj = GeneralUtility::makeInstance(SoftReferenceParserFactory::class)->getSoftReferenceParser($spKey);
+            } catch (\OutOfBoundsException|\InvalidArgumentException $e) {
+                return false;
+            }
+        }
+        // Build a wrapper to call the API with the legacy findRef() call.
+        if ($obj) {
+            if ($obj instanceof SoftReferenceParserInterface && !method_exists($obj, 'findRef')) {
+                // Build a temporary class acting as a wrapper to call findRef() with the new API.
+                return new class($obj) {
+                    private SoftReferenceParserInterface $parser;
+
+                    public function __construct(SoftReferenceParserInterface $obj)
+                    {
+                        $this->parser = $obj;
+                    }
+
+                    public function findRef($table, $field, $uid, $content, $parserKey, $spParams, $structurePath)
+                    {
+                        $this->parser->setParserKey($parserKey, $spParams);
+                        return $this->parser->parse($table, $field, $uid, $content, $structurePath)->toNullableArray();
+                    }
+                };
+            }
+            return $obj;
         }
         return false;
     }
@@ -2947,9 +2984,15 @@ class BackendUtility
      * @return array|bool Array where the parser key is the key and the value is the parameter string, FALSE if no parsers were found
      * @throws \InvalidArgumentException
      * @internal should only be used from within TYPO3 Core
+     * @deprecated will be removed in TYPO3 v12.0. Use SoftReferenceParserFactory->getParsersBySoftRefParserList instead.
      */
     public static function explodeSoftRefParserList($parserList)
     {
+        trigger_error(
+            'BackendUtility::explodeSoftRefParserList will be removed in TYPO3 v12.0, use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory->getParsersBySoftRefParserList instead.',
+            E_USER_DEPRECATED
+        );
+
         // Return immediately if list is blank:
         if ((string)$parserList === '') {
             return false;

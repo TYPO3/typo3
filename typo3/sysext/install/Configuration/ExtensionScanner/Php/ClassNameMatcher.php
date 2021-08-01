@@ -1764,4 +1764,9 @@ return [
             'Deprecation-85613-CategoryRegistry.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\SoftReferenceIndex' => [
+        'restFiles' => [
+            'Deprecation-94687-SoftReferenceIndex.rst'
+        ],
+    ],
 ];

@@ -42,6 +42,9 @@
 			<trans-unit id="mfaProviders" resname="mfaProviders">
 				<source>MFA providers</source>
 			</trans-unit>
+			<trans-unit id="softReferenceParsers" resname="softReferenceParsers">
+				<source>Soft Reference Parsers</source>
+			</trans-unit>
 			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>

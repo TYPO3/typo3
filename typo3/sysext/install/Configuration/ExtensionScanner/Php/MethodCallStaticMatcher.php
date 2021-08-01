@@ -1149,4 +1149,18 @@ return [
             'Deprecation-85613-CategoryRegistry.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94687-SoftReferenceIndex.rst'
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-94687-SoftReferenceIndex.rst'
+        ],
+    ],
 ];

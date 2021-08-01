@@ -17,15 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
-use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LinkAnalyzerTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $coreExtensionsToLoad = [
         'seo',
         'linkvalidator',
@@ -103,10 +100,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            new BrokenLinkRepository()
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -158,10 +152,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            new BrokenLinkRepository()
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -213,10 +204,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            new BrokenLinkRepository()
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -267,10 +255,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer(
-            $this->prophesize(EventDispatcherInterface::class)->reveal(),
-            new BrokenLinkRepository()
-        );
+        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
