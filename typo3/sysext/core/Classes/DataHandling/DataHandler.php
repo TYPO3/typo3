@@ -2556,7 +2556,7 @@ class DataHandler implements LoggerAwareInterface
                     break;
                 case 'double2':
                     $value = preg_replace('/[^0-9,\\.-]/', '', $value);
-                    $negative = $value[0] === '-';
+                    $negative = substr($value, 0, 1) === '-';
                     $value = strtr($value, [',' => '.', '-' => '']);
                     if (strpos($value, '.') === false) {
                         $value .= '.0';

@@ -167,7 +167,7 @@ class DataHandlerTest extends UnitTestCase
         ];
         foreach ($testData as $value => $expectedReturnValue) {
             $returnValue = $this->subject->checkValue_input_Eval($value, ['double2'], '');
-            self::assertSame($returnValue['value'], $expectedReturnValue);
+            self::assertSame($expectedReturnValue, $returnValue['value']);
         }
     }
 
@@ -236,6 +236,10 @@ class DataHandlerTest extends UnitTestCase
     public function inputValuesStringsDataProvider()
     {
         return [
+            'Empty string returns zero as integer' => [
+                '',
+                0
+            ],
             '"0" returns zero as integer' => [
                 '0',
                 0
@@ -268,7 +272,7 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly($value, $expectedReturnValue)
     {
         $tcaFieldConf = [
-            'input' => [],
+            'type' => 'input',
             'eval' => 'int',
             'range' => [
                 'lower' => '-2000000',
@@ -276,7 +280,7 @@ class DataHandlerTest extends UnitTestCase
             ]
         ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
-        self::assertSame($returnValue['value'], $expectedReturnValue);
+        self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
     /**
@@ -287,6 +291,10 @@ class DataHandlerTest extends UnitTestCase
     public function inputValuesRangeDoubleDataProvider()
     {
         return [
+            'Empty string returns zero as string' => [
+                '',
+                '0.00'
+            ],
             '"0" returns zero as string' => [
                 '0',
                 '0.00'
@@ -319,7 +327,7 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble($value, $expectedReturnValue)
     {
         $tcaFieldConf = [
-            'input' => [],
+            'type' => 'input',
             'eval' => 'double2',
             'range' => [
                 'lower' => '0',
@@ -327,7 +335,7 @@ class DataHandlerTest extends UnitTestCase
             ]
         ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
-        self::assertSame($returnValue['value'], $expectedReturnValue);
+        self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
     /**
@@ -339,7 +347,7 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble($value, $expectedReturnValue)
     {
         $tcaFieldConf = [
-            'input' => [],
+            'type' => 'input',
             'eval' => 'double2',
             'range' => [
                 'lower' => '0',
@@ -348,7 +356,7 @@ class DataHandlerTest extends UnitTestCase
             'default' => 0
         ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
-        self::assertSame($returnValue['value'], $expectedReturnValue);
+        self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
     /**
@@ -386,7 +394,7 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueCheckRecognizesDateTimeValuesAsIntegerValuesCorrectly($value, int $expected)
     {
         $tcaFieldConf = [
-            'input' => [],
+            'type' => 'input',
             'eval' => 'datetime',
             'range' => [
                 // unix timestamp: 1519862400
@@ -404,7 +412,7 @@ class DataHandlerTest extends UnitTestCase
 
         date_default_timezone_set($previousTimezone);
 
-        self::assertSame($returnValue['value'], $expected);
+        self::assertSame($expected, $returnValue['value']);
     }
 
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
@@ -470,12 +478,12 @@ class DataHandlerTest extends UnitTestCase
         return [
             'tca without dbType' => [
                 [
-                    'input' => []
+                    'type' => 'input'
                 ]
             ],
             'tca with dbType != date/datetime/time' => [
                 [
-                    'input' => [],
+                    'type' => 'input',
                     'dbType' => 'foo'
                 ]
             ]
@@ -545,7 +553,7 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueCheckDbtypeIsIndependentFromTimezone($value, $dbtype, $expectedOutput)
     {
         $tcaFieldConf = [
-            'input' => [],
+            'type' => 'input',
             'dbType' => $dbtype,
         ];
 
@@ -1008,7 +1016,7 @@ class DataHandlerTest extends UnitTestCase
     public function checkValueForInputConvertsNullToEmptyString()
     {
         $expectedResult = ['value' => ''];
-        self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
+        self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'input', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
     }
 
     /**
