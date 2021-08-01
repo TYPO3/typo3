@@ -218,7 +218,6 @@ return [
                     'change' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target_statuscode.change',
                 ],
                 'default' => 307,
-                'size' => 1,
             ],
         ],
         'hitcount' => [

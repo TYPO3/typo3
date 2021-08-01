@@ -56,7 +56,6 @@ return [
                 'foreign_table_where' => 'AND NOT({#fe_groups}.{#uid} = ###THIS_UID###)',
                 'size' => 6,
                 'autoSizeMax' => 10,
-                'minitems' => 0,
                 'maxitems' => 20,
             ],
         ],

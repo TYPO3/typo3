@@ -385,7 +385,6 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
                             'type' => 'group',
                             'size' => 1,
                             'maxitems' => 1,
-                            'minitems' => 0,
                             'allowed' => 'sys_file',
                         ],
                     ],

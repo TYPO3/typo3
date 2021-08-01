@@ -930,7 +930,6 @@ return [
                 'allowed' => 'pages',
                 'size' => 3,
                 'maxitems' => 50,
-                'minitems' => 0,
             ],
         ],
         'recursive' => [
@@ -1001,7 +1000,6 @@ return [
                 'localizeReferencesAtParentLocalization' => true,
                 'allowed' => 'sys_file_collection',
                 'foreign_table' => 'sys_file_collection',
-                'minitems' => 0,
                 'size' => 5,
                 'fieldControl' => [
                     'addRecord' => [
@@ -1089,7 +1087,6 @@ return [
                 'allowed' => 'tt_content',
                 'size' => 5,
                 'maxitems' => 200,
-                'minitems' => 0,
             ],
         ],
         'sectionIndex' => [
@@ -1202,8 +1199,6 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
                 'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateAvailableCategoryFields',
                 'itemsProcConfig' => [

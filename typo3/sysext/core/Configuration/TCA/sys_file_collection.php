@@ -123,8 +123,6 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'sys_file_storage',
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
                 'default' => 0,
             ],

@@ -67,7 +67,6 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'size' => 1,
                 'maxitems' => 1,
                 'eval' => 'required',
                 'range' => [

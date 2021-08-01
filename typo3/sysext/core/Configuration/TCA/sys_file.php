@@ -41,8 +41,6 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'sys_file_storage',
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
             ],
         ],
@@ -69,7 +67,6 @@ return [
                 'readOnly' => true,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'size' => 1,
                 'items' => [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.type.unknown', 0],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.type.text', 1],

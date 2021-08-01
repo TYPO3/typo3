@@ -194,7 +194,6 @@ class BackendUtilityTest extends UnitTestCase
                             'type' => 'group',
                             'allowed' => 'pages',
                             'maxitems' => 22,
-                            'minitems' => 0,
                             'size' => 3,
                         ],
                     ],

@@ -52,8 +52,6 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
                 'items' => [],
                 'itemsProcFunc' => \TYPO3\CMS\Core\Service\IsoCodeService::class . '->renderIsoCodeSelectDropdown',
@@ -328,8 +326,6 @@ return [
                     ['zm', 'zm', 'flags-zm'],
                     ['zw', 'zw', 'flags-zw'],
                 ],
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
                 'fieldWizard' => [
                     'selectIcons' => [

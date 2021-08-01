@@ -199,7 +199,6 @@ return [
                 'image',
                 [
                     'maxitems' => 6,
-                    'minitems'=> 0,
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             ),

@@ -230,7 +230,6 @@ return [
             'config' => [
                 'type' => 'inline', // this will store the info uid in the additional_name field (CSV)
                 'foreign_table' => 'tx_blogexample_domain_model_info',
-                'minitems' => 0,
                 'maxitems' => 1,
                 'default' => 0,
             ],
@@ -242,7 +241,6 @@ return [
                 'type' => 'inline', // this will store the post uid in the post field of the info table
                 'foreign_table' => 'tx_blogexample_domain_model_info',
                 'foreign_field' => 'post',
-                'minitems' => 0,
                 'maxitems' => 1,
                 'default' => 0,
             ],
@@ -253,7 +251,6 @@ return [
             'config' => [
                 'type' => 'inline', // this will store the comments uids in the additional_comments field (CSV)
                 'foreign_table' => 'tx_blogexample_domain_model_comment',
-                'minitems' => 0,
                 'maxitems' => 200,
             ],
         ],

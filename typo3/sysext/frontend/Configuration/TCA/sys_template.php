@@ -132,7 +132,6 @@ return [
                 'allowed' => 'sys_template',
                 'maxitems' => 50,
                 'autoSizeMax' => 10,
-                'minitems' => 0,
                 'default' => '',
                 'fieldControl' => [
                     'editPopup' => [

@@ -153,7 +153,6 @@ return [
                 'appearance' => 'useSortable,expandSingle',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
-                'minitems' => 0,
             ],
             'default' => 0,
         ],

@@ -571,7 +571,6 @@ return [
                 'allowed' => 'pages',
                 'size' => 1,
                 'maxitems' => 1,
-                'minitems' => 0,
                 'suggestOptions' => [
                     'default' => [
                         'additionalSearchFields' => 'nav_title, url',
@@ -622,7 +621,6 @@ return [
                 'allowed' => 'pages',
                 'size' => 1,
                 'maxitems' => 1,
-                'minitems' => 0,
                 'suggestOptions' => [
                     'default' => [
                         'additionalSearchFields' => 'nav_title, url',
@@ -643,7 +641,6 @@ return [
                 'allowed' => 'pages',
                 'size' => 1,
                 'maxitems' => 1,
-                'minitems' => 0,
                 'default' => 0,
             ],
         ],
@@ -873,7 +870,6 @@ return [
                         'renderType' => 'backendLayoutFromParentPage',
                     ],
                 ],
-                'size' => 1,
                 'maxitems' => 1,
             ],
         ],
@@ -894,7 +890,6 @@ return [
                         'disabled' => false,
                     ],
                 ],
-                'size' => 1,
                 'maxitems' => 1,
             ],
         ],

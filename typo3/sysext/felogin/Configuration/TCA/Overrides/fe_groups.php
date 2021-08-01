@@ -13,7 +13,6 @@ call_user_func(static function () {
                 'type' => 'group',
                 'allowed' => 'pages',
                 'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
             ],
         ],

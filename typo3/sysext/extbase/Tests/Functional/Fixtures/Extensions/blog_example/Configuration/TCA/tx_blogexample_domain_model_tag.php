@@ -69,7 +69,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
-                'minitems' => 0,
                 'autoSizeMax' => 30,
                 'multiple' => 0,
                 'foreign_table' => 'tx_blogexample_domain_model_post',

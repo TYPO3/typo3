@@ -396,8 +396,6 @@ return [
                     ['zm', 'zm', 'flags-zm'],
                     ['zw', 'zw', 'flags-zw'],
                 ],
-                'size' => 1,
-                'minitems' => 0,
                 'maxitems' => 1,
                 'fieldWizard' => [
                     'selectIcons' => [
