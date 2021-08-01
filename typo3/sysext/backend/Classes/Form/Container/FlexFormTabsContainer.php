@@ -57,7 +57,7 @@ class FlexFormTabsContainer extends AbstractContainer
 
         $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
 
-        $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName']);
+        $domIdPrefix = 'DTM-' . md5($this->data['parameterArray']['itemFormElName']);
         $tabCounter = 0;
         $tabElements = [];
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {

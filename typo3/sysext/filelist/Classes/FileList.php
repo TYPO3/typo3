@@ -907,7 +907,7 @@ class FileList
         $actions = [];
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $fullName = $fileOrFolderObject->getName();
-        $md5 = GeneralUtility::shortMD5($fullIdentifier);
+        $md5 = md5($fullIdentifier);
 
         // Add copy/cut buttons in "normal" mode:
         if ($this->clipObj->current === 'normal') {

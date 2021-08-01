@@ -213,7 +213,7 @@ class SlugHelper
         $slug = $this->sanitize($slug);
         // No valid data found
         if ($slug === '' || $slug === '/') {
-            $slug = 'default-' . GeneralUtility::shortMD5((string)json_encode($recordData));
+            $slug = 'default-' . md5((string)json_encode($recordData));
         }
         if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
             $slug = '/' . $slug;
@@ -393,7 +393,7 @@ class SlugHelper
         }
         if ($counter === 100) {
             $uniqueId = StringUtility::getUniqueId();
-            $newValue = $this->sanitize($rawValue . '-' . GeneralUtility::shortMD5($uniqueId));
+            $newValue = $this->sanitize($rawValue . '-' . md5($uniqueId));
         }
         return $newValue;
     }

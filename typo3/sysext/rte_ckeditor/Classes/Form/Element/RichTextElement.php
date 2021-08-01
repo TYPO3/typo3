@@ -233,7 +233,7 @@ class RichTextElement extends AbstractFormElement
 
         // Make a hash of the configuration and append it to CKEDITOR.timestamp
         // This will mitigate browser caching issue when plugins are updated
-        $configurationHash = GeneralUtility::shortMD5($jsonConfiguration);
+        $configurationHash = md5($jsonConfiguration);
 
         return 'function(CKEDITOR) {
                 CKEDITOR.timestamp += "-' . $configurationHash . '";

@@ -340,7 +340,7 @@ class Clipboard
                                 'action' => 'TYPO3.InfoWindow.showItem',
                                 'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, $value], false),
                             ],
-                            'removeLink' => $this->removeUrl('_FILE', GeneralUtility::shortMD5($value))
+                            'removeLink' => $this->removeUrl('_FILE', md5($value))
                         ];
                     } else {
                         // If the file did not exist (or is illegal) then it is removed from the clipboard immediately:
@@ -527,7 +527,7 @@ class Clipboard
     {
         $CB = [
             'el' => [
-                '_FILE|' . GeneralUtility::shortMD5($path) => $deselect ? '' : $path
+                '_FILE|' . md5($path) => $deselect ? '' : $path
             ]
         ];
         if ($copy) {

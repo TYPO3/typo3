@@ -506,7 +506,7 @@ class ModuleTemplate
         $view->setTemplatePathAndFilename($templatePath . ($collapsible ? 'Collapse.html' : 'Tabs.html'));
         $view->setPartialRootPaths([$templatePath . 'Partials']);
         $view->assignMultiple([
-            'id' => 'DTM-' . GeneralUtility::shortMD5($domId),
+            'id' => 'DTM-' . md5($domId),
             'items' => $menuItems,
             'defaultTabIndex' => $defaultTabIndex,
             'wrapContent' => $wrapContent,

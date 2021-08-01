@@ -603,9 +603,11 @@ class GeneralUtility
      * @param string $input Input string to be md5-hashed
      * @param int $len The string-length of the output
      * @return string Substring of the resulting md5-hash, being $len chars long (from beginning)
+     * @deprecated since v11, will be removed in v12.
      */
     public static function shortMD5($input, $len = 10)
     {
+        trigger_error(__METHOD__ . ' will be removed in TYPO3 v12, use md5() instead.', E_USER_DEPRECATED);
         return substr(md5($input), 0, $len);
     }
 
@@ -2325,7 +2327,7 @@ class GeneralUtility
      */
     public static function writeJavaScriptContentToTemporaryFile(string $content)
     {
-        $script = 'typo3temp/assets/js/' . GeneralUtility::shortMD5($content) . '.js';
+        $script = 'typo3temp/assets/js/' . md5($content) . '.js';
         if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
             self::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $content);
         }
@@ -2341,7 +2343,7 @@ class GeneralUtility
      */
     public static function writeStyleSheetContentToTemporaryFile(string $content)
     {
-        $script = 'typo3temp/assets/css/' . self::shortMD5($content) . '.css';
+        $script = 'typo3temp/assets/css/' . md5($content) . '.css';
         if (!@is_file(Environment::getPublicPath() . '/' . $script)) {
             self::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $content);
         }

@@ -243,7 +243,7 @@ CREATE TABLE sys_file_processedfile (
 	configurationsha1 char(40) DEFAULT '' NOT NULL,
 	originalfilesha1 char(40) DEFAULT '' NOT NULL,
 	task_type varchar(200) DEFAULT '' NOT NULL,
-	checksum char(10) DEFAULT '' NOT NULL,
+	checksum char(32) DEFAULT '' NOT NULL,
 	width int(11) DEFAULT '0',
 	height int(11) DEFAULT '0',
 

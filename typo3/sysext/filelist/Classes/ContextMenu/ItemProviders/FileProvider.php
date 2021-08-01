@@ -328,7 +328,7 @@ class FileProvider extends AbstractProvider
         $isSelected = '';
         // Pseudo table name for use in the clipboard.
         $table = '_FILE';
-        $uid = GeneralUtility::shortMD5($this->record->getCombinedIdentifier());
+        $uid = md5($this->record->getCombinedIdentifier());
         if ($this->clipboard->current === 'normal') {
             $isSelected = $this->clipboard->isSelected($table, $uid);
         }

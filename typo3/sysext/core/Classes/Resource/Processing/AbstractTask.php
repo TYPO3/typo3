@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract base implementation of a task.
@@ -103,7 +102,7 @@ abstract class AbstractTask implements TaskInterface
      */
     public function getConfigurationChecksum()
     {
-        return GeneralUtility::shortMD5(implode('|', $this->getChecksumData()));
+        return md5(implode('|', $this->getChecksumData()));
     }
 
     /**

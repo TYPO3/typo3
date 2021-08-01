@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render all tabs of a record that has tabs.
@@ -65,7 +64,7 @@ class TabsContainer extends AbstractContainer
         $resultArray = $this->initializeResultArray();
         $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
 
-        $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['tableName'] . $this->data['databaseRow']['uid']);
+        $domIdPrefix = 'DTM-' . md5($this->data['tableName'] . $this->data['databaseRow']['uid']);
         $tabCounter = 0;
         $tabElements = [];
         foreach ($tabsArray as $tabWithLabelAndElements) {

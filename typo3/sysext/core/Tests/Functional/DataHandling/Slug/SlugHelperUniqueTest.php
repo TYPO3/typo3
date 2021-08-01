@@ -62,8 +62,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
             self::fail('No suffix to the slug was created');
         }
         $variablePartOfSlug = end($parts);
-        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
-        self::assertSame(10, strlen($variablePartOfSlug));
+        self::assertSame(32, strlen($variablePartOfSlug));
     }
 
     /**
@@ -89,8 +88,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
             self::fail('No suffix to the slug was created');
         }
         $variablePartOfSlug = end($parts);
-        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
-        self::assertSame(10, strlen($variablePartOfSlug));
+        self::assertSame(32, strlen($variablePartOfSlug));
     }
 
     /**
@@ -117,7 +115,6 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
             self::fail('No suffix to the slug was created');
         }
         $variablePartOfSlug = end($parts);
-        // shordMd5 return value is 10 chars long, so we can use this to assure the function has been called and returned a value
-        self::assertSame(10, strlen($variablePartOfSlug));
+        self::assertSame(32, strlen($variablePartOfSlug));
     }
 }

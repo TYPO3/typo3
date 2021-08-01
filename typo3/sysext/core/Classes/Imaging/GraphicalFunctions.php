@@ -2158,9 +2158,9 @@ class GraphicalFunctions
         $command .= ' -colorspace ' . $this->colorspace;
         $cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
         if ($this->alternativeOutputKey) {
-            $theOutputName = GeneralUtility::shortMD5($command . $cropscale . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+            $theOutputName = md5($command . $cropscale . PathUtility::basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
         } else {
-            $theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+            $theOutputName = md5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
         }
         if ($this->imageMagickConvert_forceFileNameBody) {
             $theOutputName = $this->imageMagickConvert_forceFileNameBody;

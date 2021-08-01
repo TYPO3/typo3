@@ -177,7 +177,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                'default-51cf35392c'
+                'default-51cf35392ca400f2fce656a936831917'
             ],
         ];
     }
@@ -377,7 +377,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/default-51cf35392c'
+                '/default-51cf35392ca400f2fce656a936831917'
             ],
         ];
     }
@@ -477,7 +477,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/parent-page/default-51cf35392c',
+                '/parent-page/default-51cf35392ca400f2fce656a936831917',
                 [
                     'generatorOptions' => [
                         'fields' => ['title'],
@@ -573,7 +573,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'empty fields deliver default slug' => [
                 ['title' => '', 'nav_title' => '', 'subtitle' => ''],
-                '/default-b4dac929c2',
+                '/default-b4dac929c2d313b7ff79fc5edeedd207',
                 [
                     'generatorOptions' => [
                         'fields' => [
@@ -595,7 +595,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'empty config array deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
-                '/default-e13d142b36',
+                '/default-e13d142b36dcca110f2c3b57ee7a2dd3',
                 [
                     'generatorOptions' => [
                         'fields' => [
@@ -606,7 +606,7 @@ class SlugHelperTest extends UnitTestCase
             ],
             'empty config deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
-                '/default-e13d142b36',
+                '/default-e13d142b36dcca110f2c3b57ee7a2dd3',
                 [
                     'generatorOptions' => [
                         'fields' => [],

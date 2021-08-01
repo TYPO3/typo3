@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A caching backend which stores cache entries by using APCu.
@@ -97,7 +96,7 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     {
         parent::setCache($cache);
         $processUser = $this->getCurrentUserData();
-        $pathHash = GeneralUtility::shortMD5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
+        $pathHash = md5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier());
         $this->setIdentifierPrefix('TYPO3_' . $pathHash);
     }
 

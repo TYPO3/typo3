@@ -1093,6 +1093,13 @@ return [
             'Deprecation-94311-DeprecatedGeneralUtilityrmFromList.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94684-GeneralUtilityShortMD5.rst'
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\HttpUtility::redirect' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
