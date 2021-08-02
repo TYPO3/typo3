@@ -580,8 +580,10 @@ class FileQueueItem {
     const error = $(response.responseText);
     if (error.is('t3err')) {
       this.$progressPercentage.text(error.text());
+    } else if (response.statusText) {
+      this.$progressPercentage.text('(' + response.statusText + ') ');
     } else {
-      this.$progressPercentage.text('(' + response.statusText + ')');
+      this.$progressPercentage.text('');
     }
     this.$row.addClass('error');
     this.dragUploader.decrementQueueLength();
