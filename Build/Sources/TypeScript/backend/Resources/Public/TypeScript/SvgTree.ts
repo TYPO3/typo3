@@ -614,6 +614,9 @@ export class SvgTree extends LitElement {
       const currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
       if (currentlySelectedNode) {
         this.selectNode(currentlySelectedNode, false);
+        // Remove placeholder, in case this method was called from this.filter()
+        // and there was currently a node selected.
+        this.nodesRemovePlaceholder();
       } else {
         this.refreshTree();
       }
