@@ -51,6 +51,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return [
             'middlewares' => [ static::class, 'configureMiddlewares' ],
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
+            'icons' => [ static::class, 'configureIcons' ],
         ];
     }
 
@@ -103,6 +104,19 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         }
 
         return $routes;
+    }
+
+    public static function configureIcons(ContainerInterface $container, ArrayObject $icons, string $path = null): ArrayObject
+    {
+        $path = $path ?? static::getPackagePath();
+        $iconsFileNameForPackage = $path . 'Configuration/Icons.php';
+        if (file_exists($iconsFileNameForPackage)) {
+            $definedIconsInPackage = require $iconsFileNameForPackage;
+            if (is_array($definedIconsInPackage)) {
+                $icons->exchangeArray(array_merge($icons->getArrayCopy(), $definedIconsInPackage));
+            }
+        }
+        return $icons;
     }
 
     /**

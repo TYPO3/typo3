@@ -24,22 +24,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendUserL
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChannel']
     = \TYPO3\CMS\Install\Updates\SysLogChannel::class;
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-$icons = [
-    'module-install-environment' => 'EXT:install/Resources/Public/Icons/module-install-environment.svg',
-    'module-install-maintenance' => 'EXT:install/Resources/Public/Icons/module-install-maintenance.svg',
-    'module-install-settings' => 'EXT:install/Resources/Public/Icons/module-install-settings.svg',
-    'module-install-upgrade' => 'EXT:install/Resources/Public/Icons/module-install-upgrade.svg',
-];
-
-foreach ($icons as $iconIdentifier => $source) {
-    $iconRegistry->registerIcon(
-        $iconIdentifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => $source]
-    );
-}
-
 // Register report module additions
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = \TYPO3\CMS\Install\Report\InstallStatusReport::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = \TYPO3\CMS\Install\Report\SecurityStatusReport::class;

@@ -24,6 +24,8 @@ use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 
@@ -80,6 +82,7 @@ class ServiceProvider extends AbstractServiceProvider
             TimeTracker\TimeTracker::class => [ static::class, 'getTimeTracker' ],
             TypoScript\Parser\ConstantConfigurationParser::class => [ static::class, 'getTypoScriptConstantConfigurationParser' ],
             TypoScript\TypoScriptService::class => [ static::class, 'getTypoScriptService' ],
+            'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
         ];
     }
@@ -88,6 +91,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             Console\CommandRegistry::class => [ static::class, 'configureCommands' ],
+            Imaging\IconRegistry::class => [ static::class, 'configureIconRegistry' ],
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
@@ -223,6 +227,37 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Imaging\IconRegistry::class),
             $container
         ]);
+    }
+
+    public static function configureIconRegistry(ContainerInterface $container, IconRegistry $iconRegistry): IconRegistry
+    {
+        $cache = $container->get('cache.core');
+
+        $cacheIdentifier = 'Icons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+        $iconsFromPackages = $cache->require($cacheIdentifier);
+        if ($iconsFromPackages === false) {
+            $iconsFromPackages = $container->get('icons')->getArrayCopy();
+            $cache->set($cacheIdentifier, 'return ' . var_export($iconsFromPackages, true) . ';');
+        }
+
+        foreach ($iconsFromPackages as $icon => $options) {
+            $provider = $options['provider'] ?? null;
+            unset($options['provider']);
+            $options ??= [];
+            if ($provider === null && ($options['source'] ?? false)) {
+                $provider = $iconRegistry->detectIconProvider($options['source']);
+            }
+            if ($provider === null) {
+                continue;
+            }
+            $iconRegistry->registerIcon($icon, $provider, $options);
+        }
+        return $iconRegistry;
+    }
+
+    public static function getIcons(ContainerInterface $container): ArrayObject
+    {
+        return new ArrayObject();
     }
 
     public static function getFontawesomeIconProvider(ContainerInterface $container): Imaging\IconProvider\FontawesomeIconProvider
