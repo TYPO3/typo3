@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -66,7 +65,7 @@ class FileController
      * Defines behaviour when uploading files with names that already exist; possible values are
      * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
      *
-     * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
+     * @var DuplicationBehavior
      */
     protected $overwriteExistingFiles;
 
@@ -78,19 +77,24 @@ class FileController
     protected $redirect;
 
     /**
-     * Internal, dynamic:
-     * File processor object
-     *
-     * @var ExtendedFileUtility
-     */
-    protected $fileProcessor;
-
-    /**
      * The result array from the file processor
      *
      * @var array
      */
     protected $fileData;
+
+    protected ExtendedFileUtility $fileProcessor;
+    protected ResourceFactory $fileFactory;
+    protected IconFactory $iconFactory;
+    protected UriBuilder $uriBuilder;
+
+    public function __construct(ResourceFactory $resourceFactory, ExtendedFileUtility $fileProcessor, IconFactory $iconFactory, UriBuilder $uriBuilder)
+    {
+        $this->fileFactory = $resourceFactory;
+        $this->fileProcessor = $fileProcessor;
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+    }
 
     /**
      * Injects the request object for the current request or subrequest
@@ -98,7 +102,7 @@ class FileController
      *
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -186,8 +190,7 @@ class FileController
         $fileName = $request->getParsedBody()['fileName'] ?? $request->getQueryParams()['fileName'] ?? null;
         $fileTarget = $request->getParsedBody()['fileTarget'] ?? $request->getQueryParams()['fileTarget'] ?? null;
 
-        $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
+        $fileTargetObject = $this->fileFactory->retrieveFileOrFolderObject($fileTarget);
         $processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
 
         $result = [];
@@ -232,7 +235,6 @@ class FileController
             $this->overwriteExistingFiles = DuplicationBehavior::cast($parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null);
         }
         $this->initClipboard();
-        $this->fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
     }
 
     /**
@@ -260,7 +262,6 @@ class FileController
      */
     protected function main(): void
     {
-        // Initializing:
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
         $this->fileProcessor->start($this->file);
@@ -272,7 +273,7 @@ class FileController
      *
      * @param File $file to be edited
      * @return string|null URI to be redirected to
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     protected function getFileEditRedirect(File $file): ?string
     {
@@ -286,9 +287,8 @@ class FileController
         if ($this->redirect) {
             $urlParameters['returnUrl'] = $this->redirect;
         }
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         try {
-            return (string)$uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
+            return (string)$this->uriBuilder->buildUriFromRoute('file_edit', $urlParameters);
         } catch (RouteNotFoundException $exception) {
             // no route for editing files available
             return '';
@@ -314,12 +314,11 @@ class FileController
                     $thumbUrl = PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '');
                 }
             }
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $result = array_merge(
                 $result->toArray(),
                 [
                     'date' => BackendUtility::date($result->getModificationTime()),
-                    'icon' => $iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
                     'thumbUrl' => $thumbUrl
                 ]
             );
@@ -328,15 +327,5 @@ class FileController
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }
