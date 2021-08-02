@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,22 +26,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheServiceTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\CacheService
-     */
-    protected $cacheService;
+    protected ?CacheService $cacheService = null;
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager|PHPUnit_Framework_MockObject_MockObject
+     * @var CacheManager|MockObject
      */
     protected $cacheManagerMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->cacheService = new CacheService();
+        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
+        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn([]);
         $this->cacheManagerMock = $this->createMock(CacheManager::class);
-        $this->cacheService->injectCacheManager($this->cacheManagerMock);
+        $this->cacheService = new CacheService($configurationManager->reveal(), $this->cacheManagerMock);
     }
 
     /**

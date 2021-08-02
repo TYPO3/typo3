@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -129,8 +128,7 @@ class Typo3DbBackendTest extends UnitTestCase
         GeneralUtility::addInstance(DataMapper::class, $mockDataMapper);
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         $subject = new Typo3DbBackend(
-            $this->prophesize(CacheService::class)->reveal(),
-            $this->prophesize(ConfigurationManagerInterface::class)->reveal()
+            $this->prophesize(CacheService::class)->reveal()
         );
         $result = $subject->getUidOfAlreadyPersistedValueObject($mockValueObject);
         self::assertSame($expectedUid, $result);

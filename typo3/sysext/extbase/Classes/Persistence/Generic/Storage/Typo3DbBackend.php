@@ -30,9 +30,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
@@ -45,7 +43,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintExcepti
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * A Storage backend
@@ -54,20 +51,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
     protected ConnectionPool $connectionPool;
-    protected ConfigurationManagerInterface $configurationManager;
     protected CacheService $cacheService;
 
-    /**
-     * As determining the table columns is a costly operation this is done only once per table during runtime and cached then
-     *
-     * @see clearPageCache()
-     */
-    protected array $hasPidColumn = [];
-
-    public function __construct(CacheService $cacheService, ConfigurationManagerInterface $configurationManager)
+    public function __construct(CacheService $cacheService)
     {
         $this->cacheService = $cacheService;
-        $this->configurationManager = $configurationManager;
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
@@ -107,7 +95,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         if (!$isRelation) {
             // Relation tables have no auto_increment column, so no retrieval must be tried.
             $uid = (int)$connection->lastInsertId($tableName);
-            $this->clearPageCache($tableName, $uid);
+            $this->cacheService->clearCacheForRecord($tableName, $uid);
         }
         return $uid;
     }
@@ -150,7 +138,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
 
         if (!$isRelation) {
-            $this->clearPageCache($tableName, $uid);
+            $this->cacheService->clearCacheForRecord($tableName, $uid);
         }
     }
 
@@ -210,7 +198,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
 
         if (!$isRelation && isset($where['uid'])) {
-            $this->clearPageCache($tableName, (int)$where['uid']);
+            $this->cacheService->clearCacheForRecord($tableName, (int)$where['uid']);
         }
     }
 
@@ -595,84 +583,5 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $rows = $movedRecords;
         }
         return $rows;
-    }
-
-    /**
-     * Clear the TYPO3 page cache for the given record.
-     * If the record lies on a page, then we clear the cache of this page.
-     * If the record has no PID column, we clear the cache of the current page as best-effort.
-     *
-     * Much of this functionality is taken from DataHandler::clear_cache() which unfortunately only works with logged-in BE user.
-     *
-     * @param string $tableName Table name of the record
-     * @param int $uid UID of the record
-     */
-    protected function clearPageCache(string $tableName, int $uid): void
-    {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (empty($frameworkConfiguration['persistence']['enableAutomaticCacheClearing'])) {
-            return;
-        }
-        $pageIdsToClear = [];
-        $storagePage = null;
-
-        // As determining the table columns is a costly operation this is done only once per table during runtime and cached then
-        if (!isset($this->hasPidColumn[$tableName])) {
-            $columns = $this->connectionPool
-                ->getConnectionForTable($tableName)
-                ->getSchemaManager()
-                ->listTableColumns($tableName);
-            $this->hasPidColumn[$tableName] = array_key_exists('pid', $columns);
-        }
-
-        $tsfe = $this->getTSFE();
-        if ($this->hasPidColumn[$tableName]) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-            $result = $queryBuilder
-                ->select('pid')
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                    )
-                )
-                ->execute();
-            if ($row = $result->fetchAssociative()) {
-                $storagePage = $row['pid'];
-                $pageIdsToClear[] = $storagePage;
-            }
-        } elseif (isset($tsfe)) {
-            // No PID column - we can do a best-effort to clear the cache of the current page if in FE
-            $storagePage = $tsfe->id;
-            $pageIdsToClear[] = $storagePage;
-        }
-        if ($storagePage === null) {
-            return;
-        }
-
-        $pageTS = BackendUtility::getPagesTSconfig($storagePage);
-        if (isset($pageTS['TCEMAIN.']['clearCacheCmd'])) {
-            $clearCacheCommands = GeneralUtility::trimExplode(',', strtolower($pageTS['TCEMAIN.']['clearCacheCmd']), true);
-            $clearCacheCommands = array_unique($clearCacheCommands);
-            foreach ($clearCacheCommands as $clearCacheCommand) {
-                if (MathUtility::canBeInterpretedAsInteger($clearCacheCommand)) {
-                    $pageIdsToClear[] = $clearCacheCommand;
-                }
-            }
-        }
-
-        foreach ($pageIdsToClear as $pageIdToClear) {
-            $this->cacheService->getPageIdStack()->push($pageIdToClear);
-        }
-    }
-
-    /**
-     * @return TypoScriptFrontendController|null
-     */
-    protected function getTSFE(): ?TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'] ?? null;
     }
 }
