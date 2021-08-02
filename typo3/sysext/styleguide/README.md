@@ -39,7 +39,7 @@ for own extensions:
   of what the backend editing is capable of out-of-the-box and which parts can be
   sold to customers without adding expensive implementation burdens to developers.
 
-* Styleguide is a "require-dev" dependency of the [TYPO3 CMS core mono repository](https://github.com/TYPO3/TYPO3.CMS).
+* Styleguide is a "require-dev" dependency of the [TYPO3 CMS core mono repository](https://github.com/typo3/typo3).
   It is used by **core developers** to test and verify changes to JavaScript, HTML
   and PHP code do not break layout or functionality of backend modules. The extension
   is also used in core backend acceptance tests to verify FormEngine details do not
