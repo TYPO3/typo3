@@ -712,7 +712,7 @@ class ToolbarDragHandler implements DragDropHandler {
       newNode.icon = options.icon;
     }
 
-    if (newNode.position === DraggablePositionEnum.AFTER) {
+    if (newNode.position === DraggablePositionEnum.BEFORE) {
       const positionAndTarget = this.dragDrop.setNodePositionAndTarget(index);
       // @todo Check whether an error should be thrown in case of `null`
       if (positionAndTarget !== null) {
