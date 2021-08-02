@@ -72,15 +72,19 @@ class FinisherOptionGenerator extends AbstractProcessor
         } catch (MissingArrayPathException $exception) {
         }
 
+        if (isset($elementConfiguration['config'])) {
+            $elementConfiguration['config']['default'] = $optionValue;
+        }
+
         $languageService = $this->getLanguageService();
+        $elementConfiguration['label'] = (string)($elementConfiguration['label'] ?? '');
         if (empty($optionValue)) {
             $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $languageService->getLL('default'), $languageService->getLL('empty'));
         } else {
+            if (is_array($optionValue)) {
+                $optionValue = implode(',', $optionValue);
+            }
             $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $languageService->getLL('default'));
-        }
-
-        if (isset($elementConfiguration['config'])) {
-            $elementConfiguration['config']['default'] = $optionValue;
         }
 
         $sheetElements = $this->converterDto->getResult();
