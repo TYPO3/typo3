@@ -515,7 +515,13 @@ export default (function() {
         maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
 
       // append the counter only at focus to avoid cluttering the DOM
-      $parent.append($('<div />', {'class': 't3js-charcounter'}).append(
+      let $wrapper = $parent.find('.t3js-charcounter-wrapper');
+      if (!$wrapper.length) {
+        $wrapper = $('<div>');
+        $wrapper.addClass('t3js-charcounter-wrapper');
+        $parent.append($wrapper);
+      }
+      $wrapper.append($('<div />', {'class': 't3js-charcounter'}).append(
         $('<span />', {'class': maxlengthProperties.labelClass}).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
       ));
     }).on('blur', (event: JQueryEventObject) => {
@@ -561,6 +567,87 @@ export default (function() {
       remainingCharacters: remainingCharacters,
       labelClass: 'badge ' + labelClass
     };
+  };
+
+  /**
+   * Initializes the left character count needed to reach the minimum value based on the field's minlength attribute
+   */
+  FormEngine.initializeMinimumCharactersLeftViews = function () {
+    // Helper method as replacement for jQuery "parents".
+    const closest: Function = (el: ParentNode, fn: Function) => el && (fn(el) ? el : closest(el.parentNode, fn));
+
+    const addOrUpdateCounter = (minCharacterCountLeft: string, event: Event) => {
+      const parent = closest(event.currentTarget, (el: HTMLElement) => el.classList.contains('t3js-formengine-field-item'));
+      const counter = parent.querySelector('.t3js-charcounter-min');
+      const labelValue = TYPO3.lang['FormEngine.minCharactersLeft'].replace('{0}', minCharacterCountLeft);
+      if (counter) {
+        counter.querySelector('span').innerHTML = labelValue;
+      } else {
+        const counter = document.createElement('div');
+        counter.classList.add('t3js-charcounter-min');
+        const label = document.createElement('span');
+        label.classList.add('badge', 'badge-danger');
+        label.innerHTML = labelValue;
+        counter.append(label);
+        let wrapper = parent.querySelector('.t3js-charcounter-wrapper');
+        if (!wrapper) {
+          wrapper = document.createElement('div');
+          wrapper.classList.add('t3js-charcounter-wrapper');
+          parent.append(wrapper);
+        }
+        wrapper.prepend(counter);
+      }
+    };
+    const removeCounter = (event: Event) => {
+      const parent = closest(event.currentTarget, (el: HTMLElement) => el.classList.contains('t3js-formengine-field-item'));
+      const counter = parent.querySelector('.t3js-charcounter-min');
+      if (counter) {
+        counter.remove();
+      }
+    };
+
+    const minlengthElements = document.querySelectorAll('[minlength]:not(.t3js-datetimepicker):not(.t3js-charcounter-min-initialized)');
+    minlengthElements.forEach((field: HTMLInputElement|HTMLTextAreaElement) => {
+      field.addEventListener('focus', (event) => {
+        const minCharacterCountLeft = FormEngine.getMinCharacterLeftCount(field);
+        if (minCharacterCountLeft > 0) {
+          addOrUpdateCounter(minCharacterCountLeft, event);
+        }
+      });
+
+      field.addEventListener('blur', removeCounter);
+
+      field.addEventListener('keyup', (event) => {
+        const minCharacterCountLeft = FormEngine.getMinCharacterLeftCount(field);
+        if (minCharacterCountLeft > 0) {
+          addOrUpdateCounter(minCharacterCountLeft, event);
+        } else {
+          removeCounter(event);
+        }
+      });
+    });
+  };
+
+  /**
+   * Get the properties required for proper rendering of the character counter
+   *
+   * @param {HTMLElement} field
+   * @returns number
+   */
+  FormEngine.getMinCharacterLeftCount = function (field: HTMLInputElement|HTMLTextAreaElement) {
+    const text = field.value;
+    const minlength = field.minLength;
+    const currentFieldLength = text.length;
+
+    // minLength doesn't care about empty fields.
+    if (currentFieldLength === 0) {
+      return 0;
+    }
+
+    const numberOfLineBreaks = (text.match(/\n/g) || []).length; // count line breaks
+    const minimumCharactersLeft = minlength - currentFieldLength - numberOfLineBreaks;
+
+    return minimumCharactersLeft;
   };
 
   /**
@@ -624,6 +711,7 @@ export default (function() {
     FormEngine.initializeNullNoPlaceholderCheckboxes();
     FormEngine.initializeNullWithPlaceholderCheckboxes();
     FormEngine.initializeLocalizationStateSelector();
+    FormEngine.initializeMinimumCharactersLeftViews();
     FormEngine.initializeRemainingCharacterViews();
   };
 

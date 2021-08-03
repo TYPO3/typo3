@@ -191,6 +191,9 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         if (!empty($config['required'])) {
             $validationRules[] = ['type' => 'required'];
         }
+        if (!empty($config['min'])) {
+            $validationRules[] = ['type' => 'min'];
+        }
         return json_encode($validationRules);
     }
 }

@@ -181,8 +181,13 @@ class TextElement extends AbstractFormElement
         }
         $attributes['class'] = implode(' ', $classes);
 
-        if (isset($config['max']) && (int)$config['max'] > 0) {
-            $attributes['maxlength'] = (string)(int)$config['max'];
+        $maxLength = (int)($config['max'] ?? 0);
+        if ($maxLength > 0) {
+            $attributes['maxlength'] = (string)$maxLength;
+        }
+        $minlength = (int)($config['min'] ?? 0);
+        if ($minlength > 0 && ($maxLength === 0 || $minlength <= $maxLength)) {
+            $attributes['minlength'] = (string)$minlength;
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);

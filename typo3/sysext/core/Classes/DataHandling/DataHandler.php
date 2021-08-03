@@ -1577,6 +1577,14 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForText($value, $tcaFieldConf, $table, $realPid, $field)
     {
+        $richtextEnabled = (bool)($tcaFieldConf['enableRichtext'] ?? false);
+
+        // Reset value to empty string, if less than "min" characters.
+        $min = $tcaFieldConf['min'] ?? 0;
+        if (!$richtextEnabled && $min > 0 && mb_strlen((string)$value) < $min) {
+            $value = '';
+        }
+
         if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
             $valueArray = [];
         } elseif (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
@@ -1599,7 +1607,7 @@ class DataHandler implements LoggerAwareInterface
         if ($value === null) {
             return $valueArray;
         }
-        if (isset($tcaFieldConf['enableRichtext']) && (bool)$tcaFieldConf['enableRichtext'] === true) {
+        if ($richtextEnabled) {
             $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
             $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
             $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
@@ -1626,6 +1634,12 @@ class DataHandler implements LoggerAwareInterface
         // Secures the string-length to be less than max.
         if (isset($tcaFieldConf['max']) && (int)$tcaFieldConf['max'] > 0) {
             $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
+        }
+
+        // Reset value to empty string, if less than "min" characters.
+        $min = $tcaFieldConf['min'] ?? 0;
+        if ($min > 0 && mb_strlen((string)$value) < $min) {
+            $value = '';
         }
 
         if (!$this->validateValueForRequired($tcaFieldConf, (string)$value)) {

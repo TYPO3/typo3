@@ -103,6 +103,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.remainingCharacters" resname="labels.remainingCharacters">
 				<source>Remaining characters: {0}</source>
 			</trans-unit>
+			<trans-unit id="labels.minCharactersLeft" resname="labels.minCharactersLeft">
+				<source>Characters missing: {0}</source>
+			</trans-unit>
 			<trans-unit id="labels.maxItemsAllowed" resname="labels.maxItemsAllowed">
 				<source>A maximum of {0} child records are allowed.</source>
 			</trans-unit>

@@ -380,6 +380,13 @@ export default (function() {
             }
           }
           break;
+        case 'min':
+          if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) {
+            if (field.value.length > 0 && field.value.length < field.minLength) {
+              markParent = true;
+            }
+          }
+          break;
         case 'null':
           // unknown type null, we ignore it
           break;

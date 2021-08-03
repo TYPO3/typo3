@@ -146,9 +146,13 @@ class InputTextElement extends AbstractFormElement
             'data-formengine-input-name' => $itemName,
         ];
 
-        $maxLength = $config['max'] ?? 0;
-        if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (string)(int)$maxLength;
+        $maxLength = (int)($config['max'] ?? 0);
+        if ($maxLength > 0) {
+            $attributes['maxlength'] = (string)$maxLength;
+        }
+        $minLength = (int)($config['min'] ?? 0);
+        if ($minLength > 0 && ($maxLength === 0 || $minLength <= $maxLength)) {
+            $attributes['minlength'] = (string)$minLength;
         }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
