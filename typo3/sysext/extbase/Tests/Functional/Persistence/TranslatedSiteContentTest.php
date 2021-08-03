@@ -182,14 +182,14 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * Dutch language has pages record and some content elements are translated
+     * Danish language has pages record and some content elements are translated
      *
      * @return array
      */
-    public function dutchDataProvider(): array
+    public function danishDataProvider(): array
     {
         // Expected behaviour:
-        // Page is translated to Dutch, so changing sys_language_mode does NOT change the results
+        // Page is translated to Danish, so changing sys_language_mode does NOT change the results
         // Page title is always [DK]Page, and both sys_language_content and sys_language_uid are always 1
         return [
             [
@@ -251,12 +251,12 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
 
     /**
      * @test
-     * @dataProvider dutchDataProvider
+     * @dataProvider danishDataProvider
      *
      * @param string $fallbackType
      * @param array $visibleRecords
      */
-    public function renderingOfDutchLanguage(string $fallbackType, array $visibleRecords): void
+    public function renderingOfDanishLanguage(string $fallbackType, array $visibleRecords): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -385,7 +385,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                     ],
                 ],
             ],
-            // Dutch elements are shown because of the fallback chain 1,0 - first Dutch, then default language
+            // danish elements are shown because of the fallback chain 1,0 - first danish, then default language
             // note that '[DK] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
             [
                 'fallbackType' => 'fallback',
