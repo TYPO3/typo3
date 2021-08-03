@@ -417,12 +417,12 @@ class PageInformationController
                         : '';
                     break;
                 case 'backend_layout':
-                    $layout = $backendLayouts[$row[$field]] ?? null;
-                    $theData[$field] = $layout ? htmlspecialchars($layout) : $this->getPagesTableFieldValue($field, $row);
+                    $layoutValue = $backendLayouts[$row[$field]] ?? null;
+                    $theData[$field] = $this->resolveBackendLayoutValue($layoutValue, $field, $row);
                     break;
                 case 'backend_layout_next_level':
-                    $layout = $backendLayoutsNextLevel[$row[$field]] ?? null;
-                    $theData[$field] = $layout ? htmlspecialchars($layout) : $this->getPagesTableFieldValue($field, $row);
+                    $layoutValue = $backendLayoutsNextLevel[$row[$field]] ?? null;
+                    $theData[$field] = $this->resolveBackendLayoutValue($layoutValue, $field, $row);
                     break;
                 case 'uid':
                     $uid = 0;
@@ -630,5 +630,26 @@ class PageInformationController
             }
         }
         return $backendLayouts;
+    }
+
+    protected function resolveBackendLayoutValue(?string $layoutValue, string $field, array $row): string
+    {
+        if ($layoutValue !== null) {
+            // Directly return the resolved layout value from BackendLayoutView
+            return htmlspecialchars($layoutValue);
+        }
+
+        // Fetch field value from database (this is already htmlspecialchared')
+        $layoutValue = $this->getPagesTableFieldValue($field, $row);
+        if ($layoutValue !== '') {
+            // In case getPagesTableFieldValue returns a non-empty string, the database field
+            // is filled with an invalid value (the backend layout does not longer exists).
+            $layoutValue = sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
+                $this->getPagesTableFieldValue($field, $row)
+            );
+        }
+
+        return $layoutValue;
     }
 }

@@ -25,6 +25,9 @@ This is especially useful for editors to determine the actually used
 backend layout, which was previously often difficult. For example in
 installations with large page trees and highly developed inheritance.
 
+In case the current field value is invalid, e.g. referencing a non-existent
+backend layout, this is now also shown to the editor.
+
 Impact
 ======
 
