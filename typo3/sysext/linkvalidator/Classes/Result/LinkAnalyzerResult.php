@@ -254,8 +254,8 @@ class LinkAnalyzerResult
             $pageRecord = BackendUtility::getRecord('pages', $brokenLink['real_pid']);
 
             try {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($brokenLink['real_pid']);
-                $languageCode = $site->getLanguageById($brokenLink['language'])->getTwoLetterIsoCode() ?: 'default';
+                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$brokenLink['real_pid']);
+                $languageCode = $site->getLanguageById((int)$brokenLink['language'])->getTwoLetterIsoCode() ?: 'default';
             } catch (SiteNotFoundException | \InvalidArgumentException $e) {
                 $languageCode = 'default';
             }
