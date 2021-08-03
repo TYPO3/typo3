@@ -82,4 +82,24 @@
 		<sys_language_uid>2</sys_language_uid>
 		<l18n_diffsource></l18n_diffsource>
 	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>12</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<content>Lorem ipsum</content>
+		<title>Post11</title>
+		<deleted>0</deleted>
+		<l18n_diffsource></l18n_diffsource>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>13</uid>
+		<pid>1</pid>
+		<l18n_parent>12</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
+		<sys_language_uid>2</sys_language_uid>
+		<blog>1</blog>
+		<content>Lorem ipsum</content>
+		<title>GR:Post11</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
 </dataset>
