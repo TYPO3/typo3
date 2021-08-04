@@ -168,9 +168,11 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
-                'fileFolder_extList' => 'svg',
-                'fileFolder_recursions' => 1,
+                'fileFolderConfig' => [
+                    'folder' => 'EXT:styleguide/Resources/Public/Icons',
+                    'allowedExtensions' => 'svg',
+                    'depth' => 1
+                ],
                 'fieldWizard' => [
                     'selectIcons' => [
                         'disabled' => false,
