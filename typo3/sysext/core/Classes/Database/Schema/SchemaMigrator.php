@@ -122,7 +122,7 @@ class SchemaMigrator
     {
         $result = [];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $updateSuggestionsPerConnection = array_merge_recursive(
+        $updateSuggestionsPerConnection = array_replace_recursive(
             $this->getUpdateSuggestions($statements),
             $this->getUpdateSuggestions($statements, true)
         );
