@@ -487,4 +487,9 @@ return [
             'Important-94312-RemovedBEloginSecurityLevelAndFEloginSecurityLevelOptions.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'defaultCategorizedTables\']' => [
+        'restFiles' => [
+            'Deprecation-85613-CategoryRegistry.rst',
+        ],
+    ],
 ];

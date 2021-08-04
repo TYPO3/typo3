@@ -1787,40 +1787,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtility::unloadExtension($packageName);
     }
 
-    /////////////////////////////////////////
-    // Tests concerning makeCategorizable
-    /////////////////////////////////////////
-    /**
-     * @test
-     */
-    public function doesMakeCategorizableCallsTheCategoryRegistryWithDefaultFieldName()
-    {
-        $extensionKey = StringUtility::getUniqueId('extension');
-        $tableName = StringUtility::getUniqueId('table');
-
-        /** @var CategoryRegistry|\PHPUnit\Framework\MockObject\MockObject $registryMock */
-        $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects(self::once())->method('add')->with($extensionKey, $tableName, 'categories', []);
-        GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
-        ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
-    }
-
-    /**
-     * @test
-     */
-    public function doesMakeCategorizableCallsTheCategoryRegistryWithFieldName()
-    {
-        $extensionKey = StringUtility::getUniqueId('extension');
-        $tableName = StringUtility::getUniqueId('table');
-        $fieldName = StringUtility::getUniqueId('field');
-
-        /** @var CategoryRegistry|\PHPUnit\Framework\MockObject\MockObject $registryMock */
-        $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects(self::once())->method('add')->with($extensionKey, $tableName, $fieldName, []);
-        GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
-        ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
-    }
-
     ///////////////////////////////
     // Tests concerning addPlugin
     ///////////////////////////////

@@ -1582,6 +1582,7 @@ tt_content.' . $key . $suffix . ' {
             $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
+                // @deprecated remove categoryRegistry in v12
                 GeneralUtility::setSingletonInstance(
                     CategoryRegistry::class,
                     unserialize(
@@ -1629,6 +1630,7 @@ tt_content.' . $key . $suffix . ' {
         }
 
         // Apply category stuff
+        // @deprecated since v11, can be removed in v12
         CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
         // Execute override files from Configuration/TCA/Overrides
@@ -1681,6 +1683,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function createBaseTcaCacheFile(FrontendInterface $codeCache)
     {
+        // @deprecated Remove 'categoryRegistry' in v12
         $codeCache->set(
             static::getBaseTcaCacheIdentifier(),
             'return '
@@ -1842,6 +1845,11 @@ tt_content.' . $key . $suffix . ' {
      */
     public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = [], $override = false)
     {
+        trigger_error(
+            __CLASS__ . '::makeCategorizable() is deprecated and will be removed in v12. Use the TCA type "category" instead.',
+            E_USER_DEPRECATED
+        );
+
         // Update the category registry
         $result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options, $override);
         if ($result === false) {

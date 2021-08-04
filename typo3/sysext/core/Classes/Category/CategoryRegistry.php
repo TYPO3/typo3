@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to register category configurations.
+ * @deprecated since v11, will be removed in v12
  */
 class CategoryRegistry implements SingletonInterface
 {
@@ -248,6 +249,12 @@ class CategoryRegistry implements SingletonInterface
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'],
             true
         );
+        if ($defaultCategorizedTables !== []) {
+            trigger_error(
+                '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'defaultCategorizedTables\'] is deprecated and will be removed in v12. Register category fields with the TCA type "category" instead.',
+                E_USER_DEPRECATED
+            );
+        }
         foreach ($defaultCategorizedTables as $defaultCategorizedTable) {
             if (!$this->isRegistered($defaultCategorizedTable)) {
                 $this->add('core', $defaultCategorizedTable, 'categories');

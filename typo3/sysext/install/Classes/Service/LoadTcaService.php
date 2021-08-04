@@ -76,6 +76,7 @@ class LoadTcaService
         }
 
         // Apply category stuff
+        // @deprecated since v11, can be removed in v12
         CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
         // Execute override files from Configuration/TCA/Overrides

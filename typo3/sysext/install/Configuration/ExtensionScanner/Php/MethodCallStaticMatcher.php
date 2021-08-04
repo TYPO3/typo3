@@ -1135,4 +1135,11 @@ return [
             'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-85613-CategoryRegistry.rst'
+        ],
+    ],
 ];

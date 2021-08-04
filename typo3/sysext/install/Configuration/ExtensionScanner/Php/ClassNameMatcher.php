@@ -1759,4 +1759,9 @@ return [
             'Deprecation-94654-GenericExtbaseDomainClasses.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Category\CategoryRegistry' => [
+        'restFiles' => [
+            'Deprecation-85613-CategoryRegistry.rst',
+        ],
+    ],
 ];

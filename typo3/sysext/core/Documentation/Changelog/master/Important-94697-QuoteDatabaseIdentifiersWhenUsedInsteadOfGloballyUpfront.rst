@@ -13,8 +13,8 @@ When using :php:`TCA` keys that contain SQL fragments like `foreign_table_where`
 `MM_table_where` and `search.andWhere`, it is important to use a special syntax
 for SQL field names to stay DBAL compatible.
 
-See :doc:`Important-81751-DbalCompatibleQuotingInTca` for details. It
-boils down to: Use :sql:`{#colPos}=0` instead of :sql:`colPos=0` to stay DBAL
+See :doc:`#81751 <../8.7.x/Important-81751-DbalCompatibleQuotingInTca>` for details.
+It boils down to: Use :sql:`{#colPos}=0` instead of :sql:`colPos=0` to stay DBAL
 compatible. The core then takes care field names are properly quoted for the
 specific DMBS that is used.
 
