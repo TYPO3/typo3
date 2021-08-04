@@ -361,7 +361,7 @@ class DataHandlerHook
         $canMoveRecord = $recIsNewVersion || $tableSupportsVersioning;
         // Workspace source check:
         if (!$recIsNewVersion) {
-            $errorCode = $dataHandler->BE_USER->workspaceCannotEditRecord($table, $versionedRecord['uid'] ?: $uid);
+            $errorCode = $dataHandler->workspaceCannotEditRecord($table, $versionedRecord['uid'] ?: $uid);
             if ($errorCode) {
                 $workspaceAccessBlocked['src1'] = 'Record could not be edited in workspace: ' . $errorCode . ' ';
             } elseif (!$canMoveRecord && !$recordMustNotBeVersionized) {
@@ -479,10 +479,12 @@ class DataHandlerHook
      */
     protected function version_setStage($table, $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = [])
     {
-        if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
+        $record = BackendUtility::getRecord($table, $id);
+        if (!is_array($record)) {
+            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: No Record');
+        } elseif ($errorCode = $dataHandler->workspaceCannotEditOfflineVersion($table, $record)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: ' . $errorCode);
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
-            $record = BackendUtility::getRecord($table, $id);
             $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
             // check if the user is allowed to the current stage, so it's also allowed to send to next stage
             if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($record['t3ver_stage'])) {

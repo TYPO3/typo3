@@ -48,7 +48,6 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -859,88 +858,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Checking if editing of an existing record is allowed in current workspace if that is offline.
-     * Rules for editing in offline mode:
-     * - record supports versioning and is an offline version from workspace and has the current stage
-     * - or record (any) is in a branch where there is a page which is a version from the workspace
-     *   and where the stage is not preventing records
-     *
-     * @param string $table Table of record
-     * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_oid, t3ver_stage (if versioningWS is set)
-     * @return string String error code, telling the failure state. FALSE=All ok
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function workspaceCannotEditRecord($table, $recData)
-    {
-        // Only test if the user is in a workspace
-        if ($this->workspace === 0) {
-            return false;
-        }
-        $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
-        if (!is_array($recData)) {
-            $recData = BackendUtility::getRecord(
-                $table,
-                $recData,
-                'pid' . ($tableSupportsVersioning ? ',t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage' : '')
-            );
-        }
-        if (is_array($recData)) {
-            // We are testing a "version" (identified by having a t3ver_oid): it can be edited provided
-            // that workspace matches and versioning is enabled for the table.
-            $versionState = new VersionState($recData['t3ver_state'] ?? 0);
-            if ($tableSupportsVersioning
-                && (
-                    $versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)(($recData['t3ver_oid'] ?? 0) > 0)
-                )
-            ) {
-                if ((int)$recData['t3ver_wsid'] !== $this->workspace) {
-                    // So does workspace match?
-                    return 'Workspace ID of record didn\'t match current workspace';
-                }
-                // So is the user allowed to "use" the edit stage within the workspace?
-                return $this->workspaceCheckStageForCurrent(0)
-                        ? false
-                        : 'User\'s access level did not allow for editing';
-            }
-            // Check if we are testing a "live" record
-            if ($this->workspaceAllowsLiveEditingInTable($table)) {
-                // Live records are OK in the current workspace
-                return false;
-            }
-            // If not offline, output error
-            return 'Online record was not in a workspace!';
-        }
-        return 'No record';
-    }
-
-    /**
-     * Evaluates if a user is allowed to edit the offline version
-     *
-     * @param string $table Table of record
-     * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
-     * @return string String error code, telling the failure state. FALSE=All ok
-     * @see workspaceCannotEditRecord()
-     * @internal this method will be moved to EXT:workspaces
-     */
-    public function workspaceCannotEditOfflineVersion($table, $recData)
-    {
-        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-            return 'Table does not support versioning.';
-        }
-        if (!is_array($recData)) {
-            $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage');
-        }
-        if (is_array($recData)) {
-            $versionState = new VersionState($recData['t3ver_state']);
-            if ($versionState->equals(VersionState::NEW_PLACEHOLDER) || (int)$recData['t3ver_oid'] > 0) {
-                return $this->workspaceCannotEditRecord($table, $recData);
-            }
-            return 'Not an offline version';
-        }
-        return 'No record';
-    }
-
-    /**
      * Checks if a record is allowed to be edited in the current workspace.
      * This is not bound to an actual record, but to the mere fact if the user is in a workspace
      * and depending on the table settings.
@@ -983,38 +900,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
         if (!$this->workspaceAllowsLiveEditingInTable($table) && !BackendUtility::isTableWorkspaceEnabled($table)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Evaluates if auto creation of a version of a record is allowed.
-     * Auto-creation of version: In offline workspace, test if versioning is
-     * enabled and look for workspace version of input record.
-     * If there is no versionized record found we will create one and save to that.
-     *
-     * @param string $table Table of the record
-     * @param int $id UID of record
-     * @param int $recpid PID of record
-     * @return bool TRUE if ok.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function workspaceAllowAutoCreation($table, $id, $recpid)
-    {
-        // No version can be created in live workspace
-        if ($this->workspace === 0) {
-            return false;
-        }
-        // No versioning support for this table, so no version can be created
-        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-            return false;
-        }
-        if ($recpid < 0) {
-            return false;
-        }
-        // There must be no existing version of this record in workspace
-        if (BackendUtility::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
             return false;
         }
         return true;
