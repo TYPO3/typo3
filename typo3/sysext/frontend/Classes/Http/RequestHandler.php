@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -739,39 +738,8 @@ class RequestHandler implements RequestHandlerInterface
         $inlineJS = $controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
         // Javascript inline code for Footer
         $inlineFooterJs = $controller->cObj->cObjGet($controller->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
-        // Should minify?
-        if ($controller->config['config']['compressJs'] ?? false) {
-            $pageRenderer->enableCompressJavascript();
-            $minifyErrorScript = ($minifyErrorInline = '');
-            $scriptJsCode = GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
-            if ($minifyErrorScript) {
-                $this->timeTracker->setTSlogMessage($minifyErrorScript, LogLevel::ERROR);
-            }
-            if ($inlineJS) {
-                $inlineJS = GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
-                if ($minifyErrorInline) {
-                    $this->timeTracker->setTSlogMessage($minifyErrorInline, LogLevel::ERROR);
-                }
-            }
-            if ($inlineFooterJs) {
-                $inlineFooterJs = GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
-                if ($minifyErrorInline) {
-                    $this->timeTracker->setTSlogMessage($minifyErrorInline, LogLevel::ERROR);
-                }
-            }
-        }
-        if (!isset($controller->config['config']['removeDefaultJS']) || !$controller->config['config']['removeDefaultJS']) {
-            // include default and inlineJS
-            if ($scriptJsCode) {
-                $pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $controller->config['config']['compressJs']);
-            }
-            if ($inlineJS) {
-                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $controller->config['config']['compressJs']);
-            }
-            if ($inlineFooterJs) {
-                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $controller->config['config']['compressJs']);
-            }
-        } elseif ($controller->config['config']['removeDefaultJS'] === 'external') {
+        $compressJs = (bool)($controller->config['config']['compressJs'] ?? false);
+        if (($controller->config['config']['removeDefaultJS'] ?? '') === 'external') {
             /*
              * This keeps inlineJS from *_INT Objects from being moved to external files.
              * At this point in frontend rendering *_INT Objects only have placeholders instead
@@ -784,26 +752,30 @@ class RequestHandler implements RequestHandlerInterface
             $inlineJSint = '';
             $this->stripIntObjectPlaceholder($inlineJS, $inlineJSint);
             if ($inlineJSint) {
-                $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $controller->config['config']['compressJs']);
+                $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $compressJs);
             }
             if (trim($scriptJsCode . $inlineJS)) {
-                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($scriptJsCode . $inlineJS), $defaultTypeAttributeForJavaScript, $controller->config['config']['compressJs']);
+                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($scriptJsCode . $inlineJS), $defaultTypeAttributeForJavaScript, $compressJs);
             }
             if ($inlineFooterJs) {
                 $inlineFooterJSint = '';
                 $this->stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
                 if ($inlineFooterJSint) {
-                    $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $controller->config['config']['compressJs']);
+                    $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $compressJs);
                 }
-                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), $defaultTypeAttributeForJavaScript, $controller->config['config']['compressJs']);
+                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), $defaultTypeAttributeForJavaScript, $compressJs);
             }
         } else {
+            // include default and inlineJS
+            if ($scriptJsCode && (!isset($controller->config['config']['removeDefaultJS']) || !$controller->config['config']['removeDefaultJS'])) {
+                $pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $compressJs);
+            }
             // Include only inlineJS
             if ($inlineJS) {
-                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $controller->config['config']['compressJs']);
+                $pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $compressJs);
             }
             if ($inlineFooterJs) {
-                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $controller->config['config']['compressJs']);
+                $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $compressJs);
             }
         }
         if (isset($controller->pSetup['inlineLanguageLabelFiles.']) && is_array($controller->pSetup['inlineLanguageLabelFiles.'])) {
@@ -829,7 +801,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->config['config']['compressCss'] ?? false) {
             $pageRenderer->enableCompressCss();
         }
-        if ($controller->config['config']['compressJs'] ?? false) {
+        if ($compressJs ?? false) {
             $pageRenderer->enableCompressJavascript();
         }
         if ($controller->config['config']['concatenateCss'] ?? false) {
