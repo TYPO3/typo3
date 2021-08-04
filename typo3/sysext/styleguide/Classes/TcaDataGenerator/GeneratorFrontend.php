@@ -174,6 +174,7 @@ class GeneratorFrontend extends AbstractGenerator
             $domain = empty($basePath) ? '/' : $basePath;
         }
         $topPageUid = (int)$recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
+        $this->createSysLanguages();
         $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo');
 
         $this->populateSysFileReference();
