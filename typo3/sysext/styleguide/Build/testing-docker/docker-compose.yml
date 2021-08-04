@@ -72,9 +72,20 @@ services:
         done;
         echo Database is up;
         php -v | grep '^PHP';
-        mkdir -p Web/typo3temp/var/tests/ &&  \
-        php -dxdebug.mode=off vendor/codeception/codeception/codecept run Backend -d -c Web/typo3conf/ext/styleguide/Tests/codeception.yml ${TEST_FILE}
+        mkdir -p Web/typo3temp/var/tests/
+        COMMAND=\"vendor/codeception/codeception/codecept run Backend -d -c Web/typo3conf/ext/styleguide/Tests/codeception.yml ${TEST_FILE}\"
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          $${COMMAND};
+        else
+          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          $${COMMAND};
+        fi
       "
+
   cgl:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
