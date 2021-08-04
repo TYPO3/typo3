@@ -150,7 +150,7 @@ class Import extends ImportExport
                 sprintf(
                     'File extension "%s" is not valid. Supported file extensions are %s.',
                     $fileExtension,
-                    implode(', ', array_map(function ($supportedFileExtension) {
+                    implode(', ', array_map(static function ($supportedFileExtension) {
                         return '"' . $supportedFileExtension . '"';
                     }, $this->getSupportedFileExtensions()))
                 )

@@ -38,13 +38,13 @@ class BackendLoginCest
 
         // Make sure mouse is not over submit button from a previous test
         $I->moveMouseOver('#t3-username');
-        $bs = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
+        $bs = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('background-color');
         });
 
         $I->moveMouseOver('#t3-login-submit');
         $I->wait(1);
-        $bsmo = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
+        $bsmo = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('background-color');
         });
         $I->assertNotSame($bs, $bsmo);
@@ -61,12 +61,12 @@ class BackendLoginCest
         $I->waitForElement('#t3-username');
 
         $I->wantTo('check empty credentials');
-        $required = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
+        $required = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-username'))->getAttribute('required');
         });
         $I->assertEquals('true', $required, '#t3-username');
 
-        $required = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
+        $required = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-password'))->getAttribute('required');
         });
         $I->assertEquals('true', $required, '#t3-password');

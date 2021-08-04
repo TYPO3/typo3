@@ -101,11 +101,11 @@ class Mouse
     {
         $I = $this->tester;
         try {
-            return $I->executeInSelenium(function (RemoteWebDriver $webDriver) use ($selector) {
+            return $I->executeInSelenium(static function (RemoteWebDriver $webDriver) use ($selector) {
                 return $webDriver->findElement(WebDriverBy::cssSelector($selector));
             });
         } catch (InvalidSelectorException $exception) {
-            return $I->executeInSelenium(function (RemoteWebDriver $webDriver) use ($selector) {
+            return $I->executeInSelenium(static function (RemoteWebDriver $webDriver) use ($selector) {
                 return $webDriver->findElement(WebDriverBy::xpath($selector));
             });
         }
@@ -114,7 +114,7 @@ class Mouse
     protected function getMouse(): WebDriverMouse
     {
         $I = $this->tester;
-        return $I->executeInSelenium(function (RemoteWebDriver $webDriver) {
+        return $I->executeInSelenium(static function (RemoteWebDriver $webDriver) {
             return $webDriver->getMouse();
         });
     }

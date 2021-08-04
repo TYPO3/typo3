@@ -232,7 +232,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         return $this->keysFromTemplate(
             $instructions,
             '%3$d->%4$d (mount:%2$s)',
-            function (array $items) {
+            static function (array $items) {
                 array_splice(
                     $items,
                     1,

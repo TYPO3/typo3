@@ -533,7 +533,7 @@ page.10.value = HELLO WORLD!
         } else {
             $pArray[$cEl['uid']]['_templates'][] = $row;
         }
-        uasort($pArray, function ($a, $b) {
+        uasort($pArray, static function ($a, $b) {
             return $a['sorting'] - $b['sorting'];
         });
     }

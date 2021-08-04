@@ -364,7 +364,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
-            'unitTest' => function () {
+            'unitTest' => static function () {
                 return false;
             },
         ];
@@ -398,7 +398,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
-            'unitTest' => function () {
+            'unitTest' => static function () {
                 return true;
             },
         ];

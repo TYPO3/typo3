@@ -331,7 +331,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 },
                 array_filter(
                     array_keys($this->resolvedResources),
-                    function (string $candidateKey) use ($type) {
+                    static function (string $candidateKey) use ($type) {
                         return strpos($candidateKey, $type) === 0;
                     }
                 )

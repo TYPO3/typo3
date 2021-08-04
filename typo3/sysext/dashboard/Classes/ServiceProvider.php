@@ -224,7 +224,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $presetsCacheIdentifier = self::getCacheIdentifier('Presets');
         $widgetGroupsCacheIdentifier = self::getCacheIdentifier('WidgetGroups');
-        return function (CacheWarmupEvent $event) use ($container, $presetsCacheIdentifier, $widgetGroupsCacheIdentifier) {
+        return static function (CacheWarmupEvent $event) use ($container, $presetsCacheIdentifier, $widgetGroupsCacheIdentifier) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');
 

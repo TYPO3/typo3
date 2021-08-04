@@ -211,7 +211,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $expectedPermissions = array_merge($this->defaultFilePermissions, $userTsConfiguration);
         array_walk(
             $expectedPermissions,
-            function (&$value) {
+            static function (&$value) {
                 $value = (bool)$value;
             }
         );
@@ -757,7 +757,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             /** @var Connection|ObjectProphecy $connectionProphecy */
             $connectionProphecy = $this->prophesize(Connection::class);
             $connectionProphecy->getDatabasePlatform()->willReturn(new MockPlatform());
-            $connectionProphecy->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            $connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
                 return '`' . str_replace('.', '`.`', $args[0]) . '`';
             });
 

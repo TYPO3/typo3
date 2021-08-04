@@ -317,7 +317,7 @@ EOT;
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturnCallback(
-            function ($object) {
+            static function ($object) {
                 return $object->getId();
             }
         );

@@ -190,7 +190,7 @@ class EnableFileService
     {
         $files = scandir(Environment::getPublicPath() . '/');
         $files = is_array($files) ? $files : [];
-        $files = array_filter($files, function ($file) {
+        $files = array_filter($files, static function ($file) {
             return @is_file(Environment::getPublicPath() . '/' . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file);
         });
         return $files;

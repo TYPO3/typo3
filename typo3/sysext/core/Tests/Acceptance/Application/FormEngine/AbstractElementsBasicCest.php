@@ -119,7 +119,7 @@ abstract class AbstractElementsBasicCest
     {
         $I->comment('Get context for field "' . $fieldLabel . '"');
         return $I->executeInSelenium(
-            function (RemoteWebDriver $webDriver) use ($fieldLabel) {
+            static function (RemoteWebDriver $webDriver) use ($fieldLabel) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
                         '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)[1]/ancestor::fieldset[@class="form-section"][1]'

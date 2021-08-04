@@ -31,7 +31,7 @@ class TemplatePathsTest extends UnitTestCase
      */
     public function getPathSetterMethodTestValues(): array
     {
-        $generator = function ($method, $indexType = 'numeric') {
+        $generator = static function ($method, $indexType = 'numeric') {
             switch ($indexType) {
                 default:
                 case 'numeric':

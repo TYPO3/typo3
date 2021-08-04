@@ -66,7 +66,7 @@ class FailsafeContainerTest extends UnitTestCase
     public function withString(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'param' => function () {
+            'param' => static function () {
                 return 'value';
             },
         ]);
@@ -121,10 +121,10 @@ class FailsafeContainerTest extends UnitTestCase
     public function passesContainerAsParameter(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'service' => function () {
+            'service' => static function () {
                 return new Service();
             },
-            'container' => function (ContainerInterface $container) {
+            'container' => static function (ContainerInterface $container) {
                 return $container;
             },
         ]);
@@ -140,7 +140,7 @@ class FailsafeContainerTest extends UnitTestCase
     public function nullValueEntry(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'null' => function () {
+            'null' => static function () {
                 return null;
             },
         ]);
@@ -156,7 +156,7 @@ class FailsafeContainerTest extends UnitTestCase
     public function nullValueEntryCallsFactoryOnlyOnce(): void
     {
         $calledCount = 0;
-        $factory = function () use (&$calledCount) {
+        $factory = static function () use (&$calledCount) {
             $calledCount++;
             return null;
         };
@@ -178,22 +178,22 @@ class FailsafeContainerTest extends UnitTestCase
     public function has(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'service' => function () {
+            'service' => static function () {
                 return new Service();
             },
-            'param' => function () {
+            'param' => static function () {
                 return 'value';
             },
-            'int' => function () {
+            'int' => static function () {
                 return 2;
             },
-            'bool' => function () {
+            'bool' => static function () {
                 return false;
             },
-            'null' => function () {
+            'null' => static function () {
                 return null;
             },
-            '0' => function () {
+            '0' => static function () {
                 return 0;
             },
         ]);
@@ -242,12 +242,12 @@ class FailsafeContainerTest extends UnitTestCase
 
         $providerB = $this->createServiceProviderProphecy();
         $providerB->getExtensions()->willReturn([
-            'service' => function (ContainerInterface $c, Service $s) {
+            'service' => static function (ContainerInterface $c, Service $s) {
                 $s->value = 'value';
                 return $s;
             },
         ]);
-        $iterator = (function () use ($providerA, $providerB): iterable {
+        $iterator = (static function () use ($providerA, $providerB): iterable {
             yield $providerA->reveal();
             yield $providerB->reveal();
         })();
@@ -268,7 +268,7 @@ class FailsafeContainerTest extends UnitTestCase
 
         $providerB = $this->createServiceProviderProphecy();
         $providerB->getExtensions()->willReturn([
-            'service' => function (ContainerInterface $c, Service $s) {
+            'service' => static function (ContainerInterface $c, Service $s) {
                 $s->value = 'value';
                 return $s;
             },
@@ -288,7 +288,7 @@ class FailsafeContainerTest extends UnitTestCase
         $this->providerProphecy->getFactories()->willReturn(['service' => $factory]);
         $this->providerProphecy->getExtensions()->willReturn(
             [
-                'service' => function (ContainerInterface $c, Service $s) {
+                'service' => static function (ContainerInterface $c, Service $s) {
                     $s->value = 'value';
                     return $s;
                 },
@@ -305,7 +305,7 @@ class FailsafeContainerTest extends UnitTestCase
     public function extendingNonExistingFactory(): void
     {
         $this->providerProphecy->getExtensions()->willReturn([
-            'service' => function (ContainerInterface $c, Service $s = null) {
+            'service' => static function (ContainerInterface $c, Service $s = null) {
                 if ($s === null) {
                     $s = new Service();
                 }
@@ -330,7 +330,7 @@ class FailsafeContainerTest extends UnitTestCase
 
         $providerB = $this->createServiceProviderProphecy();
         $providerB->getExtensions()->willReturn([
-            'service' => function (ContainerInterface $c, Service $s) {
+            'service' => static function (ContainerInterface $c, Service $s) {
                 $s->value = '1';
                 return $s;
             },
@@ -338,7 +338,7 @@ class FailsafeContainerTest extends UnitTestCase
 
         $providerC = $this->createServiceProviderProphecy();
         $providerC->getExtensions()->willReturn([
-            'service' => function (ContainerInterface $c, Service $s) {
+            'service' => static function (ContainerInterface $c, Service $s) {
                 $s->value .= '2';
                 return $s;
             },
@@ -359,7 +359,7 @@ class FailsafeContainerTest extends UnitTestCase
         $providerA->getFactories()->willReturn(['service' => $factory]);
 
         $providerB = $this->createServiceProviderProphecy();
-        $providerB->getFactories()->willReturn(['service' => function () {
+        $providerB->getFactories()->willReturn(['service' => static function () {
             return 'value';
         }]);
 
@@ -375,10 +375,10 @@ class FailsafeContainerTest extends UnitTestCase
     public function cyclicDependency(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'A' => function (ContainerInterface $container) {
+            'A' => static function (ContainerInterface $container) {
                 return $container->get('B');
             },
-            'B' => function (ContainerInterface $container) {
+            'B' => static function (ContainerInterface $container) {
                 return $container->get('A');
             },
         ]);
@@ -396,10 +396,10 @@ class FailsafeContainerTest extends UnitTestCase
     public function cyclicDependencyRetrievedTwice(): void
     {
         $this->providerProphecy->getFactories()->willReturn([
-            'A' => function (ContainerInterface $container) {
+            'A' => static function (ContainerInterface $container) {
                 return $container->get('B');
             },
-            'B' => function (ContainerInterface $container) {
+            'B' => static function (ContainerInterface $container) {
                 return $container->get('A');
             },
         ]);
@@ -451,7 +451,7 @@ class FailsafeContainerTest extends UnitTestCase
             ],
             [
                 // Closure
-                function () {
+                static function () {
                     return new Service();
                 },
             ],

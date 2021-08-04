@@ -110,7 +110,7 @@ class CropVariantCollection
 
     public function __toString()
     {
-        $filterNonPersistentKeys = function ($key) {
+        $filterNonPersistentKeys = static function ($key) {
             if (in_array($key, ['id', 'title', 'allowedAspectRatios', 'coverAreas'], true)) {
                 return false;
             }

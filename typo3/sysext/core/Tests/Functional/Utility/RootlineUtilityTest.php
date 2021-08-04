@@ -326,12 +326,12 @@ class RootlineUtilityTest extends FunctionalTestCase
     {
         $result = [];
         foreach ($incomingData as $pos => $values) {
-            array_walk($values, function (&$val) {
+            array_walk($values, static function (&$val) {
                 if (is_numeric($val)) {
                     $val = (int)$val;
                 }
             });
-            $result[$pos] = array_filter($values, function ($fieldName) use ($fields) {
+            $result[$pos] = array_filter($values, static function ($fieldName) use ($fields) {
                 return in_array($fieldName, $fields, true);
             }, ARRAY_FILTER_USE_KEY);
         }

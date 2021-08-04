@@ -739,7 +739,7 @@ class PageLayoutView implements LoggerAwareInterface
                 }
 
                 $defaultLanguageElements = [];
-                array_walk($defaultLanguageElementsByColumn, function (array $columnContent) use (&$defaultLanguageElements) {
+                array_walk($defaultLanguageElementsByColumn, static function (array $columnContent) use (&$defaultLanguageElements) {
                     $defaultLanguageElements = array_merge($defaultLanguageElements, $columnContent);
                 });
 

@@ -200,7 +200,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
     {
         return array_filter(
             $array,
-            function ($key) {
+            static function ($key) {
                 return !is_numeric($key);
             },
             ARRAY_FILTER_USE_KEY

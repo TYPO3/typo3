@@ -104,7 +104,7 @@ class FileNameValidatorTest extends TestCase
 
         // combine to single value
         $data = array_map(
-            function (array $values): array {
+            static function (array $values): array {
                 return [implode('', $values)];
             },
             $data

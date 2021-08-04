@@ -311,7 +311,7 @@ class PreviewUriBuilder
     protected function prefixAttributeNames(string $prefix, array $attributes): array
     {
         $attributeNames = array_map(
-            function (string $name) use ($prefix): string {
+            static function (string $name) use ($prefix): string {
                 return $prefix . $name;
             },
             array_keys($attributes)

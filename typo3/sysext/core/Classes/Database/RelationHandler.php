@@ -470,7 +470,7 @@ class RelationHandler
         if ($sortby === 'uid') {
             usort(
                 $this->itemArray,
-                function ($a, $b) {
+                static function ($a, $b) {
                     return $a['id'] < $b['id'] ? -1 : 1;
                 }
             );

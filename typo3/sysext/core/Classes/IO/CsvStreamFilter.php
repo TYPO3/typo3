@@ -100,7 +100,7 @@ class CsvStreamFilter extends \php_user_filter
      */
     protected static function buildStreamFilterModifier(string $sequence): \Closure
     {
-        return function ($element) use ($sequence) {
+        return static function ($element) use ($sequence) {
             foreach ($element as &$value) {
                 if (is_numeric($value) || $value === '') {
                     continue;

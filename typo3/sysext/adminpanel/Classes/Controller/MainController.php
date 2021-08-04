@@ -133,12 +133,12 @@ class MainController implements SingletonInterface
             $requestId = $request->getAttribute('adminPanelRequestId');
             $data = $cache->get($requestId);
             $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules);
-            $settingsModules = array_filter($this->modules, function (ModuleInterface $module) {
+            $settingsModules = array_filter($this->modules, static function (ModuleInterface $module) {
                 return $module instanceof PageSettingsProviderInterface;
             });
             $parentModules = array_filter(
                 $this->modules,
-                function (ModuleInterface $module) {
+                static function (ModuleInterface $module) {
                     return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
                 }
             );

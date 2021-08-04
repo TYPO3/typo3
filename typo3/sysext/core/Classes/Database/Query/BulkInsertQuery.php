@@ -263,7 +263,7 @@ class BulkInsertQuery
                 implode(
                     ', ',
                     array_map(
-                        function ($column) use ($connection) {
+                        static function ($column) use ($connection) {
                             return $connection->quoteIdentifier($column);
                         },
                         $this->columns
@@ -279,7 +279,7 @@ class BulkInsertQuery
             implode(
                 '), (',
                 array_map(
-                    function (array $valueSet) {
+                    static function (array $valueSet) {
                         return implode(', ', $valueSet);
                     },
                     $this->values

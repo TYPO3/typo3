@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
-return function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
+return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
     $containerBuilder->registerForAutoconfiguration(ViewHelperInterface::class)->addTag('fluid.viewhelper');
 
     $containerBuilder->addCompilerPass(new class() implements CompilerPassInterface {

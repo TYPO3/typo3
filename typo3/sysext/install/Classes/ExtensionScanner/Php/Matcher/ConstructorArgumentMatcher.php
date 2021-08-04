@@ -204,7 +204,7 @@ class ConstructorArgumentMatcher extends AbstractCoreMatcher
         // keeping positions having argument values that are not null
         $unusedArgumentPositions = array_filter(
             $unusedArgumentPositions,
-            function (int $position) use ($arguments) {
+            static function (int $position) use ($arguments) {
                 $index = $position - 1;
                 return isset($arguments[$index]->value)
                     && !$arguments[$index]->value instanceof ConstFetch

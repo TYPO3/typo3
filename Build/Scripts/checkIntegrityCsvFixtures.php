@@ -178,7 +178,7 @@ class checkIntegrityCsvFixtures
                 // Extend / reduce to needed size
                 $csvLine = array_slice(array_pad($csvLine, $neededColumns, ''), 0, $neededColumns);
                 $isComment = false;
-                $line = array_reduce($csvLine, function ($carry, $column) use (&$isComment) {
+                $line = array_reduce($csvLine, static function ($carry, $column) use (&$isComment) {
                     if ($carry === null && substr($column, 0, 2) === '# ') {
                         $isComment = true;
                         $carry .= $column;

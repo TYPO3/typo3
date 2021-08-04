@@ -154,7 +154,7 @@ class Inline1nCest
 
     protected function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue): void
     {
-        $fieldContext = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
+        $fieldContext = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel
         ) {
             return $webdriver->findElement(

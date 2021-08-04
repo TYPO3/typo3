@@ -151,7 +151,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getBackendRoutesWarmer(ContainerInterface $container): \Closure
     {
-        return function (CacheWarmupEvent $event) use ($container) {
+        return static function (CacheWarmupEvent $event) use ($container) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');
                 $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');

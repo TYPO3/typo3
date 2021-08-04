@@ -1438,7 +1438,7 @@ class PageRenderer implements SingletonInterface
         // sanitize module names in internal 'paths'
         $internalPathModuleNames = array_keys($requireJsConfig['internal']['paths'] ?? []);
         $sanitizedInternalPathModuleNames = array_map(
-            function ($moduleName) {
+            static function ($moduleName) {
                 // trim spaces and slashes & add ending slash
                 return trim($moduleName, ' /') . '/';
             },
@@ -1551,7 +1551,7 @@ class PageRenderer implements SingletonInterface
     {
         return array_filter(
             $array,
-            function (string $key) use ($keys, $keep) {
+            static function (string $key) use ($keys, $keep) {
                 return in_array($key, $keys, true) === $keep;
             },
             ARRAY_FILTER_USE_KEY

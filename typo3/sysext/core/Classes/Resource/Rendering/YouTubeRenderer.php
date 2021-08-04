@@ -196,7 +196,7 @@ class YouTubeRenderer implements FileRendererInterface
             $attributes = array_merge($attributes, $options['additionalAttributes']);
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], function (&$value, $key) use (&$attributes) {
+            array_walk($options['data'], static function (&$value, $key) use (&$attributes) {
                 $attributes['data-' . $key] = $value;
             });
         }

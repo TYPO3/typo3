@@ -75,7 +75,7 @@ class AddPageInPageModuleCest
         $I->wait(2);
         $editControllerDiv = '#EditDocumentController > div';
         $generalTab = $editControllerDiv . ' > div:nth-child(1) > ul > li';
-        $classString = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
+        $classString = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $generalTab
         ) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($generalTab))->getAttribute('class');

@@ -66,7 +66,7 @@ class SchemaIndexDefinitionListener
 
         $subPartColumns = array_filter(
             $tableIndexes,
-            function ($column) {
+            static function ($column) {
                 return $column['Sub_Part'];
             }
         );

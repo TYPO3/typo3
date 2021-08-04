@@ -114,7 +114,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
 
         $overwrittenTaskList = $input->getOption('task');
         $overwrittenTaskList = is_array($overwrittenTaskList) ? $overwrittenTaskList : [];
-        $overwrittenTaskList = array_filter($overwrittenTaskList, fn ($value) => MathUtility::canBeInterpretedAsInteger($value));
+        $overwrittenTaskList = array_filter($overwrittenTaskList, static fn ($value) => MathUtility::canBeInterpretedAsInteger($value));
         $overwrittenTaskList = array_map('intval', $overwrittenTaskList);
         if ($overwrittenTaskList !== []) {
             $this->overwrittenTaskList = $overwrittenTaskList;

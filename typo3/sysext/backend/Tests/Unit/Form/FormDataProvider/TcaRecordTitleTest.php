@@ -72,7 +72,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'uid',
-                    'label_userFunc' => function (&$parameters) {
+                    'label_userFunc' => static function (&$parameters) {
                         $parameters['title'] = 'Test';
                     },
                 ],
@@ -104,7 +104,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'uid',
-                    'formattedLabel_userFunc' => function (&$parameters) {
+                    'formattedLabel_userFunc' => static function (&$parameters) {
                         $parameters['title'] = 'Test';
                     },
                 ],
@@ -131,7 +131,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'foo',
-                    'label_userFunc' => function (&$parameters) {
+                    'label_userFunc' => static function (&$parameters) {
                         $parameters['title'] = 'Value that MUST NOT be used, otherwise the code is broken.';
                     },
                 ],
@@ -168,7 +168,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'processedTca' => [
                 'ctrl' => [
                     'label' => 'foo',
-                    'formattedLabel_userFunc' => function (&$parameters) {
+                    'formattedLabel_userFunc' => static function (&$parameters) {
                         $parameters['title'] = 'aFormattedLabel';
                     },
                 ],

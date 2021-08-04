@@ -48,7 +48,7 @@ class RecordHistoryRollbackController
         $correlationIds = $request->getQueryParams()['correlation_ids'] ?? [];
         /** @var CorrelationId[] $correlationIds */
         $correlationIds = array_map(
-            function (string $correlationId) {
+            static function (string $correlationId) {
                 return CorrelationId::fromString($correlationId);
             },
             $correlationIds

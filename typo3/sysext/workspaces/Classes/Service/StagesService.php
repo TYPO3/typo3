@@ -219,7 +219,7 @@ class StagesService implements SingletonInterface
             }
         }
 
-        uasort($allowedStages, function (StageRecord $first, StageRecord $second) {
+        uasort($allowedStages, static function (StageRecord $first, StageRecord $second) {
             return $first->determineOrder($second);
         });
         return $this->prepareStagesArray($allowedStages);

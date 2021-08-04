@@ -293,7 +293,7 @@ class TcaSlugTest extends UnitTestCase
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => function (array $parameters, TcaSlug $reference): string {
+                                        'prefix' => static function (array $parameters, TcaSlug $reference): string {
                                             return $parameters['site']->getIdentifier()
                                                 . '-'
                                                 . $parameters['languageId']

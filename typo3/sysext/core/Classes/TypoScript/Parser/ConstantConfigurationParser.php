@@ -88,7 +88,7 @@ class ConstantConfigurationParser
             // Sort configurations of each subcategory
             foreach ($hierarchicConfiguration as &$catConfigurationArray) {
                 foreach ($catConfigurationArray as &$subcatConfigurationArray) {
-                    uasort($subcatConfigurationArray, function ($a, $b) {
+                    uasort($subcatConfigurationArray, static function ($a, $b) {
                         return strnatcmp($a['subcat'], $b['subcat']);
                     });
                 }

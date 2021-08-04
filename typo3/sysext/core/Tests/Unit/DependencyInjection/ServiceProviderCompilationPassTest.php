@@ -39,7 +39,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     protected function getServiceProviderRegistry(array $serviceProviders): ServiceProviderRegistry
     {
         $serviceProviderRegistryProphecy = $this->prophesize(ServiceProviderRegistry::class);
-        $serviceProviderRegistryProphecy->getIterator()->will(function () use ($serviceProviders): \Generator {
+        $serviceProviderRegistryProphecy->getIterator()->will(static function () use ($serviceProviders): \Generator {
             foreach ($serviceProviders as $id => $serviceProvider) {
                 yield (string)$id => new $serviceProvider();
             }
@@ -56,12 +56,12 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
             $serviceProviderRegistryProphecy->getExtensions($id)->willReturn($extensions);
 
             foreach ($factories as $serviceName => $factory) {
-                $serviceProviderRegistryProphecy->createService($packageKey, $serviceName, Argument::type(ContainerInterface::class))->will(function ($args) use ($factory) {
+                $serviceProviderRegistryProphecy->createService($packageKey, $serviceName, Argument::type(ContainerInterface::class))->will(static function ($args) use ($factory) {
                     return $factory($args[2]);
                 });
             }
             foreach ($extensions as $serviceName => $extension) {
-                $serviceProviderRegistryProphecy->extendService($packageKey, $serviceName, Argument::type(ContainerInterface::class), Argument::cetera())->will(function ($args) use ($extension) {
+                $serviceProviderRegistryProphecy->extendService($packageKey, $serviceName, Argument::type(ContainerInterface::class), Argument::cetera())->will(static function ($args) use ($extension) {
                     return $extension($args[2], $args[3] ?? null);
                 });
             }
@@ -155,7 +155,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProvider::class,
                 TestServiceProviderFactoryOverride::class,
             ],
-            function (ContainerBuilder $container) {
+            static function (ContainerBuilder $container) {
                 $definition = new Definition('stdClass');
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
@@ -182,7 +182,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 TestServiceProvider::class,
                 TestServiceProviderFactoryOverride::class,
             ],
-            function (ContainerBuilder $container) {
+            static function (ContainerBuilder $container) {
                 $definition = new Definition('stdClass');
                 // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');

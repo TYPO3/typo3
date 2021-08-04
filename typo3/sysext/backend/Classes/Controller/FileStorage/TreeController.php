@@ -128,14 +128,14 @@ class TreeController
         foreach ($items as $item) {
             $stateIdentifier = $item['stateIdentifier'];
             $parentIdentifier = $item['parentIdentifier'];
-            $siblings = array_filter($items, function ($itemInArray) use ($parentIdentifier) {
+            $siblings = array_filter($items, static function ($itemInArray) use ($parentIdentifier) {
                 if ($itemInArray['parentIdentifier'] === $parentIdentifier) {
                     return true;
                 }
                 return false;
             });
             $positionFound = false;
-            $siblingsBeforeInSameDepth = array_filter($siblings, function ($itemInArray) use ($stateIdentifier, &$positionFound): bool {
+            $siblingsBeforeInSameDepth = array_filter($siblings, static function ($itemInArray) use ($stateIdentifier, &$positionFound): bool {
                 if ($itemInArray['stateIdentifier'] === $stateIdentifier) {
                     $positionFound = true;
                     return false;

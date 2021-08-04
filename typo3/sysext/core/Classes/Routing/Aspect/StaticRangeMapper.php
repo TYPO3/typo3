@@ -162,7 +162,7 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
 
         $length = strlen(max($this->start, $this->end));
         $range = array_map(
-            function ($value) use ($length) {
+            static function ($value) use ($length) {
                 return str_pad($value, $length, '0', STR_PAD_LEFT);
             },
             $range

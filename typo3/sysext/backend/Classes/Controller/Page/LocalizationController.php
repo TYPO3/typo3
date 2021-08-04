@@ -113,7 +113,7 @@ class LocalizationController
         }
         // Language "All" should not appear as a source of translations (see bug 92757) and keys should be sequential
         $availableLanguages = array_values(
-            array_filter($availableLanguages, function (array $languageRecord): bool {
+            array_filter($availableLanguages, static function (array $languageRecord): bool {
                 return (int)$languageRecord['uid'] !== -1;
             })
         );

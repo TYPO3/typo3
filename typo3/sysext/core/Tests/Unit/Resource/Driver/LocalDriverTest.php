@@ -1749,7 +1749,7 @@ class LocalDriverTest extends BaseTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1463073434);
-        $closure = function () {
+        $closure = static function () {
             throw new \Exception('I was called!', 1463073434);
         };
 

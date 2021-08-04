@@ -55,7 +55,7 @@ class AbstractPluginTest extends UnitTestCase
         $tsfe->getLanguage(Argument::cetera())->willReturn(
             $this->createSiteWithDefaultLanguage()->getLanguageById(0)
         );
-        $tsfe->baseUrlWrap(Argument::cetera())->will(function (array $args) {
+        $tsfe->baseUrlWrap(Argument::cetera())->will(static function (array $args) {
             return $args[0] ?? '';
         });
 

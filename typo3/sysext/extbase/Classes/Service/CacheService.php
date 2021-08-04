@@ -70,7 +70,7 @@ class CacheService implements SingletonInterface
             if (!is_array($pageIdsToClear)) {
                 $pageIdsToClear = [(int)$pageIdsToClear];
             }
-            $tags = array_map(function ($item) {
+            $tags = array_map(static function ($item) {
                 return 'pageId_' . $item;
             }, $pageIdsToClear);
             $this->cacheManager->flushCachesInGroupByTags('pages', $tags);

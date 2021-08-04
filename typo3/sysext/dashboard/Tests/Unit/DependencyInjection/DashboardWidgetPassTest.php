@@ -96,7 +96,7 @@ class DashboardWidgetPassTest extends UnitTestCase
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
         $definition->setPublic(true);
-        $definition->setArgument('$configuration', Argument::that(function ($argument) {
+        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
         }));
 
@@ -110,7 +110,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
+        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -143,7 +143,7 @@ class DashboardWidgetPassTest extends UnitTestCase
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
         $definition->setPublic(true);
-        $definition->setArgument('$configuration', Argument::that(function ($argument) {
+        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
         }));
 
@@ -157,7 +157,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
+        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
@@ -184,7 +184,7 @@ class DashboardWidgetPassTest extends UnitTestCase
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
         $definition->setPublic(true);
-        $definition->setArgument('$configuration', Argument::that(function ($argument) {
+        $definition->setArgument('$configuration', Argument::that(static function ($argument) {
             return $argument instanceof Reference && (string)$argument === 't3newsWidgetConfiguration';
         }));
 
@@ -201,7 +201,7 @@ class DashboardWidgetPassTest extends UnitTestCase
                 ],
             ],
         ]);
-        $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
+        $this->container->addDefinitions(Argument::that(static function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition

@@ -67,7 +67,7 @@ class EventDispatcherTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
+        $this->listenerProviderProphecy->getListenersForEvent($event)->will(static function () use ($callable): iterable {
             yield $callable;
         });
 
@@ -91,7 +91,7 @@ class EventDispatcherTest extends UnitTestCase
             }
         };
 
-        $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
+        $this->listenerProviderProphecy->getListenersForEvent($event)->will(static function () use ($callable): iterable {
             yield $callable;
         });
 
@@ -109,7 +109,7 @@ class EventDispatcherTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
+        $this->listenerProviderProphecy->getListenersForEvent($event)->will(static function () use ($callable): iterable {
             yield $callable;
             yield $callable;
         });
@@ -135,9 +135,9 @@ class EventDispatcherTest extends UnitTestCase
             }
         };
 
-        $this->listenerProviderProphecy->getListenersForEvent($event)->will(function () use ($callable): iterable {
+        $this->listenerProviderProphecy->getListenersForEvent($event)->will(static function () use ($callable): iterable {
             yield $callable;
-            yield function (object $event): void {
+            yield static function (object $event): void {
                 $event->invoked += 1;
                 $event->stopped = true;
             };
@@ -159,8 +159,8 @@ class EventDispatcherTest extends UnitTestCase
 
         $event = new \stdClass();
 
-        $this->listenerProviderProphecy->getListenersForEvent($event)->will(function (): iterable {
-            yield function (object $event): void {
+        $this->listenerProviderProphecy->getListenersForEvent($event)->will(static function (): iterable {
+            yield static function (object $event): void {
                 throw new \BadMethodCallException('some invalid state', 1563270337);
             };
         });
@@ -198,7 +198,7 @@ class EventDispatcherTest extends UnitTestCase
             ],
             [
                 // Closure
-                function (object $event): void {
+                static function (object $event): void {
                     $event->invoked += 1;
                 },
             ],

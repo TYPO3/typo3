@@ -114,7 +114,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testSwitchableControllerActions);
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(function (
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(static function (
             $a
         ) {
             return $a;
@@ -154,7 +154,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testSwitchableControllerActions);
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(function (
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(static function (
             $a
         ) {
             return $a;
@@ -199,7 +199,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testSwitchableControllerActions);
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(function (
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(static function (
             $a
         ) {
             return $a;
@@ -238,7 +238,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testSwitchableControllerActions);
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(function (
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(static function (
             $a
         ) {
             return $a;
@@ -272,7 +272,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->willReturn($this->testSwitchableControllerActions);
-        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(function (
+        $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturnCallback(static function (
             $a
         ) {
             return $a;

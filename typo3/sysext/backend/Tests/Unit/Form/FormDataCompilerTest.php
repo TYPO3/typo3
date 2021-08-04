@@ -132,7 +132,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
+        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
             $result = $arguments[0];
             $result['databaseRow'] = 'newData';
             return $result;
@@ -170,7 +170,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
+        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
             $result = $arguments[0];
             unset($result['tableName']);
             return $result;
@@ -185,7 +185,7 @@ class FormDataCompilerTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
-        $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
+        $this->formDataGroupProphecy->compile(Argument::cetera())->will(static function ($arguments) {
             $result = $arguments[0];
             $result['newKey'] = 'newData';
             return $result;

@@ -153,7 +153,7 @@ class PageSlugCandidateProvider
             return '';
         }
         $redecorationPatterns = array_map(
-            function (DecoratingEnhancerInterface $decorationEnhancers) {
+            static function (DecoratingEnhancerInterface $decorationEnhancers) {
                 $pattern = $decorationEnhancers->getRoutePathRedecorationPattern();
                 return '(?:' . $pattern . ')';
             },

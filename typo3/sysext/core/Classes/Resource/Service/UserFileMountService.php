@@ -43,7 +43,7 @@ class UserFileMountService
     public function renderTceformsSelectDropdown(&$PA)
     {
         $allowedStorageIds = array_map(
-            function (ResourceStorage $storage) {
+            static function (ResourceStorage $storage) {
                 return $storage->getUid();
             },
             $this->getBackendUserAuthentication()->getFileStorages()

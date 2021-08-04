@@ -1159,7 +1159,7 @@ class DataMapProcessor
     {
         return array_filter(
             $items,
-            function (DataMapItem $item) use ($type) {
+            static function (DataMapItem $item) use ($type) {
                 return $item->getType() === $type;
             }
         );
@@ -1175,7 +1175,7 @@ class DataMapProcessor
     {
         $ids = array_filter(
             $ids,
-            function ($id) {
+            static function ($id) {
                 return MathUtility::canBeInterpretedAsInteger($id);
             }
         );
@@ -1208,7 +1208,7 @@ class DataMapProcessor
     protected function mapRelationItemId(array $relationItems)
     {
         return array_map(
-            function (array $relationItem) {
+            static function (array $relationItem) {
                 return (int)$relationItem['id'];
             },
             $relationItems

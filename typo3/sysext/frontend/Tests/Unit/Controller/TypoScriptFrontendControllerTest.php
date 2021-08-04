@@ -169,7 +169,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
             return $languageService;
         });
@@ -583,7 +583,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         ]);
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
             return $languageService;
         });
@@ -621,7 +621,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         ]);
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
             return $languageService;
         });
@@ -658,7 +658,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
-        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(function ($args) use ($languageService) {
+        $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
             return $languageService;
         });

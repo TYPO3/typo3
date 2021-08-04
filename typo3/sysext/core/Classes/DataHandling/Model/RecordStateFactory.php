@@ -101,7 +101,7 @@ class RecordStateFactory
     protected function resolveAspectFieldValues(array $data): array
     {
         return array_map(
-            function ($aspectFieldName) use ($data) {
+            static function ($aspectFieldName) use ($data) {
                 return (int)($data[$aspectFieldName] ?? 0);
             },
             $this->resolveAspectFieldNames()

@@ -103,7 +103,7 @@ class ConfigurationService implements SingletonInterface
                 ArrayProcessing::class,
                 'selectablePrototypeNames',
                 '^([\d]+)\.identifier$',
-                function ($_, $value) {
+                static function ($_, $value) {
                     return $value;
                 }
             )

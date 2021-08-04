@@ -106,7 +106,7 @@ class DispatcherTest extends UnitTestCase
         $mockSignal = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['emitSomeSignal'])
             ->getMock();
-        $mockSlot = function () {
+        $mockSlot = static function () {
         };
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', true);
         $expectedSlots = [
@@ -121,7 +121,7 @@ class DispatcherTest extends UnitTestCase
     public function dispatchPassesTheSignalArgumentsToTheSlotMethod(): void
     {
         $arguments = [];
-        $mockSlot = function () use (&$arguments) {
+        $mockSlot = static function () use (&$arguments) {
             $arguments = func_get_args();
         };
         $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, '', false);
@@ -151,7 +151,7 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -176,7 +176,7 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -201,7 +201,7 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -234,7 +234,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function () {
+                static function () {
                     return 'string';
                 }
             );
@@ -255,7 +255,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function () {
+                static function () {
                     return [1, 2, 3];
                 }
             );
@@ -296,7 +296,7 @@ class DispatcherTest extends UnitTestCase
     public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo(): void
     {
         $arguments = [];
-        $mockSlot = function () use (&$arguments) {
+        $mockSlot = static function () use (&$arguments) {
             $arguments = func_get_args();
         };
         $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);

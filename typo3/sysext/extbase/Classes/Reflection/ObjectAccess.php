@@ -211,7 +211,7 @@ class ObjectAccess
 
         $accessor = self::createAccessor();
         $propertyNames = array_keys($classSchema->getProperties());
-        $accessiblePropertyNames = array_filter($propertyNames, function ($propertyName) use ($accessor, $object) {
+        $accessiblePropertyNames = array_filter($propertyNames, static function ($propertyName) use ($accessor, $object) {
             return $accessor->isReadable($object, $propertyName);
         });
 
@@ -267,11 +267,11 @@ class ObjectAccess
         } else {
             $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($object);
 
-            $propertyNames = array_filter(array_keys($classSchema->getProperties()), function ($methodName) use ($accessor, $object) {
+            $propertyNames = array_filter(array_keys($classSchema->getProperties()), static function ($methodName) use ($accessor, $object) {
                 return $accessor->isWritable($object, $methodName);
             });
 
-            $setters = array_filter(array_keys($classSchema->getMethods()), function ($methodName) use ($object) {
+            $setters = array_filter(array_keys($classSchema->getMethods()), static function ($methodName) use ($object) {
                 return str_starts_with($methodName, 'set') && is_callable([$object, $methodName]);
             });
 
@@ -389,7 +389,7 @@ class ObjectAccess
      */
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
     {
-        $segments = array_map(function ($segment) {
+        $segments = array_map(static function ($segment) {
             return static::wrap($segment);
         }, $propertyPath->getElements());
 

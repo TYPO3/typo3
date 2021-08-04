@@ -1614,7 +1614,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'] ?? '', true);
                 array_walk(
                     $userGroupRecordPermissions,
-                    function ($permission) use (&$filePermissions) {
+                    static function ($permission) use (&$filePermissions) {
                         $filePermissions[$permission] = true;
                     }
                 );
@@ -1624,7 +1624,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 if (!empty($permissionsTsConfig)) {
                     array_walk(
                         $permissionsTsConfig,
-                        function ($value, $permission) use (&$filePermissions) {
+                        static function ($value, $permission) use (&$filePermissions) {
                             $filePermissions[$permission] = (bool)$value;
                         }
                     );
@@ -1652,7 +1652,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             if (!empty($storageFilePermissions)) {
                 array_walk(
                     $storageFilePermissions,
-                    function ($value, $permission) use (&$finalUserPermissions) {
+                    static function ($value, $permission) use (&$finalUserPermissions) {
                         $finalUserPermissions[$permission] = (bool)$value;
                     }
                 );

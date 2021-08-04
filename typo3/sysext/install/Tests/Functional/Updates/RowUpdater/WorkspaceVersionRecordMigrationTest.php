@@ -109,7 +109,7 @@ class WorkspaceVersionRecordMigrationTest extends FunctionalTestCase
 
         $names = array_shift($records);
         $records = array_map(
-            function (array $values) use ($names) {
+            static function (array $values) use ($names) {
                 return array_combine($names, $values);
             },
             $records

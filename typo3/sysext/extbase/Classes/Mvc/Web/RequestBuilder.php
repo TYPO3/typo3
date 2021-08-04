@@ -286,7 +286,7 @@ class RequestBuilder implements SingletonInterface
                 $fieldPaths[] = [$firstLevelFieldName];
             } else {
                 $newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
-                array_walk($newFieldPaths, function (&$value, $key) {
+                array_walk($newFieldPaths, static function (&$value, $key) {
                     $value = explode('/', $value);
                 });
                 $fieldPaths = array_merge($fieldPaths, $newFieldPaths);

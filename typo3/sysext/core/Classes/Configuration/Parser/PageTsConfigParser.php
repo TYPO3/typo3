@@ -74,7 +74,7 @@ class PageTsConfigParser
                     $beforeSubstitution = $content;
                     $content = preg_replace_callback(
                         '/\\{\\$(.[^}]*)\\}/',
-                        function (array $matches) use ($siteSettings): string {
+                        static function (array $matches) use ($siteSettings): string {
                             return isset($siteSettings[$matches[1]]) && !is_array($siteSettings[$matches[1]])
                                 ? (string)$siteSettings[$matches[1]] : $matches[0];
                         },

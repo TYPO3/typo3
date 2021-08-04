@@ -154,7 +154,7 @@ class HtmlWorker
     {
         $items = GeneralUtility::trimExplode(',', $selector, true);
         $items = array_map(
-            function (string $item): ?array {
+            static function (string $item): ?array {
                 $parts = explode('.', $item);
                 if (count($parts) !== 2) {
                     return null;

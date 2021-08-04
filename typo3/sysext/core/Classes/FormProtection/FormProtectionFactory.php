@@ -178,7 +178,7 @@ class FormProtectionFactory
      */
     public static function getMessageClosure(LanguageService $languageService, FlashMessageQueue $messageQueue, $isAjaxCall)
     {
-        return function () use ($languageService, $messageQueue, $isAjaxCall) {
+        return static function () use ($languageService, $messageQueue, $isAjaxCall) {
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,

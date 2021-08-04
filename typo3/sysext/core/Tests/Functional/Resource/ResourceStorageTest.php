@@ -373,7 +373,7 @@ class ResourceStorageTest extends FunctionalTestCase
                 null,
                 true,
                 [
-                    function ($itemName) {
+                    static function ($itemName) {
                         return strpos($itemName, 'blupp') !== false ? true : -1;
                     },
                 ],

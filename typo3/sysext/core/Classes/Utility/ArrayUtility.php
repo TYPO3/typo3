@@ -107,7 +107,7 @@ class ArrayUtility
         // Define a lambda function to be applied to all members of this array dimension
         // Call recursive if current value is of type array
         // Write to $resultArray (by reference!) if types and value match
-        $callback = function (&$value, $key) use ($needle, &$resultArray) {
+        $callback = static function (&$value, $key) use ($needle, &$resultArray) {
             if ($value === $needle) {
                 $resultArray[$key] = $value;
             } elseif (is_array($value)) {
@@ -376,7 +376,7 @@ class ArrayUtility
         if (empty($arrays)) {
             return $arrays;
         }
-        $sortResult = uasort($arrays, function (array $a, array $b) use ($key, $ascending) {
+        $sortResult = uasort($arrays, static function (array $a, array $b) use ($key, $ascending) {
             if (!isset($a[$key]) || !isset($b[$key])) {
                 throw new \RuntimeException('The specified sorting key "' . $key . '" is not available in the given array.', 1373727309);
             }
@@ -896,7 +896,7 @@ class ArrayUtility
      */
     public static function filterRecursive(array $array, callable $callback = null): array
     {
-        $callback = $callback ?: function ($value) {
+        $callback = $callback ?: static function ($value) {
             return (bool)$value;
         };
 

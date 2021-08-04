@@ -71,7 +71,7 @@ class SimpleParser
         }
         $nodes = array_filter(
             $this->nodes,
-            function (SimpleNode $node) use ($types): bool {
+            static function (SimpleNode $node) use ($types): bool {
                 return in_array(
                     $node->getType(),
                     $types,

@@ -39,7 +39,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
     public function staticRangeMapperDataProvider($parentSet = null): array
     {
         $variableContexts = array_map(
-            function ($value) {
+            static function ($value) {
                 return VariablesContext::create(
                     Variables::create([
                         'value' => $value,

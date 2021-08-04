@@ -42,10 +42,10 @@ class AbstractRestrictionTestCase extends UnitTestCase
         parent::setUp();
         /** @var Connection|\Prophecy\Prophecy\ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
-        $connection->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $connection->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . implode('"."', explode('.', $args[0])) . '"';
         });
-        $connection->quote(Argument::cetera())->will(function ($args) {
+        $connection->quote(Argument::cetera())->will(static function ($args) {
             return '\'' . $args[0] . '\'';
         });
         $connection->getDatabasePlatform()->willReturn(new MockPlatform());

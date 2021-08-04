@@ -170,7 +170,7 @@ class InstallStatusReport implements StatusProviderInterface
         $incompleteWizards = $upgradeWizardsService->getUpgradeWizardsList();
         $incompleteWizards = array_filter(
             $incompleteWizards,
-            function ($wizard) {
+            static function ($wizard) {
                 return $wizard['shouldRenderWizard'];
             }
         );

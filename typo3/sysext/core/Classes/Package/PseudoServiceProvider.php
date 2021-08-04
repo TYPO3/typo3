@@ -70,7 +70,7 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         // provide an optional third parameter which is forwarded as
         // dynamic path to getPackagePath().
         foreach ($extensions as $serviceName => $previousCallable) {
-            $extensions[$serviceName] = function (ContainerInterface $container, $value) use ($previousCallable, $packagePath) {
+            $extensions[$serviceName] = static function (ContainerInterface $container, $value) use ($previousCallable, $packagePath) {
                 return ($previousCallable)($container, $value, $packagePath);
             };
         }

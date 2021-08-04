@@ -392,9 +392,9 @@ class QueryHelperTest extends UnitTestCase
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $parts = array_map(
-                function ($identifier) {
+                static function ($identifier) {
                     return '"' . $identifier . '"';
                 },
                 explode('.', $args[0])

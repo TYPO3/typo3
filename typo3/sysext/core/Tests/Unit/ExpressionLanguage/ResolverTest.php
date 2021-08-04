@@ -159,9 +159,9 @@ class ResolverTest extends UnitTestCase
     {
         $expressionProvider = $this->prophesize(DefaultFunctionsProvider::class);
         $expressionProvider->getFunctions()->willReturn([
-            new ExpressionFunction('testMeLowercase', function ($str) {
+            new ExpressionFunction('testMeLowercase', static function ($str) {
                 return sprintf('(is_string(%1$s) ? strtolower(%1$s) : %1$s)', $str);
-            }, function ($arguments, $str) {
+            }, static function ($arguments, $str) {
                 return is_string($str) ? strtolower($str) : $str;
             }),
         ]);

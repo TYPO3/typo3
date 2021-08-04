@@ -224,7 +224,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('The source is not of type string, array, float, integer or boolean, but of type "object"');
 
-        $generator = function () {
+        $generator = static function () {
             return 'string';
         };
 

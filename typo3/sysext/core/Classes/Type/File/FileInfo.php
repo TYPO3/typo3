@@ -90,7 +90,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
                         '/',
                         (string)$fileInfo->file($this->getPathname(), FILEINFO_EXTENSION)
                     ),
-                    function ($item) {
+                    static function ($item) {
                         // filter invalid items ('???' is used if not found in magic.mime database)
                         return $item !== '' && $item !== '???';
                     }

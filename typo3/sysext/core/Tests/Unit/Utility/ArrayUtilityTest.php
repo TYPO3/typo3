@@ -2211,7 +2211,7 @@ class ArrayUtilityTest extends UnitTestCase
         $match = ArrayUtility::keepItemsInArray(
             $array,
             $keepItems,
-            function ($value) {
+            static function ($value) {
                 return $value[0];
             }
         );
@@ -3212,7 +3212,7 @@ class ArrayUtilityTest extends UnitTestCase
         // callback filters empty strings, array and null but keeps zero integers
         $result = ArrayUtility::filterRecursive(
             $input,
-            function ($item) {
+            static function ($item) {
                 return $item !== '' && $item !== [] && $item !== null;
             }
         );
@@ -3244,7 +3244,7 @@ class ArrayUtilityTest extends UnitTestCase
             'filter using a closure' => [
                 $input,
                 $expectedResult,
-                function ($value): bool {
+                static function ($value): bool {
                     return is_array($value) || $value === 'keep';
                 },
             ],

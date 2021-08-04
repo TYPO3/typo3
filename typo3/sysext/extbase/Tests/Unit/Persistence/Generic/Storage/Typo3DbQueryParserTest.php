@@ -301,7 +301,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->getMock();
         $connectionProphet->createQueryBuilder()->willReturn($queryBuilderForSubselectMock);
         $queryBuilderForSubselectMock->expects(self::any())->method('expr')->willReturn($expr);
-        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(function ($identifier) {
+        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(static function ($identifier) {
             return $identifier;
         });
         return $queryBuilderProphet;

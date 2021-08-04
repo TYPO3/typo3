@@ -53,10 +53,10 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'ip',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $str) {
+            static function ($arguments, $str) {
                 if ($str === 'devIP') {
                     $str = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] ?? '');
                 }
@@ -69,10 +69,10 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return new ExpressionFunction(
             'compatVersion',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $str) {
+            static function ($arguments, $str) {
                 return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
                    VersionNumberUtility::convertVersionNumberToInteger($str);
             }
@@ -81,9 +81,9 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getLikeFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('like', function () {
+        return new ExpressionFunction('like', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $haystack, $needle) {
+        }, static function ($arguments, $haystack, $needle) {
             $result = StringUtility::searchStringWildcard((string)$haystack, (string)$needle);
             return $result;
         });
@@ -96,9 +96,9 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getDateFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('date', function () {
+        return new ExpressionFunction('date', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $format) {
+        }, static function ($arguments, $format) {
             return GeneralUtility::makeInstance(Context::class)
                 ->getAspect('date')->getDateTime()->format($format);
         });
@@ -106,9 +106,9 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     protected function getFeatureToggleFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('feature', function () {
+        return new ExpressionFunction('feature', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $featureName) {
+        }, static function ($arguments, $featureName) {
             return GeneralUtility::makeInstance(Features::class)
                 ->isFeatureEnabled($featureName);
         });
@@ -116,9 +116,9 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 
     public function getTraverseArrayFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('traverse', function () {
+        return new ExpressionFunction('traverse', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $array, $path) {
+        }, static function ($arguments, $array, $path) {
             if (!is_array($array) || !is_string($path) || $path === '') {
                 return '';
             }

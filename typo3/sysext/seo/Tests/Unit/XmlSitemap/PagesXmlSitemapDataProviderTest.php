@@ -96,7 +96,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $subject->_set('numberOfItemsPerPage', $numberOfItemsPerPage);
 
         $subject->method('defineUrl')->willReturnCallback(
-            function ($input) {
+            static function ($input) {
                 return $input;
             }
         );

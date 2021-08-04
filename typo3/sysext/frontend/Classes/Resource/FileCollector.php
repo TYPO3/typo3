@@ -216,7 +216,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
         if ($sortingProperty !== '' && count($this->files) > 1) {
             @usort(
                 $this->files,
-                function (
+                static function (
                     FileInterface $a,
                     FileInterface $b
                 ) use ($sortingProperty) {

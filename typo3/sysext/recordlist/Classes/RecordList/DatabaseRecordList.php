@@ -1138,7 +1138,7 @@ class DatabaseRecordList
         }
 
         $tagAttributes = array_map(
-            function ($attributeValue) {
+            static function ($attributeValue) {
                 if (is_array($attributeValue)) {
                     return implode(' ', $attributeValue);
                 }

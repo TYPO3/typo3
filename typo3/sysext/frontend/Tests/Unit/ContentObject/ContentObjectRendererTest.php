@@ -1898,7 +1898,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $contentObjectFixture->expects(self::once())
             ->method('render')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(static function () {
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
         if ($addProductionExceptionHandlerInstance) {
@@ -3970,7 +3970,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $cacheManager
         );
         [$countCalls, $test] = [0, $this];
-        $closure = function ($par1, $par2) use (
+        $closure = static function ($par1, $par2) use (
             $test,
             $subject,
             $params,

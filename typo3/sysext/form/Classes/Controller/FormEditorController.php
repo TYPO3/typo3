@@ -342,7 +342,7 @@ class FormEditorController extends AbstractBackendController
                 continue;
             }
 
-            usort($formElementsByGroup[$groupName], function ($a, $b) {
+            usort($formElementsByGroup[$groupName], static function ($a, $b) {
                 return $a['sorting'] - $b['sorting'];
             });
             unset($formElementsByGroup[$groupName]['sorting']);

@@ -60,10 +60,10 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     protected function mockDatabaseConnection(): void
     {
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
+        $connectionProphet->quote(Argument::cetera())->will(static function ($arguments) {
             return "'" . $arguments[0] . "'";
         });
-        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($arguments) {
             return '`' . $arguments[0] . '`';
         });
 
@@ -80,7 +80,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
         );
         $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
-        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(static function ($arguments) {
             return '`' . $arguments[0] . '`';
         });
 

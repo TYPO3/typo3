@@ -33,7 +33,7 @@ class DefaultSanitizerBuilder extends CommonBuilder
         parent::__construct();
         // + URL must be on local host, or is absolute URI path
         $isOnCurrentHost = new Behavior\ClosureAttrValue(
-            function (string $value): bool {
+            static function (string $value): bool {
                 return GeneralUtility::isValidUrl($value) && GeneralUtility::isOnCurrentHost($value)
                     || GeneralUtility::isAbsPath($value) && GeneralUtility::isAllowedAbsPath($value); // @todo incorrect abs path!
             }

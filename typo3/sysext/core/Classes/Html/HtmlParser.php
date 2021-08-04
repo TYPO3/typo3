@@ -53,7 +53,7 @@ class HtmlParser
     public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = false)
     {
         $tags = array_unique(GeneralUtility::trimExplode(',', $tag, true));
-        array_walk($tags, function (&$tag) {
+        array_walk($tags, static function (&$tag) {
             $tag = preg_quote($tag, '/');
         });
         $regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
@@ -163,7 +163,7 @@ class HtmlParser
     public function splitTags($tag, $content)
     {
         $tags = GeneralUtility::trimExplode(',', $tag, true);
-        array_walk($tags, function (&$tag) {
+        array_walk($tags, static function (&$tag) {
             $tag = preg_quote($tag, '/');
         });
         $regexStr = '/\\<(' . implode('|', $tags) . ')(\\s[^>]*)?\\/?>/si';
@@ -843,7 +843,7 @@ class HtmlParser
             if ($cacheKey && isset($this->caseShift_cache[$cacheKey])) {
                 $str = $this->caseShift_cache[$cacheKey];
             } else {
-                array_walk($str, function (&$value) {
+                array_walk($str, static function (&$value) {
                     $value = strtoupper($value);
                 });
                 if ($cacheKey) {

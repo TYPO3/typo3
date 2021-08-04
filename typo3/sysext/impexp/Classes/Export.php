@@ -1405,7 +1405,7 @@ class Export extends ImportExport
                 sprintf(
                     'File type "%s" is not valid. Supported file types are %s.',
                     $exportFileType,
-                    implode(', ', array_map(function ($fileType) {
+                    implode(', ', array_map(static function ($fileType) {
                         return '"' . $fileType . '"';
                     }, $supportedFileTypes))
                 ),

@@ -175,7 +175,7 @@ class BackendUtility
     {
         return array_filter(
             $record,
-            function (string $propertyName): bool {
+            static function (string $propertyName): bool {
                 return $propertyName[0] !== '_';
             },
             ARRAY_FILTER_USE_KEY
@@ -193,7 +193,7 @@ class BackendUtility
     {
         return array_filter(
             $propertyNames,
-            function (string $propertyName): bool {
+            static function (string $propertyName): bool {
                 return $propertyName[0] !== '_';
             }
         );

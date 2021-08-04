@@ -529,7 +529,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                         'config' => [
                             'type' => 'check',
                             'items' => [],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $parameters['items'] = [
                                     'foo' => 'bar',
                                 ];
@@ -598,7 +598,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'invertedStateDisplay' => false,
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 if (
                                     $parameters['items'] !== [ 0 => [0=>'foo', 1 =>'bar', 'invertStateDisplay' => false]]
                                     || $parameters['config']['aKey'] !== 'aValue'
@@ -683,7 +683,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                                     'bar',
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 throw new \UnexpectedValueException('anException', 1438604329);
                             },
                         ],

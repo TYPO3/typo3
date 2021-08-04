@@ -206,7 +206,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        $closure = function () {
+        $closure = static function () {
             throw new MissingArrayPathException('Path does not exist in array', 1476109266);
         };
 

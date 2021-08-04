@@ -173,8 +173,8 @@ class DependencyOrderingService
 
         // Check for remaining edges in the graph
         $cycles = [];
-        array_walk($dependencyGraph, function ($dependencies, $fromId) use (&$cycles) {
-            array_walk($dependencies, function ($dependency, $toId) use (&$cycles, $fromId) {
+        array_walk($dependencyGraph, static function ($dependencies, $fromId) use (&$cycles) {
+            array_walk($dependencies, static function ($dependency, $toId) use (&$cycles, $fromId) {
                 if ($dependency) {
                     $cycles[] = $fromId . '->' . $toId;
                 }

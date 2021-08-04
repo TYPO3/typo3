@@ -3272,7 +3272,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                     $replaceCount = 0;
 
-                    $replaceCallback = function ($match) use ($replaceArray, $search, &$replaceCount) {
+                    $replaceCallback = static function ($match) use ($replaceArray, $search, &$replaceCount) {
                         $replaceCount++;
                         return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
                     };
@@ -3290,7 +3290,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                 $replaceCount = 0;
 
-                $replaceCallback = function () use ($replaceArray, &$replaceCount) {
+                $replaceCallback = static function () use ($replaceArray, &$replaceCount) {
                     $replaceCount++;
                     return $replaceArray[$replaceCount - 1][0];
                 };
@@ -4785,7 +4785,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $url = $this->lastTypoLinkUrl;
         $linkResultAttrs = array_filter(
             $linkedResult->getAttributes(),
-            function (string $name): bool {
+            static function (string $name): bool {
                 return !in_array($name, ['href', 'target']);
             },
             ARRAY_FILTER_USE_KEY
@@ -5756,7 +5756,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if (!$this->getFrontendBackendUser() instanceof AbstractUserAuthentication) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
                 try {
-                    $connection->transactional(function ($connection) use ($cacheEntry) {
+                    $connection->transactional(static function ($connection) use ($cacheEntry) {
                         $connection->insert('cache_treelist', $cacheEntry);
                     });
                 } catch (\Throwable $e) {

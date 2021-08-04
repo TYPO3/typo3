@@ -45,10 +45,10 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return new ExpressionFunction(
             'getFormValue',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $field) {
+            static function ($arguments, $field) {
                 return $arguments['formValues'][$field] ?? null;
             }
         );

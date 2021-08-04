@@ -198,7 +198,7 @@ class SiteRequestTest extends AbstractTestCase
         ];
 
         return array_map(
-            function (string $uri) {
+            static function (string $uri) {
                 if (strpos($uri, '/fr-fr/') !== false) {
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '/fr-ca/') !== false) {
@@ -272,7 +272,7 @@ class SiteRequestTest extends AbstractTestCase
         ];
 
         return array_map(
-            function (string $uri) {
+            static function (string $uri) {
                 if (strpos($uri, '.fr/') !== false) {
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '.ca/') !== false) {

@@ -879,7 +879,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $keys = $this->formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
         $ascending = $this->formSettings['persistenceManager']['sortAscending'] ?? true;
 
-        usort($forms, function (array $a, array $b) use ($keys) {
+        usort($forms, static function (array $a, array $b) use ($keys) {
             foreach ($keys as $key) {
                 if (isset($a[$key]) && isset($b[$key])) {
                     $diff = strcasecmp((string)$a[$key], (string)$b[$key]);

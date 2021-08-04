@@ -145,10 +145,10 @@ class ListenerProviderTest extends UnitTestCase
 
         $event = new \stdClass();
         $event->sequence = '';
-        $this->containerProphecy->get('listener1')->willReturn(function (object $event): void {
+        $this->containerProphecy->get('listener1')->willReturn(static function (object $event): void {
             $event->sequence .= 'a';
         });
-        $this->containerProphecy->get('listener2')->willReturn(function (object $event): void {
+        $this->containerProphecy->get('listener2')->willReturn(static function (object $event): void {
             $event->sequence .= 'b';
         });
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
@@ -203,7 +203,7 @@ class ListenerProviderTest extends UnitTestCase
             ],
             [
                 // Closure
-                'listener' => function (object $event): void {
+                'listener' => static function (object $event): void {
                     $event->invoked = 1;
                 },
                 'method' => null,

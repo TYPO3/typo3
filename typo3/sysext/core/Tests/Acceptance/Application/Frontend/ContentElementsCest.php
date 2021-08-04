@@ -36,7 +36,7 @@ class ContentElementsCest
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
         $I->click('.t3js-module-docheader-bar a[title="View webpage"]');
-        $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
+        $I->executeInSelenium(static function (RemoteWebDriver $webdriver) {
             $handles = $webdriver->getWindowHandles();
             $lastWindow = end($handles);
             $webdriver->switchTo()->window($lastWindow);

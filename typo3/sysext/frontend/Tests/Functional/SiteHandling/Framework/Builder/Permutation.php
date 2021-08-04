@@ -109,13 +109,13 @@ class Permutation
     public function getTargetsForDataProvider(): array
     {
         $keys = array_map(
-            function (TestSet $testSet) {
+            static function (TestSet $testSet) {
                 return $testSet->describe();
             },
             $this->results
         );
         $values = array_map(
-            function (TestSet $testSet) {
+            static function (TestSet $testSet) {
                 return [$testSet];
             },
             $this->results

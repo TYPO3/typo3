@@ -45,7 +45,7 @@ class BackendUserSessionRepository
 
         // Map array to correct keys
         $allSessions = array_map(
-            function ($session) {
+            static function ($session) {
                 return [
                     'id' => $session['ses_id'], // this is the hashed sessionId
                     'ip' => $session['ses_iplock'],
@@ -57,7 +57,7 @@ class BackendUserSessionRepository
         );
 
         // Sort by timestamp
-        usort($allSessions, function ($session1, $session2) {
+        usort($allSessions, static function ($session1, $session2) {
             return $session1['timestamp'] <=> $session2['timestamp'];
         });
 
@@ -76,7 +76,7 @@ class BackendUserSessionRepository
 
         return array_filter(
             $allActive,
-            function ($session) use ($backendUser) {
+            static function ($session) use ($backendUser) {
                 return (int)$session['ses_userid'] === $backendUser->getUid();
             }
         );

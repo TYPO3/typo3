@@ -177,7 +177,7 @@ class DbCheckModuleCest
     {
         $I->comment('Get context for table row "' . $rowName . '"');
         return $I->executeInSelenium(
-            function (RemoteWebDriver $webDriver) use ($rowName, $sibling) {
+            static function (RemoteWebDriver $webDriver) use ($rowName, $sibling) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
                         '//td[contains(text(),"' . $rowName . '")]/following-sibling::td[' . $sibling . ']'

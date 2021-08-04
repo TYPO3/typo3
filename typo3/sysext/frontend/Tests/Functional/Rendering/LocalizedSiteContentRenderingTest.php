@@ -340,7 +340,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
-        $visibleHeaders = array_map(function ($element) {
+        $visibleHeaders = array_map(static function ($element) {
             return $element['header'];
         }, $visibleRecords);
 

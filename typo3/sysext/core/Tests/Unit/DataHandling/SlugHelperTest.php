@@ -664,7 +664,7 @@ class SlugHelperTest extends UnitTestCase
         $options['generatorOptions'] = [
             'fields' => ['title'],
             'postModifiers' => [
-                0 => function ($parameters, $subject) {
+                0 => static function ($parameters, $subject) {
                     $slug = $parameters['slug'];
                     if ($parameters['pid'] == 13) {
                         $slug = 'prepend' . $slug;

@@ -47,7 +47,7 @@ class QueryHelper
         $orderExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            function ($expression) {
+            static function ($expression) {
                 $fieldNameOrderArray = GeneralUtility::trimExplode(' ', $expression, true);
                 $fieldName = $fieldNameOrderArray[0] ?? null;
                 $order = $fieldNameOrderArray[1] ?? null;
@@ -75,7 +75,7 @@ class QueryHelper
         $tableExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            function ($expression) {
+            static function ($expression) {
                 [$tableName, $as, $alias] = array_pad(GeneralUtility::trimExplode(' ', $expression, true), 3, null);
 
                 if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {
@@ -221,7 +221,7 @@ class QueryHelper
         if (strpos($sql, '{#') !== false) {
             $sql = preg_replace_callback(
                 '/{#(?P<identifier>[^}]+)}/',
-                function (array $matches) use ($connection) {
+                static function (array $matches) use ($connection) {
                     return $connection->quoteIdentifier($matches['identifier']);
                 },
                 $sql

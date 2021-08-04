@@ -261,7 +261,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             ->fetchOne();
 
         $entryMessages = array_map(
-            function (array $entry) {
+            static function (array $entry) {
                 $entryData = (array)unserialize($entry['log_data'], ['allowed_classes' => false]);
                 return vsprintf($entry['details'], $entryData);
             },

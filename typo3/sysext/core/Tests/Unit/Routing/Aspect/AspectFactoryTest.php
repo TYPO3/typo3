@@ -185,7 +185,7 @@ class AspectFactoryTest extends UnitTestCase
             $this->siteProphecy->reveal()
         );
         self::assertSame(array_keys($aspects), array_keys($expectation));
-        array_walk($aspects, function ($aspect, $key) use ($expectation) {
+        array_walk($aspects, static function ($aspect, $key) use ($expectation) {
             static::assertInstanceOf($expectation[$key], $aspect);
         });
     }

@@ -3916,7 +3916,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function callUserFunctionCanCallFunction(): void
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(function () {
+        $result = GeneralUtility::callUserFunction(static function () {
             return 'Worked fine';
         }, $inputData, $this, '');
         self::assertEquals('Worked fine', $result);
@@ -3946,7 +3946,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function callUserFunctionAcceptsClosures(): void
     {
         $inputData = ['foo' => 'bar'];
-        $closure = function ($parameters, $reference) use ($inputData) {
+        $closure = static function ($parameters, $reference) use ($inputData) {
             $reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
             return 'Worked fine';
         };

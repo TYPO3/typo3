@@ -62,7 +62,7 @@ class EnumTypeTest extends UnitTestCase
 
         $databaseProphet = $this->prophesize(AbstractPlatform::class);
         $databaseProphet->quoteStringLiteral(Argument::cetera())->will(
-            function ($args) {
+            static function ($args) {
                 return "'" . $args[0] . "'";
             }
         );

@@ -164,7 +164,7 @@ class FileRepository extends AbstractRepository
     {
         uasort(
             $itemList,
-            function (FileReference $a, FileReference $b) {
+            static function (FileReference $a, FileReference $b) {
                 $sortA = (int)$a->getReferenceProperty('sorting_foreign');
                 $sortB = (int)$b->getReferenceProperty('sorting_foreign');
 

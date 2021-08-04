@@ -346,7 +346,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $parentIndex = array_values(
             array_filter(
                 array_keys($indexesAfterChange),
-                function ($key) {
+                static function ($key) {
                     return strpos($key, 'parent') !== false;
                 }
             )

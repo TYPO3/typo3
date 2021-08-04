@@ -1005,7 +1005,7 @@ class GeneralUtility
         $result = explode($delim, $string) ?: [];
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, fn ($item) => trim($item) !== ''));
+            $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
         }
 
         if ($limit === 0) {

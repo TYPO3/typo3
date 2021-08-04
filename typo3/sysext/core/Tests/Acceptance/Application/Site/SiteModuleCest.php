@@ -292,7 +292,7 @@ page.10.value = This is a default text for default rendering without dynamic con
     {
         $I->comment('Get input for label "' . $labelName . '"');
         return $I->executeInSelenium(
-            function (RemoteWebDriver $webDriver) use ($labelName, $tag) {
+            static function (RemoteWebDriver $webDriver) use ($labelName, $tag) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
                         '//abbr[contains(text(),"' . $labelName . '")]/parent::*/parent::*/following-sibling::div//' . $tag

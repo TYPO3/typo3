@@ -220,7 +220,7 @@ class ClassSchema
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
 
             /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, function ($annotation) {
+            $validateAnnotations = array_filter($annotations, static function ($annotation) {
                 return $annotation instanceof Validate;
             });
 
@@ -321,7 +321,7 @@ class ClassSchema
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
 
             /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, function ($annotation) {
+            $validateAnnotations = array_filter($annotations, static function ($annotation) {
                 return $annotation instanceof Validate;
             });
 
@@ -355,7 +355,7 @@ class ClassSchema
 
                 $parameterName = $reflectionParameter->getName();
 
-                $ignoreValidationParameters = array_filter($annotations, function ($annotation) use ($parameterName) {
+                $ignoreValidationParameters = array_filter($annotations, static function ($annotation) use ($parameterName) {
                     return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
                 });
 
@@ -672,7 +672,7 @@ MESSAGE;
      */
     public function getInjectMethods(): array
     {
-        return array_filter($this->buildMethodObjects(), function ($method) {
+        return array_filter($this->buildMethodObjects(), static function ($method) {
             /** @var Method $method */
             return $method->isInjectMethod();
         });

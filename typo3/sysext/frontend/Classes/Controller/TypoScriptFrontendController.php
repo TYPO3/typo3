@@ -2149,7 +2149,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $tempCommaReplacementString = '###KASPER###';
 
         // replace every "," wrapped in "()" by a "unique" string
-        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', function ($result) use ($tempCommaReplacementString) {
+        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', static function ($result) use ($tempCommaReplacementString) {
             return str_replace(',', $tempCommaReplacementString, $result[0]);
         }, $string) ?? '';
 

@@ -97,7 +97,7 @@ class OperatorTest extends FunctionalTestCase
         );
 
         $result = array_map(
-            function ($row) {
+            static function ($row) {
                 return $row['uid'];
             },
             $query->execute(true)

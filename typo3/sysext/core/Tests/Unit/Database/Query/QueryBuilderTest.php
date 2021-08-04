@@ -359,7 +359,7 @@ class QueryBuilderTest extends UnitTestCase
     public function quoteIdentifiersForSelect($identifier, $expectedResult): void
     {
         $this->connection->quoteIdentifier(Argument::cetera())->will(
-            function ($args) {
+            static function ($args) {
                 $platform = new MockPlatform();
 
                 return $platform->quoteIdentifier($args[0]);
@@ -378,7 +378,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1461170686);
 
         $this->connection->quoteIdentifier(Argument::cetera())->will(
-            function ($args) {
+            static function ($args) {
                 $platform = new MockPlatform();
 
                 return $platform->quoteIdentifier($args[0]);
