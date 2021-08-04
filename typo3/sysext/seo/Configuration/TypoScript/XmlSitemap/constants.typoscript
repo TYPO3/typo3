@@ -19,7 +19,7 @@ plugin.tx_seo {
           # cat=plugin.tx_seo/sitemap; type=string; label=List of page uids which should be excluded recursive
           excludePagesRecursive =
           # cat=plugin.tx_seo/sitemap; type=string; label=Additional where clause
-          additionalWhere = no_index = 0 AND canonical_link = ''
+          additionalWhere = {#no_index} = 0 AND {#canonical_link} = ''
         }
       }
     }

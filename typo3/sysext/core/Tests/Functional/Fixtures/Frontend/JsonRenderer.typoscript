@@ -82,10 +82,10 @@ page {
 			if.isTrue.field = tx_irretutorial_1ncsv_hotels
 			table = tx_irretutorial_1ncsv_hotel
 			select {
-        uidInList.data = field:tx_irretutorial_1ncsv_hotels
-        orderBy = sorting
-        # prevent sys_language_uid lookup
-        languageField = 0
+				uidInList.data = field:tx_irretutorial_1ncsv_hotels
+				orderBy = sorting
+				# prevent sys_language_uid lookup
+				languageField = 0
 			}
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1ncsv_hotels/tx_irretutorial_1ncsv_hotel:{field:uid}
@@ -106,13 +106,13 @@ page {
 					table = sys_category
 					select {
 						pidInList = this,root,-1
-						selectFields = sys_category.*
-						join = sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid
+						selectFields = {#sys_category}.*
+						join = {#sys_category_record_mm} ON {#sys_category_record_mm}.{#uid_local} = {#sys_category}.{#uid}
 						where.data = field:_ORIG_uid // field:_LOCALIZED_UID // field:uid
 						where.intval = 1
-						where.wrap = sys_category_record_mm.uid_foreign=|
+						where.wrap = {#sys_category_record_mm}.{#uid_foreign}=|
 						orderBy = sys_category_record_mm.sorting_foreign
-						languageField = sys_category.sys_language_uid
+						languageField = {#sys_category}.{#sys_language_uid}
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.categories/sys_category:{field:uid}

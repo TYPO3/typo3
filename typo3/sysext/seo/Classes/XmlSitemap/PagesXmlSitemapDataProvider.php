@@ -88,7 +88,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         ];
 
         if (!empty($this->config['additionalWhere'])) {
-            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']);
+            $constraints[] = QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']));
         }
 
         if (!empty($this->config['excludedDoktypes'])) {
