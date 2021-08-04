@@ -1838,12 +1838,16 @@ class DatabaseRecordList
                 $cells['cut'] = $this->spaceIcon;
             } else {
                 $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL);
+                $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy');
                 $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL);
+                $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut');
 
                 if ($isSel === 'copy') {
                     $copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL);
+                    $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copyrelease');
                 } elseif ($isSel === 'cut') {
                     $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL);
+                    $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease');
                 }
 
                 $cells['copy'] = '<a class="btn btn-default"'
@@ -1854,8 +1858,8 @@ class DatabaseRecordList
                         $isSel === 'copy',
                         ['returnUrl' => $this->listURL()]
                     )) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '"'
-                    . ' aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
+                    . ' title="' . htmlspecialchars($copyTitle) . '"'
+                    . ' aria-label="' . htmlspecialchars($copyTitle) . '">'
                     . $copyIcon->render()
                     . '</a>';
 
@@ -1876,8 +1880,8 @@ class DatabaseRecordList
                             $isSel === 'cut',
                             ['returnUrl' => $this->listURL()]
                         )) . '"'
-                        . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '"'
-                        . ' aria-label="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
+                        . ' title="' . htmlspecialchars($cutTitle) . '"'
+                        . ' aria-label="' . htmlspecialchars($cutTitle) . '">'
                         . $cutIcon->render()
                         . '</a>';
                 } else {

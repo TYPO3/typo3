@@ -915,15 +915,17 @@ class FileList
         // For normal clipboard, add copy/cut buttons:
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected('_FILE', $md5);
-            $copyTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy'));
-            $cutTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut'));
+            $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy');
+            $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut');
             $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
             $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL)->render();
 
             if ($isSel === 'copy') {
                 $copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL)->render();
+                $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copyrelease');
             } elseif ($isSel === 'cut') {
                 $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL)->render();
+                $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease');
             }
 
             if ($fileOrFolderObject->checkActionPermission('copy')) {
@@ -931,7 +933,7 @@ class FileList
                     $fullIdentifier,
                     true,
                     $isSel === 'copy'
-                )) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
+                )) . '" title="' . htmlspecialchars($copyTitle) . '">' . $copyIcon . '</a>';
             } else {
                 $cells[] = $this->spaceIcon;
             }
@@ -941,7 +943,7 @@ class FileList
                     $fullIdentifier,
                     false,
                     $isSel === 'cut'
-                )) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
+                )) . '" title="' . htmlspecialchars($cutTitle) . '">' . $cutIcon . '</a>';
             } else {
                 $cells[] = $this->spaceIcon;
             }

@@ -993,6 +993,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.copy" resname="cm.copy">
 				<source>Copy</source>
 			</trans-unit>
+			<trans-unit id="cm.copyrelease" resname="cm.copyrelease">
+				<source>Copy release</source>
+			</trans-unit>
 			<trans-unit id="cm.cut" resname="cm.cut">
 				<source>Cut</source>
 			</trans-unit>
