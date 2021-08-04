@@ -92,8 +92,12 @@ END;
      */
     public function updateNecessary(): bool
     {
-        $result = $this->sysLogTable->executeQuery('SELECT count(channel) FROM sys_log WHERE NOT channel="default"');
-        return !$result->fetchOne();
+        try {
+            $result = $this->sysLogTable->executeQuery('SELECT count(channel) FROM sys_log WHERE NOT channel="default"');
+            return !$result->fetchOne();
+        } catch (\Doctrine\DBAL\Exception\InvalidFieldNameException $e) {
+            return true;
+        }
     }
 
     /**
