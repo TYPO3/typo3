@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
@@ -26,6 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheServiceTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     protected ?CacheService $cacheService = null;
 
     /**
