@@ -103,41 +103,40 @@ class FormSelectTreeAjaxController
                         ],
                     ];
                 }
-            } else {
-                if (isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                    ['el'][$flexFormFieldName]
-                    ['el'][$flexFormContainerName]
-                    ['el'][$flexFormContainerFieldName])
-                ) {
-                    // If this is a tree in a section container that has just been added by the FlexFormAjaxController
-                    // "new container" action, then this container is not yet persisted, so we need to trigger the
-                    // TcaFlexProcess data provider again to prepare the DS and databaseRow of that container.
-                    if ($flexFormSectionContainerIsNew) {
-                        $flexSectionContainerPreparation = [
-                            'flexFormSheetName' => $flexFormSheetName,
-                            'flexFormFieldName' => $flexFormFieldName,
-                            'flexFormContainerName' => $flexFormContainerName,
-                            'flexFormContainerIdentifier' => $flexFormContainerIdentifier,
-                        ];
-                    }
-                    // Now restrict the data structure to our tree element only
-                    $dataStructure = [
-                        'sheets' => [
-                            $flexFormSheetName => [
-                                'ROOT' => [
-                                    'type' => 'array',
-                                    'el' => [
-                                        $flexFormFieldName => [
-                                            'section' => 1,
-                                            'type' => 'array',
-                                            'el' => [
-                                                $flexFormContainerName => [
-                                                    'el' => [
-                                                        $flexFormContainerFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                                                            ['el'][$flexFormFieldName]
-                                                            ['el'][$flexFormContainerName]
-                                                            ['el'][$flexFormContainerFieldName]
-                                                    ],
+            } elseif (isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                ['el'][$flexFormFieldName]
+                ['el'][$flexFormContainerName]
+                ['el'][$flexFormContainerFieldName])
+            ) {
+                // If this is a tree in a section container that has just been added by the FlexFormAjaxController
+                // "new container" action, then this container is not yet persisted, so we need to trigger the
+                // TcaFlexProcess data provider again to prepare the DS and databaseRow of that container.
+                if ($flexFormSectionContainerIsNew) {
+                    $flexSectionContainerPreparation = [
+                        'flexFormSheetName' => $flexFormSheetName,
+                        'flexFormFieldName' => $flexFormFieldName,
+                        'flexFormContainerName' => $flexFormContainerName,
+                        'flexFormContainerIdentifier' => $flexFormContainerIdentifier,
+                    ];
+                }
+                // Now restrict the data structure to our tree element only
+                $dataStructure = [
+                    'sheets' => [
+                        $flexFormSheetName => [
+                            'ROOT' => [
+                                'type' => 'array',
+                                'el' => [
+                                    $flexFormFieldName => [
+                                        'section' => 1,
+                                        'type' => 'array',
+                                        'el' => [
+                                            $flexFormContainerName => [
+                                                'type' => 'array',
+                                                'el' => [
+                                                    $flexFormContainerFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']
+                                                        ['el'][$flexFormFieldName]
+                                                        ['el'][$flexFormContainerName]
+                                                        ['el'][$flexFormContainerFieldName]
                                                 ],
                                             ],
                                         ],
@@ -145,8 +144,8 @@ class FormSelectTreeAjaxController
                                 ],
                             ],
                         ],
-                    ];
-                }
+                    ],
+                ];
             }
             $processedTca['columns'][$fieldName]['config']['ds'] = $dataStructure;
             $processedTca['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
