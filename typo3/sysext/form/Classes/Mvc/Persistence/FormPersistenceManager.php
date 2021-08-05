@@ -310,9 +310,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
         foreach ($this->getAccessibleFormStorageFolders() as $folder) {
             $storage = $folder->getStorage();
-            $storage->addFileAndFolderNameFilter([
-                $fileExtensionFilter,
-                'filterFileList'
+            $storage->setFileAndFolderNameFilters([
+                [$fileExtensionFilter, 'filterFileList']
             ]);
 
             $files = $folder->getFiles(
