@@ -1657,9 +1657,11 @@ class GeneralUtility
      * @param string $script Script to minify
      * @param string $error Error message (if any)
      * @return string Minified script or source string if error happened
+     * @deprecated will be removed in TYPO3 v12.0. Use ResourceCompressor->compressJavaScriptSource() instead.
      */
     public static function minifyJavaScript($script, &$error = '')
     {
+        trigger_error('Calling GeneralUtility::minifyJavaScript directly will be removed in TYPO3 v12.0. Use ResourceCompressor->compressJavaScriptSource() instead.', E_USER_DEPRECATED);
         $fakeThis = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
             try {

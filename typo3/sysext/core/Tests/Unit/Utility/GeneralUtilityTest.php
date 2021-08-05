@@ -2310,19 +2310,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
     }
 
-    ///////////////////////////
-    // Tests concerning minifyJavaScript
-    ///////////////////////////
-    /**
-     * @test
-     */
-    public function minifyJavaScriptReturnsInputStringIfNoHookIsRegistered(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
-        $testString = StringUtility::getUniqueId('string');
-        self::assertSame($testString, GeneralUtility::minifyJavaScript($testString));
-    }
-
     ///////////////////////////////
     // Tests concerning fixPermissions
     ///////////////////////////////

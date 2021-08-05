@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -613,6 +614,24 @@ class ResourceCompressor
             GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
         }
         return $filename;
+    }
+
+    public function compressJavaScriptSource(string $javaScriptSourceCode): string
+    {
+        $fakeThis = null;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
+            try {
+                $parameters = ['script' => $javaScriptSourceCode];
+                $javaScriptSourceCode = GeneralUtility::callUserFunction($hookMethod, $parameters, $fakeThis);
+            } catch (\Exception $e) {
+                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning('Error minifying Javascript: {file}, hook: {hook}', [
+                    'file' => $javaScriptSourceCode,
+                    'hook' => $hookMethod,
+                    'exception' => $e,
+                ]);
+            }
+        }
+        return $javaScriptSourceCode;
     }
 
     /**

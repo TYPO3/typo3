@@ -318,13 +318,6 @@ class PageRenderer implements SingletonInterface
     ];
 
     /**
-     * Saves error messages generated during compression
-     *
-     * @var string
-     */
-    protected $compressError = '';
-
-    /**
      * Is empty string for HTML and ' /' for XHTML rendering
      *
      * @var string
@@ -2518,15 +2511,9 @@ class PageRenderer implements SingletonInterface
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsCompressHandler'], $params, $this);
             } else {
                 // Traverse the arrays, compress files
-                if (!empty($this->jsInline)) {
-                    foreach ($this->jsInline as $name => $properties) {
-                        if ($properties['compress']) {
-                            $error = '';
-                            $this->jsInline[$name]['code'] = GeneralUtility::minifyJavaScript($properties['code'], $error);
-                            if ($error) {
-                                $this->compressError .= 'Error with minify JS Inline Block "' . $name . '": ' . $error . LF;
-                            }
-                        }
+                foreach ($this->jsInline ?? [] as $name => $properties) {
+                    if ($properties['compress'] ?? false) {
+                        $this->jsInline[$name]['code'] = $this->getCompressor()->compressJavaScriptSource($properties['code']);
                     }
                 }
                 $this->jsLibs = $this->getCompressor()->compressJsFiles($this->jsLibs);

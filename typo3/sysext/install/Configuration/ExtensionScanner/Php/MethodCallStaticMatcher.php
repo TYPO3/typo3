@@ -1163,4 +1163,11 @@ return [
             'Deprecation-94687-SoftReferenceIndex.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94791-GeneralUtilityminifyJavaScript.rst'
+        ],
+    ],
 ];
