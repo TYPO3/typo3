@@ -1,0 +1,52 @@
+<!--
+	Unit test deprecated suite setup.
+
+	This suite allows tests to trigger E_USER_DEPRECATED errors
+	without making the tests fail. Used to test deprecated core
+	functionality.
+
+	Unit tests should extend \TYPO3\TestingFramework\Core\Tests\UnitTestCase,
+	take a look at this class for further documentation on how to run the suite.
+
+	TYPO3 CMS unit test suite also needs phpunit bootstrap code, the
+	file is located next to this .xml as UnitTestsBootstrap.php
+
+    The recommended way to execute the suite is "runTests.sh -s unitDeprecated"
+    execute "Build/Scripts/runTests.sh -h" for more details.
+-->
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    backupGlobals="true"
+    bootstrap="UnitTestsBootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertDeprecationsToExceptions="false"
+    forceCoversAnnotation="false"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Core tests">
+            <directory>../../typo3/sysext/*/Tests/UnitDeprecated/</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <include>
+            <directory>../../typo3/sysext/*/Classes/</directory>
+        </include>
+    </coverage>
+    <php>
+        <const name="TYPO3_MODE" value="BE" />
+        <ini name="display_errors" value="1" />
+        <env name="TYPO3_CONTEXT" value="Testing" />
+    </php>
+</phpunit>

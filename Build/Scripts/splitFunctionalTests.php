@@ -58,7 +58,7 @@ class SplitFunctionalTests
     /**
      * Main entry method
      */
-    public function execute()
+    public function execute(): int
     {
         $input = new ArgvInput($_SERVER['argv'], $this->getInputDefinition());
         $output = new ConsoleOutput();
@@ -91,7 +91,7 @@ class SplitFunctionalTests
             /** @var $file SplFileInfo */
             $relativeFilename = $file->getRealPath();
             preg_match('/.*typo3\/sysext\/(.*)$/', $relativeFilename, $matches);
-            $relativeFilename = '../typo3/sysext/' . $matches[1];
+            $relativeFilename = '../../typo3/sysext/' . $matches[1];
 
             $ast = $parser->parse($file->getContents());
             $traverser = new NodeTraverser();
@@ -148,7 +148,7 @@ class SplitFunctionalTests
             </directory>
 
 EOF;
-            file_put_contents(__DIR__ . '/../' . 'FunctionalTests-Job-' . $jobFileNumber . '.xml', $content, FILE_APPEND);
+            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $jobFileNumber . '.xml', $content, FILE_APPEND);
 
             $numberOfTestsPerChunk[$jobFileNumber] = $numberOfTestsPerChunk[$jobFileNumber] + $numberOfTestsInFile;
         }
@@ -164,6 +164,8 @@ EOF;
                 $output->writeln('Number of tests in chunk ' . $chunkNumber . ': ' . $testNumber);
             }
         }
+
+        return 0;
     }
 
     /**
@@ -188,8 +190,10 @@ EOF;
     {
         $content = <<<EOF
 <phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
     backupGlobals="true"
-    bootstrap="../vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
+    bootstrap="FunctionalTestsBootstrap.php"
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
@@ -200,13 +204,14 @@ EOF;
     stopOnSkipped="false"
     verbose="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
+    failOnWarning="true"
 >
     <testsuites>
         <testsuite name="Core tests">
 
 EOF;
         for ($i = 1; $i <= $numberOfChunks; $i++) {
-            file_put_contents(__DIR__ . '/../' . 'FunctionalTests-Job-' . $i . '.xml', $content);
+            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $i . '.xml', $content);
         }
     }
 
@@ -224,7 +229,7 @@ EOF;
 
 EOF;
         for ($i = 1; $i <= $numberOfChunks; $i++) {
-            file_put_contents(__DIR__ . '/../' . 'FunctionalTests-Job-' . $i . '.xml', $content, FILE_APPEND);
+            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $i . '.xml', $content, FILE_APPEND);
         }
     }
 }

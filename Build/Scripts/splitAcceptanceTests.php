@@ -58,7 +58,7 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
     /**
      * Main entry method
      */
-    public function execute()
+    public function execute(): int
     {
         $input = new ArgvInput($_SERVER['argv'], $this->getInputDefinition());
         $output = new ConsoleOutput();
@@ -153,6 +153,8 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
                 $output->writeln('Number of tests in chunk ' . $chunkNumber . ': ' . $testNumber);
             }
         }
+
+        return 0;
     }
 
     /**

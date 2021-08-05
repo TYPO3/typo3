@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\SignalSlot;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -33,6 +34,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DispatcherTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
