@@ -52,7 +52,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_post',
-                'foreign_table_where' => 'AND tx_blogexample_domain_model_post.uid=###REC_FIELD_l18n_parent### AND tx_blogexample_domain_model_post.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_post}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_post}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l18n_diffsource' => [
@@ -209,7 +209,7 @@ return [
                 'autoSizeMax' => 30,
                 'multiple' => 0,
                 'foreign_table' => 'tx_blogexample_domain_model_post',
-                'foreign_table_where' => 'AND ###THIS_UID### != tx_blogexample_domain_model_post.uid',
+                'foreign_table_where' => 'AND ###THIS_UID### != {#tx_blogexample_domain_model_post}.{#uid}',
                 // @todo: Broken. A symmetric MM can not have MM_opposite_field pointing to itself. A symmetric MM
                 //        is probably not supported at all and also has no functional test coverage. We should play
                 //        around with this scenario, but it's probably better to switch to inline symmetric, see

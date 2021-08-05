@@ -398,7 +398,7 @@ class CategoryRegistry implements SingletonInterface
             'type' => 'select',
             'renderType' => 'selectTree',
             'foreign_table' => 'sys_category',
-            'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+            'foreign_table_where' => ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
             'MM' => 'sys_category_record_mm',
             'MM_opposite_field' => 'items',
             'MM_match_fields' => [

@@ -29,7 +29,7 @@ return [
                 'readOnly' => true,
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'pages',
-                'foreign_table_where' => ' AND (is_siteroot=1 OR (pid=0 AND doktype IN (1,6,7))) AND l10n_parent = 0 ORDER BY pid, sorting',
+                'foreign_table_where' => ' AND ({#is_siteroot}=1 OR ({#pid}=0 AND {#doktype} IN (1,6,7))) AND {#l10n_parent} = 0 ORDER BY pid, sorting',
             ],
         ],
         'base' => [

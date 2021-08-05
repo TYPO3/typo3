@@ -70,7 +70,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => 'AND sys_category.pid=###CURRENT_PID### AND sys_category.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#sys_category}.{#pid}=###CURRENT_PID### AND {#sys_category}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],

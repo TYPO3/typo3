@@ -48,7 +48,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'sys_file_collection',
-                'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#sys_file_collection}.{#pid}=###CURRENT_PID### AND {#sys_file_collection}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],

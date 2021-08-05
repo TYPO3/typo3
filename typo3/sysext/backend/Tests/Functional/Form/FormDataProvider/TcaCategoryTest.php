@@ -511,7 +511,7 @@ class TcaCategoryTest extends FunctionalTestCase
         $default = [
             'relationship' => 'oneToOne',
             'foreign_table' => 'sys_category',
-            'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
+            'foreign_table_where' => ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
             'size' => 20,
             'default' => 0,
             'maxitems' => 1,

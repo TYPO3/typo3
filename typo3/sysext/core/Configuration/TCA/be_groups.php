@@ -49,7 +49,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_filemounts',
-                'foreign_table_where' => ' AND sys_filemounts.pid=0',
+                'foreign_table_where' => ' AND {#sys_filemounts}.{#pid}=0',
                 'size' => 3,
                 'autoSizeMax' => 10,
                 'fieldControl' => [
@@ -246,7 +246,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
-                'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###)',
+                'foreign_table_where' => 'AND NOT({#be_groups}.{#uid} = ###THIS_UID###)',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ],

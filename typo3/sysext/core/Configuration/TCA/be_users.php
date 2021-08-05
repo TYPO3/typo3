@@ -121,7 +121,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_filemounts',
-                'foreign_table_where' => ' AND sys_filemounts.pid=0',
+                'foreign_table_where' => ' AND {#sys_filemounts}.{#pid}=0',
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,

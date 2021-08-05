@@ -39,7 +39,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_person',
-                'foreign_table_where' => 'AND tx_blogexample_domain_model_person.pid=###CURRENT_PID### AND tx_blogexample_domain_model_person.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {tx_blogexample_domain_model_person}.{#pid}=###CURRENT_PID### AND {#tx_blogexample_domain_model_person}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'hidden' => [

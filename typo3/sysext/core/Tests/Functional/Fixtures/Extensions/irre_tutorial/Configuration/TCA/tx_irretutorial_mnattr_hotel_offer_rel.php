@@ -39,7 +39,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_irretutorial_mnattr_hotel_offer_rel',
-                'foreign_table_where' => 'AND tx_irretutorial_mnattr_hotel_offer_rel.pid=###CURRENT_PID### AND tx_irretutorial_mnattr_hotel_offer_rel.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_irretutorial_mnattr_hotel_offer_rel}.{#pid}=###CURRENT_PID### AND {#tx_irretutorial_mnattr_hotel_offer_rel}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],

@@ -53,7 +53,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###)',
+                'foreign_table_where' => 'AND NOT({#fe_groups}.{#uid} = ###THIS_UID###)',
                 'size' => 6,
                 'autoSizeMax' => 10,
                 'minitems' => 0,

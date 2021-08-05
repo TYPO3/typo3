@@ -289,7 +289,7 @@ return [
                 ],
                 'foreign_table' => 'pages',
                 // no sys_language_uid = -1 allowed explicitly!
-                'foreign_table_where' => 'AND pages.uid=###CURRENT_PID### AND pages.sys_language_uid = 0',
+                'foreign_table_where' => 'AND {#pages}.{#uid}=###CURRENT_PID### AND {#pages}.{#sys_language_uid} = 0',
                 'default' => 0,
             ],
         ],

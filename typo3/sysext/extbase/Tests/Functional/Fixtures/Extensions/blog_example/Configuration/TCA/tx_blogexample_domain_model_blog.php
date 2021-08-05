@@ -43,7 +43,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
-                'foreign_table_where' => 'AND tx_blogexample_domain_model_blog.uid=###REC_FIELD_l18n_parent### AND tx_blogexample_domain_model_blog.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_blog}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_blog}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l18n_diffsource' => [
@@ -139,7 +139,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'fe_users',
-                'foreign_table_where' => "AND fe_users.tx_extbase_type='ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator'",
+                'foreign_table_where' => "AND {#fe_users}.{#tx_extbase_type}='ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\Administrator'",
                 'items' => [
                     ['--none--', 0],
                 ],

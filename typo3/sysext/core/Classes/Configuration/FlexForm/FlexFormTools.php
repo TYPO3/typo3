@@ -1053,7 +1053,7 @@ class FlexFormTools
 
                 // Force foreign_table_* fields for type category
                 $fieldConfig['TCEforms']['config']['foreign_table'] = 'sys_category';
-                $fieldConfig['TCEforms']['config']['foreign_table_where'] = ' AND sys_category.sys_language_uid IN (-1, 0)';
+                $fieldConfig['TCEforms']['config']['foreign_table_where'] = ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
 
                 if (empty($fieldConfig['TCEforms']['config']['relationship'])) {
                     // Fall back to "oneToMany" when no relationship is given
