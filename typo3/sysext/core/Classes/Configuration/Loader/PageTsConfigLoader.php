@@ -69,7 +69,7 @@ class PageTsConfigLoader
     public function collect(array $rootLine): array
     {
         $tsData = [
-            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? []
+            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? ''
         ];
         foreach ($rootLine as $page) {
             // Can happen when the rootline is given from BE context, we skip this
