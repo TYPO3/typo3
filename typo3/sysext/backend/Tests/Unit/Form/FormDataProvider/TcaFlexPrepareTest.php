@@ -286,4 +286,224 @@ class TcaFlexPrepareTest extends UnitTestCase
 
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataSetsParsedDataStructureArrayRecursive(): void
+    {
+        $input = [
+            'systemLanguageRows' => [],
+            'tableName' => 'aTableName',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                    'meta' => [],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'default' => '
+                                    <T3DataStructure>
+                                        <sheets>
+                                            <sTree>
+                                                <ROOT>
+                                                    <type>array</type>
+                                                    <TCEforms>
+                                                        <sheetTitle>selectTree</sheetTitle>
+                                                    </TCEforms>
+                                                    <el>
+                                                        <select_tree_1>
+                                                            <TCEforms>
+                                                                <label>select_tree_1</label>
+                                                                <description>select_tree_1 description</description>
+                                                                <config>
+                                                                    <type>select</type>
+                                                                    <renderType>selectTree</renderType>
+                                                                </config>
+                                                            </TCEforms>
+                                                        </select_tree_1>
+                                                    </el>
+                                                </ROOT>
+                                            </sTree>
+                                            <sSection>
+                                                <ROOT>
+                                                    <type>array</type>
+                                                    <TCEforms>
+                                                        <sheetTitle>section</sheetTitle>
+                                                    </TCEforms>
+                                                    <el>
+                                                        <section_1>
+                                                            <title>section_1</title>
+                                                            <type>array</type>
+                                                            <section>1</section>
+                                                            <el>
+                                                                <container_1>
+                                                                    <type>array</type>
+                                                                    <title>container_1</title>
+                                                                    <el>
+                                                                        <select_tree_2>
+                                                                            <TCEforms>
+                                                                                <label>select_tree_2</label>
+                                                                                <description>select_tree_2 description</description>
+                                                                                <config>
+                                                                                    <type>select</type>
+                                                                                    <renderType>selectTree</renderType>
+                                                                                </config>
+                                                                            </TCEforms>
+                                                                        </select_tree_2>
+                                                                    </el>
+                                                                </container_1>
+                                                            </el>
+                                                        </section_1>
+                                                    </el>
+                                                </ROOT>
+                                            </sSection>
+                                        </sheets>
+                                    </T3DataStructure>
+                                ',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
+            = '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}';
+
+        $expected['processedTca']['columns']['aField']['config']['ds'] = [
+            'sheets' => [
+                'sSection' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'sheetTitle' => 'section',
+                        'el' => [
+                            'section_1' => [
+                                'title' => 'section_1',
+                                'type' => 'array',
+                                'section' => '1',
+                                'el' => [
+                                    'container_1' => [
+                                        'type' => 'array',
+                                        'title' => 'container_1',
+                                        'el' => [
+                                            'select_tree_2' => [
+                                                'label' => 'select_tree_2',
+                                                'description' => 'select_tree_2 description',
+                                                'config' => [
+                                                    'type' => 'select',
+                                                    'renderType' => 'selectTree'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ],
+                ],
+                'sTree' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'sheetTitle' => 'selectTree',
+                        'el' => [
+                            'select_tree_1' => [
+                                'label' => 'select_tree_1',
+                                'description' => 'select_tree_1 description',
+                                'config' => [
+                                    'type' => 'select',
+                                    'renderType' => 'selectTree'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'meta' => [],
+        ];
+
+        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+    }
+
+    /**
+     * Test of the data provider when called for a section with already
+     * resolved flex form, e.g. in an ajax request (tcaSelectTreeAjaxFieldData),
+     * which got "reduced to the relevant element only".
+     *
+     * @test
+     */
+    public function addDataMigratesResolvedFlexformTca(): void
+    {
+        $columnConfig = [
+            'label' => 'select_section_1',
+            'description' => 'select_section_1 description',
+            'config' => [
+                'type' => 'select'
+            ]
+        ];
+
+        $input = [
+            'systemLanguageRows' => [],
+            'tableName' => 'aTableName',
+            'databaseRow' => [
+                'aField' => [
+                    'data' => [],
+                    'meta' => [],
+                ],
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'sheets' => [
+                                    'sSection' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'section_1' => [
+                                                    'section' => 1,
+                                                    'type' => 'array',
+                                                    'el' => [
+                                                        'container_1' => [
+                                                            'type' => 'array',
+                                                            'el' => [
+                                                                'select_section_1' => [
+                                                                    'TCEforms' => $columnConfig
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}'
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [];
+        $expected['processedTca']['columns']['aField']['config']['ds']
+            ['sheets']['sSection']['ROOT']['el']
+                ['section_1']['el']
+                    ['container_1']['el']
+                        ['select_section_1'] = $columnConfig;
+
+        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+    }
 }
