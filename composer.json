@@ -186,7 +186,8 @@
 		"typo3/cms-t3editor": "self.version",
 		"typo3/cms-tstemplate": "self.version",
 		"typo3/cms-viewpage": "self.version",
-		"typo3/cms-workspaces": "self.version"
+		"typo3/cms-workspaces": "self.version",
+		"t3g/svg-sanitizer": "*"
 	},
 	"autoload": {
 		"psr-4": {
