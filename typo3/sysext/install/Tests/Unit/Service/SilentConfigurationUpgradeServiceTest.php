@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -39,7 +40,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -918,5 +920,70 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
         $silentConfigurationUpgradeServiceInstance->_call('migrateCachingFrameworkCaches');
+    }
+
+    public function migrateExplicitADmodeKeepsCurrentValueDataProvider(): array
+    {
+        return [
+            'empty string is kept' => [
+                '',
+            ],
+            'explicitAllow is kept' => [
+                'explicitAllow',
+            ],
+            'explicitDeny is kept' => [
+                'explicitDeny',
+            ],
+            'something else is kept' => [
+                'something',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider migrateExplicitADmodeKeepsCurrentValueDataProvider
+     */
+    public function migrateExplicitADmodeKeepsCurrentValue(string $value): void
+    {
+        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+        $configurationManager->getLocalConfigurationValueByPath('BE/explicitADmode')
+            ->shouldBeCalled()
+            ->willReturn($value);
+        $configurationManager->setLocalConfigurationValueByPath(Argument::cetera())->shouldNotBeCalled();
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $silentConfigurationUpgradeServiceInstance->_call('migrateExplicitADmode');
+    }
+
+    /**
+     * @test
+     */
+    public function migrateExplicitADmodeMigratesIfNeeded(): void
+    {
+        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
+        $configurationManager = $this->prophesize(ConfigurationManager::class);
+        $configurationManager->getLocalConfigurationValueByPath('BE/explicitADmode')
+            ->shouldBeCalled()
+            ->willThrow(new MissingArrayPathException('Path does not exist in array', 1628189230));
+        $configurationManager->setLocalConfigurationValueByPath('BE/explicitADmode', 'explicitDeny')->shouldBeCalled();
+        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+            SilentConfigurationUpgradeService::class,
+            ['dummy'],
+            [],
+            '',
+            false
+        );
+        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $configurationManager->reveal());
+        $this->expectException(ConfigurationChangedException::class);
+        $this->expectExceptionCode(1379024938);
+        $silentConfigurationUpgradeServiceInstance->_call('migrateExplicitADmode');
     }
 }
