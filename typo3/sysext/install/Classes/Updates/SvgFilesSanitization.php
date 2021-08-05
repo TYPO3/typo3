@@ -163,8 +163,10 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
     {
         $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
         $filter->setAllowedFileExtensions(['svg', 'svgz']);
-        return $storage
-            ->setFileAndFolderNameFilters([[$filter, 'filterFileList']])
+        $files = $storage
+            ->setFileAndFolderNameFilters([
+                [$filter, 'filterFileList']
+            ])
             ->getFilesInFolder(
                 $storage->getRootLevelFolder(),
                 0,
@@ -172,6 +174,8 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
                 true,
                 true
             );
+        $storage->resetFileAndFolderNameFiltersToDefault();
+        return $files;
     }
 
     protected function processSvgFiles(): bool
