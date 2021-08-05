@@ -86,7 +86,8 @@
 	"replace": {
 		"typo3/cms-lang": "*",
 		"typo3/cms-saltedpasswords": "*",
-		"typo3/cms-sv": "*"
+		"typo3/cms-sv": "*",
+		"t3g/svg-sanitizer": "*"
 	},
 	"provide": {
 		"psr/http-factory-implementation": "1.0",
