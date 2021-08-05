@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class RedisBackendTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * Set up
      */

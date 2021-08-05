@@ -51,7 +51,7 @@ class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImportExport
 
         $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithRteImagesAndFileLink.csv');
 
-        self::assertFileNotExists(Environment::getPublicPath() . '/fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg');
+        self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg');

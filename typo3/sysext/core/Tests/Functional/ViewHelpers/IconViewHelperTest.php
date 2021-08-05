@@ -27,6 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IconViewHelperTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

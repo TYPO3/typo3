@@ -29,6 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IntegrityServiceTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */

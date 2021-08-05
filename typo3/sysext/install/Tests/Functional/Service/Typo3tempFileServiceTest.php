@@ -29,6 +29,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class Typo3tempFileServiceTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var string
      */
@@ -82,8 +83,8 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
         $subject = new Typo3tempFileService($processedFileRepository->reveal(), $storageRepository->reveal());
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
 
-        self::assertDirectoryNotExists($this->directoryPath . '/a');
+        self::assertDirectoryDoesNotExist($this->directoryPath . '/a');
         self::assertDirectoryExists($this->directoryPath);
-        self::assertFileNotExists($this->directoryPath . '/c.css');
+        self::assertFileDoesNotExist($this->directoryPath . '/c.css');
     }
 }

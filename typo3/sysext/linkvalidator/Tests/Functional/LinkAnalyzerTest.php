@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LinkAnalyzerTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected $coreExtensionsToLoad = [
         'seo',
         'linkvalidator',

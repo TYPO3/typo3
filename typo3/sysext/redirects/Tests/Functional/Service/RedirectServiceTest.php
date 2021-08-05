@@ -34,6 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RedirectServiceTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use SiteBasedTestTrait;
 
     /**

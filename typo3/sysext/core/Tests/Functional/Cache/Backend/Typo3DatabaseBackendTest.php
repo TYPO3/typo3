@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class Typo3DatabaseBackendTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */

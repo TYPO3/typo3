@@ -39,7 +39,7 @@ class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
         self::assertArrayHasKey('X-Robots-Tag', $response->getHeaders());
         self::assertEquals('noindex', $response->getHeader('X-Robots-Tag')[0]);
 
-        self::assertRegExp($urlPattern, (string)$response->getBody());
+        self::assertMatchesRegularExpression($urlPattern, (string)$response->getBody());
     }
 
     /**

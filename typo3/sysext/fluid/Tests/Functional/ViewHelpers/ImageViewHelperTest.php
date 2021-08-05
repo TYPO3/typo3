@@ -75,6 +75,6 @@ class ImageViewHelperTest extends FunctionalTestCase
     {
         $view = new StandaloneView();
         $view->setTemplateSource($template);
-        self::assertRegExp($expected, $view->render());
+        self::assertMatchesRegularExpression($expected, $view->render());
     }
 }

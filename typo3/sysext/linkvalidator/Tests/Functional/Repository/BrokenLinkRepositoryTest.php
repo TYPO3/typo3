@@ -25,6 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BrokenLinkRepositoryTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var array
      */

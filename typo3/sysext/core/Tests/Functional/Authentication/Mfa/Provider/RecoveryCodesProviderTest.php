@@ -249,11 +249,11 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
 
-        self::assertRegExp('/<td>.*Name.*<td>.*some name/s', $response);
-        self::assertRegExp('/<td>.*Recovery codes left.*<td>.*2/s', $response);
-        self::assertRegExp('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
-        self::assertRegExp('/<td>.*Last used.*<td>.*18-03-21/s', $response);
-        self::assertRegExp('/<input.*id="regenerateCodes"/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Name.*<td>.*some name/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Recovery codes left.*<td>.*2/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<input.*id="regenerateCodes"/s', $response);
     }
 
     /**
@@ -266,7 +266,7 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();
 
-        self::assertRegExp('/<input.*id="recoveryCode"/s', $response);
+        self::assertMatchesRegularExpression('/<input.*id="recoveryCode"/s', $response);
 
         // Lock the provider by setting attempts=3
         $this->setupUser(['recovery-codes' => ['active' => true, 'codes' => ['some-code'], 'attempts' => 3]]);

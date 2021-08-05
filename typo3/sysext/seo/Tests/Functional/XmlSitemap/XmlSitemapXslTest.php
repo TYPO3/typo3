@@ -68,7 +68,7 @@ class XmlSitemapXslTest extends AbstractTestCase
             (new InternalRequest('http://localhost/'))->withQueryParameters($config)
         );
 
-        self::assertRegExp('/<\?xml-stylesheet type="text\/xsl" href="' . $xslFilePath . '"\?>/', (string)$response->getBody());
+        self::assertMatchesRegularExpression('/<\?xml-stylesheet type="text\/xsl" href="' . $xslFilePath . '"\?>/', (string)$response->getBody());
     }
 
     public function getXslFilePathsDataProvider(): array

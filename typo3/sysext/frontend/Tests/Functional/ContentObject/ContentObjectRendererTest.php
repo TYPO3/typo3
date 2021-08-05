@@ -37,6 +37,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ContentObjectRendererTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use SiteBasedTestTrait;
 
     /**

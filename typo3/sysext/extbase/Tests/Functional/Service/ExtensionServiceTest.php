@@ -30,6 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ExtensionServiceTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var array
      */

@@ -353,12 +353,12 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 );
 
                 if ($shallExist) {
-                    self::assertRegExp(
+                    self::assertMatchesRegularExpression(
                         '#' . $pattern . '#',
                         $content
                     );
                 } else {
-                    self::assertNotRegExp(
+                    self::assertDoesNotMatchRegularExpression(
                         '#' . $pattern . '#',
                         $content
                     );

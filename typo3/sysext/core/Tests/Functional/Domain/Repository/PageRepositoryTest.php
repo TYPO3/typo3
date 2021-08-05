@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class PageRepositoryTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     protected function setUp(): void
     {
         parent::setUp();

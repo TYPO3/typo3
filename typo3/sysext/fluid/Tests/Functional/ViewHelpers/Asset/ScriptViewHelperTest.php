@@ -24,6 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ScriptViewHelperTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function valueDataProvider(): array
     {
         return [

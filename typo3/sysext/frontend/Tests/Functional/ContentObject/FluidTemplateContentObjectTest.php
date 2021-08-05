@@ -28,6 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class FluidTemplateContentObjectTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var array
      */

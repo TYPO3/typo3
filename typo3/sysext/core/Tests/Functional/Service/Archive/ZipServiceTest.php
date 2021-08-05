@@ -67,7 +67,7 @@ class ZipServiceTest extends FunctionalTestCase
             __DIR__ . '/Fixtures/malicious.zip',
             $extensionDirectory
         );
-        self::assertFileNotExists($extensionDirectory . '/../tool.php');
+        self::assertFileDoesNotExist($extensionDirectory . '/../tool.php');
         self::assertFileExists($extensionDirectory . '/tool.php');
         // This is a smoke test to verify PHP's zip library is broken regarding symlinks
         self::assertFileExists($extensionDirectory . '/passwd');

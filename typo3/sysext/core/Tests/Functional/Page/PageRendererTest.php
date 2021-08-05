@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class PageRendererTest extends FunctionalTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @test
      */
@@ -123,9 +124,9 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedBaseUrlString, $renderedString);
         self::assertStringContainsString($expectedInlineCommentString, $renderedString);
         self::assertStringContainsString($expectedHeaderData, $renderedString);
-        self::assertRegExp($expectedJsLibraryRegExp, $renderedString);
-        self::assertRegExp($expectedJsFileRegExp, $renderedString);
-        self::assertRegExp($expectedJsFileWithoutTypeRegExp, $renderedString);
+        self::assertMatchesRegularExpression($expectedJsLibraryRegExp, $renderedString);
+        self::assertMatchesRegularExpression($expectedJsFileRegExp, $renderedString);
+        self::assertMatchesRegularExpression($expectedJsFileWithoutTypeRegExp, $renderedString);
         self::assertStringContainsString($expectedJsInlineCodeString, $renderedString);
         self::assertStringContainsString($expectedCssFileString, $renderedString);
         self::assertStringContainsString($expectedCssInlineBlockOnTopString, $renderedString);
@@ -212,8 +213,8 @@ class PageRendererTest extends FunctionalTestCase
         $renderedString = $subject->render();
 
         self::assertStringContainsString($expectedFooterData, $renderedString);
-        self::assertRegExp($expectedJsFooterLibraryRegExp, $renderedString);
-        self::assertRegExp($expectedJsFooterRegExp, $renderedString);
+        self::assertMatchesRegularExpression($expectedJsFooterLibraryRegExp, $renderedString);
+        self::assertMatchesRegularExpression($expectedJsFooterRegExp, $renderedString);
         self::assertStringContainsString($expectedJsFooterInlineCodeString, $renderedString);
         self::assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel1, $renderedString);

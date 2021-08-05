@@ -233,10 +233,10 @@ class TitleTagRenderingTest extends FunctionalTestCase
         );
         $content = (string)$response->getBody();
         if ($expectations['assertRegExp']) {
-            self::assertRegExp($expectations['assertRegExp'], $content);
+            self::assertMatchesRegularExpression($expectations['assertRegExp'], $content);
         }
         if ($expectations['assertNotRegExp']) {
-            self::assertNotRegExp($expectations['assertNotRegExp'], $content);
+            self::assertDoesNotMatchRegularExpression($expectations['assertNotRegExp'], $content);
         }
     }
 }

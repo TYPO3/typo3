@@ -243,10 +243,10 @@ class TotpProviderTest extends FunctionalTestCase
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::SETUP)->getBody()->getContents();
 
-        self::assertRegExp('/<input.*id="totp"/s', $response);
-        self::assertRegExp('/<input.*id="secret"/s', $response);
-        self::assertRegExp('/<div.*id="qr-code"/s', $response);
-        self::assertRegExp('/<typo3-mfa-totp-url-info-button.*url="otpauth:\/\//s', $response);
+        self::assertMatchesRegularExpression('/<input.*id="totp"/s', $response);
+        self::assertMatchesRegularExpression('/<input.*id="secret"/s', $response);
+        self::assertMatchesRegularExpression('/<div.*id="qr-code"/s', $response);
+        self::assertMatchesRegularExpression('/<typo3-mfa-totp-url-info-button.*url="otpauth:\/\//s', $response);
     }
 
     /**
@@ -259,9 +259,9 @@ class TotpProviderTest extends FunctionalTestCase
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
 
-        self::assertRegExp('/<td>.*Name.*<td>.*some name/s', $response);
-        self::assertRegExp('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
-        self::assertRegExp('/<td>.*Last used.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Name.*<td>.*some name/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*18-03-21/s', $response);
     }
 
     /**
@@ -274,7 +274,7 @@ class TotpProviderTest extends FunctionalTestCase
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();
 
-        self::assertRegExp('/<input.*id="totp"/s', $response);
+        self::assertMatchesRegularExpression('/<input.*id="totp"/s', $response);
 
         // Lock the provider by setting attempts=3
         $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]);
