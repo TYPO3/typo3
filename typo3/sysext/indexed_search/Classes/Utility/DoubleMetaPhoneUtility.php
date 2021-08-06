@@ -81,7 +81,6 @@ class DoubleMetaPhoneUtility
         $this->primary = '';
         $this->secondary = '';
         $this->current = 0;
-        $this->current = 0;
         $this->length = strlen($string);
         $this->last = $this->length - 1;
         $this->original = $string . '     ';
