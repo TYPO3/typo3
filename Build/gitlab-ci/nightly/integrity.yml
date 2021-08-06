@@ -21,14 +21,6 @@ composer validate:
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 7.4
 
-doc block check php 7.4:
-  stage: integrity
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s docBlockCheck -p 7.4
-
 grunt clean:
   stage: integrity
   only:

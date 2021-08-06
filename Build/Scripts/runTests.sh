@@ -108,7 +108,6 @@ Options:
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
             - composerValidate: "composer validate"
-            - docBlockCheck: Scan php doc blocks for validity
             - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
             - install: installation acceptance tests, only with -d mariadb|postgres|sqlite
@@ -566,12 +565,6 @@ case ${TEST_SUITE} in
     composerValidate)
         setUpDockerComposeDotEnv
         docker-compose run composer_validate
-        SUITE_EXIT_CODE=$?
-        docker-compose down
-        ;;
-    docBlockCheck)
-        setUpDockerComposeDotEnv
-        docker-compose run doc_block_check
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

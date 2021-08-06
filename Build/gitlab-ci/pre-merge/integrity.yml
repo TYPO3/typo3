@@ -8,16 +8,6 @@ annotations php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
 
-doc block check php 7.4 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - master
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s docBlockCheck -p 7.4
-
 grunt clean pre-merge:
   stage: main
   except:
