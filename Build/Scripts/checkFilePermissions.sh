@@ -11,7 +11,6 @@
 
 # Array of files to ignore the file permission check
 IGNORE=(
-  "typo3/cli_dispatch.phpsh"
   "typo3/sysext/core/bin/typo3"
 )
 
