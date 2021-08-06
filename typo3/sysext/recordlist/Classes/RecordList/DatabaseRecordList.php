@@ -1853,8 +1853,8 @@ class DatabaseRecordList
                 $cells['copy'] = '<a class="btn btn-default"'
                     . ' href="' . htmlspecialchars($this->clipObj->selUrlDB(
                         $table,
-                        $row['uid'],
-                        1,
+                        (int)$row['uid'],
+                        true,
                         $isSel === 'copy',
                         ['returnUrl' => $this->listURL()]
                     )) . '"'
@@ -1875,8 +1875,8 @@ class DatabaseRecordList
                     $cells['cut'] = '<a class="btn btn-default"'
                         . ' href="' . htmlspecialchars($this->clipObj->selUrlDB(
                             $table,
-                            $row['uid'],
-                            0,
+                            (int)$row['uid'],
+                            false,
                             $isSel === 'cut',
                             ['returnUrl' => $this->listURL()]
                         )) . '"'

@@ -188,7 +188,6 @@ class FileList
         );
         // Create clipboard object and initialize that
         $this->clipObj = GeneralUtility::makeInstance(Clipboard::class);
-        $this->clipObj->fileMode = true;
         $this->clipObj->initializeClipboard();
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');

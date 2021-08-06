@@ -216,7 +216,7 @@ class FileListController implements LoggerAwareInterface
 
         // Generate the clipboard, if enabled
         if ($this->MOD_SETTINGS['clipBoard'] ?? false) {
-            $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
+            $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard('_FILE'));
         }
 
         // Register drag-uploader
@@ -341,7 +341,7 @@ class FileListController implements LoggerAwareInterface
             $items = $this->filelist->clipObj->cleanUpCBC(
                 (array)($request->getParsedBody()['CBC'] ?? []),
                 '_FILE',
-                1
+                true
             );
             if (!empty($items)) {
                 // Make command array:

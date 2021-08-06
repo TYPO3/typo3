@@ -200,7 +200,7 @@ class RecordListController
             // Deleting records...:
             // Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
             if ($cmd === 'delete' && $request->getMethod() === 'POST') {
-                $items = $clipboard->cleanUpCBC($parsedBody['CBC'] ?? [], $parsedBody['cmd_table'] ?? '', 1);
+                $items = $clipboard->cleanUpCBC((array)($parsedBody['CBC'] ?? []), (string)($parsedBody['cmd_table'] ?? ''), true);
                 if (!empty($items)) {
                     // Create data handler command array
                     $dataHandlerCmd = [];

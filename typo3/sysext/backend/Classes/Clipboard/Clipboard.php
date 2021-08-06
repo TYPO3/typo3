@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -44,11 +46,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class Clipboard
 {
     /**
-     * @var int
-     */
-    public $numberTabs = 3;
-
-    /**
      * Clipboard data kept here
      *
      * Keys:
@@ -69,21 +66,15 @@ class Clipboard
      *
      * @var array
      */
-    public $clipData = [];
+    public array $clipData = [];
 
     public bool $changed = false;
 
-    /**
-     * @var string
-     */
-    public $current = '';
+    public string $current = '';
 
     public bool $lockToNormal = false;
 
-    /**
-     * If set, clipboard is displaying files.
-     */
-    public bool $fileMode = false;
+    public int $numberOfPads = 3;
 
     protected IconFactory $iconFactory;
     protected UriBuilder $uriBuilder;
@@ -104,21 +95,21 @@ class Clipboard
     /**
      * Initialize the clipboard from the be_user session
      */
-    public function initializeClipboard()
+    public function initializeClipboard(): void
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
         $clipData = $this->getBackendUser()->getModuleData('clipboard', !empty($userTsConfig['options.']['saveClipboard'])  ? '' : 'ses') ?: [];
         $clipData += ['normal' => []];
-        $this->numberTabs = MathUtility::forceIntegerInRange((int)($userTsConfig['options.']['clipboardNumberPads'] ?? 3), 0, 20);
+        $this->numberOfPads = MathUtility::forceIntegerInRange((int)($userTsConfig['options.']['clipboardNumberPads'] ?? 3), 0, 20);
         // Resets/reinstates the clipboard pads
         $this->clipData['normal'] = is_array($clipData['normal']) ? $clipData['normal']: [];
-        for ($a = 1; $a <= $this->numberTabs; $a++) {
+        for ($a = 1; $a <= $this->numberOfPads; $a++) {
             $index = 'tab_' . $a;
             $this->clipData[$index] = is_iterable($clipData[$index] ?? null) ? $clipData[$index] : [];
         }
         // Setting the current pad pointer ($this->current))
-        $current = $clipData['current'] ?? '';
+        $current = (string)($clipData['current'] ?? '');
         $this->current = isset($this->clipData[$current]) ? $current : 'normal';
         $this->clipData['current'] = $this->current;
     }
@@ -128,7 +119,7 @@ class Clipboard
      * Trying to switch pad through ->setCmd will not work.
      * This is used by the clickmenu since it only allows operation on single elements at a time (that is the "normal" pad)
      */
-    public function lockToNormal()
+    public function lockToNormal(): void
     {
         $this->lockToNormal = true;
         $this->current = 'normal';
@@ -145,28 +136,28 @@ class Clipboard
      *
      * @param array $cmd Array of actions, see function description
      */
-    public function setCmd($cmd)
+    public function setCmd(array $cmd): void
     {
         $cmd['el'] ??= [];
         $cmd['el'] = is_iterable($cmd['el']) ? $cmd['el'] : [];
-        foreach ($cmd['el'] as $k => $v) {
+        foreach ($cmd['el'] as $key => $value) {
             if ($this->current === 'normal') {
                 unset($this->clipData['normal']);
             }
-            if ($v) {
-                $this->clipData[$this->current]['el'][$k] = $v;
+            if ($value) {
+                $this->clipData[$this->current]['el'][$key] = $value;
             } else {
-                $this->removeElement($k);
+                $this->removeElement((string)$key);
             }
             $this->changed = true;
         }
         // Change clipboard pad (if not locked to normal)
         if ($cmd['setP'] ?? false) {
-            $this->setCurrentPad($cmd['setP']);
+            $this->setCurrentPad((string)$cmd['setP']);
         }
         // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[shortmd5 hash of path]'
         if ($cmd['remove'] ?? false) {
-            $this->removeElement($cmd['remove']);
+            $this->removeElement((string)$cmd['remove']);
             $this->changed = true;
         }
         // Remove all on current pad (value = pad-ident)
@@ -186,10 +177,10 @@ class Clipboard
      *
      * @param string $padIdentifier Key in the array $this->clipData
      */
-    public function setCurrentPad($padIdentifier)
+    public function setCurrentPad(string $padIdentifier): void
     {
         // Change clipboard pad (if not locked to normal)
-        if (!$this->lockToNormal && $this->current != $padIdentifier) {
+        if (!$this->lockToNormal && $this->current !== $padIdentifier) {
             if (isset($this->clipData[$padIdentifier])) {
                 $this->clipData['current'] = ($this->current = $padIdentifier);
             }
@@ -205,7 +196,7 @@ class Clipboard
      * Call this after initialization and setCmd in order to save the clipboard to the user session.
      * The function will check if the internal flag ->changed has been set and if so, save the clipboard. Else not.
      */
-    public function endClipboard()
+    public function endClipboard(): void
     {
         if ($this->changed) {
             $this->saveClipboard();
@@ -218,17 +209,15 @@ class Clipboard
      *
      * @param array $CBarr Element array from outside ("key" => "selected/deselected")
      * @param string $table The 'table which is allowed'. Must be set.
-     * @param bool|int $removeDeselected Can be set in order to remove entries which are marked for deselection.
+     * @param bool $removeDeselected Can be set in order to remove entries which are marked for deselection.
      * @return array Processed input $CBarr
      */
-    public function cleanUpCBC($CBarr, $table, $removeDeselected = 0)
+    public function cleanUpCBC(array $CBarr, string $table, bool $removeDeselected = false): array
     {
-        if (is_array($CBarr)) {
-            foreach ($CBarr as $k => $v) {
-                $p = explode('|', $k);
-                if ((string)$p[0] != (string)$table || $removeDeselected && !$v) {
-                    unset($CBarr[$k]);
-                }
+        foreach ($CBarr as $reference => $value) {
+            $referenceTable = (string)(explode('|', $reference)[0] ?? '');
+            if ($referenceTable !== $table || ($removeDeselected && !$value)) {
+                unset($CBarr[$reference]);
             }
         }
         return $CBarr;
@@ -244,10 +233,11 @@ class Clipboard
      *
      * @return string HTML output
      * @throws \BadFunctionCallException
+     * @todo This should be a web component
      */
-    public function printClipboard()
+    public function printClipboard(string $table = ''): string
     {
-        $elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
+        $elementCount = count($this->elFromTable($table));
         $view = $this->getStandaloneView();
 
         // CopyMode Selector menu
@@ -268,26 +258,26 @@ class Clipboard
             'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'normal']]),
             'description' => 'labels.normal-description',
             'label' => 'labels.normal',
-            'padding' => $this->padTitle('normal')
+            'padding' => $this->padTitle('normal', $table)
         ];
         if ($this->current === 'normal') {
             $tabArray['normal']['content'] = $this->getContentFromTab('normal');
         }
         // Print header and content for the NUMERIC tabs:
-        for ($a = 1; $a <= $this->numberTabs; $a++) {
+        for ($a = 1; $a <= $this->numberOfPads; $a++) {
             $tabArray['tab_' . $a] = [
                 'id' => 'tab_' . $a,
                 'number' => $a,
                 'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'tab_' . $a]]),
                 'description' => 'labels.cliptabs-description',
                 'label' => 'labels.cliptabs-name',
-                'padding' => $this->padTitle('tab_' . $a)
+                'padding' => $this->padTitle('tab_' . $a, $table)
             ];
             if ($this->current === 'tab_' . $a) {
                 $tabArray['tab_' . $a]['content'] = $this->getContentFromTab('tab_' . $a);
             }
         }
-        $view->assign('clipboardHeader', BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clLabel('buttons.clipboard')));
+        $view->assign('clipboardHeader', BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clipboardLabel('buttons.clipboard')));
         $view->assign('tabArray', $tabArray);
         return $view->render();
     }
@@ -295,95 +285,96 @@ class Clipboard
     /**
      * Print the content on a pad. Called from ->printClipboard()
      *
-     * @internal
-     * @param string $pad Pad reference
+     * @param string $padIdentifier Pad reference
      * @return array Array with table rows for the clipboard.
      */
-    public function getContentFromTab($pad)
+    protected function getContentFromTab(string $padIdentifier): array
     {
-        $lines = [];
-        if (is_array($this->clipData[$pad]['el'] ?? false)) {
-            foreach ($this->clipData[$pad]['el'] as $k => $v) {
-                if ($v) {
-                    [$table, $uid] = explode('|', $k);
-                    // Rendering files/directories on the clipboard
-                    if ($table === '_FILE') {
-                        $fileObject = $this->resourceFactory->retrieveFileOrFolderObject($v);
-                        if ($fileObject) {
-                            $thumb = [];
-                            $folder = $fileObject instanceof Folder;
-                            $size = $folder ? '' : '(' . GeneralUtility::formatSize((int)$fileObject->getSize()) . 'bytes)';
-                            /** @var File $fileObject */
-                            if (!$folder && $fileObject->isImage()) {
-                                $processedFile = $fileObject->process(
-                                    ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                                    [
-                                        'width' => 64,
-                                        'height' => 64,
-                                    ]
-                                );
+        if (!is_array($this->clipData[$padIdentifier]['el'] ?? false)) {
+            return [];
+        }
 
-                                $thumb = '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '')) . '" ' .
-                                    'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
-                                    'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
-                                    'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" />';
-                            }
-                            $lines[] = [
-                                'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource(
-                                    $fileObject,
-                                    Icon::SIZE_SMALL
-                                )->render() . '</span>',
-                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-                                    $fileObject->getName(),
-                                    $this->getBackendUser()->uc['titleLen']
-                                )), $fileObject->getName()),
-                                'thumb' => $thumb,
-                                'infoDataDispatch' => [
-                                    'action' => 'TYPO3.InfoWindow.showItem',
-                                    'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, $v], false),
-                                ],
-                                'removeLink' => $this->removeUrl('_FILE', GeneralUtility::shortMD5($v))
-                            ];
-                        } else {
-                            // If the file did not exist (or is illegal) then it is removed from the clipboard immediately:
-                            unset($this->clipData[$pad]['el'][$k]);
-                            $this->changed = true;
+        $records = [];
+        foreach ($this->clipData[$padIdentifier]['el'] as $reference => $value) {
+            if ($value) {
+                [$table, $uid] = explode('|', $reference);
+                // Rendering files/directories on the clipboard
+                if ($table === '_FILE') {
+                    $fileObject = $this->resourceFactory->retrieveFileOrFolderObject($value);
+                    if ($fileObject) {
+                        $thumb = [];
+                        $folder = $fileObject instanceof Folder;
+                        $size = $folder ? '' : '(' . GeneralUtility::formatSize((int)$fileObject->getSize()) . 'bytes)';
+                        /** @var File $fileObject */
+                        if (!$folder && $fileObject->isImage()) {
+                            $processedFile = $fileObject->process(
+                                ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                                [
+                                    'width' => 64,
+                                    'height' => 64,
+                                ]
+                            );
+
+                            $thumb = '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '')) . '" ' .
+                                'width="' . htmlspecialchars((string)$processedFile->getProperty('width')) . '" ' .
+                                'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" ' .
+                                'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" />';
+                        }
+                        $records[] = [
+                            'icon' => '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource(
+                                $fileObject,
+                                Icon::SIZE_SMALL
+                            )->render() . '</span>',
+                            'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+                                $fileObject->getName(),
+                                $this->getBackendUser()->uc['titleLen']
+                            )), $fileObject->getName()),
+                            'thumb' => $thumb,
+                            'infoDataDispatch' => [
+                                'action' => 'TYPO3.InfoWindow.showItem',
+                                'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, $value], false),
+                            ],
+                            'removeLink' => $this->removeUrl('_FILE', GeneralUtility::shortMD5($value))
+                        ];
+                    } else {
+                        // If the file did not exist (or is illegal) then it is removed from the clipboard immediately:
+                        unset($this->clipData[$padIdentifier]['el'][$reference]);
+                        $this->changed = true;
+                    }
+                } else {
+                    // Rendering records:
+                    $record = BackendUtility::getRecordWSOL($table, (int)$uid);
+                    if (is_array($record)) {
+                        $records[] = [
+                            'icon' => $this->linkItemText($this->iconFactory->getIconForRecord(
+                                $table,
+                                $record,
+                                Icon::SIZE_SMALL
+                            )->render(), $record, $table),
+                            'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
+                                $table,
+                                $record
+                            ) ?? '', $this->getBackendUser()->uc['titleLen'])), $record, $table),
+                            'infoDataDispatch' => [
+                                'action' => 'TYPO3.InfoWindow.showItem',
+                                'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),
+                            ],
+                            'removeLink' => $this->removeUrl($table, $uid)
+                        ];
+
+                        $localizationData = $this->getLocalizations($table, $record);
+                        if (!empty($localizationData)) {
+                            $records = array_merge($records, $localizationData);
                         }
                     } else {
-                        // Rendering records:
-                        $rec = BackendUtility::getRecordWSOL($table, (int)$uid);
-                        if (is_array($rec)) {
-                            $lines[] = [
-                                'icon' => $this->linkItemText($this->iconFactory->getIconForRecord(
-                                    $table,
-                                    $rec,
-                                    Icon::SIZE_SMALL
-                                )->render(), $rec, $table),
-                                'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
-                                    $table,
-                                    $rec
-                                ), $this->getBackendUser()->uc['titleLen'])), $rec, $table),
-                                'infoDataDispatch' => [
-                                    'action' => 'TYPO3.InfoWindow.showItem',
-                                    'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),
-                                ],
-                                'removeLink' => $this->removeUrl($table, $uid)
-                            ];
-
-                            $localizationData = $this->getLocalizations($table, $rec);
-                            if (!empty($localizationData)) {
-                                $lines = array_merge($lines, $localizationData);
-                            }
-                        } else {
-                            unset($this->clipData[$pad]['el'][$k]);
-                            $this->changed = true;
-                        }
+                        unset($this->clipData[$padIdentifier]['el'][$reference]);
+                        $this->changed = true;
                     }
                 }
             }
         }
         $this->endClipboard();
-        return $lines;
+        return $records;
     }
 
     /**
@@ -391,7 +382,7 @@ class Clipboard
      *
      * @return bool
      */
-    public function hasElements()
+    public function hasElements(): bool
     {
         foreach ($this->clipData as $data) {
             if (isset($data['el']) && is_array($data['el']) && !empty($data['el'])) {
@@ -405,97 +396,99 @@ class Clipboard
      * Gets all localizations of the current record.
      *
      * @param string $table The table
-     * @param array $parentRec The current record
+     * @param array $parentRecord The parent record
      * @return array HTML table rows
+     * @todo This should be protected (However, still called in ClipboardTest)
      */
-    public function getLocalizations($table, $parentRec)
+    public function getLocalizations(string $table, array $parentRecord): array
     {
-        $lines = [];
-        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-        $workspaceId = (int)$this->getBackendUser()->workspace;
-
-        if (BackendUtility::isTableLocalizable($table)) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $tcaCtrl['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($parentRec['uid'], \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        $tcaCtrl['languageField'],
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->gt(
-                        'pid',
-                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                    )
-                )
-                ->orderBy($tcaCtrl['languageField']);
-
-            if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $queryBuilder->getRestrictions()->add(
-                    GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId)
-                );
-            }
-            $rows = $queryBuilder->execute()->fetchAllAssociative();
-            if (is_array($rows)) {
-                foreach ($rows as $rec) {
-                    $lines[] = [
-                        'icon' => $this->iconFactory->getIconForRecord($table, $rec, Icon::SIZE_SMALL)->render(),
-                        'title' => htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen']))
-                    ];
-                }
-            }
+        if (!BackendUtility::isTableLocalizable($table)) {
+            return [];
         }
-        return $lines;
+
+        $records = [];
+        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $tcaCtrl['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter((int)$parentRecord['uid'], \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    $tcaCtrl['languageField'],
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gt(
+                    'pid',
+                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                )
+            )
+            ->orderBy($tcaCtrl['languageField']);
+
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
+            $queryBuilder->getRestrictions()->add(
+                GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace)
+            );
+        }
+
+        foreach ($queryBuilder->execute()->fetchAllAssociative() as $record) {
+            $records[] = [
+                'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render(),
+                'title' => htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), $this->getBackendUser()->uc['titleLen']))
+            ];
+        }
+
+        return $records;
     }
 
     /**
      * Warps title with number of elements if any.
      *
-     * @param string  $pad Pad reference
+     * @param string $padIdentifier Identifier for the clipboard pad
+     * @param string $table The table name to count for elements
      * @return string padding
      */
-    public function padTitle($pad)
+    protected function padTitle(string $padIdentifier, string $table = ''): string
     {
-        $el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
-        if ($el) {
-            return ' (' . ($pad === 'normal' ? (($this->clipData['normal']['mode'] ?? '') === 'copy' ? $this->clLabel('cm.copy') : $this->clLabel('cm.cut')) : htmlspecialchars((string)$el)) . ')';
+        $el = count($this->elFromTable($table, $padIdentifier));
+        if (!$el) {
+            return '';
         }
-        return '';
+        $modeLabel = ($this->clipData['normal']['mode'] ?? '') === 'copy' ? $this->clipboardLabel('cm.copy') : $this->clipboardLabel('cm.cut');
+        return ' (' . ($padIdentifier === 'normal' ? $modeLabel : htmlspecialchars((string)$el)) . ')';
     }
 
     /**
      * Wraps the title of the items listed in link-tags. The items will link to the page/folder where they originate from
      *
-     * @param string $str Title of element - must be htmlspecialchar'ed on beforehand.
-     * @param mixed $rec If array, a record is expected. If string, its a path
+     * @param string $itemText Title of element - must be htmlspecialchar'ed on beforehand.
+     * @param array|string $reference If array, a record is expected. If string, its a path
      * @param string $table Table name
      * @return string
      */
-    public function linkItemText($str, $rec, $table = '')
+    protected function linkItemText(string $itemText, $reference, string $table = ''): string
     {
-        if (is_array($rec) && $table) {
-            if ($this->fileMode) {
-                $str = '<span class="text-muted">' . $str . '</span>';
+        if (is_array($reference) && $table !== '') {
+            if ($table === '_FILE') {
+                $itemText = '<span class="text-muted">' . $itemText . '</span>';
             } else {
-                $str = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $rec['pid']])) . '">' . $str . '</a>';
+                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $reference['pid']])) . '">' . $itemText . '</a>';
             }
-        } elseif (file_exists($rec)) {
-            if (!$this->fileMode) {
-                $str = '<span class="text-muted">' . $str . '</span>';
+        } elseif (is_string($reference) && file_exists($reference)) {
+            if ($table !== '_FILE') {
+                $itemText = '<span class="text-muted">' . $itemText . '</span>';
             } elseif (ExtensionManagementUtility::isLoaded('filelist')) {
-                $str = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('file_list', ['id' => PathUtility::dirname($rec)])) . '">' . $str . '</a>';
+                $itemText = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('file_list', ['id' => PathUtility::dirname($reference)])) . '">' . $itemText . '</a>';
             }
         }
-        return $str;
+        return $itemText;
     }
 
     /**
@@ -503,19 +496,25 @@ class Clipboard
      *
      * @param string $table Table name
      * @param int $uid Uid of record
-     * @param bool|int $copy If set, copymode will be enabled
-     * @param bool|int $deselect If set, the link will deselect, otherwise select.
-     * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
+     * @param bool $copy If set, copymode will be enabled
+     * @param bool $deselect If set, the link will deselect, otherwise select.
+     * @param array $getParameters The base array of GET parameters to be sent in addition.
+     *                             Notice that current GET vars WILL automatically be included.
      * @return string URL linking to the current script but with the CB array set to select the element with table/uid
      */
-    public function selUrlDB($table, $uid, $copy = 0, $deselect = 0, $baseArray = [])
-    {
+    public function selUrlDB(
+        string $table,
+        int $uid,
+        bool $copy = false,
+        bool $deselect = false,
+        array $getParameters = []
+    ): string {
         $CB = ['el' => [rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1]];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
-        $baseArray['CB'] = $CB;
-        return GeneralUtility::linkThisScript($baseArray);
+        $getParameters['CB'] = $CB;
+        return GeneralUtility::linkThisScript($getParameters);
     }
 
     /**
@@ -526,7 +525,7 @@ class Clipboard
      * @param bool $deselect If set, the link will deselect, otherwise select.
      * @return string URL linking to the current script but with the CB array set to select the path
      */
-    public function selUrlFile($path, $copy = false, $deselect = false)
+    public function selUrlFile(string $path, bool $copy = false, bool $deselect = false): string
     {
         $CB = [
             'el' => [
@@ -545,22 +544,25 @@ class Clipboard
      * The URL will point to tce_file or tce_db depending in $table
      *
      * @param string $table Tablename (_FILE for files)
-     * @param mixed $uid "destination": can be positive or negative indicating how the paste is done (paste into / paste after)
+     * @param string|int $identifier "destination": can be positive or negative indicating how the paste is done
+     *                               (paste into / paste after). For files, this is the combined identifier.
      * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
      * @param array|null $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
      * @return string
      */
-    public function pasteUrl($table, $uid, $setRedirect = true, array $update = null)
+    public function pasteUrl(string $table, $identifier, bool $setRedirect = true, array $update = null): string
     {
         $urlParameters = [
-            'CB[paste]' => $table . '|' . $uid,
-            'CB[pad]' => $this->current
+            'CB' => [
+                'paste' => $table . '|' . $identifier,
+                'pad' => $this->current
+            ]
         ];
         if ($setRedirect) {
             $urlParameters['redirect'] = GeneralUtility::linkThisScript(['CB' => '']);
         }
         if (is_array($update)) {
-            $urlParameters['CB[update]'] = $update;
+            $urlParameters['CB']['update'] = $update;
         }
         return (string)$this->uriBuilder->buildUriFromRoute($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters);
     }
@@ -570,74 +572,82 @@ class Clipboard
      * for file $table='_FILE' and $uid = shortmd5 hash of path
      *
      * @param string $table Tablename
-     * @param string $uid Uid integer/shortmd5 hash
+     * @param string $identifier Either the records uid or the shortmd5 hash for files
      * @return string URL
      */
-    public function removeUrl($table, $uid)
+    protected function removeUrl(string $table, string $identifier): string
     {
-        return GeneralUtility::linkThisScript(['CB' => ['remove' => $table . '|' . $uid]]);
+        return GeneralUtility::linkThisScript(['CB' => ['remove' => $table . '|' . $identifier]]);
     }
 
     /**
      * Returns confirm JavaScript message
      *
      * @param string $table Table name
-     * @param mixed $rec For records its an array, for files its a string (path)
+     * @param array|string $reference For records its an array, for files its a string (path)
      * @param string $type Type-code
-     * @param array $clElements Array of selected elements
+     * @param array $selectedElements Array of selected elements
      * @param string $columnLabel Name of the content column
      * @return string the text for a confirm message
      */
-    public function confirmMsgText($table, $rec, $type, $clElements, $columnLabel = '')
-    {
-        if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
-            $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos' : ''));
-            if ($table === '_FILE') {
-                $thisRecTitle = PathUtility::basename($rec);
-                if ($this->current === 'normal') {
-                    $selItem = reset($clElements);
-                    $selRecTitle = PathUtility::basename($selItem);
-                } else {
-                    $selRecTitle = count($clElements);
-                }
-            } else {
-                $thisRecTitle = $table === 'pages' && !is_array($rec) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : BackendUtility::getRecordTitle($table, $rec);
-                if ($this->current === 'normal') {
-                    $selItem = $this->getSelectedRecord();
-                    $selRecTitle = $selItem['_RECORD_TITLE'];
-                } else {
-                    $selRecTitle = count($clElements);
-                }
-            }
-            // @TODO
-            // This can get removed as soon as the "_colPos" label is translated
-            // into all available locallang languages.
-            if (!$msg && $columnLabel) {
-                $thisRecTitle .= ' | ' . $columnLabel;
-                $msg = $this->getLanguageService()->sL($labelKey);
-            }
-
-            // Message
-            $conf = sprintf(
-                $msg,
-                GeneralUtility::fixed_lgd_cs($selRecTitle, 30),
-                GeneralUtility::fixed_lgd_cs($thisRecTitle, 30),
-                GeneralUtility::fixed_lgd_cs($columnLabel, 30)
-            );
-        } else {
-            $conf = '';
+    public function confirmMsgText(
+        string $table,
+        $reference,
+        string $type,
+        array $selectedElements,
+        string $columnLabel = ''
+    ): string {
+        if (!$this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
+            return '';
         }
-        return $conf;
+
+        $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
+            . ($this->currentMode() === 'copy' ? 'copy' : 'move')
+            . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
+        $confirmationMessage = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos' : ''));
+
+        if ($table === '_FILE' && is_string($reference)) {
+            $recordTitle = PathUtility::basename($reference);
+            if ($this->current === 'normal') {
+                $selectedItem = reset($selectedElements);
+                $selectedRecordTitle = PathUtility::basename($selectedItem);
+            } else {
+                $selectedRecordTitle = count($selectedElements);
+            }
+        } else {
+            $recordTitle = $table !== 'pages' && is_array($reference)
+                ? BackendUtility::getRecordTitle($table, $reference)
+                : $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            if ($this->current === 'normal') {
+                $selectedItem = $this->getSelectedRecord();
+                $selectedRecordTitle = $selectedItem['_RECORD_TITLE'];
+            } else {
+                $selectedRecordTitle = count($selectedElements);
+            }
+        }
+        // @TODO
+        // This can get removed as soon as the "_colPos" label is translated
+        // into all available locallang languages.
+        if (!$confirmationMessage && $columnLabel) {
+            $recordTitle .= ' | ' . $columnLabel;
+            $confirmationMessage = $this->getLanguageService()->sL($labelKey);
+        }
+
+        return sprintf(
+            $confirmationMessage,
+            GeneralUtility::fixed_lgd_cs($selectedRecordTitle, 30),
+            GeneralUtility::fixed_lgd_cs($recordTitle, 30),
+            GeneralUtility::fixed_lgd_cs($columnLabel, 30)
+        );
     }
 
     /**
      * Clipboard label - getting from "EXT:core/Resources/Private/Language/locallang_core.xlf:"
      *
      * @param string $key Label Key
-     * @return string
+     * @return string htmspecialchared' label
      */
-    public function clLabel($key)
+    protected function clipboardLabel(string $key): string
     {
         return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:' . $key));
     }
@@ -650,21 +660,19 @@ class Clipboard
     /**
      * Removes element on clipboard
      *
-     * @param string $el Key of element in ->clipData array
+     * @param string $elementKey Key of element in ->clipData array
      */
-    public function removeElement($el)
+    public function removeElement(string $elementKey): void
     {
-        unset($this->clipData[$this->current]['el'][$el]);
+        unset($this->clipData[$this->current]['el'][$elementKey]);
         $this->changed = true;
     }
 
     /**
      * Saves the clipboard, no questions asked.
      * Use ->endClipboard normally (as it checks if changes has been done so saving is necessary)
-     *
-     * @internal
      */
-    public function saveClipboard()
+    protected function saveClipboard(): void
     {
         $this->getBackendUser()->pushModuleData('clipboard', $this->clipData);
     }
@@ -674,7 +682,7 @@ class Clipboard
      *
      * @return string "copy" or "cut
      */
-    public function currentMode()
+    public function currentMode(): string
     {
         return ($this->clipData[$this->current]['mode'] ?? '') === 'copy' ? 'copy' : 'cut';
     }
@@ -683,28 +691,28 @@ class Clipboard
      * This traverses the elements on the current clipboard pane
      * and unsets elements which does not exist anymore or are disabled.
      */
-    public function cleanCurrent()
+    public function cleanCurrent(): void
     {
-        if (is_array($this->clipData[$this->current]['el'] ?? false)) {
-            foreach ($this->clipData[$this->current]['el'] as $k => $v) {
-                [$table, $uid] = explode('|', $k);
-                if ($table !== '_FILE') {
-                    if (!$v || !is_array(BackendUtility::getRecord($table, (int)$uid, 'uid'))) {
-                        unset($this->clipData[$this->current]['el'][$k]);
-                        $this->changed = true;
-                    }
-                } else {
-                    if (!$v) {
-                        unset($this->clipData[$this->current]['el'][$k]);
-                        $this->changed = true;
-                    } else {
-                        try {
-                            $this->resourceFactory->retrieveFileOrFolderObject($v);
-                        } catch (ResourceDoesNotExistException $e) {
-                            // The file has been deleted in the meantime, so just remove it silently
-                            unset($this->clipData[$this->current]['el'][$k]);
-                        }
-                    }
+        if (!is_array($this->clipData[$this->current]['el'] ?? false)) {
+            return;
+        }
+
+        foreach ($this->clipData[$this->current]['el'] as $reference => $value) {
+            [$table, $uid] = explode('|', $reference);
+            if ($table !== '_FILE') {
+                if (!$value || !is_array(BackendUtility::getRecord($table, (int)$uid, 'uid'))) {
+                    unset($this->clipData[$this->current]['el'][$reference]);
+                    $this->changed = true;
+                }
+            } elseif (!$value) {
+                unset($this->clipData[$this->current]['el'][$reference]);
+                $this->changed = true;
+            } else {
+                try {
+                    $this->resourceFactory->retrieveFileOrFolderObject($value);
+                } catch (ResourceDoesNotExistException $e) {
+                    // The file has been deleted in the meantime, so just remove it silently
+                    unset($this->clipData[$this->current]['el'][$reference]);
                 }
             }
         }
@@ -714,44 +722,48 @@ class Clipboard
      * Counts the number of elements from the table $matchTable. If $matchTable is blank, all tables (except '_FILE' of course) is counted.
      *
      * @param string $matchTable Table to match/count for.
-     * @param string $pad Can optionally be used to set another pad than the current.
+     * @param string $padIdentifier Can optionally be used to set another pad than the current.
      * @return array Array with keys from the CB.
      */
-    public function elFromTable($matchTable = '', $pad = '')
+    public function elFromTable(string $matchTable = '', string $padIdentifier = ''): array
     {
-        $pad = $pad ?: $this->current;
-        $list = [];
-        if (is_array($this->clipData[$pad]['el'] ?? false)) {
-            foreach ($this->clipData[$pad]['el'] as $k => $v) {
-                if ($v) {
-                    [$table, $uid] = explode('|', $k);
-                    if ($table !== '_FILE') {
-                        if ((!$matchTable || (string)$table == (string)$matchTable) && $GLOBALS['TCA'][$table]) {
-                            $list[$k] = $pad === 'normal' ? $v : $uid;
-                        }
-                    } else {
-                        if ((string)$table == (string)$matchTable) {
-                            $list[$k] = $v;
-                        }
-                    }
+        $padIdentifier = $padIdentifier ?: $this->current;
+
+        if (!is_array($this->clipData[$padIdentifier]['el'] ?? false)) {
+            return [];
+        }
+
+        $elements = [];
+        foreach ($this->clipData[$padIdentifier]['el'] as $reference => $value) {
+            if (!$value) {
+                continue;
+            }
+            [$table, $uid] = explode('|', $reference);
+            if ($table !== '_FILE') {
+                if ((!$matchTable || $table === $matchTable) && ($GLOBALS['TCA'][$table] ?? false)) {
+                    $elements[$reference] = $padIdentifier === 'normal' ? $value : $uid;
                 }
+            } elseif ($table === $matchTable) {
+                $elements[$reference] = $value;
             }
         }
-        return $list;
+        return $elements;
     }
 
     /**
      * Verifies if the item $table/$uid is on the current pad.
-     * If the pad is "normal" and the element exists, the mode value is returned. Thus you'll know if the item was copied or cut.
+     * If the pad is "normal" and the element exists, the mode value is returned.
+     * Thus you'll know if the item was copied or cut.
      *
      * @param string $table Table name, (_FILE for files...)
-     * @param int $uid Element uid (path for files)
-     * @return string
+     * @param string|int $identifier Either the records' uid or a filepath
+     * @return string If selected the current mode is returned, otherwise an empty string
      */
-    public function isSelected($table, $uid)
+    public function isSelected(string $table, $identifier): string
     {
-        $k = $table . '|' . $uid;
-        return !empty($this->clipData[$this->current]['el'][$k]) ? ($this->current === 'normal' ? $this->currentMode() : 1) : '';
+        $key = $table . '|' . $identifier;
+        $mode = $this->current === 'normal' ? $this->currentMode() : 'any';
+        return !empty($this->clipData[$this->current]['el'][$key]) ? $mode : '';
     }
 
     /**
@@ -760,17 +772,17 @@ class Clipboard
      *
      * @return array Element record with extra field _RECORD_TITLE set to the title of the record
      */
-    public function getSelectedRecord()
+    public function getSelectedRecord(): array
     {
-        $elArr = $this->elFromTable('');
-        reset($elArr);
-        [$table, $uid] = explode('|', (string)key($elArr));
-        if ($this->isSelected($table, (int)$uid)) {
-            $selRec = BackendUtility::getRecordWSOL($table, (int)$uid);
-            $selRec['_RECORD_TITLE'] = BackendUtility::getRecordTitle($table, $selRec);
-            return $selRec;
+        $elements = $this->elFromTable();
+        reset($elements);
+        [$table, $uid] = explode('|', (string)key($elements));
+        if (!$this->isSelected($table, (int)$uid)) {
+            return [];
         }
-        return [];
+        $selectedRecord = BackendUtility::getRecordWSOL($table, (int)$uid);
+        $selectedRecord['_RECORD_TITLE'] = BackendUtility::getRecordTitle($table, $selectedRecord);
+        return $selectedRecord;
     }
 
     /**
@@ -778,131 +790,9 @@ class Clipboard
      *
      * @return bool TRUE if elements exist.
      */
-    public function isElements()
+    protected function isElements(): bool
     {
         return is_array($this->clipData[$this->current]['el'] ?? null) && !empty($this->clipData[$this->current]['el']);
-    }
-
-    /**
-     * Applies the proper paste configuration in the $cmd array send to SimpleDataHandlerController (tce_db route)
-     * $ref is the target, see description below.
-     * The current pad is pasted
-     *
-     * $ref: [tablename]:[paste-uid].
-     * Tablename is the name of the table from which elements *on the current clipboard* is pasted with the 'pid' paste-uid.
-     * No tablename means that all items on the clipboard (non-files) are pasted. This requires paste-uid to be positive though.
-     * so 'tt_content:-3'	means 'paste tt_content elements on the clipboard to AFTER tt_content:3 record
-     * 'tt_content:30'	means 'paste tt_content elements on the clipboard into page with id 30
-     * ':30'	means 'paste ALL database elements on the clipboard into page with id 30
-     * ':-30'	not valid.
-     *
-     * @param string $ref [tablename]:[paste-uid], see description
-     * @param array $CMD Command-array
-     * @param array|null $update If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
-     * @return array Modified Command-array
-     */
-    public function makePasteCmdArray($ref, $CMD, array $update = null)
-    {
-        [$pTable, $pUid] = explode('|', $ref);
-        $pUid = (int)$pUid;
-        // pUid must be set and if pTable is not set (that means paste ALL elements)
-        // the uid MUST be positive/zero (pointing to page id)
-        if ($pTable || $pUid >= 0) {
-            $elements = $this->elFromTable($pTable);
-            // So the order is preserved.
-            $elements = array_reverse($elements);
-            $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
-            // Traverse elements and make CMD array
-            foreach ($elements as $tP => $value) {
-                [$table, $uid] = explode('|', $tP);
-                if (!is_array($CMD[$table])) {
-                    $CMD[$table] = [];
-                }
-                if (is_array($update)) {
-                    $CMD[$table][$uid][$mode] = [
-                        'action' => 'paste',
-                        'target' => $pUid,
-                        'update' => $update,
-                    ];
-                } else {
-                    $CMD[$table][$uid][$mode] = $pUid;
-                }
-                if ($mode === 'move') {
-                    $this->removeElement($tP);
-                }
-            }
-            $this->endClipboard();
-        }
-        return $CMD;
-    }
-
-    /**
-     * Delete record entries in CMD array
-     *
-     * @param array $CMD Command-array
-     * @return array Modified Command-array
-     */
-    public function makeDeleteCmdArray($CMD)
-    {
-        // all records
-        $elements = $this->elFromTable('');
-        foreach ($elements as $tP => $value) {
-            [$table, $uid] = explode('|', $tP);
-            if (!is_array($CMD[$table])) {
-                $CMD[$table] = [];
-            }
-            $CMD[$table][$uid]['delete'] = 1;
-            $this->removeElement($tP);
-        }
-        $this->endClipboard();
-        return $CMD;
-    }
-
-    /*****************************************
-     *
-     * FOR USE IN tce_file.php:
-     *
-     ****************************************/
-    /**
-     * Applies the proper paste configuration in the $file array send to tce_file.php.
-     * The current pad is pasted
-     *
-     * @param string $ref Reference to element (splitted by "|")
-     * @param array $FILE Command-array
-     * @return array Modified Command-array
-     */
-    public function makePasteCmdArray_file($ref, $FILE)
-    {
-        $pUid = explode('|', $ref)[1];
-        $elements = $this->elFromTable('_FILE');
-        $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
-        // Traverse elements and make CMD array
-        foreach ($elements as $tP => $path) {
-            $FILE[$mode][] = ['data' => $path, 'target' => $pUid];
-            if ($mode === 'move') {
-                $this->removeElement($tP);
-            }
-        }
-        $this->endClipboard();
-        return $FILE;
-    }
-
-    /**
-     * Delete files in CMD array
-     *
-     * @param array $FILE Command-array
-     * @return array Modified Command-array
-     */
-    public function makeDeleteCmdArray_file($FILE)
-    {
-        $elements = $this->elFromTable('_FILE');
-        // Traverse elements and make CMD array
-        foreach ($elements as $tP => $path) {
-            $FILE['delete'][] = ['data' => $path];
-            $this->removeElement($tP);
-        }
-        $this->endClipboard();
-        return $FILE;
     }
 
     /**
@@ -910,7 +800,7 @@ class Clipboard
      *
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
@@ -920,7 +810,7 @@ class Clipboard
      *
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

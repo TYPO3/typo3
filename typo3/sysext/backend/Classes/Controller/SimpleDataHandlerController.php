@@ -175,14 +175,13 @@ class SimpleDataHandlerController
         $queryParams = $request->getQueryParams();
 
         // GPvars:
-        $this->flags = $parsedBody['flags'] ?? $queryParams['flags'] ?? null;
-        $this->data = $parsedBody['data'] ?? $queryParams['data'] ?? null;
-        $this->cmd = $parsedBody['cmd'] ?? $queryParams['cmd'] ?? null;
-        $this->mirror = $parsedBody['mirror'] ?? $queryParams['mirror'] ?? null;
-        $this->cacheCmd = $parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? null;
-        $redirect = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? '';
-        $this->redirect = GeneralUtility::sanitizeLocalUrl($redirect);
-        $this->CB = $parsedBody['CB'] ?? $queryParams['CB'] ?? null;
+        $this->flags = (array)($parsedBody['flags'] ?? $queryParams['flags'] ?? []);
+        $this->data = (array)($parsedBody['data'] ?? $queryParams['data'] ?? []);
+        $this->cmd = (array)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? []);
+        $this->mirror = (array)($parsedBody['mirror'] ?? $queryParams['mirror'] ?? []);
+        $this->cacheCmd = (string)($parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? '');
+        $this->CB = (array)($parsedBody['CB'] ?? $queryParams['CB'] ?? []);
+        $this->redirect = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? ''));
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
         // Configuring based on user prefs.
@@ -204,20 +203,16 @@ class SimpleDataHandlerController
      */
     protected function initializeClipboard(): void
     {
-        if (is_array($this->CB)) {
+        if ($this->CB !== []) {
             $clipObj = GeneralUtility::makeInstance(Clipboard::class);
             $clipObj->initializeClipboard();
-            if ($this->CB['paste']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->cmd = $clipObj->makePasteCmdArray(
-                    $this->CB['paste'],
-                    $this->cmd,
-                    $this->CB['update'] ?? null
-                );
+            if ($this->CB['paste'] ?? false) {
+                $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
+                $this->setPasteCmd($clipObj);
             }
-            if ($this->CB['delete']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
+            if ($this->CB['delete'] ?? false) {
+                $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
+                $this->setDeleteCmd($clipObj);
             }
         }
     }
@@ -229,7 +224,7 @@ class SimpleDataHandlerController
     {
         // LOAD DataHandler with data and cmd arrays:
         $this->tce->start($this->data, $this->cmd);
-        if (is_array($this->mirror)) {
+        if ($this->mirror !== []) {
             $this->tce->setMirror($this->mirror);
         }
         // Execute actions:
@@ -243,6 +238,68 @@ class SimpleDataHandlerController
         if (isset($this->data['pages']) || isset($this->cmd['pages'])) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
+    }
+
+    /**
+     * Applies the proper paste configuration to $this->cmd
+     *
+     * The reference ($this->CB['paste']) has following format: [tablename]:[paste-uid].
+     * Tablename is the name of the table from which elements *on the current clipboard* is pasted with the 'pid' paste-uid.
+     * No tablename means that all items on the clipboard (non-files) are pasted. This requires paste-uid to be positive though.
+     * so 'tt_content:-3'	means 'paste tt_content elements on the clipboard to AFTER tt_content:3 record
+     * 'tt_content:30'	means 'paste tt_content elements on the clipboard into page with id 30
+     * ':30'	means 'paste ALL database elements on the clipboard into page with id 30
+     * ':-30'	not valid.
+     */
+    protected function setPasteCmd(Clipboard $clipboard): void
+    {
+        [$pasteTable, $pasteUid] = explode('|', (string)$this->CB['paste']);
+        $pasteUid = (int)$pasteUid;
+        // pUid must be set and if pTable is not set (that means paste ALL elements)
+        // the uid MUST be positive/zero (pointing to page id)
+        if (!$pasteTable && $pasteUid < 0) {
+            return;
+        }
+        $elements = $clipboard->elFromTable($pasteTable);
+        // So the order is preserved.
+        $elements = array_reverse($elements);
+        $mode = $clipboard->currentMode() === 'copy' ? 'copy' : 'move';
+        // Traverse elements and make CMD array
+        foreach ($elements as $key => $value) {
+            [$table, $uid] = explode('|', $key);
+            if (!is_array($this->cmd[$table])) {
+                $this->cmd[$table] = [];
+            }
+            if (is_array($this->CB['update'] ?? false)) {
+                $this->cmd[$table][$uid][$mode] = [
+                    'action' => 'paste',
+                    'target' => $pasteUid,
+                    'update' => $this->CB['update'],
+                ];
+            } else {
+                $this->cmd[$table][$uid][$mode] = $pasteUid;
+            }
+            if ($mode === 'move') {
+                $clipboard->removeElement($key);
+            }
+        }
+        $clipboard->endClipboard();
+    }
+
+    /**
+     * Applies the proper delete configuration to $this->cmd
+     */
+    protected function setDeleteCmd(Clipboard $clipboard): void
+    {
+        foreach ($clipboard->elFromTable() as $key => $value) {
+            [$table, $uid] = explode('|', $key);
+            if (!is_array($this->cmd[$table])) {
+                $this->cmd[$table] = [];
+            }
+            $this->cmd[$table][$uid]['delete'] = 1;
+            $clipboard->removeElement($key);
+        }
+        $clipboard->endClipboard();
     }
 
     /**

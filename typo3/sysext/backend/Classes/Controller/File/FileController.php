@@ -215,9 +215,9 @@ class FileController
         // Set the GPvars from outside
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $this->file = $parsedBody['data'] ?? $queryParams['data'] ?? null;
-        $redirectUrl = $parsedBody['redirect'] ?? $queryParams['redirect'] ?? '';
-        if ($this->file === null || !empty($redirectUrl)) {
+        $this->file = (array)($parsedBody['data'] ?? $queryParams['data'] ?? []);
+        $redirectUrl = (string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? '');
+        if ($this->file === [] || $redirectUrl !== '') {
             // This in clipboard mode or when a new folder is created
             $this->redirect = GeneralUtility::sanitizeLocalUrl($redirectUrl);
         } else {
@@ -225,7 +225,7 @@ class FileController
             $elementKey = key($this->file[$mode]);
             $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect'] ?? '');
         }
-        $this->CB = $parsedBody['CB'] ?? $queryParams['CB'] ?? null;
+        $this->CB = (array)($parsedBody['CB'] ?? $queryParams['CB'] ?? []);
 
         if (isset($this->file['rename'][0]['conflictMode'])) {
             $conflictMode = $this->file['rename'][0]['conflictMode'];
@@ -242,16 +242,16 @@ class FileController
      */
     protected function initClipboard(): void
     {
-        if (is_array($this->CB)) {
+        if ($this->CB !== []) {
             $clipObj = GeneralUtility::makeInstance(Clipboard::class);
             $clipObj->initializeClipboard();
-            if ($this->CB['paste']) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->file = $clipObj->makePasteCmdArray_file($this->CB['paste'], $this->file);
+            if ($this->CB['paste'] ?? false) {
+                $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
+                $this->setPasteCmd($clipObj);
             }
             if ($this->CB['delete'] ?? false) {
-                $clipObj->setCurrentPad($this->CB['pad']);
-                $this->file = $clipObj->makeDeleteCmdArray_file($this->file);
+                $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
+                $this->setDeleteCmd($clipObj);
             }
         }
     }
@@ -327,5 +327,35 @@ class FileController
         }
 
         return $result;
+    }
+
+    /**
+     * Applies the proper paste configuration to $this->file
+     */
+    protected function setPasteCmd(Clipboard $clipboard): void
+    {
+        $target = explode('|', (string)$this->CB['paste'])[1] ?? '';
+        $mode = $clipboard->currentMode() === 'copy' ? 'copy' : 'move';
+        // Traverse elements and make CMD array
+        foreach ($clipboard->elFromTable('_FILE') as $key => $path) {
+            $this->file[$mode][] = ['data' => $path, 'target' => $target];
+            if ($mode === 'move') {
+                $clipboard->removeElement($key);
+            }
+        }
+        $clipboard->endClipboard();
+    }
+
+    /**
+     * Applies the proper delete configuration to $this->file
+     */
+    protected function setDeleteCmd(Clipboard $clipObj): void
+    {
+        // Traverse elements and make CMD array
+        foreach ($clipObj->elFromTable('_FILE') as $key => $path) {
+            $this->file['delete'][] = ['data' => $path];
+            $clipObj->removeElement($key);
+        }
+        $clipObj->endClipboard();
     }
 }
