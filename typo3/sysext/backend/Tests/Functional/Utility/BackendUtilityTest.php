@@ -24,6 +24,7 @@ class BackendUtilityTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/tt_content.xml');
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
     }
@@ -98,8 +99,6 @@ class BackendUtilityTest extends FunctionalTestCase
             )
         );
 
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/tt_content.xml');
-
         self::assertEquals(
             'German',
             BackendUtility::getProcessedValue(
@@ -111,6 +110,20 @@ class BackendUtilityTest extends FunctionalTestCase
                 false,
                 1
             )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getRecordTitleForUidLabel(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'uid';
+        unset($GLOBALS['TCA']['tt_content']['ctrl']['label_alt']);
+
+        self::assertEquals(
+            '1',
+            BackendUtility::getRecordTitle('tt_content', BackendUtility::getRecord('tt_content', 1))
         );
     }
 

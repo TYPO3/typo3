@@ -1426,7 +1426,7 @@ class BackendUtility
                 $recordTitle = self::getProcessedValue(
                     $table,
                     $ctrlLabel,
-                    $row[$ctrlLabel] ?? '',
+                    (string)($row[$ctrlLabel] ?? ''),
                     0,
                     false,
                     false,
@@ -1434,7 +1434,7 @@ class BackendUtility
                     $forceResult
                 ) ?? '';
                 if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])
-                    && (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) || (string)$recordTitle === '')
+                    && (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) || $recordTitle === '')
                 ) {
                     $altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
                     $tA = [];
@@ -1442,8 +1442,8 @@ class BackendUtility
                         $tA[] = $recordTitle;
                     }
                     foreach ($altFields as $fN) {
-                        $recordTitle = trim(strip_tags($row[$fN] ?? ''));
-                        if ((string)$recordTitle !== '') {
+                        $recordTitle = trim(strip_tags((string)($row[$fN] ?? '')));
+                        if ($recordTitle !== '') {
                             $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid']);
                             if (!($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] ?? false)) {
                                 break;
