@@ -32,6 +32,16 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class InstallStatusReport implements StatusProviderInterface
 {
+    protected const WRAP_FLAT = 1;
+    protected const WRAP_NESTED = 2;
+
+    protected bool $useMarkup;
+
+    public function __construct(bool $useMarkup = true)
+    {
+        $this->useMarkup = $useMarkup;
+    }
+
     /**
      * Compiles a collection of system status checks as a status report.
      *
@@ -211,8 +221,7 @@ class InstallStatusReport implements StatusProviderInterface
         }
 
         try {
-            $isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
-            $isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
+            $versionMaintenanceWindow = $coreVersionService->getMaintenanceWindow();
         } catch (RemoteFetchException $remoteFetchException) {
             return GeneralUtility::makeInstance(
                 Status::class,
@@ -225,27 +234,96 @@ class InstallStatusReport implements StatusProviderInterface
             );
         }
 
-        if (!$isUpdateAvailable && $isMaintainedVersion) {
-            // Everything is fine, working with the latest version
-            $message = '';
-            $status = Status::OK;
-        } elseif ($isUpdateAvailable) {
-            // There is an update available
-            $newVersion = $coreVersionService->getYoungestPatchRelease();
-            if ($coreVersionService->isUpdateSecurityRelevant()) {
-                $message = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $newVersion);
-                $status = Status::ERROR;
-            } else {
-                $message = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $newVersion);
-                $status = Status::WARNING;
-            }
-        } else {
+        if (!$versionMaintenanceWindow->isSupportedByCommunity() && !$versionMaintenanceWindow->isSupportedByElts()) {
             // Version is not maintained
             $message = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_versionOutdated');
             $status = Status::ERROR;
+        } else {
+            // There is an update available
+            $availableReleases = [];
+            $latestRelease = $coreVersionService->getYoungestPatchRelease();
+            $isCurrentVersionElts = $coreVersionService->isCurrentInstalledVersionElts();
+
+            if ($coreVersionService->isPatchReleaseSuitableForUpdate($latestRelease)) {
+                $availableReleases[] = $latestRelease;
+            }
+
+            if (!$versionMaintenanceWindow->isSupportedByCommunity()) {
+                if ($latestRelease->isElts()) {
+                    $latestCommunityDrivenRelease = $coreVersionService->getYoungestCommunityPatchRelease();
+                    if ($coreVersionService->isPatchReleaseSuitableForUpdate($latestCommunityDrivenRelease)) {
+                        $availableReleases[] = $latestCommunityDrivenRelease;
+                    }
+                }
+            }
+
+            if ($availableReleases === []) {
+                // Everything is fine, working with the latest version
+                $message = '';
+                $status = Status::OK;
+            } else {
+                $messages = [];
+                $status = Status::WARNING;
+                foreach ($availableReleases as $availableRelease) {
+                    $versionString = $availableRelease->getVersion();
+                    if ($availableRelease->isElts()) {
+                        $versionString .= ' ELTS';
+                    }
+                    if ($coreVersionService->isUpdateSecurityRelevant($availableRelease)) {
+                        $status = Status::ERROR;
+                        $updateMessage = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $versionString);
+                    } else {
+                        $updateMessage = sprintf($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $versionString);
+                    }
+
+                    if ($availableRelease->isElts()) {
+                        if ($isCurrentVersionElts) {
+                            $updateMessage .= ' ' . sprintf(
+                                $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_elts_download'),
+                                '<a href="https://my.typo3.org" target="_blank" rel="noopener">my.typo3.org</a>'
+                            );
+                        } else {
+                            $updateMessage .= ' ' . sprintf(
+                                $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_elts_subscribe'),
+                                $coreVersionService->getInstalledVersion(),
+                                '<a href="https://typo3.com/elts" target="_blank" rel="noopener">https://typo3.com/elts</a>'
+                            );
+                        }
+                    }
+                    $messages[] = $updateMessage;
+                }
+                $message = $this->wrapList($messages, count($messages) > 1 ? self::WRAP_NESTED : self::WRAP_FLAT);
+            }
         }
 
         return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $message, $status);
+    }
+
+    protected function wrapList(array $items, int $style): string
+    {
+        if (!$this->useMarkup) {
+            return implode(', ', $items);
+        }
+        if ($style === self::WRAP_NESTED) {
+            return sprintf(
+                '<ul>%s</ul>',
+                implode('', $this->wrapItems($items, '<li>', '</li>'))
+            );
+        }
+        return sprintf(
+            '<p>%s</p>',
+            implode('', $this->wrapItems($items, '<br>', ''))
+        );
+    }
+
+    protected function wrapItems(array $items, string $before, string $after): array
+    {
+        return array_map(
+            static function (string $item) use ($before, $after): string {
+                return $before . $item . $after;
+            },
+            array_filter($items)
+        );
     }
 
     /**

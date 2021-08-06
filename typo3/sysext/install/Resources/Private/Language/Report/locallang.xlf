@@ -70,10 +70,16 @@
 				<source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
 			</trans-unit>
 			<trans-unit id="status_newVersionSecurityRelevant" resname="status_newVersionSecurityRelevant">
-				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s</source>
+				<source>There is a new version of TYPO3 available, updating is security relevant. Please update to version %s.</source>
 			</trans-unit>
 			<trans-unit id="status_newVersion" resname="status_newVersion">
-				<source>There is a new version of TYPO3 available. You can update to version %s</source>
+				<source>There is a new version of TYPO3 available. You can update to version %s.</source>
+			</trans-unit>
+			<trans-unit id="status_elts_download" resname="status_elts_download">
+				<source>Please visit %s to download the release in your ELTS area.</source>
+			</trans-unit>
+			<trans-unit id="status_elts_subscribe" resname="status_elts_subscribe">
+				<source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
 			</trans-unit>
 			<trans-unit id="status_versionOutdated" resname="status_versionOutdated">
 				<source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
