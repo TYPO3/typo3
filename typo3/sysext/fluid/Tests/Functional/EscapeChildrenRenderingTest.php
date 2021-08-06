@@ -22,6 +22,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class EscapeChildrenRenderingTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     protected $testExtensionsToLoad = ['typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test'];
 
     public function viewHelperTemplateSourcesDataProvider(): array

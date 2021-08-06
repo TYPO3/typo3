@@ -20,11 +20,12 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case for TYPO3\CMS\Backend\Tests\Functional\Configuration\SiteConfiguration\SiteConfigurationOverridesTest
- */
 class SiteConfigurationOverridesTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
 
     /** @var array */
     protected $subject;

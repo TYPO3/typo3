@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -28,12 +29,15 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class PageRendererTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     /**
      * @test
      */

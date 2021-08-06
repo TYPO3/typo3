@@ -18,11 +18,13 @@ namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\Parser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Functional test for TypoScriptParser
- */
 class TypoScriptParserTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     /**
      * This tests triggers an error if the serialize(unserialize())) call
      * within TypoScriptParser is removed. See forge issue #76919

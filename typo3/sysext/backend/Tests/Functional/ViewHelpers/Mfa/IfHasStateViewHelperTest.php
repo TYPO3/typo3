@@ -25,6 +25,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IfHasStateViewHelperTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     protected StandaloneView $view;
 
     protected function setUp(): void

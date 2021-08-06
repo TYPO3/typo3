@@ -25,18 +25,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class ErrorHandlerTest extends FunctionalTestCase
 {
     /**
-     * Disabled on sqlite and mssql: They don't support init command "SET NAMES 'UTF8'". That's
-     * ok since this test is not about db platform support but error handling in core.
-     *
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @test
-     * @group not-sqlite
-     * @group not-mssql
      */
     public function handleErrorFetchesDeprecations()
     {
@@ -65,8 +62,6 @@ class ErrorHandlerTest extends FunctionalTestCase
      * be a check if \TYPO3\CMS\Core\Error\ErrorHandler should handle the incoming error.
      *
      * @test
-     * @group not-sqlite
-     * @group not-mssql
      */
     public function handleErrorOnlyHandlesRegisteredErrorLevels(): void
     {

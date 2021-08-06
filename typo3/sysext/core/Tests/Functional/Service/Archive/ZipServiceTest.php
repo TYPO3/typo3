@@ -27,6 +27,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class ZipServiceTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @var vfsStreamDirectory
      */
     private $vfs;

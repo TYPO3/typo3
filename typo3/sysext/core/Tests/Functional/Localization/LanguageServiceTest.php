@@ -23,6 +23,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LanguageServiceTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     protected LanguageService $subject;
 
     protected function setUp(): void

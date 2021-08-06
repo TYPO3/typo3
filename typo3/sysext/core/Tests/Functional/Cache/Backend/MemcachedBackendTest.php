@@ -15,18 +15,22 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class MemcachedBackendTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     /**
      * Sets up this test case
      */

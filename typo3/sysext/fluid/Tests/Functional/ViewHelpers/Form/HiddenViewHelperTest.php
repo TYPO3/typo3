@@ -23,6 +23,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class HiddenViewHelperTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @test
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void

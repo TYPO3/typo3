@@ -24,6 +24,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class CshViewHelperTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();

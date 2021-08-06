@@ -24,12 +24,15 @@ use TYPO3\CMS\Core\Session\Backend\RedisSessionBackend;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Test case
- *
  * @requires extension redis
  */
 class RedisSessionBackendTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     /**
      * @var RedisSessionBackend Prepared and connected redis test subject
      */

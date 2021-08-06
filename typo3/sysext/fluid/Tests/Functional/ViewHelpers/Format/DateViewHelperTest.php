@@ -24,6 +24,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 class DateViewHelperTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @var string Backup of current timezone, it is manipulated in tests
      */
     protected $timezone;

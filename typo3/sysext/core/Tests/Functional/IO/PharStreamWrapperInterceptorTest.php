@@ -23,6 +23,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class PharStreamWrapperInterceptorTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * Explicitly copy extension directory & files instead of using symlink with $testExtensionsToLoad
      *
      * @var array

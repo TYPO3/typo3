@@ -23,6 +23,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @return array
      */
     public function errorCodesDataProvider(): array

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -33,7 +34,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class RedisBackendTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     /**
      * Set up
      */

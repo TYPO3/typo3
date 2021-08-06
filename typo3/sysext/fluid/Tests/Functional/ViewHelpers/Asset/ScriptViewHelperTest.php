@@ -18,13 +18,20 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Asset;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Fluid\ViewHelpers\Asset\ScriptViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ScriptViewHelperTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     public function valueDataProvider(): array
     {
         return [

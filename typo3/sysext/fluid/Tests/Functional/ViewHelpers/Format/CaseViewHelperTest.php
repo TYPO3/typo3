@@ -23,6 +23,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 class CaseViewHelperTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     public function renderConvertsAValueDataProvider(): array
     {
         return [

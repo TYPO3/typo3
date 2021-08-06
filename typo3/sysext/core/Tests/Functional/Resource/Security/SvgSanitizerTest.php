@@ -24,6 +24,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class SvgSanitizerTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @return array<string, string[]>
      */
     public function svgContentIsSanitizedDataProvider(): array

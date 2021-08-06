@@ -24,11 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case for \TYPO3\CMS\Backend\ViewHelpers\Uri\NewRecordViewHelper
- */
 class NewRecordViewHelperTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     public function setUp(): void
     {
         parent::setUp();

@@ -22,11 +22,13 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class RateLimiterFactoryTest extends FunctionalTestCase
 {
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
     public function loginRateLimiterLimitsRequestsDataProvider(): array
     {
         return [

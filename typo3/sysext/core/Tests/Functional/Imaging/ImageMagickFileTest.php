@@ -29,6 +29,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class ImageMagickFileTest extends FunctionalTestCase
 {
     /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    /**
      * @var vfsStreamDirectory
      */
     private $directory;
