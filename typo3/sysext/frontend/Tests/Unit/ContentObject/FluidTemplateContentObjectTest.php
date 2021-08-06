@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -955,12 +957,12 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'addHeaderData',
             'addFooterData'
         ])->getMock();
-        if (!empty(trim($expectedHeader))) {
+        if ($expectedHeader !== null && !empty(trim($expectedHeader))) {
             $pageRendererMock->expects(self::once())->method('addHeaderData')->with($expectedHeader);
         } else {
             $pageRendererMock->expects(self::never())->method('addHeaderData');
         }
-        if (!empty(trim($expectedFooter))) {
+        if ($expectedFooter !== null && !empty(trim($expectedFooter))) {
             $pageRendererMock->expects(self::once())->method('addFooterData')->with($expectedFooter);
         } else {
             $pageRendererMock->expects(self::never())->method('addFooterData');

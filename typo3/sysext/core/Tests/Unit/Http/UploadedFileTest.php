@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -37,7 +39,7 @@ class UploadedFileTest extends UnitTestCase
 
     protected function tearDown(): void
     {
-        if (is_scalar($this->tmpFile) && file_exists($this->tmpFile)) {
+        if (is_string($this->tmpFile) && file_exists($this->tmpFile)) {
             unlink($this->tmpFile);
         }
         parent::tearDown();

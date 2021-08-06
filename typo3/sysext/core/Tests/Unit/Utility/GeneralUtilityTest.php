@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -2460,9 +2462,9 @@ class GeneralUtilityTest extends UnitTestCase
         // Use this if writeFileToTypo3tempDir is fixed to create hidden files in subdirectories
         // \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
         // \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/..file2', '42');
-        touch($baseDirectory . '/.bar/.file', '42');
+        touch($baseDirectory . '/.bar/.file', 42);
         chmod($baseDirectory . '/.bar/.file', 482);
-        touch($baseDirectory . '/.bar/..file2', '42');
+        touch($baseDirectory . '/.bar/..file2', 42);
         chmod($baseDirectory . '/.bar/..file2', 482);
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';

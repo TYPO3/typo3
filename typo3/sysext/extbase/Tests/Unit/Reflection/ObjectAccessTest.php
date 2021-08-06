@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -152,7 +154,7 @@ class ObjectAccessTest extends UnitTestCase
         $objectStorage = new ObjectStorage();
         $object = new \stdClass();
         $objectStorage->attach($object);
-        $actual = ObjectAccess::getProperty($objectStorage, 0);
+        $actual = ObjectAccess::getProperty($objectStorage, '0');
         self::assertSame($object, $actual, 'getProperty does not work with ObjectStorage property.');
     }
 
