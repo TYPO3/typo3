@@ -84,7 +84,7 @@
 		"phpstan/phpstan": "^0.12.64",
 		"phpunit/phpunit": "^9.5",
 		"typo3/cms-styleguide": "~11.4.0",
-		"typo3/testing-framework": "^6.8.4"
+		"typo3/testing-framework": "^6.9.0"
 	},
 	"suggest": {
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
