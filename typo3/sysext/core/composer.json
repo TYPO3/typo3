@@ -54,7 +54,7 @@
 		"fiunchinho/phpunit-randomizer": "^4.0",
 		"friendsofphp/php-cs-fixer": "^2.16.7",
 		"typo3/cms-styleguide": "~9.2.2",
-		"typo3/testing-framework": "^4.15.3"
+		"typo3/testing-framework": "^4.15.5"
 	},
 	"suggest": {
 		"ext-fileinfo": "Used for proper file type detection in the file abstraction layer",
