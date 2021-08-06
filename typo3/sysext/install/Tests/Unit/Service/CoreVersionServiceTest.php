@@ -20,6 +20,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,57 +45,7 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTarGzSha1OfVersionReturnsSha1(): void
-    {
-        $this->setUpApiResponse(
-            'release/8.7.12',
-            [
-                'version' => '8.7.12',
-                'date' => '2018-03-22T11:36:39+00:00',
-                'type' => 'regular',
-                'tar_package' =>
-                    [
-                        'md5sum' => 'e835f454229b1077c9042f1bae4d46c7',
-                        'sha1sum' => '185f3796751a903554a03378634a438beeef966e',
-                        'sha256sum' => '77c3589161bea9d2c30e5d3d944443ba64b56813314ac2511b830e37d3297881',
-                    ],
-                'zip_package' =>
-                    [
-                        'md5sum' => 'e5736ca3b3725966a4528a0c53fc849f',
-                        'sha1sum' => 'eba49b9033da52d98f48876e97ed090a0c5593e0',
-                        'sha256sum' => '7aad3f5864256f3f989c0378cec8bb729e728b30adb25e55ae713d8e682ef72b',
-                    ],
-            ]
-        );
-        $coreVersionService = new CoreVersionService();
-        $result = $coreVersionService->getTarGzSha1OfVersion('8.7.12');
-        self::assertSame('185f3796751a903554a03378634a438beeef966e', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function getTarGzSha1OfVersionReturnsSha1ReturnsEmptyStringIfNoVersionData(): void
-    {
-        $this->setUpApiResponse(
-            'release/8.7.44',
-            [
-                'error' =>
-                    [
-                        'code' => 404,
-                        'message' => 'Not Found',
-                    ],
-            ]
-        );
-        $coreVersionService = new CoreVersionService();
-        $result = $coreVersionService->getTarGzSha1OfVersion('8.7.44');
-        self::assertSame('', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function isVersionActivelyMaintainedReturnsTrueIfMaintainedUntilIsNotSet(): void
+    public function isVersionActivelyCommunityMaintainedReturnsFalseIfMaintainedUntilIsNotSet(): void
     {
         $this->setUpApiResponse(
             'major/9',
@@ -105,18 +56,18 @@ class CoreVersionServiceTest extends UnitTestCase
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
 
-        $result = $instance->isVersionActivelyMaintained();
+        $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
-        self::assertTrue($result);
+        self::assertFalse($result);
     }
 
     /**
      * @test
      */
-    public function isVersionActivelyMaintainedReturnsTrueIfMaintainedUntilIsAfterToday(): void
+    public function isVersionActivelyCommunityMaintainedReturnsTrueIfMaintainedUntilIsAfterToday(): void
     {
         $this->setUpApiResponse(
             'major/9',
@@ -128,10 +79,10 @@ class CoreVersionServiceTest extends UnitTestCase
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
 
-        $result = $instance->isVersionActivelyMaintained();
+        $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
         self::assertTrue($result);
     }
@@ -139,7 +90,7 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isVersionActivelyMaintainedReturnsFalseIfMaintainedUntilWasBeforeToday(): void
+    public function isVersionActivelyCommunityMaintainedReturnsFalseIfMaintainedUntilWasBeforeToday(): void
     {
         $this->setUpApiResponse(
             'major/7',
@@ -151,10 +102,10 @@ class CoreVersionServiceTest extends UnitTestCase
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.6.25'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('7');
 
-        $result = $instance->isVersionActivelyMaintained();
+        $result = $instance->getMaintenanceWindow()->isSupportedByCommunity();
 
         self::assertFalse($result);
     }
@@ -162,21 +113,44 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isYoungerPatchReleaseAvailableReturnsTrueIfNewerVersionExists(): void
+    public function isVersionActivelyEltsMaintainedReturnsFalseIfEltsUntilIsNotSet(): void
     {
         $this->setUpApiResponse(
-            'major/9/release/latest',
+            'major/9',
             [
-                'version' => '9.1.0',
-                'date' => '2018-01-30T15:44:52+00:00',
-                'type' => 'regular',
+                'version' => 9.0,
+                'title' => 'TYPO3 v9',
+                'release_date' => '2018-01-30T00:00:00+01:00',
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.0.0'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
 
-        $result = $instance->isYoungerPatchReleaseAvailable();
+        $result = $instance->getMaintenanceWindow()->isSupportedByElts();
+
+        self::assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function isVersionActivelyEltsMaintainedReturnsTrueIfEltsUntilIsAfterToday(): void
+    {
+        $this->setUpApiResponse(
+            'major/9',
+            [
+                'version' => 9.0,
+                'title' => 'TYPO3 v9',
+                'release_date' => '2018-01-30T00:00:00+01:00',
+                'elts_until' => '2222-01-30T00:00:00+01:00',
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('9');
+
+        $result = $instance->getMaintenanceWindow()->isSupportedByElts();
 
         self::assertTrue($result);
     }
@@ -184,7 +158,93 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isYoungerPatchReleaseAvailableReturnsFalseIfNoNewerVersionExists(): void
+    public function isVersionActivelyEltsMaintainedReturnsFalseIfEltsUntilWasBeforeToday(): void
+    {
+        $this->setUpApiResponse(
+            'major/7',
+            [
+                'version' => 7,
+                'title' => 'TYPO3 v7',
+                'maintained_until' => '2003-02-18T08:10:14+00:00',
+                'elts_until' => '2002-06-03T12:01:07+00:00',
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::once())->method('getInstalledMajorVersion')->willReturn('7');
+
+        $result = $instance->getMaintenanceWindow()->isSupportedByElts();
+
+        self::assertFalse($result);
+    }
+
+    /**
+     * The maintenance date ranges are built relatively to avoid the need to adjust them once the dates passed
+     * @test
+     */
+    public function getSupportedMajorReleasesReturnsListOfVersions(): void
+    {
+        $this->setUpApiResponse(
+            'major',
+            [
+                [
+                    'version' => 11,
+                    'title' => 'TYPO3 11',
+                    'maintained_until' => (new \DateTimeImmutable('+3 years'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('+ 6 years'))->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'version' => 10,
+                    'title' => 'TYPO3 10 LTS',
+                    'maintained_until' => (new \DateTimeImmutable('+2 years'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('+ 5 years'))->format(\DateTimeInterface::ATOM),
+                    'lts' => 10.4,
+                ],
+                [
+                    'version' => 9,
+                    'title' => 'TYPO3 9 LTS',
+                    'maintained_until' => (new \DateTimeImmutable('+2 months'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('+3 years'))->format(\DateTimeInterface::ATOM),
+                    'lts' => 9.5,
+                ],
+                [
+                    'version' => 8,
+                    'title' => 'TYPO3 8 ELTS',
+                    'maintained_until' => (new \DateTimeImmutable('-1 year'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('+2 years'))->format(\DateTimeInterface::ATOM),
+                    'lts' => 8.7,
+                ],
+                [
+                    'version' => 7,
+                    'title' => 'TYPO3 7 ELTS',
+                    'maintained_until' => (new \DateTimeImmutable('-3 years'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('+2 months'))->format(\DateTimeInterface::ATOM),
+                    'lts' => 7.6,
+                ],
+                [
+                    'version' => 6,
+                    'title' => 'TYPO3 6 ELTS',
+                    'maintained_until' => (new \DateTimeImmutable('-4 years'))->format(\DateTimeInterface::ATOM),
+                    'elts_until' => (new \DateTimeImmutable('-5 months'))->format(\DateTimeInterface::ATOM),
+                    'lts' => 6.2,
+                ],
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['dummy']);
+        $result = $instance->getSupportedMajorReleases();
+
+        $expectation = [
+            'community' => ['11', '10.4', '9.5'],
+            'elts' => ['8.7', '7.6'],
+        ];
+        self::assertSame($expectation, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function isPatchReleaseSuitableForUpdateReturnsTrueIfNewerVersionExists(): void
     {
         $this->setUpApiResponse(
             'major/9/release/latest',
@@ -192,13 +252,45 @@ class CoreVersionServiceTest extends UnitTestCase
                 'version' => '9.1.0',
                 'date' => '2018-01-30T15:44:52+00:00',
                 'type' => 'regular',
+                'tar_package' => [
+                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c'
+                ]
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.1.0'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('9.0.0');
 
-        $result = $instance->isYoungerPatchReleaseAvailable();
+        $coreRelease = $instance->getYoungestPatchRelease();
+        $result = $instance->isPatchReleaseSuitableForUpdate($coreRelease);
+
+        self::assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function isPatchReleaseSuitableForUpdateReturnsFalseIfNoNewerVersionExists(): void
+    {
+        $this->setUpApiResponse(
+            'major/9/release/latest',
+            [
+                'version' => '9.1.0',
+                'date' => '2018-01-30T15:44:52+00:00',
+                'type' => 'regular',
+                'tar_package' => [
+                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c'
+                ]
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('9');
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('9.1.0');
+
+        $coreRelease = $instance->getYoungestPatchRelease();
+        $result = $instance->isPatchReleaseSuitableForUpdate($coreRelease);
 
         self::assertFalse($result);
     }
@@ -208,19 +300,43 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isUpdateSecurityRelevantReturnsTrueIfNewerSecurityUpdateExists(): void
     {
+        $coreRelease = new CoreRelease('8.7.5', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
+
         $this->setUpApiResponse(
-            'major/8/release/latest/security',
+            'major/8/release',
             [
-                'version' => '8.7.5',
-                'date' => '2017-09-05T10:54:18+00:00',
-                'type' => 'security',
+                [
+                    'version' => '8.7.1',
+                    'date' => '2017-04-18T17:05:53+00:00',
+                    'type' => 'regular',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.4',
+                    'date' => '2017-07-25T16:47:27+00:00',
+                    'type' => 'regular',
+                    'tar_package' => [
+                        'sha1sum' => '1129c740796aabbf2efbc5e43f892debe7e1d583',
+                    ],
+                ],
+                [
+                    'version' => '8.7.5',
+                    'date' => '2017-09-05T10:54:18+00:00',
+                    'type' => 'security',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('8.7.1'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.1');
 
-        $result = $instance->isUpdateSecurityRelevant();
+        $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
         self::assertTrue($result);
     }
@@ -228,21 +344,45 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isUpdateSecurityRelevantReturnsFalseIfNoNewerSecurityUpdatesExist(): void
+    public function isUpdateSecurityRelevantReturnsFalseIfNewerSecurityUpdateExistsButCannotGetUpgraded(): void
     {
+        $coreRelease = new CoreRelease('8.7.6', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
+
         $this->setUpApiResponse(
-            'major/8/release/latest/security',
+            'major/8/release',
             [
-                'version' => '8.7.5',
-                'date' => '2017-09-05T10:54:18+00:00',
-                'type' => 'security',
+                [
+                    'version' => '8.7.5',
+                    'date' => '2017-09-05T10:54:18+00:00',
+                    'type' => 'security',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.6',
+                    'date' => '2017-09-05T10:54:18+00:00',
+                    'type' => 'regular',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.33',
+                    'date' => '2020-05-12T00:00:00+02:00',
+                    'type' => 'security',
+                    'tar_package' => [
+                        'sha1sum' => '2dd44ab6c98c3f07a0bbe4af6ccc5d7ced7e5856',
+                    ],
+                ],
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('8.7.5'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
 
-        $result = $instance->isUpdateSecurityRelevant();
+        $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
         self::assertFalse($result);
     }
@@ -250,58 +390,201 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersion(): void
+    public function isUpdateSecurityRelevantReturnsFalseIfNoNewerSecurityUpdatesExist(): void
     {
+        $coreRelease = new CoreRelease('8.7.6', new \DateTimeImmutable('2017-09-05T10:54:18+00:00'), 'security', 'e79466bffc81f270f5c262d01a125e82b2e1989a');
+
         $this->setUpApiResponse(
-            'major/9/release/latest',
+            'major/8/release',
             [
-                'version' => '9.1.0',
-                'date' => '2018-01-30T15:44:52+00:00',
-                'type' => 'regular',
+                [
+                    'version' => '8.7.5',
+                    'date' => '2017-09-05T10:54:18+00:00',
+                    'type' => 'security',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.6',
+                    'date' => '2017-09-05T10:54:18+00:00',
+                    'type' => 'regular',
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ]
             ]
         );
 
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion']);
-        $instance->expects($this->atLeastOnce())->method('getInstalledVersion')->will($this->returnValue('9.0.0'));
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion', 'getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn('8.7.5');
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
 
-        $result = $instance->getYoungestPatchRelease();
+        $result = $instance->isUpdateSecurityRelevant($coreRelease);
 
-        self::assertSame('9.1.0', $result);
+        self::assertFalse($result);
     }
 
     /**
-     * Data provider
+     * @test
+     * @dataProvider isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider
      */
-    public function getMajorVersionDataProvider(): array
+    public function isCurrentInstalledVersionEltsReturnsExpectedResult(string $major, string $version, bool $expectation): void
+    {
+        $this->setUpApiResponse(
+            'major/8/release',
+            [
+                [
+                    'version' => '8.7.1',
+                    'date' => '2017-04-18T17:05:53+00:00',
+                    'type' => 'regular',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.4',
+                    'date' => '2017-07-25T16:47:27+00:00',
+                    'type' => 'regular',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => '1129c740796aabbf2efbc5e43f892debe7e1d583',
+                    ],
+                ],
+                [
+                    'version' => '8.7.33',
+                    'date' => '2020-05-12T00:00:00+02:00',
+                    'type' => 'security',
+                    'elts' => true,
+                    'tar_package' => [
+                        'sha1sum' => '2dd44ab6c98c3f07a0bbe4af6ccc5d7ced7e5856',
+                    ],
+                ],
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion', 'getInstalledVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
+        $instance->expects(self::atLeastOnce())->method('getInstalledVersion')->willReturn($version);
+
+        self::assertSame($expectation, $instance->isCurrentInstalledVersionElts());
+    }
+
+    public function isCurrentInstalledVersionEltsReturnsExpectedResultDataProvider(): array
     {
         return [
-            '7.2' => [
-                '7.2.0',
-                '7',
+            ['8', '8.7.4', false],
+            ['8', '8.7.33', true]
+        ];
+    }
+
+    /**
+     * @dataProvider getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider
+     * @test
+     */
+    public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersion(string $major, array $response): void
+    {
+        $this->setUpApiResponse(
+            'major/' . $major . '/release/latest',
+            $response
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn($major);
+
+        $result = $instance->getYoungestPatchRelease();
+
+        self::assertSame($response['version'], $result->getVersion());
+        self::assertEquals($response['date'], $result->getDate()->format(\DateTimeInterface::ATOM));
+        self::assertSame($response['type'] === 'security', $result->isSecurityUpdate());
+        self::assertEquals($response['tar_package']['sha1sum'], $result->getChecksum());
+        self::assertSame($response['elts'], $result->isElts());
+    }
+
+    public function getYoungestPatchReleaseReturnsLatestReleaseForCurrentMajorVersionDataProvider(): array
+    {
+        return [
+            [
+                '9',
+                [
+                    'version' => '9.1.0',
+                    'date' => '2018-01-30T15:44:52+00:00',
+                    'type' => 'regular',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c',
+                    ],
+                ],
             ],
-            '7.4-dev' => [
-                '7.4-dev',
-                '7',
-            ],
-            '4.5' => [
-                '4.5.40',
-                '4',
-            ],
+            [
+                '8',
+                [
+                    'version' => '8.7.33',
+                    'date' => '2020-05-12T00:00:00+02:00',
+                    'type' => 'security',
+                    'elts' => true,
+                    'tar_package' => [
+                        'sha1sum' => '2dd44ab6c98c3f07a0bbe4af6ccc5d7ced7e5856',
+                    ],
+                ],
+            ]
         ];
     }
 
     /**
      * @test
-     * @dataProvider getMajorVersionDataProvider
-     * @param string $version
-     * @param string $expectedMajor
-     * @throws \InvalidArgumentException
      */
-    public function getMajorVersionReturnsCorrectMajorVersion($version, $expectedMajor): void
+    public function getYoungestCommunityPatchReleaseReturnsLatestNonEltsRelease(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $instance = $this->getAccessibleMock(CoreVersionService::class, ['dummy'], [], '', false);
-        $this->assertSame($expectedMajor, $instance->_call('getMajorVersion', $version));
+        $this->setUpApiResponse(
+            'major/8/release',
+            [
+                [
+                    'version' => '8.7.1',
+                    'date' => '2017-04-18T17:05:53+00:00',
+                    'type' => 'regular',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
+                    ],
+                ],
+                [
+                    'version' => '8.7.4',
+                    'date' => '2017-07-25T16:47:27+00:00',
+                    'type' => 'regular',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => '1129c740796aabbf2efbc5e43f892debe7e1d583',
+                    ],
+                ],
+                [
+                    'version' => '8.7.30',
+                    'date' => '2019-12-17T10:51:34+01:00',
+                    'type' => 'security',
+                    'elts' => false,
+                    'tar_package' => [
+                        'sha1sum' => '3df3a112dc7e2857bf39cfd2bc2c0bb7842a824c',
+                    ],
+                ],
+                [
+                    'version' => '8.7.33',
+                    'date' => '2020-05-12T00:00:00+02:00',
+                    'type' => 'security',
+                    'elts' => true,
+                    'tar_package' => [
+                        'sha1sum' => '2dd44ab6c98c3f07a0bbe4af6ccc5d7ced7e5856',
+                    ],
+                ],
+            ]
+        );
+
+        $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledMajorVersion']);
+        $instance->expects(self::atLeastOnce())->method('getInstalledMajorVersion')->willReturn('8');
+
+        $result = $instance->getYoungestCommunityPatchRelease();
+
+        self::assertSame('8.7.30', $result->getVersion());
     }
 
     /**
@@ -309,10 +592,10 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.2.0'));
-        $this->assertTrue($instance->isInstalledVersionAReleasedVersion());
+        $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.2.0');
+        self::assertTrue($instance->isInstalledVersionAReleasedVersion());
     }
 
     /**
@@ -320,9 +603,9 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion()
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
-        $instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('7.4-dev'));
-        $this->assertFalse($instance->isInstalledVersionAReleasedVersion());
+        $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.4-dev');
+        self::assertFalse($instance->isInstalledVersionAReleasedVersion());
     }
 }

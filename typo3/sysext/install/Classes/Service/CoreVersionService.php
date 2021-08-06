@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Install\Service;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Install\CoreVersion\CoreRelease;
+use TYPO3\CMS\Install\CoreVersion\MaintenanceWindow;
+use TYPO3\CMS\Install\CoreVersion\MajorRelease;
 
 /**
  * Core version service
@@ -69,21 +72,6 @@ class CoreVersionService
     }
 
     /**
-     * Get sha1 of a version from version matrix
-     *
-     * @param string $version A version to get sha1 of
-     * @return string sha1 of version
-     * @throws Exception\CoreVersionServiceException
-     */
-    public function getTarGzSha1OfVersion(string $version): string
-    {
-        $url = 'release/' . $version;
-        $result = $this->fetchFromRemote($url);
-
-        return $result['tar_package']['sha1sum'] ?? '';
-    }
-
-    /**
      * Get current installed version number
      *
      * @return string
@@ -93,22 +81,48 @@ class CoreVersionService
         return VersionNumberUtility::getCurrentTypo3Version();
     }
 
-    /**
-     * Checks if TYPO3 version (e.g. 6.2) is an actively maintained version
-     *
-     * @return bool TRUE if version is actively maintained
-     * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
-     */
-    public function isVersionActivelyMaintained(): bool
+    public function getMaintenanceWindow(): MaintenanceWindow
     {
         $url = 'major/' . $this->getInstalledMajorVersion();
         $result = $this->fetchFromRemote($url);
 
-        return !isset($result['maintained_until']) ||
-               (
-                   new \DateTimeImmutable($result['maintained_until']) >=
-                   new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
-               );
+        return MaintenanceWindow::fromApiResponse($result);
+    }
+
+    /**
+     * @return array{community: string[], elts: string[]}
+     */
+    public function getSupportedMajorReleases(): array
+    {
+        $url = 'major';
+        $result = $this->fetchFromRemote($url);
+
+        $majorReleases = [
+            'community' => [],
+            'elts' => [],
+        ];
+        foreach ($result as $release) {
+            $majorRelease = MajorRelease::fromApiResponse($release);
+            $maintenanceWindow = $majorRelease->getMaintenanceWindow();
+
+            if ($maintenanceWindow->isSupportedByCommunity()) {
+                $group = 'community';
+            } elseif ($maintenanceWindow->isSupportedByElts()) {
+                $group = 'elts';
+            } else {
+                // Major version is unsupported
+                continue;
+            }
+
+            $majorReleases[$group][] = $majorRelease->getLts() ?? $majorRelease->getVersion();
+        }
+
+        return $majorReleases;
+    }
+
+    public function isPatchReleaseSuitableForUpdate(CoreRelease $coreRelease): bool
+    {
+        return version_compare($this->getInstalledVersion(), $coreRelease->getVersion()) === -1;
     }
 
     /**
@@ -119,7 +133,7 @@ class CoreVersionService
      */
     public function isYoungerPatchReleaseAvailable(): bool
     {
-        return version_compare($this->getInstalledVersion(), $this->getYoungestPatchRelease()) === -1;
+        return version_compare($this->getInstalledVersion(), $this->getYoungestPatchRelease()->getVersion()) === -1;
     }
 
     /**
@@ -128,28 +142,70 @@ class CoreVersionService
      * @return bool TRUE if there is a pending security update
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
-    public function isUpdateSecurityRelevant(): bool
+    public function isUpdateSecurityRelevant(CoreRelease $releaseToCheck): bool
     {
-        $url = 'major/' . $this->getInstalledMajorVersion() . '/release/latest/security';
+        $url = 'major/' . $this->getInstalledMajorVersion() . '/release';
         $result = $this->fetchFromRemote($url);
 
-        if (isset($result['version'])) {
-            return version_compare($this->getInstalledVersion(), $result['version']) === -1;
+        $installedVersion = $this->getInstalledVersion();
+        foreach ($result as $release) {
+            $coreRelease = CoreRelease::fromApiResponse($release);
+            if ($coreRelease->isSecurityUpdate()
+                && version_compare($installedVersion, $coreRelease->getVersion()) === -1 // installed version is lower than release
+                && version_compare($releaseToCheck->getVersion(), $coreRelease->getVersion()) > -1 // release to check is equal or higher than release
+            ) {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    public function isCurrentInstalledVersionElts(): bool
+    {
+        $url = 'major/' . $this->getInstalledMajorVersion() . '/release';
+        $result = $this->fetchFromRemote($url);
+
+        $installedVersion = $this->getInstalledVersion();
+        foreach ($result as $release) {
+            if (version_compare($installedVersion, $release['version']) === 0) {
+                return $release['elts'] ?? false;
+            }
+        }
+
         return false;
     }
 
     /**
-     * Youngest patch release, e.g., 6.2.2
+     * Youngest patch release
      *
-     * @return string Version string of youngest patch level release
+     * @return CoreRelease
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
-    public function getYoungestPatchRelease(): string
+    public function getYoungestPatchRelease(): CoreRelease
     {
         $url = 'major/' . $this->getInstalledMajorVersion() . '/release/latest';
         $result = $this->fetchFromRemote($url);
-        return $result['version'];
+        return CoreRelease::fromApiResponse($result);
+    }
+
+    public function getYoungestCommunityPatchRelease(): CoreRelease
+    {
+        $url = 'major/' . $this->getInstalledMajorVersion() . '/release';
+        $result = $this->fetchFromRemote($url);
+
+        // Make sure all releases are sorted by their version
+        $columns = array_column($result, 'version');
+        array_multisort($columns, SORT_NATURAL, $result);
+
+        // Remove any ELTS release
+        $releases = array_filter($result, static function (array $release) {
+            return ($release['elts'] ?? false) === false;
+        });
+
+        $latestRelease = end($releases);
+
+        return CoreRelease::fromApiResponse($latestRelease);
     }
 
     /**
@@ -229,7 +285,7 @@ class CoreVersionService
             'Method getYoungestPatchDevelopmentRelease() is deprecated since TYPO3 v9 and will be removed in TYPO3 v10.0, use getYoungestPatchRelease() instead.',
             E_USER_DEPRECATED
         );
-        return $this->getYoungestPatchRelease();
+        return $this->getYoungestPatchRelease()->getVersion();
     }
 
     /**

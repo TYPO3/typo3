@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 
@@ -155,10 +156,10 @@ class CoreUpdateService
     /**
      * Check if an update is possible at all
      *
-     * @param string $version The target version number
+     * @param CoreRelease $coreRelease The target core release
      * @return bool TRUE on success
      */
-    public function checkPreConditions($version)
+    public function checkPreConditions(CoreRelease $coreRelease)
     {
         $success = true;
 
@@ -216,7 +217,7 @@ class CoreUpdateService
                 unlink($file);
             }
 
-            if (!$this->checkCoreFilesAvailable($version)) {
+            if (!$this->checkCoreFilesAvailable($coreRelease->getVersion())) {
                 // Explicit write check to upper directory of current core location
                 $coreLocation = @realpath($this->symlinkToCoreFiles . '/../');
                 $file = $coreLocation . '/' . StringUtility::getUniqueId('install-core-update-test-');
@@ -251,11 +252,12 @@ class CoreUpdateService
     /**
      * Download the specified version
      *
-     * @param string $version A version to download
+     * @param CoreRelease $coreRelease A core release to download
      * @return bool TRUE on success
      */
-    public function downloadVersion($version)
+    public function downloadVersion(CoreRelease $coreRelease)
     {
+        $version = $coreRelease->getVersion();
         $success = true;
         if ($this->checkCoreFilesAvailable($version)) {
             $this->messages->enqueue(new FlashMessage(
@@ -307,11 +309,12 @@ class CoreUpdateService
     /**
      * Verify checksum of downloaded version
      *
-     * @param string $version A downloaded version to check
+     * @param CoreRelease $coreRelease A downloaded core release to check
      * @return bool TRUE on success
      */
-    public function verifyFileChecksum($version)
+    public function verifyFileChecksum(CoreRelease $coreRelease)
     {
+        $version = $coreRelease->getVersion();
         $success = true;
         if ($this->checkCoreFilesAvailable($version)) {
             $this->messages->enqueue(new FlashMessage(
@@ -321,7 +324,7 @@ class CoreUpdateService
             ));
         } else {
             $fileLocation = $this->getDownloadTarGzTargetPath($version);
-            $expectedChecksum = $this->coreVersionService->getTarGzSha1OfVersion($version);
+            $expectedChecksum = $coreRelease->getChecksum();
             if (!file_exists($fileLocation)) {
                 $success = false;
                 $this->messages->enqueue(new FlashMessage(
@@ -355,11 +358,12 @@ class CoreUpdateService
     /**
      * Unpack a downloaded core
      *
-     * @param string $version A version to unpack
+     * @param CoreRelease $coreRelease A core release to unpack
      * @return bool TRUE on success
      */
-    public function unpackVersion($version)
+    public function unpackVersion(CoreRelease $coreRelease)
     {
+        $version = $coreRelease->getVersion();
         $success = true;
         if ($this->checkCoreFilesAvailable($version)) {
             $this->messages->enqueue(new FlashMessage(
@@ -417,11 +421,12 @@ class CoreUpdateService
     /**
      * Move an unpacked core to its final destination
      *
-     * @param string $version A version to move
+     * @param CoreRelease $coreRelease A core release to move
      * @return bool TRUE on success
      */
-    public function moveVersion($version)
+    public function moveVersion(CoreRelease $coreRelease)
     {
+        $version = $coreRelease->getVersion();
         $success = true;
         if ($this->checkCoreFilesAvailable($version)) {
             $this->messages->enqueue(new FlashMessage(
@@ -463,12 +468,12 @@ class CoreUpdateService
     /**
      * Activate a core version
      *
-     * @param string $version A version to activate
+     * @param CoreRelease $coreRelease A core release to activate
      * @return bool TRUE on success
      */
-    public function activateVersion($version)
+    public function activateVersion(CoreRelease $coreRelease)
     {
-        $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $version;
+        $newCoreLocation = @realpath($this->symlinkToCoreFiles . '/../') . '/typo3_src-' . $coreRelease->getVersion();
         $success = true;
         if (!is_dir($newCoreLocation)) {
             $success = false;

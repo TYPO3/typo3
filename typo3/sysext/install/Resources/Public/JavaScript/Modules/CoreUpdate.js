@@ -192,7 +192,7 @@ define([
       if (data.action && typeof(data.action) === 'object') {
         this.showActionButton(data.action);
       }
-      if (successMessage) {
+      if (canContinue && successMessage) {
         this.addMessage(Severity.ok, successMessage);
       }
       return canContinue;

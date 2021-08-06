@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
@@ -276,43 +277,116 @@ class UpgradeController extends AbstractController
      */
     public function coreUpdateIsUpdateAvailableAction(): ResponseInterface
     {
+        $action = null;
         $this->coreUpdateInitialize();
         $messageQueue = new FlashMessageQueue('install');
+
+        $messages = [];
+
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
-            $isDevelopmentUpdateAvailable = $this->coreVersionService->isYoungerPatchDevelopmentReleaseAvailable();
-            $isUpdateAvailable = $this->coreVersionService->isYoungerPatchReleaseAvailable();
-            $isUpdateSecurityRelevant = $this->coreVersionService->isUpdateSecurityRelevant();
-            if (!$isUpdateAvailable && !$isDevelopmentUpdateAvailable) {
-                $messageQueue->enqueue(new FlashMessage(
-                    '',
-                    'No regular update available',
-                    FlashMessage::NOTICE
-                ));
-            } elseif ($isUpdateAvailable) {
-                $newVersion = $this->coreVersionService->getYoungestPatchRelease();
-                if ($isUpdateSecurityRelevant) {
-                    $messageQueue->enqueue(new FlashMessage(
-                        '',
-                        'Update to security relevant released version ' . $newVersion . ' is available!',
-                        FlashMessage::WARNING
-                    ));
-                    $action = ['title' => 'Update now', 'action' => 'updateRegular'];
-                } else {
-                    $messageQueue->enqueue(new FlashMessage(
-                        '',
-                        'Update to regular released version ' . $newVersion . ' is available!',
-                        FlashMessage::INFO
-                    ));
-                    $action = ['title' => 'Update now', 'action' => 'updateRegular'];
+            $versionMaintenanceWindow = $this->coreVersionService->getMaintenanceWindow();
+            $renderVersionInformation = false;
+
+            if (!$versionMaintenanceWindow->isSupportedByCommunity() && !$versionMaintenanceWindow->isSupportedByElts()) {
+                $messages[] = [
+                    'title' => 'Outdated version',
+                    'message' => 'The currently installed TYPO3 version ' . $this->coreVersionService->getInstalledVersion() . ' does not receive any further updates, please consider upgrading to a supported version!',
+                    'severity' => FlashMessage::ERROR,
+                ];
+                $renderVersionInformation = true;
+            } else {
+                $currentVersion = $this->coreVersionService->getInstalledVersion();
+                $isCurrentVersionElts = $this->coreVersionService->isCurrentInstalledVersionElts();
+                $latestRelease = $this->coreVersionService->getYoungestPatchRelease();
+
+                $availableReleases = [];
+                if ($this->coreVersionService->isPatchReleaseSuitableForUpdate($latestRelease)) {
+                    $availableReleases[] = $latestRelease;
                 }
-            } elseif ($isDevelopmentUpdateAvailable) {
-                $newVersion = $this->coreVersionService->getYoungestPatchDevelopmentRelease();
-                $messageQueue->enqueue(new FlashMessage(
-                    '',
-                    'Update to development release ' . $newVersion . ' is available!',
-                    FlashMessage::INFO
-                ));
-                $action = ['title' => 'Update now', 'action' => 'updateDevelopment'];
+                if (!$versionMaintenanceWindow->isSupportedByCommunity()) {
+                    if ($latestRelease->isElts()) {
+                        // Check if there's a public release left that's not installed yet
+                        $latestCommunityDrivenRelease = $this->coreVersionService->getYoungestCommunityPatchRelease();
+                        if ($this->coreVersionService->isPatchReleaseSuitableForUpdate($latestCommunityDrivenRelease)) {
+                            $availableReleases[] = $latestCommunityDrivenRelease;
+                            $action = ['title' => 'Update now to version ' . $latestCommunityDrivenRelease->getVersion(), 'action' => 'updateRegular'];
+                        }
+                    } elseif (!$isCurrentVersionElts) {
+                        // Inform user about ELTS being available soon if:
+                        // - regular support ran out
+                        // - the current installed version is no ELTS
+                        // - no ELTS update was released, yet
+                        $messages[] = [
+                            'title' => 'ELTS will be available soon',
+                            'message' => sprintf('The currently installed TYPO3 version %s doesn\'t receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Please read the information below.', $currentVersion),
+                            'severity' => FlashMessage::WARNING,
+                        ];
+                        $renderVersionInformation = true;
+                    }
+                }
+
+                if ($availableReleases === []) {
+                    $messages[] = [
+                        'title' => 'Up to date',
+                        'message' => 'There are no TYPO3 updates available.',
+                        'severity' => FlashMessage::NOTICE,
+                    ];
+                } else {
+                    foreach ($availableReleases as $availableRelease) {
+                        $isUpdateSecurityRelevant = $this->coreVersionService->isUpdateSecurityRelevant($availableRelease);
+                        $versionString = $availableRelease->getVersion();
+                        if ($availableRelease->isElts()) {
+                            $versionString .= ' ELTS';
+                        }
+
+                        if ($isUpdateSecurityRelevant) {
+                            $title = ($availableRelease->isElts() ? 'ELTS ' : '') . 'Security update available!';
+                            $message = sprintf('The currently installed version is %s, update to security relevant released version %s is available.', $currentVersion, $versionString);
+                            $severity = FlashMessage::ERROR;
+                        } else {
+                            $title = ($availableRelease->isElts() ? 'ELTS ' : '') . 'Update available!';
+                            $message = sprintf('Currently installed version is %s, update to regular released version %s is available.', $currentVersion, $versionString);
+                            $severity = FlashMessage::WARNING;
+                        }
+
+                        if ($availableRelease->isElts()) {
+                            if ($isCurrentVersionElts) {
+                                $message .= ' Please visit my.typo3.org to download the release in your ELTS area.';
+                            } else {
+                                $message .= ' ' . sprintf('The currently installed TYPO3 version %s doesn\'t receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Please read the information below.', $currentVersion);
+                            }
+
+                            $renderVersionInformation = true;
+                        }
+
+                        $messages[] = [
+                            'title' => $title,
+                            'message' => $message,
+                            'severity' => $severity,
+                        ];
+                    }
+                }
+            }
+
+            if ($renderVersionInformation) {
+                $supportedMajorReleases = $this->coreVersionService->getSupportedMajorReleases();
+                $supportMessages = [];
+                if (!empty($supportedMajorReleases['community'])) {
+                    $supportMessages[] = sprintf('Currently community-supported TYPO3 versions: %s (more information at https://get.typo3.org).', implode(', ', $supportedMajorReleases['community']));
+                }
+                if (!empty($supportedMajorReleases['elts'])) {
+                    $supportMessages[] = sprintf('Currently supported TYPO3 ELTS versions: %s (more information at https://typo3.com/elts).', implode(', ', $supportedMajorReleases['elts']));
+                }
+
+                $messages[] = [
+                    'title' => 'TYPO3 Version information',
+                    'message' => implode(' ', $supportMessages),
+                    'severity' => FlashMessage::INFO,
+                ];
+            }
+
+            foreach ($messages as $message) {
+                $messageQueue->enqueue(new FlashMessage($message['message'], $message['title'], $message['severity']));
             }
         } else {
             $messageQueue->enqueue(new FlashMessage(
@@ -1117,9 +1191,9 @@ class UpgradeController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @throws \RuntimeException
-     * @return string Version to handle, eg. 6.2.2
+     * @return CoreRelease
      */
-    protected function coreUpdateGetVersionToHandle(ServerRequestInterface $request): string
+    protected function coreUpdateGetVersionToHandle(ServerRequestInterface $request): CoreRelease
     {
         $type = $request->getQueryParams()['install']['type'];
         if (!isset($type) || empty($type)) {
@@ -1128,12 +1202,7 @@ class UpgradeController extends AbstractController
                 1380975303
             );
         }
-        if ($type === 'development') {
-            $versionToHandle = $this->coreVersionService->getYoungestPatchDevelopmentRelease();
-        } else {
-            $versionToHandle = $this->coreVersionService->getYoungestPatchRelease();
-        }
-        return $versionToHandle;
+        return $this->coreVersionService->getYoungestCommunityPatchRelease();
     }
 
     /**
