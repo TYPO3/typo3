@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -59,6 +61,6 @@ class FormTestService
      */
     public function formHtmlContainsField(string $fieldName, string $formHtml): bool
     {
-        return strpos($formHtml, '[' . $fieldName . ']');
+        return (bool)strpos($formHtml, '[' . $fieldName . ']');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Fixture extension for functional tests for Inline Relational Record Editing IRRE',
     'description' => 'based on irre_tutorial extension created by Oliver Hader, see https://forge.typo3.org/projects/extension-irre_tutorial',

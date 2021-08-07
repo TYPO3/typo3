@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Extension skeleton for TYPO3 7',
     'description' => 'Description for ext',

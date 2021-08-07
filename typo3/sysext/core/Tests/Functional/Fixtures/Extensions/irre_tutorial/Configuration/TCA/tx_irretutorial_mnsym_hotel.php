@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:irre_tutorial/locallang_db.xlf:tx_irretutorial_mnsym_hotel',
