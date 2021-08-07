@@ -4,9 +4,9 @@
 # TYPO3 core test runner based on docker and docker-compose.
 #
 
-# Function to write a .env file in Build/testing-docker/local
+# Function to write a .env file in Build/testing-docker
 # This is read by docker-compose and vars defined here are
-# used in Build/testing-docker/local/docker-compose.yml
+# used in Build/testing-docker/docker-compose.yml
 setUpDockerComposeDotEnv() {
     # Delete possibly existing local .env file if exists
     [ -e .env ] && rm .env
@@ -199,20 +199,9 @@ DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
+TEST_FILE=${1}
 if [ -n "${1}" ]; then
     TEST_FILE="Web/typo3conf/ext/styleguide/${1}"
-else
-    case ${TEST_SUITE} in
-        acceptance)
-            TEST_FILE="Web/typo3conf/ext/styleguide/Tests/Acceptance"
-            ;;
-        functional)
-            TEST_FILE="Web/typo3conf/ext/styleguide/Tests/Functional"
-            ;;
-        unit)
-            TEST_FILE="Web/typo3conf/ext/styleguide/Tests/Unit"
-            ;;
-    esac
 fi
 
 if [ ${SCRIPT_VERBOSE} -eq 1 ]; then

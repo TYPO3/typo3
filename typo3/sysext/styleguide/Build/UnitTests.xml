@@ -1,0 +1,30 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    backupGlobals="true"
+    bootstrap="UnitTestsBootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
+    forceCoversAnnotation="false"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Unit tests">
+            <directory>../Tests/Unit/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <const name="TYPO3_MODE" value="BE" />
+        <ini name="display_errors" value="1" />
+        <env name="TYPO3_CONTEXT" value="Testing" />
+    </php>
+</phpunit>
