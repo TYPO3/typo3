@@ -118,7 +118,7 @@ class CacheService implements SingletonInterface
         if (!is_array($this->clearCacheForTables[$table])) {
             $this->clearCacheForTables[$table] = [];
         }
-        $this->clearCacheForTables[$table] = $uid;
+        $this->clearCacheForTables[$table][] = $uid;
     }
 
     /**
