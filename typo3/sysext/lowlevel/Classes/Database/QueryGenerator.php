@@ -373,7 +373,7 @@ class QueryGenerator
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
                     }
                     $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table);
-                    $output .= '<h2>' . $cPR['header'] . '</h2><div>' . $cPR['content'] . '</div>';
+                    $output .= '<h2>' . ($cPR['header'] ?? '') . '</h2><div>' . $cPR['content'] . '</div>';
                 } catch (DBALException $e) {
                     if (!$userTsConfig['mod.']['dbint.']['disableShowSQLQuery']) {
                         $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
@@ -575,7 +575,7 @@ class QueryGenerator
         $keyArr = explode(',', $this->storeList);
         $storeQueryConfigs[$index] = [];
         foreach ($keyArr as $k) {
-            $storeQueryConfigs[$index][$k] = $this->settings[$k];
+            $storeQueryConfigs[$index][$k] = $this->settings[$k] ?? null;
         }
         return $storeQueryConfigs;
     }
@@ -851,7 +851,7 @@ class QueryGenerator
     protected function csvValues($row, $delim = ',', $quote = '"', $conf = [], $table = '')
     {
         $valueArray = $row;
-        if ($this->settings['search_result_labels'] && $table) {
+        if (($this->settings['search_result_labels'] ?? false) && $table) {
             foreach ($valueArray as $key => $val) {
                 $valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, $conf, ';');
             }
@@ -1561,7 +1561,7 @@ class QueryGenerator
         $fields = array_unique(GeneralUtility::trimExplode(',', $list . ',' . $force, true));
         $reList = [];
         foreach ($fields as $fieldName) {
-            if ($this->fields[$fieldName]) {
+            if (isset($this->fields[$fieldName])) {
                 $reList[] = $fieldName;
             }
         }
@@ -2189,7 +2189,7 @@ class QueryGenerator
         $out[] = '<select class="form-select t3js-submit-change" name="' . htmlspecialchars($name) . '">';
         $out[] = '<option value=""></option>';
         foreach ($this->fields as $key => $value) {
-            if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
+            if (!($value['exclude'] ?? false) || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
                 $label = $this->fields[$key]['label'];
                 if ($this->showFieldAndTableNames) {
                     $label .= ' [' . $key . ']';

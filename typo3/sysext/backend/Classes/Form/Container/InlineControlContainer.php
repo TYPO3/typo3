@@ -320,7 +320,7 @@ class InlineControlContainer extends AbstractContainer
             $html .= $selectorBox . $localizationButtons;
         }
 
-        $title = $languageService->sL(trim($parameterArray['fieldConf']['label']));
+        $title = $languageService->sL(trim($parameterArray['fieldConf']['label'] ?? ''));
         $html .= '<div class="panel-group panel-hover" data-title="' . htmlspecialchars($title) . '" id="' . $nameObject . '_records">';
 
         $sortableRecordUids = [];

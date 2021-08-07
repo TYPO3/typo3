@@ -552,7 +552,7 @@ class TypoScriptParser
             }
             return $retArr;
         }
-        if ($setup[$subKey]) {
+        if (isset($setup[$subKey])) {
             return $this->getVal($remainingKey, $setup[$subKey]);
         }
 

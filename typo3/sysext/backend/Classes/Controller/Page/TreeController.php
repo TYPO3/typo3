@@ -381,7 +381,7 @@ class TreeController
             $visibleText = htmlspecialchars('[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
         }
 
-        if ($this->addDomainName && $page['is_siteroot']) {
+        if ($this->addDomainName && ($page['is_siteroot'] ?? false)) {
             $domain = $this->getDomainNameForPage($pageId);
             $suffix = $domain !== '' ? ' [' . $domain . ']' : '';
         }

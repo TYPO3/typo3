@@ -167,7 +167,7 @@ class SelectSingleElement extends AbstractFormElement
 
         // Fallback icon
         // @todo: assign a special icon for non matching values?
-        if (!$selectedIcon && $selectItemGroups[0]['items'][0]['icon']) {
+        if (!$selectedIcon && !empty($selectItemGroups[0]['items'][0]['icon'])) {
             $selectedIcon = $selectItemGroups[0]['items'][0]['icon'];
         }
 

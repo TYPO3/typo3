@@ -257,7 +257,7 @@ class DatabaseIntegrityController
         }
         if ($setLimitToStart) {
             $currentLimit = explode(',', $this->MOD_SETTINGS['queryLimit']);
-            if ($currentLimit[1]) {
+            if (!empty($currentLimit[1] ?? 0)) {
                 $this->MOD_SETTINGS['queryLimit'] = '0,' . $currentLimit[1];
             } else {
                 $this->MOD_SETTINGS['queryLimit'] = '0';
@@ -450,7 +450,7 @@ class DatabaseIntegrityController
                     $lostRecordCount = isset($admin->getLRecords()[$t]) ? count($admin->getLRecords()[$t]) : 0;
                 }
                 if ($countArr['all'][$t] ?? false) {
-                    $theNumberOfRe = (int)$countArr['non_deleted'][$t] . '/' . $lostRecordCount;
+                    $theNumberOfRe = (int)($countArr['non_deleted'][$t] ?? 0) . '/' . $lostRecordCount;
                 } else {
                     $theNumberOfRe = '';
                 }
