@@ -652,17 +652,19 @@ class FileList
         try {
             if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
                 $metaData = $fileObject->getMetaData()->get();
-                $urlParameters = [
-                    'edit' => [
-                        'sys_file_metadata' => [
-                            $metaData['uid'] => 'edit'
-                        ]
-                    ],
-                    'returnUrl' => $this->listURL()
-                ];
-                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
-                $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
+                if (!empty($metaData['uid'] ?? 0)) {
+                    $urlParameters = [
+                        'edit' => [
+                            'sys_file_metadata' => [
+                                $metaData['uid'] => 'edit'
+                            ]
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ];
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                    $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
+                    $code = '<a class="responsive-title" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $code . '</a>';
+                }
             }
         } catch (\Exception $e) {
             // intentional fall-through
@@ -1017,17 +1019,21 @@ class FileList
         // Edit metadata of file
         if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
             $metaData = $fileOrFolderObject->getMetaData()->get();
-            $urlParameters = [
-                'edit' => [
-                    'sys_file_metadata' => [
-                        $metaData['uid'] => 'edit'
-                    ]
-                ],
-                'returnUrl' => $this->listURL()
-            ];
-            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
-            $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+            if (!empty($metaData['uid'] ?? 0)) {
+                $urlParameters = [
+                    'edit' => [
+                        'sys_file_metadata' => [
+                            $metaData['uid'] => 'edit'
+                        ]
+                    ],
+                    'returnUrl' => $this->listURL()
+                ];
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
+                $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
+            } else {
+                $cells['metadata'] = $this->spaceIcon;
+            }
         }
 
         // document view
