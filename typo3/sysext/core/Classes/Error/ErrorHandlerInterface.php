@@ -22,6 +22,10 @@ namespace TYPO3\CMS\Core\Error;
  */
 interface ErrorHandlerInterface
 {
+    // Constants to make the implications of the PHP error handling API a bit more obvious.
+    public const ERROR_HANDLED = true;
+    public const PROPAGATE_ERROR = false;
+
     /**
      * Registers this class as default error handler
      *

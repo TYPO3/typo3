@@ -18,10 +18,10 @@ namespace TYPO3\CMS\Core\Error;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -42,26 +42,20 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
 
     /**
      * Error levels which should result in an exception thrown.
-     *
-     * @var int
      */
-    protected $exceptionalErrors = 0;
+    protected int $exceptionalErrors = 0;
 
     /**
      * Error levels which should be handled.
-     *
-     * @var int
      */
-    protected $errorHandlerErrors = 0;
+    protected int $errorHandlerErrors = 0;
 
     /**
      * Whether to write a flash message in case of an error
-     *
-     * @var bool
      */
-    protected $debugMode = false;
+    protected bool $debugMode = false;
 
-    protected const ERROR_LEVELS = [
+    protected const ERROR_LEVEL_LABELS = [
         E_WARNING => 'PHP Warning',
         E_NOTICE => 'PHP Notice',
         E_USER_ERROR => 'PHP User Error',
@@ -143,46 +137,37 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 && $reportingLevel === (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR)
                 && $errorLevel !== E_USER_DEPRECATED)
         ) {
-            return true;
+            return self::ERROR_HANDLED;
         }
 
-        $message = self::ERROR_LEVELS[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
+        $message = self::ERROR_LEVEL_LABELS[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
         if ($errorLevel & $this->exceptionalErrors) {
             throw new Exception($message, 1476107295);
         }
-        $flashMessageSeverity = FlashMessage::OK;
+
+        $message = $this->getFormattedLogMessage($message);
+
+        if ($errorLevel === E_USER_DEPRECATED || $errorLevel === E_DEPRECATED) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger('TYPO3.CMS.deprecations');
+            $logger->notice($message);
+            return self::ERROR_HANDLED;
+        }
+
         switch ($errorLevel) {
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
-                // no $flashMessageSeverity, as there will be no flash message for errors
-                $severity = 2;
-                $logLevel = \Psr\Log\LogLevel::ERROR;
+                $logLevel = LogLevel::ERROR;
                 break;
             case E_USER_WARNING:
             case E_WARNING:
-                $flashMessageSeverity = FlashMessage::WARNING;
-                $severity = 1;
-                $logLevel = \Psr\Log\LogLevel::WARNING;
+                $logLevel = LogLevel::WARNING;
                 break;
             default:
-                $flashMessageSeverity = FlashMessage::NOTICE;
-                $severity = 0;
-                $logLevel = \Psr\Log\LogLevel::NOTICE;
+                $logLevel = LogLevel::NOTICE;
         }
 
-        // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
-        $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
-        $logTitle = 'Core: Error handler (' . $applicationType . ')';
-        $message = $logTitle . ': ' . $message;
-
-        if ($errorLevel === E_USER_DEPRECATED) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger('TYPO3.CMS.deprecations');
-            $logger->notice($message);
-            return true;
-        }
         if ($this->logger) {
-            $this->logger->log(LogLevel::normalizeLevel(LogLevel::NOTICE) - $severity, $message);
+            $this->logger->log($logLevel, $message);
         }
 
         try {
@@ -195,36 +180,49 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         if ($errorLevel & ($GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting'] ?? 0)) {
             // Silently catch in case an error occurs before a database connection exists.
             try {
-                $this->writeLog($message, $severity);
+                $this->writeLog($message, $logLevel);
             } catch (\Exception $e) {
             }
         }
-        if ($logLevel === \Psr\Log\LogLevel::ERROR) {
+        if ($logLevel === LogLevel::ERROR) {
             // Let the internal handler continue. This will stop the script
-            return false;
+            return self::PROPAGATE_ERROR;
         }
         if ($this->debugMode) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $message,
-                self::ERROR_LEVELS[$errorLevel],
-                $flashMessageSeverity
-            );
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
+            $this->createAndEnqueueFlashMessage($message, $errorLevel);
         }
         // Don't execute PHP internal error handler
-        return true;
+        return self::ERROR_HANDLED;
+    }
+
+    protected function createAndEnqueueFlashMessage(string $message, int $errorLevel): void
+    {
+        switch ($errorLevel) {
+            case E_USER_WARNING:
+            case E_WARNING:
+                $flashMessageSeverity = FlashMessage::WARNING;
+                break;
+            default:
+                $flashMessageSeverity = FlashMessage::NOTICE;
+        }
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
+            $message,
+            self::ERROR_LEVEL_LABELS[$errorLevel],
+            $flashMessageSeverity
+        );
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
     /**
      * Writes an error in the sys_log table
      *
      * @param string $logMessage Default text that follows the message (in english!).
-     * @param int $severity The error level of the message (0 = OK, 1 = warning, 2 = error)
+     * @param string $logLevel The error level, see LogLevel::* constants
      */
-    protected function writeLog($logMessage, $severity)
+    protected function writeLog($logMessage, string $logLevel)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_log');
@@ -243,6 +241,19 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 if ($backUserId = $backendUser->getOriginalUserIdWhenInSwitchUserMode()) {
                     $data['originalUser'] = $backUserId;
                 }
+            }
+
+            switch ($logLevel) {
+                case LogLevel::ERROR:
+                    $severity = 2;
+                    break;
+                case LogLevel::WARNING:
+                    $severity = 1;
+                    break;
+                case LogLevel::NOTICE:
+                default:
+                    $severity = 0;
+                    break;
             }
 
             $connection->insert(
@@ -265,10 +276,16 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         }
     }
 
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getFormattedLogMessage(string $message): string
+    {
+        // String 'FE' if in FrontendApplication, else 'BE' (also in CLI without request object)
+        $applicationType = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+        && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
+        $logPrefix = 'Core: Error handler (' . $applicationType . ')';
+        return $logPrefix . ': ' . $message;
+    }
+
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
     }
