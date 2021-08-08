@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Scheduler\Example;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -54,10 +53,8 @@ class TestTask extends AbstractTask
 
             if (Environment::isCli()) {
                 $calledBy = 'CLI module dispatcher';
-                $site = '-';
             } else {
                 $calledBy = 'TYPO3 backend';
-                $site = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
             }
             $email = GeneralUtility::makeInstance(
                 FluidEmail::class,
@@ -75,7 +72,6 @@ class TestTask extends AbstractTask
                     [
                         'data' => [
                             'uid' => $this->taskUid,
-                            'site' => $site,
                             'calledBy' => $calledBy,
                             'tstamp' => time(),
                             'maxLifetime' => $this->scheduler->extConf['maxLifetime'],
@@ -83,10 +79,6 @@ class TestTask extends AbstractTask
                         'exec' => $this->getExecution()
                     ]
                 );
-
-            if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-                $email->setRequest($GLOBALS['TYPO3_REQUEST']);
-            }
             GeneralUtility::makeInstance(Mailer::class)->send($email);
             return true;
         }

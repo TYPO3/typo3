@@ -3,7 +3,6 @@
 <f:section name="Main">
 UID: {data.uid}
 Sitename: {typo3.sitename}
-Site: {data.site}
 Called by: {data.calledBy}
 Tstamp: {f:format.date(format:'Y-m-d H:i:s',date:data.tstamp)} [{data.tstamp}]
 maxLifetime: {data.maxLifetime}
