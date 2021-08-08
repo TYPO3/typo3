@@ -36,10 +36,5 @@
 			},
 			"extension-key": "filelist"
 		}
-	},
-	"autoload": {
-		"psr-4": {
-			"TYPO3\\CMS\\Filelist\\": "Classes/"
-		}
 	}
 }

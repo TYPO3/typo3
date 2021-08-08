@@ -36,10 +36,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Opendocs\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Opendocs\\Tests\\": "Tests/"
-		}
 	}
 }

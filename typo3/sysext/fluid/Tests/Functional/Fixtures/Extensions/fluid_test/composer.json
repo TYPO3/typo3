@@ -17,34 +17,14 @@
         }
     ],
     "license": "GPL-2.0+",
-    "repositories": [
-        {"type": "vcs", "url": "/Users/helmut/Developer/TYPO3/master"}
-    ],
     "autoload": {
         "psr-4": {
             "TYPO3Fluid\\FluidTest\\": "Classes"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "TYPO3Fluid\\FluidTest\\Tests\\": "Tests",
-            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
-        }
-    },
     "replace": {
         "fluid_test": "self.version",
         "typo3-ter/ext-scaffold": "self.version"
-    },
-    "config": {
-        "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin"
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "mkdir -p .Build/Web/typo3conf/ext/",
-            "[ -L .Build/Web/typo3conf/ext/fluid_test ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/fluid_test"
-        ]
     },
     "extra": {
         "branch-alias": {

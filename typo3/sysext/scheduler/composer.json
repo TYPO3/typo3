@@ -36,10 +36,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Scheduler\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Scheduler\\Tests\\": "Tests/"
-		}
 	}
 }

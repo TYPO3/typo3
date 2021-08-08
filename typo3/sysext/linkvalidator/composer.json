@@ -40,10 +40,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Linkvalidator\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Linkvalidator\\Tests\\": "Tests/"
-		}
 	}
 }

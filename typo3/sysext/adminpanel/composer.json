@@ -47,10 +47,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Adminpanel\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Adminpanel\\Tests\\": "Tests/"
-		}
 	}
 }

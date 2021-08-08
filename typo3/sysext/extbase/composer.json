@@ -50,18 +50,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Extbase\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Extbase\\Tests\\": "Tests/"
-		},
-		"classmap": [
-			"Tests/Unit/Object/Container/Fixtures/",
-			"Tests/Functional/Fixtures/",
-			"Tests/Functional/Mvc/Controller/Fixture/"
-		],
-		"files": [
-			"Tests/Fixture/TxClassWithGettersAndSetters.php"
-		]
 	}
 }

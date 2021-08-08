@@ -40,10 +40,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\T3editor\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\T3editor\\Tests\\": "Tests/"
-		}
 	}
 }

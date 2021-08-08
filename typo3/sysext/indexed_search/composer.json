@@ -39,10 +39,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\IndexedSearch\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\IndexedSearch\\Tests\\": "Tests/"
-		}
 	}
 }

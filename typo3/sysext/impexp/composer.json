@@ -39,10 +39,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Impexp\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Impexp\\Tests\\": "Tests/"
-		}
 	}
 }

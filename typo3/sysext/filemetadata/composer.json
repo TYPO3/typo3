@@ -31,10 +31,5 @@
 		"typo3/cms": {
 			"extension-key": "filemetadata"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Filemetadata\\Tests\\": "Tests/"
-		}
 	}
 }

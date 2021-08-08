@@ -41,10 +41,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Seo\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Seo\\Tests\\": "Tests/"
-		}
 	}
 }

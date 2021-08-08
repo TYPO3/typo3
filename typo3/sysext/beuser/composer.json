@@ -39,10 +39,5 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Beuser\\": "Classes/"
 		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Beuser\\Tests\\": "Tests/"
-		}
 	}
 }

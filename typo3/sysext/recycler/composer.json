@@ -21,9 +21,6 @@
 	"require": {
 		"typo3/cms-core": "11.4.*@dev"
 	},
-	"require-dev": {
-		"ext-libxml": "*"
-	},
 	"suggest": {
 		"typo3/cms-scheduler": "Remove deleted records after given time"
 	},
@@ -41,11 +38,6 @@
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\Recycler\\": "Classes/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Recycler\\Tests\\": "Tests/"
 		}
 	}
 }
