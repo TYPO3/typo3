@@ -47,7 +47,7 @@ class MailUtilityTest extends UnitTestCase
         $lineWidth = 76;
         $str = 'This text is not longer than 76 chars and therefore will not be broken.';
         $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        self::assertEquals(1, count(explode($newlineChar, $returnString)));
+        self::assertCount(1, explode($newlineChar, $returnString));
     }
 
     /**
@@ -59,7 +59,7 @@ class MailUtilityTest extends UnitTestCase
         $lineWidth = 50;
         $str = 'This text is longer than 50 chars and therefore will be broken.';
         $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        self::assertEquals(2, count(explode($newlineChar, $returnString)));
+        self::assertCount(2, explode($newlineChar, $returnString));
     }
 
     /**

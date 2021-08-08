@@ -87,7 +87,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectStoragePageAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setRespectStoragePage(true) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectStoragePage(true));
     }
 
     /**
@@ -106,7 +106,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setStoragePageIdsAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setStoragePageIds([1, 2, 3]) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setStoragePageIds([1, 2, 3]));
     }
 
     /**
@@ -125,7 +125,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectSysLanguageAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setRespectSysLanguage(true) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setRespectSysLanguage(true));
     }
 
     /**
@@ -133,7 +133,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setLanguageUidAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setLanguageUid(42) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setLanguageUid(42));
     }
 
     /**
@@ -152,7 +152,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIgnoreEnableFieldsAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setIgnoreEnableFields(true) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIgnoreEnableFields(true));
     }
 
     /**
@@ -171,7 +171,10 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setEnableFieldsToBeIgnoredAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(
+            QuerySettingsInterface::class,
+            $this->subject->setEnableFieldsToBeIgnored(['starttime', 'endtime'])
+        );
     }
 
     /**
@@ -190,6 +193,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIncludeDeletedAllowsChaining(): void
     {
-        self::assertTrue($this->subject->setIncludeDeleted(true) instanceof QuerySettingsInterface);
+        self::assertInstanceOf(QuerySettingsInterface::class, $this->subject->setIncludeDeleted(true));
     }
 }

@@ -58,7 +58,7 @@ class AlphanumericValidatorTest extends UnitTestCase
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();
-        self::assertEquals(1, count($subject->validate('adsf%&/$jklsfdö')->getErrors()));
+        self::assertCount(1, $subject->validate('adsf%&/$jklsfdö')->getErrors());
     }
 
     /**

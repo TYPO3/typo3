@@ -106,7 +106,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'removeLocalConfigurationKeysByPath',
             ]
         );
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('removeLocalConfigurationKeysByPath')
             ->willReturnMap($currentLocalConfiguration);
 
@@ -144,7 +144,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'removeLocalConfigurationKeysByPath',
             ]
         );
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('removeLocalConfigurationKeysByPath')
             ->willReturnMap($currentLocalConfiguration);
 
@@ -178,7 +178,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValueByPath',
             ]
         );
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('getLocalConfigurationValueByPath')
             ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::never())
@@ -213,7 +213,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'setLocalConfigurationValueByPath',
             ]
         );
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('getLocalConfigurationValueByPath')
             ->willReturnCallback($closure);
         $this->configurationManager->expects(self::once())
@@ -628,7 +628,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ]
         );
 
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('getLocalConfigurationValueByPath')
             ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::never())
@@ -663,7 +663,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ]
         );
 
-        $this->configurationManager->expects(self::exactly(1))
+        $this->configurationManager->expects(self::once())
             ->method('getLocalConfigurationValueByPath')
             ->willReturnMap($currentLocalConfiguration);
         $this->configurationManager->expects(self::once())

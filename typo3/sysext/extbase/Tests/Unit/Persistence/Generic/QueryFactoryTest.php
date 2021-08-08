@@ -116,7 +116,7 @@ class QueryFactoryTest extends UnitTestCase
         );
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
         $this->container->expects(self::any())->method('has')->willReturn(true);
-        $this->container->expects(self::exactly(1))->method('get')->with(QueryInterface::class)->willReturn($query);
+        $this->container->expects(self::once())->method('get')->with(QueryInterface::class)->willReturn($query);
 
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
         $this->queryFactory->create($this->className);

@@ -89,7 +89,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertNotNull($hash);
-        self::assertTrue(is_string($hash));
+        self::assertIsString($hash);
     }
 
     /**

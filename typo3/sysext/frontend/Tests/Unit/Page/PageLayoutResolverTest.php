@@ -29,7 +29,7 @@ class PageLayoutResolverTest extends UnitTestCase
     {
         $subject = new PageLayoutResolver();
         $result = $subject->getLayoutForPage(['backend_layout' => '1'], ['does-not-matter']);
-        self::assertEquals($result, '1');
+        self::assertEquals('1', $result);
     }
 
     /**
@@ -39,7 +39,7 @@ class PageLayoutResolverTest extends UnitTestCase
     {
         $subject = new PageLayoutResolver();
         $result = $subject->getLayoutForPage(['backend_layout' => '-1'], ['does-not-matter']);
-        self::assertEquals($result, 'none');
+        self::assertEquals('none', $result);
     }
 
     /**
@@ -51,10 +51,10 @@ class PageLayoutResolverTest extends UnitTestCase
         $parentPages = [['backend_layout' => '']];
         $page = ['backend_layout' => '0'];
         $result = $subject->getLayoutForPage($page, array_merge([$page], $parentPages));
-        self::assertEquals($result, 'default');
+        self::assertEquals('default', $result);
         $page = ['backend_layout' => ''];
         $result = $subject->getLayoutForPage($page, array_merge([$page], $parentPages));
-        self::assertEquals($result, 'default');
+        self::assertEquals('default', $result);
     }
 
     /**
@@ -67,7 +67,7 @@ class PageLayoutResolverTest extends UnitTestCase
         $page = ['backend_layout' => ''];
         $parentPages = [['uid' => 13, 'backend_layout' => 'does-not-matter'], ['uid' => 1, 'backend_layout_next_level' => '0']];
         $result = $subject->getLayoutForPage($page, array_merge([$page], $parentPages));
-        self::assertEquals($result, 'default');
+        self::assertEquals('default', $result);
     }
 
     /**
@@ -80,7 +80,7 @@ class PageLayoutResolverTest extends UnitTestCase
         $page = ['backend_layout' => ''];
         $parentPages = [['uid' => 13, 'backend_layout' => 'does-not-matter', 'backend_layout_next_level' => ''], ['uid' => 1, 'backend_layout_next_level' => 'regular']];
         $result = $subject->getLayoutForPage($page, array_merge([$page], $parentPages));
-        self::assertEquals($result, 'regular');
+        self::assertEquals('regular', $result);
     }
 
     /**
@@ -93,6 +93,6 @@ class PageLayoutResolverTest extends UnitTestCase
         $page = ['backend_layout' => ''];
         $parentPages = [['uid' => 13, 'backend_layout' => 'does-not-matter'], ['uid' => 15, 'backend_layout_next_level' => '-1'], ['uid' => 1, 'backend_layout_next_level' => 'regular']];
         $result = $subject->getLayoutForPage($page, array_merge([$page], $parentPages));
-        self::assertEquals($result, 'none');
+        self::assertEquals('none', $result);
     }
 }

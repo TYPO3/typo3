@@ -876,7 +876,7 @@ class UriBuilderTest extends UnitTestCase
     public function convertIteratorToArrayConvertsIteratorsToArray($iterator)
     {
         $result = $this->uriBuilder->_call('convertIteratorToArray', $iterator);
-        self::assertTrue(is_array($result));
+        self::assertIsArray($result);
     }
 
     protected function getRequestWithRouteAttribute(string $path = '/test/Path'): ServerRequestInterface

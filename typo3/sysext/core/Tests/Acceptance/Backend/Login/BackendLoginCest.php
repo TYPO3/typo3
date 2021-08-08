@@ -49,7 +49,7 @@ class BackendLoginCest
         $bsmo = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-login-submit'))->getCSSValue('background-color');
         });
-        $I->assertFalse($bs === $bsmo);
+        $I->assertNotSame($bs, $bsmo);
     }
 
     /**

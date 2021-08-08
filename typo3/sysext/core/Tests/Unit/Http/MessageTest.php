@@ -184,7 +184,7 @@ class MessageTest extends UnitTestCase
         self::assertNotSame($message, $message2);
         self::assertFalse($message2->hasHeader('X-Foo'));
         $headers = $message2->getHeaders();
-        self::assertEquals(0, count($headers));
+        self::assertCount(0, $headers);
     }
 
     /**

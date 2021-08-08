@@ -57,7 +57,7 @@ class ObjectAccessTest extends UnitTestCase
     public function getPropertyReturnsExpectedValueForGetterProperty()
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'property');
-        self::assertEquals($property, 'string1');
+        self::assertEquals('string1', $property);
     }
 
     /**
@@ -66,7 +66,7 @@ class ObjectAccessTest extends UnitTestCase
     public function getPropertyReturnsExpectedValueForPublicProperty()
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'publicProperty2');
-        self::assertEquals($property, 42, 'A property of a given object was not returned correctly.');
+        self::assertEquals(42, $property, 'A property of a given object was not returned correctly.');
     }
 
     /**
@@ -111,7 +111,7 @@ class ObjectAccessTest extends UnitTestCase
     public function setPropertyCallsASetterMethodToSetThePropertyValueIfOneIsAvailable()
     {
         ObjectAccess::setProperty($this->dummyObject, 'property', 4242);
-        self::assertEquals($this->dummyObject->getProperty(), 4242, 'setProperty does not work with setter.');
+        self::assertEquals(4242, $this->dummyObject->getProperty(), 'setProperty does not work with setter.');
     }
 
     /**
@@ -120,7 +120,7 @@ class ObjectAccessTest extends UnitTestCase
     public function setPropertyWorksWithPublicProperty()
     {
         ObjectAccess::setProperty($this->dummyObject, 'publicProperty', 4242);
-        self::assertEquals($this->dummyObject->publicProperty, 4242, 'setProperty does not work with public property.');
+        self::assertEquals(4242, $this->dummyObject->publicProperty, 'setProperty does not work with public property.');
     }
 
     /**
@@ -195,7 +195,7 @@ class ObjectAccessTest extends UnitTestCase
     {
         $array = ['key' => 'value'];
         $expected = ObjectAccess::getProperty($array, 'key');
-        self::assertEquals($expected, 'value', 'getProperty does not work with Array property.');
+        self::assertEquals('value', $expected, 'getProperty does not work with Array property.');
     }
 
     /**

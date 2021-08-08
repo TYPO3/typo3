@@ -135,7 +135,7 @@ class PageRendererTest extends UnitTestCase
 
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
-        self::assertSame(1, count($subject->getInlineLanguageLabelFiles()));
+        self::assertCount(1, $subject->getInlineLanguageLabelFiles());
     }
 
     /**

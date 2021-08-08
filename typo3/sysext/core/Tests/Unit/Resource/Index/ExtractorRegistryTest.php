@@ -104,9 +104,9 @@ class ExtractorRegistryTest extends UnitTestCase
 
         $extractorInstances = $extractorRegistry->getExtractors();
 
-        self::assertTrue($extractorInstances[0] instanceof $extractorClass2);
-        self::assertTrue($extractorInstances[1] instanceof $extractorClass3);
-        self::assertTrue($extractorInstances[2] instanceof $extractorClass1);
+        self::assertInstanceOf($extractorClass2, $extractorInstances[0]);
+        self::assertInstanceOf($extractorClass3, $extractorInstances[1]);
+        self::assertInstanceOf($extractorClass1, $extractorInstances[2]);
     }
 
     /**

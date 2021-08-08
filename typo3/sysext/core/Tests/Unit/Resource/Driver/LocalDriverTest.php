@@ -516,7 +516,7 @@ class LocalDriverTest extends BaseTestCase
         ]);
         $subject = $this->createDriver();
         $path = $subject->_call('getAbsolutePath', '/someFolder/file1.ext');
-        self::assertTrue(file_exists($path));
+        self::assertFileExists($path);
         self::assertEquals($this->getUrlInMount('/someFolder/file1.ext'), $path);
     }
 
@@ -535,9 +535,9 @@ class LocalDriverTest extends BaseTestCase
             [],
             ['getMimeTypeOfFile']
         );
-        self::assertTrue(file_exists($this->getUrl('sourceFolder/file')));
+        self::assertFileExists($this->getUrl('sourceFolder/file'));
         $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
-        self::assertTrue(file_exists($this->getUrlInMount('/targetFolder/file')));
+        self::assertFileExists($this->getUrlInMount('/targetFolder/file'));
     }
 
     /**
@@ -555,9 +555,9 @@ class LocalDriverTest extends BaseTestCase
             [],
             ['getMimeTypeOfFile']
         );
-        self::assertTrue(file_exists($this->getUrl('sourceFolder/file')));
+        self::assertFileExists($this->getUrl('sourceFolder/file'));
         $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'targetFile');
-        self::assertTrue(file_exists($this->getUrlInMount('/targetFolder/targetFile')));
+        self::assertFileExists($this->getUrlInMount('/targetFolder/targetFile'));
     }
 
     /**
@@ -591,7 +591,7 @@ class LocalDriverTest extends BaseTestCase
             [],
             ['getMimeTypeOfFile']
         );
-        self::assertTrue(file_exists($this->getUrl('sourceFolder/file')));
+        self::assertFileExists($this->getUrl('sourceFolder/file'));
         $fileIdentifier = $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
         self::assertEquals('file', basename($fileIdentifier));
         self::assertEquals('/targetFolder/file', $fileIdentifier);
@@ -1364,7 +1364,7 @@ class LocalDriverTest extends BaseTestCase
         ]);
         $subject = $this->createDriver();
         $mappingInformation = $subject->renameFolder('/sourceFolder/', 'newFolder');
-        self::assertTrue(is_array($mappingInformation));
+        self::assertIsArray($mappingInformation);
         self::assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
         self::assertEquals('/newFolder/file2', $mappingInformation['/sourceFolder/file2']);
         self::assertEquals('/newFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
@@ -1453,7 +1453,7 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
         /** @var LocalDriver $subject */
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
-        self::assertTrue(file_exists($this->getUrlInMount('/targetFolder/someFolder/')));
+        self::assertFileExists($this->getUrlInMount('/targetFolder/someFolder/'));
         self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));
         // @todo remove condition and else branch as soon as phpunit v8 goes out of support
         if (method_exists($this, 'assertFileDoesNotExist')) {
@@ -1499,7 +1499,7 @@ class LocalDriverTest extends BaseTestCase
         ]);
         $subject = $this->createDriver();
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolder');
-        self::assertTrue(file_exists($this->getUrlInMount('/targetFolder/newFolder/')));
+        self::assertFileExists($this->getUrlInMount('/targetFolder/newFolder/'));
     }
 
     /**
@@ -1528,7 +1528,7 @@ class LocalDriverTest extends BaseTestCase
         GeneralUtility::mkdir_deep($basePath . '/targetFolder');
 
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
-        self::assertTrue(is_dir($basePath . '/targetFolder/newFolderName/subFolder'));
+        self::assertDirectoryExists($basePath . '/targetFolder/newFolderName/subFolder');
     }
 
     /**

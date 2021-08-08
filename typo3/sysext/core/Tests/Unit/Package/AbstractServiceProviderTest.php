@@ -183,7 +183,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $className = get_class($this->getMockBuilder('foo')->getMock());
         $newClosure = $this->getClosureForNew();
         $instance = $newClosure($containerProphecy->reveal(), $className);
-        self::assertTrue($instance instanceof $className);
+        self::assertInstanceOf($className, $instance);
     }
 
     /**

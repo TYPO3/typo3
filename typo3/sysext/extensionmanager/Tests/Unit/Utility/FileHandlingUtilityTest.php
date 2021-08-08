@@ -115,7 +115,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $extDirPath;
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('addDirectory', $extDirPath);
-        self::assertTrue(is_dir($extDirPath));
+        self::assertDirectoryExists($extDirPath);
     }
 
     /**
@@ -127,7 +127,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         @mkdir($extDirPath);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('removeDirectory', $extDirPath);
-        self::assertFalse(is_dir($extDirPath));
+        self::assertDirectoryDoesNotExist($extDirPath);
     }
 
     /**
@@ -278,7 +278,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
-        self::assertTrue(file_exists($rootPath . 'ChangeLog'));
+        self::assertFileExists($rootPath . 'ChangeLog');
     }
 
     /**
@@ -343,11 +343,11 @@ class FileHandlingUtilityTest extends UnitTestCase
             'mod/doc/'
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        self::assertFalse(is_dir($rootPath . 'doc/'));
-        self::assertFalse(is_dir($rootPath . 'mod/doc/'));
+        self::assertDirectoryDoesNotExist($rootPath . 'doc/');
+        self::assertDirectoryDoesNotExist($rootPath . 'mod/doc/');
         $fileHandlerMock->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
-        self::assertTrue(is_dir($rootPath . 'doc/'));
-        self::assertTrue(is_dir($rootPath . 'mod/doc/'));
+        self::assertDirectoryExists($rootPath . 'doc/');
+        self::assertDirectoryExists($rootPath . 'mod/doc/');
     }
 
     /**
@@ -366,6 +366,6 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->injectEmConfUtility(new EmConfUtility());
         $fileHandlerMock->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);
-        self::assertTrue(file_exists($rootPath . 'ext_emconf.php'));
+        self::assertFileExists($rootPath . 'ext_emconf.php');
     }
 }

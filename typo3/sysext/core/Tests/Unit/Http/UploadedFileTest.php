@@ -213,7 +213,7 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        self::assertTrue(file_exists($to));
+        self::assertFileExists($to);
         $contents = file_get_contents($to);
         self::assertEquals($stream->__toString(), $contents);
     }
@@ -262,7 +262,7 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        self::assertTrue(file_exists($to));
+        self::assertFileExists($to);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717308);
@@ -280,7 +280,7 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        self::assertTrue(file_exists($to));
+        self::assertFileExists($to);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717306);

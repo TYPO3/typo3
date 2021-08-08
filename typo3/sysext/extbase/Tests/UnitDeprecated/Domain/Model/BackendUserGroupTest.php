@@ -94,11 +94,11 @@ class BackendUserGroupTest extends UnitTestCase
         $group2->setTitle('bar');
         $this->subject->addSubGroup($group1);
         $this->subject->addSubGroup($group2);
-        self::assertEquals(count($this->subject->getSubGroups()), 2);
+        self::assertCount(2, $this->subject->getSubGroups());
         $this->subject->removeSubGroup($group1);
-        self::assertEquals(count($this->subject->getSubGroups()), 1);
+        self::assertCount(1, $this->subject->getSubGroups());
         $this->subject->removeSubGroup($group2);
-        self::assertEquals(count($this->subject->getSubGroups()), 0);
+        self::assertCount(0, $this->subject->getSubGroups());
     }
 
     /**
@@ -113,7 +113,7 @@ class BackendUserGroupTest extends UnitTestCase
         $this->subject->addSubGroup($group1);
         $this->subject->addSubGroup($group2);
         $this->subject->removeAllSubGroups();
-        self::assertEquals(count($this->subject->getSubGroups()), 0);
+        self::assertCount(0, $this->subject->getSubGroups());
     }
 
     /**

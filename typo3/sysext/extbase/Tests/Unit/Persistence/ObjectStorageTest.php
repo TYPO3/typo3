@@ -35,8 +35,8 @@ class ObjectStorageTest extends UnitTestCase
         $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2, 'foo');
-        self::assertEquals($objectStorage[$object1], null);
-        self::assertEquals($objectStorage[$object2], 'foo');
+        self::assertNull($objectStorage[$object1]);
+        self::assertEquals('foo', $objectStorage[$object2]);
     }
 
     /**
@@ -49,11 +49,11 @@ class ObjectStorageTest extends UnitTestCase
         $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2, 'foo');
-        self::assertEquals(count($objectStorage), 2);
+        self::assertCount(2, $objectStorage);
         $objectStorage->detach($object1);
-        self::assertEquals(count($objectStorage), 1);
+        self::assertCount(1, $objectStorage);
         $objectStorage->detach($object2);
-        self::assertEquals(count($objectStorage), 0);
+        self::assertCount(0, $objectStorage);
     }
 
     /**
@@ -65,9 +65,9 @@ class ObjectStorageTest extends UnitTestCase
         $object1 = new \stdClass();
         $object2 = new \stdClass();
         $objectStorage->offsetSet($object1, 'foo');
-        self::assertEquals(count($objectStorage), 1);
+        self::assertCount(1, $objectStorage);
         $objectStorage[$object2] = 'bar';
-        self::assertEquals(count($objectStorage), 2);
+        self::assertCount(2, $objectStorage);
     }
 
     /**
@@ -80,11 +80,11 @@ class ObjectStorageTest extends UnitTestCase
         $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2, 'foo');
-        self::assertEquals(count($objectStorage), 2);
+        self::assertCount(2, $objectStorage);
         $objectStorage->offsetUnset($object2);
-        self::assertEquals(count($objectStorage), 1);
+        self::assertCount(1, $objectStorage);
         $objectStorage->offsetUnset($object1);
-        self::assertEquals(count($objectStorage), 0);
+        self::assertCount(0, $objectStorage);
     }
 
     /**
@@ -97,11 +97,11 @@ class ObjectStorageTest extends UnitTestCase
         $object2 = new \stdClass();
         $objectStorage->attach($object1);
         $objectStorage->attach($object2, 'foo');
-        self::assertEquals(count($objectStorage), 2);
+        self::assertCount(2, $objectStorage);
         $objectStorage->offsetUnset(0);
-        self::assertEquals(count($objectStorage), 1);
+        self::assertCount(1, $objectStorage);
         $objectStorage->offsetUnset(0);
-        self::assertEquals(count($objectStorage), 0);
+        self::assertCount(0, $objectStorage);
     }
 
     /**
@@ -114,8 +114,8 @@ class ObjectStorageTest extends UnitTestCase
         $object2 = new \stdClass();
         $objectStorage[$object1] = 'foo';
         $objectStorage->attach($object2);
-        self::assertEquals($objectStorage->offsetGet($object1), 'foo');
-        self::assertEquals($objectStorage->offsetGet($object2), null);
+        self::assertEquals('foo', $objectStorage->offsetGet($object1));
+        self::assertNull($objectStorage->offsetGet($object2));
     }
 
     /**
@@ -141,8 +141,8 @@ class ObjectStorageTest extends UnitTestCase
         $object1 = new \stdClass();
         $object2 = new \stdClass();
         $objectStorage->attach($object1);
-        self::assertEquals($objectStorage->offsetExists($object1), true);
-        self::assertEquals($objectStorage->offsetExists($object2), false);
+        self::assertTrue($objectStorage->offsetExists($object1));
+        self::assertFalse($objectStorage->offsetExists($object2));
     }
 
     /**
@@ -162,7 +162,7 @@ class ObjectStorageTest extends UnitTestCase
     public function offsetExistsWorksWithEmptyStorageAndIntegerKey()
     {
         $objectStorage = new ObjectStorage();
-        self::assertEquals($objectStorage->offsetExists(0), false);
+        self::assertFalse($objectStorage->offsetExists(0));
     }
 
     /**
@@ -171,7 +171,7 @@ class ObjectStorageTest extends UnitTestCase
     public function offsetExistsWorksWithEmptyStorageAndStringKey()
     {
         $objectStorage = new ObjectStorage();
-        self::assertEquals($objectStorage->offsetExists('0'), false);
+        self::assertFalse($objectStorage->offsetExists('0'));
     }
 
     /**
@@ -187,11 +187,11 @@ class ObjectStorageTest extends UnitTestCase
         $objectStorage->attach($object2, 'foo');
         $objectStorage->attach($object3, ['bar', 'baz']);
         $objectStorage->rewind();
-        self::assertEquals($objectStorage->getInfo(), 42);
+        self::assertEquals(42, $objectStorage->getInfo());
         $objectStorage->next();
-        self::assertEquals($objectStorage->getInfo(), 'foo');
+        self::assertEquals('foo', $objectStorage->getInfo());
         $objectStorage->next();
-        self::assertEquals($objectStorage->getInfo(), ['bar', 'baz']);
+        self::assertEquals(['bar', 'baz'], $objectStorage->getInfo());
     }
 
     /**
@@ -208,8 +208,8 @@ class ObjectStorageTest extends UnitTestCase
         $objectStorage->setInfo(42);
         $objectStorage->next();
         $objectStorage->setInfo('bar');
-        self::assertEquals($objectStorage[$object1], 42);
-        self::assertEquals($objectStorage[$object2], 'bar');
+        self::assertEquals(42, $objectStorage[$object1]);
+        self::assertEquals('bar', $objectStorage[$object2]);
     }
 
     /**
@@ -224,9 +224,9 @@ class ObjectStorageTest extends UnitTestCase
         $objectStorageB = new ObjectStorage();
         $objectStorageB->attach($object1, 'bar');
         $objectStorageB->attach($object2, 'baz');
-        self::assertEquals(count($objectStorageB), 2);
+        self::assertCount(2, $objectStorageB);
         $objectStorageB->removeAll($objectStorageA);
-        self::assertEquals(count($objectStorageB), 1);
+        self::assertCount(1, $objectStorageB);
     }
 
     /**
@@ -241,10 +241,10 @@ class ObjectStorageTest extends UnitTestCase
         $objectStorageA->attach($object1, 'foo');
         $objectStorageB = new ObjectStorage();
         $objectStorageB->attach($object2, 'baz');
-        self::assertEquals($objectStorageB->offsetExists($object1), false);
+        self::assertFalse($objectStorageB->offsetExists($object1));
         $objectStorageB->addAll($objectStorageA);
-        self::assertEquals($objectStorageB[$object1], 'foo');
-        self::assertEquals($objectStorageB[$object2], 'baz');
+        self::assertEquals('foo', $objectStorageB[$object1]);
+        self::assertEquals('baz', $objectStorageB[$object2]);
     }
 
     /**

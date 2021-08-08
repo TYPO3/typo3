@@ -266,8 +266,8 @@ class ContentObjectRendererTest extends UnitTestCase
     ): array {
         self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
         self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $imageResource['origFile']);
-        self::assertTrue(is_array($fileArray));
-        self::assertTrue($parent instanceof ContentObjectRenderer);
+        self::assertIsArray($fileArray);
+        self::assertInstanceOf(ContentObjectRenderer::class, $parent);
         return $imageResource;
     }
 
@@ -3215,7 +3215,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ['calculateCacheKey']
         );
         $subject
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);

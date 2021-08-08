@@ -115,7 +115,10 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         $handle = opendir('phar://' . $path);
         closedir($handle);
 
-        self::assertFalse(is_resource($handle));
+        // Testing with a variable here, otherwise the suggested assertion would be assertIsNotResource
+        // which fails.
+        $isResource = is_resource($handle);
+        self::assertFalse($isResource);
     }
 
     public function directoryActionDeniesInvocationDataProvider()
@@ -330,7 +333,10 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
         fclose($handle);
-        self::assertFalse(is_resource($handle));
+        // Testing with a variable here, otherwise the suggested assertion would be assertIsNotResource
+        // which fails.
+        $isResource = is_resource($handle);
+        self::assertFalse($isResource);
     }
 
     /**

@@ -38,9 +38,6 @@ class ServerRequestFactoryTest extends UnitTestCase
         self::assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
     public function testServerRequestHasMethodSet()
     {
         $factory = new ServerRequestFactory();
@@ -48,9 +45,6 @@ class ServerRequestFactoryTest extends UnitTestCase
         self::assertSame('POST', $request->getMethod());
     }
 
-    /**
-     * @test
-     */
     public function testServerRequestFactoryHasAWritableEmptyBody()
     {
         $factory = new ServerRequestFactory();
@@ -163,9 +157,12 @@ class ServerRequestFactoryTest extends UnitTestCase
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
         self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
-        self::assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['image'] instanceof UploadedFile);
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
         self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]);
-        self::assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0] instanceof UploadedFile);
+        self::assertInstanceOf(
+            UploadedFile::class,
+            $uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]
+        );
     }
 
     /**

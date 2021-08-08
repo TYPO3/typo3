@@ -191,7 +191,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('randomSessionId2', $this->testSessionRecord);
 
         // Check if session was really removed
-        self::assertEquals(2, count($this->subject->getAll()));
+        self::assertCount(2, $this->subject->getAll());
     }
 
     /**

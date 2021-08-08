@@ -34,7 +34,7 @@ class FileLockStrategyTest extends UnitTestCase
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER, true);
         new FileLockStrategy('999999999');
-        self::assertTrue(is_dir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER));
+        self::assertDirectoryExists(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER);
     }
 
     /**
@@ -51,7 +51,7 @@ class FileLockStrategyTest extends UnitTestCase
      */
     public function getPriorityReturnsDefaultPriority()
     {
-        self::assertEquals(FileLockStrategy::getPriority(), FileLockStrategy::DEFAULT_PRIORITY);
+        self::assertEquals(FileLockStrategy::DEFAULT_PRIORITY, FileLockStrategy::getPriority());
     }
 
     /**

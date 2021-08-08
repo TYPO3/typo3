@@ -153,7 +153,7 @@ class FailsafeContainerTest extends UnitTestCase
         self::assertNull($container->get('null'));
         self::assertTrue($container->has('null'));
         self::assertNull($container->get('null'));
-        self::assertEquals($calledCount, 1);
+        self::assertEquals(1, $calledCount);
     }
 
     public function testHas(): void

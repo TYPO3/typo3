@@ -102,7 +102,10 @@ class FormProtectionFactoryTest extends UnitTestCase
      */
     public function getForTypeInstallToolReturnsInstallToolFormProtection()
     {
-        self::assertTrue(FormProtectionFactory::get(InstallToolFormProtection::class) instanceof InstallToolFormProtection);
+        self::assertInstanceOf(
+            InstallToolFormProtection::class,
+            FormProtectionFactory::get(InstallToolFormProtection::class)
+        );
     }
 
     /**

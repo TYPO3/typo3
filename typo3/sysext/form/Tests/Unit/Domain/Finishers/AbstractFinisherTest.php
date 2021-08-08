@@ -444,7 +444,10 @@ class AbstractFinisherTest extends UnitTestCase
 
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
 
-        self::assertEquals(1, preg_match($expected, (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())));
+        self::assertMatchesRegularExpression(
+            $expected,
+            (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())
+        );
     }
 
     /**

@@ -73,7 +73,7 @@ class WorkspaceVersionRecordMigrationTest extends FunctionalTestCase
         }
         $pageIds = array_column($records, 'pid', 'uid');
         $pageIds = array_map('intval', $pageIds);
-        self::assertFalse(in_array(-1, $pageIds));
+        self::assertNotContains(-1, $pageIds);
 
         $differences = array_diff_key(
             [

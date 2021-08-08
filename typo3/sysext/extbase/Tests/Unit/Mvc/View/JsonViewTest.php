@@ -161,7 +161,6 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param object|array $object
      * @param array $configuration
      * @param array|string $expected
@@ -334,7 +333,6 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param object|array $object
      * @param array $configuration
      * @param array|string $expected
@@ -384,7 +382,6 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param object $object
      * @param array $configuration
      * @param array $expected

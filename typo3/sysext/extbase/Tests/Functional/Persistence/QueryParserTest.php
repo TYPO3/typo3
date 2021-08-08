@@ -66,7 +66,7 @@ class QueryParserTest extends FunctionalTestCase
         );
 
         $result = $query->execute()->toArray();
-        self::assertEquals(3, count($result));
+        self::assertCount(3, $result);
     }
 
     /**
@@ -82,7 +82,7 @@ class QueryParserTest extends FunctionalTestCase
             $query->equals('tags.name', 'Tag12')
         );
         $result = $query->execute()->toArray();
-        self::assertEquals(2, count($result));
+        self::assertCount(2, $result);
     }
 
     /**

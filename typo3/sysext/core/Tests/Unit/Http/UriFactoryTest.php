@@ -36,9 +36,6 @@ class UriFactoryTest extends UnitTestCase
         self::assertInstanceOf(UriFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
     public function testUriIsCreated()
     {
         $factory = new UriFactory();

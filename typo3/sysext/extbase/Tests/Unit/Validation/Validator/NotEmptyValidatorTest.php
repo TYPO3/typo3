@@ -67,7 +67,7 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject()
     {
-        self::assertEquals(1, count($this->validator->validate('')->getErrors()));
+        self::assertCount(1, $this->validator->validate('')->getErrors());
     }
 
     /**
@@ -75,7 +75,7 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue()
     {
-        self::assertEquals(1, count($this->validator->validate(null)->getErrors()));
+        self::assertCount(1, $this->validator->validate(null)->getErrors());
     }
 
     /**

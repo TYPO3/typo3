@@ -44,7 +44,7 @@ class SemaphoreLockStrategyTest extends UnitTestCase
      */
     public function getPriorityReturnsDefaultPriority()
     {
-        self::assertEquals(SimpleLockStrategy::getPriority(), SimpleLockStrategy::DEFAULT_PRIORITY);
+        self::assertEquals(SimpleLockStrategy::DEFAULT_PRIORITY, SimpleLockStrategy::getPriority());
     }
 
     /**

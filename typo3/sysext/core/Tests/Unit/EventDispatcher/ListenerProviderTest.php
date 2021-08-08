@@ -67,12 +67,12 @@ class ListenerProviderTest extends UnitTestCase
         $this->listenerProvider->addListener('Event\\Name', 'listener1');
         $this->listenerProvider->addListener('Event\\Name', 'listener2', 'methodName');
 
-        self::assertEquals($this->listenerProvider->getAllListenerDefinitions(), [
+        self::assertEquals([
             'Event\\Name' => [
                 [ 'service' => 'listener1', 'method' => null ],
                 [ 'service' => 'listener2', 'method' => 'methodName' ],
             ]
-        ]);
+        ], $this->listenerProvider->getAllListenerDefinitions());
     }
 
     /**

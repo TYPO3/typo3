@@ -90,9 +90,9 @@ class FrontendUserGroupTest extends UnitTestCase
     public function addSubgroupAddsSubgroup()
     {
         $group1 = new FrontendUserGroup('foo');
-        self::assertEquals(count($this->subject->getSubgroup()), 0);
+        self::assertCount(0, $this->subject->getSubgroup());
         $this->subject->addSubgroup($group1);
-        self::assertEquals(count($this->subject->getSubgroup()), 1);
+        self::assertCount(1, $this->subject->getSubgroup());
     }
 
     /**
@@ -104,11 +104,11 @@ class FrontendUserGroupTest extends UnitTestCase
         $group2 = new FrontendUserGroup('bar');
         $this->subject->addSubgroup($group1);
         $this->subject->addSubgroup($group2);
-        self::assertEquals(count($this->subject->getSubgroup()), 2);
+        self::assertCount(2, $this->subject->getSubgroup());
         $this->subject->removeSubgroup($group1);
-        self::assertEquals(count($this->subject->getSubgroup()), 1);
+        self::assertCount(1, $this->subject->getSubgroup());
         $this->subject->removeSubgroup($group2);
-        self::assertEquals(count($this->subject->getSubgroup()), 0);
+        self::assertCount(0, $this->subject->getSubgroup());
     }
 
     /**

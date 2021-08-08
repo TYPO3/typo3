@@ -105,11 +105,11 @@ class DownloadQueueTest extends UnitTestCase
         $this->downloadQueue->addExtensionToQueue($extension);
         $extensionStorageBefore = $this->downloadQueue->getExtensionQueue();
 
-        self::assertTrue(array_key_exists('foobar', $extensionStorageBefore['download']));
+        self::assertArrayHasKey('foobar', $extensionStorageBefore['download']);
 
         $this->downloadQueue->removeExtensionFromQueue($this->extension);
         $extensionStorageAfter = $this->downloadQueue->getExtensionQueue();
 
-        self::assertFalse(array_key_exists('foobar', $extensionStorageAfter['download']));
+        self::assertArrayNotHasKey('foobar', $extensionStorageAfter['download']);
     }
 }

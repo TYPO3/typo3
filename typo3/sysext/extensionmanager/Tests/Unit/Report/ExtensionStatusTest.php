@@ -132,7 +132,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::ERROR);
+        self::assertEquals(Status::ERROR, $statusObject->getSeverity());
     }
 
     /**
@@ -166,7 +166,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::NOTICE);
+        self::assertEquals(Status::NOTICE, $statusObject->getSeverity());
     }
 
     /**
@@ -183,7 +183,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['mainRepositoryStatus'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::OK);
+        self::assertEquals(Status::OK, $statusObject->getSeverity());
     }
 
     /**
@@ -200,7 +200,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::ERROR);
+        self::assertEquals(Status::ERROR, $statusObject->getSeverity());
     }
 
     /**
@@ -217,7 +217,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         foreach ($status as $statusObject) {
             self::assertInstanceOf(Status::class, $statusObject);
-            self::assertEquals($statusObject->getSeverity(), Status::OK);
+            self::assertEquals(Status::OK, $statusObject->getSeverity());
         }
     }
 
@@ -235,7 +235,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsSecurityStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
+        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
     }
 
     /**
@@ -252,7 +252,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
+        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
     }
 
     /**
@@ -269,7 +269,7 @@ class ExtensionStatusTest extends UnitTestCase
         $status = $subject->getStatus();
         $statusObject = $status['extensionsOutdatedStatusNotInstalled'];
         self::assertInstanceOf(Status::class, $statusObject);
-        self::assertEquals($statusObject->getSeverity(), Status::WARNING);
+        self::assertEquals(Status::WARNING, $statusObject->getSeverity());
     }
 
     /**

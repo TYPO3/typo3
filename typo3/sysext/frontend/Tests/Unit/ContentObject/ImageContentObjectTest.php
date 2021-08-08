@@ -187,7 +187,7 @@ class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of imgResource
         $cObj
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar']);
@@ -440,7 +440,7 @@ class ImageContentObjectTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
 
         $getImageSourceCollectionHookMock
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('getOneSourceCollection')
             ->willReturnCallback([$this, 'isGetOneSourceCollectionCalledCallback']);
 
@@ -484,8 +484,8 @@ class ImageContentObjectTest extends UnitTestCase
         $oneSourceCollection,
         $parent
     ): string {
-        self::assertTrue(is_array($sourceRenderConfiguration));
-        self::assertTrue(is_array($sourceConfiguration));
+        self::assertIsArray($sourceRenderConfiguration);
+        self::assertIsArray($sourceConfiguration);
         return 'isGetOneSourceCollectionCalledCallback';
     }
 

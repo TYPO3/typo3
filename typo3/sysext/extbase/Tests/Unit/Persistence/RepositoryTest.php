@@ -119,7 +119,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function abstractRepositoryImplementsRepositoryInterface()
     {
-        self::assertTrue($this->repository instanceof RepositoryInterface);
+        self::assertInstanceOf(RepositoryInterface::class, $this->repository);
     }
 
     /**

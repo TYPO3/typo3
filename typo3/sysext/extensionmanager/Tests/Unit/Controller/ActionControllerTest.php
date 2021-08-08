@@ -90,19 +90,19 @@ class ActionControllerTest extends UnitTestCase
         self::assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 
         // File was created
-        self::assertTrue(file_exists($filename), 'Zip file not created');
+        self::assertFileExists($filename, 'Zip file not created');
 
         // Read archive and check its contents
         $archive = new \ZipArchive();
         self::assertTrue($archive->open($filename), 'Unable to open archive');
-        self::assertEquals($archive->statName('emptyFile.txt')['size'], 0, 'Empty file not in archive');
-        self::assertEquals($archive->getFromName('notEmptyFile.txt'), 'content', 'Expected content not found');
+        self::assertEquals(0, $archive->statName('emptyFile.txt')['size'], 'Empty file not in archive');
+        self::assertEquals('content', $archive->getFromName('notEmptyFile.txt'), 'Expected content not found');
         self::assertFalse($archive->statName('.hiddenFile'), 'Hidden file not in archive');
-        self::assertTrue(is_array($archive->statName('emptyDir/')), 'Empty directory not in archive');
-        self::assertTrue(is_array($archive->statName('notEmptyDir/')), 'Not empty directory not in archive');
-        self::assertTrue(is_array($archive->statName('notEmptyDir/file.txt')), 'File within directory not in archive');
+        self::assertIsArray($archive->statName('emptyDir/'), 'Empty directory not in archive');
+        self::assertIsArray($archive->statName('notEmptyDir/'), 'Not empty directory not in archive');
+        self::assertIsArray($archive->statName('notEmptyDir/file.txt'), 'File within directory not in archive');
 
         // Check that the archive has no additional content
-        self::assertEquals($archive->numFiles, 5, 'Too many or too less files in archive');
+        self::assertEquals(5, $archive->numFiles, 'Too many or too less files in archive');
     }
 }

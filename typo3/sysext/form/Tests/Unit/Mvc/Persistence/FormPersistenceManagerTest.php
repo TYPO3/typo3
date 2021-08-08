@@ -473,7 +473,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $expected = '#^-1:/user_uploads/example_([0-9]{10}).form.yaml$#';
 
         $returnValue = $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/');
-        self::assertEquals(1, preg_match($expected, $returnValue));
+        self::assertMatchesRegularExpression($expected, $returnValue);
     }
 
     /**
@@ -525,7 +525,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $expected = '#^example_([0-9]{10})$#';
 
         $returnValue = $mockFormPersistenceManager->_call('getUniqueIdentifier', $input);
-        self::assertEquals(1, preg_match($expected, $returnValue));
+        self::assertMatchesRegularExpression($expected, $returnValue);
     }
 
     /**

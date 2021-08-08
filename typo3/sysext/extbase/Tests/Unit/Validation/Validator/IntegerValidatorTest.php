@@ -92,6 +92,6 @@ class IntegerValidatorTest extends UnitTestCase
      */
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        self::assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
+        self::assertCount(1, $this->validator->validate('not a number')->getErrors());
     }
 }

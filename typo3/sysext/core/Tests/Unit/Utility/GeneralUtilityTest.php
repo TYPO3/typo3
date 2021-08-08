@@ -582,7 +582,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function expandListExpandsForTwoThousandElementsExpandsOnlyToThousandElementsMaximum()
     {
         $list = GeneralUtility::expandList('1-2000');
-        self::assertSame(1000, count(explode(',', $list)));
+        self::assertCount(1000, explode(',', $list));
     }
 
     ///////////////////////////////
@@ -2213,7 +2213,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $hmac = GeneralUtility::hmac('message');
         self::assertTrue(!empty($hmac) && is_string($hmac));
-        self::assertTrue(strlen($hmac) == 40);
+        self::assertEquals(strlen($hmac), 40);
     }
 
     /**
@@ -2574,7 +2574,7 @@ class GeneralUtilityTest extends UnitTestCase
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
-        self::assertTrue(is_dir($directory));
+        self::assertDirectoryExists($directory);
     }
 
     /**
@@ -2586,7 +2586,7 @@ class GeneralUtilityTest extends UnitTestCase
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
-        self::assertTrue(is_dir($directory));
+        self::assertDirectoryExists($directory);
     }
 
     /**
@@ -2598,7 +2598,7 @@ class GeneralUtilityTest extends UnitTestCase
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
-        self::assertTrue(is_dir($directory));
+        self::assertDirectoryExists($directory);
     }
 
     /**
@@ -2616,7 +2616,7 @@ class GeneralUtilityTest extends UnitTestCase
         clearstatcache();
         $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
         umask($oldUmask);
-        self::assertEquals($resultDirectoryPermissions, '0772');
+        self::assertEquals('0772', $resultDirectoryPermissions);
     }
 
     /**
@@ -2767,7 +2767,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtility::mkdir_deep($directory);
-        self::assertTrue(is_dir($directory));
+        self::assertDirectoryExists($directory);
     }
 
     /**
@@ -2778,7 +2778,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getVirtualTestDir() . 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_');
         $subDirectory = $directory . '/foo';
         GeneralUtility::mkdir_deep($subDirectory);
-        self::assertTrue(is_dir($subDirectory));
+        self::assertDirectoryExists($subDirectory);
     }
 
     /**
@@ -2801,7 +2801,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         vfsStream::setup('root', null, ['public' => []]);
         GeneralUtility::mkdir_deep('vfs://root/public/' . $directoryToCreate);
-        self::assertTrue(is_dir('vfs://root/public/' . $directoryToCreate));
+        self::assertDirectoryExists('vfs://root/public/' . $directoryToCreate);
     }
 
     /**
@@ -2921,7 +2921,7 @@ class GeneralUtilityTest extends UnitTestCase
         $baseDirectory = StringUtility::getUniqueId('test_');
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
         GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/sub');
-        self::assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
+        self::assertDirectoryExists('vfs://' . $baseDirectory . '/sub');
     }
 
     /**
@@ -2958,7 +2958,7 @@ class GeneralUtilityTest extends UnitTestCase
         $file = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);
-        self::assertFalse(file_exists($file));
+        self::assertFileDoesNotExist($file);
     }
 
     /**
@@ -2988,7 +2988,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_');
         mkdir($directory);
         GeneralUtility::rmdir($directory);
-        self::assertFalse(file_exists($directory));
+        self::assertFileDoesNotExist($directory);
     }
 
     /**
@@ -2999,7 +2999,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_') . '/';
         mkdir($directory);
         GeneralUtility::rmdir($directory);
-        self::assertFalse(file_exists($directory));
+        self::assertFileDoesNotExist($directory);
     }
 
     /**
@@ -3013,8 +3013,8 @@ class GeneralUtilityTest extends UnitTestCase
         touch($directory . $file);
         $this->testFilesToDelete[] = $directory;
         $return = GeneralUtility::rmdir($directory);
-        self::assertTrue(file_exists($directory));
-        self::assertTrue(file_exists($directory . $file));
+        self::assertFileExists($directory);
+        self::assertFileExists($directory . $file);
         self::assertFalse($return);
     }
 
@@ -3028,7 +3028,7 @@ class GeneralUtilityTest extends UnitTestCase
         mkdir($directory . 'sub/');
         touch($directory . 'sub/file');
         $return = GeneralUtility::rmdir($directory, true);
-        self::assertFalse(file_exists($directory));
+        self::assertFileDoesNotExist($directory);
         self::assertTrue($return);
     }
 
@@ -3126,7 +3126,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        self::assertTrue(in_array('testA.txt', $files));
+        self::assertContains('testA.txt', $files);
     }
 
     /**
@@ -3136,7 +3136,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        self::assertTrue(in_array('.secret.txt', $files));
+        self::assertContains('.secret.txt', $files);
     }
 
     /**
@@ -3170,10 +3170,10 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
-        self::assertTrue(in_array('double.setup.typoscript', $files));
-        self::assertTrue(in_array('testA.txt', $files));
-        self::assertTrue(in_array('test.js', $files));
-        self::assertTrue(in_array('test.css', $files));
+        self::assertContains('double.setup.typoscript', $files);
+        self::assertContains('testA.txt', $files);
+        self::assertContains('test.js', $files);
+        self::assertContains('test.css', $files);
     }
 
     /**
@@ -3183,9 +3183,9 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
-        self::assertTrue(in_array('testA.txt', $files));
-        self::assertTrue(in_array('test.js', $files));
-        self::assertFalse(in_array('test.css', $files));
+        self::assertContains('testA.txt', $files);
+        self::assertContains('test.js', $files);
+        self::assertNotContains('test.css', $files);
     }
 
     /**
@@ -3195,8 +3195,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, '', 'excludeMe.*');
-        self::assertTrue(in_array('test.js', $files));
-        self::assertFalse(in_array('excludeMe.txt', $files));
+        self::assertContains('test.js', $files);
+        self::assertNotContains('excludeMe.txt', $files);
     }
 
     /**
@@ -3205,11 +3205,9 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirCanPrependPath()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        self::assertTrue(
-            in_array(
-                $vfsStreamUrl . '/testA.txt',
-                GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
-            )
+        self::assertContains(
+            $vfsStreamUrl . '/testA.txt',
+            GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
         );
     }
 
@@ -3263,11 +3261,9 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirDoesNotFindDirectories()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        self::assertFalse(
-            in_array(
-                'subDirectory',
-                GeneralUtility::getFilesInDir($vfsStreamUrl)
-            )
+        self::assertNotContains(
+            'subDirectory',
+            GeneralUtility::getFilesInDir($vfsStreamUrl)
         );
     }
 
@@ -3281,8 +3277,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        self::assertFalse(in_array('..', $files));
-        self::assertFalse(in_array('.', $files));
+        self::assertNotContains('..', $files);
+        self::assertNotContains('.', $files);
     }
 
     ///////////////////////////////
@@ -3480,7 +3476,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstanceReturnsClassInstance()
     {
         $className = get_class($this->getMockBuilder('foo')->getMock());
-        self::assertTrue(GeneralUtility::makeInstance($className) instanceof $className);
+        self::assertInstanceOf($className, GeneralUtility::makeInstance($className));
     }
 
     /**

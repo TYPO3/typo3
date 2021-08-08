@@ -377,10 +377,10 @@ class ExtensionUtilityTest extends UnitTestCase
         ExtensionUtility::registerTypeConverter($typeConverterClassName);
 
         self::assertEquals($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][0]);
-        self::assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
+        self::assertCount(1, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
 
         ExtensionUtility::registerTypeConverter($typeConverterClassName);
-        self::assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
+        self::assertCount(1, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
     }
 
     /**

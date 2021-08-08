@@ -867,7 +867,7 @@ class RelationTest extends FunctionalTestCase
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
-        self::assertSame(3, count($post->getCategories()));
+        self::assertCount(3, $post->getCategories());
     }
 
     /**
@@ -879,10 +879,10 @@ class RelationTest extends FunctionalTestCase
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $posts = $postRepository->findByCategory(1);
-        self::assertSame(2, count($posts));
+        self::assertCount(2, $posts);
 
         $posts = $postRepository->findByCategory(4);
-        self::assertSame(0, count($posts));
+        self::assertCount(0, $posts);
     }
 
     /**

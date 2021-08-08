@@ -239,8 +239,8 @@ class ResourceStorageTest extends FunctionalTestCase
         $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        self::assertTrue(file_exists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt'));
-        self::assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
+        self::assertFileExists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt');
+        self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
     }
 
     /**
@@ -259,7 +259,7 @@ class ResourceStorageTest extends FunctionalTestCase
         $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        self::assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
+        self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
     }
 
     public function searchFilesFindsFilesInFolderDataProvider(): array

@@ -266,7 +266,7 @@ class PackageManagerTest extends UnitTestCase
         $actualPackagePath = $actualPackage->getPackagePath();
 
         self::assertEquals($expectedPackagePath, $actualPackagePath);
-        self::assertTrue(is_dir($actualPackagePath), 'Package path should exist after createPackage()');
+        self::assertDirectoryExists($actualPackagePath, 'Package path should exist after createPackage()');
         self::assertEquals($packageKey, $actualPackage->getPackageKey());
         self::assertTrue($this->packageManager->isPackageAvailable($packageKey));
     }

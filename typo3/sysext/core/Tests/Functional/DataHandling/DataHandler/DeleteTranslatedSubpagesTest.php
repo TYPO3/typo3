@@ -51,6 +51,6 @@ class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
 
-        self::assertEquals($dataHandler->errorLog, []);
+        self::assertEquals([], $dataHandler->errorLog);
     }
 }

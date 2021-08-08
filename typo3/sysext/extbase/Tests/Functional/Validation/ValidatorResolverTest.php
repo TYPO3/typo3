@@ -66,7 +66,7 @@ class ValidatorResolverTest extends FunctionalTestCase
 
         /** @var array $baseValidatorConjunctions */
         $baseValidatorConjunctions = $this->validatorResolver->_get('baseValidatorConjunctions');
-        self::assertTrue(is_array($baseValidatorConjunctions));
+        self::assertIsArray($baseValidatorConjunctions);
         self::assertCount(2, $baseValidatorConjunctions);
         self::assertArrayHasKey(Model::class, $baseValidatorConjunctions);
         self::assertArrayHasKey(AnotherModel::class, $baseValidatorConjunctions);

@@ -433,9 +433,6 @@ class DataMapperTest extends UnitTestCase
         date_default_timezone_set($originalTimeZone);
     }
 
-    /**
-     * @test
-     */
     public function testMapDateTimeHandlesSubclassesOfDateTime()
     {
         /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */

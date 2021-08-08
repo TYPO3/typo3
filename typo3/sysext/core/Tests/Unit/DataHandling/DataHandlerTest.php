@@ -82,7 +82,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function fixtureCanBeCreated()
     {
-        self::assertTrue($this->subject instanceof DataHandler);
+        self::assertInstanceOf(DataHandler::class, $this->subject);
     }
 
     //////////////////////////////////////////

@@ -133,7 +133,11 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->close();
-        self::assertFalse(is_resource($resource));
+
+        // Testing with a variable here, otherwise the suggested assertion would be assertIsNotResource
+        // which fails.
+        $isResource = is_resource($resource);
+        self::assertFalse($isResource);
     }
 
     /**
@@ -164,7 +168,7 @@ class StreamTest extends UnitTestCase
         $detached = $stream->detach();
 
         $stream->close();
-        self::assertTrue(is_resource($detached));
+        self::assertIsResource($detached);
         self::assertSame($resource, $detached);
     }
 

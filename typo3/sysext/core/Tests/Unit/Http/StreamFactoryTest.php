@@ -37,9 +37,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertInstanceOf(StreamFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamReturnsEmptyStreamByDefault()
     {
         $factory = new StreamFactory();
@@ -47,9 +44,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromEmptyString()
     {
         $factory = new StreamFactory();
@@ -57,9 +51,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromNonEmptyString()
     {
         $factory = new StreamFactory();
@@ -67,9 +58,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamReturnsWritableStream()
     {
         $factory = new StreamFactory();
@@ -78,9 +66,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamReturnsAppendableStream()
     {
         $factory = new StreamFactory();
@@ -89,9 +74,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('FooBar', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromFile()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -102,9 +84,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromFileWithMode()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -117,9 +96,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $contents);
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromFileWithInvalidMode()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -131,9 +107,6 @@ class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($fileName, 'z');
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromFileWithMissingFile()
     {
         $unavailableFileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -143,9 +116,6 @@ class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($unavailableFileName, 'r');
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamFromResource()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
@@ -159,9 +129,6 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    /**
-     * @test
-     */
     public function testCreateStreamResourceFromInvalidResource()
     {
         $this->expectException(\InvalidArgumentException::class);

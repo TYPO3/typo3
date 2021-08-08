@@ -198,7 +198,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         $expected = '#^([0-9]{10})$#';
-        self::assertEquals(1, preg_match($expected, $databaseData['date']));
+        self::assertMatchesRegularExpression($expected, $databaseData['date']);
     }
 
     /**

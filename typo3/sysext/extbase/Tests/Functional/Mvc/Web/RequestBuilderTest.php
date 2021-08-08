@@ -267,7 +267,7 @@ class RequestBuilderTest extends FunctionalTestCase
         self::assertSame('image/jpg', $argument['type']);
         self::assertSame('/tmp/php/php6hst32', $argument['tmp_name']);
         self::assertSame(UPLOAD_ERR_OK, $argument['error']);
-        self::assertTrue(!isset($argument['size']));
+        self::assertNotTrue(isset($argument['size']));
     }
 
     /**

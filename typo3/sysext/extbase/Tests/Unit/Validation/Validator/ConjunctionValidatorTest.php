@@ -146,9 +146,9 @@ class ConjunctionValidatorTest extends UnitTestCase
         $validator2 = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        self::assertSame(0, count($validatorConjunction));
+        self::assertCount(0, $validatorConjunction);
         $validatorConjunction->addValidator($validator1);
         $validatorConjunction->addValidator($validator2);
-        self::assertSame(2, count($validatorConjunction));
+        self::assertCount(2, $validatorConjunction);
     }
 }

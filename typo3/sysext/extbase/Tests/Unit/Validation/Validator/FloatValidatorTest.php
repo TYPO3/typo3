@@ -94,6 +94,6 @@ class FloatValidatorTest extends UnitTestCase
      */
     public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        self::assertEquals(1, count($this->validator->validate(123456)->getErrors()));
+        self::assertCount(1, $this->validator->validate(123456)->getErrors());
     }
 }

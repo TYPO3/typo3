@@ -45,7 +45,7 @@ class HashServiceTest extends UnitTestCase
     public function generateHmacReturnsHashStringIfStringIsGiven()
     {
         $hash = $this->hashService->generateHmac('asdf');
-        self::assertTrue(is_string($hash));
+        self::assertIsString($hash);
     }
 
     /**

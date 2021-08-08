@@ -36,7 +36,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER, true);
         new SimpleLockStrategy('999999999');
-        self::assertTrue(is_dir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER));
+        self::assertDirectoryExists(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER);
     }
 
     /**
@@ -69,7 +69,7 @@ class SimpleLockStrategyTest extends UnitTestCase
         clearstatcache();
         $resultFilePermissions = substr(decoct(fileperms($pathOfLockFile)), 2);
         $lock->release();
-        self::assertEquals($resultFilePermissions, '0777');
+        self::assertEquals('0777', $resultFilePermissions);
     }
 
     /**
@@ -134,7 +134,7 @@ class SimpleLockStrategyTest extends UnitTestCase
      */
     public function getPriorityReturnsDefaultPriority()
     {
-        self::assertEquals(SemaphoreLockStrategy::getPriority(), SemaphoreLockStrategy::DEFAULT_PRIORITY);
+        self::assertEquals(SemaphoreLockStrategy::DEFAULT_PRIORITY, SemaphoreLockStrategy::getPriority());
     }
 
     /**

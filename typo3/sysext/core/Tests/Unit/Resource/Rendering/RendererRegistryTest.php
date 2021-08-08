@@ -127,9 +127,9 @@ class RendererRegistryTest extends UnitTestCase
         $rendererRegistry->registerRendererClass($rendererClass3);
 
         $rendererInstances = $rendererRegistry->getRendererInstances();
-        self::assertTrue($rendererInstances[0] instanceof $rendererClass2);
-        self::assertTrue($rendererInstances[1] instanceof $rendererClass3);
-        self::assertTrue($rendererInstances[2] instanceof $rendererClass1);
+        self::assertInstanceOf($rendererClass2, $rendererInstances[0]);
+        self::assertInstanceOf($rendererClass3, $rendererInstances[1]);
+        self::assertInstanceOf($rendererClass1, $rendererInstances[2]);
     }
 
     /**
@@ -199,7 +199,7 @@ class RendererRegistryTest extends UnitTestCase
 
         $renderer = $rendererRegistry->getRenderer($fileResourceMock);
 
-        self::assertTrue($renderer instanceof $rendererClass1);
+        self::assertInstanceOf($rendererClass1, $renderer);
     }
 
     /**

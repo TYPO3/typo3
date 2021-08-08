@@ -30,7 +30,7 @@ class LoginCest extends AbstractCest
         $I->amGoingTo('assert the install tool is locked in the first place');
         $I->waitForElementVisible('.panel-heading');
         $I->see('The Install Tool is locked');
-        $I->assertFileNotExists(self::ENABLE_INSTALL_TOOL_FILEPATH);
+        $I->assertFileDoesNotExist(self::ENABLE_INSTALL_TOOL_FILEPATH);
 
         $I->amGoingTo('lock the tool without logging in');
         $I->writeToFile(self::ENABLE_INSTALL_TOOL_FILEPATH, '');

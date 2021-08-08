@@ -105,6 +105,6 @@ class ExtensionRepositoryTest extends UnitTestCase
         $input = [$suitableExtension, $unsuitableExtension];
         $subject = $this->getAccessibleMock(ExtensionRepository::class, ['dummy'], [], '', false);
 
-        self::assertTrue($this->count($subject->_call('getExtensionsSuitableForTypo3Version', $input)) === 1);
+        self::assertSame($this->count($subject->_call('getExtensionsSuitableForTypo3Version', $input)), 1);
     }
 }

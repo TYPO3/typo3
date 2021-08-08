@@ -64,9 +64,9 @@ class SectionTest extends UnitTestCase
         $properties = $this->sectionInstance->getProperties();
 
         self::assertCount(2, $properties, json_encode($properties));
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertArrayHasKey('foo', $properties);
         self::assertEquals('bar', $properties['foo']);
-        self::assertTrue(array_key_exists('buz', $properties));
+        self::assertArrayHasKey('buz', $properties);
         self::assertEquals('qax', $properties['buz']);
     }
 
@@ -79,7 +79,7 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('foo', 'buz');
 
         $properties = $this->sectionInstance->getProperties();
-        self::assertEquals(1, \count($properties));
+        self::assertCount(1, $properties);
         self::assertTrue(array_key_exists('foo', $properties));
         self::assertEquals('buz', $properties['foo']);
     }
@@ -96,7 +96,7 @@ class SectionTest extends UnitTestCase
         self::assertTrue(array_key_exists('foo', $properties));
 
         //check arrays details
-        self::assertTrue(\is_array($properties['foo']));
+        self::assertIsArray($properties['foo']);
         self::assertCount(2, $properties['foo']);
         self::assertTrue(array_key_exists('bar', $properties['foo']));
         self::assertEquals('baz', $properties['foo']['bar']);

@@ -352,7 +352,7 @@ class RequestTest extends UnitTestCase
         $request = new Request('http://example.com');
         $headers = $request->getHeaders();
         self::assertArrayHasKey('host', $headers);
-        self::assertTrue(in_array('example.com', $headers['host']));
+        self::assertContains('example.com', $headers['host']);
     }
 
     /**

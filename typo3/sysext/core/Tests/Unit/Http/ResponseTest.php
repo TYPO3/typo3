@@ -39,17 +39,11 @@ class ResponseTest extends UnitTestCase
         $this->response = new Response();
     }
 
-    /**
-     * @test
-     */
     public function testStatusCodeIs200ByDefault()
     {
         self::assertEquals(200, $this->response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
     public function testStatusCodeMutatorReturnsCloneWithChanges()
     {
         $response = $this->response->withStatus(400);
@@ -75,7 +69,6 @@ class ResponseTest extends UnitTestCase
 
     /**
      * @dataProvider invalidStatusCodesDataProvider
-     * @test
      */
     public function testCannotSetInvalidStatusCode($code)
     {
@@ -83,36 +76,24 @@ class ResponseTest extends UnitTestCase
         $this->response->withStatus($code);
     }
 
-    /**
-     * @test
-     */
     public function testReasonPhraseDefaultsToStandards()
     {
         $response = $this->response->withStatus(422);
         self::assertEquals('Unprocessable Entity', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
     public function testCanSetCustomReasonPhrase()
     {
         $response = $this->response->withStatus(422, 'Foo Bar!');
         self::assertEquals('Foo Bar!', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
     public function testConstructorRaisesExceptionForInvalidStream()
     {
         $this->expectException(\InvalidArgumentException::class);
         new Response(['TOTALLY INVALID']);
     }
 
-    /**
-     * @test
-     */
     public function testConstructorCanAcceptAllMessageParts()
     {
         $body = new Stream('php://memory');
@@ -146,7 +127,6 @@ class ResponseTest extends UnitTestCase
 
     /**
      * @dataProvider invalidStatusDataProvider
-     * @test
      */
     public function testConstructorRaisesExceptionForInvalidStatus($code)
     {
@@ -172,7 +152,6 @@ class ResponseTest extends UnitTestCase
 
     /**
      * @dataProvider invalidResponseBodyDataProvider
-     * @test
      */
     public function testConstructorRaisesExceptionForInvalidBody($body)
     {

@@ -557,8 +557,8 @@ class TranslationTest extends FunctionalTestCase
         $posts = $query->execute()->toArray();
         self::assertCount(2, $posts);
         self::assertSame('A EN:Post2', $posts[0]->getTitle());
-        self::assertSame(1, count($posts[0]->getTags()));
+        self::assertCount(1, $posts[0]->getTags());
         self::assertSame('B EN:Post1', $posts[1]->getTitle());
-        self::assertSame(2, count($posts[1]->getTags()));
+        self::assertCount(2, $posts[1]->getTags());
     }
 }

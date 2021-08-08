@@ -54,7 +54,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
 
         $filteredFlashMessages = $flashMessageQueue->getAllMessages(FlashMessage::NOTICE);
 
-        self::assertEquals(count($filteredFlashMessages), 1);
+        self::assertCount(1, $filteredFlashMessages);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);
@@ -102,7 +102,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
 
         $filteredFlashMessages = $flashMessageQueue->getAllMessagesAndFlush(FlashMessage::NOTICE);
 
-        self::assertEquals(count($filteredFlashMessages), 1);
+        self::assertCount(1, $filteredFlashMessages);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);

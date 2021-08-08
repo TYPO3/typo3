@@ -53,9 +53,9 @@ class AbstractFormElementTest extends UnitTestCase
         $properties = $subject->getProperties();
 
         self::assertCount(2, $properties);
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertArrayHasKey('foo', $properties);
         self::assertEquals('bar', $properties['foo']);
-        self::assertTrue(array_key_exists('buz', $properties));
+        self::assertArrayHasKey('buz', $properties);
         self::assertEquals('qax', $properties['buz']);
     }
 
@@ -71,8 +71,8 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo', 'buz');
 
         $properties = $subject->getProperties();
-        self::assertEquals(1, \count($properties));
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertCount(1, $properties);
+        self::assertArrayHasKey('foo', $properties);
         self::assertEquals('buz', $properties['foo']);
     }
 
@@ -88,12 +88,12 @@ class AbstractFormElementTest extends UnitTestCase
         $properties = $subject->getProperties();
 
         self::assertCount(1, $properties);
-        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertArrayHasKey('foo', $properties);
 
         //check arrays details
-        self::assertTrue(\is_array($properties['foo']));
+        self::assertIsArray($properties['foo']);
         self::assertCount(2, $properties['foo']);
-        self::assertTrue(array_key_exists('bar', $properties['foo']));
+        self::assertArrayHasKey('bar', $properties['foo']);
         self::assertEquals('baz', $properties['foo']['bar']);
     }
 

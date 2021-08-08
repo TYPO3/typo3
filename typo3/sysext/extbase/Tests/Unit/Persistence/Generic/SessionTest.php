@@ -95,7 +95,7 @@ class SessionTest extends UnitTestCase
         $session = new Session($this->createContainer());
         $session->registerObject($object, 12345);
 
-        self::assertEquals($session->getIdentifierByObject($object), 12345, 'Did not get UUID registered for object.');
+        self::assertEquals(12345, $session->getIdentifierByObject($object), 'Did not get UUID registered for object.');
     }
 
     /**
@@ -141,7 +141,7 @@ class SessionTest extends UnitTestCase
     {
         $persistenceSession = new Session($this->createContainer());
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
-        self::assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+        self::assertCount(0, $reconstitutedObjects, 'The reconstituted objects storage was not empty.');
     }
 
     /**
@@ -166,6 +166,6 @@ class SessionTest extends UnitTestCase
         $persistenceSession->registerReconstitutedEntity($entity);
         $persistenceSession->unregisterReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
-        self::assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+        self::assertCount(0, $reconstitutedObjects, 'The reconstituted objects storage was not empty.');
     }
 }

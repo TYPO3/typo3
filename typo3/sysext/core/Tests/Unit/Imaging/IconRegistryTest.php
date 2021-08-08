@@ -57,7 +57,7 @@ class IconRegistryTest extends UnitTestCase
     public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString()
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getDefaultIconIdentifier();
-        self::assertEquals($result, 'default-not-found');
+        self::assertEquals('default-not-found', $result);
     }
 
     /**
@@ -67,7 +67,7 @@ class IconRegistryTest extends UnitTestCase
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $result = $subject->isRegistered($subject->getDefaultIconIdentifier());
-        self::assertEquals($result, true);
+        self::assertTrue($result);
     }
 
     /**
@@ -76,7 +76,7 @@ class IconRegistryTest extends UnitTestCase
     public function isRegisteredReturnsFalseForNotRegisteredIcon()
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->isRegistered($this->notRegisteredIconIdentifier);
-        self::assertEquals($result, false);
+        self::assertFalse($result);
     }
 
     /**
@@ -126,7 +126,7 @@ class IconRegistryTest extends UnitTestCase
         self::assertArrayHasKey('provider', $result);
         self::assertArrayHasKey('options', $result);
         // the provider must implement the IconProviderInterface
-        self::assertTrue(in_array(IconProviderInterface::class, class_implements($result['provider'])));
+        self::assertContains(IconProviderInterface::class, class_implements($result['provider']));
     }
 
     /**

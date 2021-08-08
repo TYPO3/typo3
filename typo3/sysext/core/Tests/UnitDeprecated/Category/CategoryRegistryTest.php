@@ -191,9 +191,9 @@ class CategoryRegistryTest extends UnitTestCase
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
         self::assertCount(2, $matches[0]);
         self::assertEquals($matches[1][0], $this->tables['first']);
-        self::assertEquals($matches[2][0], 'categories');
+        self::assertEquals('categories', $matches[2][0]);
         self::assertEquals($matches[1][1], $this->tables['second']);
-        self::assertEquals($matches[2][1], 'categories');
+        self::assertEquals('categories', $matches[2][1]);
     }
 
     /**
@@ -208,7 +208,7 @@ class CategoryRegistryTest extends UnitTestCase
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
         self::assertCount(1, $matches[0]);
         self::assertEquals($matches[1][0], $this->tables['first']);
-        self::assertEquals($matches[2][0], 'categories');
+        self::assertEquals('categories', $matches[2][0]);
     }
 
     /**

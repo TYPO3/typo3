@@ -130,7 +130,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $pageRepository->expects(self::once())->method('getPage')->willReturn(null);
         $this->subject->_set('sys_page', $pageRepository);
         $result = $this->subject->_call('sectionIndex', 'field');
-        self::assertEquals($result, []);
+        self::assertEquals([], $result);
     }
 
     /**
@@ -144,7 +144,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
         $result = $this->subject->_call('sectionIndex', 'field');
-        self::assertEquals($result, []);
+        self::assertEquals([], $result);
     }
 
     /**
@@ -194,7 +194,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('parent_cObj', $cObject);
 
         $result = $this->subject->_call('sectionIndex', 'field');
-        self::assertEquals($result[0]['title'], 'OVERLAID');
+        self::assertEquals('OVERLAID', $result[0]['title']);
     }
 
     /**

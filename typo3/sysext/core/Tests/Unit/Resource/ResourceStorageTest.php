@@ -326,7 +326,7 @@ class ResourceStorageTest extends BaseTestCase
         $sourceFileIdentifier = '/sourceFile.ext';
         $sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
         $result = $subject->getPublicUrl($sourceFile);
-        self::assertSame($result, null);
+        self::assertNull($result);
     }
 
     /**
@@ -684,7 +684,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->initializeVfs();
         $this->prepareSubject([], null, $mockedDriver);
         $this->subject->addFileMount('/mountFolder');
-        self::assertEquals(1, count($this->subject->getFileMounts()));
+        self::assertCount(1, $this->subject->getFileMounts());
         $this->subject->isWithinFileMountBoundaries($mockedFile);
     }
 

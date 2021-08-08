@@ -362,7 +362,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             $searchFields
         );
 
-        self::assertEquals($expectedCount, count($results));
+        self::assertCount($expectedCount, $results);
     }
 
     public function getAllBrokenLinksForPagesReturnsCorrectValuesForUserDataProvider()

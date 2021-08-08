@@ -35,9 +35,6 @@ class ResponseFactoryTest extends UnitTestCase
         self::assertInstanceOf(ResponseFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
     public function testResponseHasStatusCode200ByDefault()
     {
         $factory = new ResponseFactory();
@@ -45,9 +42,6 @@ class ResponseFactoryTest extends UnitTestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
     public function testResponseHasStatusCodeSet()
     {
         $factory = new ResponseFactory();
@@ -55,9 +49,6 @@ class ResponseFactoryTest extends UnitTestCase
         self::assertSame(201, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
     public function testResponseHasDefaultReasonPhrase()
     {
         $factory = new ResponseFactory();
@@ -65,9 +56,6 @@ class ResponseFactoryTest extends UnitTestCase
         self::assertSame('Moved Permanently', $response->getReasonPhrase());
     }
 
-    /**
-     * @test
-     */
     public function testResponseHasCustomReasonPhrase()
     {
         $factory = new ResponseFactory();

@@ -42,7 +42,7 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
-        self::assertEquals(1, count($result));
+        self::assertCount(1, $result);
         self::assertEquals('', $result[0]['localPath']);
     }
 
@@ -55,7 +55,7 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
-        self::assertEquals(1, count($result));
+        self::assertCount(1, $result);
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
@@ -67,7 +67,7 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
-        self::assertEquals(1, count($result));
+        self::assertCount(1, $result);
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
@@ -79,7 +79,7 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="typo3/index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
-        self::assertEquals(1, count($result));
+        self::assertCount(1, $result);
         self::assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
     }
 
@@ -99,7 +99,7 @@ class IndexerTest extends UnitTestCase
         $GLOBALS['TSFE']->config = $config;
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);
-        self::assertEquals(1, count($result));
+        self::assertCount(1, $result);
         self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 

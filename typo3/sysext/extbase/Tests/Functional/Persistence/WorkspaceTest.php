@@ -118,7 +118,7 @@ class WorkspaceTest extends FunctionalTestCase
 
         $blogs = $query->execute()->toArray();
 
-        self::assertSame(4, count($blogs));
+        self::assertCount(4, $blogs);
 
         // Check first blog was overlaid with workspace preview
         $firstBlog = array_shift($blogs);

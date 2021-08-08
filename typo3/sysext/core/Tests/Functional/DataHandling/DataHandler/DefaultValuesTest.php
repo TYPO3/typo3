@@ -66,7 +66,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
         // Empty header is used, because it was handed in
-        self::assertEquals($newContentRecord['header'], '');
+        self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'bodytext' => 'Random bodytext'
@@ -89,7 +89,7 @@ TCAdefaults.tt_content.header = global space');
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
-        self::assertEquals($newPageRecord['keywords'], 'from pagets, with love');
+        self::assertEquals('from pagets, with love', $newPageRecord['keywords']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
@@ -98,14 +98,14 @@ TCAdefaults.tt_content.header = global space');
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
         // Empty header is used, because it was handed in
-        self::assertEquals($newContentRecord['header'], '');
+        self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'bodytext' => 'Random bodytext'
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        self::assertEquals($newContentRecord['header'], 'global space');
+        self::assertEquals('global space', $newContentRecord['header']);
     }
 
     /**
@@ -128,7 +128,7 @@ TCAdefaults.tt_content.header = local space
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
-        self::assertEquals($newPageRecord['keywords'], 'I am specific, not generic');
+        self::assertEquals('I am specific, not generic', $newPageRecord['keywords']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
@@ -137,14 +137,14 @@ TCAdefaults.tt_content.header = local space
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
         // Empty header is used, because it was handed in
-        self::assertEquals($newContentRecord['header'], '');
+        self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'bodytext' => 'Random bodytext'
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
-        self::assertEquals($newContentRecord['header'], 'local space');
+        self::assertEquals('local space', $newContentRecord['header']);
     }
 
     /**
