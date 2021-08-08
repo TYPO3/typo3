@@ -45,7 +45,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     public function generateTokenRetrievesTokenOnce(): void
     {
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['retrieveSessionToken'])
+            ->onlyMethods(['retrieveSessionToken'])
             ->getMock();
         $subject->expects(self::once())->method('retrieveSessionToken')->willReturn('token');
         $subject->generateToken('foo');
@@ -58,7 +58,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     public function validateTokenRetrievesTokenOnce(): void
     {
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['retrieveSessionToken'])
+            ->onlyMethods(['retrieveSessionToken'])
             ->getMock();
         $subject->expects(self::once())->method('retrieveSessionToken')->willReturn('token');
         $subject->validateToken('foo', 'bar');
@@ -82,7 +82,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     public function cleanPersistsToken(): void
     {
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['persistSessionToken'])
+            ->onlyMethods(['persistSessionToken'])
             ->getMock();
         $subject->expects(self::once())->method('persistSessionToken');
         $subject->clean();
@@ -254,7 +254,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['createValidationErrorMessage'])
+            ->onlyMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects(self::never())->method('createValidationErrorMessage');
         $formName = 'foo';
@@ -271,7 +271,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['createValidationErrorMessage'])
+            ->onlyMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects(self::once())->method('createValidationErrorMessage');
         $formName = 'foo';
@@ -288,7 +288,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
-            ->setMethods(['createValidationErrorMessage'])
+            ->onlyMethods(['createValidationErrorMessage'])
             ->getMock();
         $subject->expects(self::once())->method('createValidationErrorMessage');
         $formName = 'foo';

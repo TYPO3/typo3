@@ -73,26 +73,27 @@ class Typo3DbBackendTest extends UnitTestCase
     public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(bool $isFrontendEnvironment)
     {
         $mockValueObject = $this->getMockBuilder(AbstractValueObject::class)
-            ->setMethods(['_getProperties'])
+            ->onlyMethods(['_getProperties'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockValueObject->expects(self::once())->method('_getProperties')
             ->willReturn(['propertyName' => 'propertyValue']);
         $mockColumnMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['isPersistableProperty', 'getColumnName'])
+            ->onlyMethods(['isPersistableProperty'])
+            ->addMethods(['getColumnName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockColumnMap->expects(self::any())->method('getColumnName')->willReturn('column_name');
         $tableName = 'tx_foo_table';
         $mockDataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['isPersistableProperty', 'getColumnMap', 'getTableName'])
+            ->onlyMethods(['isPersistableProperty', 'getColumnMap', 'getTableName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockDataMap->expects(self::any())->method('isPersistableProperty')->willReturn(true);
         $mockDataMap->expects(self::any())->method('getColumnMap')->willReturn($mockColumnMap);
         $mockDataMap->expects(self::any())->method('getTableName')->willReturn($tableName);
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
-            ->setMethods(['getDataMap', 'getPlainValue'])
+            ->onlyMethods(['getDataMap', 'getPlainValue'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockDataMapper->expects(self::once())->method('getDataMap')
@@ -157,7 +158,7 @@ class Typo3DbBackendTest extends UnitTestCase
             'pid' => '42'
         ];
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -168,7 +169,7 @@ class Typo3DbBackendTest extends UnitTestCase
             'workspace' => new WorkspaceAspect($workspaceUid)
         ]);
         $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['getWorkspaceVersionOfRecord'])
+            ->onlyMethods(['getWorkspaceVersionOfRecord'])
             ->setConstructorArgs([$context])
             ->getMock();
         $this->container = $this->createMock(ContainerInterface::class);

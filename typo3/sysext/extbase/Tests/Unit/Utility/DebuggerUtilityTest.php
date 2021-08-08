@@ -33,7 +33,7 @@ class DebuggerUtilityTest extends UnitTestCase
     {
         /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
         $objectStorage = $this->getMockBuilder(ObjectStorage::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         for ($i = 0; $i < 5; $i++) {
             $obj = new \stdClass();

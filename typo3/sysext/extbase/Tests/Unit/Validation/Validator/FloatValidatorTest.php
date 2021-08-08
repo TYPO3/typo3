@@ -34,7 +34,7 @@ class FloatValidatorTest extends UnitTestCase
     {
         parent::setUp();
         $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
     }
 

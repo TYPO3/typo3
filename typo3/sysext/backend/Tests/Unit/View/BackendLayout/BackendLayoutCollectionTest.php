@@ -60,7 +60,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
         $backendLayoutCollection = new BackendLayoutCollection($identifier);
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier__');
         $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
@@ -79,12 +79,12 @@ class BackendLayoutCollectionTest extends UnitTestCase
         $backendLayoutCollection = new BackendLayoutCollection($identifier);
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
         $firstBackendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $firstBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $secondBackendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $secondBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
@@ -102,7 +102,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
         $backendLayoutCollection = new BackendLayoutCollection($identifier);
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
         $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);

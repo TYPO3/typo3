@@ -35,7 +35,7 @@ class DatabaseWriterTest extends UnitTestCase
         $logTable = StringUtility::getUniqueId('logtable_');
         /** @var DatabaseWriter|MockObject $subject */
         $subject = $this->getMockBuilder(DatabaseWriter::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);

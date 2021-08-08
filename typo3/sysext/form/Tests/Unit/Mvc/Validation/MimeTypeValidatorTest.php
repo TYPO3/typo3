@@ -38,7 +38,7 @@ class MimeTypeValidatorTest extends UnitTestCase
 
         $options = ['allowedMimeTypes' => ''];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -55,7 +55,7 @@ class MimeTypeValidatorTest extends UnitTestCase
 
         $options = ['allowedMimeTypes' => []];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -69,7 +69,7 @@ class MimeTypeValidatorTest extends UnitTestCase
     {
         $options = ['allowedMimeTypes' => ['image/jpeg']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -88,7 +88,7 @@ class MimeTypeValidatorTest extends UnitTestCase
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -102,7 +102,7 @@ class MimeTypeValidatorTest extends UnitTestCase
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -133,7 +133,7 @@ class MimeTypeValidatorTest extends UnitTestCase
     {
         $options = ['allowedMimeTypes' => $allowedMimeTypes];
         $validator = $this->getMockBuilder(MimeTypeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)

@@ -50,10 +50,10 @@ class AbstractTemplateViewTest extends UnitTestCase
     {
         parent::setUp();
         $this->viewHelperVariableContainer = $this->getMockBuilder(ViewHelperVariableContainer::class)
-            ->setMethods(['setView'])
+            ->onlyMethods(['setView'])
             ->getMock();
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['getViewHelperVariableContainer'])
+            ->onlyMethods(['getViewHelperVariableContainer'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext->expects(self::any())->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);

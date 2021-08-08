@@ -54,7 +54,7 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         ];
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->selectedBackends = [AbstractBackend::class];
@@ -80,7 +80,7 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
         ];
         /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->selectedBackends = [NullBackend::class];

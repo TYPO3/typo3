@@ -108,7 +108,7 @@ class ActionControllerTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->getMockBuilder(Arguments::class)
-            ->setMethods(['addNewArgument', 'removeAll'])
+            ->onlyMethods(['addNewArgument', 'removeAll'])
             ->getMock();
         $mockArguments->expects(self::exactly(3))->method('addNewArgument')
             ->withConsecutive(
@@ -309,7 +309,8 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setTemplateRootPaths'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->addMethods(['setTemplateRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setTemplateRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
@@ -387,7 +388,8 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setlayoutRootPaths'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->addMethods(['setlayoutRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setlayoutRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
@@ -465,7 +467,8 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setpartialRootPaths'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->addMethods(['setpartialRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setpartialRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
@@ -564,21 +567,21 @@ class ActionControllerTest extends UnitTestCase
      */
     public function headerAssetDataProvider()
     {
-        $viewWithHeaderData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithHeaderData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithHeaderData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 ['HeaderAssets', self::anything(), true],
                 ['FooterAssets', self::anything(), true]
             )
             ->willReturnOnConsecutiveCalls('custom-header-data', null);
-        $viewWithFooterData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithFooterData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithFooterData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 ['HeaderAssets', self::anything(), true],
                 ['FooterAssets', self::anything(), true]
             )
             ->willReturnOnConsecutiveCalls(null, 'custom-footer-data');
-        $viewWithBothData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithBothData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithBothData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 ['HeaderAssets', self::anything(), true],
@@ -653,7 +656,7 @@ class ActionControllerTest extends UnitTestCase
     public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = FlashMessage::OK, $storeInSession = true)
     {
         $flashMessageQueue = $this->getMockBuilder(FlashMessageQueue::class)
-            ->setMethods(['enqueue'])
+            ->onlyMethods(['enqueue'])
             ->setConstructorArgs([StringUtility::getUniqueId('identifier_')])
             ->getMock();
 

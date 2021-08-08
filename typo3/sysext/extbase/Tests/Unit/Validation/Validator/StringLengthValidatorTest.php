@@ -59,7 +59,7 @@ class StringLengthValidatorTest extends UnitTestCase
     {
         /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
             ->getMock();
 
@@ -73,7 +73,7 @@ class StringLengthValidatorTest extends UnitTestCase
     {
         /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 5, 'maximum' => 10]])
             ->getMock();
 
@@ -160,7 +160,7 @@ class StringLengthValidatorTest extends UnitTestCase
 
         /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->setMethods(['addError', 'translateErrorMessage'])
+            ->onlyMethods(['addError', 'translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 101, 'maximum' => 100]])
             ->getMock();
         $validator->validate('1234567890');
@@ -173,7 +173,7 @@ class StringLengthValidatorTest extends UnitTestCase
     {
         /** @var StringLengthValidator $validator */
         $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
             ->getMock();
 

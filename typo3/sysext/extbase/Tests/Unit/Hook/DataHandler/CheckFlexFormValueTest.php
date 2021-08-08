@@ -58,7 +58,7 @@ class CheckFlexFormValueTest extends UnitTestCase
         $newFlexFormDataArray = [];
         /** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
         $checkFlexFormValue = $this->getMockBuilder(CheckFlexFormValue::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
 

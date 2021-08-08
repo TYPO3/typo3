@@ -49,7 +49,7 @@ class ConfigurationManagerTest extends UnitTestCase
     protected function createSubjectWithMockedMethods(array $methods): void
     {
         $this->subject = $this->getMockBuilder(ConfigurationManager::class)
-            ->setMethods($methods)
+            ->onlyMethods($methods)
             ->getMock();
     }
 

@@ -40,7 +40,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(DebugExceptionHandler::class)
-            ->setMethods(['sendStatusHeaders', 'writeLogEntries'])
+            ->onlyMethods(['sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -39,7 +39,7 @@ class RendererRegistryTest extends UnitTestCase
     protected function getTestRendererRegistry(array $createsRendererInstances = [])
     {
         $rendererRegistry = $this->getMockBuilder(RendererRegistry::class)
-            ->setMethods(['createRendererInstance'])
+            ->onlyMethods(['createRendererInstance'])
             ->getMock();
 
         if (!empty($createsRendererInstances)) {
@@ -170,7 +170,7 @@ class RendererRegistryTest extends UnitTestCase
     {
         $rendererClass1 = StringUtility::getUniqueId('myVideoRenderer');
         $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMethods(['getPriority', 'canRender', 'render'])
+            ->onlyMethods(['getPriority', 'canRender', 'render'])
             ->setMockClassName($rendererClass1)
             ->getMock();
         $rendererObject1->expects(self::any())->method('getPriority')->willReturn(1);
@@ -178,7 +178,7 @@ class RendererRegistryTest extends UnitTestCase
 
         $rendererClass2 = StringUtility::getUniqueId('myAudioRenderer');
         $rendererObject2 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMethods(['getPriority', 'canRender', 'render'])
+            ->onlyMethods(['getPriority', 'canRender', 'render'])
             ->setMockClassName($rendererClass2)
             ->getMock();
         $rendererObject2->expects(self::any())->method('getPriority')->willReturn(10);

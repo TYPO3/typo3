@@ -44,7 +44,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
         parent::setUp();
         $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['sL'])
+            ->onlyMethods(['sL'])
             ->getMock();
     }
 
@@ -55,13 +55,13 @@ class ExtendedFileUtilityTest extends UnitTestCase
     {
         $fileUid = 1;
         $file = $this->getMockBuilder(File::class)
-            ->setMethods(['getUid'])
+            ->onlyMethods(['getUid'])
             ->disableOriginalConstructor()
             ->getMock();
         $file->expects(self::once())->method('getUid')->willReturn($fileUid);
 
         $folder = $this->getMockBuilder(Folder::class)
-            ->setMethods(['getFiles'])
+            ->onlyMethods(['getFiles'])
             ->disableOriginalConstructor()
             ->getMock();
         $folder->expects(self::once())
@@ -72,7 +72,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(ExtendedFileUtility::class)
-            ->setMethods(['addFlashMessage'])
+            ->onlyMethods(['addFlashMessage'])
             ->getMock();
 
         // prophetizing the DB query
@@ -114,7 +114,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
     public function folderHasFilesInUseReturnsFalseIfItHasNoFiles()
     {
         $folder = $this->getMockBuilder(Folder::class)
-            ->setMethods(['getFiles'])
+            ->onlyMethods(['getFiles'])
             ->disableOriginalConstructor()
             ->getMock();
         $folder->expects(self::once())->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)->willReturn(
@@ -123,7 +123,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
         $subject = $this->getMockBuilder(ExtendedFileUtility::class)
-            ->setMethods(['addFlashMessage'])
+            ->onlyMethods(['addFlashMessage'])
             ->getMock();
         self::assertFalse($subject->folderHasFilesInUse($folder));
     }

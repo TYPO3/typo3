@@ -60,13 +60,13 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         parent::setUp();
         // Property Mapping Configuration
         $this->extbasePropertyMappingConfiguration = $this->getMockBuilder(ExtbasePropertyMappingConfiguration::class)
-            ->setMethods(['setTypeConverterOptions'])
+            ->onlyMethods(['setTypeConverterOptions'])
             ->disableOriginalConstructor()
             ->getMock();
 
         // Processing Rules
         $this->processingRule = $this->getMockBuilder(ProcessingRule::class)
-            ->setMethods(['getValidators', 'removeValidator', 'getPropertyMappingConfiguration'])
+            ->onlyMethods(['getValidators', 'removeValidator', 'getPropertyMappingConfiguration'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -77,7 +77,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Root Form
         $this->rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getProcessingRule', 'getPersistenceIdentifier', 'getIdentifier'])
+            ->onlyMethods(['getProcessingRule', 'getPersistenceIdentifier', 'getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -88,7 +88,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // File Upload
         $this->fileUpload = $this->getMockBuilder(FileUpload::class)
-            ->setMethods(['getProperties', 'getRootForm', 'getIdentifier'])
+            ->onlyMethods(['getProperties', 'getRootForm', 'getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
 

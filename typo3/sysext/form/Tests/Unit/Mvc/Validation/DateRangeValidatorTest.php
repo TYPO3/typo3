@@ -37,7 +37,7 @@ class DateRangeValidatorTest extends UnitTestCase
 
         $options = ['minimum' => '1972-01', 'maximum' => ''];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -54,7 +54,7 @@ class DateRangeValidatorTest extends UnitTestCase
 
         $options = ['minimum' => '', 'maximum' => '1972-01'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -68,7 +68,7 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => '2018-03-17', 'maximum' => '2018-03-17'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -83,7 +83,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -98,7 +98,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -113,7 +113,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -128,7 +128,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -143,7 +143,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -158,7 +158,7 @@ class DateRangeValidatorTest extends UnitTestCase
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 

@@ -76,11 +76,11 @@ class DataProviderCollectionTest extends UnitTestCase
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
         $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
-            ->setMethods(['getBackendLayout'])
+            ->onlyMethods(['getBackendLayout'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock->expects(self::any())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
@@ -102,11 +102,11 @@ class DataProviderCollectionTest extends UnitTestCase
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
         $dataProviderMock = $this->getMockBuilder(DefaultDataProvider::class)
-            ->setMethods(['getBackendLayout'])
+            ->onlyMethods(['getBackendLayout'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock = $this->getMockBuilder(BackendLayout::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $backendLayoutMock->expects(self::any())->method('getIdentifier')->willReturn($backendLayoutIdentifier);

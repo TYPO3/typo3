@@ -132,7 +132,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected)
     {
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
-            ->setMethods(['serializeAndHashFormFieldArray'])
+            ->onlyMethods(['serializeAndHashFormFieldArray'])
             ->getMock();
         $requestHashService->expects(self::once())->method('serializeAndHashFormFieldArray')->with($expected);
         $requestHashService->generateTrustedPropertiesToken($input);
@@ -149,7 +149,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode($expectExceptionCode);
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
-            ->setMethods(['serializeAndHashFormFieldArray'])
+            ->onlyMethods(['serializeAndHashFormFieldArray'])
             ->getMock();
         $requestHashService->generateTrustedPropertiesToken($input);
     }
@@ -168,7 +168,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $mockHash = '12345';
 
         $hashService = $this->getMockBuilder(HashService::class)
-            ->setMethods(['appendHmac'])
+            ->onlyMethods(['appendHmac'])
             ->getMock();
         $hashService->expects(self::once())->method('appendHmac')->with(json_encode($formFieldArray))->willReturn(json_encode($formFieldArray) . $mockHash);
 
@@ -185,7 +185,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      */
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
     {
-        $request = $this->getMockBuilder(Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
         $arguments = new Arguments();
 
@@ -201,7 +201,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectException(BadRequestException::class);
         $this->expectExceptionCode(1581862822);
 
-        $request = $this->getMockBuilder(Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('string with less than 40 characters');
         $arguments = new Arguments();
 
@@ -323,11 +323,11 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      */
     protected function initializePropertyMappingConfiguration(array $trustedProperties)
     {
-        $request = $this->getMockBuilder(Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
+        $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');
 
         $mockHashService = $this->getMockBuilder(HashService::class)
-            ->setMethods(['validateAndStripHmac'])
+            ->onlyMethods(['validateAndStripHmac'])
             ->getMock();
         $mockHashService->expects(self::once())->method('validateAndStripHmac')->with('fooTrustedProperties')->willReturn(json_encode($trustedProperties));
 

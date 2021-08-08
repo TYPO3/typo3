@@ -115,18 +115,18 @@ abstract class BaseTestCase extends UnitTestCase
      */
     protected function _createFileFolderMock($type, $identifier, $mockedMethods)
     {
-        if (!empty($mockedMethods)) {
-            if (!in_array('getIdentifier', $mockedMethods)) {
-                $mockedMethods[] = 'getIdentifier';
-            }
-            if (!in_array('getName', $mockedMethods)) {
-                $mockedMethods[] = 'getName';
-            }
+        if (!in_array('getIdentifier', $mockedMethods, true)) {
+            $mockedMethods[] = 'getIdentifier';
         }
+        if (!in_array('getName', $mockedMethods, true)) {
+            $mockedMethods[] = 'getName';
+        }
+
         $mock = $this->getMockBuilder($type)
-            ->setMethods($mockedMethods)
+            ->onlyMethods($mockedMethods)
             ->disableOriginalConstructor()
             ->getMock();
+
         $mock->expects(self::any())->method('getIdentifier')->willReturn($identifier);
         $mock->expects(self::any())->method('getName')->willReturn(basename($identifier));
         return $mock;

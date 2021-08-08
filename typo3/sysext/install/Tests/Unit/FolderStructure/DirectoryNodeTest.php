@@ -66,7 +66,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $parent = $this->createMock(NodeInterface::class);
         /** @var $node DirectoryNode|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getMockBuilder(DirectoryNode::class)
-            ->setMethods(['createChildren'])
+            ->onlyMethods(['createChildren'])
             ->disableOriginalConstructor()
             ->getMock();
         $childArray = [
@@ -331,7 +331,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getMockBuilder(DirectoryNode::class)
             ->disableOriginalConstructor()
-            ->setMethods(['fixSelf'])
+            ->onlyMethods(['fixSelf'])
             ->getMock();
         $uniqueReturn = [StringUtility::getUniqueId('foo_')];
         $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);

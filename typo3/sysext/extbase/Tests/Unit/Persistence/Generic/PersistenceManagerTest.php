@@ -343,7 +343,7 @@ class PersistenceManagerTest extends UnitTestCase
         $repositoryClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
 
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
-            ->setMethods(['has', 'get'])
+            ->onlyMethods(['has', 'get'])
             ->disableOriginalConstructor()
             ->getMock();
         $psrContainer->expects(self::any())->method('has')->willReturn(false);
@@ -355,7 +355,7 @@ class PersistenceManagerTest extends UnitTestCase
         $repository->_set('objectType', get_class($entity1));
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(Backend::class)
-            ->setMethods(['commit', 'setChangedEntities'])
+            ->onlyMethods(['commit', 'setChangedEntities'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockBackend->expects(self::once())
@@ -406,13 +406,10 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend(): void
     {
-        $methods = array_merge(
-            get_class_methods(BackendInterface::class),
-            ['tearDown']
-        );
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(BackendInterface::class)
-            ->setMethods($methods)
+            ->onlyMethods(get_class_methods(BackendInterface::class))
+            ->addMethods(['tearDown'])
             ->getMock();
         $mockBackend->expects(self::once())->method('tearDown');
 
@@ -445,7 +442,7 @@ class PersistenceManagerTest extends UnitTestCase
         $aggregateRootObjects->attach($entity1);
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(Backend::class)
-            ->setMethods(['commit', 'setAggregateRootObjects', 'setDeletedEntities'])
+            ->onlyMethods(['commit', 'setAggregateRootObjects', 'setDeletedEntities'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockBackend->expects(self::once())

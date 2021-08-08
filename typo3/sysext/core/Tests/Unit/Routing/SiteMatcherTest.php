@@ -74,7 +74,7 @@ class SiteMatcherTest extends UnitTestCase
         /** @var SiteFinder $finderMock */
         $finderMock = $this
             ->getMockBuilder(SiteFinder::class)
-            ->setMethods(['getAllSites'])
+            ->onlyMethods(['getAllSites'])
             ->disableOriginalConstructor()
             ->getMock();
         $finderMock->method('getAllSites')->willReturn(['main' => $site, 'second' => $secondSite]);
@@ -173,7 +173,7 @@ class SiteMatcherTest extends UnitTestCase
         /** @var SiteFinder $finderMock */
         $finderMock = $this
             ->getMockBuilder(SiteFinder::class)
-            ->setMethods(['getAllSites'])
+            ->onlyMethods(['getAllSites'])
             ->disableOriginalConstructor()
             ->getMock();
         $finderMock->method('getAllSites')->willReturn(['main' => $site, 'second' => $secondSite]);

@@ -35,7 +35,7 @@ class DatabaseEditRowTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(DatabaseEditRow::class)
-            ->setMethods(['getDatabaseRow'])
+            ->onlyMethods(['getDatabaseRow'])
             ->getMock();
     }
 

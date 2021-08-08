@@ -62,10 +62,10 @@ class FilesContentObjectTest extends UnitTestCase
             ->getMock();
         $templateService = $this->getMockBuilder(TemplateService::class)
             ->setConstructorArgs([null, $packageManagerMock])
-            ->setMethods(['getFileName', 'linkData'])
+            ->addMethods(['getFileName', 'linkData'])
             ->getMock();
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $tsfe->tmpl = $templateService;
@@ -77,7 +77,7 @@ class FilesContentObjectTest extends UnitTestCase
             'TEXT' => TextContentObject::class,
         ]);
         $this->subject = $this->getMockBuilder(FilesContentObject::class)
-            ->setMethods(['getFileCollector'])
+            ->onlyMethods(['getFileCollector'])
             ->setConstructorArgs([$contentObjectRenderer])
             ->getMock();
     }
@@ -252,7 +252,7 @@ class FilesContentObjectTest extends UnitTestCase
             ->method('findFileReferenceByUid')
             ->willReturnMap($fileReferenceMap);
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(['getFileRepository'])
+            ->onlyMethods(['getFileRepository'])
             ->getMock();
         $fileCollector->expects(self::any())
             ->method('getFileRepository')
@@ -435,7 +435,7 @@ class FilesContentObjectTest extends UnitTestCase
             ->method('getFileObject')
             ->willReturnMap($fileMap);
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(['getResourceFactory'])
+            ->onlyMethods(['getResourceFactory'])
             ->getMock();
         $fileCollector->expects(self::any())
             ->method('getResourceFactory')
@@ -667,7 +667,7 @@ class FilesContentObjectTest extends UnitTestCase
             ->method('findByUid')
             ->willReturnMap($collectionMap);
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(['getFileCollectionRepository'])
+            ->onlyMethods(['getFileCollectionRepository'])
             ->getMock();
         $fileCollector->expects(self::any())
             ->method('getFileCollectionRepository')
@@ -957,7 +957,7 @@ class FilesContentObjectTest extends UnitTestCase
             ->method('getFolderObjectFromCombinedIdentifier')
             ->willReturnMap($folderMap);
         $fileCollector = $this->getMockBuilder(FileCollector::class)
-            ->setMethods(['getResourceFactory'])
+            ->onlyMethods(['getResourceFactory'])
             ->getMock();
         $fileCollector->expects(self::any())
             ->method('getResourceFactory')

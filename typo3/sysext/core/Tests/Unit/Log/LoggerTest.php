@@ -97,7 +97,7 @@ class LoggerTest extends UnitTestCase
         $logger = new Logger($component);
         /** @var $processor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface|\PHPUnit\Framework\MockObject\MockObject */
         $processor = $this->getMockBuilder(NullProcessor::class)
-            ->setMethods(['processLogRecord'])
+            ->onlyMethods(['processLogRecord'])
             ->getMock();
         $processor->expects(self::once())->method('processLogRecord')->willReturn(new LogRecord($component, $level, $message));
         $logger->addProcessor($level, $processor);
@@ -114,7 +114,7 @@ class LoggerTest extends UnitTestCase
         $logger = new Logger('test.core.log');
         /** @var NullWriter|\PHPUnit\Framework\MockObject\MockObject $writer */
         $writer = $this->getMockBuilder(NullWriter::class)
-            ->setMethods(['writeLog'])
+            ->onlyMethods(['writeLog'])
             ->getMock();
         $writer->expects(self::once())->method('writeLog');
         $logger->addWriter(LogLevel::DEBUG, $writer);

@@ -43,7 +43,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     public function getDelegatesToRequireOnce()
     {
         $instance = $this->getMockBuilder(FluidTemplateCache::class)
-            ->setMethods(['requireOnce'])
+            ->onlyMethods(['requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
         $instance->expects(self::once())->method('requireOnce')->with('foobar');

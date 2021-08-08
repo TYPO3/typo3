@@ -162,7 +162,7 @@ class FileTest extends UnitTestCase
             'storage' => 'first',
         ];
         $subject = $this->getMockBuilder(File::class)
-            ->setMethods(['loadStorage'])
+            ->addMethods(['loadStorage'])
             ->setConstructorArgs([$fileProperties, $this->storageMock])
             ->getMock();
         $mockedNewStorage = $this->createMock(ResourceStorage::class);
@@ -259,12 +259,12 @@ class FileTest extends UnitTestCase
     {
         $fixture = $this->getMockBuilder(File::class)
             ->setConstructorArgs([[], $this->storageMock])
-            ->setMethods(['getMetaData'])
+            ->onlyMethods(['getMetaData'])
             ->getMock();
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$fixture])
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->getMock();
 
         $metaDataAspectMock->expects(self::any())->method('get')->willReturn(['testproperty' => 'testvalue']);

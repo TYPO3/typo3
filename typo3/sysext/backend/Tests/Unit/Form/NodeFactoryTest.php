@@ -283,7 +283,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockNode = new \stdClass();
         /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
-            ->setMethods(['instantiate'])
+            ->onlyMethods(['instantiate'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSubject->expects(self::once())->method('instantiate')->willReturn($mockNode);

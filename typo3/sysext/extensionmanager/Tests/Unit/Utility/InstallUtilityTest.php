@@ -265,7 +265,7 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir($absPath . 'Initialisation');
         file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
         $registryMock = $this->getMockBuilder(Registry::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->getMock();
         $registryMock
             ->expects(self::any())

@@ -33,7 +33,7 @@ class CountValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -52,7 +52,7 @@ class CountValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = $this->getMockBuilder(CountValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -71,7 +71,7 @@ class CountValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 2, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -90,7 +90,7 @@ class CountValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 
@@ -110,7 +110,7 @@ class CountValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = $this->getMockBuilder(CountValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
 

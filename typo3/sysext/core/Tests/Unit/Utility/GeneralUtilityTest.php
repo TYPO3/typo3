@@ -3573,7 +3573,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1288967686);
 
         $instance = $this->getMockBuilder(SingletonInterface::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
         $singletonClassName = get_class($this->createMock(SingletonInterface::class));
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
@@ -3678,10 +3678,10 @@ class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967686);
 
-        $instance = $this->getMockBuilder('foo')
-            ->setMethods(['bar'])
+        $instance = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['bar'])
             ->getMock();
-        $singletonClassName = get_class($this->createMock('foo'));
+        $singletonClassName = get_class($this->createMock(\stdClass::class));
         GeneralUtility::addInstance($singletonClassName, $instance);
     }
 
@@ -3810,11 +3810,11 @@ class GeneralUtilityTest extends UnitTestCase
         // build the dummy package "foo" for use in ExtensionManagementUtility::extPath('foo');
         $package = $this->getMockBuilder(Package::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getPackagePath'])
+            ->onlyMethods(['getPackagePath'])
             ->getMock();
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $package->expects(self::any())

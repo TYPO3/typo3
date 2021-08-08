@@ -47,7 +47,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->beUserProphecy;
 
         $this->subject = $this->getMockBuilder(DatabaseLanguageRows::class)
-            ->setMethods(['getRecordWorkspaceOverlay'])
+            ->onlyMethods(['getRecordWorkspaceOverlay'])
             ->getMock();
     }
 

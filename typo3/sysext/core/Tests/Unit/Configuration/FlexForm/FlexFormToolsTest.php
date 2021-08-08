@@ -1750,7 +1750,7 @@ class FlexFormToolsTest extends UnitTestCase
         $editData = [];
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(FlexFormTools::class)
-            ->setMethods(['executeCallBackMethod'])
+            ->onlyMethods(['executeCallBackMethod'])
             ->getMock();
         $subject->expects(self::never())->method('executeCallBackMethod');
         $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);

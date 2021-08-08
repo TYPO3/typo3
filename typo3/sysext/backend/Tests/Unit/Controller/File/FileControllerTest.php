@@ -59,15 +59,15 @@ class FileControllerTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->fileResourceMock = $this->getMockBuilder(File::class)
-            ->setMethods(['toArray', 'getModificationTime', 'getExtension'])
+            ->onlyMethods(['toArray', 'getModificationTime', 'getExtension'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->folderResourceMock = $this->getMockBuilder(Folder::class)
-            ->setMethods(['getIdentifier'])
+            ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockFileProcessor = $this->getMockBuilder(ExtendedFileUtility::class)
-            ->setMethods(['getErrorMessages'])
+            ->onlyMethods(['getErrorMessages'])
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -133,14 +133,14 @@ class TemplateServiceTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $mockPackage = $this->getMockBuilder(Package::class)
-            ->setMethods(['getPackagePath', 'getPackageKey'])
+            ->onlyMethods(['getPackagePath', 'getPackageKey'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockPackage->expects(self::any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/');
         $mockPackage->expects(self::any())->method('getPackageKey')->willReturn('core');
 
         $mockPackageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockPackageManager->expects(self::any())->method('isPackageActive')->willReturn(true);

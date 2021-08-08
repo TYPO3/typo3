@@ -32,7 +32,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => 'false'];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(false)->hasErrors());
@@ -45,7 +45,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => 'true'];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(true)->hasErrors());
@@ -58,7 +58,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(true)->hasErrors());
@@ -71,7 +71,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => false];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(false)->hasErrors());
@@ -84,7 +84,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => false];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertTrue($validator->validate(true)->hasErrors());
@@ -97,7 +97,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertTrue($validator->validate(false)->hasErrors());
@@ -110,7 +110,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertTrue($validator->validate('a string')->hasErrors());
@@ -123,7 +123,7 @@ class BooleanValidatorTest extends UnitTestCase
     {
         $options = [];
         $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(true)->hasErrors());

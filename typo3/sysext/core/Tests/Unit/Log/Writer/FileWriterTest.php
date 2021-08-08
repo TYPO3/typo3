@@ -208,10 +208,10 @@ class FileWriterTest extends UnitTestCase
         $this->setUpVfsStream();
 
         $firstWriter = $this->getMockBuilder(FileWriter::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $secondWriter = $this->getMockBuilder(FileWriter::class)
-            ->setMethods(['createLogFile'])
+            ->onlyMethods(['createLogFile'])
             ->getMock();
 
         $secondWriter->expects(self::never())->method('createLogFile');
@@ -229,10 +229,10 @@ class FileWriterTest extends UnitTestCase
         $this->setUpVfsStream();
 
         $firstWriter = $this->getMockBuilder(FileWriter::class)
-            ->setMethods(['closeLogFile'])
+            ->onlyMethods(['closeLogFile'])
             ->getMock();
         $secondWriter = $this->getMockBuilder(FileWriter::class)
-            ->setMethods(['closeLogFile'])
+            ->onlyMethods(['closeLogFile'])
             ->getMock();
 
         $firstWriter->expects(self::never())->method('closeLogFile');

@@ -66,7 +66,7 @@ class DateTimeValidatorTest extends UnitTestCase
     public function addsErrorForInvalidValue()
     {
         $validator = $this->getMockBuilder(DateTimeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
         $result = $validator->validate(false);
 

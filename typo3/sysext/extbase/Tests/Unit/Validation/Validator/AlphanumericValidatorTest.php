@@ -32,7 +32,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
         self::assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
     }
@@ -44,7 +44,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
         self::assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
     }
@@ -56,7 +56,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
         self::assertEquals(1, count($subject->validate('adsf%&/$jklsfdö')->getErrors()));
     }
@@ -68,7 +68,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
         self::assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
     }

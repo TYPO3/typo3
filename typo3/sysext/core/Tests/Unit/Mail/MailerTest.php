@@ -58,7 +58,7 @@ class MailerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(Mailer::class)
-            ->setMethods(null)
+            ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
         $this->logManager = new class() implements LogManagerInterface {

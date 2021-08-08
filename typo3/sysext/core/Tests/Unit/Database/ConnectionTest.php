@@ -62,7 +62,7 @@ class ConnectionTest extends UnitTestCase
         parent::setUp();
 
         $this->connection = $this->getMockBuilder(Connection::class)
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'connect',
                     'executeQuery',

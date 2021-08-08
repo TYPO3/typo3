@@ -178,7 +178,7 @@ class FolderTest extends UnitTestCase
 
         $parentFolderFixture = $this->createFolderFixture($parentIdentifier, 'parent');
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
+            ->onlyMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockedStorage->expects(self::once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->willReturn($parentIdentifier);

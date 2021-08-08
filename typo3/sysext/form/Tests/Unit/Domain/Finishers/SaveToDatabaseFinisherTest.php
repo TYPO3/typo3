@@ -79,7 +79,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     public function executeInternalProcessesSingleTable()
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
-            ->setMethods(['process'])
+            ->onlyMethods(['process'])
             ->getMock();
         $saveToDatabaseFinisher->setOptions([
             'table' => 'tx_foo',
@@ -157,7 +157,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     public function executeInternalProcessesMultipleTables()
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
-            ->setMethods(['process'])
+            ->onlyMethods(['process'])
             ->getMock();
         $saveToDatabaseFinisher->setOptions([
             [

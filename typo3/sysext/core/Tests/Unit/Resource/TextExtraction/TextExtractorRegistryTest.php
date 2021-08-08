@@ -36,7 +36,7 @@ class TextExtractorRegistryTest extends UnitTestCase
     protected function getTextExtractorRegistry(array $createsTextExtractorInstances = [])
     {
         $textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
-            ->setMethods(['createTextExtractorInstance'])
+            ->onlyMethods(['createTextExtractorInstance'])
             ->getMock();
 
         if (!empty($createsTextExtractorInstances)) {

@@ -44,7 +44,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -70,7 +70,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -136,7 +136,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -227,7 +227,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['exists'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -301,7 +301,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
 
         $runtimeCache= $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -917,7 +917,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, ['getStorageByUid'], [], '', false);
 
         $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get', 'set'])
+            ->onlyMethods(['get', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 

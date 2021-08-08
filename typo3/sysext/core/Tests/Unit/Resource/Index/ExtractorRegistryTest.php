@@ -149,7 +149,7 @@ class ExtractorRegistryTest extends UnitTestCase
     protected function getMockExtractorRegistry(array $createsExtractorInstances = [])
     {
         $extractorRegistry = $this->getMockBuilder(ExtractorRegistry::class)
-            ->setMethods(['createExtractorInstance'])
+            ->onlyMethods(['createExtractorInstance'])
             ->getMock();
 
         if (!empty($createsExtractorInstances)) {

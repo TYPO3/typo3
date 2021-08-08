@@ -35,7 +35,7 @@ class VariableFrontendTest extends UnitTestCase
         $this->expectExceptionCode(1233058264);
 
         $cache = $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['isValidEntryIdentifier'])
+            ->onlyMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->expects(self::once())->method('isValidEntryIdentifier')->with('foo')->willReturn(false);
@@ -49,7 +49,8 @@ class VariableFrontendTest extends UnitTestCase
     {
         $theString = 'Just some value';
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('set')->with(self::equalTo('VariableCacheTest'), self::equalTo(serialize($theString)));
@@ -65,7 +66,8 @@ class VariableFrontendTest extends UnitTestCase
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('set')->with(self::equalTo('VariableCacheTest'), self::equalTo(serialize($theArray)));
@@ -82,7 +84,8 @@ class VariableFrontendTest extends UnitTestCase
         $theString = 'Just some value';
         $theLifetime = 1234;
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('set')->with(self::equalTo('VariableCacheTest'), self::equalTo(serialize($theString)), self::equalTo([]), self::equalTo($theLifetime));
@@ -97,7 +100,8 @@ class VariableFrontendTest extends UnitTestCase
     public function getFetchesStringValueFromBackend()
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('get')->willReturn(serialize('Just some value'));
@@ -113,7 +117,8 @@ class VariableFrontendTest extends UnitTestCase
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('get')->willReturn(serialize($theArray));
@@ -128,7 +133,8 @@ class VariableFrontendTest extends UnitTestCase
     public function getFetchesFalseBooleanValueFromBackend()
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('get')->willReturn(serialize(false));
@@ -143,7 +149,8 @@ class VariableFrontendTest extends UnitTestCase
     public function hasReturnsResultFromBackend()
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
         $backend->expects(self::once())->method('has')->with(self::equalTo('VariableCacheTest'))->willReturn(true);
@@ -159,7 +166,8 @@ class VariableFrontendTest extends UnitTestCase
     {
         $cacheIdentifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(AbstractBackend::class)
-            ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
+            ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
+            ->addMethods(['findIdentifiersByTag', 'flushByTag'])
             ->disableOriginalConstructor()
             ->getMock();
 

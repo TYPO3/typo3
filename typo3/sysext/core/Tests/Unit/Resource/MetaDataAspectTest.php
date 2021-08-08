@@ -116,7 +116,7 @@ class MetaDataAspectTest extends UnitTestCase
         /** @var MetaDataAspect|\PHPUnit\Framework\MockObject\MockObject $metaDataAspectMock */
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
-            ->setMethods(['getMetaDataRepository'])
+            ->onlyMethods(['getMetaDataRepository'])
             ->getMock();
 
         $metaDataAspectMock->add($metaData);
@@ -161,7 +161,7 @@ class MetaDataAspectTest extends UnitTestCase
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->setMethods(['findByFileUid', 'getTableFields', 'update'])
+            ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
             ->setConstructorArgs([$eventDispatcher->reveal()])
             ->getMock();
         $metaDataRepositoryMock->expects(self::any())->method('findByFileUid')->willReturn([]);
@@ -195,7 +195,8 @@ class MetaDataAspectTest extends UnitTestCase
         $file = new File(['uid' => 12], $this->storageMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->setMethods(['loadFromRepository', 'createMetaDataRecord', 'update'])
+            ->onlyMethods(['createMetaDataRecord', 'update'])
+            ->addMethods(['loadFromRepository'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -204,7 +205,7 @@ class MetaDataAspectTest extends UnitTestCase
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
-            ->setMethods(['loadFromRepository'])
+            ->onlyMethods(['loadFromRepository'])
             ->getMock();
 
         $metaDataAspectMock->expects(self::any())->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData));

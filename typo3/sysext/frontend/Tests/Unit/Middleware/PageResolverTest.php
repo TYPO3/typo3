@@ -106,7 +106,7 @@ class PageResolverTest extends UnitTestCase
                     ],
                 ]
             ]
-        ])->setMethods(['getRouter'])->getMock();
+        ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -115,7 +115,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom'));
         $expectedRouteResult = new PageArguments(13, '0', []);
 
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
         $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 
@@ -147,7 +147,7 @@ class PageResolverTest extends UnitTestCase
                     ],
                 ]
             ]
-        ])->setMethods(['getRouter'])->getMock();
+        ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -156,7 +156,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new PageArguments(13, '0', []);
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
         $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 
@@ -186,7 +186,7 @@ class PageResolverTest extends UnitTestCase
                     ],
                 ]
             ]
-        ])->setMethods(['getRouter'])->getMock();
+        ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -195,7 +195,7 @@ class PageResolverTest extends UnitTestCase
         $request = $request->withAttribute('routing', new SiteRouteResult($request->getUri(), $site, $language, 'mr-magpie/bloom/'));
 
         $expectedRouteResult = new PageArguments(13, '0', []);
-        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
+        $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
         $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 

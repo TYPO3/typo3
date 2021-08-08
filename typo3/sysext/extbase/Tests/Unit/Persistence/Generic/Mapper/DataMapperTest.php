@@ -70,7 +70,7 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ])
-            ->setMethods(['mapSingleRow', 'getTargetType'])
+            ->onlyMethods(['mapSingleRow', 'getTargetType'])
             ->getMock();
 
         $dataMapper->expects(self::any())->method('getTargetType')->willReturnArgument(1);
@@ -228,7 +228,7 @@ class DataMapperTest extends UnitTestCase
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $dataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['getColumnMap'])
+            ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
         $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
@@ -251,7 +251,7 @@ class DataMapperTest extends UnitTestCase
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_BELONGS_TO_MANY);
         $dataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['getColumnMap'])
+            ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
         $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
@@ -275,7 +275,7 @@ class DataMapperTest extends UnitTestCase
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $dataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['getColumnMap'])
+            ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
         $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
@@ -301,7 +301,7 @@ class DataMapperTest extends UnitTestCase
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $dataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['getColumnMap'])
+            ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -313,7 +313,7 @@ class DataMapperTest extends UnitTestCase
         $identifier = 1;
 
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
-            ->setMethods(['has', 'get'])
+            ->onlyMethods(['has', 'get'])
             ->disableOriginalConstructor()
             ->getMock();
         $psrContainer->expects(self::any())->method('has')->willReturn(false);
@@ -323,7 +323,7 @@ class DataMapperTest extends UnitTestCase
         $session->registerObject($child, $identifier);
 
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
-            ->setMethods(['getClassSchema'])
+            ->onlyMethods(['getClassSchema'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockReflectionService->expects(self::any())->method('getClassSchema')->willReturn($classSchema1);

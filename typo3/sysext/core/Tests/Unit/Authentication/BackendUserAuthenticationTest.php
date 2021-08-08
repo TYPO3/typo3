@@ -119,7 +119,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -189,7 +189,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getTSConfig'])
+            ->onlyMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
 
         $subject
@@ -331,7 +331,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
+            ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects(self::any())->method('getUid')->willReturn($storageUid);
@@ -373,7 +373,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
+            ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects(self::any())->method('getUid')->willReturn($storageUid);
@@ -525,7 +525,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin', 'getTSConfig'])
+            ->onlyMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
 
         $subject
@@ -548,7 +548,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
 
         $subject
@@ -584,7 +584,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['getTSConfig'])
+            ->onlyMethods(['getTSConfig'])
             ->getMock();
         $subject->method('getTSConfig')->with()->willReturn([
             'options.' => [
@@ -602,7 +602,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['getTSConfig'])
+            ->onlyMethods(['getTSConfig'])
             ->getMock();
         $subject->method('getTSConfig')->with()->willReturn([
             'options.' => [
@@ -627,7 +627,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     public function jsConfirmationAllowsUnsettingBitsInValue($jsConfirmation, $typeChangeAllowed, $copyMovePasteAllowed, $deleteAllowed, $feEditAllowed, $otherAllowed): void
     {
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['getTSConfig'])
+            ->onlyMethods(['getTSConfig'])
             ->getMock();
         $subject->method('getTSConfig')->with()->willReturn([
             'options.' => [
@@ -673,7 +673,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['getTSConfig'])
+            ->onlyMethods(['getTSConfig'])
             ->getMock();
         $subject->method('getTSConfig')->with()->willReturn([
             'options.' => [
@@ -691,7 +691,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['getTSConfig'])
+            ->onlyMethods(['getTSConfig'])
             ->getMock();
 
         self::assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
@@ -778,7 +778,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->setMethods(['isAdmin'])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $subject->setLogger(new NullLogger());
         $subject->expects(self::any())

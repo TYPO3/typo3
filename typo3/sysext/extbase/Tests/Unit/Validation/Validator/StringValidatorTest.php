@@ -40,7 +40,7 @@ class StringValidatorTest extends UnitTestCase
     {
         /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
 
         self::assertTrue($validator->validate(42)->hasErrors());
@@ -53,7 +53,7 @@ class StringValidatorTest extends UnitTestCase
     {
         /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->getMock();
 
         $object = new class() {

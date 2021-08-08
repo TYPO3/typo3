@@ -48,7 +48,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['getTreeList'])
+            ->onlyMethods(['getTreeList'])
             ->getMock();
         $this->frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,

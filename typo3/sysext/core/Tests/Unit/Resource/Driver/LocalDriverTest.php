@@ -1777,7 +1777,7 @@ class LocalDriverTest extends BaseTestCase
     {
         $dummyObject = $this
             ->getMockBuilder(LocalDriver::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $method = [

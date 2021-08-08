@@ -124,7 +124,7 @@ class ResourceStorageTest extends BaseTestCase
         $mockedMethods[] = 'getIndexer';
 
         $this->subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(array_unique($mockedMethods))
+            ->onlyMethods(array_unique($mockedMethods))
             ->setConstructorArgs([$driverObject, $storageRecord, $this->eventDispatcher])
             ->getMock();
         $this->subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($resourceFactory);
@@ -180,7 +180,7 @@ class ResourceStorageTest extends BaseTestCase
             // We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
             // when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
             $driver = $this->getMockBuilder(LocalDriver::class)
-                ->setMethods($mockedDriverMethods)
+                ->onlyMethods($mockedDriverMethods)
                 ->setConstructorArgs([$driverConfiguration])
                 ->getMock();
         }
@@ -317,7 +317,7 @@ class ResourceStorageTest extends BaseTestCase
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
         /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['isOnline', 'getResourceFactoryInstance'])
+            ->onlyMethods(['isOnline', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$driver, ['configuration' => []], $this->eventDispatcher])
             ->getMock();
         $subject->expects(self::once())->method('isOnline')->willReturn(false);
@@ -376,7 +376,7 @@ class ResourceStorageTest extends BaseTestCase
         // Let all other checks pass
         /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
+            ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$mockedDriver, [], $this->eventDispatcher])
             ->getMock();
         $subject->expects(self::any())->method('isWritable')->willReturn(true);
@@ -569,7 +569,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->initializeVfs();
         $driverObject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
         $this->subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['getFileIndexRepository', 'checkFileActionPermission'])
+            ->onlyMethods(['getFileIndexRepository', 'checkFileActionPermission'])
             ->setConstructorArgs([$driverObject, [], $this->eventDispatcher])
             ->getMock();
         $this->subject->expects(self::any())->method('checkFileActionPermission')->willReturn(true);
@@ -660,7 +660,7 @@ class ResourceStorageTest extends BaseTestCase
         )->willReturn('/targetFolder/file.ext');
         /** @var $subject ResourceStorage */
         $subject = $this->getMockBuilder(ResourceStorage::class)
-            ->setMethods(['assureFileMovePermissions'])
+            ->onlyMethods(['assureFileMovePermissions'])
             ->setConstructorArgs([$mockedDriver, ['configuration' => $configuration], $this->eventDispatcher])
             ->getMock();
         $subject->moveFile($sourceFile, $targetFolder, 'file.ext');
@@ -801,7 +801,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->expectExceptionCode(1325689164);
         $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
         $this->prepareSubject([], true);
-        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver = $this->createDriverMock([], $this->subject, ['folderExists']);
         $mockedDriver->expects(self::once())->method('folderExists')->with(self::equalTo('/someFolder/'))->willReturn(false);
         $this->subject->createFolder('newFolder', $mockedParentFolder);
     }
@@ -811,7 +811,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function renameFileRenamesFileAsRequested(): void
     {
-        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile']);
         $mockedDriver->expects(self::once())->method('renameFile')->willReturn('bar');
         $this->prepareSubject([], true, $mockedDriver, null);
         /** @var File $file */
@@ -827,7 +827,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function renameFileRenamesWithUniqueNameIfConflictAndConflictModeIsRename(): void
     {
-        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile', 'sanitizeFileName']);
         $mockedDriver->expects(self::any())->method('renameFile')->will(self::onConsecutiveCalls(self::throwException(new ExistingTargetFileNameException(
             'foo',
             1489593090
@@ -859,7 +859,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function renameFileThrowsExceptionIfConflictAndConflictModeIsCancel(): void
     {
-        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile']);
         $mockedDriver->expects(self::once())->method('renameFile')->will(self::throwException(new ExistingTargetFileNameException(
             'foo',
             1489593099
@@ -876,7 +876,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function renameFileReplacesIfConflictAndConflictModeIsReplace(): void
     {
-        $mockedDriver = $this->createDriverMock([], $this->subject);
+        $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile', 'sanitizeFileName']);
         $mockedDriver->expects(self::once())->method('renameFile')->will(self::throwException(new ExistingTargetFileNameException(
             'foo',
             1489593098

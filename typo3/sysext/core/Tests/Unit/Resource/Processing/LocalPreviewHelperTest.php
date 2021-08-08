@@ -45,7 +45,7 @@ class LocalPreviewHelperTest extends UnitTestCase
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
+            ->onlyMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
             ->getMock();
         $localPreviewHelper->expects(self::once())->method('getTemporaryFilePath')->willReturn('test/file');
         // Assert that by default 64x64 is used as preview size
@@ -68,7 +68,7 @@ class LocalPreviewHelperTest extends UnitTestCase
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
 
         $task = $this->createMock(TaskInterface::class);
@@ -95,7 +95,7 @@ class LocalPreviewHelperTest extends UnitTestCase
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
+            ->onlyMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
             ->getMock();
         $expectedResult = ['width' => 20, 'height' => 20, 'filePath' => 'test/file'];
         $localPreviewHelper->expects(self::once())->method('generatePreviewFromFile')->willReturn($expectedResult);

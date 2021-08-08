@@ -63,7 +63,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
 
         /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
         $mock = $this->getMockBuilder(AbstractUserAuthentication::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->loginType = 'BE';

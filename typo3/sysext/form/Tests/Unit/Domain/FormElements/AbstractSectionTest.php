@@ -63,7 +63,7 @@ class AbstractSectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition $rootForm */
         $rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getRenderingOptions', 'getTypeDefinitions'])
+            ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
@@ -103,7 +103,7 @@ class AbstractSectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition $rootForm */
         $rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getRenderingOptions', 'getTypeDefinitions'])
+            ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
@@ -146,7 +146,7 @@ class AbstractSectionTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition $rootForm */
         $rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getRenderingOptions', 'getTypeDefinitions'])
+            ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
@@ -200,7 +200,7 @@ class AbstractSectionTest extends UnitTestCase
 
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition $rootForm */
         $rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getRenderingOptions', 'getTypeDefinitions'])
+            ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
@@ -275,7 +275,7 @@ class AbstractSectionTest extends UnitTestCase
 
         /** @var \PHPUnit\Framework\MockObject\MockObject|FormDefinition $rootForm */
         $rootForm = $this->getMockBuilder(FormDefinition::class)
-            ->setMethods(['getRenderingOptions', 'getTypeDefinitions'])
+            ->onlyMethods(['getRenderingOptions', 'getTypeDefinitions'])
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm

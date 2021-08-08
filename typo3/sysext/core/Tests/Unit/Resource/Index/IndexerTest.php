@@ -39,7 +39,7 @@ class IndexerTest extends UnitTestCase
         /** @var Indexer|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(Indexer::class)
             ->setConstructorArgs([$mockStorage])
-            ->setMethods(['getFileIndexRepository', 'extractRequiredMetaData', 'getExtractorService'])
+            ->onlyMethods(['getFileIndexRepository', 'extractRequiredMetaData', 'getExtractorService'])
             ->getMock();
 
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);

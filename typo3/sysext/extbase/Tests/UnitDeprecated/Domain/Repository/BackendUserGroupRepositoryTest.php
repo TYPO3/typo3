@@ -49,7 +49,7 @@ class BackendUserGroupRepositoryTest extends UnitTestCase
         $objectManager = $this->createMock(ObjectManagerInterface::class);
         /** @var $subject BackendUserGroupRepository */
         $subject = $this->getMockBuilder(BackendUserGroupRepository::class)
-            ->setMethods(['setDefaultQuerySettings'])
+            ->onlyMethods(['setDefaultQuerySettings'])
             ->setConstructorArgs([$objectManager])
             ->getMock();
         $querySettings = $this->createMock(Typo3QuerySettings::class);

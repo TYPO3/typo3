@@ -553,7 +553,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
@@ -586,7 +586,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
@@ -619,7 +619,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(true);
@@ -666,7 +666,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
@@ -685,7 +685,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
@@ -714,7 +714,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
@@ -743,7 +743,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Must be mocked here to test for "mysql" version implementation
         $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-            ->setMethods(['isConnectionMysql'])
+            ->onlyMethods(['isConnectionMysql'])
             ->setConstructorArgs(['Testing'])
             ->getMock();
         $subject->expects(self::once())->method('isConnectionMysql')->willReturn(false);
@@ -816,7 +816,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             $subject = new Typo3DatabaseBackend('Testing');
         } else {
             $subject = $this->getMockBuilder(Typo3DatabaseBackend::class)
-                ->setMethods(['isConnectionMysql'])
+                ->onlyMethods(['isConnectionMysql'])
                 ->setConstructorArgs(['Testing'])
                 ->getMock();
             $subject->expects(self::once())->method('isConnectionMysql')->willReturn($isConnectionMysql);

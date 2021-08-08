@@ -75,7 +75,7 @@ class UpgradeControllerTest extends UnitTestCase
         /** @var UpgradeController|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDocumentationFiles', 'initializeStandaloneView'])
+            ->onlyMethods(['getDocumentationFiles', 'initializeStandaloneView'])
             ->getMock();
 
         $subject->expects(self::any())->method('getDocumentationFiles')->willReturn([

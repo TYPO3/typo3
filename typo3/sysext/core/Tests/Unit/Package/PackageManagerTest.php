@@ -50,11 +50,12 @@ class PackageManagerTest extends UnitTestCase
 
         /** @var PhpFrontend|\PHPUnit\Framework\MockObject\MockObject $mockCache */
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['has', 'set', 'getBackend'])
+            ->onlyMethods(['has', 'set', 'getBackend'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockCacheBackend = $this->getMockBuilder(SimpleFileBackend::class)
-            ->setMethods(['has', 'set', 'getBackend', 'getCacheDirectory'])
+            ->onlyMethods(['has', 'set', 'getCacheDirectory'])
+            ->addMethods(['getBackend'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockCache->expects(self::any())->method('has')->willReturn(false);

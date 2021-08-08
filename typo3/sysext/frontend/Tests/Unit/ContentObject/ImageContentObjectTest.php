@@ -155,7 +155,7 @@ class ImageContentObjectTest extends UnitTestCase
     {
         /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap', 'getImgResource'])
+            ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
 
         $cObj->start([], 'tt_content');
@@ -251,7 +251,7 @@ class ImageContentObjectTest extends UnitTestCase
     {
         /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap', 'getImgResource'])
+            ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
 
         $cObj->start([], 'tt_content');
@@ -376,7 +376,7 @@ class ImageContentObjectTest extends UnitTestCase
     ): void {
         /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap', 'getImgResource'])
+            ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
 
         $cObj->start([], 'tt_content');
@@ -433,7 +433,7 @@ class ImageContentObjectTest extends UnitTestCase
         $getImageSourceCollectionHookMock = $this->getMockBuilder(
             ContentObjectOneSourceCollectionHookInterface::class
         )
-            ->setMethods(['getOneSourceCollection'])
+            ->onlyMethods(['getOneSourceCollection'])
             ->setMockClassName($className)
             ->getMock();
         GeneralUtility::addInstance($className, $getImageSourceCollectionHookMock);

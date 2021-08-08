@@ -44,7 +44,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(ProductionExceptionHandler::class)
-            ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
+            ->onlyMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->subject->expects(self::any())->method('discloseExceptionInformation')->willReturn(true);
@@ -79,7 +79,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $title = '<b>b</b><script>alert(1);</script>';
         /** @var $exception \Exception|\PHPUnit\Framework\MockObject\MockObject */
         $exception = $this->getMockBuilder('Exception')
-            ->setMethods(['getTitle'])
+            ->addMethods(['getTitle'])
             ->setConstructorArgs(['some message'])
             ->getMock();
         $exception->expects(self::any())->method('getTitle')->willReturn($title);

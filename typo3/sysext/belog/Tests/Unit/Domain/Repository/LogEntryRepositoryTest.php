@@ -35,7 +35,8 @@ class LogEntryRepositoryTest extends UnitTestCase
         $querySettings = $this->getMockBuilder(QuerySettingsInterface::class)->getMock();
         $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false)->willReturn($querySettings);
         $subject = $this->getMockBuilder(LogEntryRepository::class)
-            ->setMethods(['setDefaultQuerySettings', 'getBackendUsers'])
+            ->onlyMethods(['setDefaultQuerySettings'])
+            ->addMethods(['getBackendUsers'])
             ->setConstructorArgs([$this->getMockBuilder(ObjectManagerInterface::class)->getMock()])
             ->getMock();
         $subject->injectQuerySettings($querySettings);

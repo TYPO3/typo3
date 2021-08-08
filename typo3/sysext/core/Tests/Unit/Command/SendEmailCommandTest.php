@@ -42,7 +42,7 @@ class SendEmailCommandTest extends UnitTestCase
 
         $mailer = $this->getMockBuilder(Mailer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getTransport', 'getRealTransport'])
+            ->onlyMethods(['getTransport', 'getRealTransport'])
             ->getMock();
 
         $mailer
@@ -58,7 +58,7 @@ class SendEmailCommandTest extends UnitTestCase
         /** @var SendEmailCommand|\PHPUnit\Framework\MockObject\MockObject $command */
         $command = $this->getMockBuilder(SendEmailCommand::class)
             ->setConstructorArgs(['mailer:spool:send'])
-            ->setMethods(['getMailer'])
+            ->onlyMethods(['getMailer'])
             ->getMock();
 
         $command

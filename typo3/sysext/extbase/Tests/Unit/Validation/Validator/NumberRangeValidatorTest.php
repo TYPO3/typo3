@@ -37,7 +37,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(10.5)->hasErrors());
@@ -50,7 +50,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertTrue($validator->validate(1000.1)->hasErrors());
@@ -63,7 +63,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 1000, 'maximum' => 0];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertFalse($validator->validate(100)->hasErrors());
@@ -76,7 +76,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
         self::assertTrue($validator->validate('not a number')->hasErrors());

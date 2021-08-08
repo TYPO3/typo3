@@ -114,7 +114,7 @@ class FlexFormServiceTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $convertedFlexFormArray = $flexFormService->convertFlexFormContentToArray($input);

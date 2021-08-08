@@ -33,7 +33,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(DatabaseParentPageRow::class)
-            ->setMethods(['getDatabaseRow'])
+            ->onlyMethods(['getDatabaseRow'])
             ->getMock();
     }
 

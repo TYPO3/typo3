@@ -47,17 +47,17 @@ class ConjunctionValidatorTest extends UnitTestCase
     {
         $validatorConjunction = new ConjunctionValidator();
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorObject->expects(self::once())->method('validate')->willReturn(new Result());
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $secondValidatorObject->expects(self::once())->method('validate')->willReturn($errors);
         $thirdValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $thirdValidatorObject->expects(self::once())->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
@@ -73,11 +73,11 @@ class ConjunctionValidatorTest extends UnitTestCase
     {
         $validatorConjunction = new ConjunctionValidator([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorObject->expects(self::any())->method('validate')->willReturn(new Result());
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $secondValidatorObject->expects(self::any())->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
@@ -92,7 +92,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     {
         $validatorConjunction = new ConjunctionValidator([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
@@ -108,10 +108,10 @@ class ConjunctionValidatorTest extends UnitTestCase
     {
         $validatorConjunction = new ConjunctionValidator();
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validator2 = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorConjunction->addValidator($validator1);
         $validatorConjunction->addValidator($validator2);
@@ -129,7 +129,7 @@ class ConjunctionValidatorTest extends UnitTestCase
         $this->expectExceptionCode(1207020177);
         $validatorConjunction = new ConjunctionValidator();
         $validator = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorConjunction->removeValidator($validator);
     }
@@ -141,10 +141,10 @@ class ConjunctionValidatorTest extends UnitTestCase
     {
         $validatorConjunction = new ConjunctionValidator();
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validator2 = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         self::assertSame(0, count($validatorConjunction));
         $validatorConjunction->addValidator($validator1);

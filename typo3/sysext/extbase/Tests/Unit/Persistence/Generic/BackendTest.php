@@ -106,7 +106,7 @@ class BackendTest extends UnitTestCase
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $session = $this->getMockBuilder('stdClass')
-            ->setMethods(['getIdentifierByObject'])
+            ->addMethods(['getIdentifierByObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();
@@ -131,12 +131,12 @@ class BackendTest extends UnitTestCase
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $proxy = $this->getMockBuilder(LazyLoadingProxy::class)
-            ->setMethods(['_loadRealInstance'])
+            ->onlyMethods(['_loadRealInstance'])
             ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods()
             ->getMock();
         $session = $this->getMockBuilder('stdClass')
-            ->setMethods(['getIdentifierByObject'])
+            ->addMethods(['getIdentifierByObject'])
             ->disableOriginalConstructor()
             ->getMock();
         $object = new \stdClass();

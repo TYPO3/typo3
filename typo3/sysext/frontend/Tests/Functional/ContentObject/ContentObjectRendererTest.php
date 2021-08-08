@@ -461,13 +461,13 @@ class ContentObjectRendererTest extends FunctionalTestCase
         self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
 
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['getPage'])
+            ->onlyMethods(['getPage'])
             ->getMock();
         $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn($pageArray);
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $typoScriptFrontendController->config = [
             'config' => [],
@@ -527,7 +527,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
 
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
-            ->setMethods(['getPage'])
+            ->onlyMethods(['getPage'])
             ->getMock();
         $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn([
             'uid' => 1,
@@ -544,7 +544,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $pageLinkBuilder = $this->getMockBuilder(PageLinkBuilder::class)
-            ->setMethods(['createTotalUrlAndLinkData'])
+            ->onlyMethods(['createTotalUrlAndLinkData'])
             ->setConstructorArgs([$subject])
             ->getMock();
         $pageLinkBuilder->expects($this::once())->method('createTotalUrlAndLinkData')->willReturn([
@@ -561,7 +561,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $typoScriptFrontendController->config = [
             'config' => [],

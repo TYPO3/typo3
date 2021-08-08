@@ -34,7 +34,7 @@ class RelationHandlerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(RelationHandler::class)
-            ->setMethods(['purgeVersionedIds', 'purgeLiveVersionedIds'])
+            ->onlyMethods(['purgeVersionedIds', 'purgeLiveVersionedIds'])
             ->getMock();
     }
 

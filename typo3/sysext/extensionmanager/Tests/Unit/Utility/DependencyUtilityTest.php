@@ -256,7 +256,7 @@ class DependencyUtilityTest extends UnitTestCase
         ];
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $listUtilityMock = $this->getMockBuilder(ListUtility::class)
-            ->setMethods(['getAvailableExtensions'])
+            ->onlyMethods(['getAvailableExtensions'])
             ->getMock();
         $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
@@ -278,7 +278,7 @@ class DependencyUtilityTest extends UnitTestCase
         ];
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $listUtilityMock = $this->getMockBuilder(ListUtility::class)
-            ->setMethods(['getAvailableExtensions'])
+            ->onlyMethods(['getAvailableExtensions'])
             ->getMock();
         $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
@@ -294,7 +294,7 @@ class DependencyUtilityTest extends UnitTestCase
     public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion(): void
     {
         $emConfUtility = $this->getMockBuilder(EmConfUtility::class)
-            ->setMethods(['includeEmConf'])
+            ->onlyMethods(['includeEmConf'])
             ->getMock();
         $emConfUtility->expects(self::once())->method('includeEmConf')->willReturn([
             'key' => 'dummy',
@@ -318,7 +318,7 @@ class DependencyUtilityTest extends UnitTestCase
     public function isExtensionDownloadableFromRemoteReturnsTrueIfOneVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
-            ->setMethods(['countByExtensionKey'])
+            ->addMethods(['countByExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(1);
@@ -335,7 +335,7 @@ class DependencyUtilityTest extends UnitTestCase
     public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists()
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
-            ->setMethods(['countByExtensionKey'])
+            ->addMethods(['countByExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(0);
@@ -353,7 +353,7 @@ class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-10.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
-            ->setMethods(['countByVersionRangeAndExtensionKey'])
+            ->onlyMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->willReturn(2);
@@ -371,7 +371,7 @@ class DependencyUtilityTest extends UnitTestCase
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-2.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
-            ->setMethods(['countByVersionRangeAndExtensionKey'])
+            ->onlyMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->willReturn(0);
@@ -411,7 +411,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependency = Dependency::createFromEmConf('foobar', '1.0.0-2.0.0');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
-            ->setMethods(['findByVersionRangeAndExtensionKeyOrderedByVersion'])
+            ->onlyMethods(['findByVersionRangeAndExtensionKeyOrderedByVersion'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->willReturn($myStorage);

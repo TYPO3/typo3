@@ -35,7 +35,7 @@ class WorkspaceRepositoryTest extends UnitTestCase
         $querySettings = $this->getMockBuilder(QuerySettingsInterface::class)->getMock();
         $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false)->willReturn($querySettings);
         $subject = $this->getMockBuilder(WorkspaceRepository::class)
-            ->setMethods(['setDefaultQuerySettings'])
+            ->onlyMethods(['setDefaultQuerySettings'])
             ->setConstructorArgs([$this->getMockBuilder(ObjectManagerInterface::class)->getMock()])
             ->getMock();
         $subject->injectQuerySettings($querySettings);

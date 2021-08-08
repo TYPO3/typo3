@@ -167,7 +167,7 @@ class RepositoryTest extends UnitTestCase
         $mockQuery->expects(self::once())->method('execute')->with()->willReturn($expectedResult);
 
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['createQuery'])
+            ->onlyMethods(['createQuery'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
@@ -246,7 +246,7 @@ class RepositoryTest extends UnitTestCase
         $mockQuery->expects(self::once())->method('execute')->with()->willReturn($mockQueryResult);
 
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['createQuery'])
+            ->onlyMethods(['createQuery'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
@@ -269,7 +269,7 @@ class RepositoryTest extends UnitTestCase
         $mockQuery->expects(self::once())->method('execute')->willReturn($mockQueryResult);
 
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['createQuery'])
+            ->onlyMethods(['createQuery'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
@@ -290,7 +290,7 @@ class RepositoryTest extends UnitTestCase
         $mockQueryResult->expects(self::once())->method('count')->willReturn(2);
 
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['createQuery'])
+            ->onlyMethods(['createQuery'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
@@ -306,7 +306,7 @@ class RepositoryTest extends UnitTestCase
         $this->expectException(UnsupportedMethodException::class);
         $this->expectExceptionCode(1233180480);
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['createQuery'])
+            ->onlyMethods(['createQuery'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->__call('foo', []);
@@ -384,7 +384,7 @@ class RepositoryTest extends UnitTestCase
         $fakeUid = '123';
         $object = new \stdClass();
         $repository = $this->getMockBuilder(Repository::class)
-            ->setMethods(['findByIdentifier'])
+            ->onlyMethods(['findByIdentifier'])
             ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $expectedResult = $object;

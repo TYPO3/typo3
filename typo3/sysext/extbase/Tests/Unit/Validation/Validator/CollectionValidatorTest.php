@@ -101,7 +101,7 @@ class CollectionValidatorTest extends UnitTestCase
             ->with('EmailAddress')
             ->willReturn(
                 $this->getMockBuilder(EmailAddressValidator::class)
-                    ->setMethods(['translateErrorMessage'])
+                    ->onlyMethods(['translateErrorMessage'])
                     ->getMock()
             );
         $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
@@ -142,12 +142,12 @@ class CollectionValidatorTest extends UnitTestCase
 
         // Create validators
         $aValidator = $this->getMockBuilder(GenericObjectValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([[]])
             ->getMock();
         $this->validator->_set('options', ['elementValidator' => 'Integer']);
         $integerValidator = $this->getMockBuilder(IntegerValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs([[]])
             ->getMock();
 

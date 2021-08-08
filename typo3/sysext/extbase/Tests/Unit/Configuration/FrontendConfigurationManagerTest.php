@@ -492,7 +492,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
-            ->setMethods(['convertFlexFormContentToArray'])
+            ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
         $flexFormService->expects(self::once())->method('convertFlexFormContentToArray')->willReturn([
             'persistence' => [
@@ -517,7 +517,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
-            ->setMethods(['convertFlexFormContentToArray'])
+            ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
@@ -538,7 +538,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
-            ->setMethods(['convertFlexFormContentToArray'])
+            ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
@@ -559,7 +559,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
-            ->setMethods(['convertFlexFormContentToArray'])
+            ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
         $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 

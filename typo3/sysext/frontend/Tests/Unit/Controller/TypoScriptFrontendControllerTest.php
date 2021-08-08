@@ -115,12 +115,12 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setMethods([
+            ->onlyMethods([
                 'processNonCacheableContentPartsAndSubstituteContentMarkers',
                 'INTincScript_loadJSCode',
                 'setAbsRefPrefix',
-                'regeneratePageTitle'
-            ])->disableOriginalConstructor()
+            ])
+            ->addMethods(['regeneratePageTitle'])->disableOriginalConstructor()
             ->getMock();
         $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'processNonCacheableContentPartsAndSubstituteContentMarkers']);
 

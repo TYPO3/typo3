@@ -38,7 +38,7 @@ class FileSizeValidatorTest extends UnitTestCase
 
         $options = ['minimum' => '0', 'maximum' => '1B'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -55,7 +55,7 @@ class FileSizeValidatorTest extends UnitTestCase
 
         $options = ['minimum' => '0B', 'maximum' => '1'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -69,7 +69,7 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -88,7 +88,7 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -107,7 +107,7 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
@@ -121,7 +121,7 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->setMethods(['translateErrorMessage'])
+            ->onlyMethods(['translateErrorMessage'])
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 

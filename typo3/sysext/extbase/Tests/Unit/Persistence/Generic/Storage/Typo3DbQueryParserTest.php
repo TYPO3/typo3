@@ -293,7 +293,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         );
         $queryBuilderProphet->getConnection()->willReturn($connectionProphet->reveal());
         $queryBuilderForSubselectMock = $this->getMockBuilder(QueryBuilder::class)
-            ->setMethods(['expr', 'unquoteSingleIdentifier'])
+            ->onlyMethods(['expr', 'unquoteSingleIdentifier'])
             ->setConstructorArgs([$connectionProphet->reveal()])
             ->getMock();
         $connectionProphet->createQueryBuilder()->willReturn($queryBuilderForSubselectMock);
@@ -504,12 +504,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
     public function orderStatementGenerationWorks()
     {
         $mockSource = $this->getMockBuilder(Selector::class)
-            ->setMethods(['getNodeTypeName'])
+            ->onlyMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('foo');
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
-            ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
+            ->onlyMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockDataMapper->expects(self::once())->method('convertClassNameToTableName')->with('foo')->willReturn('tx_myext_tablename');
@@ -532,12 +532,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $this->expectException(UnsupportedOrderException::class);
         $this->expectExceptionCode(1242816074);
         $mockSource = $this->getMockBuilder(Selector::class)
-            ->setMethods(['getNodeTypeName'])
+            ->onlyMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::never())->method('getNodeTypeName');
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
-            ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
+            ->onlyMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockDataMapper->expects(self::never())->method('convertClassNameToTableName');
@@ -555,12 +555,12 @@ class Typo3DbQueryParserTest extends UnitTestCase
     public function orderStatementGenerationWorksWithMultipleOrderings()
     {
         $mockSource = $this->getMockBuilder(Selector::class)
-            ->setMethods(['getNodeTypeName'])
+            ->onlyMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('Tx_MyExt_ClassName');
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
-            ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
+            ->onlyMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockDataMapper->expects(self::any())->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->willReturn('tx_myext_tablename');
@@ -574,7 +574,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['addOrderBy'])
+            ->onlyMethods(['addOrderBy'])
             ->getMock();
         $queryBuilder->expects(self::exactly(2))->method('addOrderBy')
             ->withConsecutive(
@@ -640,7 +640,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
-            ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
+            ->onlyMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->willReturn($ignoreEnableFields);
@@ -708,7 +708,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockQuerySettings->setIgnoreEnableFields(!$respectEnableFields);
@@ -740,7 +740,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'delete' => 'deleted_column'
         ];
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
-            ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
+            ->onlyMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->willReturn(false);

@@ -95,13 +95,13 @@ class GenericObjectValidatorTest extends UnitTestCase
 
         /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validatorForFoo */
         $validatorForFoo = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForFoo->expects(self::once())->method('validate')->with('foovalue')->willReturn($validationResultForFoo);
 
         /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validatorForBar */
         $validatorForBar = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForBar->expects(self::once())->method('validate')->with('barvalue')->willReturn($validationResultForBar);
 
@@ -163,7 +163,7 @@ class GenericObjectValidatorTest extends UnitTestCase
 
         /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockUuidValidator */
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects(self::any())->method('validate')->with(15)->willReturn($result);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
@@ -199,7 +199,7 @@ class GenericObjectValidatorTest extends UnitTestCase
 
         /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockUuidValidator */
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $mockUuidValidator->expects(self::any())->method('validate')->with(15)->willReturn($result1);
         $aValidator->addPropertyValidator('uuid', $mockUuidValidator);
@@ -235,7 +235,7 @@ class GenericObjectValidatorTest extends UnitTestCase
 
         /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockValidatorUuidNot0xF */
         $mockValidatorUuidNot0xF = $this->getMockBuilder(ValidatorInterface::class)
-            ->setMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
         $mockValidatorUuidNot0xF->expects(self::any())
             ->method('validate')->with(0xF)->willReturn($result1);

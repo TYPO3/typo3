@@ -415,7 +415,7 @@ class DataMapFactoryTest extends UnitTestCase
         ];
 
         $mockColumnMap = $this->getMockBuilder(ColumnMap::class)
-            ->setMethods(['setDateTimeStorageFormat'])
+            ->onlyMethods(['setDateTimeStorageFormat'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -444,7 +444,7 @@ class DataMapFactoryTest extends UnitTestCase
         // @TODO expectExceptionCode is 0
         $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['getControlSection'], [], '', false);
         $cacheMock = $this->getMockBuilder(VariableFrontend::class)
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
         $cacheMock->expects(self::any())->method('get')->willReturn(false);

@@ -56,7 +56,7 @@ class AbstractProcessorTest extends UnitTestCase
         $level = LogLevel::DEBUG;
         $logRecord = new LogRecord('dummy', $level, 'message');
         $processor = $this->getMockBuilder(ProcessorInterface::class)
-            ->setMethods(['processLogRecord'])
+            ->onlyMethods(['processLogRecord'])
             ->getMock();
         $processor->expects(self::once())->method('processLogRecord')->willReturn($logRecord);
 

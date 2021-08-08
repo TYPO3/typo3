@@ -41,7 +41,7 @@ class JsonViewTest extends UnitTestCase
     {
         parent::setUp();
         $this->view = $this->getMockBuilder(JsonView::class)
-            ->setMethods(['loadConfigurationFromYamlFile'])
+            ->addMethods(['loadConfigurationFromYamlFile'])
             ->getMock();
     }
 
@@ -401,7 +401,7 @@ class JsonViewTest extends UnitTestCase
     ): void {
         $persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getIdentifierByObject'])
+            ->onlyMethods(['getIdentifierByObject'])
             ->getMock();
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);

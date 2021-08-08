@@ -38,7 +38,7 @@ class PhpFrontendTest extends UnitTestCase
         $this->expectExceptionCode(1264023823);
 
         $cache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['isValidEntryIdentifier'])
+            ->onlyMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->expects(self::once())->method('isValidEntryIdentifier')->with('foo')->willReturn(false);
@@ -67,7 +67,7 @@ class PhpFrontendTest extends UnitTestCase
         $this->expectExceptionCode(1264023824);
 
         $cache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $cache->set('Foo-Bar', []);

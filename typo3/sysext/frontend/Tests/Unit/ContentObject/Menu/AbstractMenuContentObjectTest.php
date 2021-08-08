@@ -88,7 +88,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', []), $frontendUserProphecy->reveal()])
-            ->setMethods(['initCaches'])
+            ->onlyMethods(['initCaches'])
             ->getMock();
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();
         $GLOBALS['TSFE']->page = [];
@@ -398,7 +398,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         foreach ($menuItems as $page) {
             $menu[] = ['uid' => $page];
         }
-        $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)->setMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
+        $runtimeCacheMock = $this->getMockBuilder(VariableFrontend::class)->onlyMethods(['get', 'set'])->disableOriginalConstructor()->getMock();
         $runtimeCacheMock->expects(self::once())->method('get')->with(self::anything())->willReturn(false);
         $runtimeCacheMock->expects(self::once())->method('set')->with(self::anything(), ['result' => $expectedResult]);
 
@@ -609,7 +609,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, $oTarget, $addParams = '', $typeOverride = '', int $overrideId = null)
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['typoLink'])
+            ->onlyMethods(['typoLink'])
             ->getMock();
         $cObject->expects(self::once())->method('typoLink')->with('|', $expected);
         $this->subject->_set('parent_cObj', $cObject);

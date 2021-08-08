@@ -594,7 +594,7 @@ class DataHandlerTest extends UnitTestCase
     {
         $hookClass = StringUtility::getUniqueId('tx_coretest');
         $hookMock = $this->getMockBuilder(DataHandlerCheckModifyAccessListHookInterface::class)
-            ->setMethods(['checkModifyAccessList'])
+            ->onlyMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
             ->getMock();
         $hookMock->expects(self::once())->method('checkModifyAccessList');
@@ -624,7 +624,7 @@ class DataHandlerTest extends UnitTestCase
     {
         /** @var DataHandler $subject */
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(['log'])
+            ->onlyMethods(['log'])
             ->getMock();
         $this->backEndUser->workspace = 1;
         $this->backEndUser->workspaceRec = ['freeze' => true];
@@ -637,9 +637,9 @@ class DataHandlerTest extends UnitTestCase
      */
     public function doesCheckFlexFormValueHookGetsCalled()
     {
-        $hookClass = StringUtility::getUniqueId('tx_coretest');
+        $hookClass = \stdClass::class;
         $hookMock = $this->getMockBuilder($hookClass)
-            ->setMethods(['checkFlexFormValue_beforeMerge'])
+            ->addMethods(['checkFlexFormValue_beforeMerge'])
             ->getMock();
         $hookMock->expects(self::once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
@@ -913,7 +913,7 @@ class DataHandlerTest extends UnitTestCase
     {
         /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $dataHandlerMock */
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
-            ->setMethods(['canDeletePage', 'log'])
+            ->onlyMethods(['canDeletePage', 'log'])
             ->getMock();
         $dataHandlerMock
             ->expects(self::never())

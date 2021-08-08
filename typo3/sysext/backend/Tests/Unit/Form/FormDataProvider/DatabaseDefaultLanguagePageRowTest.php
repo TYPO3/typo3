@@ -34,7 +34,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     {
         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] = 'l10n_parent';
         $this->subject = $this->getMockBuilder(DatabaseDefaultLanguagePageRow::class)
-            ->setMethods(['getDatabaseRow'])
+            ->onlyMethods(['getDatabaseRow'])
             ->getMock();
     }
 

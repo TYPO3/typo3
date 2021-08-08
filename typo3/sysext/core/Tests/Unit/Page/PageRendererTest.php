@@ -39,7 +39,8 @@ class PageRendererTest extends UnitTestCase
 
         /** @var PageRenderer|AccessibleObjectInterface $pageRenderer */
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
-            ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart', 'getTypoScriptFrontendController'])
+            ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray'])
+            ->addMethods(['getTemplateForPart', 'getTypoScriptFrontendController'])
             ->getMock();
         $pageRenderer->expects(self::any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
         $pageRenderer->expects(self::exactly(3))->method('reset');

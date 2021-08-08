@@ -155,7 +155,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->templateServiceMock =
             $this->getMockBuilder(TemplateService::class)
                 ->setConstructorArgs([null, $packageManagerMock])
-                ->setMethods(['linkData'])
+                ->addMethods(['linkData'])
                 ->getMock();
         $pageRepositoryMock =
             $this->getAccessibleMock(PageRepository::class, ['getRawRecord', 'getMountPointInfo']);
@@ -236,7 +236,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $className = StringUtility::getUniqueId('tx_coretest');
         $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)
-            ->setMethods(['getImgResourcePostProcess'])
+            ->onlyMethods(['getImgResourcePostProcess'])
             ->setMockClassName($className)
             ->getMock();
         $getImgResourceHookMock
@@ -1308,7 +1308,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeSession(): void
     {
         $frontendUser = $this->getMockBuilder(FrontendUserAuthentication::class)
-            ->setMethods(['getSessionData'])
+            ->onlyMethods(['getSessionData'])
             ->getMock();
         $frontendUser->expects(self::once())->method('getSessionData')->with('myext')->willReturn([
             'mydata' => [
@@ -2550,7 +2550,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
             ->setConstructorArgs([null, $packageManagerMock])
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [
             'lib.' => [
@@ -2818,7 +2818,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
             ->setConstructorArgs([null, $packageManagerMock])
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [
             'lib.' => [
@@ -2986,7 +2986,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
             ->setConstructorArgs([null, $packageManagerMock])
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->getMock();
         $templateServiceObjectMock->setup = [
             'lib.' => [
@@ -3431,7 +3431,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function HTMLcaseshift(string $expect, string $content, string $case, array $with, array $will): void
     {
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['caseshift'])->getMock();
+            ->onlyMethods(['caseshift'])->getMock();
         $subject
             ->expects(self::exactly(count($with)))
             ->method('caseshift')
@@ -3674,7 +3674,7 @@ class ContentObjectRendererTest extends UnitTestCase
         string $will
     ): void {
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['HTMLparser_TSbridge'])->getMock();
+            ->onlyMethods(['HTMLparser_TSbridge'])->getMock();
         $subject
             ->expects(self::exactly($times))
             ->method('HTMLparser_TSbridge')
@@ -3743,7 +3743,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $difference = $now - (int)$content;
         $GLOBALS['EXEC_TIME'] = $now;
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['calcAge'])->getMock();
+            ->onlyMethods(['calcAge'])->getMock();
         $subject
             ->expects(self::once())
             ->method('calcAge')
@@ -3775,7 +3775,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
+            ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cObjGetSingle')
@@ -3983,7 +3983,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
+            ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cObjGetSingle')
@@ -4062,7 +4062,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $expect = StringUtility::getUniqueId('expect');
         $conf['orderedStdWrap.'] = $conf;
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap'])->getMock();
+            ->onlyMethods(['stdWrap'])->getMock();
         $subject
             ->expects(self::exactly(2))
             ->method('stdWrap')
@@ -4308,7 +4308,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId();
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['HTMLcaseshift'])->getMock();
+            ->onlyMethods(['HTMLcaseshift'])->getMock();
         $subject
             ->expects(self::once())
             ->method('HTMLcaseshift')
@@ -4353,7 +4353,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['crop'])->getMock();
+            ->onlyMethods(['crop'])->getMock();
         $subject
             ->expects(self::once())
             ->method('crop')
@@ -4386,7 +4386,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cropHTML'])->getMock();
+            ->onlyMethods(['cropHTML'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cropHTML')
@@ -4567,7 +4567,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['dataWrap'])->getMock();
+            ->onlyMethods(['dataWrap'])->getMock();
         $subject
             ->expects(self::once())
             ->method('dataWrap')
@@ -4942,7 +4942,7 @@ class ContentObjectRendererTest extends UnitTestCase
             GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
         }
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['editIcons'])->getMock();
+            ->onlyMethods(['editIcons'])->getMock();
         $subject
             ->expects(self::exactly($times))
             ->method('editIcons')
@@ -4975,7 +4975,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['encaps_lineSplit'])->getMock();
+            ->onlyMethods(['encaps_lineSplit'])->getMock();
         $subject
             ->expects(self::once())
             ->method('encaps_lineSplit')
@@ -5170,7 +5170,7 @@ class ContentObjectRendererTest extends UnitTestCase
         }
         $conf = ['editPanel.' => [StringUtility::getUniqueId('editPanel.')]];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['editPanel'])->getMock();
+            ->onlyMethods(['editPanel'])->getMock();
         $subject
             ->expects(self::exactly($times))
             ->method('editPanel')
@@ -5287,7 +5287,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $expect = StringUtility::getUniqueId('expect');
         $conf = ['field' => StringUtility::getUniqueId('field')];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['getFieldVal'])->getMock();
+            ->onlyMethods(['getFieldVal'])->getMock();
         $subject
             ->expects(self::once())
             ->method('getFieldVal')
@@ -5942,7 +5942,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $conf = [StringUtility::getUniqueId('conf not used')];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['insertData'])->getMock();
+            ->onlyMethods(['insertData'])->getMock();
         $subject->expects(self::once())->method('insertData')
             ->with($content)->willReturn($return);
         self::assertSame(
@@ -6200,7 +6200,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['listNum'])->getMock();
+            ->onlyMethods(['listNum'])->getMock();
         $subject
             ->expects(self::once())
             ->method('listNum')
@@ -6320,7 +6320,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'numRows.' => [StringUtility::getUniqueId('numRows')],
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['numRows'])->getMock();
+            ->onlyMethods(['numRows'])->getMock();
         $subject->expects(self::once())->method('numRows')
             ->with($conf['numRows.'])->willReturn('return');
         self::assertSame(
@@ -6350,7 +6350,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['numberFormat'])->getMock();
+            ->onlyMethods(['numberFormat'])->getMock();
         $subject
             ->expects(self::once())
             ->method('numberFormat')
@@ -6528,7 +6528,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['parseFunc'])->getMock();
+            ->onlyMethods(['parseFunc'])->getMock();
         $subject
             ->expects(self::once())
             ->method('parseFunc')
@@ -6563,7 +6563,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
+            ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cObjGetSingle')
@@ -6595,7 +6595,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['callUserFunction'])->getMock();
+            ->onlyMethods(['callUserFunction'])->getMock();
         $subject
             ->expects(self::once())
             ->method('callUserFunction')
@@ -6636,7 +6636,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expect = '<!--' . $substKey . '-->';
         $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()->setMethods(['uniqueHash'])
+            ->disableOriginalConstructor()->onlyMethods(['uniqueHash'])
             ->getMock();
         $frontend->expects(self::once())->method('uniqueHash')
             ->with()->willReturn($uniqueHash);
@@ -6686,7 +6686,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
+            ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cObjGetSingle')
@@ -6722,7 +6722,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['listNum'])->getMock();
+            ->onlyMethods(['listNum'])->getMock();
         $subject
             ->expects(self::once())
             ->method('listNum')
@@ -6795,7 +6795,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->frontendControllerMock
             ->config['config']['disablePrefixComment'] = $disable;
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['prefixComment'])->getMock();
+            ->onlyMethods(['prefixComment'])->getMock();
         $subject
             ->expects(self::exactly($times))
             ->method('prefixComment')
@@ -6830,7 +6830,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['cObjGetSingle'])->getMock();
+            ->onlyMethods(['cObjGetSingle'])->getMock();
         $subject
             ->expects(self::once())
             ->method('cObjGetSingle')
@@ -6905,7 +6905,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'preUserFunc.' => [StringUtility::getUniqueId('preUserFunc.')],
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['callUserFunction'])->getMock();
+            ->onlyMethods(['callUserFunction'])->getMock();
         $subject->expects(self::once())->method('callUserFunction')
             ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
             ->willReturn('return');
@@ -6971,7 +6971,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['replacement'])->getMock();
+            ->onlyMethods(['replacement'])->getMock();
         $subject
             ->expects(self::once())
             ->method('replacement')
@@ -7052,7 +7052,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['round'])->getMock();
+            ->onlyMethods(['round'])->getMock();
         $subject
             ->expects(self::once())
             ->method('round')
@@ -7156,7 +7156,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['splitObj'])->getMock();
+            ->onlyMethods(['splitObj'])->getMock();
         $subject
             ->expects(self::once())
             ->method('splitObj')
@@ -7188,7 +7188,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['stdWrap'])->getMock();
+            ->onlyMethods(['stdWrap'])->getMock();
         $subject
             ->expects(self::once())
             ->method('stdWrap')
@@ -7550,7 +7550,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['substring'])->getMock();
+            ->onlyMethods(['substring'])->getMock();
         $subject
             ->expects(self::once())
             ->method('substring')
@@ -7646,7 +7646,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['typolink'])->getMock();
+            ->onlyMethods(['typolink'])->getMock();
         $subject
             ->expects(self::once())
             ->method('typolink')

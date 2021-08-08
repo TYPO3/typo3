@@ -76,7 +76,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     protected function createConfigurationManagerWithMockedMethods(array $methods)
     {
         $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
-            ->setMethods($methods)
+            ->onlyMethods($methods)
             ->getMock();
     }
 

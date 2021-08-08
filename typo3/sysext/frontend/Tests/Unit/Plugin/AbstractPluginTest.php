@@ -262,7 +262,7 @@ class AbstractPluginTest extends UnitTestCase
     {
         $resultBrowserHook = $this->getMockBuilder(ResultBrowserPluginHook::class)
             ->setMockClassName($className)
-            ->setMethods(['pi_list_browseresults'])
+            ->onlyMethods(['pi_list_browseresults'])
             ->disableOriginalConstructor()
             ->getMock();
 

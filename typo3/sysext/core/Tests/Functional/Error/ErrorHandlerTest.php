@@ -76,7 +76,7 @@ class ErrorHandlerTest extends FunctionalTestCase
         /** @var Logger|MockObject $logger */
         $logger = $this->getMockBuilder(Logger::class)
             ->disableOriginalConstructor()
-            ->setMethods(['log'])
+            ->onlyMethods(['log'])
             ->getMock();
 
         // Make sure the assigned logger does not log

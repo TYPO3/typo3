@@ -79,10 +79,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $packagePath;
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
-                ->setMethods($packageMethods)
+                ->onlyMethods($packageMethods)
                 ->getMock();
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
+            ->onlyMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->disableOriginalConstructor()
             ->getMock();
         $package->expects(self::any())
@@ -132,7 +132,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = StringUtility::getUniqueId('foo');
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive'])
+            ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects(self::once())
@@ -150,11 +150,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
-                ->setMethods(['getPackagePath'])
+                ->onlyMethods(['getPackagePath'])
                 ->getMock();
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $package->expects(self::once())
@@ -1202,7 +1202,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1217,13 +1217,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1365,7 +1365,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1382,7 +1382,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1398,7 +1398,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
@@ -1433,7 +1433,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1446,7 +1446,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1471,13 +1471,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
         file_put_contents($packagePath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1497,13 +1497,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadBaseTcaWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1538,7 +1538,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1553,13 +1553,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1587,13 +1587,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1610,13 +1610,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1632,13 +1632,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function createExtTablesCacheEntryWritesCacheEntryWithNoTags()
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
-            ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
+            ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->setMethods(['getCache'])
+            ->onlyMethods(['getCache'])
             ->getMock();
         $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
@@ -1713,7 +1713,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $uniqueSuffix = StringUtility::getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
         $packageMetaData = $this->getMockBuilder(MetaData::class)
-            ->setMethods(['getVersion'])
+            ->onlyMethods(['getVersion'])
             ->setConstructorArgs([$extensionKey])
             ->getMock();
         $packageMetaData->expects(self::any())->method('getVersion')->willReturn('1.2.3');
@@ -1758,7 +1758,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = StringUtility::getUniqueId('foo');
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive'])
+            ->onlyMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects(self::once())
@@ -1777,7 +1777,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $packageName = StringUtility::getUniqueId('foo');
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->setMethods(['isPackageActive', 'deactivatePackage'])
+            ->onlyMethods(['isPackageActive', 'deactivatePackage'])
             ->disableOriginalConstructor()
             ->getMock();
         $packageManager->expects(self::any())

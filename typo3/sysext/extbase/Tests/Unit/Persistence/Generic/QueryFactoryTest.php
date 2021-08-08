@@ -68,13 +68,14 @@ class QueryFactoryTest extends UnitTestCase
         $this->container = $this->createMock(ContainerInterface::class);
 
         $this->dataMap = $this->getMockBuilder(DataMap::class)
-            ->setMethods(['getIsStatic', 'getRootLevel'])
+            ->onlyMethods(['getIsStatic', 'getRootLevel'])
             ->setConstructorArgs(['Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'])
             ->getMock();
 
         $this->dataMapFactory = $this->getMockBuilder(DataMapFactory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['buildDataMap', 'convertClassNameToTableName'])
+            ->onlyMethods(['buildDataMap'])
+            ->addMethods(['convertClassNameToTableName'])
             ->getMock();
         $this->dataMapFactory->expects(self::any())->method('buildDataMap')->willReturn($this->dataMap);
 
