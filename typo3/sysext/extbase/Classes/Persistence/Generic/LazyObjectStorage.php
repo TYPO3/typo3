@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use Symfony\Component\VarDumper\Cloner\Data;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
