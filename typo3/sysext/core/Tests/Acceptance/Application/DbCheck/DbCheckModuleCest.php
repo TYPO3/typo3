@@ -105,10 +105,10 @@ class DbCheckModuleCest
         $this->goToPageAndSeeHeadline($I, 'Manage Reference Index', 'Manage Reference Index');
 
         $I->click('Check reference index');
-        $I->waitForElement('.alert-danger');
+        $I->waitForElement('.alert');
 
         $I->click('Update reference index');
-        $I->waitForElement('.alert-danger');
+        $I->waitForElement('.alert');
 
         $I->click('Check reference index');
         $I->waitForElement('.alert-success');

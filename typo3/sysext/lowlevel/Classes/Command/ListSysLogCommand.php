@@ -89,7 +89,7 @@ class ListSysLogCommand extends Command
                 $row['uid'],
                 BackendUtility::datetime($row['tstamp']),
                 $userInformation,
-                sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4], $logData[5])
+                sprintf($row['details'], ($logData[0] ?? ''), ($logData[1] ?? ''), ($logData[2] ?? ''), ($logData[3] ?? ''), ($logData[4] ?? ''), ($logData[5] ?? ''))
             ];
 
             if ($showDetails) {

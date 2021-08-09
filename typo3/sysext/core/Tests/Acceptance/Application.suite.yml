@@ -13,6 +13,7 @@ modules:
             editor: ff83dfd81e20b34c27d3e97771a4525a
             admin: 886526ce72b86870739cc41991144ec1
     - Asserts
+    - Codeception\Module\Cli
 
 extensions:
     enabled:

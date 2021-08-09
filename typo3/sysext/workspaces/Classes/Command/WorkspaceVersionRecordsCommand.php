@@ -298,7 +298,7 @@ class WorkspaceVersionRecordsCommand extends Command
                         ->execute();
                     while ($rowSub = $result->fetchAssociative()) {
                         // Add any versions of those records
-                        $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
+                        $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . (($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false) ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
                         if (is_array($versions)) {
                             foreach ($versions as $verRec) {
                                 if (!$verRec['_CURRENT_VERSION']) {

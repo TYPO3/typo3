@@ -126,7 +126,7 @@ class LanguagePackCommand extends Command
         }
         $languagePackService->setLastUpdatedIsoCode($isos);
         $progressBar->finish();
-
+        $output->writeln('');
         // Flush language cache
         GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
 

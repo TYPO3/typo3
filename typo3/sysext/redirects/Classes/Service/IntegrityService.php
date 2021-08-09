@@ -126,7 +126,7 @@ class IntegrityService
         $row = $queryBuilder->execute()->fetchAssociative();
 
         $subPages = $this->getSlugsOfSubPages($site->getRootPageId());
-        $pages = array_merge([$site->getBase()->getPath() . '/', $row['slug']], $subPages);
+        $pages = array_merge([$site->getBase()->getPath() . '/', ($row['slug'] ?? '')], $subPages);
         return array_unique($pages);
     }
 

@@ -99,7 +99,7 @@ Manual repair suggestions:
         $orphans = [];
         foreach (array_keys($GLOBALS['TCA']) as $tableName) {
             $idList = [0];
-            if (is_array($allRecords[$tableName]) && !empty($allRecords[$tableName])) {
+            if (is_array($allRecords[$tableName] ?? false) && !empty($allRecords[$tableName])) {
                 $idList = $allRecords[$tableName];
             }
             // Select all records that are NOT connected

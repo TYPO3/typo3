@@ -92,6 +92,7 @@
 		"codeception/codeception": "^4.1.22",
 		"codeception/lib-asserts": "^1.13.2",
 		"codeception/module-asserts": "^1.3.1",
+		"codeception/module-cli": "^1.1",
 		"codeception/module-filesystem": "^1.0.3",
 		"codeception/module-webdriver": "^1.2.1",
 		"composer/package-versions-deprecated": "^1.11.99.2",
