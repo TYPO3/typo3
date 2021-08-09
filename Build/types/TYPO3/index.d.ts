@@ -102,7 +102,6 @@ declare module 'TYPO3/CMS/Backend/FormEngine' {
 interface Window {
   TYPO3: any;
   $: any; // only required in ImageManipulation.ts
-  loadEditId: (id: number, addGetVars?: string) => void;
   require: Function;
   list_frame: Window;
   jump: Function;

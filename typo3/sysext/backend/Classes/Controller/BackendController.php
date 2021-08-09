@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -377,56 +376,9 @@ class BackendController
             navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
             currentBank: "0"
         };
-        ' . $this->handlePageEditing($request),
+        ',
             false
         );
-    }
-
-    /**
-     * Checking if the "&edit" variable was sent so we can open it for editing the page.
-     */
-    protected function handlePageEditing(ServerRequestInterface $request): string
-    {
-        $beUser = $this->getBackendUser();
-        $userTsConfig = $this->getBackendUser()->getTSConfig();
-        // EDIT page
-        $editId = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['edit'] ?? '') ?? '';
-        if ($editId) {
-            // Looking up the page to edit, checking permissions:
-            $where = ' AND (' . $beUser->getPagePermsClause(Permission::PAGE_EDIT) . ' OR ' . $beUser->getPagePermsClause(Permission::CONTENT_EDIT) . ')';
-            $editRecord = null;
-            if (MathUtility::canBeInterpretedAsInteger($editId)) {
-                $editRecord = BackendUtility::getRecordWSOL('pages', (int)$editId, '*', $where);
-            }
-            // If the page was accessible, then let the user edit it.
-            if (is_array($editRecord) && $beUser->isInWebMount($editRecord)) {
-                // Checking page edit parameter:
-                if (!($userTsConfig['options.']['bookmark_onEditId_dontSetPageTree'] ?? false)) {
-                    $bookmarkKeepExpanded = (bool)($userTsConfig['options.']['bookmark_onEditId_keepExistingExpanded'] ?? false);
-                    // Expanding page tree:
-                    BackendUtility::openPageTree((int)$editRecord['pid'], !$bookmarkKeepExpanded);
-                }
-                // Setting JS code to open editing:
-                return '
-		// Load page to edit:
-	window.setTimeout("top.loadEditId(' . (int)$editRecord['uid'] . ');", 500);
-			';
-            }
-            return '
-            // Warning about page editing:
-            require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
-                Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), (string)$editId)) . ', Severity.notice, [{
-                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close')) . ',
-                    active: true,
-                    btnClass: "btn-info",
-                    name: "cancel",
-                    trigger: function () {
-                        Modal.currentModal.trigger("modal-dismiss");
-                    }
-                }])
-            });';
-        }
-        return '';
     }
 
     /**

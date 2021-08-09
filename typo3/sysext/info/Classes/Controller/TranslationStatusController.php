@@ -190,29 +190,31 @@ class TranslationStatusController
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
 
+        // If another page module was specified, replace the default Page module with the new one
+        $pageModule = trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
+        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
+        $canLinkToPageModule = $this->getBackendUser()->check('modules', $pageModule);
+
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
             $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen);
             // Page icons / titles etc.
+            if ($canLinkToPageModule) {
+                $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'SET' => ['language' => 0]]);
+                $pageModuleLink = '<a href="' . htmlspecialchars($pageModuleLink) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' . htmlspecialchars($pageTitle) . '</a>';
+            } else {
+                $pageModuleLink = htmlspecialchars($pageTitle);
+            }
+
             $tCells[] = '<td' . (!empty($data['row']['_CSSCLASS']) ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
                 (!empty($data['depthData']) ? $data['depthData'] : '') .
                 BackendUtility::wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
-                '<a href="#" onclick="' . htmlspecialchars(
-                    'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;'
-                ) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' .
-                htmlspecialchars($pageTitle) .
-                '</a>' .
+                $pageModuleLink .
                 ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
                 '</td>';
             $previewUriBuilder = PreviewUriBuilder::create((int)$data['row']['uid']);
             // DEFAULT language:
-            // "View page" link is created:
-            $viewPageLink = '<a href="#" ' . $previewUriBuilder
-                    ->withAdditionalQueryParameters('&L=###LANG_UID###')
-                    ->serializeDispatcherAttributes()
-                . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
             $status = $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? 'danger' : 'success';
             // Create links:
@@ -264,13 +266,17 @@ class TranslationStatusController
                         ) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $lang->sL(
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre'
                         ) . '</div>' : '');
+
+                        if ($canLinkToPageModule) {
+                            $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'SET' => ['language' => $languageId]]);
+                            $pageModuleLink = '<a href="' . htmlspecialchars($pageModuleLink) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageLang') . '">' . $info . '</a>';
+                        } else {
+                            $pageModuleLink = $info;
+                        }
                         $tCells[] = '<td class="' . $status . ' col-border-left">' .
                             BackendUtility::wrapClickMenuOnIcon($tree->getIcon($row), 'pages', (int)$row['uid']) .
-                            '<a href="#" onclick="' . htmlspecialchars(
-                                'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=' . $languageId . '"); return false;'
-                            ) . '" title="' . $lang->sL(
-                                'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageLang'
-                            ) . '">' . $info . '</a></td>';
+                            $pageModuleLink .
+                            '</td>';
                         // Edit whole record:
                         // Create links:
                         $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
@@ -281,7 +287,12 @@ class TranslationStatusController
                             ],
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                         ]);
-                        $info = str_replace('###LANG_UID###', (string)$languageId, $viewPageLink);
+                        // ViewPageLink
+                        $info = '<a href="#" ' . $previewUriBuilder
+                                ->withAdditionalQueryParameters('&L=' . $languageId)
+                                ->serializeDispatcherAttributes()
+                            . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+                            $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
                         $info .= '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'

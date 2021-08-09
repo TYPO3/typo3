@@ -38,36 +38,10 @@ function jump(url, modName, mainModName, pageId) {
 }
 
 /**
- * Loads a page id for editing in the page edit module:
- */
-function loadEditId(id, addGetVars) {	//
-  top.fsMod.recentIds.web = id;
-  top.fsMod.navFrameHighlightedID.web = '0_' + id; // For highlighting
-
-  if (top.nav_frame && top.nav_frame.refresh_nav) {
-    top.nav_frame.refresh_nav();
-  }
-  if (TYPO3.configuration.pageModule) {
-    TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule, addGetVars);
-  }
-}
-
-/**
  * Returns incoming URL (to a module) unless nextLoadModuleUrl is set. If that is the case nextLoadModuleUrl is returned (and cleared)
  * Used by the shortcut frame to set a "intermediate URL"
  */
 var nextLoadModuleUrl = "";
-
-function getModuleUrl(inUrl) {	//
-  var nMU;
-  if (top.nextLoadModuleUrl) {
-    nMU = top.nextLoadModuleUrl;
-    top.nextLoadModuleUrl = "";
-    return nMU;
-  } else {
-    return inUrl;
-  }
-}
 
 // Used by Frameset Modules
 var currentSubScript = "";
