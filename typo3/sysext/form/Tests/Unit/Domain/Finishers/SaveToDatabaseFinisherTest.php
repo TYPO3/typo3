@@ -148,7 +148,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
-        self:self::assertSame($expectedEmpty, empty($databaseData));
+        self::assertSame($expectedEmpty, empty($databaseData));
     }
 
     /**
