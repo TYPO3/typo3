@@ -165,18 +165,6 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     }
 
     /**
-     * Public API for currently protected method. Can be dropped when switching to
-     * Fluid 1.1.0 or above.
-     *
-     * @param string $partialName
-     * @return string
-     */
-    public function getPartialPathAndFilename($partialName)
-    {
-        return parent::getPartialPathAndFilename($partialName);
-    }
-
-    /**
      * Get absolute path to template file
      *
      * @return string Returns the absolute path to a Fluid template file
