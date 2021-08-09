@@ -1042,4 +1042,117 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function levelLinksPositionIsMigrated(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'levelLinksPosition' => 'none'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'levelLinksPosition' => 'invalid'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'levelLinksPosition' => 'both'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'appearance' => [
+                                'levelLinksPosition' => 'none'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'showAllLocalizationLink' => false,
+                                'showSynchronizationLink' => false,
+                                'showNewRecordLink' => false
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'levelLinksPosition' => 'invalid'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'appearance' => [
+                                'levelLinksPosition' => 'both'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'appearance' => [
+                                'levelLinksPosition' => 'none'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

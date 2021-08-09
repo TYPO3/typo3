@@ -285,7 +285,8 @@ class InlineControlContainer extends AbstractContainer
 
         // Render the "new record" level button:
         $newRecordButton = '';
-        if (!empty($config['appearance']['enabledControls']['new'])) {
+        // For b/w compatibility, "showNewRecordLink" - in contrast to the other show* options - defaults to TRUE
+        if (!isset($config['appearance']['showNewRecordLink']) || $config['appearance']['showNewRecordLink']) {
             $newRecordButton = $this->getLevelInteractionButton('newRecord', $config);
         }
 

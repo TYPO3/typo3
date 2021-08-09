@@ -222,7 +222,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataForcesLevelLinksPositionWithForeignSelector()
+    public function addDataForcesLevelLinksWithForeignSelector(): void
     {
         $input = [
             'processedTca' => [
@@ -257,7 +257,10 @@ class TcaInlineConfigurationTest extends UnitTestCase
             ],
             'foreignTable' => 'anotherForeignTableName',
         ];
-        $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
+        $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showAllLocalizationLink'] = false;
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showSynchronizationLink'] = false;
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showNewRecordLink'] = false;
         self::assertEquals($expected, (new TcaInlineConfiguration())->addData($input));
     }
 
@@ -620,7 +623,9 @@ class TcaInlineConfigurationTest extends UnitTestCase
 
         $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showAllLocalizationLink'] = false;
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showSynchronizationLink'] = false;
+        $expected['processedTca']['columns']['aField']['config']['appearance']['showNewRecordLink'] = false;
         $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
         $expected['processedTca']['columns']['aField']['config']['overrideChildTca']['columns']['aField'] = [
             'config' => [

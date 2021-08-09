@@ -62,6 +62,7 @@ class TcaMigration
         $tca = $this->migrateSpecialLanguagesToTcaTypeLanguage($tca);
         $tca = $this->removeShowRemovedLocalizationRecords($tca);
         $tca = $this->migrateFileFolderConfiguration($tca);
+        $tca = $this->migrateLevelLinksPosition($tca);
 
         return $tca;
     }
@@ -475,6 +476,46 @@ class TcaMigration
                     . 'dedicated sub array \'fileFolderConfig\', while \'fileFolder\' is now just \'folder\' and '
                     . 'the other options have been renamed to \'allowedExtensions\' and \'depth\'. '
                     . 'The TCA configuration should be adjusted accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * The [appearance][levelLinksPosition] option can be used
+     * to select the position of the level links. This option
+     * was previously misused to disable all those links by
+     * setting it to "none". Since all of those links can be
+     * disabled by a dedicated option, e.g. showNewRecordLink,
+     * this wizard sets those options to false and unsets the
+     * invalid levelLinksPosition value.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateLevelLinksPosition(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'inline'
+                    || (string)($fieldConfig['config']['appearance']['levelLinksPosition'] ?? '') !== 'none'
+                ) {
+                    continue;
+                }
+                // Unset levelLinksPosition and disable all level link buttons
+                unset($fieldConfig['config']['appearance']['levelLinksPosition']);
+                $fieldConfig['config']['appearance']['showAllLocalizationLink'] = false;
+                $fieldConfig['config']['appearance']['showSynchronizationLink'] = false;
+                $fieldConfig['config']['appearance']['showNewRecordLink'] = false;
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets '
+                    . '[appearance][levelLinksPosition] to "none", while only "top", "bottom" and "both" are supported. '
+                    . 'The TCA configuration should be adjusted accordingly. In case you want to disable all level links, '
+                    . 'use the corresponding level link specific options, e.g. [appearance][showNewRecordLink], instead.';
             }
         }
 

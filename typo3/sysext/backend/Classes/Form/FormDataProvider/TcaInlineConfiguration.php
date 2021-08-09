@@ -103,15 +103,19 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             // Init appearance if not set
             $config['appearance'] = [];
         }
-        // Set the position/appearance of the "Create new record" link
+        // Initialize position of the level links
+        if (!isset($config['appearance']['levelLinksPosition'])
+            || !in_array($config['appearance']['levelLinksPosition'], ['top', 'bottom', 'both'], true)
+        ) {
+            $config['appearance']['levelLinksPosition'] = 'top';
+        }
+        // Hide level links (no matter the defined position) for "use combination"
         if (isset($config['foreign_selector']) && $config['foreign_selector']
             && (!isset($config['appearance']['useCombination']) || !$config['appearance']['useCombination'])
         ) {
-            $config['appearance']['levelLinksPosition'] = 'none';
-        } elseif (!isset($config['appearance']['levelLinksPosition'])
-            || !in_array($config['appearance']['levelLinksPosition'], ['top', 'bottom', 'both', 'none'], true)
-        ) {
-            $config['appearance']['levelLinksPosition'] = 'top';
+            $config['appearance']['showAllLocalizationLink'] = false;
+            $config['appearance']['showSynchronizationLink'] = false;
+            $config['appearance']['showNewRecordLink'] = false;
         }
         $config['appearance']['showPossibleLocalizationRecords']
             = isset($config['appearance']['showPossibleLocalizationRecords']) && $config['appearance']['showPossibleLocalizationRecords'];
