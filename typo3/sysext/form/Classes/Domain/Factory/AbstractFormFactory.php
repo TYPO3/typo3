@@ -28,8 +28,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  * Base class for custom *Form Factories*. A Form Factory is responsible for building
  * a {@link TYPO3\CMS\Form\Domain\Model\FormDefinition}.
  *
- * {@inheritDoc}
- *
  * Example
  * =======
  *

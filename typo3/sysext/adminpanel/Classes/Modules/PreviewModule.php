@@ -44,9 +44,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      */
     protected $config;
 
-    /**
-     * @inheritdoc
-     */
     public function getIconIdentifier(): string
     {
         return 'actions-preview';

@@ -15,10 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-/**
- * Class RenderViewHelper
- * @inheritdoc
- */
 class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper
 {
     public function initializeArguments()
