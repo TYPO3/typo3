@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -176,7 +177,7 @@ class FileList
 
     protected ?FileSearchDemand $searchDemand = null;
 
-    public function __construct()
+    public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen'] ?? 1);
@@ -188,7 +189,7 @@ class FileList
         );
         // Create clipboard object and initialize that
         $this->clipObj = GeneralUtility::makeInstance(Clipboard::class);
-        $this->clipObj->initializeClipboard();
+        $this->clipObj->initializeClipboard($request);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');

@@ -375,7 +375,7 @@ class RecordListController
         $clipboard = GeneralUtility::makeInstance(Clipboard::class);
         $cmd = (string)($request->getParsedBody()['cmd'] ?? $request->getQueryParams()['cmd'] ?? '');
         // Initialize - reads the clipboard content from the user session
-        $clipboard->initializeClipboard();
+        $clipboard->initializeClipboard($request);
         // Clipboard actions are handled:
         // CB is the clipboard command array
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);

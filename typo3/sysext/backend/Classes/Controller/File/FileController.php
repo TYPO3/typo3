@@ -234,17 +234,17 @@ class FileController
         } else {
             $this->overwriteExistingFiles = DuplicationBehavior::cast($parsedBody['overwriteExistingFiles'] ?? $queryParams['overwriteExistingFiles'] ?? null);
         }
-        $this->initClipboard();
+        $this->initClipboard($request);
     }
 
     /**
      * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
      */
-    protected function initClipboard(): void
+    protected function initClipboard(ServerRequestInterface $request): void
     {
         if ($this->CB !== []) {
             $clipObj = GeneralUtility::makeInstance(Clipboard::class);
-            $clipObj->initializeClipboard();
+            $clipObj->initializeClipboard($request);
             if ($this->CB['paste'] ?? false) {
                 $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
                 $this->setPasteCmd($clipObj);

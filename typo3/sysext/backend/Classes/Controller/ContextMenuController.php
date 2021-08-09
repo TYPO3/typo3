@@ -66,7 +66,7 @@ class ContextMenuController
     {
         /** @var Clipboard $clipboard */
         $clipboard = GeneralUtility::makeInstance(Clipboard::class);
-        $clipboard->initializeClipboard();
+        $clipboard->initializeClipboard($request);
         $clipboard->lockToNormal();
 
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);

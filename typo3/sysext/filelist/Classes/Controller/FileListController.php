@@ -318,7 +318,7 @@ class FileListController implements LoggerAwareInterface
     protected function initializeFileList(ServerRequestInterface $request): void
     {
         // Create the file list
-        $this->filelist = GeneralUtility::makeInstance(FileList::class);
+        $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->MOD_SETTINGS['displayThumbs'] ?? false);
 
         // Create clipboard object and initialize it

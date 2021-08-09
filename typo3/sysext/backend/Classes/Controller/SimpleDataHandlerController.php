@@ -109,7 +109,7 @@ class SimpleDataHandlerController
     {
         $this->init($request);
 
-        $this->initializeClipboard();
+        $this->initializeClipboard($request);
         $this->processRequest();
 
         // Write errors to flash message queue
@@ -131,7 +131,7 @@ class SimpleDataHandlerController
         $this->init($request);
 
         // do the regular / main logic
-        $this->initializeClipboard();
+        $this->initializeClipboard($request);
         $this->processRequest();
 
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
@@ -201,11 +201,11 @@ class SimpleDataHandlerController
     /**
      * Clipboard pasting and deleting.
      */
-    protected function initializeClipboard(): void
+    protected function initializeClipboard(ServerRequestInterface $request): void
     {
         if ($this->CB !== []) {
             $clipObj = GeneralUtility::makeInstance(Clipboard::class);
-            $clipObj->initializeClipboard();
+            $clipObj->initializeClipboard($request);
             if ($this->CB['paste'] ?? false) {
                 $clipObj->setCurrentPad((string)($this->CB['pad'] ?? ''));
                 $this->setPasteCmd($clipObj);

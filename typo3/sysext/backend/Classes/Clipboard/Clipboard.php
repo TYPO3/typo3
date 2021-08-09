@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Clipboard;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -80,6 +81,8 @@ class Clipboard
     protected UriBuilder $uriBuilder;
     protected ResourceFactory $resourceFactory;
 
+    protected ?ServerRequestInterface $request = null;
+
     public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder, ResourceFactory $resourceFactory)
     {
         $this->iconFactory = $iconFactory;
@@ -95,8 +98,11 @@ class Clipboard
     /**
      * Initialize the clipboard from the be_user session
      */
-    public function initializeClipboard(): void
+    public function initializeClipboard(?ServerRequestInterface $request = null): void
     {
+        // Initialize the request
+        $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
+
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
         $clipData = $this->getBackendUser()->getModuleData('clipboard', !empty($userTsConfig['options.']['saveClipboard'])  ? '' : 'ses') ?: [];
@@ -241,12 +247,12 @@ class Clipboard
         $view = $this->getStandaloneView();
 
         // CopyMode Selector menu
-        $view->assign('actionCopyModeUrl', GeneralUtility::linkThisScript());
+        $view->assign('actionCopyModeUrl', $this->buildUrl());
         $view->assign('currentMode', $this->currentMode());
         $view->assign('elementCount', $elementCount);
 
         if ($elementCount) {
-            $view->assign('removeAllUrl', GeneralUtility::linkThisScript(['CB' => ['removeAll' => $this->current]]));
+            $view->assign('removeAllUrl', $this->buildUrl(['CB' => ['removeAll' => $this->current]]));
         }
 
         // Print header and content for the NORMAL tab:
@@ -255,7 +261,7 @@ class Clipboard
         $tabArray['normal'] = [
             'id' => 'normal',
             'number' => 0,
-            'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'normal']]),
+            'url' => $this->buildUrl(['CB' => ['setP' => 'normal']]),
             'description' => 'labels.normal-description',
             'label' => 'labels.normal',
             'padding' => $this->padTitle('normal', $table)
@@ -268,7 +274,7 @@ class Clipboard
             $tabArray['tab_' . $a] = [
                 'id' => 'tab_' . $a,
                 'number' => $a,
-                'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'tab_' . $a]]),
+                'url' => $this->buildUrl(['CB' => ['setP' => 'tab_' . $a]]),
                 'description' => 'labels.cliptabs-description',
                 'label' => 'labels.cliptabs-name',
                 'padding' => $this->padTitle('tab_' . $a, $table)
@@ -509,12 +515,12 @@ class Clipboard
         bool $deselect = false,
         array $getParameters = []
     ): string {
-        $CB = ['el' => [rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1]];
+        $CB = ['el' => [$table . '|' . $uid => $deselect ? 0 : 1]];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
         $getParameters['CB'] = $CB;
-        return GeneralUtility::linkThisScript($getParameters);
+        return $this->buildUrl($getParameters);
     }
 
     /**
@@ -529,13 +535,13 @@ class Clipboard
     {
         $CB = [
             'el' => [
-                rawurlencode('_FILE|' . GeneralUtility::shortMD5($path)) => $deselect ? '' : $path
+                '_FILE|' . GeneralUtility::shortMD5($path) => $deselect ? '' : $path
             ]
         ];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
-        return GeneralUtility::linkThisScript(['CB' => $CB]);
+        return $this->buildUrl(['CB' => $CB]);
     }
 
     /**
@@ -559,7 +565,7 @@ class Clipboard
             ]
         ];
         if ($setRedirect) {
-            $urlParameters['redirect'] = GeneralUtility::linkThisScript(['CB' => '']);
+            $urlParameters['redirect'] = $this->buildUrl(['CB' => []]);
         }
         if (is_array($update)) {
             $urlParameters['CB']['update'] = $update;
@@ -577,7 +583,7 @@ class Clipboard
      */
     protected function removeUrl(string $table, string $identifier): string
     {
-        return GeneralUtility::linkThisScript(['CB' => ['remove' => $table . '|' . $identifier]]);
+        return $this->buildUrl(['CB' => ['remove' => $table . '|' . $identifier]]);
     }
 
     /**
@@ -829,5 +835,20 @@ class Clipboard
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
+    }
+
+    /**
+     * Builds a URL to the current module with the received
+     * parameters, merged / replaced by additional parameters.
+     *
+     * @param array $parameters
+     * @return string
+     */
+    protected function buildUrl(array $parameters = []): string
+    {
+        return (string)$this->uriBuilder->buildUriFromRoutePath(
+            $this->request->getAttribute('route')->getPath(),
+            array_replace_recursive($this->request->getQueryParams(), $parameters)
+        );
     }
 }
