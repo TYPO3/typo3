@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<XMLversion>1.0</XMLversion>
+        <meta type="array"></meta>
+		<static_tables index="relStaticTables" type="array"></static_tables>
+		<excludeMap type="array"></excludeMap>
+		<softrefCfg type="array"></softrefCfg>
+		<extensionDependencies type="array"></extensionDependencies>
+		<charset>utf-8</charset>
+		<records type="array">
+			<table index="sys_category" type="array">
+				<rec index="6" type="array">
+					<uid>6</uid>
+					<pid>0</pid>
+					<title>Podcasts</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+		</records>
+		<pid_lookup type="array">
+			<page_contents index="0" type="array">
+				<table index="sys_category" type="array">
+					<item index="6">1</item>
+				</table>
+			</page_contents>
+		</pid_lookup>
+	</header>
+	<records type="array">
+		<tablerow index="sys_category:6" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">6</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1603272617</field>
+				<field index="crdate" type="integer">1603272617</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">32</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource"></field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">Podcasts</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+	</records>
+</T3RecordDocument>

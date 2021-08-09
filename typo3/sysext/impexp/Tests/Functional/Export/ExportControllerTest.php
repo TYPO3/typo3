@@ -23,9 +23,6 @@ use TYPO3\CMS\Impexp\Controller\ExportController;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-/**
- * Test case
- */
 class ExportControllerTest extends AbstractImportExportTestCase
 {
     /**
@@ -44,7 +41,7 @@ class ExportControllerTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function tableSelectOptionsContainPresetsTable()
+    public function tableSelectOptionsContainPresetsTable(): void
     {
         $tables = $this->exportControllerMock->_call('getTableSelectOptions');
         self::assertArrayHasKey('tx_impexp_presets', $tables);

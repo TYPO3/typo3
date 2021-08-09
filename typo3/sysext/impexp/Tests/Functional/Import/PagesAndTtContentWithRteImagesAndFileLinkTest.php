@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-/**
- * Test case
- */
 class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImportExportTestCase
 {
     /**
@@ -37,16 +34,16 @@ class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImportExport
     /**
      * @test
      */
-    public function importPagesAndRelatedTtContentWithRteImagesAndFileLink()
+    public function importPagesAndRelatedTtContentWithRteImagesAndFileLink(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
-        $subject->init();
+        $subject->setPid(0);
 
         $subject->loadFile(
-            __DIR__ . '/../Fixtures/XmlImports/pages-and-ttcontent-with-rte-image-n-file-link.xml',
-            1
+            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-rte-image-n-file-link.xml',
+            true
         );
-        $subject->importData(0);
+        $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg';
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg';

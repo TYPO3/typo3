@@ -17,14 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-/**
- * Test case
- */
 class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 {
     /**
@@ -49,21 +46,19 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function exportPagesAndRelatedTtContentWithImages()
+    public function exportPagesAndRelatedTtContentWithImages(): void
     {
-        $subject = GeneralUtility::makeInstance(Export::class);
-        $subject->init();
-
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
 
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
+        $out = $subject->render();
 
-        $out = $subject->compileMemoryToFileContent('xml');
+        self::assertFalse($subject->hasErrors());
 
-        $errors = $subject->printErrorLog();
-        self::assertSame('', $errors);
-
-        self::assertXmlStringEqualsXmlFile(
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image.xml',
             $out
         );
@@ -72,24 +67,24 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord()
+    public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord(): void
     {
-        $subject = GeneralUtility::makeInstance(Export::class);
-        $subject->init();
-
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_corrupt.xml');
 
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
-
-        $out = $subject->compileMemoryToFileContent('xml');
+        $out = $subject->render();
 
         $expectedErrors = [
-            'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
+            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
+            'The file was added based on the current file hash.'
         ];
-        $errors = $subject->errorLog;
+        $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);
 
-        self::assertXmlStringEqualsXmlFile(
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-corrupt-image.xml',
             $out
         );
@@ -98,26 +93,57 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function exportPagesAndRelatedTtContentWithImagesButNotIncluded()
+    public function exportPagesAndRelatedTtContentWithImagesButNotIncluded(): void
     {
-        $subject = GeneralUtility::makeInstance(Export::class);
-        $subject->init();
-
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
 
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
         $subject->setSaveFilesOutsideExportFile(true);
-
         $this->compileExportPagesAndRelatedTtContentWithImages($subject);
+        $out = $subject->render();
 
-        $out = $subject->compileMemoryToFileContent('xml');
-
-        self::assertXmlStringEqualsXmlFile(
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image-but-not-included.xml',
             $out
         );
 
-        $temporaryFilesDirectory = $subject->getTemporaryFilesPathForExport();
-        self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
+        $temporaryFilesDirectory = $subject->getOrCreateTemporaryFolderName();
+        self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . '/' . 'da9acdf1e105784a57bbffec9520969578287797');
+    }
+
+    /**
+     * @test
+     */
+    public function exportPagesAndRelatedTtContentWithImagesButNotIncludedAndInvalidHash(): void
+    {
+        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_invalid_hash.xml');
+
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setSaveFilesOutsideExportFile(true);
+        $this->compileExportPagesAndRelatedTtContentWithImages($subject);
+        $out = $subject->render();
+
+        $expectedErrors = [
+            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
+            'The file was added based on the current file hash.'
+        ];
+        $errors = $subject->getErrorLog();
+        self::assertSame($expectedErrors, $errors);
+
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image-but-not-included.xml',
+            $out
+        );
+
+        $temporaryFilesDirectory = $subject->getOrCreateTemporaryFolderName();
+        self::assertFileEquals(
+            __DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg',
+            $temporaryFilesDirectory . '/' . 'da9acdf1e105784a57bbffec9520969578287797'
+        );
     }
 
     /**
@@ -125,9 +151,9 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      *
      * @param $subject Export
      */
-    protected function compileExportPagesAndRelatedTtContentWithImages(Export $subject)
+    protected function compileExportPagesAndRelatedTtContentWithImages(Export $subject): void
     {
-        $subject->setRecordTypesIncludeFields(
+        $recordTypesIncludeFields =
             [
                 'pages' => [
                     'title',
@@ -200,33 +226,18 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'l10n_parent'
                 ]
             ]
-        );
+        ;
 
-        $subject->relOnlyTables = [
+        $subject->setPid(1);
+        $subject->setLevels(1);
+        $subject->setTables(['_ALL']);
+        $subject->setRecordTypesIncludeFields($recordTypesIncludeFields);
+        $subject->setRelOnlyTables([
             'sys_file',
             'sys_file_metadata',
             'sys_file_storage',
             'sys_language'
-        ];
-
-        // @todo: Do not rely on BackendUtility::getRecord() in the test case itself
-        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 1)));
-        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 2)));
-        $subject->export_addRecord('tt_content', $this->forceStringsOnRowValues(BackendUtility::getRecord('tt_content', 1)));
-        $subject->export_addRecord('sys_language', $this->forceStringsOnRowValues(BackendUtility::getRecord('sys_language', 1)));
-        $subject->export_addRecord('sys_file_reference', $this->forceStringsOnRowValues(BackendUtility::getRecord('sys_file_reference', 1)));
-
-        $this->setPageTree($subject, 1, 1);
-
-        // After adding ALL records we set relations:
-        for ($a = 0; $a < 10; $a++) {
-            $addR = $subject->export_addDBRelations($a);
-            if (empty($addR)) {
-                break;
-            }
-        }
-
-        $subject->export_addFilesFromRelations();
-        $subject->export_addFilesFromSysFilesRecords();
+        ]);
+        $subject->process();
     }
 }

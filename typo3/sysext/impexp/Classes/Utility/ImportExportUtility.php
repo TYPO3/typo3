@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,29 +25,20 @@ use TYPO3\CMS\Impexp\Import;
 
 /**
  * Utility for import / export
- * Can be used for API access for simple importing of files
- * @internal
+ * Can be used for API access for simple importing of files.
+ *
+ * @internal This class is not considered part of the public TYPO3 API.
  */
 class ImportExportUtility
 {
-    /**
-     * @var Import|null
-     */
-    protected $import;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected ?Import $import = null;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return Import|null
-     */
     public function getImport(): ?Import
     {
         return $this->import;
@@ -57,39 +50,35 @@ class ImportExportUtility
      * @param string $file The full absolute path to the file
      * @param int $pid The pid under which the t3d file should be imported
      * @throws \ErrorException
-     * @throws \InvalidArgumentException
-     * @return int
+     * @return int ID of first created page
      */
-    public function importT3DFile($file, $pid)
+    public function importT3DFile(string $file, int $pid): int
     {
-        if (!is_string($file)) {
-            throw new \InvalidArgumentException('Input parameter $file has to be of type string', 1377625645);
-        }
-        if (!is_int($pid)) {
-            throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
-        }
         $this->import = GeneralUtility::makeInstance(Import::class);
-        $this->import->init();
+        $this->import->setPid($pid);
 
         $this->eventDispatcher->dispatch(new BeforeImportEvent($this->import));
 
+        try {
+            $this->import->loadFile($file, true);
+            $this->import->importData();
+        } catch (\Exception $e) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->warning(
+                $e->getMessage() . PHP_EOL . implode(PHP_EOL, $this->import->getErrorLog())
+            );
+        }
+
+        // Get id of first created page:
         $importResponse = 0;
-        if ($file && @is_file($file)) {
-            if ($this->import->loadFile($file, 1)) {
-                // Import to root page:
-                $this->import->importData($pid);
-                // Get id of first created page:
-                $newPages = $this->import->import_mapId['pages'];
-                $importResponse = (int)reset($newPages);
-            }
+        $importMapId = $this->import->getImportMapId();
+        if (isset($importMapId['pages'])) {
+            $newPages = $importMapId['pages'];
+            $importResponse = (int)reset($newPages);
         }
 
         // Check for errors during the import process:
-        $errors = $this->import->printErrorLog();
-        if ($errors !== '') {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->warning($errors);
-
+        if ($this->import->hasErrors()) {
             if (!$importResponse) {
                 throw new \ErrorException('No page records imported', 1377625537);
             }

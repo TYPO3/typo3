@@ -1,28 +1,47 @@
-<h4><f:translate key="makeadvanc_softReferences" /></h4>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<h4>
+    <f:translate key="makeadvanc_softReferences"/>
+</h4>
 <div class="form-group">
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources"><f:translate key="makeadvanc_excludeHtmlCssFile" /></f:be.buttons.csh>
     <label for="checkExcludeHTMLfileResources">
-        <f:form.checkbox name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1" checked="{inData.excludeHTMLfileResources} == 1" />
+        <f:form.checkbox name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"
+            checked="{inData.excludeHTMLfileResources} == 1"/>
     </label>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources">
+        <strong><f:translate key="makeadvanc_excludeHtmlCssFile"/></strong>
+    </f:be.buttons.csh>
 </div>
-<h4><f:translate key="makeadvanc_files" /></h4>
+
+<h4>
+    <f:translate key="makeadvanc_files"/>
+</h4>
 <div class="form-group">
     <label for="saveFilesOutsideExportFile">
-        <f:form.checkbox name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1" checked="{inData.saveFilesOutsideExportFile} == 1" />
-        <f:translate key="makeadvanc_saveFilesOutsideExportFile" />
-        <f:translate key="makeadvanc_saveFilesOutsideExportFile_limit" />
+        <f:form.checkbox name="tx_impexp[saveFilesOutsideExportFile]" id="saveFilesOutsideExportFile" value="1"
+            checked="{inData.saveFilesOutsideExportFile} == 1"/>
+        <f:translate key="makeadvanc_saveFilesOutsideExportFile"/>
+        <f:translate key="makeadvanc_saveFilesOutsideExportFile_limit"/>
     </label>
 </div>
-<h4><f:translate key="makeadvanc_extensionDependencies" /></h4>
+
+<h4>
+    <f:translate key="makeadvanc_extensionDependencies"/>
+</h4>
 <div class="form-group">
     <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies"><f:translate key="makeadvanc_selectExtensionsThatThe" /></f:be.buttons.csh>
+        <f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies">
+            <f:translate key="makeadvanc_selectExtensionsThatThe"/>
+        </f:be.buttons.csh>
     </label>
     <f:form.select class="form-select" name="tx_impexp[extension_dep]" multiple="multiple"
-                                    size="{f:if(condition: '{extensions -> f:count()} > 9', then: '10', else: '5')}"
-                                    options="{extensions}" value="{inData.extension_dep}"/>
+        size="{f:if(condition: '{extensions -> f:count()} > 9', then: '10', else: '5')}"
+        options="{extensions}" value="{inData.extension_dep}"/>
 </div>
+
 <div class="form-group">
-    <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_update')}" />
-    <f:form.hidden name="tx_impexp[download_export_name]" value="{nameSuggestion -> f:format.crop(maxCharacters: 30, append: '')}" />
+    <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_update')}"/>
 </div>
+
+</html>

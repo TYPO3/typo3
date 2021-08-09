@@ -1,29 +1,42 @@
-<h3><f:translate key="importdata_uploadFileFromLocal" /></h3>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<h3>
+    <f:translate key="importdata_uploadFileFromLocal"/>
+</h3>
 <h4>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="upload"><f:translate key="importdata_browse" /></f:be.buttons.csh>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="upload">
+        <f:translate key="importdata_browse"/>
+    </f:be.buttons.csh>
 </h4>
 <div class="form-group">
-    <f:form.upload name="upload_1" />
-    <f:form.hidden name="file[upload][1][target]" value="{tempFolder}" />
-    <f:form.hidden name="file[upload][1][data]" value="1" />
+    <f:form.upload name="upload_1"/>
+    <f:form.hidden name="file[upload][1][target]" value="{importFolder}"/>
+    <f:form.hidden name="file[upload][1][data]" value="1"/>
 </div>
 <div class="form-group">
-    <f:form.submit class="btn btn-default" name="_upload" value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')}" />
+    <f:form.submit class="btn btn-default" name="_upload"
+        value="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.php.submit')}"/>
 </div>
 <div class="form-group">
     <label for="checkOverwriteExistingFiles">
-        <f:form.checkbox name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="replace" checked="checked" />
-        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles" />
+        <f:form.checkbox name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="replace" checked="checked"/>
+        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:overwriteExistingFiles"/>
     </label>
 </div>
-<f:if condition="{submitted}">
-    <h4><f:translate key="importdata_uploadStatus" /></h4>
-    <f:if condition="{noFileUploaded}">
+
+<f:if condition="{uploadStatus}">
+    <h4>
+        <f:translate key="importdata_uploadStatus"/>
+    </h4>
+    <f:if condition="{uploadStatus} == 1">
         <f:then>
-            <f:be.infobox  title="{f:translate(key: 'importdata_success')} {uploadedFile}" state="0" />
+            <f:be.infobox title="{f:translate(key: 'importdata_success')} {uploadedFile}" state="0"/>
         </f:then>
         <f:else>
-            <f:be.infobox  title="{f:translate(key: 'importdata_failureNoFileUploaded')}" state="2" />
+            <f:be.infobox title="{f:translate(key: 'importdata_failureNoFileUploaded')}" state="2"/>
         </f:else>
     </f:if>
 </f:if>
+
+</html>

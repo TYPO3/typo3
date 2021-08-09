@@ -574,8 +574,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         /** @var Site[] $newSites */
         $newSites = array_diff_key($siteConfiguration->resolveAllExistingSites(false), $existingSites);
         $importedPages = [];
-        if ($import instanceof Import && !empty($import->import_mapId['pages'])) {
-            $importedPages = $import->import_mapId['pages'];
+        if ($import instanceof Import) {
+            $importedPages = $import->getImportMapId()['pages'] ?? null;
         }
 
         $newSiteIdentifierList = [];

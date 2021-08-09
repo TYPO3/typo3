@@ -30,6 +30,7 @@
         </sheet>
     </data>
 </T3FlexForms>]]></tx_irretutorial_flexform>
+        <sorting>128</sorting>
 	</tt_content>
 	<tx_irretutorial_1ncsv_hotel>
 		<uid>1</uid>
@@ -43,6 +44,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 1 (csv)</title>
 		<offers>1,2</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_1ncsv_hotel>
 	<tx_irretutorial_1ncsv_hotel>
 		<uid>2</uid>
@@ -56,6 +58,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 2 (csv)</title>
 		<offers>3</offers>
+        <sorting>256</sorting>
 	</tx_irretutorial_1ncsv_hotel>
 	<tx_irretutorial_1ncsv_offer>
 		<uid>1</uid>
@@ -69,6 +72,7 @@
 		<hidden>0</hidden>
 		<title>Offer 1.1 (csv)</title>
 		<prices>1</prices>
+        <sorting>128</sorting>
 	</tx_irretutorial_1ncsv_offer>
 	<tx_irretutorial_1ncsv_offer>
 		<uid>2</uid>
@@ -82,6 +86,7 @@
 		<hidden>0</hidden>
 		<title>Offer 1.2 (csv)</title>
 		<prices>2</prices>
+        <sorting>256</sorting>
 	</tx_irretutorial_1ncsv_offer>
 	<tx_irretutorial_1ncsv_offer>
 		<uid>3</uid>
@@ -95,6 +100,7 @@
 		<hidden>0</hidden>
 		<title>Offer 2.2 (csv)</title>
 		<prices>3</prices>
+        <sorting>512</sorting>
 	</tx_irretutorial_1ncsv_offer>
 	<tx_irretutorial_1ncsv_price>
 		<uid>1</uid>
@@ -150,6 +156,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Hotel 1 (nff)</title>
 		<offers>2</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_1nff_hotel>
 	<tx_irretutorial_1nff_hotel>
 		<uid>2</uid>
@@ -166,6 +173,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Hotel 2 (nff)</title>
 		<offers>1</offers>
+        <sorting>256</sorting>
 	</tx_irretutorial_1nff_hotel>
 	<tx_irretutorial_1nff_offer>
 		<uid>1</uid>
@@ -182,6 +190,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Offer 1.1 (nff)</title>
 		<prices>2</prices>
+        <sorting>128</sorting>
 	</tx_irretutorial_1nff_offer>
 	<tx_irretutorial_1nff_offer>
 		<uid>2</uid>
@@ -198,6 +207,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Offer 1.2 (nff)</title>
 		<prices>1</prices>
+        <sorting>256</sorting>
 	</tx_irretutorial_1nff_offer>
 	<tx_irretutorial_1nff_offer>
 		<uid>3</uid>
@@ -214,6 +224,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Offer 2.1 (nff)</title>
 		<prices>1</prices>
+        <sorting>512</sorting>
 	</tx_irretutorial_1nff_offer>
 	<tx_irretutorial_1nff_price>
 		<uid>1</uid>
@@ -230,6 +241,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Price 1.1.1 (nff)</title>
 		<price>4.00</price>
+        <sorting>128</sorting>
 	</tx_irretutorial_1nff_price>
 	<tx_irretutorial_1nff_price>
 		<uid>2</uid>
@@ -246,6 +258,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Price 1.1.2 (nff)</title>
 		<price>869.00</price>
+        <sorting>256</sorting>
 	</tx_irretutorial_1nff_price>
 	<tx_irretutorial_1nff_price>
 		<uid>3</uid>
@@ -262,6 +275,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Price 1.2.1 (nff)</title>
 		<price>678.00</price>
+        <sorting>512</sorting>
 	</tx_irretutorial_1nff_price>
 	<tx_irretutorial_1nff_price>
 		<uid>4</uid>
@@ -278,6 +292,7 @@
 		<parentidentifier></parentidentifier>
 		<title>Price 2.1.1 (nff)</title>
 		<price>5467567.00</price>
+        <sorting>1024</sorting>
 	</tx_irretutorial_1nff_price>
 	<tx_irretutorial_mnasym_hotel>
 		<uid>1</uid>
@@ -291,6 +306,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 1 (m:n ASym)</title>
 		<offers>2</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnasym_hotel>
 	<tx_irretutorial_mnasym_hotel_offer_rel>
 		<uid>1</uid>
@@ -334,6 +350,7 @@
 		<hidden>0</hidden>
 		<title>Offer 1 (m:n ASym)</title>
 		<hotels>1</hotels>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnasym_offer>
 	<tx_irretutorial_mnasym_offer>
 		<uid>2</uid>
@@ -347,6 +364,7 @@
 		<hidden>0</hidden>
 		<title>Offer 2 (m:n ASym)</title>
 		<hotels>1</hotels>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnasym_offer>
 	<tx_irretutorial_mnasym_price>
 		<uid>1</uid>
@@ -361,6 +379,7 @@
 		<parentid>1</parentid>
 		<title>Price 1 1:2 (m:n ASym)</title>
 		<price>678.00</price>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnasym_price>
 	<tx_irretutorial_mnasym_price>
 		<uid>2</uid>
@@ -375,6 +394,7 @@
 		<parentid>2</parentid>
 		<title>Price 2 1:1 (m:n ASym)</title>
 		<price>45.00</price>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnasym_price>
 	<tx_irretutorial_mnattr_hotel>
 		<uid>1</uid>
@@ -388,6 +408,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 1 (m:n Attr)</title>
 		<offers>1</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnattr_hotel>
 	<tx_irretutorial_mnattr_hotel>
 		<uid>2</uid>
@@ -401,6 +422,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 2 (m:n Attr)</title>
 		<offers>1</offers>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnattr_hotel>
 	<tx_irretutorial_mnattr_hotel_offer_rel>
 		<uid>1</uid>
@@ -446,6 +468,7 @@
 		<hidden>0</hidden>
 		<title>Offer 1 (m:n Attr)</title>
 		<hotels>0</hotels>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnattr_offer>
 	<tx_irretutorial_mnattr_offer>
 		<uid>2</uid>
@@ -459,6 +482,7 @@
 		<hidden>0</hidden>
 		<title>Offer 2 (m:n Attr)</title>
 		<hotels>0</hotels>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnattr_offer>
 	<tx_irretutorial_mnmmasym_hotel>
 		<uid>1</uid>
@@ -472,6 +496,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 1 (m:n (MM) ASym)</title>
 		<offers>2</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnmmasym_hotel>
 	<tx_irretutorial_mnmmasym_hotel>
 		<uid>2</uid>
@@ -485,6 +510,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 2 (m:n (MM) ASym)</title>
 		<offers>1</offers>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnmmasym_hotel>
 	<tx_irretutorial_mnmmasym_hotel_offer_rel>
 		<uid>1</uid>
@@ -526,6 +552,7 @@
 		<title>Offer 1.1 (m:n (MM) ASym)</title>
 		<hotels>0</hotels>
 		<prices>1</prices>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnmmasym_offer>
 	<tx_irretutorial_mnmmasym_offer>
 		<uid>2</uid>
@@ -540,6 +567,7 @@
 		<title>Offer 1.2 (m:n (MM) ASym)</title>
 		<hotels>0</hotels>
 		<prices>1</prices>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnmmasym_offer>
 	<tx_irretutorial_mnmmasym_offer>
 		<uid>3</uid>
@@ -554,6 +582,7 @@
 		<title>Offer 2.1 (m:n (MM) ASym)</title>
 		<hotels>0</hotels>
 		<prices>1</prices>
+        <sorting>512</sorting>
 	</tx_irretutorial_mnmmasym_offer>
 	<tx_irretutorial_mnmmasym_offer_price_rel>
 		<uid>1</uid>
@@ -595,6 +624,7 @@
 		<title>Price 1.1.1 (m:n (MM) ASym)</title>
 		<price>567.00</price>
 		<offers>0</offers>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnmmasym_price>
 	<tx_irretutorial_mnmmasym_price>
 		<uid>2</uid>
@@ -609,6 +639,7 @@
 		<title>Price 1.2.2 (m:n (MM) ASym)</title>
 		<price>567.00</price>
 		<offers>0</offers>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnmmasym_price>
 	<tx_irretutorial_mnmmasym_price>
 		<uid>3</uid>
@@ -623,6 +654,7 @@
 		<title>Price (m:n (MM) ASym)</title>
 		<price>223.00</price>
 		<offers>0</offers>
+        <sorting>512</sorting>
 	</tx_irretutorial_mnmmasym_price>
 	<tx_irretutorial_mnsym_hotel>
 		<uid>1</uid>
@@ -636,6 +668,7 @@
 		<hidden>0</hidden>
 		<title>Hotel 1 (mm sym)</title>
 		<branches>2</branches>
+        <sorting>128</sorting>
 	</tx_irretutorial_mnsym_hotel>
 	<tx_irretutorial_mnsym_hotel>
 		<uid>2</uid>
@@ -649,6 +682,7 @@
 		<hidden>0</hidden>
 		<title>Hotel Branch 1.1 (mm sym)</title>
 		<branches>1</branches>
+        <sorting>256</sorting>
 	</tx_irretutorial_mnsym_hotel>
 	<tx_irretutorial_mnsym_hotel>
 		<uid>3</uid>
@@ -662,6 +696,7 @@
 		<hidden>0</hidden>
 		<title>Hotel branch 1.2 (mm sym)</title>
 		<branches>0</branches>
+        <sorting>512</sorting>
 	</tx_irretutorial_mnsym_hotel>
 	<tx_irretutorial_mnsym_hotel_rel>
 		<uid>1</uid>

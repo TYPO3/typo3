@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-/**
- * Test case
- */
 class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 {
     /**
@@ -36,16 +33,16 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function importIrreRecords()
+    public function importIrreRecords(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
-        $subject->init();
+        $subject->setPid(0);
 
         $subject->loadFile(
-            __DIR__ . '/../Fixtures/XmlImports/irre-records.xml',
-            1
+            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml',
+            true
         );
-        $subject->importData(0);
+        $subject->importData();
 
         $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importIrreRecords.csv');
     }

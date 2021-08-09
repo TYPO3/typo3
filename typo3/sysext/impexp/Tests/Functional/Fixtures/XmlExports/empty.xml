@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<XMLversion>1.0</XMLversion>
+		<meta type="array"></meta>
+		<static_tables index="relStaticTables" type="array"></static_tables>
+		<excludeMap type="array"></excludeMap>
+		<softrefCfg type="array"></softrefCfg>
+		<extensionDependencies type="array"></extensionDependencies>
+		<charset>utf-8</charset>
+	</header>
+	<records type="array"></records>
+</T3RecordDocument>

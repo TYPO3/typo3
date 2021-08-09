@@ -206,10 +206,10 @@ $tree-control-icon-size: 12px;
 //
 // Tree Variations
 //
-[id=imp-exp-mod] {
+.panel-tab {
     .list-tree li:last-child:before,
     .list-tree-control > .fa:before {
-        background-color: #f1f1f1;
+        background-color: $nav-tabs-active-link-bg;
     }
 }
 

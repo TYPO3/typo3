@@ -46,6 +46,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'backend',
             'belog',
             'install',
+            'impexp',
             'frontend',
             'recordlist',
             'redirects',

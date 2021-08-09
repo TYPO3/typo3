@@ -1,0 +1,22 @@
+
+renderingOptions:
+  submitButtonLabel: Submit
+type: Form
+identifier: flexFormWithSoftReference
+label: FlexFormWithSoftReference
+prototypeName: standard
+renderables:
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: Page
+    identifier: page-1
+    label: Step
+    renderables:
+      -
+        label: 'Content element'
+        properties:
+          contentElementUid: '1'
+        type: ContentElement
+        identifier: contentelement-1

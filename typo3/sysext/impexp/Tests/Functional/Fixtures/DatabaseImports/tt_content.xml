@@ -9,6 +9,7 @@
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
+        <sorting>128</sorting>
 	</tt_content>
 	<tt_content>
 		<uid>2</uid>
@@ -19,5 +20,18 @@
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
+        <sorting>256</sorting>
 	</tt_content>
+    <tt_content>
+        <uid>3</uid>
+        <pid>1</pid>
+        <CType>text</CType>
+        <header>Test content 3</header>
+        <header_link>file:3</header_link>
+        <deleted>0</deleted>
+        <hidden>1</hidden>
+        <t3ver_oid>0</t3ver_oid>
+        <t3ver_wsid>0</t3ver_wsid>
+        <sorting>512</sorting>
+    </tt_content>
 </dataset>

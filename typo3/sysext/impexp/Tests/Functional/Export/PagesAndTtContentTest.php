@@ -17,14 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-/**
- * Test case
- */
 class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
     /**
@@ -41,6 +38,40 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
             'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension'
     ];
 
+    protected array $recordTypesIncludeFields =
+        [
+            'pages' => [
+                'title',
+                'deleted',
+                'doktype',
+                'hidden',
+                'perms_everybody'
+            ],
+            'tt_content' => [
+                'CType',
+                'header',
+                'header_link',
+                'deleted',
+                'hidden',
+                't3ver_oid'
+            ],
+            'sys_file' => [
+                'storage',
+                'type',
+                'metadata',
+                'identifier',
+                'identifier_hash',
+                'folder_hash',
+                'mime_type',
+                'name',
+                'sha1',
+                'size',
+                'creation_date',
+                'modification_date',
+            ],
+        ]
+    ;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -56,70 +87,45 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContent()
     {
-        $subject = GeneralUtility::makeInstance(Export::class);
-        $subject->init();
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setPid(1);
+        $subject->setLevels(1);
+        $subject->setTables(['_ALL']);
+        $subject->setRelOnlyTables(['sys_file']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->process();
 
-        $subject->setRecordTypesIncludeFields(
-            [
-                'pages' => [
-                    'title',
-                    'deleted',
-                    'doktype',
-                    'hidden',
-                    'perms_everybody'
-                ],
-                'tt_content' => [
-                    'CType',
-                    'header',
-                    'header_link',
-                    'deleted',
-                    'hidden',
-                    't3ver_oid'
-                ],
-                'sys_file' => [
-                    'storage',
-                    'type',
-                    'metadata',
-                    'identifier',
-                    'identifier_hash',
-                    'folder_hash',
-                    'mime_type',
-                    'name',
-                    'sha1',
-                    'size',
-                    'creation_date',
-                    'modification_date',
-                ],
-            ]
-        );
+        $out = $subject->render();
 
-        $subject->relOnlyTables = [
-                'sys_file',
-        ];
-
-        // @todo: Do not rely on BackendUtility::getRecord() in the test case itself
-        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 1)));
-        $subject->export_addRecord('pages', $this->forceStringsOnRowValues(BackendUtility::getRecord('pages', 2)));
-        $subject->export_addRecord('tt_content', $this->forceStringsOnRowValues(BackendUtility::getRecord('tt_content', 1)));
-        $subject->export_addRecord('tt_content', $this->forceStringsOnRowValues(BackendUtility::getRecord('tt_content', 2)));
-
-        $this->setPageTree($subject, 1, 1);
-
-        // After adding ALL records we set relations:
-        for ($a = 0; $a < 10; $a++) {
-            $addR = $subject->export_addDBRelations($a);
-            if (empty($addR)) {
-                break;
-            }
-        }
-
-        $subject->export_addFilesFromRelations();
-        $subject->export_addFilesFromSysFilesRecords();
-
-        $out = $subject->compileMemoryToFileContent('xml');
-
-        self::assertXmlStringEqualsXmlFile(
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent.xml',
+            $out
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function exportPagesAndRelatedTtContentWithComplexConfiguration()
+    {
+        /** @var Export|MockObject|AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setPid(1);
+        $subject->setExcludeMap(['pages:2' => 1]);
+        $subject->setLevels(1);
+        $subject->setTables(['_ALL']);
+        $subject->setRelOnlyTables(['sys_file']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->setExcludeDisabledRecords(true);
+        $subject->process();
+
+        $out = $subject->render();
+
+        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
+        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+            __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-complex.xml',
             $out
         );
     }

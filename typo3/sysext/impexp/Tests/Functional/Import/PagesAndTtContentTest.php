@@ -22,24 +22,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
-/**
- * Test case
- */
 class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
     /**
      * @test
      */
-    public function importPagesAndRelatedTtContent()
+    public function importPagesAndRelatedTtContent(): void
     {
         $subject = GeneralUtility::makeInstance(Import::class);
-        $subject->init();
+        $subject->setPid(0);
 
         $subject->loadFile(
-            __DIR__ . '/../Fixtures/XmlImports/pages-and-ttcontent.xml',
-            1
+            'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml',
+            true
         );
-        $subject->importData(0);
+        $subject->importData();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg';
 

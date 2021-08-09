@@ -1,101 +1,135 @@
-<h3><f:translate key="importdata_selectFileToImport" /></h3>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<h3>
+    <f:translate key="importdata_selectFileToImport"/>
+</h3>
 <div class="form-group">
     <label for="impexp-file">
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="importFile"><f:translate key="importdata_file" /></f:be.buttons.csh>
+        <f:be.buttons.csh table="xMOD_tx_impexp" field="importFile">
+            <f:translate key="importdata_file"/>
+        </f:be.buttons.csh>
     </label>
-    <f:form.select name="tx_impexp[file]" class="form-select" id="impexp-file" value="{inData.file}" options="{fileSelectOptions}" />
-    <p class="help-block">{importPath}</p>
-    <f:if condition="{import.compress}">
-        <f:else><span class="text-danger"><f:translate key="importdata_noteNoDecompressorAvailable" /></span></f:else>
+    <f:form.select name="tx_impexp[file]" class="form-select" id="impexp-file" value="{inData.file}"
+        options="{fileSelectOptions}"/>
+    <p class="help-block">{importFolderHint}</p>
+    <f:if condition="{import.decompressionAvailable}">
+        <f:else><span class="text-danger"><f:translate key="importdata_noteNoDecompressorAvailable"/></span></f:else>
     </f:if>
 </div>
-<h3><f:translate key="importdata_importOptions" /></h3>
 
+<h3>
+    <f:translate key="importdata_importOptions"/>
+</h3>
 <h4>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="update"><f:translate key="importdata_update" /></f:be.buttons.csh>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="update">
+        <f:translate key="importdata_update"/>
+    </f:be.buttons.csh>
 </h4>
 <div class="form-group">
     <label for="checkDo_update">
-        <f:form.checkbox name="tx_impexp[do_update]" id="checkDo_update" value="1" checked="{inData.do_update} == 1" />
-        <f:translate key="importdata_updateRecords" />
+        <f:form.checkbox name="tx_impexp[do_update]" id="checkDo_update" value="1" checked="{inData.do_update} == 1"/>
+        <f:translate key="importdata_updateRecords"/>
     </label>
-    <p class="help-block">(<f:translate key="importdata_thisOptionRequiresThat" />)</p>
+    <p class="help-block">
+        (<f:translate key="importdata_thisOptionRequiresThat"/>)
+    </p>
 </div>
 <f:if condition="{inData.do_update}">
     <div class="form-group">
         <label for="checkGlobal_ignore_pid">
-            <f:form.checkbox name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1" checked="{inData.global_ignore_pid} == 1" />
-            <f:translate key="importdata_ignorePidDifferencesGlobally" />
+            <f:form.checkbox name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"
+                checked="{inData.global_ignore_pid} == 1"/>
+            <f:translate key="importdata_ignorePidDifferencesGlobally"/>
         </label>
-        <p class="help-block">(<f:translate key="importdata_ifYouSetThis" />)</p>
+        <p class="help-block">
+            (<f:translate key="importdata_ifYouSetThis"/>)
+        </p>
     </div>
 </f:if>
 
 <h4>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="options"><f:translate key="importdata_options" /></f:be.buttons.csh>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="options">
+        <f:translate key="importdata_options"/>
+    </f:be.buttons.csh>
 </h4>
 <div class="form-group">
     <label for="checkNotShowDiff">
-        <f:form.checkbox name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1" checked="{inData.notShowDiff} == 1" />
-        <f:translate key="importdata_doNotShowDifferences" />
+        <f:form.checkbox name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"
+            checked="{inData.notShowDiff} == 1"/>
+        <f:translate key="importdata_doNotShowDifferences"/>
     </label>
-    <p class="help-block">(<f:translate key="importdata_greenValuesAreFrom" />)</p>
+    <p class="help-block">
+        (<f:translate key="importdata_greenValuesAreFrom"/>)
+    </p>
 </div>
 <f:if condition="{isAdmin}">
     <f:if condition="!{inData.do_update}">
         <div class="form-group">
             <label for="checkForce_all_UIDS">
                 <f:form.checkbox name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1"
-                                                checked="{inData.force_all_UIDS} == 1" />
+                    checked="{inData.force_all_UIDS} == 1"/>
                 <span class="text-danger">
-                    <f:translate key="importdata_force_all_UIDS" />
+                    <f:translate key="importdata_force_all_UIDS"/>
                 </span>
             </label>
-            <p class="help-block">(<f:translate key="importdata_force_all_UIDS_descr" />)</p>
+            <p class="help-block">
+                (<f:translate key="importdata_force_all_UIDS_descr"/>)
+            </p>
         </div>
     </f:if>
 </f:if>
 
 <h4>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="action"><f:translate key="importdata_action" /></f:be.buttons.csh>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="action">
+        <f:translate key="importdata_action"/>
+    </f:be.buttons.csh>
 </h4>
 <f:if condition="{inData.import_file}">
     <f:then>
-        <f:form.submit class="btn btn-default" name="tx_impexp[new_import]" value="{f:translate(key: 'importdata_newImport')}" />
+        <f:form.submit class="btn btn-default" name="tx_impexp[new_import]"
+            value="{f:translate(key: 'importdata_newImport')}"/>
     </f:then>
     <f:else>
-        <f:form.submit class="btn btn-default" value="{f:translate(key: 'importdata_preview')}" />
+        <f:form.submit class="btn btn-default" value="{f:translate(key: 'importdata_preview')}"/>
         <f:if condition="{inData.file}">
-            - <f:form.hidden name="not-set" value="1" id="t3js-submit-field" />
+            -
+            <f:form.hidden name="not-set" value="1" id="t3js-submit-field"/>
             <f:if condition="{inData.do_update}">
                 <f:then>
                     <f:form.button class="btn btn-default t3js-confirm-trigger"
-                                                type="button" name="tx_impexp[import_file]"
-                                                data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
-                        <f:translate key="importdata_update_299e" />
+                            type="button" name="tx_impexp[import_file]"
+                            data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
+                        <f:translate key="importdata_update_299e"/>
                     </f:form.button>
                 </f:then>
                 <f:else>
                     <f:form.button class="btn btn-default t3js-confirm-trigger"
-                                                type="button" name="tx_impexp[import_file]"
-                                                data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
-                        <f:translate key="importdata_import" />
+                        type="button" name="tx_impexp[import_file]"
+                        data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
+                        <f:translate key="importdata_import"/>
                     </f:form.button>
                 </f:else>
             </f:if>
         </f:if>
     </f:else>
 </f:if>
-<f:form.hidden name="tx_impexp[action]" value="import" />
+<f:form.hidden name="tx_impexp[action]" value="import"/>
 
 <h4>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="enableLogging"><f:translate key="importdata_enableLogging" /></f:be.buttons.csh>
+    <f:be.buttons.csh table="xMOD_tx_impexp" field="enableLogging">
+        <f:translate key="importdata_enableLogging"/>
+    </f:be.buttons.csh>
 </h4>
 <div class="form-group">
     <label for="checkEnableLogging">
         <f:form.checkbox name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"
-                                        checked="{inData.enableLogging} == 1" />
-        <f:translate key="importdata_writeIndividualDbActions" />
+            checked="{inData.enableLogging} == 1"/>
+        <f:translate key="importdata_writeIndividualDbActions"/>
     </label>
-    <p class="help-block">(<f:translate key="importdata_thisIsDisabledBy" />)</p>
+    <p class="help-block">
+        (<f:translate key="importdata_thisIsDisabledBy"/>)
+    </p>
 </div>
+
+</html>

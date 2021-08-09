@@ -1,0 +1,157 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:if condition="{import.mode} == 'import'">
+    <f:then>
+        <h2>
+            <f:if condition="{inData.import_file}">
+                <f:then>
+                    <f:translate key="importdata_structureHasBeenImported"/>
+                </f:then>
+                <f:else>
+                    <f:if condition="{inData.file}">
+                        <f:translate key="filterpage_structureToBeImported"/>
+                    </f:if>
+                </f:else>
+            </f:if>
+        </h2>
+    </f:then>
+    <f:else>
+        <f:if condition="{inData.action} == 'export'">
+            <h2>
+                <f:translate key="execlistqu_structureToBeExported"/>
+            </h2>
+        </f:if>
+    </f:else>
+</f:if>
+<div>
+    <f:if condition="{inData.excludeDisabled}">
+        <f:else>
+            <f:if condition="{inData.action} == 'export'">
+                <f:form.button class="btn btn-default t3js-impexp-toggledisabled" type="button">
+                    <f:translate key="impexpcore_toggle_all_disabled_records"/>
+                </f:form.button>
+            </f:if>
+        </f:else>
+    </f:if>
+    <f:if condition="{preview.insidePageTree -> f:count()} > 0">
+        <h3>
+            <f:translate key="impexpcore_displaycon_insidePagetree"/>
+        </h3>
+        <table class="table table-striped table-hover t3js-impexp-preview">
+            <tbody>
+            <tr>
+                <th>
+                    <f:translate key="impexpcore_displaycon_controls"/>
+                </th>
+                <th>
+                    <f:translate key="impexpcore_displaycon_title"/>
+                </th>
+                <th>
+                    <f:translate key="impexpcore_displaycon_message"/>
+                </th>
+                <f:if condition="{preview.update}">
+                    <th>
+                        <f:translate key="impexpcore_displaycon_updateMode"/>
+                    </th>
+                    <th>
+                        <f:translate key="impexpcore_displaycon_currentPath"/>
+                    </th>
+                </f:if>
+                <f:if condition="{preview.showDiff}">
+                    <th>
+                        <f:translate key="impexpcore_displaycon_result"/>
+                    </th>
+                </f:if>
+            </tr>
+            <f:for each="{preview.insidePageTree}" as="line">
+                <tr data-active="{line.active}">
+                    <td>
+                        <f:format.raw>{line.controls}</f:format.raw>
+                    </td>
+                    <td class="col-nowrap">
+                        <f:format.raw>{line.preCode} {line.title}</f:format.raw>
+                    </td>
+                    <td class="col-nowrap">
+                        <f:format.raw>{line.message}</f:format.raw>
+                    </td>
+                    <f:if condition="{preview.update}">
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.updateMode}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.updatePath}</f:format.raw>
+                        </td>
+                    </f:if>
+                    <f:if condition="{preview.showDiff}">
+                        <td>
+                            <f:format.raw>{line.showDiffContent}</f:format.raw>
+                        </td>
+                    </f:if>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:if>
+    <f:if condition="{preview.outsidePageTree -> f:count()} > 0">
+        <h3>
+            <f:translate key="impexpcore_singlereco_outsidePagetree"/>
+        </h3>
+        <table class="table table-striped table-hover t3js-impexp-preview">
+            <tbody>
+            <tr data-active="{line.active}">
+                <th>
+                    <f:translate key="impexpcore_displaycon_controls"/>
+                </th>
+                <th>
+                    <f:translate key="impexpcore_displaycon_title"/>
+                </th>
+                <th>
+                    <f:translate key="impexpcore_displaycon_message"/>
+                </th>
+                <f:if condition="{preview.update}">
+                    <th>
+                        <f:translate key="impexpcore_displaycon_updateMode"/>
+                    </th>
+                    <th>
+                        <f:translate key="impexpcore_displaycon_currentPath"/>
+                    </th>
+                </f:if>
+                <f:if condition="{preview.showDiff}">
+                    <th>
+                        <f:translate key="impexpcore_displaycon_result"/>
+                    </th>
+                </f:if>
+            </tr>
+            <f:for each="{preview.outsidePageTree}" as="line">
+                <tr>
+                    <td>
+                        <f:format.raw>{line.controls}</f:format.raw>
+                    </td>
+                    <td class="col-nowrap">
+                        <f:format.raw>{line.preCode} {line.title}</f:format.raw>
+                    </td>
+                    <td class="col-nowrap">
+                        <f:format.raw>{line.message}</f:format.raw>
+                    </td>
+                    <f:if condition="{preview.update}">
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.updateMode}</f:format.raw>
+                        </td>
+                        <td class="col-nowrap">
+                            <f:format.raw>{line.updatePath}</f:format.raw>
+                        </td>
+                    </f:if>
+                    <f:if condition="{preview.showDiff}">
+                        <td>
+                            <f:format.raw>{line.showDiffContent}</f:format.raw>
+                        </td>
+                    </f:if>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:if>
+</div>
+
+</html>

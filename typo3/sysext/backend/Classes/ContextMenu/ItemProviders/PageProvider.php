@@ -472,7 +472,7 @@ class PageProvider extends RecordProvider
     protected function canClearCache(): bool
     {
         return !$this->isRoot()
-            && ($this->backendUser->isAdmin() || $this->backendUser->getTSConfig()['options.']['clearCache.']['pages'] ?? false);
+            && ($this->backendUser->isAdmin() || ($this->backendUser->getTSConfig()['options.']['clearCache.']['pages'] ?? false));
     }
 
     /**

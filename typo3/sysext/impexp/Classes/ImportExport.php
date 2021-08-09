@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,145 +25,113 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * EXAMPLE for using the impexp-class for exporting stuff:
+ * T3D file Import / Export library (TYPO3 Record Document)
  *
- * Create and initialize:
- * $this->export = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
- * $this->export->init();
- * Set which tables relations we will allow:
- * $this->export->relOnlyTables[]="tt_news";	// exclusively includes. See comment in the class
- *
- * Adding records:
- * $this->export->export_addRecord("pages", $this->pageinfo);
- * $this->export->export_addRecord("pages", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("pages", 38));
- * $this->export->export_addRecord("pages", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("pages", 39));
- * $this->export->export_addRecord("tt_content", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("tt_content", 12));
- * $this->export->export_addRecord("tt_content", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("tt_content", 74));
- * $this->export->export_addRecord("sys_template", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("sys_template", 20));
- *
- * Adding all the relations (recursively in 5 levels so relations has THEIR relations registered as well)
- * for($a=0;$a<5;$a++) {
- * $addR = $this->export->export_addDBRelations($a);
- * if (empty($addR)) break;
- * }
- *
- * Finally load all the files.
- * $this->export->export_addFilesFromRelations();	// MUST be after the DBrelations are set so that file from ALL added records are included!
- *
- * Write export
- * $out = $this->export->compileMemoryToFileContent();
- * @internal this is not part of TYPO3's Core API.
- */
-
-/**
- * T3D file Import/Export library (TYPO3 Record Document)
+ * @internal This class is not considered part of the public TYPO3 API.
  */
 abstract class ImportExport
 {
     /**
-     * If set, static relations (not exported) will be shown in overview as well
+     * Whether "import" or "export" mode of object.
+     *
+     * @var string
+     */
+    protected $mode = '';
+
+    /**
+     * A WHERE clause for selection records from the pages table based on read-permissions of the current backend user.
+     *
+     * @var string
+     */
+    protected $permsClause;
+
+    /**
+     * Root page of import or export page tree
+     *
+     * @var int
+     */
+    protected $pid = -1;
+
+    /**
+     * Root page record of import or of export page tree
+     */
+    protected ?array $pidRecord = null;
+
+    /**
+     * If set, static relations (not exported) will be shown in preview as well
      *
      * @var bool
      */
-    public $showStaticRelations = false;
-
-    /**
-     * Name of the "fileadmin" folder where files for export/import should be located
-     *
-     * @var string
-     */
-    public $fileadminFolderName = '';
-
-    /**
-     * Whether "import" or "export" mode of object. Set through init() function
-     *
-     * @var string
-     */
-    public $mode = '';
+    protected $showStaticRelations = false;
 
     /**
      * Updates all records that has same UID instead of creating new!
      *
      * @var bool
      */
-    public $update = false;
+    protected $update = false;
 
     /**
-     * Is set by importData() when an import has been done.
+     * Set by importData() when an import is started.
      *
      * @var bool
      */
-    public $doesImport = false;
+    protected $doesImport = false;
 
     /**
-     * If set to a page-record, then the preview display of the content will expect this page-record to be the target
-     * for the import and accordingly display validation information. This triggers the visual view of the
-     * import/export memory to validate if import is possible
+     * Setting the import mode for specific import records.
+     * Available options are: force_uid, as_new, exclude, ignore_pid, respect_pid
      *
      * @var array
      */
-    public $display_import_pid_record = [];
-
-    /**
-     * Setting import modes during update state: as_new, exclude, force_uid
-     *
-     * @var array
-     */
-    public $import_mode = [];
+    protected $importMode = [];
 
     /**
      * If set, PID correct is ignored globally
      *
      * @var bool
      */
-    public $global_ignore_pid = false;
+    protected $globalIgnorePid = false;
 
     /**
      * If set, all UID values are forced! (update or import)
      *
      * @var bool
      */
-    public $force_all_UIDS = false;
+    protected $forceAllUids = false;
 
     /**
-     * If set, a diff-view column is added to the overview.
+     * If set, a diff-view column is added to the preview.
      *
      * @var bool
      */
-    public $showDiff = false;
+    protected $showDiff = false;
 
     /**
-     * Array of values to substitute in editable softreferences.
+     * Array of values to substitute in editable soft references.
      *
      * @var array
      */
-    public $softrefInputValues = [];
+    protected $softrefInputValues = [];
 
     /**
      * Mapping between the fileID from import memory and the final filenames they are written to.
      *
      * @var array
      */
-    public $fileIDMap = [];
-
-    /**
-     * Add table names here which are THE ONLY ones which will be included
-     * into export if found as relations. '_ALL' will allow all tables.
-     *
-     * @var array
-     */
-    public $relOnlyTables = [];
+    protected $fileIdMap = [];
 
     /**
      * Add tables names here which should not be exported with the file.
@@ -169,71 +139,56 @@ abstract class ImportExport
      *
      * @var array
      */
-    public $relStaticTables = [];
+    protected $relStaticTables = [];
 
     /**
-     * Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
+     * Exclude map. Keys are table:uid pairs and if set, records are not added to the export.
      *
      * @var array
      */
-    public $excludeMap = [];
+    protected $excludeMap = [];
 
     /**
-     * Soft Reference Token ID modes.
+     * Soft reference token ID modes.
      *
      * @var array
      */
-    public $softrefCfg = [];
+    protected $softrefCfg = [];
 
     /**
      * Listing extension dependencies.
      *
      * @var array
      */
-    public $extensionDependencies = [];
+    protected $extensionDependencies = [];
 
     /**
      * After records are written this array is filled with [table][original_uid] = [new_uid]
      *
      * @var array
      */
-    public $import_mapId = [];
+    protected $importMapId = [];
 
     /**
      * Error log.
      *
      * @var array
      */
-    public $errorLog = [];
+    protected $errorLog = [];
 
     /**
      * Cache for record paths
      *
      * @var array
      */
-    public $cache_getRecordPath = [];
-
-    /**
-     * Cache of checkPID values.
-     *
-     * @var array
-     */
-    public $checkPID_cache = [];
-
-    /**
-     * Set internally if the gzcompress function exists
-     * Used by ImportExportController
-     *
-     * @var bool
-     */
-    public $compress = false;
+    protected $cacheGetRecordPath = [];
 
     /**
      * Internal import/export memory
      *
      * @var array
      */
-    public $dat = [];
+    protected $dat = [];
 
     /**
      * File processing object
@@ -243,14 +198,34 @@ abstract class ImportExport
     protected $fileProcObj;
 
     /**
+     * @var DiffUtility
+     */
+    protected $diffUtility;
+
+    /**
      * @var array
      */
     protected $remainHeader = [];
 
     /**
+     * @var LanguageService
+     */
+    protected $lang;
+
+    /**
      * @var IconFactory
      */
     protected $iconFactory;
+
+    /**
+     * Name of the "fileadmin" folder where files for export/import should be located
+     *
+     * @var string
+     */
+    protected $fileadminFolderName = '';
+
+    protected ?string $temporaryFolderName = null;
+    protected ?Folder $defaultImportExportFolder = null;
 
     /**
      * Flag to control whether all disabled records and their children are excluded (true) or included (false). Defaults
@@ -261,24 +236,67 @@ abstract class ImportExport
     protected $excludeDisabledRecords = false;
 
     /**
+     * Array of currently registered storage objects
+     *
+     * @var ResourceStorage[]
+     */
+    protected $storages = [];
+
+    /**
+     * Array of currently registered storage objects available for importing files to
+     *
+     * @var ResourceStorage[]
+     */
+    protected $storagesAvailableForImport = [];
+
+    /**
+     * Currently registered default storage object
+     */
+    protected ?ResourceStorage $defaultStorage = null;
+
+    /**
+     * @var StorageRepository
+     */
+    protected $storageRepository;
+
+    /**
      * The constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->lang = $this->getLanguageService();
+        $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
+        $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+
+        $this->fetchStorages();
     }
 
-    /**************************
-     * Initialize
-     *************************/
-
     /**
-     * Init the object, both import and export
+     * Fetch all available file storages and index by storage UID
+     *
+     * Note: It also creates a default storage record if the database table sys_file_storage is empty,
+     * e.g. during tests.
      */
-    public function init()
+    protected function fetchStorages(): void
     {
-        $this->compress = function_exists('gzcompress');
-        $this->fileadminFolderName = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin';
+        $this->storages = [];
+        $this->storagesAvailableForImport = [];
+        $this->defaultStorage = null;
+
+        $this->getStorageRepository()->flush();
+
+        $storages = $this->getStorageRepository()->findAll();
+        // @todo: Why by reference here? Test ImagesWithStoragesTest::importMultipleImagesWithMultipleStorages fails otherwise
+        foreach ($storages as &$storage) {
+            $this->storages[$storage->getUid()] = $storage;
+            if ($storage->isOnline() && $storage->isWritable() && $storage->getDriverType() === 'Local') {
+                $this->storagesAvailableForImport[$storage->getUid()] = $storage;
+            }
+            if ($this->defaultStorage === null && $storage->isDefault()) {
+                $this->defaultStorage = $storage;
+            }
+        }
     }
 
     /********************************************************
@@ -286,120 +304,101 @@ abstract class ImportExport
      ********************************************************/
 
     /**
-     * Displays an overview of the header-content.
+     * Displays a preview of the import or export.
      *
-     * @return array The view data
+     * @return array The preview data
      */
-    public function displayContentOverview()
+    public function renderPreview(): array
     {
-        if (!isset($this->dat['header'])) {
-            return [];
-        }
-        // Check extension dependencies:
-        foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-            if (!empty($extKey) && !ExtensionManagementUtility::isLoaded($extKey)) {
-                $this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
-            }
-        }
-
-        // Probably this is done to save memory space?
+        // @todo: Why is this done?
         unset($this->dat['files']);
 
-        $viewData = [];
+        $previewData = [
+            'update' => $this->update,
+            'showDiff' => $this->showDiff,
+            'insidePageTree' => [],
+            'outsidePageTree' => [],
+        ];
+
+        if (!isset($this->dat['header']['pagetree']) && !isset($this->dat['header']['records'])) {
+            return $previewData;
+        }
+
         // Traverse header:
         $this->remainHeader = $this->dat['header'];
-        // If there is a page tree set, show that:
+
+        // Preview of the page tree to be exported
         if (is_array($this->dat['header']['pagetree'] ?? null)) {
-            reset($this->dat['header']['pagetree']);
-            $lines = [];
-            $this->traversePageTree($this->dat['header']['pagetree'], $lines);
-
-            $viewData['dat'] = $this->dat;
-            $viewData['update'] = $this->update;
-            $viewData['showDiff'] = $this->showDiff;
-            if (!empty($lines)) {
-                foreach ($lines as &$r) {
-                    $r['controls'] = $this->renderControls($r);
-                    if (($r['msg'] ?? false) && !$this->doesImport) {
-                        $r['message'] = '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>';
-                    } else {
-                        $r['message'] = '';
-                    }
-                }
-                $viewData['pagetreeLines'] = $lines;
-            } else {
-                $viewData['pagetreeLines'] = [];
+            $this->traversePageTree($this->dat['header']['pagetree'], $previewData['insidePageTree']);
+            foreach ($previewData['insidePageTree'] as &$line) {
+                $line['controls'] = $this->renderControls($line);
+                $line['message'] = (($line['msg'] ?? '') && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
             }
         }
-        // Print remaining records that were not contained inside the page tree:
+
+        // Preview the remaining records that were not included in the page tree
         if (is_array($this->remainHeader['records'] ?? null)) {
-            $lines = [];
             if (is_array($this->remainHeader['records']['pages'] ?? null)) {
-                $this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
+                $this->traversePageRecords($this->remainHeader['records']['pages'], $previewData['outsidePageTree']);
             }
-            $this->traverseAllRecords($this->remainHeader['records'], $lines);
-            if (!empty($lines)) {
-                foreach ($lines as &$r) {
-                    $r['controls'] = $this->renderControls($r);
-                    if (($r['msg'] ?? false) && !$this->doesImport) {
-                        $r['message'] = '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>';
-                    } else {
-                        $r['message'] = '';
-                    }
-                }
-                $viewData['remainingRecords'] = $lines;
+            $this->traverseAllRecords($this->remainHeader['records'], $previewData['outsidePageTree']);
+            foreach ($previewData['outsidePageTree'] as &$line) {
+                $line['controls'] = $this->renderControls($line);
+                $line['message'] = (($line['msg'] ?? '') && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($line['msg']) . '</span>' : '');
             }
         }
 
-        return $viewData;
+        return $previewData;
     }
 
     /**
      * Go through page tree for display
      *
-     * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
-     * @param array $lines Output lines array (is passed by reference and modified)
-     * @param string $preCode Pre-HTML code
+     * @param array<int, array> $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree])
+     * @param array $lines Output lines array
+     * @param int $indent Indentation level
      */
-    public function traversePageTree($pT, &$lines, $preCode = '')
+    protected function traversePageTree(array $pageTree, array &$lines, int $indent = 0): void
     {
-        foreach ($pT as $k => $v) {
-            if ($this->excludeDisabledRecords === true && !$this->isActive('pages', $k)) {
-                $this->excludePageAndRecords($k, $v);
+        foreach ($pageTree as $pageUid => $page) {
+            if ($this->excludeDisabledRecords === true && $this->isRecordDisabled('pages', $pageUid)) {
+                $this->excludePageAndRecords($pageUid, $page);
                 continue;
             }
 
-            // Add this page:
-            $this->singleRecordLines('pages', $k, $lines, $preCode);
-            // Subrecords:
-            if (is_array($this->dat['header']['pid_lookup'][$k])) {
-                foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
-                    $t = (string)$t;
-                    if ($t !== 'pages') {
-                        foreach ($recUidArr as $ruid => $value) {
-                            $this->singleRecordLines($t, $ruid, $lines, $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;');
+            // Add page
+            $this->addRecord('pages', $pageUid, $lines, $indent);
+
+            // Add records
+            if (is_array($this->dat['header']['pid_lookup'][$pageUid] ?? null)) {
+                foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $records) {
+                    $table = (string)$table;
+                    if ($table !== 'pages') {
+                        foreach (array_keys($records) as $uid) {
+                            $this->addRecord($table, (int)$uid, $lines, $indent + 2);
                         }
                     }
                 }
-                unset($this->remainHeader['pid_lookup'][$k]);
+                unset($this->remainHeader['pid_lookup'][$pageUid]);
             }
-            // Subpages, called recursively:
-            if (is_array($v['subrow'])) {
-                $this->traversePageTree($v['subrow'], $lines, $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;');
+
+            // Add subtree
+            if (is_array($page['subrow'] ?? null)) {
+                $this->traversePageTree($page['subrow'], $lines, $indent + 2);
             }
         }
     }
 
     /**
-     * Test whether a record is active (i.e. not hidden)
+     * Test whether a record is disabled (e.g. hidden)
      *
      * @param string $table Name of the records' database table
      * @param int $uid Database uid of the record
-     * @return bool true if the record is active, false otherwise
+     * @return bool true if the record is disabled, false otherwise
      */
-    protected function isActive($table, $uid): bool
+    protected function isRecordDisabled(string $table, int $uid): bool
     {
-        return !($this->dat['records'][$table . ':' . $uid]['data'][
+        return (bool)($this->dat['records'][$table . ':' . $uid]['data'][
             $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? ''
         ] ?? false);
     }
@@ -408,28 +407,29 @@ abstract class ImportExport
      * Exclude a page, its sub pages (recursively) and records placed in them from this import/export
      *
      * @param int $pageUid Uid of the page to exclude
-     * @param array $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree]
+     * @param array $page Page array with uid/subrow (from ->dat[header][pagetree])
      */
-    protected function excludePageAndRecords($pageUid, $pageTree)
+    protected function excludePageAndRecords(int $pageUid, array $page): void
     {
-        // Prevent having this page appear in "remaining records" table
+        // Exclude page
         unset($this->remainHeader['records']['pages'][$pageUid]);
 
-        // Subrecords
-        if (is_array($this->dat['header']['pid_lookup'][$pageUid])) {
-            foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $recordData) {
+        // Exclude records
+        if (is_array($this->dat['header']['pid_lookup'][$pageUid] ?? null)) {
+            foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $records) {
                 if ($table !== 'pages') {
-                    foreach (array_keys($recordData) as $uid) {
+                    foreach (array_keys($records) as $uid) {
                         unset($this->remainHeader['records'][$table][$uid]);
                     }
                 }
             }
             unset($this->remainHeader['pid_lookup'][$pageUid]);
         }
-        // Subpages excluded recursively
-        if (is_array($pageTree['subrow'])) {
-            foreach ($pageTree['subrow'] as $subPageUid => $subPageTree) {
-                $this->excludePageAndRecords($subPageUid, $subPageTree);
+
+        // Exclude subtree
+        if (is_array($page['subrow'] ?? null)) {
+            foreach ($page['subrow'] as $subPageUid => $subPage) {
+                $this->excludePageAndRecords($subPageUid, $subPage);
             }
         }
     }
@@ -437,23 +437,25 @@ abstract class ImportExport
     /**
      * Go through remaining pages (not in tree)
      *
-     * @param array<int, array> $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
-     * @param array $lines Output lines array (is passed by reference and modified)
+     * @param array<int, array> $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree])
+     * @param array $lines Output lines array
      */
-    public function traversePageRecords($pT, &$lines)
+    protected function traversePageRecords(array $pageTree, array &$lines): void
     {
-        foreach ($pT as $k => $rHeader) {
-            $this->singleRecordLines('pages', (int)$k, $lines, '', true);
-            // Subrecords:
-            if (is_array($this->dat['header']['pid_lookup'][$k])) {
-                foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
-                    if ($t !== 'pages') {
-                        foreach ($recUidArr as $ruid => $value) {
-                            $this->singleRecordLines((string)$t, (int)$ruid, $lines, '&nbsp;&nbsp;&nbsp;&nbsp;');
+        foreach ($pageTree as $pageUid => $_) {
+            // Add page
+            $this->addRecord('pages', (int)$pageUid, $lines, 0, true);
+
+            // Add records
+            if (is_array($this->dat['header']['pid_lookup'][$pageUid] ?? null)) {
+                foreach ($this->dat['header']['pid_lookup'][$pageUid] as $table => $records) {
+                    if ($table !== 'pages') {
+                        foreach (array_keys($records) as $uid) {
+                            $this->addRecord((string)$table, (int)$uid, $lines, 2);
                         }
                     }
                 }
-                unset($this->remainHeader['pid_lookup'][$k]);
+                unset($this->remainHeader['pid_lookup'][$pageUid]);
             }
         }
     }
@@ -461,17 +463,16 @@ abstract class ImportExport
     /**
      * Go through ALL records (if the pages are displayed first, those will not be among these!)
      *
-     * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
-     * @param array $lines Output lines array (is passed by reference and modified)
+     * @param array $pageTree Page tree array with uid/subrow (from ->dat[header][pagetree])
+     * @param array $lines Output lines array
      */
-    public function traverseAllRecords($pT, &$lines)
+    protected function traverseAllRecords(array $pageTree, array &$lines): void
     {
-        foreach ($pT as $t => $recUidArr) {
-            $this->addGeneralErrorsByTable($t);
-            if ($t !== 'pages') {
-                $preCode = '';
-                foreach ($recUidArr as $ruid => $value) {
-                    $this->singleRecordLines((string)$t, (int)$ruid, $lines, $preCode, true);
+        foreach ($pageTree as $table => $records) {
+            $this->addGeneralErrorsByTable($table);
+            if ($table !== 'pages') {
+                foreach (array_keys($records) as $uid) {
+                    $this->addRecord((string)$table, (int)$uid, $lines, 0, true);
                 }
             }
         }
@@ -482,200 +483,164 @@ abstract class ImportExport
      *
      * @param string $table database table name
      */
-    protected function addGeneralErrorsByTable($table)
+    protected function addGeneralErrorsByTable(string $table): void
     {
         if ($this->update && $table === 'sys_file') {
-            $this->error('Updating sys_file records is not supported! They will be imported as new records!');
+            $this->addError('Updating sys_file records is not supported! They will be imported as new records!');
         }
-        if ($this->force_all_UIDS && $table === 'sys_file') {
-            $this->error('Forcing uids of sys_file records is not supported! They will be imported as new records!');
+        if ($this->forceAllUids && $table === 'sys_file') {
+            $this->addError('Forcing uids of sys_file records is not supported! They will be imported as new records!');
         }
     }
 
     /**
-     * Add entries for a single record
+     * Add a record, its relations and soft references, to the preview
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @param array $lines Output lines array (is passed by reference and modified)
-     * @param string $preCode Pre-HTML code
+     * @param array $lines Output lines array
+     * @param int $indent Indentation level
      * @param bool $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
      */
-    public function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord = false)
+    protected function addRecord(string $table, int $uid, array &$lines, int $indent, bool $checkImportInPidRecord = false): void
     {
-        // Get record:
-        $record = $this->dat['header']['records'][$table][$uid];
+        $record = $this->dat['header']['records'][$table][$uid] ?? null;
         unset($this->remainHeader['records'][$table][$uid]);
-        if (!is_array($record) && !($table === 'pages' && !$uid)) {
-            $this->error('MISSING RECORD: ' . $table . ':' . $uid);
+        if (!is_array($record) && !($table === 'pages' && $uid === 0)) {
+            $this->addError('MISSING RECORD: ' . $table . ':' . $uid);
         }
-        // Begin to create the line arrays information record, pInfo:
-        $pInfo = [];
-        $pInfo['ref'] = $table . ':' . $uid;
-        // Unknown table name:
-        $lang = $this->getLanguageService();
-        if ($table === '_SOFTREF_') {
-            $pInfo['preCode'] = $preCode;
-            $pInfo['title'] = '<em>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_softReferencesFiles')) . '</em>';
-        } elseif (!isset($GLOBALS['TCA'][$table])) {
-            // Unknown table name:
-            $pInfo['preCode'] = $preCode;
-            $pInfo['msg'] = 'UNKNOWN TABLE \'' . $pInfo['ref'] . '\'';
-            $pInfo['title'] = '<em>' . htmlspecialchars($record['title']) . '</em>';
-        } else {
-            // prepare data attribute telling whether the record is active or hidden, allowing frontend bulk selection
-            $pInfo['active'] = $this->isActive($table, $uid) ? 'active' : 'hidden';
 
-            // Otherwise, set table icon and title.
-            // Import Validation (triggered by $this->display_import_pid_record) will show messages if import is not possible of various items.
-            if (is_array($this->display_import_pid_record) && !empty($this->display_import_pid_record)) {
+        // Create record information for preview
+        $line = [];
+        $line['ref'] = $table . ':' . $uid;
+        $line['type'] = 'record';
+        if ($table === '_SOFTREF_') {
+            // Record is a soft reference
+            $line['preCode'] = $this->renderIndent($indent);
+            $line['title'] = '<em>' . htmlspecialchars($this->lang->getLL('impexpcore_singlereco_softReferencesFiles')) . '</em>';
+        } elseif (!isset($GLOBALS['TCA'][$table])) {
+            // Record is of unknown table
+            $line['preCode'] = $this->renderIndent($indent);
+            $line['title'] = '<em>' . htmlspecialchars((string)$record['title']) . '</em>';
+            $line['msg'] = 'UNKNOWN TABLE \'' . $line['ref'] . '\'';
+        } else {
+            $pidRecord = $this->getPidRecord();
+            $icon = $this->iconFactory->getIconForRecord(
+                $table,
+                (array)($this->dat['records'][$table . ':' . $uid]['data'] ?? []),
+                Icon::SIZE_SMALL
+            )->render();
+            $line['preCode'] = sprintf(
+                '%s<span title="%s">%s</span>',
+                $this->renderIndent($indent),
+                htmlspecialchars($line['ref']),
+                $icon
+            );
+            $line['title'] = htmlspecialchars($record['title'] ?? '');
+            // Link to page view
+            if ($table === 'pages') {
+                $viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->importMapId['pages'][$uid] : 0);
+                if ($viewID) {
+                    $attributes = PreviewUriBuilder::create($viewID)->serializeDispatcherAttributes();
+                    $line['title'] = sprintf('<a href="#" %s>%s</a>', $attributes, $line['title']);
+                }
+            }
+            $line['active'] = !$this->isRecordDisabled($table, $uid) ? 'active' : 'hidden';
+            if ($this->mode === 'import' && $pidRecord !== null) {
                 if ($checkImportInPidRecord) {
-                    if (!$this->getBackendUser()->doesUserHaveAccess($this->display_import_pid_record, ($table === 'pages' ? 8 : 16))) {
-                        $pInfo['msg'] .= '\'' . $pInfo['ref'] . '\' cannot be INSERTED on this page! ';
+                    if (!$this->getBackendUser()->doesUserHaveAccess($pidRecord, ($table === 'pages' ? 8 : 16))) {
+                        $line['msg'] .= '\'' . $line['ref'] . '\' cannot be INSERTED on this page! ';
                     }
-                    if (!$this->checkDokType($table, $this->display_import_pid_record['doktype']) && !$GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
-                        $pInfo['msg'] .= '\'' . $table . '\' cannot be INSERTED on this page type (change page type to \'Folder\'.) ';
+                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !$GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
+                        $line['msg'] .= '\'' . $table . '\' cannot be INSERTED on this page type (change page type to \'Folder\'.) ';
                     }
                 }
                 if (!$this->getBackendUser()->check('tables_modify', $table)) {
-                    $pInfo['msg'] .= 'You are not allowed to CREATE \'' . $table . '\' tables! ';
+                    $line['msg'] .= 'You are not allowed to CREATE \'' . $table . '\' tables! ';
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
-                    $pInfo['msg'] .= 'TABLE \'' . $table . '\' is READ ONLY! ';
+                if ($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ?? false) {
+                    $line['msg'] .= 'TABLE \'' . $table . '\' is READ ONLY! ';
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] && !$this->getBackendUser()->isAdmin()) {
-                    $pInfo['msg'] .= 'TABLE \'' . $table . '\' is ADMIN ONLY! ';
+                if (($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] ?? false) && !$this->getBackendUser()->isAdmin()) {
+                    $line['msg'] .= 'TABLE \'' . $table . '\' is ADMIN ONLY! ';
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-                    $pInfo['msg'] .= 'TABLE \'' . $table . '\' is a STATIC TABLE! ';
+                if ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false) {
+                    $line['msg'] .= 'TABLE \'' . $table . '\' is a STATIC TABLE! ';
                 }
-                if ((int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1) {
-                    $pInfo['msg'] .= 'TABLE \'' . $table . '\' will be inserted on ROOT LEVEL! ';
+                if ((int)($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0) === 1) {
+                    $line['msg'] .= 'TABLE \'' . $table . '\' will be inserted on ROOT LEVEL! ';
                 }
-                $diffInverse = false;
-                $recInf = null;
+                $databaseRecord = null;
                 if ($this->update) {
-                    // In case of update-PREVIEW we swap the diff-sources.
-                    $diffInverse = true;
-                    $recInf = $this->doesRecordExist($table, $uid, $this->showDiff ? '*' : '');
-                    $pInfo['updatePath'] = $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<strong>NEW!</strong>';
-                    // Mode selector:
-                    $optValues = [];
-                    $optValues[] = $recInf ? $lang->getLL('impexpcore_singlereco_update') : $lang->getLL('impexpcore_singlereco_insert');
-                    if ($recInf) {
-                        $optValues['as_new'] = $lang->getLL('impexpcore_singlereco_importAsNew');
-                    }
-                    if ($recInf) {
-                        if (!$this->global_ignore_pid) {
-                            $optValues['ignore_pid'] = $lang->getLL('impexpcore_singlereco_ignorePid');
-                        } else {
-                            $optValues['respect_pid'] = $lang->getLL('impexpcore_singlereco_respectPid');
-                        }
-                    }
-                    if (!$recInf && $this->getBackendUser()->isAdmin()) {
-                        $optValues['force_uid'] = sprintf($lang->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
-                    }
-                    $optValues['exclude'] = $lang->getLL('impexpcore_singlereco_exclude');
-                    if ($table === 'sys_file') {
-                        $pInfo['updateMode'] = '';
+                    $databaseRecord = $this->getRecordFromDatabase($table, $uid, $this->showDiff ? '*' : 'uid,pid');
+                    if ($databaseRecord === null) {
+                        $line['updatePath'] = '<strong>NEW!</strong>';
                     } else {
-                        $pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
+                        $line['updatePath'] = htmlspecialchars($this->getRecordPath((int)($databaseRecord['pid'] ?? 0)));
+                    }
+                    if ($table === 'sys_file') {
+                        $line['updateMode'] = '';
+                    } else {
+                        $line['updateMode'] = $this->renderImportModeSelector(
+                            $table,
+                            $uid,
+                            $databaseRecord !== null
+                        );
                     }
                 }
-                // Diff view:
+                // Diff view
                 if ($this->showDiff) {
-                    // For IMPORTS, get new id:
-                    if ($newUid = $this->import_mapId[$table][$uid]) {
+                    $diffInverse = $this->update ? true : false;
+                    // For imports, get new id:
+                    if (isset($this->importMapId[$table][$uid]) && $newUid = $this->importMapId[$table][$uid]) {
                         $diffInverse = false;
-                        $recInf = $this->doesRecordExist($table, $newUid, '*');
-                        BackendUtility::workspaceOL($table, $recInf);
+                        $databaseRecord = $this->getRecordFromDatabase($table, $newUid, '*');
+                        BackendUtility::workspaceOL($table, $databaseRecord);
                     }
-                    if (is_array($recInf)) {
-                        $pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][$table . ':' . $uid]['data'], $table, $diffInverse);
+                    $importRecord = $this->dat['records'][$table . ':' . $uid]['data'] ?? null;
+                    if (is_array($databaseRecord) && is_array($importRecord)) {
+                        $line['showDiffContent'] = $this->compareRecords($databaseRecord, $importRecord, $table, $diffInverse);
+                    } else {
+                        $line['showDiffContent'] = 'ERROR: One of the inputs were not an array!';
                     }
-                }
-            }
-            $pInfo['preCode'] = $preCode . '<span title="' . htmlspecialchars($table . ':' . $uid) . '">'
-                . $this->iconFactory->getIconForRecord($table, (array)$this->dat['records'][$table . ':' . $uid]['data'], Icon::SIZE_SMALL)->render()
-                . '</span>';
-            $pInfo['title'] = htmlspecialchars($record['title']);
-            // View page:
-            if ($table === 'pages') {
-                $viewID = $this->mode === 'export' ? (int)$uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
-                if ($viewID) {
-                    $attributes = PreviewUriBuilder::create($viewID)->serializeDispatcherAttributes();
-                    $pInfo['title'] = '<a href="#" ' . $attributes . $pInfo['title'] . '</a>';
                 }
             }
         }
-        $pInfo['type'] = 'record';
-        $lines[] = $pInfo;
+        $lines[] = $line;
+
         // File relations
         if (is_array($record['filerefs'] ?? null)) {
-            $this->addFiles($record['filerefs'], $lines, $preCode);
+            $this->addFiles($record['filerefs'], $lines, $indent);
         }
-        // DB relations
+        // Database relations
         if (is_array($record['rels'] ?? null)) {
-            $this->addRelations($record['rels'], $lines, $preCode);
+            $this->addRelations($record['rels'], $lines, $indent);
         }
-        // Soft ref
-        if (!empty($record['softrefs'])) {
-            $preCode_A = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;';
-            $preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-            foreach ($record['softrefs'] as $info) {
-                $pInfo = [];
-                $pInfo['preCode'] = $preCode_A . $this->iconFactory->getIcon('status-reference-soft', Icon::SIZE_SMALL)->render();
-                $pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
-                if ($info['subst']['type']) {
-                    if (strlen($info['subst']['title'])) {
-                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_title')) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
-                    }
-                    if (strlen($info['subst']['description'])) {
-                        $pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . htmlspecialchars($lang->getLL('impexpcore_singlereco_descr')) . '</strong> ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
-                    }
-                    $pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] === 'file' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_filename')) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] === 'string' ? htmlspecialchars($lang->getLL('impexpcore_singlereco_value')) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] === 'db' ? htmlspecialchars($lang->getLL('impexpcore_softrefsel_record')) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
-                }
-                $pInfo['ref'] = 'SOFTREF';
-                $pInfo['type'] = 'softref';
-                $pInfo['_softRefInfo'] = $info;
-                $pInfo['type'] = 'softref';
-                $mode = $this->softrefCfg[$info['subst']['tokenID']]['mode'];
-                if ($info['error'] && $mode !== 'editable' && $mode !== 'exclude') {
-                    $pInfo['msg'] .= $info['error'];
-                }
-                $lines[] = $pInfo;
-                // Add relations:
-                if ($info['subst']['type'] === 'db') {
-                    [$tempTable, $tempUid] = explode(':', $info['subst']['recordRef']);
-                    $this->addRelations([['table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID']]], $lines, $preCode_B, [], '');
-                }
-                // Add files:
-                if ($info['subst']['type'] === 'file') {
-                    $this->addFiles([$info['file_ID']], $lines, $preCode_B, '', $info['subst']['tokenID']);
-                }
-            }
+        // Soft references
+        if (is_array($record['softrefs'] ?? null)) {
+            $this->addSoftRefs($record['softrefs'], $lines, $indent);
         }
     }
 
     /**
-     * Add DB relations entries for a record's rels-array
+     * Add database relations of a record to the preview
      *
-     * @param array $rels Array of relations
-     * @param array $lines Output lines array (is passed by reference and modified)
-     * @param string $preCode Pre-HTML code
-     * @param array $recurCheck Recursivity check stack
-     * @param string $htmlColorClass Alternative HTML color class to use.
-     * @internal
-     * @see singleRecordLines()
+     * @param array $relations Array of relations
+     * @param array $lines Output lines array
+     * @param int $indent Indentation level
+     * @param array $recursionCheck Recursion check stack
+     *
+     * @see addRecord()
      */
-    public function addRelations($rels, &$lines, $preCode, $recurCheck = [], $htmlColorClass = '')
+    protected function addRelations(array $relations, array &$lines, int $indent, array $recursionCheck = []): void
     {
-        foreach ($rels as $dat) {
-            $table = $dat['table'];
-            $uid = $dat['id'];
-            $pInfo = [];
-            $pInfo['ref'] = $table . ':' . $uid;
-            if (in_array($pInfo['ref'], $recurCheck)) {
+        foreach ($relations as $relation) {
+            $table = $relation['table'];
+            $uid = $relation['id'];
+            $line = [];
+            $line['ref'] = $table . ':' . $uid;
+            $line['type'] = 'rel';
+            if (in_array($line['ref'], $recursionCheck, true)) {
                 continue;
             }
             $iconName = 'status-status-checked';
@@ -685,140 +650,172 @@ abstract class ImportExport
             if ($uid > 0) {
                 $record = $this->dat['header']['records'][$table][$uid] ?? null;
                 if (!is_array($record)) {
-                    if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || (($dat['tokenID'] ?? '') && !$this->includeSoftref($dat['tokenID'] ?? ''))) {
-                        $pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
+                    if ($this->isTableStatic($table) || $this->isRecordExcluded($table, (int)$uid)
+                        || ($relation['tokenID'] ?? '') && !$this->isSoftRefIncluded($relation['tokenID'] ?? '')) {
+                        $line['title'] = htmlspecialchars('STATIC: ' . $line['ref']);
                         $iconClass = 'text-info';
                         $staticFixed = true;
                     } else {
-                        $doesRE = $this->doesRecordExist($table, $uid);
-                        $lostPath = $this->getRecordPath($table === 'pages' ? $doesRE['uid'] : $doesRE['pid']);
-                        $pInfo['title'] = htmlspecialchars($pInfo['ref']);
-                        $pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
-                        $pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
+                        $databaseRecord = $this->getRecordFromDatabase($table, (int)$uid);
+                        $recordPath = $this->getRecordPath($databaseRecord === null ? 0 : ($table === 'pages' ? (int)$databaseRecord['uid'] : (int)$databaseRecord['pid']));
+                        $line['title'] = sprintf(
+                            '<span title="%s">%s</span>',
+                            htmlspecialchars($recordPath),
+                            htmlspecialchars($line['ref'])
+                        );
+                        $line['msg'] = 'LOST RELATION' . ($databaseRecord === null ? ' (Record not found!)' : ' (Path: ' . $recordPath . ')');
                         $iconClass = 'text-danger';
                         $iconName = 'status-dialog-warning';
                     }
                 } else {
-                    $pInfo['title'] = htmlspecialchars($record['title']);
-                    $pInfo['title'] = '<span title="' . htmlspecialchars($this->getRecordPath(($table === 'pages' ? $record['uid'] : $record['pid']))) . '">' . $pInfo['title'] . '</span>';
+                    $recordPath = $this->getRecordPath($table === 'pages' ? (int)$record['uid'] : (int)$record['pid']);
+                    $line['title'] = sprintf(
+                        '<span title="%s">%s</span>',
+                        htmlspecialchars($recordPath),
+                        htmlspecialchars((string)$record['title'])
+                    );
                 }
             } else {
-                // Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
-                $pInfo['title'] = htmlspecialchars('FIXED: ' . $pInfo['ref']);
+                // Negative values in relation fields. These are typically fields of sys_language, fe_users etc.
+                // They are static values. They CAN theoretically be negative pointers to uids in other tables,
+                // but this is so rarely used that it is not supported.
+                $line['title'] = htmlspecialchars('FIXED: ' . $line['ref']);
                 $staticFixed = true;
             }
 
-            $icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render() . '</span>';
-
-            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $icon;
-            $pInfo['type'] = 'rel';
+            $icon = $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render();
+            $line['preCode'] = sprintf(
+                '%s<span class="%s" title="%s">%s</span>',
+                $this->renderIndent($indent + 2),
+                $iconClass,
+                htmlspecialchars($line['ref']),
+                $icon
+            );
             if (!$staticFixed || $this->showStaticRelations) {
-                $lines[] = $pInfo;
-                if (is_array($record) && is_array($record['rels'])) {
-                    $this->addRelations($record['rels'], $lines, $preCode . '&nbsp;&nbsp;', array_merge($recurCheck, [$pInfo['ref']]));
+                $lines[] = $line;
+                if (is_array($record) && is_array($record['rels'] ?? null)) {
+                    $this->addRelations($record['rels'], $lines, $indent + 1, array_merge($recursionCheck, [$line['ref']]));
                 }
             }
         }
     }
 
     /**
-     * Add file relation entries for a record's rels-array
+     * Add file relations of a record to the preview.
      *
-     * @param array $rels Array of file IDs
-     * @param array $lines Output lines array (is passed by reference and modified)
-     * @param string $preCode Pre-HTML code
-     * @param string $htmlColorClass Alternative HTML color class to use.
-     * @param string $tokenID Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
-     * @internal
-     * @see singleRecordLines()
+     * Public access for testing purpose only.
+     *
+     * @param array $relations Array of file IDs
+     * @param array $lines Output lines array
+     * @param int $indent Indentation level
+     * @param string $tokenID Token ID if this is a soft reference (in which case it only makes sense with a single element in the $relations array!)
+     *
+     * @see addRecord()
      */
-    public function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '')
+    public function addFiles(array $relations, array &$lines, int $indent, string $tokenID = ''): void
     {
-        foreach ($rels as $ID) {
-            // Process file:
-            $pInfo = [];
-            $fI = $this->dat['header']['files'][$ID];
-            if (!is_array($fI)) {
-                if (!$tokenID || $this->includeSoftref($tokenID)) {
-                    $pInfo['msg'] = 'MISSING FILE: ' . $ID;
-                    $this->error('MISSING FILE: ' . $ID);
+        foreach ($relations as $ID) {
+            $line = [];
+            $fileInfo = $this->dat['header']['files'][$ID];
+            if (!is_array($fileInfo)) {
+                if ($tokenID !== '' || $this->isSoftRefIncluded($tokenID)) {
+                    $line['msg'] = 'MISSING FILE: ' . $ID;
+                    $this->addError('MISSING FILE: ' . $ID);
                 } else {
                     return;
                 }
             }
-            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
-            $pInfo['title'] = htmlspecialchars($fI['filename']);
-            $pInfo['ref'] = 'FILE';
-            $pInfo['type'] = 'file';
-            // If import mode and there is a non-RTE softreference, check the destination directory:
-            if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
-                if (isset($fI['parentRelFileName'])) {
-                    $pInfo['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
+            $line['ref'] = 'FILE';
+            $line['type'] = 'file';
+            $line['preCode'] = sprintf(
+                '%s<span title="%s">%s</span>',
+                $this->renderIndent($indent + 2),
+                htmlspecialchars($line['ref']),
+                $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render()
+            );
+            $line['title'] = htmlspecialchars($fileInfo['filename']);
+            $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$ID]);
+            // If import mode and there is a non-RTE soft reference, check the destination directory.
+            if ($this->mode === 'import' && $tokenID !== '' && !$fileInfo['RTE_ORIG_ID']) {
+                // Check folder existence
+                if (isset($fileInfo['parentRelFileName'])) {
+                    $line['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
                 } else {
-                    $testDirPrefix = PathUtility::dirname($fI['relFileName']) . '/';
-                    $testDirPrefix2 = $this->verifyFolderAccess($testDirPrefix);
-                    if (!$testDirPrefix2) {
-                        $pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';
-                    } elseif ($testDirPrefix !== $testDirPrefix2) {
-                        $pInfo['msg'] = 'File will be attempted written to "' . $testDirPrefix2 . '". ';
+                    $origDirPrefix = PathUtility::dirname($fileInfo['relFileName']) . '/';
+                    $dirPrefix = $this->resolveStoragePath($origDirPrefix);
+                    if ($dirPrefix === null) {
+                        $line['msg'] = 'ERROR: There are no available file mounts to write file in! ';
+                    } elseif ($origDirPrefix !== $dirPrefix) {
+                        $line['msg'] = 'File will be attempted written to "' . $dirPrefix . '". ';
                     }
                 }
-                // Check if file exists:
-                if (file_exists(Environment::getPublicPath() . '/' . $fI['relFileName'])) {
+                // Check file existence
+                if (file_exists(Environment::getPublicPath() . '/' . $fileInfo['relFileName'])) {
                     if ($this->update) {
-                        $pInfo['updatePath'] .= 'File exists.';
+                        $line['updatePath'] .= 'File exists.';
                     } else {
-                        $pInfo['msg'] .= 'File already exists! ';
+                        $line['msg'] .= 'File already exists! ';
                     }
                 }
-                // Check extension:
+                // Check file extension
                 $fileProcObj = $this->getFileProcObj();
                 if ($fileProcObj->actionPerms['addFile']) {
-                    $testFI = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fI['relFileName']);
-                    if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($testFI['file'])) {
-                        $pInfo['msg'] .= 'File extension was not allowed!';
+                    $pathInfo = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fileInfo['relFileName']);
+                    if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($pathInfo['file'])) {
+                        $line['msg'] .= 'File extension was not allowed!';
                     }
                 } else {
-                    $pInfo['msg'] = 'Your user profile does not allow you to create files on the server!';
+                    $line['msg'] = 'Your user profile does not allow you to create files on the server!';
                 }
             }
-            $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-            $lines[] = $pInfo;
+            $lines[] = $line;
             unset($this->remainHeader['files'][$ID]);
-            // RTE originals:
-            if ($fI['RTE_ORIG_ID']) {
-                $ID = $fI['RTE_ORIG_ID'];
-                $pInfo = [];
-                $fI = $this->dat['header']['files'][$ID];
-                if (!is_array($fI)) {
-                    $pInfo['msg'] = 'MISSING RTE original FILE: ' . $ID;
-                    $this->error('MISSING RTE original FILE: ' . $ID);
+
+            // RTE originals
+            if ($fileInfo['RTE_ORIG_ID']) {
+                $ID = $fileInfo['RTE_ORIG_ID'];
+                $line = [];
+                $fileInfo = $this->dat['header']['files'][$ID];
+                if (!is_array($fileInfo)) {
+                    $line['msg'] = 'MISSING RTE original FILE: ' . $ID;
+                    $this->addError('MISSING RTE original FILE: ' . $ID);
                 }
-                $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-                $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render();
-                $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
-                $pInfo['ref'] = 'FILE';
-                $pInfo['type'] = 'file';
-                $lines[] = $pInfo;
+                $line['ref'] = 'FILE';
+                $line['type'] = 'file';
+                $line['preCode'] = sprintf(
+                    '%s<span title="%s">%s</span>',
+                    $this->renderIndent($indent + 4),
+                    htmlspecialchars($line['ref']),
+                    $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render()
+                );
+                $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Original)</em>';
+                $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$ID]);
+                $lines[] = $line;
                 unset($this->remainHeader['files'][$ID]);
             }
-            // External resources:
-            if (is_array($fI['EXT_RES_ID'])) {
-                foreach ($fI['EXT_RES_ID'] as $extID) {
-                    $pInfo = [];
-                    $fI = $this->dat['header']['files'][$extID];
-                    if (!is_array($fI)) {
-                        $pInfo['msg'] = 'MISSING External Resource FILE: ' . $extID;
-                        $this->error('MISSING External Resource FILE: ' . $extID);
+
+            // External resources
+            if (is_array($fileInfo['EXT_RES_ID'] ?? null)) {
+                foreach ($fileInfo['EXT_RES_ID'] as $extID) {
+                    $line = [];
+                    $fileInfo = $this->dat['header']['files'][$extID];
+                    if (!is_array($fileInfo)) {
+                        $line['msg'] = 'MISSING External Resource FILE: ' . $extID;
+                        $this->addError('MISSING External Resource FILE: ' . $extID);
                     } else {
-                        $pInfo['updatePath'] = $fI['parentRelFileName'];
+                        $line['updatePath'] = $fileInfo['parentRelFileName'];
                     }
-                    $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$extID]);
-                    $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render();
-                    $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
-                    $pInfo['ref'] = 'FILE';
-                    $pInfo['type'] = 'file';
-                    $lines[] = $pInfo;
+                    $line['ref'] = 'FILE';
+                    $line['type'] = 'file';
+                    $line['preCode'] = sprintf(
+                        '%s<span title="%s">%s</span>',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($line['ref']),
+                        $this->iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render()
+                    );
+                    $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Resource)</em>';
+                    $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$extID]);
+                    $lines[] = $line;
                     unset($this->remainHeader['files'][$extID]);
                 }
             }
@@ -826,18 +823,111 @@ abstract class ImportExport
     }
 
     /**
-     * Verifies that a table is allowed on a certain doktype of a page
+     * Add soft references of a record to the preview
      *
-     * @param string $checkTable Table name to check
-     * @param int $doktype doktype value.
+     * @param array $softrefs Soft references
+     * @param array $lines Output lines array
+     * @param int $indent Indentation level
+     *
+     * @see addRecord()
+     */
+    protected function addSoftRefs(array $softrefs, array &$lines, int $indent): void
+    {
+        foreach ($softrefs as $softref) {
+            $line = [];
+            $line['ref'] = 'SOFTREF';
+            $line['type'] = 'softref';
+            $line['preCode'] = sprintf(
+                '%s<span title="%s">%s</span>',
+                $this->renderIndent($indent + 2),
+                htmlspecialchars($line['ref']),
+                $this->iconFactory->getIcon('status-reference-soft', Icon::SIZE_SMALL)->render()
+            );
+            $line['title'] = sprintf(
+                '<em>%s, "%s"</em> : <span title="%s">%s</span>',
+                $softref['field'],
+                $softref['spKey'],
+                htmlspecialchars($softref['matchString']),
+                htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['matchString'], 60))
+            );
+            if ($softref['subst']['type']) {
+                if (strlen($softref['subst']['title'] ?? '')) {
+                    $line['title'] .= sprintf(
+                        '<br/>%s<strong>%s</strong> %s',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_title')),
+                        htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['title'], 60))
+                    );
+                }
+                if (strlen($softref['subst']['description'] ?? '')) {
+                    $line['title'] .= sprintf(
+                        '<br/>%s<strong>%s</strong> %s',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_descr')),
+                        htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['description'], 60))
+                    );
+                }
+                if ($softref['subst']['type'] === 'db') {
+                    $line['title'] .= sprintf(
+                        '<br/>%s%s <strong>%s</strong>',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($this->lang->getLL('impexpcore_softrefsel_record')),
+                        $softref['subst']['recordRef']
+                    );
+                } elseif ($softref['subst']['type'] === 'file') {
+                    $line['title'] .= sprintf(
+                        '<br/>%s%s <strong>%s</strong>',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_filename')),
+                        $softref['subst']['relFileName']
+                    );
+                } elseif ($softref['subst']['type'] === 'string') {
+                    $line['title'] .= sprintf(
+                        '<br/>%s%s <strong>%s</strong>',
+                        $this->renderIndent($indent + 4),
+                        htmlspecialchars($this->lang->getLL('impexpcore_singlereco_value')),
+                        $softref['subst']['tokenValue']
+                    );
+                }
+            }
+            $line['_softRefInfo'] = $softref;
+            $mode = $this->softrefCfg[$softref['subst']['tokenID']]['mode'] ?? '';
+            if (isset($softref['error']) && $mode !== Import::SOFTREF_IMPORT_MODE_EDITABLE && $mode !== Import::SOFTREF_IMPORT_MODE_EXCLUDE) {
+                $line['msg'] .= $softref['error'];
+            }
+            $lines[] = $line;
+
+            // Add database relations
+            if ($softref['subst']['type'] === 'db') {
+                [$referencedTable, $referencedUid] = explode(':', $softref['subst']['recordRef']);
+                $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $softref['subst']['tokenID']]];
+                $this->addRelations($relations, $lines, $indent + 4);
+            }
+            // Add files relations
+            if ($softref['subst']['type'] === 'file') {
+                $relations = [$softref['file_ID']];
+                $this->addFiles($relations, $lines, $indent + 4, $softref['subst']['tokenID']);
+            }
+        }
+    }
+
+    protected function renderIndent(int $indent): string
+    {
+        return str_repeat('&nbsp;&nbsp;', $indent);
+    }
+
+    /**
+     * Verifies that a table is allowed on a certain doktype of a page.
+     *
+     * @param string $table Table name to check
+     * @param int $dokType Page doktype
      * @return bool TRUE if OK
      */
-    public function checkDokType($checkTable, $doktype)
+    protected function checkDokType(string $table, int $dokType): bool
     {
-        $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+        $allowedTableList = $GLOBALS['PAGES_TYPES'][$dokType]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
-        // If all tables or the table is listed as an allowed type, return TRUE
-        if (strpos($allowedTableList, '*') !== false || in_array($checkTable, $allowedArray)) {
+        if (strpos($allowedTableList, '*') !== false || in_array($table, $allowedArray, true)) {
             return true;
         }
         return false;
@@ -846,25 +936,66 @@ abstract class ImportExport
     /**
      * Render input controls for import or export
      *
-     * @param array $r Configuration for element
+     * @param array $line Output line array
      * @return string HTML
      */
-    public function renderControls($r)
+    protected function renderControls(array $line): string
     {
         if ($this->mode === 'export') {
-            if ($r['type'] === 'record') {
-                return '<input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_singlereco_exclude')) . '</label>';
+            if ($line['type'] === 'record') {
+                return $this->renderRecordExcludeCheckbox($line['ref']);
             }
-            return  $r['type'] === 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '';
+            if ($line['type'] === 'softref') {
+                return $this->renderSoftRefExportSelector($line['_softRefInfo']);
+            }
+        } elseif ($this->mode === 'import') {
+            if ($line['type'] === 'softref') {
+                return $this->renderSoftRefImportTextField($line['_softRefInfo']);
+            }
         }
-        // During import
-        // For softreferences with editable fields:
-        if ($r['type'] === 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
-            $tokenID = $r['_softRefInfo']['subst']['tokenID'];
+        return '';
+    }
+
+    /**
+     * Render check box for exclusion of a record from export.
+     *
+     * @param string $recordRef The record ID of the form [table]:[id].
+     * @return string HTML
+     */
+    protected function renderRecordExcludeCheckbox(string $recordRef): string
+    {
+        return sprintf(
+            '
+            <input type="checkbox" class="t3js-exclude-checkbox" name="tx_impexp[exclude][%1$s]" id="checkExclude%1$s" value="1" />
+            <label for="checkExclude%1$s">%2$s</label>',
+            $recordRef,
+            htmlspecialchars($this->lang->getLL('impexpcore_singlereco_exclude'))
+        );
+    }
+
+    /**
+     * Render text field when importing a soft reference.
+     *
+     * @param array $softref Soft reference
+     * @return string HTML
+     */
+    protected function renderSoftRefImportTextField(array $softref): string
+    {
+        if (isset($softref['subst']['tokenID'])) {
+            $tokenID = $softref['subst']['tokenID'];
             $cfg = $this->softrefCfg[$tokenID];
-            if ($cfg['mode'] === 'editable') {
-                return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
-						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars($this->softrefInputValues[$tokenID] ?? $cfg['defValue']) . '" />';
+            if ($cfg['mode'] === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
+                $html = '';
+                if (strlen((string)$cfg['title'])) {
+                    $html .= '<strong>' . htmlspecialchars((string)$cfg['title']) . '</strong><br/>';
+                }
+                $html .= htmlspecialchars((string)$cfg['description']) . '<br/>';
+                $html .= sprintf(
+                    '<input type="text" name="tx_impexp[softrefInputValues][%s]" value="%s" />',
+                    $tokenID,
+                    htmlspecialchars($this->softrefInputValues[$tokenID] ?? $cfg['defValue'])
+                );
+                return $html;
             }
         }
 
@@ -872,82 +1003,139 @@ abstract class ImportExport
     }
 
     /**
-     * Selectorbox with export options for soft references
+     * Render select box with export options for soft references.
+     * An export box is shown only if a substitution scheme is found for the soft reference.
      *
-     * @param array $cfg Softref configuration array. An export box is shown only if a substitution scheme is found for the soft reference.
-     * @return string Selector box HTML
+     * @param array $softref Soft reference
+     * @return string HTML
      */
-    public function softrefSelector($cfg)
+    protected function renderSoftRefExportSelector(array $softref): string
     {
-        // Looking for file ID if any:
-        $fI = $cfg['file_ID'] ? $this->dat['header']['files'][$cfg['file_ID']] : [];
+        $fileInfo = isset($softref['file_ID']) ? $this->dat['header']['files'][$softref['file_ID']] : [];
         // Substitution scheme has to be around and RTE images MUST be exported.
-        if (is_array($cfg['subst']) && $cfg['subst']['tokenID'] && !$fI['RTE_ORIG_ID']) {
-            // Create options:
-            $optValues = [];
-            $optValues[''] = '';
-            $optValues['editable'] = $this->getLanguageService()->getLL('impexpcore_softrefsel_editable');
-            $optValues['exclude'] = $this->getLanguageService()->getLL('impexpcore_softrefsel_exclude');
-            // Get current value:
-            $value = $this->softrefCfg[$cfg['subst']['tokenID']]['mode'];
-            // Render options selector:
-            $selectorbox = $this->renderSelectBox('tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][mode]', $value, $optValues) . '<br/>';
-            if ($value === 'editable') {
-                $descriptionField = '';
-                // Title:
-                if (strlen($cfg['subst']['title'])) {
-                    $descriptionField .= '
-					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][title]" value="' . htmlspecialchars($cfg['subst']['title']) . '" />
-					<strong>' . htmlspecialchars($cfg['subst']['title']) . '</strong><br/>';
+        if (isset($softref['subst']['tokenID']) && !isset($fileInfo['RTE_ORIG_ID'])) {
+            $options = [];
+            $options[''] = '';
+            $options[Import::SOFTREF_IMPORT_MODE_EDITABLE] = $this->lang->getLL('impexpcore_softrefsel_editable');
+            $options[Import::SOFTREF_IMPORT_MODE_EXCLUDE] = $this->lang->getLL('impexpcore_softrefsel_exclude');
+            $value = $this->softrefCfg[$softref['subst']['tokenID']]['mode'] ?? '';
+            $selectHtml = $this->renderSelectBox(
+                'tx_impexp[softrefCfg][' . $softref['subst']['tokenID'] . '][mode]',
+                $value,
+                $options
+            ) . '<br/>';
+            $textFieldHtml = '';
+            if ($value === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
+                if (strlen($softref['subst']['title'] ?? '')) {
+                    $textFieldHtml .= sprintf(
+                        '
+                        <input type="hidden" name="tx_impexp[softrefCfg][%1$s][title]" value="%2$s" />
+                        <strong>%2$s</strong><br/>',
+                        $softref['subst']['tokenID'],
+                        htmlspecialchars($softref['subst']['title'])
+                    );
                 }
-                // Description:
-                if (!strlen($cfg['subst']['description'])) {
-                    $descriptionField .= '
-					' . htmlspecialchars($this->getLanguageService()->getLL('impexpcore_printerror_description')) . '<br/>
-					<input type="text" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description']) . '" />';
+                if (!strlen($softref['subst']['description'] ?? '')) {
+                    $textFieldHtml .= sprintf(
+                        '
+                        %s<br/>
+                        <input type="text" name="tx_impexp[softrefCfg][%s][description]" value="%s" />',
+                        htmlspecialchars($this->lang->getLL('impexpcore_printerror_description')),
+                        $softref['subst']['tokenID'],
+                        htmlspecialchars($this->softrefCfg[$softref['subst']['tokenID']]['description'] ?? '')
+                    );
                 } else {
-                    $descriptionField .= '
-
-					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($cfg['subst']['description']) . '" />' . htmlspecialchars($cfg['subst']['description']);
+                    $textFieldHtml .= sprintf(
+                        '
+                        <input type="hidden" name="tx_impexp[softrefCfg][%1$s][description]" value="%2$s" />%2$s',
+                        $softref['subst']['tokenID'],
+                        htmlspecialchars($softref['subst']['description'])
+                    );
                 }
-                // Default Value:
-                $descriptionField .= '<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][defValue]" value="' . htmlspecialchars($cfg['subst']['tokenValue']) . '" />';
-            } else {
-                $descriptionField = '';
+                $textFieldHtml .= sprintf(
+                    '
+                    <input type="hidden" name="tx_impexp[softrefCfg][%s][defValue]" value="%s" />',
+                    $softref['subst']['tokenID'],
+                    htmlspecialchars($softref['subst']['tokenValue'])
+                );
             }
-            return $selectorbox . $descriptionField;
+            return $selectHtml . $textFieldHtml;
         }
         return '';
     }
 
     /**
-     * Verifies that the input path relative to public web path is found in the backend users filemounts.
-     * If it doesn't it will try to find another relative filemount for the user and return an alternative path prefix for the file.
+     * Render select box with import options for the record.
      *
-     * @param string $dirPrefix Path relative to public web path
-     * @param bool $noAlternative If set, Do not look for alternative path! Just return FALSE
-     * @return string|bool If a path is available that will be returned, otherwise FALSE.
+     * @param string $table Table name
+     * @param int $uid Record UID
+     * @param bool $doesRecordExist Is there already a record with this UID in the database?
+     * @return string HTML
      */
-    public function verifyFolderAccess($dirPrefix, $noAlternative = false)
+    protected function renderImportModeSelector(string $table, int $uid, bool $doesRecordExist): string
     {
-        // Check the absolute path for public web path, if the user has access - no problem
-        try {
-            GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($dirPrefix);
-            return $dirPrefix;
-        } catch (InsufficientFolderAccessPermissionsException $e) {
-            // Check all storages available for the user as alternative
-            if (!$noAlternative) {
-                $fileStorages = $this->getBackendUser()->getFileStorages();
-                foreach ($fileStorages as $fileStorage) {
-                    try {
-                        $folder = $fileStorage->getFolder(rtrim($dirPrefix, '/'));
-                        return $folder->getPublicUrl();
-                    } catch (InsufficientFolderAccessPermissionsException $e) {
-                    }
-                }
+        $options = [];
+        if (!$doesRecordExist) {
+            $options[] = $this->lang->getLL('impexpcore_singlereco_insert');
+            if ($this->getBackendUser()->isAdmin()) {
+                $options[Import::IMPORT_MODE_FORCE_UID] = sprintf($this->lang->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
+            }
+        } else {
+            $options[] = $this->lang->getLL('impexpcore_singlereco_update');
+            $options[Import::IMPORT_MODE_AS_NEW] = $this->lang->getLL('impexpcore_singlereco_importAsNew');
+            if (!$this->globalIgnorePid) {
+                $options[Import::IMPORT_MODE_IGNORE_PID] = $this->lang->getLL('impexpcore_singlereco_ignorePid');
+            } else {
+                $options[Import::IMPORT_MODE_RESPECT_PID] = $this->lang->getLL('impexpcore_singlereco_respectPid');
             }
         }
-        return false;
+        $options[Import::IMPORT_MODE_EXCLUDE] = $this->lang->getLL('impexpcore_singlereco_exclude');
+        return $this->renderSelectBox(
+            'tx_impexp[import_mode][' . $table . ':' . $uid . ']',
+            (string)$this->importMode[$table . ':' . $uid],
+            $options
+        );
+    }
+
+    /**
+     * Renders a select box from option values.
+     *
+     * @param string $name Form element name
+     * @param string $value Current value
+     * @param array $options Options to display (key/value pairs)
+     * @return string HTML
+     */
+    protected function renderSelectBox(string $name, string $value, array $options): string
+    {
+        $optionsHtml = '';
+        $isValueInOptions = false;
+
+        foreach ($options as $k => $v) {
+            if ((string)$k === $value) {
+                $isValueInOptions = true;
+                $selectedHtml = ' selected="selected"';
+            } else {
+                $selectedHtml = '';
+            }
+            $optionsHtml .= sprintf(
+                '<option value="%s"%s>%s</option>',
+                htmlspecialchars((string)$k),
+                $selectedHtml,
+                htmlspecialchars((string)$v)
+            );
+        }
+
+        // Append and select the current value as an option of the form "[value]"
+        // if it is not available in the options.
+        if (!$isValueInOptions && $value !== '') {
+            $optionsHtml .= sprintf(
+                '<option value="%s" selected="selected">%s</option>',
+                htmlspecialchars($value),
+                htmlspecialchars('[\'' . $value . '\']')
+            );
+        }
+
+        return '<select name="' . $name . '">' . $optionsHtml . '</select>';
     }
 
     /*****************************
@@ -957,36 +1145,139 @@ abstract class ImportExport
     /**
      * @return string
      */
-    protected function getTemporaryFolderName()
+    public function getFileadminFolderName(): string
     {
-        $temporaryPath = Environment::getVarPath() . '/transient/';
-        do {
-            $temporaryFolderName = $temporaryPath . 'export_temp_files_' . random_int(1, PHP_INT_MAX);
-        } while (is_dir($temporaryFolderName));
-        GeneralUtility::mkdir($temporaryFolderName);
-        return $temporaryFolderName;
+        if (empty($this->fileadminFolderName)) {
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
+                $this->fileadminFolderName = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/');
+            } else {
+                $this->fileadminFolderName = 'fileadmin';
+            }
+        }
+        return $this->fileadminFolderName;
     }
 
     /**
-     * Recursively flattening the idH array
-     *
-     * @param array $idH Page uid hierarchy
-     * @param array $a Accumulation array of pages (internal, don't set from outside)
-     * @return array Array with uid-uid pairs for all pages in the page tree.
-     * @see Import::flatInversePageTree_pid()
+     * @return string
      */
-    public function flatInversePageTree($idH, $a = [])
+    public function getOrCreateTemporaryFolderName(): string
     {
-        if (is_array($idH)) {
-            $idH = array_reverse($idH);
-            foreach ($idH as $k => $v) {
-                $a[$v['uid']] = $v['uid'];
-                if (is_array($v['subrow'] ?? false)) {
-                    $a = $this->flatInversePageTree($v['subrow'], $a);
+        if (empty($this->temporaryFolderName)) {
+            $this->createTemporaryFolderName();
+        }
+        return $this->temporaryFolderName;
+    }
+
+    protected function createTemporaryFolderName(): void
+    {
+        $temporaryPath = Environment::getVarPath() . '/transient';
+        do {
+            $temporaryFolderName = sprintf(
+                '%s/impexp_%s_files_%d',
+                $temporaryPath,
+                $this->mode,
+                random_int(1, PHP_INT_MAX)
+            );
+        } while (is_dir($temporaryFolderName));
+        GeneralUtility::mkdir($temporaryFolderName);
+        $this->temporaryFolderName = $temporaryFolderName;
+    }
+
+    public function removeTemporaryFolderName(): void
+    {
+        if (!empty($this->temporaryFolderName)) {
+            GeneralUtility::rmdir($this->temporaryFolderName, true);
+            $this->temporaryFolderName = null;
+        }
+    }
+
+    /**
+     * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
+     * to the server and is also used for uploading import files.
+     *
+     * @return Folder|null
+     */
+    public function getOrCreateDefaultImportExportFolder(): ?Folder
+    {
+        if (empty($this->defaultImportExportFolder)) {
+            $this->createDefaultImportExportFolder();
+        }
+        return $this->defaultImportExportFolder;
+    }
+
+    /**
+     * Creates a \TYPO3\CMS\Core\Resource\Folder object for saving export files
+     * to the server and is also used for uploading import files.
+     */
+    protected function createDefaultImportExportFolder(): void
+    {
+        $defaultTemporaryFolder = $this->getBackendUser()->getDefaultUploadTemporaryFolder();
+        $defaultImportExportFolder = null;
+        $importExportFolderName = 'importexport';
+
+        if ($defaultTemporaryFolder !== null) {
+            if ($defaultTemporaryFolder->hasFolder($importExportFolderName) === false) {
+                $defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
+            } else {
+                $defaultImportExportFolder = $defaultTemporaryFolder->getSubfolder($importExportFolderName);
+            }
+        }
+        $this->defaultImportExportFolder = $defaultImportExportFolder;
+    }
+
+    public function removeDefaultImportExportFolder(): void
+    {
+        if (!empty($this->defaultImportExportFolder)) {
+            $this->defaultImportExportFolder->delete(true);
+        }
+    }
+
+    /**
+     * Checks if the input path relative to the public web path can be found in the file mounts of the backend user.
+     * If not, it checks all file mounts of the user for the relative path and returns it if found.
+     *
+     * @param string $dirPrefix Path relative to public web path.
+     * @param bool $checkAlternatives If set to false, do not look for an alternative path.
+     * @return string If a path is available, it will be returned, otherwise NULL.
+     * @throws \Exception
+     */
+    protected function resolveStoragePath(string $dirPrefix, bool $checkAlternatives = true): ?string
+    {
+        try {
+            GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($dirPrefix);
+            return $dirPrefix;
+        } catch (InsufficientFolderAccessPermissionsException $e) {
+            if ($checkAlternatives) {
+                $storagesByUser = $this->getBackendUser()->getFileStorages();
+                foreach ($storagesByUser as $storage) {
+                    try {
+                        $folder = $storage->getFolder(rtrim($dirPrefix, '/'));
+                        return $folder->getPublicUrl();
+                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                    }
                 }
             }
         }
-        return $a;
+        return null;
+    }
+
+    /**
+     * Recursively flattening the $pageTree array to a one-dimensional array with uid-pid pairs.
+     *
+     * @param array $pageTree Page tree array
+     * @param array $list List with uid-pid pairs
+     * @param int $pid PID value (internal, don't set from outside)
+     */
+    protected function flatInversePageTree(array $pageTree, array &$list, int $pid = -1): void
+    {
+        // @todo: return $list instead of by-reference?!
+        $pageTreeInverse = array_reverse($pageTree);
+        foreach ($pageTreeInverse as $page) {
+            $list[$page['uid']] = $pid;
+            if (is_array($page['subrow'] ?? null)) {
+                $this->flatInversePageTree($page['subrow'], $list, (int)$page['uid']);
+            }
+        }
     }
 
     /**
@@ -995,88 +1286,51 @@ abstract class ImportExport
      * @param string $table Table name
      * @return bool TRUE, if table is marked static
      */
-    public function isTableStatic($table)
+    protected function isTableStatic(string $table): bool
     {
-        if (is_array($GLOBALS['TCA'][$table])) {
-            return ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false) || in_array($table, $this->relStaticTables) || in_array('_ALL', $this->relStaticTables);
+        if (is_array($GLOBALS['TCA'][$table] ?? null)) {
+            return ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false)
+                || in_array($table, $this->relStaticTables, true)
+                || in_array('_ALL', $this->relStaticTables, true);
         }
         return false;
     }
 
     /**
-     * Returns TRUE if the input table name is to be included as relation
+     * Returns TRUE if the element should be excluded from import and export.
      *
      * @param string $table Table name
-     * @return bool TRUE, if table is marked static
+     * @param int $uid Record UID
+     * @return bool TRUE, if the record should be excluded
      */
-    public function inclRelation($table)
-    {
-        return is_array($GLOBALS['TCA'][$table])
-            && (in_array($table, $this->relOnlyTables) || in_array('_ALL', $this->relOnlyTables))
-            && $this->getBackendUser()->check('tables_select', $table);
-    }
-
-    /**
-     * Returns TRUE if the element should be excluded as static record.
-     *
-     * @param string $table Table name
-     * @param int $uid UID value
-     * @return bool TRUE, if table is marked static
-     */
-    public function isExcluded($table, $uid)
+    protected function isRecordExcluded(string $table, int $uid): bool
     {
         return (bool)($this->excludeMap[$table . ':' . $uid] ?? false);
     }
 
     /**
-     * Returns TRUE if soft reference should be included in exported file.
+     * Returns TRUE if the soft reference should be included in export.
      *
      * @param string $tokenID Token ID for soft reference
-     * @return bool TRUE if softreference media should be included
+     * @return bool TRUE, if soft reference should be included
      */
-    public function includeSoftref($tokenID)
+    protected function isSoftRefIncluded(string $tokenID): bool
     {
         $mode = $this->softrefCfg[$tokenID]['mode'];
-        return $tokenID && $mode !== 'exclude' && $mode !== 'editable';
+        return $tokenID && $mode !== Import::SOFTREF_IMPORT_MODE_EXCLUDE && $mode !== Import::SOFTREF_IMPORT_MODE_EDITABLE;
     }
 
     /**
-     * Checking if a PID is in the webmounts of the user
-     *
-     * @param int $pid Page ID to check
-     * @return bool TRUE if OK
-     */
-    public function checkPID($pid)
-    {
-        if (!isset($this->checkPID_cache[$pid])) {
-            $this->checkPID_cache[$pid] = (bool)$this->getBackendUser()->isInWebMount($pid);
-        }
-        return $this->checkPID_cache[$pid];
-    }
-
-    /**
-     * Checks if the position of an updated record is configured to be corrected. This can be disabled globally and changed for elements individually.
-     *
-     * @param string $table Table name
-     * @param int $uid Uid or record
-     * @return bool TRUE if the position of the record should be updated to match the one in the import structure
-     */
-    public function dontIgnorePid($table, $uid)
-    {
-        return $this->import_mode[$table . ':' . $uid] !== 'ignore_pid' && (!$this->global_ignore_pid || $this->import_mode[$table . ':' . $uid] === 'respect_pid');
-    }
-
-    /**
-     * Checks if the record exists
+     * Returns given fields of record if it exists.
      *
      * @param string $table Table name
      * @param int $uid UID of record
-     * @param string $fields Field list to select. Default is "uid,pid
-     * @return array Result of \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord() which means the record if found, otherwise FALSE
+     * @param string $fields Field list to select. Default is "uid,pid"
+     * @return array|null Result of \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord() which means the record if found, otherwise NULL
      */
-    public function doesRecordExist($table, $uid, $fields = '')
+    protected function getRecordFromDatabase(string $table, int $uid, string $fields = 'uid,pid'): ?array
     {
-        return BackendUtility::getRecord($table, $uid, $fields ?: 'uid,pid');
+        return BackendUtility::getRecord($table, $uid, $fields);
     }
 
     /**
@@ -1085,93 +1339,104 @@ abstract class ImportExport
      * @param int $pid Record PID to check
      * @return string The path for the input PID
      */
-    public function getRecordPath($pid)
+    protected function getRecordPath(int $pid): string
     {
-        if (!isset($this->cache_getRecordPath[$pid])) {
-            $clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-            $this->cache_getRecordPath[$pid] = (string)BackendUtility::getRecordPath($pid, $clause, 20);
+        if (!isset($this->cacheGetRecordPath[$pid])) {
+            $this->cacheGetRecordPath[$pid] = (string)BackendUtility::getRecordPath($pid, $this->permsClause, 20);
         }
-        return $this->cache_getRecordPath[$pid];
-    }
-
-    /**
-     * Makes a selector-box from optValues
-     *
-     * @param string $prefix Form element name
-     * @param string $value Current value
-     * @param array $optValues Options to display (key/value pairs)
-     * @return string HTML select element
-     */
-    public function renderSelectBox($prefix, $value, $optValues)
-    {
-        $opt = [];
-        $isSelFlag = 0;
-        foreach ($optValues as $k => $v) {
-            $sel = (string)$k === (string)$value ? ' selected="selected"' : '';
-            if ($sel) {
-                $isSelFlag++;
-            }
-            $opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
-        }
-        if (!$isSelFlag && (string)$value !== '') {
-            $opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars('[\'' . $value . '\']') . '</option>';
-        }
-        return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';
+        return $this->cacheGetRecordPath[$pid];
     }
 
     /**
      * Compares two records, the current database record and the one from the import memory.
      * Will return HTML code to show any differences between them!
      *
-     * @param array $databaseRecord Database record, all fields (new values)
-     * @param array|null $importRecord Import memory records for the same table/uid, all fields (old values)
+     * @param array $databaseRecord Database record, all fields (old values)
+     * @param array $importRecord Import memory record for the same table/uid, all fields (new values)
      * @param string $table The table name of the record
-     * @param bool $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
+     * @param bool $inverse Inverse the diff view (switch red/green, needed for pre-update difference view)
      * @return string HTML
      */
-    public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = false)
+    protected function compareRecords(array $databaseRecord, array $importRecord, string $table, bool $inverse = false): string
     {
-        // Initialize:
-        $output = [];
-        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-        // Check if both inputs are records:
-        if (is_array($databaseRecord) && is_array($importRecord)) {
-            // Traverse based on database record
-            foreach ($databaseRecord as $fN => $value) {
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
-                    if (isset($importRecord[$fN])) {
-                        if (trim($databaseRecord[$fN]) !== trim($importRecord[$fN])) {
-                            // Create diff-result:
-                            $output[$fN] = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, true, true), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, true, true));
-                        }
-                        unset($importRecord[$fN]);
+        $diffHtml = '';
+
+        // Updated fields
+        foreach ($databaseRecord as $fieldName => $_) {
+            if (is_array($GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null)
+                && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] !== 'passthrough'
+            ) {
+                if (isset($importRecord[$fieldName])) {
+                    if (trim((string)$databaseRecord[$fieldName]) !== trim((string)$importRecord[$fieldName])) {
+                        $diffFieldHtml = $this->getDiffUtility()->makeDiffDisplay(
+                            BackendUtility::getProcessedValue(
+                                $table,
+                                $fieldName,
+                                !$inverse ? $importRecord[$fieldName] : $databaseRecord[$fieldName],
+                                0,
+                                true,
+                                true
+                            ),
+                            BackendUtility::getProcessedValue(
+                                $table,
+                                $fieldName,
+                                !$inverse ? $databaseRecord[$fieldName] : $importRecord[$fieldName],
+                                0,
+                                true,
+                                true
+                            )
+                        );
+                        $diffHtml .= sprintf(
+                            '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
+                            htmlspecialchars($this->lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'])),
+                            htmlspecialchars((string)$fieldName),
+                            $diffFieldHtml
+                        );
                     }
+                    unset($importRecord[$fieldName]);
                 }
             }
-            // Traverse remaining in import record:
-            foreach ($importRecord as $fN => $value) {
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
-                    $output[$fN] = '<strong>Field missing</strong> in database';
-                }
-            }
-            // Create output:
-            if (!empty($output)) {
-                $tRows = [];
-                foreach ($output as $fN => $state) {
-                    $tRows[] = '
-						<tr>
-							<td>' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'])) . ' (' . htmlspecialchars((string)$fN) . ')</td>
-							<td>' . $state . '</td>
-						</tr>
-					';
-                }
-                $output = '<table class="table table-striped table-hover">' . implode('', $tRows) . '</table>';
-            } else {
-                $output = 'Match';
-            }
-            return '<strong class="text-nowrap">[' . htmlspecialchars($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid']) . ']:</strong> ' . $output;
         }
-        return 'ERROR: One of the inputs were not an array!';
+
+        // New fields
+        foreach ($importRecord as $fieldName => $_) {
+            if (is_array($GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null)
+                && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] !== 'passthrough'
+            ) {
+                $diffFieldHtml = '<strong>Field missing</strong> in database';
+                $diffHtml .= sprintf(
+                    '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
+                    htmlspecialchars($this->lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'])),
+                    htmlspecialchars((string)$fieldName),
+                    $diffFieldHtml
+                );
+            }
+        }
+
+        if ($diffHtml !== '') {
+            $diffHtml = '<table class="table table-striped table-hover">' . PHP_EOL . $diffHtml . '</table>';
+        } else {
+            $diffHtml = 'Match';
+        }
+
+        return sprintf(
+            '<strong class="text-nowrap">[%s]:</strong>' . PHP_EOL . '%s',
+            htmlspecialchars($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid']),
+            $diffHtml
+        );
+    }
+
+    /**
+     * Returns string comparing object, initialized only once.
+     *
+     * @return DiffUtility String comparing object
+     */
+    protected function getDiffUtility(): DiffUtility
+    {
+        if ($this->diffUtility === null) {
+            $this->diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
+        }
+        return $this->diffUtility;
     }
 
     /**
@@ -1179,7 +1444,7 @@ abstract class ImportExport
      *
      * @return ExtendedFileUtility File processor object
      */
-    public function getFileProcObj()
+    protected function getFileProcObj(): ExtendedFileUtility
     {
         if ($this->fileProcObj === null) {
             $this->fileProcObj = GeneralUtility::makeInstance(ExtendedFileUtility::class);
@@ -1189,29 +1454,16 @@ abstract class ImportExport
     }
 
     /**
-     * Call Hook
+     * Returns storage repository object, initialized only once.
      *
-     * @param string $name Name of the hook
-     * @param array $params Array with params
+     * @return StorageRepository Storage repository object
      */
-    public function callHook($name, $params)
+    protected function getStorageRepository(): StorageRepository
     {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/impexp/class.tx_impexp.php'][$name] ?? [] as $hook) {
-            GeneralUtility::callUserFunction($hook, $params, $this);
+        if ($this->storageRepository === null) {
+            $this->storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         }
-    }
-
-    /**
-     * Set flag to control whether disabled records and their children are excluded (true) or included (false). Defaults
-     * to the old behaviour of including everything.
-     *
-     * @param bool $excludeDisabledRecords Set to true if if all disabled records should be excluded, false otherwise
-     * @return \TYPO3\CMS\Impexp\ImportExport $this for fluent calls
-     */
-    public function setExcludeDisabledRecords($excludeDisabledRecords = false)
-    {
-        $this->excludeDisabledRecords = $excludeDisabledRecords;
-        return $this;
+        return $this->storageRepository;
     }
 
     /*****************************
@@ -1221,27 +1473,22 @@ abstract class ImportExport
     /**
      * Sets error message in the internal error log
      *
-     * @param string $msg Error message
+     * @param string $message Error message
      */
-    public function error($msg)
+    protected function addError(string $message): void
     {
-        $this->errorLog[] = $msg;
+        $this->errorLog[] = $message;
     }
 
-    /**
-     * Returns a table with the error-messages.
-     *
-     * @return string HTML print of error log
-     */
-    public function printErrorLog()
+    public function hasErrors(): bool
     {
-        return !empty($this->errorLog) ? DebugUtility::viewArray($this->errorLog) : '';
+        return empty($this->errorLog) === false;
     }
 
     /**
      * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -1249,8 +1496,305 @@ abstract class ImportExport
     /**
      * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**************************
+     * Getters and Setters
+     *************************/
+
+    /**
+     * @return int
+     */
+    public function getPid(): int
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function setPid(int $pid): void
+    {
+        $this->pid = $pid;
+        $this->pidRecord = null;
+    }
+
+    /**
+     * Return record of root page of import or of export page tree
+     * - or null if access denied to that page.
+     *
+     * If the page is the root of the page tree,
+     * add some basic but missing information.
+     *
+     * @return array|null
+     */
+    protected function getPidRecord(): ?array
+    {
+        if ($this->pidRecord === null && $this->pid >= 0) {
+            $pidRecord = BackendUtility::readPageAccess($this->pid, $this->permsClause);
+
+            if (is_array($pidRecord)) {
+                if ($this->pid === 0) {
+                    $pidRecord += ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
+                }
+                $this->pidRecord = $pidRecord;
+            }
+        }
+
+        return $this->pidRecord;
+    }
+
+    /**
+     * Set flag to control whether disabled records and their children are excluded (true) or included (false). Defaults
+     * to the old behaviour of including everything.
+     *
+     * @param bool $excludeDisabledRecords Set to true if if all disabled records should be excluded, false otherwise
+     */
+    public function setExcludeDisabledRecords(bool $excludeDisabledRecords): void
+    {
+        $this->excludeDisabledRecords = $excludeDisabledRecords;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExcludeDisabledRecords(): bool
+    {
+        return $this->excludeDisabledRecords;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExcludeMap(): array
+    {
+        return $this->excludeMap;
+    }
+
+    /**
+     * @param array $excludeMap
+     */
+    public function setExcludeMap(array $excludeMap): void
+    {
+        $this->excludeMap = $excludeMap;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSoftrefCfg(): array
+    {
+        return $this->softrefCfg;
+    }
+
+    /**
+     * @param array $softrefCfg
+     */
+    public function setSoftrefCfg(array $softrefCfg): void
+    {
+        $this->softrefCfg = $softrefCfg;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtensionDependencies(): array
+    {
+        return $this->extensionDependencies;
+    }
+
+    /**
+     * @param array $extensionDependencies
+     */
+    public function setExtensionDependencies(array $extensionDependencies): void
+    {
+        $this->extensionDependencies = $extensionDependencies;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowStaticRelations(): bool
+    {
+        return $this->showStaticRelations;
+    }
+
+    /**
+     * @param bool $showStaticRelations
+     */
+    public function setShowStaticRelations(bool $showStaticRelations): void
+    {
+        $this->showStaticRelations = $showStaticRelations;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelStaticTables(): array
+    {
+        return $this->relStaticTables;
+    }
+
+    /**
+     * @param array $relStaticTables
+     */
+    public function setRelStaticTables(array $relStaticTables): void
+    {
+        $this->relStaticTables = $relStaticTables;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorLog(): array
+    {
+        return $this->errorLog;
+    }
+
+    /**
+     * @param array $errorLog
+     */
+    public function setErrorLog(array $errorLog): void
+    {
+        $this->errorLog = $errorLog;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpdate(): bool
+    {
+        return $this->update;
+    }
+
+    /**
+     * @param bool $update
+     */
+    public function setUpdate(bool $update): void
+    {
+        $this->update = $update;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImportMode(): array
+    {
+        return $this->importMode;
+    }
+
+    /**
+     * @param array $importMode
+     */
+    public function setImportMode(array $importMode): void
+    {
+        $this->importMode = $importMode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGlobalIgnorePid(): bool
+    {
+        return $this->globalIgnorePid;
+    }
+
+    /**
+     * @param bool $globalIgnorePid
+     */
+    public function setGlobalIgnorePid(bool $globalIgnorePid): void
+    {
+        $this->globalIgnorePid = $globalIgnorePid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isForceAllUids(): bool
+    {
+        return $this->forceAllUids;
+    }
+
+    /**
+     * @param bool $forceAllUids
+     */
+    public function setForceAllUids(bool $forceAllUids): void
+    {
+        $this->forceAllUids = $forceAllUids;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowDiff(): bool
+    {
+        return $this->showDiff;
+    }
+
+    /**
+     * @param bool $showDiff
+     */
+    public function setShowDiff(bool $showDiff): void
+    {
+        $this->showDiff = $showDiff;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSoftrefInputValues(): array
+    {
+        return $this->softrefInputValues;
+    }
+
+    /**
+     * @param array $softrefInputValues
+     */
+    public function setSoftrefInputValues(array $softrefInputValues): void
+    {
+        $this->softrefInputValues = $softrefInputValues;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param string $mode
+     */
+    public function setMode(string $mode): void
+    {
+        $this->mode = $mode;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImportMapId(): array
+    {
+        return $this->importMapId;
+    }
+
+    /**
+     * @param array $importMapId
+     */
+    public function setImportMapId(array $importMapId): void
+    {
+        $this->importMapId = $importMapId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDat(): array
+    {
+        return $this->dat;
     }
 }

@@ -4,14 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id=".alttitle" resname=".alttitle">
-				<source>Import/Export</source>
+				<source>Import / Export</source>
 			</trans-unit>
 			<trans-unit id=".description" resname=".description">
-				<source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
+				<source>Native module for importing and exporting TYPO3 data. Can export single records, content of tables, single pages, parts of or the whole page tree. Includes attached media like images and preserves relations between records. Exports either to XML or a TYPO3 specific format T3D (compressed or uncompressed). The format is meant for exchange between TYPO3 systems.</source>
 			</trans-unit>
 			<trans-unit id="_.image" resname="_.image">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp.png</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" resname=".image_descr">
 				<source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>

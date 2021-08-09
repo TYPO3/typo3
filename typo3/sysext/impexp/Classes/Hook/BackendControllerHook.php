@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,7 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class adds import export related JavaScript to the backend
- * @internal this is an internal TYPO3 hook implementation and solely used for EXT:impexp and not part of TYPO3's Core API.
+ *
+ * @internal This class is not considered part of the public TYPO3 API.
  */
 class BackendControllerHook
 {
@@ -32,19 +35,11 @@ class BackendControllerHook
      * @param array $configuration
      * @param BackendController $backendController
      */
-    public function addJavaScript(array $configuration, BackendController $backendController)
+    public function addJavaScript(array $configuration, BackendController $backendController): void
     {
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->getPageRenderer()->addInlineSetting('ImportExport', 'exportModuleUrl', (string)$uriBuilder->buildUriFromRoute('tx_impexp_export'));
-        $this->getPageRenderer()->addInlineSetting('ImportExport', 'importModuleUrl', (string)$uriBuilder->buildUriFromRoute('tx_impexp_import'));
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addInlineSetting('ImportExport', 'exportModuleUrl', (string)$uriBuilder->buildUriFromRoute('tx_impexp_export'));
+        $pageRenderer->addInlineSetting('ImportExport', 'importModuleUrl', (string)$uriBuilder->buildUriFromRoute('tx_impexp_import'));
     }
 }

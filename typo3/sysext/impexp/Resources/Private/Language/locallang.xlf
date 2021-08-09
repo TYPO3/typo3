@@ -183,10 +183,10 @@
 			<trans-unit id="makesavefo_notes" resname="makesavefo_notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_t3dFileCompressed" resname="makesavefo_t3dFileCompressed">
+			<trans-unit id="makesavefo_t3d_compressed" resname="makesavefo_t3d_compressed">
 				<source>T3D file / compressed</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_t3dFile" resname="makesavefo_t3dFile">
+			<trans-unit id="makesavefo_t3d" resname="makesavefo_t3d">
 				<source>T3D file</source>
 			</trans-unit>
 			<trans-unit id="makesavefo_xml" resname="makesavefo_xml">
@@ -249,9 +249,6 @@
 			<trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom">
 				<source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
 			</trans-unit>
-			<trans-unit id="importdata_allowToWriteBanned" resname="importdata_allowToWriteBanned">
-				<source>Allow to write banned file extensions (eg. PHP scripts), if any</source>
-			</trans-unit>
 			<trans-unit id="importdata_action" resname="importdata_action">
 				<source>Action</source>
 			</trans-unit>
@@ -264,9 +261,6 @@
 			<trans-unit id="importdata_import" resname="importdata_import">
 				<source>Import</source>
 			</trans-unit>
-			<trans-unit id="importdata_areYouSure" resname="importdata_areYouSure">
-				<source>Are you sure?</source>
-			</trans-unit>
 			<trans-unit id="importdata_newImport" resname="importdata_newImport">
 				<source>New import</source>
 			</trans-unit>
@@ -274,7 +268,7 @@
 				<source>Enable logging</source>
 			</trans-unit>
 			<trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions">
-				<source>Write individual DB actions during import to the log</source>
+				<source>Write individual database actions during import to the log</source>
 			</trans-unit>
 			<trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy">
 				<source>This is disabled by default since there may be hundred of entries generated.</source>
@@ -321,9 +315,6 @@
 			<trans-unit id="importdata_email" resname="importdata_email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="importdata_icon" resname="importdata_icon">
-				<source>Icon</source>
-			</trans-unit>
 			<trans-unit id="importdata_metaData_1387" resname="importdata_metaData_1387">
 				<source>Meta data</source>
 			</trans-unit>
@@ -332,9 +323,6 @@
 			</trans-unit>
 			<trans-unit id="importdata_structureHasBeenImported" resname="importdata_structureHasBeenImported">
 				<source>Structure has been imported, here is the result</source>
-			</trans-unit>
-			<trans-unit id="importdata_no_accessible_file_mount" resname="importdata_no_accessible_file_mount">
-				<source>No accessible filemount</source>
 			</trans-unit>
 			<trans-unit id="importdata_no_default_upload_folder" resname="importdata_no_default_upload_folder">
 				<source>No default upload folder</source>

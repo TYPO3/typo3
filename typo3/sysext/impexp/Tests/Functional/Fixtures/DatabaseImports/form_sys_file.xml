@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file>
+		<uid>1</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<type>1</type>
+		<identifier>/form_definitions/flexFormWithSoftReference.form.yaml</identifier>
+		<identifier_hash>c6e1accb577763016f7fc2ea06a5a0735ac24a70</identifier_hash>
+		<folder_hash>c62e3e70a526a59f0f0b7687864947eab72d7d3f</folder_hash>
+		<extension>yaml</extension>
+		<mime_type>text/plain</mime_type>
+		<name>flexFormWithSoftReference.form.yaml</name>
+		<sha1>4acd754cee5861bb543870fae76df5d35c0a0e5b</sha1>
+		<size>501</size>
+		<creation_date>1628060459</creation_date>
+		<modification_date>1628060459</modification_date>
+	</sys_file>
+</dataset>

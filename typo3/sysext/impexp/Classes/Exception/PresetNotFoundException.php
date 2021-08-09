@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,11 +15,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Impexp\Command\Exception;
+namespace TYPO3\CMS\Impexp\Exception;
+
+use TYPO3\CMS\Impexp\Exception;
 
 /**
- * File was not found or could not be opened
+ * Export preset could not be found
+ *
+ * @internal This class is not considered part of the public TYPO3 API.
  */
-class InvalidFileException extends \InvalidArgumentException
+class PresetNotFoundException extends Exception
 {
 }

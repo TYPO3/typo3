@@ -1,32 +1,41 @@
-<f:layout name="Default" />
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
 
 <f:section name="content">
-    <h1><f:translate key="title_import" /></h1>
+    <h1>
+        <f:translate key="title_import"/>
+    </h1>
 
-    <f:flashMessages queueIdentifier="impexp.errors" />
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize active" href="#import-import" aria-controls="import-import" role="tab" data-bs-toggle="tab">
+            <a class="nav-link text-capitalize active" href="#import-import" aria-controls="import-import" role="tab"
+                data-bs-toggle="tab">
                 <f:translate key="importdata_import" />
             </a>
         </li>
-        <f:if condition="{hasTempUploadFolder}">
+        <f:if condition="{importFolder}">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-upload" aria-controls="import-upload" role="tab" data-bs-toggle="tab">
+                <a class="nav-link text-capitalize" href="#import-upload" aria-controls="import-upload" role="tab"
+                    data-bs-toggle="tab">
                     <f:translate key="importdata_upload" />
                 </a>
             </li>
         </f:if>
-        <f:if condition="{metaDataInFileExists}">
+        <f:if condition="{import.metaData}">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-metadata" aria-controls="import-metadata" role="tab" data-bs-toggle="tab">
+                <a class="nav-link text-capitalize" href="#import-metadata" aria-controls="import-metadata" role="tab"
+                    data-bs-toggle="tab">
                     <f:translate key="importdata_metaData_1387" />
                 </a>
             </li>
         </f:if>
         <f:if condition="{errors -> f:count()} > 0">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab" data-bs-toggle="tab">
+                <a class="nav-link text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab"
+                    data-bs-toggle="tab">
                     <f:translate key="importdata_messages" />
                     <core:icon identifier="status-dialog-warning" />
                 </a>
@@ -41,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <f:if condition="{hasTempUploadFolder}">
+        <f:if condition="{importFolder}">
             <div role="tabpanel" class="tab-pane" id="import-upload">
                 <div class="panel panel-tab">
                     <div class="panel-body">
@@ -50,7 +59,7 @@
                 </div>
             </div>
         </f:if>
-        <f:if condition="{metaDataInFileExists}">
+        <f:if condition="{import.metaData}">
             <div role="tabpanel" class="tab-pane" id="import-metadata">
                 <div class="panel panel-tab">
                     <div class="panel-body">
@@ -74,5 +83,7 @@
         </f:if>
     </div>
 
-    <f:render partial="ContentOverview" arguments="{_all}"/>
+    <f:render partial="Preview" arguments="{_all}"/>
 </f:section>
+
+</html>

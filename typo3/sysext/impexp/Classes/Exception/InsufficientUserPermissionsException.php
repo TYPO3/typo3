@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,11 +15,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Impexp\Command\Exception;
+namespace TYPO3\CMS\Impexp\Exception;
+
+use TYPO3\CMS\Impexp\Exception;
 
 /**
- * Import failed
+ * Backend user is not allowed to perform import / export action
+ *
+ * @internal This class is not considered part of the public TYPO3 API.
  */
-class ImportFailedException extends \RuntimeException
+class InsufficientUserPermissionsException extends Exception
 {
 }

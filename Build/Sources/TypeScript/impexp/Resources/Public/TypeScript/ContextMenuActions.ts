@@ -23,7 +23,8 @@ class ContextMenuActions {
     if (table === 'pages') {
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.ImportExport.exportModuleUrl +
-        '&id=0&tx_impexp[pagetree][id]=' + uid +
+        '&id=' + uid +
+        '&tx_impexp[pagetree][id]=' + uid +
         '&tx_impexp[pagetree][levels]=0' +
         '&tx_impexp[pagetree][tables][]=_ALL',
       );

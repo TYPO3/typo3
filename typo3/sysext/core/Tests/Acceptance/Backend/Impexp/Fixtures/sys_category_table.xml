@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3RecordDocument>
+	<header type="array">
+		<XMLversion>1.0</XMLversion>
+        <meta type="array"></meta>
+		<static_tables index="relStaticTables" type="array"></static_tables>
+		<excludeMap type="array"></excludeMap>
+		<softrefCfg type="array"></softrefCfg>
+		<extensionDependencies type="array"></extensionDependencies>
+		<charset>utf-8</charset>
+		<records type="array">
+			<table index="sys_category" type="array">
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>0</pid>
+					<title>Movies</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="4" type="array">
+					<uid>4</uid>
+					<pid>0</pid>
+					<title>Books</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="5" type="array">
+					<uid>5</uid>
+					<pid>0</pid>
+					<title>Audiobooks</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>0</pid>
+					<title>News</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>0</pid>
+					<title>Examples</title>
+					<relations index="rels" type="array">
+						<element index="pages:62" type="array">
+							<id>62</id>
+							<table>pages</table>
+						</element>
+						<element index="tt_content:213" type="array">
+							<id>213</id>
+							<table>tt_content</table>
+						</element>
+						<element index="tt_content:11" type="array">
+							<id>11</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+		</records>
+		<pid_lookup type="array">
+			<page_contents index="0" type="array">
+				<table index="sys_category" type="array">
+					<item index="3">1</item>
+					<item index="4">1</item>
+					<item index="5">1</item>
+					<item index="2">1</item>
+					<item index="1">1</item>
+				</table>
+			</page_contents>
+		</pid_lookup>
+	</header>
+	<records type="array">
+		<tablerow index="sys_category:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1603272232</field>
+				<field index="crdate" type="integer">1603272217</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">64</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource">{&quot;title&quot;:&quot;&quot;,&quot;parent&quot;:&quot;&quot;,&quot;items&quot;:&quot;&quot;,&quot;sys_language_uid&quot;:&quot;&quot;,&quot;hidden&quot;:&quot;&quot;,&quot;starttime&quot;:&quot;&quot;,&quot;endtime&quot;:&quot;&quot;,&quot;description&quot;:&quot;&quot;}</field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">Movies</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="sys_category:4" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">4</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1603272241</field>
+				<field index="crdate" type="integer">1603272241</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">96</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource"></field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">Books</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="sys_category:5" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">5</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1603272274</field>
+				<field index="crdate" type="integer">1603272274</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">112</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource"></field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">Audiobooks</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="sys_category:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1602145286</field>
+				<field index="crdate" type="integer">1602145286</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">128</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource">a:1:{s:5:&quot;items&quot;;N;}</field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">News</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array"></related>
+		</tablerow>
+		<tablerow index="sys_category:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="tstamp" type="integer">1602145286</field>
+				<field index="crdate" type="integer">1602145286</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="starttime" type="integer">0</field>
+				<field index="endtime" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="description"></field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l10n_parent" type="integer">0</field>
+				<field index="l10n_state" type="NULL"></field>
+				<field index="t3_origuid" type="integer">0</field>
+				<field index="l10n_diffsource">{&quot;items&quot;:&quot;&quot;}</field>
+				<field index="t3ver_oid" type="integer">0</field>
+				<field index="t3ver_wsid" type="integer">0</field>
+				<field index="t3ver_state" type="integer">0</field>
+				<field index="t3ver_stage" type="integer">0</field>
+				<field index="t3ver_move_id" type="integer">0</field>
+				<field index="title">Examples</field>
+				<field index="parent" type="integer">0</field>
+				<field index="items" type="integer">3</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="items" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>62</id>
+							<table>pages</table>
+						</element>
+						<element index="1" type="array">
+							<id>213</id>
+							<table>tt_content</table>
+						</element>
+						<element index="2" type="array">
+							<id>11</id>
+							<table>tt_content</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+	</records>
+</T3RecordDocument>

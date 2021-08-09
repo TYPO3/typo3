@@ -17,18 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use Doctrine\DBAL\Platforms\SqlitePlatform;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Impexp\Export;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -60,6 +56,11 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         $backendUser = $this->setUpBackendUserFromFixture(1);
         $backendUser->workspace = 0;
         Bootstrap::initializeLanguageObject();
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('route', new Route('/record/importexport/export', []))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
 
     /**
@@ -76,111 +77,10 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     }
 
     /**
-     * Builds a flat array containing the page tree with the PageTreeView
-     * based on given start pid and depth and set it in the Export object.
-     *
-     * Used in export tests
-     *
-     * @param $export Export instance
-     * @param int $pidToStart
-     * @param int $depth
-     */
-    protected function setPageTree(Export $export, $pidToStart, $depth = 1)
-    {
-        $permsClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-        GeneralUtility::makeInstance(Router::class)->addRoute('module_key', new Route('/some/Path', []));
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest(new Uri()))
-            ->withAttribute('route', new Route('/some/Path', []))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init('AND ' . $permsClause);
-        $tree->tree[] = ['row' => $pidToStart];
-        $tree->buffer_idH = [];
-        if ($depth > 0) {
-            $tree->getTree($pidToStart, $depth);
-        }
-
-        $idH = [];
-        $idH[$pidToStart]['uid'] = $pidToStart;
-        if (!empty($tree->buffer_idH)) {
-            $idH[$pidToStart]['subrow'] = $tree->buffer_idH;
-        }
-
-        $export->setPageTree($idH);
-    }
-
-    /**
-     * Adds records to the export object for a specific page id.
-     *
-     * Used in export tests.
-     *
-     * @param $export Export instance
-     * @param int $pid Page id for which to select records to add
-     * @param array $tables Array of table names to select from
-     */
-    protected function addRecordsForPid(Export $export, $pid, array $tables)
-    {
-        foreach ($GLOBALS['TCA'] as $table => $value) {
-            if ($table !== 'pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
-                if ($GLOBALS['BE_USER']->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-                    $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable($table);
-
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-                    $queryBuilder
-                        ->select('*')
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'pid',
-                                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
-                            )
-                        );
-
-                    foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
-                        [$fieldName, $order] = $orderPair;
-                        $queryBuilder->addOrderBy($fieldName, $order);
-                    }
-                    $queryBuilder->addOrderBy('uid', 'ASC');
-
-                    $result = $queryBuilder->execute();
-                    while ($row = $result->fetchAssociative()) {
-                        $export->export_addRecord($table, $this->forceStringsOnRowValues($row));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * All not null values are forced to be strings to align
-     * db driver differences
-     *
-     * @param array $row
-     * @return array
-     */
-    protected function forceStringsOnRowValues(array $row): array
-    {
-        foreach ($row as $fieldName => $value) {
-            // Keep null but force everything else to string
-            $row[$fieldName] = $value === null ? $value : (string)$value;
-        }
-        return $row;
-    }
-
-    /**
      * Test if the local filesystem is case sensitive.
      * Needed for some export related tests
-     *
-     * @return bool
      */
-    protected function isCaseSensitiveFilesystem()
+    protected function isCaseSensitiveFilesystem(): bool
     {
         $caseSensitive = true;
         $path = GeneralUtility::tempnam('aAbB');
@@ -193,5 +93,25 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         // clean filesystem
         unlink($path);
         return $caseSensitive;
+    }
+
+    /**
+     * Asserts that two XML documents are equal.
+     *
+     * @todo: This is a hack to align 'expected' fixture files on sqlite: sqlite returns integer
+     *      fields as string, so the exported xml miss the 'type="integer"' attribute.
+     *      This change drops 'type="integer"' from the expectations if on sqlite.
+     *      This needs to be changed in impexp, after that this helper method can vanish again.
+     */
+    public function assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(string $expectedFile, string $actualXml): void
+    {
+        $actual = (new XmlLoader())->load($actualXml);
+        $expectedFileContent = file_get_contents($expectedFile);
+        $databasePlatform = $this->getConnectionPool()->getConnectionForTable('pages')->getDatabasePlatform();
+        if ($databasePlatform instanceof SqlitePlatform) {
+            $expectedFileContent = str_replace(' type="integer"', '', $expectedFileContent);
+        }
+        $expected = (new XmlLoader())->load($expectedFileContent);
+        self::assertEquals($expected, $actual);
     }
 }

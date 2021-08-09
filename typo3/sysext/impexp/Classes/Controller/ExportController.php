@@ -17,46 +17,34 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Controller;
 
-use Doctrine\DBAL\Driver\Statement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
+use TYPO3\CMS\Impexp\Exception;
 use TYPO3\CMS\Impexp\Export;
-use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 
 /**
  * Main script class for the Export facility
  *
- * @internal this is a TYPO3 Backend controller implementation and not part of TYPO3's Core API.
+ * @internal This class is not considered part of the public TYPO3 API.
  */
 class ExportController extends ImportExportController
 {
     /**
-     * The name of the module
-     *
      * @var string
      */
     protected $moduleName = 'tx_impexp_export';
@@ -67,18 +55,6 @@ class ExportController extends ImportExportController
     protected $export;
 
     /**
-     * @var string
-     */
-    protected $treeHTML = '';
-
-    /**
-     * @var bool
-     */
-    protected $excludeDisabledRecords = false;
-
-    /**
-     * preset repository
-     *
      * @var PresetRepository
      */
     protected $presetRepository;
@@ -90,347 +66,248 @@ class ExportController extends ImportExportController
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         parent::__construct($iconFactory, $pageRenderer, $uriBuilder, $moduleTemplateFactory);
+
         $this->presetRepository = GeneralUtility::makeInstance(PresetRepository::class);
     }
 
     /**
+     * Incoming array has syntax:
+     *
+     * file[] = file
+     * dir[] = dir
+     * list[] = table:pid
+     * record[] = table:uid
+     *
+     * pagetree[id] = (single id)
+     * pagetree[levels]=1,2,3, -1 = currently unpacked tree, -2 = only tables on page
+     * pagetree[tables][]=table/_ALL
+     *
+     * external_ref[tables][]=table/_ALL
+     *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws Exception
      * @throws ExistingTargetFileNameException
-     * @throws RouteNotFoundException
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
+        parent::main($request);
 
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
-        if ($this->pageinfo !== []) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-        }
-        // Setting up the context sensitive menu:
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
-
-        // Input data grabbed:
+        // Input data
+        $presetAction = $request->getQueryParams()['preset'] ?? [];
         $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];
+        $inData = $this->preprocessInputData($inData);
+
+        // Perform export
+        $inData = $this->processPresets($presetAction, $inData);
+        $inData = $this->exportData($inData);
+
+        // Prepare view
+        $this->registerDocHeaderButtons();
+        $this->makeConfigurationForm($inData);
+        $this->makeSaveForm($inData);
+        $this->makeAdvancedOptionsForm();
+        $this->standaloneView->assign('inData', $inData);
+        $this->standaloneView->setTemplate('Export.html');
+        $this->moduleTemplate->setContent($this->standaloneView->render());
+
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * @param array $inData
+     * @return array Modified data
+     */
+    public function preprocessInputData(array $inData): array
+    {
+        // Flag doesn't exist initially; state is on by default
         if (!array_key_exists('excludeDisabled', $inData)) {
-            // flag doesn't exist initially; state is on by default
             $inData['excludeDisabled'] = 1;
         }
-        $this->standaloneView->assign('moduleUrl', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
-        $this->standaloneView->assign('id', $this->id);
-        $this->standaloneView->assign('inData', $inData);
+        // Set exclude fields in export object:
+        $inData['exclude'] ??= [];
+        $inData['preset']['public'] = (int)($inData['preset']['public'] ?? 0);
+        return $inData;
+    }
 
-        $this->shortcutName = $this->lang->getLL('title_export');
-        // Call export interface
-        $this->exportData($inData);
-        $this->standaloneView->setTemplate('Export.html');
+    /**
+     * Process export preset
+     *
+     * @param array $presetAction
+     * @param array $inData
+     * @return array Modified data
+     */
+    public function processPresets(array $presetAction, array $inData): array
+    {
+        if (empty($presetAction)) {
+            return $inData;
+        }
 
-        // Setting up the buttons and markers for docheader
-        $this->getButtons();
+        $presetUid = (int)$presetAction['select'];
 
-        $this->moduleTemplate->setContent($this->standaloneView->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        try {
+            $info = null;
+
+            // Save preset
+            if (isset($presetAction['save'])) {
+                // Update existing
+                if ($presetUid > 0) {
+                    $this->presetRepository->updatePreset($presetUid, $inData);
+                    $info = 'Preset #' . $presetUid . ' saved!';
+                }
+                // Insert new
+                else {
+                    $this->presetRepository->createPreset($inData);
+                    $info = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
+                }
+            }
+
+            // Delete preset
+            if (isset($presetAction['delete'])) {
+                if ($presetUid > 0) {
+                    $this->presetRepository->deletePreset($presetUid);
+                    $info = 'Preset #' . $presetUid . ' deleted!';
+                } else {
+                    $error = 'ERROR: No preset selected for deletion.';
+                    $this->moduleTemplate->addFlashMessage($error, 'Presets', FlashMessage::ERROR);
+                }
+            }
+
+            // Load preset data
+            if (isset($presetAction['load']) || isset($presetAction['merge'])) {
+                if ($presetUid > 0) {
+                    $presetData = $this->presetRepository->loadPreset($presetUid);
+                    if (isset($presetAction['merge'])) {
+                        // Merge records in:
+                        if (is_array($presetData['record'] ?? null)) {
+                            $inData['record'] = array_merge((array)$inData['record'], $presetData['record']);
+                        }
+                        // Merge lists in:
+                        if (is_array($presetData['list'] ?? null)) {
+                            $inData['list'] = array_merge((array)$inData['list'], $presetData['list']);
+                        }
+                        $info = 'Preset #' . $presetUid . ' merged!';
+                    } else {
+                        $inData = $presetData;
+                        $info = 'Preset #' . $presetUid . ' loaded!';
+                    }
+                } else {
+                    $error = 'ERROR: No preset selected for loading.';
+                    $this->moduleTemplate->addFlashMessage($error, 'Presets', FlashMessage::ERROR);
+                }
+            }
+
+            if ($info !== null) {
+                $this->moduleTemplate->addFlashMessage($info, 'Presets', FlashMessage::INFO);
+            }
+        } catch (Exception $e) {
+            $this->moduleTemplate->addFlashMessage($e->getMessage(), 'Presets', FlashMessage::ERROR);
+        }
+        return $inData;
     }
 
     /**
      * Export part of module
      *
      * @param array $inData
+     * @return array Modified data
      * @throws ExistingTargetFileNameException
-     * @throws Exception
      */
-    protected function exportData(array $inData)
+    protected function exportData(array $inData): array
     {
-        // BUILDING EXPORT DATA:
-        // Processing of InData array values:
-        $inData['filename'] = trim((string)preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'] ?? '')));
-        if ($inData['filename'] !== '') {
-            $inData['filename'] .= $inData['filetype'] === 'xml' ? '.xml' : '.t3d';
-        }
-        // Set exclude fields in export object:
-        $inData['exclude'] ??= [];
-        // Saving/Loading/Deleting presets:
-        $this->presetRepository->processPresets($inData);
         // Create export object and configure it:
         $this->export = GeneralUtility::makeInstance(Export::class);
-        $this->export->init(0);
-        $this->export->excludeMap = (array)($inData['exclude'] ?? []);
-        $this->export->softrefCfg = (array)($inData['softrefCfg'] ?? []);
-        $this->export->extensionDependencies = (($inData['extension_dep'] ?? '') === '') ? [] : (array)$inData['extension_dep'];
-        $this->export->showStaticRelations = $inData['showStaticRelations'] ?? false;
-        $this->export->includeExtFileResources = !($inData['excludeHTMLfileResources'] ?? false);
-        $this->excludeDisabledRecords = (bool)($inData['excludeDisabled'] ?? false);
-        $this->export->setExcludeDisabledRecords($this->excludeDisabledRecords);
+        $this->export->setExcludeMap((array)($inData['exclude'] ?? []));
+        $this->export->setSoftrefCfg((array)($inData['softrefCfg'] ?? []));
+        $this->export->setExtensionDependencies((($inData['extension_dep'] ?? '') === '') ? [] : (array)$inData['extension_dep']);
+        $this->export->setShowStaticRelations((bool)($inData['showStaticRelations'] ?? false));
+        $this->export->setIncludeExtFileResources(!($inData['excludeHTMLfileResources'] ?? false));
+        $this->export->setExcludeDisabledRecords((bool)($inData['excludeDisabled'] ?? false));
+        if (!empty($inData['filetype'])) {
+            $this->export->setExportFileType((string)$inData['filetype']);
+        }
+        $this->export->setExportFileName($inData['filename'] ?? '');
 
         // Static tables:
         if (is_array($inData['external_static']['tables'] ?? null)) {
-            $this->export->relStaticTables = $inData['external_static']['tables'];
+            $this->export->setRelStaticTables($inData['external_static']['tables']);
         }
         // Configure which tables external relations are included for:
         if (is_array($inData['external_ref']['tables'] ?? null)) {
-            $this->export->relOnlyTables = $inData['external_ref']['tables'];
+            $this->export->setRelOnlyTables($inData['external_ref']['tables']);
         }
-        $saveFilesOutsideExportFile = false;
         if (isset($inData['save_export'], $inData['saveFilesOutsideExportFile']) && $inData['saveFilesOutsideExportFile'] === '1') {
             $this->export->setSaveFilesOutsideExportFile(true);
-            $saveFilesOutsideExportFile = true;
         }
-        $this->export->setHeaderBasics();
-        // Meta data setting:
-
-        $beUser = $this->getBackendUser();
-        $this->export->setMetaData(
-            $inData['meta']['title'] ?? '',
-            $inData['meta']['description'] ?? '',
-            $inData['meta']['notes'] ?? '',
-            $beUser->user['username'],
-            $beUser->user['realName'],
-            $beUser->user['email']
-        );
-        // Configure which records to export
+        if (is_array($inData['meta'] ?? null)) {
+            if (isset($inData['meta']['title'])) {
+                $this->export->setTitle($inData['meta']['title']);
+            }
+            if (isset($inData['meta']['description'])) {
+                $this->export->setDescription($inData['meta']['description']);
+            }
+            if (isset($inData['meta']['notes'])) {
+                $this->export->setNotes($inData['meta']['notes']);
+            }
+        }
         if (is_array($inData['record'] ?? null)) {
-            foreach ($inData['record'] as $ref) {
-                $rParts = explode(':', $ref);
-                $this->export->export_addRecord($rParts[0], BackendUtility::getRecord($rParts[0], (int)$rParts[1]));
-            }
+            $this->export->setRecord($inData['record']);
         }
-        // Configure which tables to export
         if (is_array($inData['list'] ?? null)) {
-            foreach ($inData['list'] as $ref) {
-                $rParts = explode(':', $ref);
-                if ($beUser->check('tables_select', $rParts[0])) {
-                    $statement = $this->exec_listQueryPid($rParts[0], (int)$rParts[1]);
-                    while ($subTrow = $statement->fetchAssociative()) {
-                        $this->export->export_addRecord($rParts[0], $subTrow);
-                    }
-                }
-            }
+            $this->export->setList($inData['list']);
         }
-        // Pagetree
         if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'] ?? null)) {
-            // Based on click-expandable tree
-            $idH = null;
-            $pid = (int)$inData['pagetree']['id'];
-            $levels = (int)$inData['pagetree']['levels'];
-            if ($levels === -1) {
-                $pagetree = GeneralUtility::makeInstance(ExportPageTreeView::class);
-                if ($this->excludeDisabledRecords) {
-                    $pagetree->init(BackendUtility::BEenableFields('pages'));
-                }
-                $tree = $pagetree->ext_tree($pid, $this->filterPageIds($this->export->excludeMap));
-                $this->treeHTML = $pagetree->printTree($tree);
-                $idH = $pagetree->buffer_idH;
-            } elseif ($levels === -2) {
-                $this->addRecordsForPid($pid, $inData['pagetree']['tables']);
-            } else {
-                // Based on depth
-                // Drawing tree:
-                // If the ID is zero, export root
-                if (!$inData['pagetree']['id'] && $beUser->isAdmin()) {
-                    $sPage = [
-                        'uid' => 0,
-                        'title' => 'ROOT'
-                    ];
-                } else {
-                    $sPage = BackendUtility::getRecordWSOL('pages', $pid, '*', ' AND ' . $this->perms_clause);
-                }
-                if (is_array($sPage)) {
-                    $tree = GeneralUtility::makeInstance(PageTreeView::class);
-                    $initClause = 'AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap);
-                    if ($this->excludeDisabledRecords) {
-                        $initClause .= BackendUtility::BEenableFields('pages');
-                    }
-                    $tree->init($initClause);
-                    $HTML = $this->iconFactory->getIconForRecord('pages', $sPage, Icon::SIZE_SMALL)->render();
-                    $tree->tree[] = ['row' => $sPage, 'HTML' => $HTML];
-                    $tree->buffer_idH = [];
-                    if ($levels > 0) {
-                        $tree->getTree($pid, $levels);
-                    }
-                    $idH = [];
-                    $idH[$pid]['uid'] = $pid;
-                    if (!empty($tree->buffer_idH)) {
-                        $idH[$pid]['subrow'] = $tree->buffer_idH;
-                    }
-                    $pagetree = GeneralUtility::makeInstance(ExportPageTreeView::class);
-                    $this->treeHTML = $pagetree->printTree($tree->tree);
-                    $this->shortcutName .= ' (' . $sPage['title'] . ')';
-                }
-            }
-            // In any case we should have a multi-level array, $idH, with the page structure
-            // here (and the HTML-code loaded into memory for nice display...)
-            if (is_array($idH)) {
-                // Sets the pagetree and gets a 1-dim array in return with the pages (in correct submission order BTW...)
-                $flatList = $this->export->setPageTree($idH);
-                foreach ($flatList as $k => $value) {
-                    $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', $k));
-                    $this->addRecordsForPid((int)$k, $inData['pagetree']['tables']);
-                }
-            }
+            $this->export->setPid((int)$inData['pagetree']['id']);
         }
-        // After adding ALL records we set relations:
-        for ($a = 0; $a < 10; $a++) {
-            $addR = $this->export->export_addDBRelations($a);
-            if (empty($addR)) {
-                break;
-            }
+        if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['levels'] ?? null)) {
+            $this->export->setLevels((int)$inData['pagetree']['levels']);
         }
-        // Finally files are added:
-        // MUST be after the DBrelations are set so that files from ALL added records are included!
-        $this->export->export_addFilesFromRelations();
+        if (is_array($inData['pagetree']['tables'] ?? null)) {
+            $this->export->setTables($inData['pagetree']['tables']);
+        }
 
-        $this->export->export_addFilesFromSysFilesRecords();
+        $this->export->process();
 
-        // If the download button is clicked, return file
+        $inData['filename'] = $this->export->getExportFileName();
+
+        // Perform export:
         if (($inData['download_export'] ?? null) || ($inData['save_export'] ?? null)) {
-            switch ($inData['filetype'] ?? '') {
-                case 'xml':
-                    $out = $this->export->compileMemoryToFileContent('xml');
-                    $fExt = '.xml';
-                    break;
-                case 't3d':
-                    $this->export->dontCompress = true;
-                    // intentional fall-through
-                    // no break
-                default:
-                    $out = $this->export->compileMemoryToFileContent();
-                    $fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';
-            }
-            // Filename:
-            $dlFile = $inData['filename'];
-            if (!$dlFile) {
-                $exportName = substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20);
-                $dlFile = 'T3D_' . $exportName . '_' . date('Y-m-d_H-i') . $fExt;
-            }
 
-            // Export for download:
-            if ($inData['download_export']) {
+            // Export by download:
+            if ($inData['download_export'] ?? null) {
+                // @todo: create response and return!
+                $fileName = $this->export->getOrGenerateExportFileNameWithFileExtension();
+                $fileContent = $this->export->render();
                 $mimeType = 'application/octet-stream';
                 header('Content-Type: ' . $mimeType);
-                header('Content-Length: ' . strlen($out));
-                header('Content-Disposition: attachment; filename=' . PathUtility::basename($dlFile));
-                echo $out;
+                header('Content-Length: ' . strlen($fileContent));
+                header('Content-Disposition: attachment; filename=' . PathUtility::basename($fileName));
+                echo $fileContent;
                 die;
             }
 
-            // Export by saving:
-            if ($inData['save_export']) {
-                $saveFolder = $this->getDefaultImportExportFolder();
-                $lang = $this->getLanguageService();
-                if ($saveFolder instanceof Folder && $saveFolder->checkActionPermission('write')) {
-                    $temporaryFileName = GeneralUtility::tempnam('export');
-                    GeneralUtility::writeFile($temporaryFileName, $out);
-                    $file = $saveFolder->addFile($temporaryFileName, $dlFile, 'replace');
-                    if ($saveFilesOutsideExportFile) {
-                        $filesFolderName = $dlFile . '.files';
-                        $filesFolder = $saveFolder->createFolder($filesFolderName);
-                        $temporaryFilesForExport = GeneralUtility::getFilesInDir($this->export->getTemporaryFilesPathForExport(), '', true);
-                        foreach ($temporaryFilesForExport as $temporaryFileForExport) {
-                            $filesFolder->addFile($temporaryFileForExport);
-                            GeneralUtility::unlink_tempfile($temporaryFileForExport);
-                        }
-                        GeneralUtility::rmdir($this->export->getTemporaryFilesPathForExport());
-                    }
-
-                    /** @var FlashMessage $flashMessage */
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        sprintf($lang->getLL('exportdata_savedInSBytes'), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
-                        $lang->getLL('exportdata_savedFile'),
-                        FlashMessage::OK
+            // Export by saving on server:
+            if ($inData['save_export'] ?? null) {
+                try {
+                    $saveFile = $this->export->saveToFile();
+                    $saveFileSize = $saveFile->getProperty('size');
+                    $this->moduleTemplate->addFlashMessage(
+                        sprintf($this->lang->getLL('exportdata_savedInSBytes'), $saveFile->getPublicUrl(), GeneralUtility::formatSize($saveFileSize)),
+                        $this->lang->getLL('exportdata_savedFile')
                     );
-                } else {
-                    /** @var FlashMessage $flashMessage */
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        sprintf($lang->getLL('exportdata_badPathS'), $saveFolder->getPublicUrl()),
-                        $lang->getLL('exportdata_problemsSavingFile'),
+                } catch (CoreException $e) {
+                    $saveFolder = $this->export->getOrCreateDefaultImportExportFolder();
+                    $this->moduleTemplate->addFlashMessage(
+                        sprintf($this->lang->getLL('exportdata_badPathS'), $saveFolder->getPublicUrl()),
+                        $this->lang->getLL('exportdata_problemsSavingFile'),
                         FlashMessage::ERROR
                     );
                 }
-                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }
 
-        $this->makeConfigurationForm($inData);
-
-        $this->makeSaveForm($inData);
-
-        $this->makeAdvancedOptionsForm($inData);
-
-        $this->standaloneView->assign('errors', $this->export->errorLog);
-
-        // Generate overview:
-        $this->standaloneView->assign(
-            'contentOverview',
-            $this->export->displayContentOverview()
-        );
-    }
-
-    /**
-     * Adds records to the export object for a specific page id.
-     *
-     * @param int $k Page id for which to select records to add
-     * @param array $tables Array of table names to select from
-     */
-    protected function addRecordsForPid(int $k, array $tables): void
-    {
-        foreach ($GLOBALS['TCA'] as $table => $value) {
-            if ($table !== 'pages'
-                && (in_array($table, $tables, true) || in_array('_ALL', $tables, true))
-                && $this->getBackendUser()->check('tables_select', $table)
-                && !$GLOBALS['TCA'][$table]['ctrl']['is_static']
-            ) {
-                $statement = $this->exec_listQueryPid($table, $k);
-                while ($subTrow = $statement->fetchAssociative()) {
-                    $this->export->export_addRecord($table, $subTrow);
-                }
-            }
-        }
-    }
-
-    /**
-     * Selects records from table / pid
-     *
-     * @param string $table Table to select from
-     * @param int $pid Page ID to select from
-     * @return Statement Query statement
-     */
-    protected function exec_listQueryPid(string $table, int $pid): Statement
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-
-        $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, 0));
-
-        if ($this->excludeDisabledRecords === false) {
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, 0));
-        }
-
-        $queryBuilder->select('*')
-            ->from($table)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
-                )
-            );
-
-        foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
-            [$fieldName, $order] = $orderPair;
-            $queryBuilder->addOrderBy($fieldName, $order);
-        }
-
-        return $queryBuilder->execute();
+        $this->standaloneView->assign('errors', $this->export->getErrorLog());
+        $this->standaloneView->assign('preview', $this->export->renderPreview());
+        return $inData;
     }
 
     /**
@@ -440,32 +317,29 @@ class ExportController extends ImportExportController
      */
     protected function makeConfigurationForm(array $inData): void
     {
-        $nameSuggestion = '';
-        // Page tree export options:
+        // Page tree export:
         if (MathUtility::canBeInterpretedAsInteger($inData['pagetree']['id'] ?? '')) {
-            $this->standaloneView->assign('treeHTML', $this->treeHTML);
-
-            $opt = [
-                -2 => $this->lang->getLL('makeconfig_tablesOnThisPage'),
-                -1 => $this->lang->getLL('makeconfig_expandedTree'),
+            $options = [
+                Export::LEVELS_RECORDS_ON_THIS_PAGE => $this->lang->getLL('makeconfig_tablesOnThisPage'),
+                Export::LEVELS_EXPANDED_TREE => $this->lang->getLL('makeconfig_expandedTree'),
                 0 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
                 1 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
                 2 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
                 3 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
                 4 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
+                Export::LEVELS_INFINITE => $this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
             ];
-            $this->standaloneView->assign('levelSelectOptions', $opt);
+            $this->standaloneView->assign('levelSelectOptions', $options);
             $this->standaloneView->assign('tableSelectOptions', $this->getTableSelectOptions('pages'));
-            $nameSuggestion .= 'tree_PID' . ($inData['pagetree']['id'] ?? 0) . '_L' . ($inData['pagetree']['levels'] ?? 0);
+            $this->standaloneView->assign('treeHTML', $this->export->getTreeHTML());
         }
-        // Single record export:
+
+        // Single records export:
         if (is_array($inData['record'] ?? null)) {
             $records = [];
             foreach ($inData['record'] as $ref) {
                 $rParts = explode(':', $ref);
                 [$tName, $rUid] = $rParts;
-                $nameSuggestion .= $tName . '_' . $rUid;
                 $rec = BackendUtility::getRecordWSOL((string)$tName, (int)$rUid);
                 if (!empty($rec)) {
                     $records[] = [
@@ -479,8 +353,8 @@ class ExportController extends ImportExportController
             $this->standaloneView->assign('records', $records);
         }
 
-        // Single tables/pids:
-        if (is_array($inData['list'] ?? false)) {
+        // Single tables export:
+        if (is_array($inData['list'] ?? null)) {
             // Display information about pages from which the export takes place
             $tableList = [];
             foreach ($inData['list'] as $reference) {
@@ -508,20 +382,16 @@ class ExportController extends ImportExportController
 
         $this->standaloneView->assign('externalReferenceTableSelectOptions', $this->getTableSelectOptions());
         $this->standaloneView->assign('externalStaticTableSelectOptions', $this->getTableSelectOptions());
-        $this->standaloneView->assign('nameSuggestion', $nameSuggestion);
     }
 
     /**
      * Create advanced options form
-     *
-     * @param array $inData Form configuration data
      */
-    protected function makeAdvancedOptionsForm(array $inData): void
+    protected function makeAdvancedOptionsForm(): void
     {
         $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         $loadedExtensions = array_combine($loadedExtensions, $loadedExtensions);
         $this->standaloneView->assign('extensions', $loadedExtensions);
-        $this->standaloneView->assign('inData', $inData);
     }
 
     /**
@@ -531,31 +401,22 @@ class ExportController extends ImportExportController
      */
     protected function makeSaveForm(array $inData): void
     {
-        $opt = $this->presetRepository->getPresets((int)($inData['pagetree']['id'] ?? 0));
+        $presetOptions = $this->presetRepository->getPresets((int)($inData['pagetree']['id'] ?? 0));
 
-        $this->standaloneView->assign('presetSelectOptions', $opt);
-
-        $saveFolder = $this->getDefaultImportExportFolder();
-        if ($saveFolder) {
-            $this->standaloneView->assign('saveFolder', $saveFolder->getCombinedIdentifier());
+        $fileTypeOptions = [];
+        foreach ($this->export->getSupportedFileTypes() as $supportedFileType) {
+            $fileTypeOptions[$supportedFileType] = $this->lang->getLL('makesavefo_' . $supportedFileType);
         }
 
-        // Add file options:
-        $opt = [];
-        $opt['xml'] = $this->lang->getLL('makesavefo_xml');
-        if ($this->export->compress) {
-            $opt['t3d_compressed'] = $this->lang->getLL('makesavefo_t3dFileCompressed');
-        }
-        $opt['t3d'] = $this->lang->getLL('makesavefo_t3dFile');
-
-        $this->standaloneView->assign('filetypeSelectOptions', $opt);
-
-        $fileName = '';
+        $saveFolder = $this->export->getOrCreateDefaultImportExportFolder();
         if ($saveFolder) {
             $this->standaloneView->assign('saveFolder', $saveFolder->getPublicUrl());
             $this->standaloneView->assign('hasSaveFolder', true);
         }
-        $this->standaloneView->assign('fileName', $fileName);
+
+        $this->standaloneView->assign('fileName', '');
+        $this->standaloneView->assign('presetSelectOptions', $presetOptions);
+        $this->standaloneView->assign('filetypeSelectOptions', $fileTypeOptions);
     }
 
     /**
@@ -566,50 +427,16 @@ class ExportController extends ImportExportController
      */
     protected function getTableSelectOptions(string $excludeList = ''): array
     {
-        $optValues = [];
+        $options = [];
         if (!GeneralUtility::inList($excludeList, '_ALL')) {
-            $optValues['_ALL'] = '[' . $this->lang->getLL('ALL_tables') . ']';
+            $options['_ALL'] = '[' . $this->lang->getLL('ALL_tables') . ']';
         }
         foreach ($GLOBALS['TCA'] as $table => $_) {
             if (!GeneralUtility::inList($excludeList, $table) && $this->getBackendUser()->check('tables_select', $table)) {
-                $optValues[$table] = $table;
+                $options[$table] = $table;
             }
         }
-        natsort($optValues);
-        return $optValues;
-    }
-
-    /**
-     * Filter page IDs by traversing exclude array, finding all
-     * excluded pages (if any) and making an AND NOT IN statement for the select clause.
-     *
-     * @param array $exclude Exclude array from import/export object.
-     * @return string AND where clause part to filter out page uids.
-     */
-    protected function filterPageIds(array $exclude): string
-    {
-        // Get keys:
-        $exclude = array_keys($exclude);
-        // Traverse
-        $pageIds = [];
-        foreach ($exclude as $element) {
-            [$table, $uid] = explode(':', $element);
-            if ($table === 'pages') {
-                $pageIds[] = (int)$uid;
-            }
-        }
-        // Add to clause:
-        if (!empty($pageIds)) {
-            return ' AND uid NOT IN (' . implode(',', $pageIds) . ')';
-        }
-        return '';
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
+        natsort($options);
+        return $options;
     }
 }

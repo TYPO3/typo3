@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Import/Export',
-    'description' => 'Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems.',
+    'description' => 'Import and Export of data and files of TYPO3 in XML or a custom serialized format T3D.',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

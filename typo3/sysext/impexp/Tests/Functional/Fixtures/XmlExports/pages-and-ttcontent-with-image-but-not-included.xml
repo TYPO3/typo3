@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3RecordDocument>
 	<header type="array">
+		<XMLversion>1.0</XMLversion>
+		<meta type="array"></meta>
+		<static_tables index="relStaticTables" type="array"></static_tables>
+		<excludeMap type="array"></excludeMap>
+		<softrefCfg type="array"></softrefCfg>
+		<extensionDependencies type="array"></extensionDependencies>
+		<charset>utf-8</charset>
+		<pagetree type="array">
+			<node index="1" type="array">
+				<uid>1</uid>
+				<node index="subrow" type="array">
+					<node index="2" type="array">
+						<uid>2</uid>
+					</node>
+					<node index="3" type="array">
+						<uid>3</uid>
+					</node>
+				</node>
+			</node>
+		</pagetree>
 		<records type="array">
 			<table index="pages" type="array">
 				<rec index="1" type="array">
@@ -10,11 +30,32 @@
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>1</pid>
+					<title>Dummy 1-3</title>
+					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Dummy 1-2</title>
 					<relations index="rels" type="array"></relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="sys_file_reference" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>typo3_image2.jpg</title>
+					<relations index="rels" type="array">
+						<element index="sys_file:1" type="array">
+							<id>1</id>
+							<table>sys_file</table>
+						</element>
+					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
@@ -42,29 +83,6 @@
 							</subst>
 						</softref_element>
 					</softrefs>
-				</rec>
-			</table>
-			<table index="sys_language" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>0</pid>
-					<title>Deutsch</title>
-					<relations index="rels" type="array"></relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
-			<table index="sys_file_reference" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>typo3_image2.jpg</title>
-					<relations index="rels" type="array">
-						<element index="sys_file:1" type="array">
-							<id>1</id>
-							<table>sys_file</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
 			<table index="sys_file" type="array">
@@ -138,9 +156,6 @@
 				<table index="pages" type="array">
 					<item index="1">1</item>
 				</table>
-				<table index="sys_language" type="array">
-					<item index="1">1</item>
-				</table>
 				<table index="sys_file" type="array">
 					<item index="1">1</item>
 				</table>
@@ -153,27 +168,18 @@
 				</table>
 			</page_contents>
 			<page_contents index="1" type="array">
-				<table index="pages" type="array">
-					<item index="2">1</item>
+				<table index="sys_file_reference" type="array">
+					<item index="1">1</item>
 				</table>
 				<table index="tt_content" type="array">
 					<item index="1">1</item>
 				</table>
-				<table index="sys_file_reference" type="array">
-					<item index="1">1</item>
+				<table index="pages" type="array">
+					<item index="3">1</item>
+					<item index="2">1</item>
 				</table>
 			</page_contents>
 		</pid_lookup>
-		<pagetree type="array">
-			<node index="1" type="array">
-				<uid>1</uid>
-				<node index="subrow" type="array">
-					<node index="2" type="array">
-						<uid>2</uid>
-					</node>
-				</node>
-			</node>
-		</pagetree>
 		<files_fal type="array">
 			<file index="4a705ca3ef43b53dc00de861ba2c86af" type="array">
 				<filename>typo3_image2.jpg</filename>
@@ -184,38 +190,53 @@
 	<records type="array">
 		<tablerow index="pages:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="perms_everybody">15</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">0</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
 				<field index="title">Root</field>
-				<field index="doktype">1</field>
+				<field index="doktype" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="pages:2" type="array">
+		<tablerow index="sys_file_reference:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">2</field>
-				<field index="pid">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="perms_everybody">15</field>
-				<field index="title">Dummy 1-2</field>
-				<field index="doktype">1</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="uid_local" type="integer">1</field>
+				<field index="uid_foreign" type="integer">1</field>
+				<field index="tablenames">tt_content</field>
+				<field index="fieldname">image</field>
+				<field index="sorting_foreign" type="integer">0</field>
+				<field index="table_local">sys_file</field>
+				<field index="title" type="NULL"></field>
+				<field index="description" type="NULL"></field>
+				<field index="alternative" type="NULL"></field>
+				<field index="link"></field>
 			</fieldlist>
-			<related index="rels" type="array"></related>
+			<related index="rels" type="array">
+				<field index="uid_local" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>sys_file</table>
+						</element>
+					</relations>
+				</field>
+			</related>
 		</tablerow>
 		<tablerow index="tt_content:1" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="deleted">0</field>
-				<field index="hidden">0</field>
-				<field index="t3ver_oid">0</field>
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="t3ver_oid" type="integer">0</field>
 				<field index="CType">textpic</field>
 				<field index="header">Test content</field>
-				<field index="image">1</field>
+				<field index="image" type="integer">1</field>
 				<field index="header_link">file:1</field>
 			</fieldlist>
 			<related index="rels" type="array">
@@ -248,42 +269,29 @@
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="sys_language:1" type="array">
+		<tablerow index="pages:3" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="hidden">0</field>
-				<field index="title">Deutsch</field>
-				<field index="flag">de</field>
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">1</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="title">Dummy 1-3</field>
+				<field index="doktype" type="integer">1</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="sys_file_reference:1" type="array">
+		<tablerow index="pages:2" type="array">
 			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">1</field>
-				<field index="uid_local">1</field>
-				<field index="uid_foreign">1</field>
-				<field index="tablenames">tt_content</field>
-				<field index="fieldname">image</field>
-				<field index="sorting_foreign">0</field>
-				<field index="table_local">sys_file</field>
-				<field index="title" type="NULL"></field>
-				<field index="description" type="NULL"></field>
-				<field index="alternative" type="NULL"></field>
-				<field index="link"></field>
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="perms_everybody" type="integer">15</field>
+				<field index="title">Dummy 1-2</field>
+				<field index="doktype" type="integer">1</field>
 			</fieldlist>
-			<related index="rels" type="array">
-				<field index="uid_local" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>sys_file</table>
-						</element>
-					</relations>
-				</field>
-			</related>
+			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="sys_file:1" type="array">
 			<fieldlist index="data" type="array">
@@ -331,7 +339,7 @@
 			<fieldlist index="data" type="array">
 				<field index="uid">1</field>
 				<field index="pid">0</field>
-				<field index="description" type="NULL"/>
+				<field index="description" type="NULL"></field>
 				<field index="name">fileadmin</field>
 				<field index="driver">Local</field>
 				<field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
