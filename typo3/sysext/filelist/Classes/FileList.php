@@ -635,15 +635,11 @@ class FileList
     public function linkWrapDir($title, Folder $folderObject)
     {
         $href = $this->listURL(['id' => $folderObject->getCombinedIdentifier(), 'searchTerm' => '', 'pointer' => 0]);
-        $triggerTreeUpdateAttribute = sprintf(
-            ' data-tree-update-request="%s"',
-            htmlspecialchars($folderObject->getCombinedIdentifier())
-        );
         // Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
         if ((string)$title === strip_tags($title)) {
-            return '<a href="' . htmlspecialchars($href) . '"' . $triggerTreeUpdateAttribute . ' title="' . htmlspecialchars($title) . '">' . $title . '</a>';
+            return '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($title) . '">' . $title . '</a>';
         }
-        return '<a href="' . htmlspecialchars($href) . '"' . $triggerTreeUpdateAttribute . '>' . $title . '</a>';
+        return '<a href="' . htmlspecialchars($href) . '">' . $title . '</a>';
     }
 
     /**

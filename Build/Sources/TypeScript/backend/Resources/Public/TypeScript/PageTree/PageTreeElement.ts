@@ -28,6 +28,7 @@ import {DragDrop, DragDropHandler, DraggablePositionEnum} from '../Tree/DragDrop
 import {D3DragEvent} from 'd3-drag';
 import Modal = require('../Modal');
 import Severity = require('../Severity');
+import {ModuleStateStorage} from '../Storage/ModuleStateStorage';
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -51,7 +52,7 @@ export class EditablePageTree extends PageTree {
   public dragDrop: PageTreeDragDrop;
 
   public selectFirstNode(): void {
-    this.selectNode(this.nodes[0]);
+    this.selectNode(this.nodes[0], true);
   }
 
   public sendChangeCommand(data: any): void {
@@ -74,7 +75,9 @@ export class EditablePageTree extends PageTree {
       params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + encodeURIComponent(data.title);
     } else {
       if (data.command === 'delete') {
-        if (data.uid === window.fsMod.recentIds.web) {
+        // @todo currently it's "If uid of deleted record (data.uid) is still selected, randomly select the first node"
+        const moduleStateStorage = ModuleStateStorage.current('web');
+        if (data.uid === moduleStateStorage.identifier) {
           this.selectFirstNode();
         }
         params = '&cmd[pages][' + data.uid + '][delete]=1';
@@ -140,13 +143,13 @@ export class EditablePageTree extends PageTree {
     return super.appendTextElement(nodes)
       .on('click', (event, node: TreeNode) => {
         if (node.identifier === '0') {
-          this.selectNode(node);
+          this.selectNode(node, true);
           return;
         }
         if (++clicks === 1) {
           setTimeout(() => {
             if (clicks === 1) {
-              this.selectNode(node);
+              this.selectNode(node, true);
             } else {
               this.editNodeLabel(node);
             }
@@ -396,9 +399,11 @@ export class PageTreeNavigationComponent extends LitElement {
       return;
     }
     //remember the selected page in the global state
-    top.window.fsMod.recentIds.web = node.identifier;
-    top.window.fsMod.currentBank = node.stateIdentifier.split('_')[0];
-    top.window.fsMod.navFrameHighlightedID.web = node.stateIdentifier;
+    ModuleStateStorage.update('web', node.identifier, true, node.stateIdentifier.split('_')[0]);
+
+    if (evt.detail.propagate === false) {
+      return;
+    }
 
     let separator = '?';
     if (top.window.currentSubScript.indexOf('?') !== -1) {
@@ -427,10 +432,10 @@ export class PageTreeNavigationComponent extends LitElement {
 
   /**
    * Event listener called for each loaded node,
-   * here used to mark node remembered in fsMod as selected
+   * here used to mark node remembered in ModuleState as selected
    */
   private selectActiveNode = (evt: CustomEvent): void => {
-    const selectedNodeIdentifier = window.fsMod.navFrameHighlightedID.web;
+    const selectedNodeIdentifier = ModuleStateStorage.current('web').selection;
     let nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
       if (node.stateIdentifier === selectedNodeIdentifier) {

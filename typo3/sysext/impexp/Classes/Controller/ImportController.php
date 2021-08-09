@@ -84,10 +84,7 @@ class ImportController extends ImportExportController
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
-        $this->moduleTemplate->addJavaScriptCode(
-            'ImpexpInLineJS',
-            'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
-        );
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
 
         // Input data grabbed:
         $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];

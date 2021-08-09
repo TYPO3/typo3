@@ -157,8 +157,13 @@ class SiteModuleCest
     {
         $I->amGoingTo('Create a default FE typoscript for the created site configuration');
 
+        // Select the root page
+        $I->switchToMainFrame();
         $I->amGoingTo('Access template module');
         $I->click('Template');
+        // click on PID=0
+        $I->waitForElement('svg .nodes .node');
+        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('Template tools');
@@ -167,7 +172,6 @@ class SiteModuleCest
         $I->switchToMainFrame();
         $I->click('Template');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->wait(0.2);
         $I->switchToContentFrame();
         $I->waitForText('Create new website');
 
@@ -204,6 +208,9 @@ page.10.value = This is a default text for default rendering without dynamic con
         $I->amGoingTo('Delete the site template record again');
         $I->amOnPage('/typo3/index.php');
         $I->click('Template');
+        // click on PID=0
+        $I->waitForElement('svg .nodes .node');
+        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->switchToMainFrame();

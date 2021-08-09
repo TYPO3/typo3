@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -225,25 +226,7 @@ class RecordListController
 
             // Add JavaScript functions to the page:
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
-
-            $this->moduleTemplate->addJavaScriptCode(
-                'RecordListInlineJS',
-                '
-				function setHighlight(id) {
-					top.fsMod.recentIds["web"] = id;
-					top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + id; // For highlighting
-
-					if (top.nav_frame && top.nav_frame.refresh_nav) {
-						top.nav_frame.refresh_nav();
-					}
-				}
-				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="' . (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
-				}
-
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-			'
-            );
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
 
             // Setting up the context sensitive menu:
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
@@ -255,7 +238,8 @@ class RecordListController
         } else {
             $title = $pageinfo['title'];
         }
-        $body = $this->moduleTemplate->header($title);
+        $body = ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
+        $body .= $this->moduleTemplate->header($title);
 
         // Additional header content
         /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */

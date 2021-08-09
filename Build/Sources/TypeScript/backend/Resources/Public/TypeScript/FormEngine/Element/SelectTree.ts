@@ -76,7 +76,7 @@ export class SelectTree extends SvgTree
    * Node selection logic (triggered by different events) to select multiple
    * nodes (unlike SVG Tree itself).
    */
-  public selectNode(node: TreeNode): void {
+  public selectNode(node: TreeNode, propagate: boolean = true): void {
     if (!this.isNodeSelectable(node)) {
       return;
     }
@@ -92,7 +92,7 @@ export class SelectTree extends SvgTree
 
     node.checked = !checked;
 
-    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node}}));
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node, propagate: propagate}}));
     this.updateVisibleNodes();
   }
 

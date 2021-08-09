@@ -17,6 +17,7 @@ import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
@@ -144,7 +145,7 @@ class WorkspacesMenu {
   private switchWorkspace(workspaceId: number): void {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_switch)).post({
       workspaceId: workspaceId,
-      pageId: top.fsMod.recentIds.web
+      pageId: ModuleStateStorage.current('web').identifier
     }).then(async (response: AjaxResponse): Promise<any> => {
       const data = await response.resolve();
       if (!data.workspaceId) {
@@ -155,7 +156,8 @@ class WorkspacesMenu {
 
       // append the returned page ID to the current module URL
       if (data.pageId) {
-        top.fsMod.recentIds.web = data.pageId;
+        // @todo actually that's superfluous, since that information was known already when doing the AJAX call
+        ModuleStateStorage.update('web', data.pageId, true);
         let url = TYPO3.Backend.ContentContainer.getUrl();
         url += (!url.includes('?') ? '?' : '&') + '&id=' + data.pageId;
         WorkspacesMenu.refreshPageTree();

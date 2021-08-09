@@ -25,6 +25,7 @@ import Severity = require('../Severity');
 import Notification = require('../Notification');
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {TreeNodeSelection, Toolbar} from '../SvgTree';
+import {ModuleStateStorage} from '../Storage/ModuleStateStorage';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -122,7 +123,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
   private selectFirstNode = (): void => {
     const node = this.tree.nodes[0];
     if (node) {
-      this.tree.selectNode(node);
+      this.tree.selectNode(node, true);
     }
   }
 
@@ -131,7 +132,7 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     const identifier = encodeURIComponent(evt.detail.payload.identifier);
     let nodeToSelect = this.tree.nodes.filter((node: TreeNode) => { return node.identifier === identifier})[0];
     if (nodeToSelect && this.tree.getSelectedNodes().filter((selectedNode: TreeNode) => { return selectedNode.identifier === nodeToSelect.identifier; }).length === 0) {
-      this.tree.selectNode(nodeToSelect);
+      this.tree.selectNode(nodeToSelect, false);
     }
   }
 
@@ -149,8 +150,11 @@ export class FileStorageTreeNavigationComponent extends LitElement {
     }
 
     // remember the selected folder in the global state
-    window.fsMod.recentIds.file = node.identifier;
-    window.fsMod.navFrameHighlightedID.file = node.stateIdentifier;
+    ModuleStateStorage.update('file', node.identifier, true);
+
+    if (evt.detail.propagate === false) {
+      return;
+    }
 
     const separator = (window.currentSubScript.indexOf('?') !== -1) ? '&' : '?';
     TYPO3.Backend.ContentContainer.setUrl(
@@ -175,13 +179,13 @@ export class FileStorageTreeNavigationComponent extends LitElement {
 
   /**
    * Event listener called for each loaded node,
-   * here used to mark node remembered in fsMod as selected
+   * here used to mark node remembered in ModuleStateStorage as selected
    */
   private selectActiveNode = (evt: CustomEvent): void => {
-    const selectedNodeIdentifier = window.fsMod.navFrameHighlightedID.file;
+    const selectedNodeIdentifier = ModuleStateStorage.current('file').selection;
     let nodes = evt.detail.nodes as Array<TreeNode>;
     evt.detail.nodes = nodes.map((node: TreeNode) => {
-      if (node.stateIdentifier === selectedNodeIdentifier) {
+      if (node.identifier === selectedNodeIdentifier) {
         node.checked = true;
       }
       return node;

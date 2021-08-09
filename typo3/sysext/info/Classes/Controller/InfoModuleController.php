@@ -203,16 +203,12 @@ class InfoModuleController
             if ($backendUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
-            // JavaScript
-            $this->moduleTemplate->addJavaScriptCode(
-                'WebFuncInLineJS',
-                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-				'
-            );
             // Setting up the context sensitive menu:
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
 
             $this->view = $this->getFluidTemplateObject();
+            $this->view->assign('id', (int)$this->id);
             $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
             $this->view->assign('functionMenuModuleContent', $this->extObjContent($request));
             // Setting up the buttons and markers for doc header

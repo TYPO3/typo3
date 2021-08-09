@@ -108,6 +108,7 @@ class BackendController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Module/Router');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage/ModuleStateStorage');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
@@ -361,22 +362,7 @@ class BackendController
 
         $this->pageRenderer->addJsInlineCode(
             'BackendConfiguration',
-            '
-        TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-        /**
-         * Frameset Module object
-         *
-         * Used in main modules with a frameset for submodules to keep the ID between modules
-         * Typically that is set by something like this in a Web>* sub module:
-         *		if (top.fsMod) top.fsMod.recentIds["web"] = "\'.(int)$this->id.\'";
-         * 		if (top.fsMod) top.fsMod.recentIds["file"] = "...(file reference/string)...";
-         */
-        var fsMod = {
-            recentIds: [],					// used by frameset modules to track the most recent used id for list frame.
-            navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
-            currentBank: "0"
-        };
-        ',
+            'TYPO3.configuration = ' . json_encode($t3Configuration) . ';',
             false
         );
     }

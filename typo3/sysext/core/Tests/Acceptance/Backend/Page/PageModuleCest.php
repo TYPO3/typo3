@@ -39,7 +39,12 @@ class PageModuleCest
      */
     public function checkThatPageModuleHasAHeadline(BackendTester $I)
     {
+        // Select the root page
+        $I->switchToMainFrame();
         $I->click('Page');
+        $I->waitForElement('svg .nodes .node');
+        // click on PID=0
+        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
         $I->canSee('Web>Page module', 'h4');
     }
@@ -53,9 +58,10 @@ class PageModuleCest
         $currentPageTitle = 'styleguide TCA demo';
         $newPageTitle = 'styleguide TCA demo page';
 
+        $I->switchToMainFrame();
         $I->click('Page');
+        $I->waitForElement('svg .nodes .node');
         $pageTree->openPath([$currentPageTitle]);
-        $I->wait(0.2);
         $I->switchToContentFrame();
 
         // Rename the page

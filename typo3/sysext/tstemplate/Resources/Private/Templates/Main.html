@@ -1,4 +1,6 @@
 <form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageId, template: \'all\'}')}" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">
+    <f:variable name="args" value="{0: 'web', 1: pageId}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
     <h1><f:translate key="moduleTitle" /></h1>
     <f:format.raw>{typoscriptTemplateModuleContent}</f:format.raw>
 </form>

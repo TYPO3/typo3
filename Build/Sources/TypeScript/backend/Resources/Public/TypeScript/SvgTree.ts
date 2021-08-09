@@ -530,7 +530,7 @@ export class SvgTree extends LitElement {
       .on('mouseover', (evt: MouseEvent, node: TreeNode) => this.onMouseOverNode(node))
       .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
       .on('click', (evt: MouseEvent, node: TreeNode) => {
-        this.selectNode(node);
+        this.selectNode(node, true);
         this.switchFocusNode(node);
       })
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
@@ -555,15 +555,17 @@ export class SvgTree extends LitElement {
   /**
    * Node selection logic (triggered by different events)
    * This represents a dummy method and is usually overridden
+   * The second argument can be interpreted by the listened events to e.g. not avoid reloading the content frame and instead
+   * used for just updating the state within the tree
    */
-  public selectNode(node: TreeNode): void {
+  public selectNode(node: TreeNode, propagate: boolean = true): void {
     if (!this.isNodeSelectable(node)) {
       return;
     }
     // Disable already selected nodes
     this.disableSelectedNodes();
     node.checked = true;
-    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node}}));
+    this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node, propagate: propagate}}));
     this.updateVisibleNodes();
   }
 
@@ -611,7 +613,7 @@ export class SvgTree extends LitElement {
       // re-select the node from the identifier because the nodes have been updated
       const currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
       if (currentlySelectedNode) {
-        this.selectNode(currentlySelectedNode);
+        this.selectNode(currentlySelectedNode, false);
       } else {
         this.refreshTree();
       }
@@ -787,7 +789,7 @@ export class SvgTree extends LitElement {
       })
       .attr('dy', 5)
       .attr('class', 'node-name')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node));
+      .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node, true));
   }
 
   protected nodesUpdate(nodes: TreeNodeSelection): TreeNodeSelection {
@@ -1257,7 +1259,7 @@ export class SvgTree extends LitElement {
         break;
       case KeyTypes.ENTER:
       case KeyTypes.SPACE:
-        this.selectNode(currentNode);
+        this.selectNode(currentNode, true);
         break;
       default:
     }

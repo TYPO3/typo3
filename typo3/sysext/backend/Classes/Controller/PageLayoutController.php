@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -560,19 +561,7 @@ class PageLayoutController
         // The page will show only if there is a valid page and if this page may be viewed by the user
         if ($this->id && is_array($this->pageinfo)) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
-
-            $this->moduleTemplate->addJavaScriptCode('mainJsFunctions', '
-                if (top.fsMod) {
-                    top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-                    top.fsMod.navFrameHighlightedID["web"] = top.fsMod.currentBank + "_" + ' . (int)$this->id . ';
-                }
-                function deleteRecord(table,id,url) {   //
-                    window.location.href = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('tce_db') . '&cmd[')
-                                            . ' + table + "][" + id + "][delete]=1&redirect=" + encodeURIComponent(url);
-                    return false;
-                }
-            ');
-
+            $content .= ImmediateActionElement::moduleStateUpdateWithCurrentMount('web', (int)$this->id, true);
             if ($this->context instanceof PageLayoutContext) {
                 $backendLayout = $this->context->getBackendLayout();
 
@@ -614,10 +603,7 @@ class PageLayoutController
             // Create LanguageMenu
             $this->makeLanguageMenu();
         } else {
-            $this->moduleTemplate->addJavaScriptCode(
-                'mainJsFunctions',
-                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
-            );
+            $content .= ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
             $content .= '<h1>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '</h1>';
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
@@ -645,6 +631,7 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
+        $this->pageRenderer->loadRequireJsModule(ImmediateActionElement::MODULE_NAME);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
         $tableOutput = '';

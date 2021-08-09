@@ -221,13 +221,9 @@ class TypoScriptTemplateModuleController
         $this->access = $this->pageinfo !== [];
         $view = $this->getFluidTemplateObject('tstemplate');
         if ($this->id && $this->access) {
-            // JavaScript
-            $this->moduleTemplate->addJavaScriptCode(
-                'TSTemplateInlineJS',
-                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
-            );
-            // Setting up the context sensitive menu:
+            // Setting up the context sensitive menu
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
             // Build the module content
             $view->assign('pageId', $this->id);
             $view->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());

@@ -18,6 +18,7 @@ import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
 type QueryParameters = {[key: string]: string};
 
@@ -48,30 +49,13 @@ class Filelist {
     if (mainElement === null) {
       return
     }
-    // emit event for currently shown folder
+    // update ModuleStateStorage to the current folder identifier
+    const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
+    ModuleStateStorage.update('file', id, true, undefined);
+    // emit event for currently shown folder so the folder tree gets updated
     Filelist.emitTreeUpdateRequest(
-      mainElement.dataset.filelistCurrentFolderHash
+      mainElement.dataset.filelistCurrentIdentifier
     );
-    // update recentIds so the current id will be used on accessing the FileList module again
-    if (top.fsMod) {
-      const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
-      // top.fsMod.recentIds should always be set by BackendController::generateJavascript(),
-      // however let's check the type to prevent unnecessary type errors.
-      if (typeof top.fsMod.recentIds !== 'object') {
-        top.fsMod.recentIds = {file: id};
-      } else {
-        top.fsMod.recentIds.file = id;
-      }
-    }
-  }
-
-  private static registerTreeUpdateEvents(): void {
-    // listen potential change of folder
-    new RegularEvent('click', function (this: HTMLElement): void {
-      Filelist.emitTreeUpdateRequest(
-        this.dataset.treeUpdateRequest
-      );
-    }).delegateTo(document.body, '[data-tree-update-request]');
   }
 
   private static emitTreeUpdateRequest(identifier: string): void {
@@ -99,7 +83,6 @@ class Filelist {
     Filelist.processTriggers();
     DocumentService.ready().then((): void => {
       Tooltip.initialize('.table-fit a[title]');
-      Filelist.registerTreeUpdateEvents();
       // file index events
       new RegularEvent('click', (event: Event, target: HTMLElement): void => {
         event.preventDefault();

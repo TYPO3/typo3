@@ -21,7 +21,7 @@ import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Viewport = require('./Viewport');
-import { PageTree } from './PageTree/PageTree';
+import {ModuleStateStorage} from './Storage/ModuleStateStorage';
 
 /**
  * @exports TYPO3/CMS/Backend/ContextMenuActions
@@ -240,7 +240,8 @@ class ContextMenuActions {
         const eventData = {component: 'contextmenu', action: 'delete', table, uid};
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages') {
-            if (uid === top.fsMod.recentIds.web) {
+            // base on the assumption that the last selected node, is the one that got deleted
+            if (ModuleStateStorage.current('web').identifier === uid.toString()) {
               top.document.dispatchEvent(new CustomEvent('typo3:pagetree:selectFirstNode'));
             }
             ContextMenuActions.refreshPageTree();

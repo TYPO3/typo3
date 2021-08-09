@@ -22,9 +22,11 @@ import TriggerRequest = require('./Event/TriggerRequest');
 import InteractionRequest = require('./Event/InteractionRequest');
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import {ModuleStateStorage} from './Storage/ModuleStateStorage';
 
 /**
  * Class to render the module menu and handle the BE navigation
+ * Module: TYPO3/CMS/Backend/ModuleMenu
  */
 class ModuleMenu {
   private loadedModule: string = null;
@@ -83,10 +85,10 @@ class ModuleMenu {
     } else {
       section = moduleData.name.split('_')[0];
     }
-    if (top.fsMod.recentIds[section]) {
-      params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
+    const moduleStateStorage = ModuleStateStorage.current(section);
+    if (moduleStateStorage.selection) {
+      params = 'id=' + moduleStateStorage.selection + '&' + params;
     }
-
     return params;
   }
 

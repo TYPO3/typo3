@@ -37,6 +37,10 @@ export class ImmediateActionElement extends HTMLElement {
       case 'TYPO3.WindowManager.localOpen':
         const windowManager = await import('TYPO3/CMS/Backend/WindowManager');
         return windowManager.localOpen.bind(windowManager);
+      case 'TYPO3.Backend.Storage.ModuleStateStorage.update':
+        return (await import('TYPO3/CMS/Backend/Storage/ModuleStateStorage')).ModuleStateStorage.update;
+      case 'TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount':
+        return (await import('TYPO3/CMS/Backend/Storage/ModuleStateStorage')).ModuleStateStorage.updateWithCurrentMount;
       default:
         throw Error('Unknown action "' + action + '"');
     }

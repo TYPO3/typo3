@@ -262,7 +262,7 @@ class FileListController implements LoggerAwareInterface
         $this->view->setTemplatePathAndFilename(
             GeneralUtility::getFileAbsFileName('EXT:filelist/Resources/Private/Templates/File/List.html')
         );
-        $this->view->assign('currentIdentifier', $this->id);
+        $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
 
         // @todo: These modules should be merged into one module
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');

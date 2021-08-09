@@ -31,12 +31,12 @@ class TemplateCest
     {
         $I->useExistingSession('admin');
 
+        $I->switchToMainFrame();
         $I->see('Template');
         $I->click('Template');
-
+        $I->waitForElement('svg .nodes .node');
         $I->switchToContentFrame();
-        $I->waitForElementVisible('#ts-overview');
-        $I->see('Template tools');
+        $I->waitForText('Template tools');
     }
 
     /**
@@ -45,6 +45,12 @@ class TemplateCest
     public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(BackendTester $I)
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
+        // Select the root page
+        $I->switchToMainFrame();
+        // click on PID=0
+        $I->clickWithLeftButton('#identifier-0_0 text.node-name');
+
+        $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
         $I->see('This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.');
 

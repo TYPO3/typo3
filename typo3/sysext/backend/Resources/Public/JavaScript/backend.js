@@ -29,12 +29,13 @@ function jump(url, modName, mainModName, pageId) {
   if (isNaN(pageId)) {
     pageId = -2;
   }
-  // clear information about which entry in nav. tree that might have been highlighted.
-  top.fsMod.navFrameHighlightedID = [];
-  top.fsMod.recentIds['web'] = pageId;
-
-  top.nextLoadModuleUrl = url;
-  top.TYPO3.ModuleMenu.App.showModule(modName);
+  // @todo Once available, should be using ESM native import
+  require(['TYPO3/CMS/Backend/Storage/ModuleStateStorage'], () => {
+    // clear information about which entry in nav. tree that might have been highlighted.
+    ModuleStateStorage.updateWithCurrentMount('web', pageId);
+    top.nextLoadModuleUrl = url;
+    top.TYPO3.ModuleMenu.App.showModule(modName);
+  });
 }
 
 /**

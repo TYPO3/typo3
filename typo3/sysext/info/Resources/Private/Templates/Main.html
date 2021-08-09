@@ -1,3 +1,5 @@
 <form action="{moduleName}" method="post" id="InfoModuleController" name="webinfoForm">
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
     <f:format.raw>{functionMenuModuleContent}</f:format.raw>
 </form>
