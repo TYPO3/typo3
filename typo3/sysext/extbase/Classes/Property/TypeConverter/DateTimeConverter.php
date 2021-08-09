@@ -73,7 +73,7 @@ class DateTimeConverter extends AbstractTypeConverter
      *
      * @var string
      */
-    const DEFAULT_DATE_FORMAT = \DateTime::W3C;
+    const DEFAULT_DATE_FORMAT = \DateTimeInterface::W3C;
 
     /**
      * @var string[]

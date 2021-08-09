@@ -183,7 +183,7 @@ class RenderFormValueViewHelper extends AbstractViewHelper
         }
 
         if ($object instanceof \DateTime) {
-            return $object->format(\DateTime::W3C);
+            return $object->format(\DateTimeInterface::W3C);
         }
 
         if ($object instanceof File || $object instanceof FileReference) {

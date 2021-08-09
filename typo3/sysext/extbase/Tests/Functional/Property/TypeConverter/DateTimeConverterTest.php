@@ -82,7 +82,7 @@ class DateTimeConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration->setTypeConverterOption(
             DateTimeConverter::class,
             DateTimeConverter::CONFIGURATION_DATE_FORMAT,
-            \DateTime::RFC7231
+            \DateTimeInterface::RFC7231
         );
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
@@ -260,7 +260,7 @@ class DateTimeConverterTest extends FunctionalTestCase
         );
 
         self::assertInstanceOf(\DateTime::class, $dateTime);
-        self::assertSame('2019-12-07T19:07:02+00:00', $dateTime->format(\DateTime::W3C));
+        self::assertSame('2019-12-07T19:07:02+00:00', $dateTime->format(\DateTimeInterface::W3C));
         self::assertSame(1575745622, $dateTime->getTimestamp());
     }
 
@@ -288,7 +288,7 @@ class DateTimeConverterTest extends FunctionalTestCase
         );
 
         self::assertInstanceOf(\DateTime::class, $dateTime);
-        self::assertSame('2019-12-07T19:07:02-11:00', $dateTime->format(\DateTime::W3C));
+        self::assertSame('2019-12-07T19:07:02-11:00', $dateTime->format(\DateTimeInterface::W3C));
         self::assertSame(1575785222, $dateTime->getTimestamp());
     }
 

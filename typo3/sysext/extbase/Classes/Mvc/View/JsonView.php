@@ -272,7 +272,7 @@ class JsonView extends AbstractView
     protected function transformObject(object $object, array $configuration)
     {
         if ($object instanceof \DateTime) {
-            return $object->format(\DateTime::ATOM);
+            return $object->format(\DateTimeInterface::ATOM);
         }
         $propertyNames = ObjectAccess::getGettablePropertyNames($object);
 

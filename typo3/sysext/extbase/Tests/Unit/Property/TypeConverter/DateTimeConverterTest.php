@@ -137,7 +137,7 @@ class DateTimeConverterTest extends UnitTestCase
             ['12:13', 'H:i', true],
             ['13.12.1980', 'd.m.Y', true],
             ['2005-08-15T15:52:01+00:00', null, true],
-            ['2005-08-15T15:52:01+00:00', \DateTime::ATOM, true],
+            ['2005-08-15T15:52:01+00:00', \DateTimeInterface::ATOM, true],
             ['1308174051', 'U', true],
         ];
     }
@@ -380,7 +380,7 @@ class DateTimeConverterTest extends UnitTestCase
             [['date' => '12:13', 'dateFormat' => 'H:i'], true, null],
             [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true, null],
             [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true, '2005-08-15T15:52:01+00:00'],
-            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => \DateTime::ATOM], true, '2005-08-15T15:52:01+00:00'],
+            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => \DateTimeInterface::ATOM], true, '2005-08-15T15:52:01+00:00'],
             [['date' => '1308174051', 'dateFormat' => 'U'], true, '2011-06-15T21:40:51+00:00'],
             [['date' => 1308174051, 'dateFormat' => 'U'], true, '2011-06-15T21:40:51+00:00'],
             [['date' => -1308174051, 'dateFormat' => 'U'], true, '1928-07-19T02:19:09+00:00'],

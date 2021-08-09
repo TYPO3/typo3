@@ -44,7 +44,7 @@ class DatePicker extends AbstractFormElement implements StringableFormElementInt
      */
     public function valueToString($value): string
     {
-        $dateFormat = \DateTime::W3C;
+        $dateFormat = \DateTimeInterface::W3C;
 
         if (isset($this->properties['dateFormat'])) {
             $dateFormat = $this->properties['dateFormat'];
