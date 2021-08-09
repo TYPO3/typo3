@@ -283,8 +283,11 @@ class InlineControlContainer extends AbstractContainer
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
         }
 
-        // Render the level buttons (create new record):
-        $levelButtons = $this->getLevelInteractionButton('newRecord', $config);
+        // Render the "new record" level button:
+        $newRecordButton = '';
+        if (!empty($config['appearance']['enabledControls']['new'])) {
+            $newRecordButton = $this->getLevelInteractionButton('newRecord', $config);
+        }
 
         $formGroupAttributes = [
             'class' => 'form-group',
@@ -307,7 +310,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons before all child records:
         if (in_array($config['appearance']['levelLinksPosition'] ?? null, ['both', 'top'], true)) {
-            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelButtons . $localizationButtons . '</div>';
+            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $newRecordButton . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
@@ -352,7 +355,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons after all child records:
         if (!$isReadOnly && in_array($config['appearance']['levelLinksPosition'] ?? false, ['both', 'bottom'], true)) {
-            $html .= $levelButtons . $localizationButtons;
+            $html .= $newRecordButton . $localizationButtons;
         }
         if (is_array($config['customControls'] ?? false)) {
             $html .= '<div id="' . $nameObject . '_customControls">';
