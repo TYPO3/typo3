@@ -281,8 +281,11 @@ class InlineControlContainer extends AbstractContainer
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
         }
 
-        // Render the level buttons (create new record):
-        $levelButtons = $this->getLevelInteractionButton('newRecord', $config);
+        // Render the "new record" level button:
+        $newRecordButton = '';
+        if (!empty($config['appearance']['enabledControls']['new'])) {
+            $newRecordButton = $this->getLevelInteractionButton('newRecord', $config);
+        }
 
         // Wrap all inline fields of a record with a <div> (like a container)
         $html = '<div class="form-group" id="' . htmlspecialchars($nameObject) . '" data-uid="' . htmlspecialchars((string)$row['uid']) . '" data-foreign-table="' . htmlspecialchars($foreign_table) . '" data-object-group="' . htmlspecialchars($nameObject) . '-' . htmlspecialchars((string)$foreign_table) . '" data-form-field="' . htmlspecialchars($nameForm) . '" data-appearance="' . htmlspecialchars((string)json_encode($config['appearance'])) . '">';
@@ -293,7 +296,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons before all child records:
         if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
-            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelButtons . $localizationButtons . '</div>';
+            $html .= '<div class="form-group t3js-formengine-validation-marker">' . $newRecordButton . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
@@ -338,7 +341,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons after all child records:
         if (!$isReadOnly && ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom')) {
-            $html .= $levelButtons . $localizationButtons;
+            $html .= $newRecordButton . $localizationButtons;
         }
         if (is_array($config['customControls'])) {
             $html .= '<div id="' . $nameObject . '_customControls">';
