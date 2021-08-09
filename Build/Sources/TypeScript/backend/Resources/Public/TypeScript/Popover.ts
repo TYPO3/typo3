@@ -38,7 +38,7 @@ class Popover {
   public initialize(selector?: string): void {
     selector = selector || this.DEFAULT_SELECTOR;
     $(selector).each((i, el) => {
-      const popover = new BootstrapPopover(el)
+      const popover = new BootstrapPopover(el);
       $(el).data('typo3.bs.popover', popover);
     });
   }
@@ -51,7 +51,7 @@ class Popover {
    */
   public popover($element: JQuery) {
     $element.each((i, el) => {
-      const popover = new BootstrapPopover(el)
+      const popover = new BootstrapPopover(el);
       $(el).data('typo3.bs.popover', popover);
     });
   }
@@ -65,6 +65,7 @@ class Popover {
    */
   public setOptions($element: JQuery, options?: BootstrapPopover.Options): void {
     options = options || <BootstrapPopover.Options>{};
+    options.html = true;
     const title: string|(() => void) = options.title || $element.data('title') || '';
     const content: string|(() => void) = options.content || $element.data('bs-content') || '';
     $element
@@ -87,8 +88,9 @@ class Popover {
    */
   public setOption($element: JQuery, key: string, value: string): void {
     if (key === 'content') {
-      $element.attr('data-bs-content', value);
-      $element.data('typo3.bs.popover').setContent();
+      const popover = $element.data('typo3.bs.popover');
+      popover._config.content = value;
+      popover.setContent(popover.tip);
     } else {
       $element.each((i, el) => {
         const popover = $(el).data('typo3.bs.popover');

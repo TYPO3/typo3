@@ -58,6 +58,8 @@ define(['jquery', 'bootstrap', 'TYPO3/CMS/Backend/Popover'], function($, bootstr
       $body.append($element2);
       it('can set content', function() {
         Popover.initialize('.t3js-test-set-options2');
+        // Popover must be visible before the content can be updated manually via setOptions()
+        Popover.show($element2);
         expect($element2.attr('data-title')).toBe('foo-title');
         expect($element2.attr('data-bs-content')).toBe('foo-content');
         expect($element2.attr('data-bs-original-title')).toBe('');

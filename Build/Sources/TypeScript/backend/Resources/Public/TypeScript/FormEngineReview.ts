@@ -129,8 +129,9 @@ class FormEngineReview {
       // bootstrap has no official API to update the content of a popover w/o destroying it
       const $popover: any = $toggleButton.data('bs.popover');
       if ($popover) {
+        $popover.options.html = true;
         $popover.options.content = $list.wrapAll('<div>').parent().html();
-        $popover.setContent();
+        $popover.setContent($popover.$tip);
         $popover.$tip.addClass($popover.options.placement);
       }
     } else {
