@@ -214,6 +214,9 @@ SYS:
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'
+              rte.htmlSanitize:
+                type: bool
+                description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'
               security.frontend.keepSessionDataOnLogout:
                 type: bool
                 description: 'If on, session data is kept in an anonymous session after frontend user logged out. As this is a potential security risk, it is recommended to disable this option if not specifically needed.'

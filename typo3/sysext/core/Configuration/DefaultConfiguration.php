@@ -75,6 +75,7 @@ return [
             'fluidBasedPageModule' => false,
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
+            'rte.htmlSanitize' => true,
             'unifiedPageTranslationHandling' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
             'security.backend.enforceReferrer' => true,
@@ -247,6 +248,9 @@ return [
                     'groups' => ['system']
                 ],
             ],
+        ],
+        'htmlSanitizer' => [
+            'default' => \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder::class,
         ],
         'defaultCategorizedTables' => '',
         'displayErrors' => -1,
