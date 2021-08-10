@@ -89,10 +89,11 @@ Options:
     -s <...>
         Specifies which test suite to run
             - acceptance: main backend acceptance tests
+            - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
+            - cgl: test and fix all core php files
             - cglGit: test and fix latest committed patch for CGL compliance
-            - cglAll: test and fix all core php files
             - checkAnnotations: check php code for allowed annotations
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
@@ -110,8 +111,7 @@ Options:
             - composerValidate: "composer validate"
             - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
-            - install: installation acceptance tests, only with -d mariadb|postgres|sqlite
-            - lint: PHP linting
+            - lintPhp: PHP linting
             - lintScss: SCSS linting
             - lintTypescript: TS linting
             - lintHtml: HTML linting
@@ -136,7 +136,7 @@ Options:
                 - pdo_sqlsrv
 
     -d <mariadb|mysql|mssql|postgres|sqlite>
-        Only with -s install|functional|acceptance
+        Only with -s functional|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use MySQL server
@@ -188,7 +188,7 @@ Options:
         named "canRetrieveValueWithGP"
 
     -x
-        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|install
+        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|acceptanceInstall
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -204,7 +204,7 @@ Options:
         replay the unit tests in that order.
 
     -n
-        Only with -s cglGit|cglAll
+        Only with -s cgl|cglGit
         Activate dry-run in CGL check that does not actively change files and only prints broken ones.
 
     -u
@@ -243,17 +243,14 @@ Examples:
     # Run functional tests on mariadb 10.5
     ./Build/Scripts/runTests.sh -d mariadb -i 10.5
 
-    # Run install tests on mysql 8.0
-    .Build/Scripts/runTests.sh -d mysql -j 8.0
-
     # Run functional tests on postgres 11
-    ./Build/Scripts/runTests.sh -d postgres -k 11
+    ./Build/Scripts/runTests.sh -s functional -d postgres -k 11
 
     # Run restricted set of backend acceptance tests
     ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Backend/Login/BackendLoginCest.php:loginButtonMouseOver
 
     # Run installer tests of a new instance on sqlite
-    ./Build/Scripts/runTests.sh -s install -d sqlite
+    ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
 EOF
 
 # Test if docker-compose exists, else exit out with error
@@ -450,6 +447,40 @@ case ${TEST_SUITE} in
         esac
         docker-compose down
         ;;
+    acceptanceInstall)
+        handleDbmsAndDriverOptions
+        setUpDockerComposeDotEnv
+        case ${DBMS} in
+            mysql)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_acceptance_install_mysql
+                docker-compose run acceptance_install_mysql
+                SUITE_EXIT_CODE=$?
+                ;;
+            mariadb)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_acceptance_install_mariadb
+                docker-compose run acceptance_install_mariadb
+                SUITE_EXIT_CODE=$?
+                ;;
+            postgres)
+                docker-compose run prepare_acceptance_install_postgres
+                docker-compose run acceptance_install_postgres
+                SUITE_EXIT_CODE=$?
+                ;;
+            sqlite)
+                docker-compose run prepare_acceptance_install_sqlite
+                docker-compose run acceptance_install_sqlite
+                SUITE_EXIT_CODE=$?
+                ;;
+            *)
+                echo "Acceptance install tests don't run with DBMS ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+        esac
+        docker-compose down
+        ;;
     buildCss)
         setUpDockerComposeDotEnv
         docker-compose run build_css
@@ -462,19 +493,19 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
-    cglGit)
-        setUpDockerComposeDotEnv
-        docker-compose run cgl_git
-        SUITE_EXIT_CODE=$?
-        docker-compose down
-        ;;
-    cglAll)
-        # Active dry-run for cglAll needs not "-n" but specific options
+    cgl)
+        # Active dry-run for cgl needs not "-n" but specific options
         if [[ ! -z ${CGLCHECK_DRY_RUN} ]]; then
             CGLCHECK_DRY_RUN="--dry-run --diff --diff-format udiff"
         fi
         setUpDockerComposeDotEnv
         docker-compose run cgl_all
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    cglGit)
+        setUpDockerComposeDotEnv
+        docker-compose run cgl_git
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
@@ -617,41 +648,7 @@ case ${TEST_SUITE} in
         esac
         docker-compose down
         ;;
-    install)
-        handleDbmsAndDriverOptions
-        setUpDockerComposeDotEnv
-        case ${DBMS} in
-            mysql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_install_mysql
-                docker-compose run acceptance_install_mysql
-                SUITE_EXIT_CODE=$?
-                ;;
-            mariadb)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_install_mariadb
-                docker-compose run acceptance_install_mariadb
-                SUITE_EXIT_CODE=$?
-                ;;
-            postgres)
-                docker-compose run prepare_acceptance_install_postgres
-                docker-compose run acceptance_install_postgres
-                SUITE_EXIT_CODE=$?
-                ;;
-            sqlite)
-                docker-compose run prepare_acceptance_install_sqlite
-                docker-compose run acceptance_install_sqlite
-                SUITE_EXIT_CODE=$?
-                ;;
-            *)
-                echo "Install tests don't run with DBMS ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
-                exit 1
-        esac
-        docker-compose down
-        ;;
-    lint)
+    lintPhp)
         setUpDockerComposeDotEnv
         docker-compose run lint_php
         SUITE_EXIT_CODE=$?
@@ -752,7 +749,7 @@ if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
 fi
 echo "" >&2
 echo "###########################################################################" >&2
-if [[ ${TEST_SUITE} =~ ^(functional|install|acceptance)$ ]]; then
+if [[ ${TEST_SUITE} =~ ^(functional|acceptance|acceptanceInstall)$ ]]; then
     echo "Result of ${TEST_SUITE}" >&2
     echo "PHP: ${PHP_VERSION}" >&2
     echo "${DBMS_OUTPUT}" >&2

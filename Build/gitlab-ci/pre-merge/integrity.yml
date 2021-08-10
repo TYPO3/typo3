@@ -42,23 +42,6 @@ integration various php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s checkBom -p 7.4
     - Build/Scripts/runTests.sh -s checkComposer -p 7.4
 
-lint php 7.4 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - master
-  script:
-    - Build/Scripts/runTests.sh -s lint -p 7.4
-lint php 8.0 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - master
-  script:
-    - Build/Scripts/runTests.sh -s lint -p 8.0
-
 lint scss ts html pre-merge:
   stage: main
   except:

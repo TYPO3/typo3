@@ -6,13 +6,13 @@ annotations php 7.4:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
 
-cgl all:
+cgl:
   stage: integrity
   only:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s cglAll -n -p 7.4
+    - Build/Scripts/runTests.sh -s cgl -n -p 7.4
 
 composer validate:
   stage: integrity
@@ -56,13 +56,13 @@ lint php 7.4:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s lint -p 7.4
+    - Build/Scripts/runTests.sh -s lintPhp -p 7.4
 lint php 8.0:
   stage: integrity
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s lint -p 8.0
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.0
 
 lint scss ts html:
   stage: integrity
