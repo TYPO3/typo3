@@ -424,6 +424,8 @@ class DatabaseRecordList
      */
     protected array $backendUserCache = [];
 
+    protected array $showLocalizeColumn = [];
+
     protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
@@ -1103,7 +1105,10 @@ class DatabaseRecordList
                 $theData[$fCol] = $this->languageFlag($table, $row);
                 // Localize record
                 $localizationPanel = $translationEnabled ? $this->makeLocalizationPanel($table, $row, $translations) : '';
-                $theData[$fCol . 'b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
+                if ($localizationPanel !== '') {
+                    $theData['_LOCALIZATION_b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
+                    $this->showLocalizeColumn[$table] = true;
+                }
             } elseif ($fCol !== '_LOCALIZATION_b') {
                 // default for all other columns, except "_LOCALIZATION_b"
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
@@ -1235,12 +1240,14 @@ class DatabaseRecordList
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_':
-                    // Path
+                    // Show language of record
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_b':
-                    // Path
-                    $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
+                    // Show translation options
+                    if ($this->showLocalizeColumn[$table] ?? false) {
+                        $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
+                    }
                     break;
                 default:
                     // Regular fields header:
