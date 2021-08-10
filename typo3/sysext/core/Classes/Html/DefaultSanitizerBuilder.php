@@ -40,10 +40,13 @@ class DefaultSanitizerBuilder extends CommonBuilder
         );
         // + starting with `t3://`
         $isTypo3Uri = new Behavior\RegExpAttrValue('#^t3://#');
+        // + TYPO3 spam protected email address using JavaScript
+        $isSpamProtectedEmailUri = new Behavior\RegExpAttrValue('#^javascript:linkTo_UnCryptMailto#');
+
         // extends common attributes for TYPO3-specific URIs
         $this->srcAttr->addValues($isOnCurrentHost);
         $this->srcsetAttr->addValues($isOnCurrentHost);
-        $this->hrefAttr->addValues($isOnCurrentHost, $isTypo3Uri);
+        $this->hrefAttr->addValues($isOnCurrentHost, $isTypo3Uri, $isSpamProtectedEmailUri);
 
         // @todo `style` used in Introduction Package, inline CSS should be removed
         $this->globalAttrs[] = new Behavior\Attr('style');
