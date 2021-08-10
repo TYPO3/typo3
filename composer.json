@@ -47,7 +47,7 @@
 		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^2.1",
-		"enshrined/svg-sanitize": "^0.14.0",
+		"enshrined/svg-sanitize": "^0.14.1",
 		"guzzlehttp/guzzle": "^7.2",
 		"guzzlehttp/psr7": "^1.7.0",
 		"nikic/php-parser": "^4.10.4",
