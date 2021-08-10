@@ -219,7 +219,7 @@ class RequestBuilder implements SingletonInterface
             return $this->defaultControllerClassName;
         }
         $controllerClassName = $this->controllerAliasToClassMapping[$parameters['controller']] ?? '';
-        if (!in_array($controllerClassName, array_keys($this->allowedControllerActions))) {
+        if (!array_key_exists($controllerClassName, $this->allowedControllerActions)) {
             $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
                 throw new PageNotFoundException('The requested resource was not found', 1313857897);
