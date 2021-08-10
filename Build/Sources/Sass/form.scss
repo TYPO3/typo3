@@ -779,7 +779,7 @@ $tree-line-height: 20px;
                 $validation-list-background: lighten($info, 30%);
 
                 right: 0;
-                transition: right $stage-validation-transition-time-in;
+                transition: none;
                 background-color: $validation-list-background;
 
                 &:before {
