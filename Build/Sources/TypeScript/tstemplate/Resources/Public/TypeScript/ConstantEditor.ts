@@ -17,6 +17,7 @@ enum Selectors {
   editIconSelector = '.t3js-toggle',
   colorSelectSelector = '.t3js-color-select',
   colorInputSelector = '.t3js-color-input',
+  formFieldsSelector = '.tstemplate-constanteditor [data-form-update-fragment]'
 }
 
 /**
@@ -31,7 +32,23 @@ class ConstantEditor {
       .on('click', Selectors.editIconSelector, this.changeProperty)
       .on('change', Selectors.colorSelectSelector, this.updateColorFromSelect)
       .on('blur', Selectors.colorInputSelector, this.updateColorFromInput)
+      .on('change', Selectors.formFieldsSelector, this.updateFormFragment)
     ;
+  }
+
+  /**
+   * Sets the # suffix for the form action to jump directly to the last updated Constant Editor field on submit.
+   * Removes any existing "#" suffixes in case multiple fields were updated
+   */
+  private updateFormFragment = (evt: JQueryEventObject): void => {
+    const $formField = $(evt.currentTarget);
+    const fragment = $formField.attr('data-form-update-fragment');
+    let formTargetAction = document.forms[0].action;
+    // Strip away any existing fragments
+    if (formTargetAction.indexOf('#') !== -1) {
+      formTargetAction = formTargetAction.substring(0, formTargetAction.indexOf('#'));
+    }
+    document.forms[0].action = formTargetAction + '#' + fragment;
   }
 
   /**

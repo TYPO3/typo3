@@ -852,8 +852,8 @@ class ExtendedTemplateService extends TemplateService
                     }
                     $typeDat = $this->ext_getTypeData($params['type']);
                     $p_field = '';
-                    $raname = substr(md5($params['name']), 0, 10);
-                    $aname = '\'' . $raname . '\'';
+                    $fragmentName = substr(md5($params['name']), 0, 10);
+                    $fragmentNameEscaped = htmlspecialchars($fragmentName);
                     [$fN, $fV, $params, $idName] = $this->ext_fNandV($params);
                     $idName = htmlspecialchars($idName);
                     $hint = '';
@@ -879,12 +879,12 @@ class ExtendedTemplateService extends TemplateService
 
                             $p_field =
                                 '<input class="form-control" id="' . $idName . '" type="number"'
-                                . ' name="' . $fN . '" value="' . $fV . '" onChange="uFormUrl(' . $aname . ')"' . $additionalAttributes . ' />';
+                                . ' name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" ' . $additionalAttributes . ' />';
                             break;
                         case 'color':
                             $p_field = '
                                 <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
-                                '" name="' . $fN . '" value="' . $fV . '" onChange="uFormUrl(' . $aname . ')" />';
+                                '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
 
                             if (empty($this->inlineJavaScript[$typeDat['type']])) {
                                 $this->inlineJavaScript[$typeDat['type']] = 'require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});';
@@ -893,20 +893,20 @@ class ExtendedTemplateService extends TemplateService
                         case 'wrap':
                             $wArr = explode('|', $fV);
                             $p_field = '<div class="input-group">
-                                            <input class="form-control form-control-adapt" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '" onChange="uFormUrl(' . $aname . ')" />
+                                            <input class="form-control form-control-adapt" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
                                             <span class="input-group-addon input-group-icon">|</span>
-                                            <input class="form-control form-control-adapt" type="text" name="W' . $fN . '" value="' . $wArr[1] . '" onChange="uFormUrl(' . $aname . ')" />
+                                            <input class="form-control form-control-adapt" type="text" name="W' . $fN . '" value="' . $wArr[1] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
                                          </div>';
                             break;
                         case 'offset':
                             $wArr = explode(',', $fV);
                             $labels = GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-                            $p_field = '<span class="input-group-addon input-group-icon">' . ($labels[0] ?: 'x') . '</span><input type="text" class="form-control form-control-adapt" name="' . $fN . '" value="' . $wArr[0] . '" onChange="uFormUrl(' . $aname . ')" />';
-                            $p_field .= '<span class="input-group-addon input-group-icon">' . ($labels[1] ?: 'y') . '</span><input type="text" name="W' . $fN . '" value="' . $wArr[1] . '" class="form-control form-control-adapt" onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<span class="input-group-addon input-group-icon">' . ($labels[0] ?: 'x') . '</span><input type="text" class="form-control form-control-adapt" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
+                            $p_field .= '<span class="input-group-addon input-group-icon">' . ($labels[1] ?: 'y') . '</span><input type="text" name="W' . $fN . '" value="' . $wArr[1] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
                             $labelsCount = count($labels);
                             for ($aa = 2; $aa < $labelsCount; $aa++) {
                                 if ($labels[$aa]) {
-                                    $p_field .= '<span class="input-group-addon input-group-icon">' . $labels[$aa] . '</span><input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" class="form-control form-control-adapt" onChange="uFormUrl(' . $aname . ')" />';
+                                    $p_field .= '<span class="input-group-addon input-group-icon">' . $labels[$aa] . '</span><input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
                                 } else {
                                     $p_field .= '<input type="hidden" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" />';
                                 }
@@ -927,7 +927,7 @@ class ExtendedTemplateService extends TemplateService
                                     }
                                     $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $this->getLanguageService()->sL($label) . '</option>';
                                 }
-                                $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+                                $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
                             }
                             break;
                         case 'boolean':
@@ -935,7 +935,7 @@ class ExtendedTemplateService extends TemplateService
                             $p_field =
                                 '<input type="hidden" name="' . $fN . '" value="0" />'
                                 . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
                                 . '<span class="t3-icon fa"></span>'
                                 . '</label>';
                             break;
@@ -944,7 +944,7 @@ class ExtendedTemplateService extends TemplateService
                             $p_field =
                                 '<input type="hidden" name="' . $fN . '" value="" />'
                                 . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="1" ' . $sel . ' onClick="uFormUrl(' . $aname . ')" />'
+                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="1" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
                                 . '<span class="t3-icon fa"></span>'
                                 . '</label>';
                             break;
@@ -960,7 +960,7 @@ class ExtendedTemplateService extends TemplateService
                                 $p_field .= '<option value=""></option>';
                                 $p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
                             }
-                            $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+                            $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
                             break;
                         case 'user':
                             $userFunction = $typeDat['paramstr'];
@@ -968,8 +968,7 @@ class ExtendedTemplateService extends TemplateService
                             $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
                             break;
                         default:
-                            $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"'
-                                . ' onChange="uFormUrl(' . $aname . ')" />';
+                            $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
                     }
                     // Define default names and IDs
                     $userTyposcriptID = 'userTS-' . $idName;
@@ -1017,7 +1016,7 @@ class ExtendedTemplateService extends TemplateService
                         . $constantDefaultRow;
 
                     $groupedOutput[$categoryLoop]['items'][] = [
-                        'identifier' => $raname,
+                        'identifier' => $fragmentName,
                         'label' => $head,
                         'name' => $params['name'],
                         'description' => $body,

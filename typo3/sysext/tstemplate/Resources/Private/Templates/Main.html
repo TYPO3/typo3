@@ -1,4 +1,4 @@
-<form action="{actionName}" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">
+<form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageId, template: \'all\'}')}" method="post" enctype="multipart/form-data" id="TypoScriptTemplateModuleController" name="editForm" class="form">
     <h1><f:translate key="moduleTitle" /></h1>
     <f:format.raw>{typoscriptTemplateModuleContent}</f:format.raw>
 </form>

@@ -221,24 +221,15 @@ class TypoScriptTemplateModuleController
         $this->access = $this->pageinfo !== [];
         $view = $this->getFluidTemplateObject('tstemplate');
         if ($this->id && $this->access) {
-            $urlParameters = [
-                'id' => $this->id,
-                'template' => 'all'
-            ];
-            $aHref = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-
             // JavaScript
             $this->moduleTemplate->addJavaScriptCode(
                 'TSTemplateInlineJS',
-                'function uFormUrl(aname) {
-                    document.forms[0].action = ' . GeneralUtility::quoteJSvalue($aHref . '#') . '+aname;
-                }
-                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
+                'if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';'
             );
             // Setting up the context sensitive menu:
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             // Build the module content
-            $view->assign('actionName', $aHref);
+            $view->assign('pageId', $this->id);
             $view->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
