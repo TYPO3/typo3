@@ -43,14 +43,15 @@ class ImageCropScaleMaskTask extends AbstractGraphicalTask
      * are given, within the boundaries and don't conflict with each other.
      *
      * @param array $configuration
+     * @return bool
      */
-    protected function isValidConfiguration(array $configuration)
+    protected function isValidConfiguration(array $configuration): bool
     {
-        // @todo Implement isValidConfiguration() method.
+        return true;
     }
 
-    public function fileNeedsProcessing()
+    public function fileNeedsProcessing(): bool
     {
-        // @todo Implement fileNeedsProcessing() method.
+        return false;
     }
 }

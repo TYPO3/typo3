@@ -2395,7 +2395,7 @@ class DatabaseRecordList
             // Checking if the table should be rendered:
             // Checks that we see only permitted/requested tables:
             if (($this->table && $tableName !== $this->table)
-                || ($this->tableList && !GeneralUtility::inList($this->tableList, $tableName))
+                || ($this->tableList && !GeneralUtility::inList($this->tableList, (string)$tableName))
                 || !$backendUser->check('tables_select', $tableName)
             ) {
                 $hideTable = true;

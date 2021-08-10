@@ -62,7 +62,7 @@ class InstallToolFormProtection extends AbstractFormProtection
     /**
      * Retrieves or generates the session token.
      */
-    protected function retrieveSessionToken()
+    protected function retrieveSessionToken(): string
     {
         if (isset($_SESSION['installToolFormToken']) && !empty($_SESSION['installToolFormToken'])) {
             $this->sessionToken = $_SESSION['installToolFormToken'];
@@ -70,6 +70,7 @@ class InstallToolFormProtection extends AbstractFormProtection
             $this->sessionToken = $this->generateSessionToken();
             $this->persistSessionToken();
         }
+        return $this->sessionToken;
     }
 
     /**

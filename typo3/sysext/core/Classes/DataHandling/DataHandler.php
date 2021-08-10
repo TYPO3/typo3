@@ -2617,7 +2617,7 @@ class DataHandler implements LoggerAwareInterface
                     if ($negative) {
                         $value *= -1;
                     }
-                    $value = number_format($value, 2, '.', '');
+                    $value = number_format((float)$value, 2, '.', '');
                     break;
                 case 'md5':
                     if (strlen($value) !== 32) {

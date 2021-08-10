@@ -664,7 +664,7 @@ class RecordListController
         $languageService = $this->getLanguageService();
 
         if (isset($arguments['table'])) {
-            $tableTitle = ': ' . $languageService->sL($GLOBALS['TCA'][$arguments['table']]['ctrl']['title'] ?? '') ?: $arguments['table'];
+            $tableTitle = ': ' . (isset($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) ? $languageService->sL($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) : $arguments['table']);
         }
 
         if ($this->pageInfo !== []) {

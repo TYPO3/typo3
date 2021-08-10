@@ -46,12 +46,13 @@ class ImagePreviewTask extends AbstractGraphicalTask
      *
      * @param array $configuration
      */
-    protected function isValidConfiguration(array $configuration)
+    protected function isValidConfiguration(array $configuration): bool
     {
         /**
          * Checks to perform:
          * - width and/or height given, integer values?
          */
+        return true;
     }
 
     /**
@@ -61,7 +62,7 @@ class ImagePreviewTask extends AbstractGraphicalTask
      * This check is done in ProcessedFile::isOutdated().
      * @todo isOutdated()/needsReprocessing()?
      */
-    public function fileNeedsProcessing()
+    public function fileNeedsProcessing(): bool
     {
         // @todo Implement fileNeedsProcessing() method.
 
@@ -69,5 +70,6 @@ class ImagePreviewTask extends AbstractGraphicalTask
          * Checks to perform:
          * - width/height smaller than image, keeping aspect ratio?
          */
+        return false;
     }
 }

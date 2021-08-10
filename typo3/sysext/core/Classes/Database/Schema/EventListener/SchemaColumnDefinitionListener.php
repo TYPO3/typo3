@@ -116,7 +116,7 @@ class SchemaColumnDefinitionListener
             $valuesDefinition
         ) ?? '';
 
-        $values = explode($quoteChar . ',' . $quoteChar, substr($valuesDefinition, 1, -1)) ?: [];
+        $values = explode($quoteChar . ',' . $quoteChar, substr($valuesDefinition, 1, -1));
 
         return array_map(
             function (string $value) use ($quoteChar) {

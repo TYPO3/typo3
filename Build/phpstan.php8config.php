@@ -52,11 +52,6 @@ if (PHP_MAJOR_VERSION === 8) {
             'count' => 1,
         ],
         [
-            'message' => '#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\|false given\\.$#',
-            'path' => '%currentWorkingDirectory%/typo3/sysext/frontend/Classes/Imaging/GifBuilder.php',
-            'count' => 1
-        ],
-        [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parse expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
@@ -81,6 +76,17 @@ if (PHP_MAJOR_VERSION === 8) {
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
+        [
+            'message' => '#^Parameter \\#1 \\$separator of function explode expects non-empty-string, string given\\.$#',
+            'path' => '%currentWorkingDirectory%/',
+            'count' => 8
+        ],
+        [
+            'message' => '#^Ternary operator condition is always true.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/core/Classes/Utility/GeneralUtility.php',
+            'count' => 3
+        ],
+
     ];
 }
 

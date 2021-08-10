@@ -4,6 +4,8 @@ includes:
 conditionalTags:
 	PHPStan\Rules\Functions\RandomIntParametersRule:
 		phpstan.rules.rule: %featureToggles.randomIntParameters%
+	PHPStan\Rules\DateTimeInstantiationRule:
+		phpstan.rules.rule: %featureToggles.dateTimeInstantiation%
 
 parameters:
 	checkFunctionArgumentTypes: true
@@ -14,3 +16,5 @@ services:
 		class: PHPStan\Rules\Functions\RandomIntParametersRule
 		arguments:
 			reportMaybes: %reportMaybes%
+	-
+		class: PHPStan\Rules\DateTimeInstantiationRule

@@ -28,6 +28,10 @@ parameters:
   paths:
     - %currentWorkingDirectory%/typo3/sysext/
 
+  earlyTerminatingMethodCalls:
+      TYPO3\CMS\Core\Resource\InaccessibleFolder:
+        - throwInaccessibleException
+
   excludes_analyse:
     - %currentWorkingDirectory%/typo3/sysext/*/Tests/*
     - %currentWorkingDirectory%/typo3/sysext/*/Documentation/*
@@ -186,22 +190,6 @@ parameters:
       message: "#^Parameter \\#1 \\$node of function dom_import_simplexml expects SimpleXMLElement, SimpleXMLElement\\|false given\\.$#"
       count: 1
       path: typo3/sysext/frontend/Classes/ContentObject/ScalableVectorGraphicsContentObject.php
-    -
-      message: "#^Parameter \\#1 \\$(array_arg|array) of function current expects array, object given\\.$#"
-      count: 1
-      path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
-    -
-      message: "#^Parameter \\#1 \\$(array_arg|array) of function key expects array, object given\\.$#"
-      count: 1
-      path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
-    -
-      message: "#^Parameter \\#1 \\$(array_arg|array) of function next expects array, object given\\.$#"
-      count: 1
-      path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
-    -
-      message: "#^Parameter \\#1 \\$array of function reset expects array, object given\\.$#"
-      count: 1
-      path: typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
     -
       message: "#^Parameter \\#1 \\$currentRequest of static method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:buildRequestFromCurrentRequestAndForwardResponse\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request, TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface given\\.$#"
       count: 1
