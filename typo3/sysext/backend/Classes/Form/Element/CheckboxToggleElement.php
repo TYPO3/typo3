@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\NodeFactory;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -27,11 +24,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class CheckboxToggleElement extends AbstractFormElement
 {
-    /**
-     * @var IconRegistry
-     */
-    private $iconRegistry;
-
     /**
      * Default field information enabled for this element.
      *
@@ -65,16 +57,6 @@ class CheckboxToggleElement extends AbstractFormElement
             ],
         ],
     ];
-
-    /**
-     * @param NodeFactory $nodeFactory
-     * @param array $data
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data)
-    {
-        parent::__construct($nodeFactory, $data);
-        $this->iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-    }
 
     /**
      * This will render a checkbox or an array of checkboxes
