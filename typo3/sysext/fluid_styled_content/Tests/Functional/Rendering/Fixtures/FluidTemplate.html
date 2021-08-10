@@ -6,5 +6,8 @@
         <f:case value="empty-parseFuncTSPath">
             <f:format.html parseFuncTSPath="">{payload}</f:format.html>
         </f:case>
+        <f:case value="disable-htmlSanitize">
+            <f:format.html>{payload}</f:format.html>
+        </f:case>
     </f:switch>
 </f:spaceless>
