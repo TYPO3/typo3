@@ -66,7 +66,7 @@ class XmlSitemapRenderer
         $this->view->assign('type', $GLOBALS['TSFE']->type);
         $sitemapType = $typoScriptConfiguration['sitemapType'] ?? 'xmlSitemap';
         $this->view->assign('xslFile', $this->getXslFilePath($sitemapType));
-        if (!empty($sitemap = $request->getQueryParams()['sitemap'])) {
+        if (!empty($sitemap = ($request->getQueryParams()['sitemap'] ?? null))) {
             return $this->renderSitemap($request, $sitemap, $sitemapType);
         }
 
@@ -135,7 +135,7 @@ class XmlSitemapRenderer
 
                 $items = $provider->getItems();
 
-                $template = $sitemapConfig['config']['template'] ?: 'Sitemap';
+                $template = ($sitemapConfig['config']['template'] ?? false) ?: 'Sitemap';
                 $this->view->setTemplate($template);
                 $this->view->assign('xslFile', $this->getXslFilePath($sitemapType, $sitemap));
                 $this->view->assign('items', $items);
