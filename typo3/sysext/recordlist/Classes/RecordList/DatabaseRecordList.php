@@ -783,7 +783,7 @@ class DatabaseRecordList
         return '
             <div class="recordlist mb-5 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
                 <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
-                    <input type="hidden" name="cmd_table" />
+                    <input type="hidden" name="cmd_table" value="' . htmlspecialchars($tableIdentifier) . '" />
                     <input type="hidden" name="cmd" />
                     <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center">
                         <div class="col">
@@ -1184,8 +1184,7 @@ class DatabaseRecordList
                     // If the numeric clipboard pads are enabled, display the control icons for that:
                     if ($this->clipObj->current !== 'normal') {
                         // The "select" link:
-                        $spriteIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
-                        $cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB', '', $lang->getLL('clip_selectMarked'));
+                        $cells['copyMarked'] = $this->linkClipboardHeaderIcon('actions-edit-copy', 'setCB', '', $lang->getLL('clip_selectMarked'));
                         // The "edit marked" link:
                         $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
                             . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit';
@@ -1198,8 +1197,7 @@ class DatabaseRecordList
                             . '</a>';
                         // The "Delete marked" link:
                         $cells['delete'] = $this->linkClipboardHeaderIcon(
-                            $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
-                            $table,
+                            'actions-edit-delete',
                             'delete',
                             sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                             $lang->getLL('clip_deleteMarked')
@@ -2073,46 +2071,46 @@ class DatabaseRecordList
      *
      *********************************/
     /**
-     * Creates a link around $string. The link contains an onclick action
-     * which submits the script with some clipboard action.
-     * Currently, this is used for setting elements / delete elements.
+     * Creates a button around an icon. In case the button triggers a modal,
+     * a event is provided for performing the clipboard actions (setting
+     * the command and submitting the form). Currently, this is used for
+     * setting elements / delete elements.
      *
-     * @param string $icon The HTML content to link (image)
-     * @param string $table Table name
+     * @param string $iconIdentifier The icon identifier
      * @param string $cmd Clipboard command (eg. "setCB" or "delete")
      * @param string $warning Warning text, if any ("delete" uses this for confirmation)
-     * @param string $title title attribute for the anchor
-     * @return string HTML <a> tag wrapped link.
+     * @param string $title title attribute for the button
+     * @return string HTML <button>
      */
-    public function linkClipboardHeaderIcon($icon, $table, $cmd, $warning = '', $title = '')
+    public function linkClipboardHeaderIcon(string $iconIdentifier, string $cmd, string $warning = '', string $title = ''): string
     {
-        $tableIdentifier = $this->showOnlyTranslatedRecords ? ($table . '_translated') : $table;
-        $formName = 'list-table-form-' . htmlspecialchars($tableIdentifier);
-
-        // @todo Replace this inline JavaScript by a custom elements or some kind of trigger class
-        $jsCode = 'document.querySelector(\'form[name="' . $formName . '"]\').cmd.value=' . GeneralUtility::quoteJSvalue($cmd)
-            . ';document.querySelector(\'form[name="' . $formName . '"]\').cmd_table.value=' . GeneralUtility::quoteJSvalue($table)
-            . ';document.querySelector(\'form[name="' . $formName . '"]\').submit();';
-
         $attributes = [];
         if ($title !== '') {
-            $attributes['title'] = $title;
-            $attributes['aria-label'] = $title;
+            $attributes = [
+                'title' => $title,
+                'aria-label' => $title
+            ];
         }
         if ($warning) {
-            $tag = ['<button type="button" ', '</button>'];
-            $attributes['class'] = 'btn btn-default t3js-modal-trigger';
-            $attributes['data-href'] = 'javascript:' . $jsCode;
-            $attributes['data-severity'] = 'warning';
-            $attributes['data-bs-content'] = $warning;
-            $attributes['aria-haspopup'] = 'dialog';
+            $attributes = array_merge($attributes, [
+                'class' => 'btn btn-default t3js-modal-trigger',
+                'data-severity' => 'warning',
+                'data-bs-content' => $warning,
+                'aria-haspopup' => 'dialog',
+                'data-event-name' => 'recordlist:clipboard:cmd',
+                'data-event-payload' => $cmd
+            ]);
         } else {
-            $tag = ['<a href="#" ', '</a>'];
-            $attributes['class'] = 'btn btn-default';
-            $attributes['onclick'] = $jsCode . 'return false;';
+            $attributes = array_merge($attributes, [
+                'class' => 'btn btn-default',
+                'data-recordlist-clipboard-cmd' => $cmd
+            ]);
         }
 
-        return $tag[0] . GeneralUtility::implodeAttributes($attributes, true) . '>' . $icon . $tag[1];
+        return '
+            <button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' .
+                $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() .
+            '</button>';
     }
 
     /**

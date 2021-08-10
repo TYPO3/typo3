@@ -17,6 +17,7 @@ import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 
 interface IconIdentifier {
   collapse: string;
@@ -59,6 +60,19 @@ class Recordlist {
     },
   };
 
+  private static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement) {
+    const clipboardForm = <HTMLFormElement>target.closest('form');
+    if (!clipboardForm) {
+      return;
+    }
+    const commandField = <HTMLInputElement>clipboardForm.querySelector('input[name="cmd"]');
+    if (!commandField) {
+      return;
+    }
+    commandField.value = cmd;
+    clipboardForm.submit();
+  }
+
   constructor() {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
@@ -69,6 +83,17 @@ class Recordlist {
       this.registerPaginationEvents();
     });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
+
+    // clipboard events
+    new RegularEvent('recordlist:clipboard:cmd', (event: ModalResponseEvent): void => {
+      if (event.detail.result) {
+        Recordlist.submitClipboardFormWithCommand(<string>event.detail.payload, <HTMLButtonElement>event.target);
+      }
+    }).delegateTo(document, 'button[data-event-name="recordlist:clipboard:cmd"]');
+    new RegularEvent('click', (event: Event, target: HTMLButtonElement): void => {
+      event.preventDefault();
+      Recordlist.submitClipboardFormWithCommand(target.dataset.recordlistClipboardCmd, target);
+    }).delegateTo(document, '[data-recordlist-clipboard-cmd]:not([data-recordlist-clipboard-cmd=""])');
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
