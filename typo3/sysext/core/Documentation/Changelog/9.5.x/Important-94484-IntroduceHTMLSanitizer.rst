@@ -169,8 +169,8 @@ can be adjusted in a similar way, e.g. in :file:`Configuration/Processing.yaml`.
        # disable individually per use-case
        # htmlSanitize: false
 
-Sanitization for persisting data can be disabled globally using corresponding
-feature flag :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize']`.
+Sanitization for persisting data can be needs to be enabled globally using corresponding
+feature flag :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte']`.
 
 
 Debugging & Logging

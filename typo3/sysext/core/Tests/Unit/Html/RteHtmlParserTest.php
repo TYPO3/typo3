@@ -106,7 +106,7 @@ class RteHtmlParserTest extends UnitTestCase
     public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult)
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize'] = false;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
         $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
@@ -184,7 +184,7 @@ class RteHtmlParserTest extends UnitTestCase
     public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize'] = false;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
         $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));

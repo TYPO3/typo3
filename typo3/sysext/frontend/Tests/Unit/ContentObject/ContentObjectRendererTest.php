@@ -75,6 +75,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ContentObjectRendererTest extends UnitTestCase
 {
+    use ContentObjectRendererTestTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -2532,220 +2534,6 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @return array
      */
-    protected function getLibParseFunc_RTE(): array
-    {
-        return [
-            'parseFunc' => '',
-            'parseFunc.' => [
-                'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
-                'constants' => '1',
-                'denyTags' => '*',
-                'externalBlocks' => 'article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre',
-                'externalBlocks.' => [
-                    'article.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'aside.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'blockquote.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'dd.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'div.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'dl.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'footer.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'header.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'nav.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'ol.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'section.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                    'table.' => [
-                        'HTMLtableCells' => '1',
-                        'HTMLtableCells.' => [
-                            'addChr10BetweenParagraphs' => '1',
-                            'default.' => [
-                                'stdWrap.' => [
-                                    'parseFunc' => '=< lib.parseFunc_RTE',
-                                    'parseFunc.' => [
-                                        'nonTypoTagStdWrap.' => [
-                                            'encapsLines.' => [
-                                                'nonWrappedTag' => '',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'stdWrap.' => [
-                            'HTMLparser' => '1',
-                            'HTMLparser.' => [
-                                'keepNonMatchedTags' => '1',
-                                'tags.' => [
-                                    'table.' => [
-                                        'fixAttrib.' => [
-                                            'class.' => [
-                                                'always' => '1',
-                                                'default' => 'contenttable',
-                                                'list' => 'contenttable',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'stripNL' => '1',
-                    ],
-                    'ul.' => [
-                        'callRecursive' => '1',
-                        'stripNL' => '1',
-                    ],
-                ],
-                'makelinks' => '1',
-                'makelinks.' => [
-                    'http.' => [
-                        'extTarget.' => [
-                            'override' => '_blank',
-                        ],
-                        'keep' => 'path',
-                    ],
-                ],
-                'nonTypoTagStdWrap.' => [
-                    'encapsLines.' => [
-                        'addAttributes.' => [
-                            'P.' => [
-                                'class' => 'bodytext',
-                                'class.' => [
-                                    'setOnly' => 'blank',
-                                ],
-                            ],
-                        ],
-                        'encapsTagList' => 'p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li',
-                        'innerStdWrap_all.' => [
-                            'ifBlank' => '&nbsp;',
-                        ],
-                        'nonWrappedTag' => 'P',
-                        'remapTag.' => [
-                            'DIV' => 'P',
-                        ],
-                    ],
-                    'HTMLparser' => '1',
-                    'HTMLparser.' => [
-                        'htmlSpecialChars' => '2',
-                        'keepNonMatchedTags' => '1',
-                    ],
-                ],
-                'sword' => '<span class="csc-sword">|</span>',
-                'tags.' => [
-                    'link' => 'TEXT',
-                    'link.' => [
-                        'current' => '1',
-                        'parseFunc.' => [
-                            'constants' => '1',
-                        ],
-                        'typolink.' => [
-                            'directImageLink' => false,
-                            'extTarget.' => [
-                                'override' => '',
-                            ],
-                            'parameter.' => [
-                                'data' => 'parameters : allParams',
-                            ],
-                            'target.' => [
-                                'override' => '',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function _parseFuncReturnsCorrectHtmlDataProvider(): array
-    {
-        return [
-            'Text without tag is wrapped with <p> tag' => [
-                'Text without tag',
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">Text without tag</p>',
-            ],
-            'Text wrapped with <p> tag remains the same' => [
-                '<p class="myclass">Text with &lt;p&gt; tag</p>',
-                $this->getLibParseFunc_RTE(),
-                '<p class="myclass">Text with &lt;p&gt; tag</p>',
-            ],
-            'Text with absolute external link' => [
-                'Text with <link http://example.com/foo/>external link</link>',
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
-            ],
-            'Empty lines are not duplicated' => [
-                LF,
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">&nbsp;</p>',
-            ],
-            'Multiple empty lines with no text' => [
-                LF . LF . LF,
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
-            ],
-            'Empty lines are not duplicated at the end of content' => [
-                'test' . LF . LF,
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
-            ],
-            'Empty lines are not trimmed' => [
-                LF . 'test' . LF,
-                $this->getLibParseFunc_RTE(),
-                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
-     * @param string $value
-     * @param array $configuration
-     * @param string $expectedResult
-     */
-    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
-    {
-        $this->assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
-    }
-
-    /**
-     * @return array
-     */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider(): array
     {
         return [
@@ -3754,7 +3542,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
 
-        $expectExceptions = ['numRows', 'split', 'bytes'];
+        // `parseFunc` issues deprecation in case `htmlSanitize` is not given
+        $expectExceptions = ['numRows', 'parseFunc', 'split', 'bytes'];
         $count = 0;
         $processors = [];
         $exceptions = [];

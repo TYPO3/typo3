@@ -43,6 +43,7 @@ use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\ContentObjectRendererTestTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -50,6 +51,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ContentObjectRendererTest extends UnitTestCase
 {
+    use ContentObjectRendererTestTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -250,5 +253,61 @@ class ContentObjectRendererTest extends UnitTestCase
             'return',
             $subject->stdWrap_filelist('discard', $conf)
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function _parseFuncReturnsCorrectHtmlDataProvider(): array
+    {
+        return [
+            'Text without tag is wrapped with <p> tag' => [
+                'Text without tag',
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">Text without tag</p>',
+            ],
+            'Text wrapped with <p> tag remains the same' => [
+                '<p class="myclass">Text with &lt;p&gt; tag</p>',
+                $this->getLibParseFunc_RTE(),
+                '<p class="myclass">Text with &lt;p&gt; tag</p>',
+            ],
+            'Text with absolute external link' => [
+                'Text with <link http://example.com/foo/>external link</link>',
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
+            ],
+            'Empty lines are not duplicated' => [
+                LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Multiple empty lines with no text' => [
+                LF . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not duplicated at the end of content' => [
+                'test' . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not trimmed' => [
+                LF . 'test' . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
+     * @param string $value
+     * @param array $configuration
+     * @param string $expectedResult
+     */
+    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
+    {
+        $this->assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 }

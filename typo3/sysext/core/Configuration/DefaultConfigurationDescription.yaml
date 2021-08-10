@@ -218,9 +218,6 @@ SYS:
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'
-              rte.htmlSanitize:
-                type: bool
-                description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'
               unifiedPageTranslationHandling:
                 type: bool
                 description: 'If on, TCA configuration for pages_language_overlay is never loaded and the database table "pages_language_overlay" is not created by core. Enable this feature if no extensions fiddles with table pages_language_overlay to have a slightly quicker system with less deprecation log entries.'
@@ -233,6 +230,12 @@ SYS:
               security.frontend.keepSessionDataOnLogout:
                 type: bool
                 description: 'If on, session data is kept in an anonymous session after frontend user logged out. As this is a potential security risk, it is recommended to disable this option if not specifically needed.'
+              security.frontend.htmlSanitizeParseFuncDefault:
+                type: bool
+                description: 'If on, HTML sanitizer is enabled in parseFunc during frontend rendering as fall-back, in case it has not define more specifically'
+              security.backend.htmlSanitizeRte:
+                type: bool
+                description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'
               security.backend.enforceReferrer:
                 type: bool
                 description: 'If on, HTTP referrer headers are enforced for backend and install tool requests to mitigate

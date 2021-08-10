@@ -97,7 +97,7 @@ class HtmlViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('parseFuncTSPath', 'string', ' path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
+        $this->registerArgument('parseFuncTSPath', 'string', 'Path to TypoScript parseFunc setup', false, 'lib.parseFunc_RTE');
     }
 
     /**

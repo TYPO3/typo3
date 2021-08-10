@@ -245,8 +245,9 @@ class SecurityTest extends FunctionalTestCase
      * @test
      * @dataProvider crossSiteScriptingDataProvider
      */
-    public function markupIsSanitizedForContentBodytext(string $input, array $expectations): void
+    public function markupIsSanitizedForContentBodytextWithHtmlSanitizerEnabled(string $input, array $expectations): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = true;
         $newIds = $this->actionService->createNewRecord('tt_content', 1, [
             'CType' => 'text',
             'bodytext' => $input,
@@ -276,7 +277,7 @@ class SecurityTest extends FunctionalTestCase
      */
     public function markupIsSanitizedForContentBodytextWithHtmlSanitizerDisabled(string $input, array $expectations): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize'] = false;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $newIds = $this->actionService->createNewRecord('tt_content', 1, [
             'CType' => 'text',
             'bodytext' => $input,
