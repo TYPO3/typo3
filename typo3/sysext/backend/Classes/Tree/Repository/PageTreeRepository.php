@@ -224,12 +224,10 @@ class PageTreeRepository
 
         // This is necessary to resolve all IDs in a workspace
         if ($this->currentWorkspace !== 0 && !empty($pageRecords)) {
-            $livePagePids = [];
             $livePageIds = [];
             $movedPages = [];
             foreach ($pageRecords as $pageRecord) {
                 $livePageIds[] = (int)$pageRecord['uid'];
-                $livePagePids[(int)$pageRecord['uid']] = (int)$pageRecord['pid'];
                 if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],

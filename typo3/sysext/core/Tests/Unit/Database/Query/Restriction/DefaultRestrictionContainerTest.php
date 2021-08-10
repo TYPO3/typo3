@@ -37,8 +37,6 @@ class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = 123;
         $subject = new DefaultRestrictionContainer();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $more = [];
-        $more[] = $expression;
         $expression = $this->expressionBuilder->andX($expression);
 
         self::assertSame('("aTable"."deleted" = 0) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 123) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 123))', (string)$expression);

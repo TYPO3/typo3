@@ -331,7 +331,6 @@ class NewRecordController
      */
     protected function getButtons(): void
     {
-        $buttons = [];
         $lang = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
@@ -351,7 +350,6 @@ class NewRecordController
         } elseif ($this->isRecordCreationAllowedForTable('pages')) {
             // Pages only wizard
             // CSH
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_pages');
             $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_pages');
             $buttonBar->addButton($cshButton);
         }

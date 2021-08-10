@@ -368,8 +368,6 @@ class IndexSearchRepository
      */
     protected function getSearchString($searchWordArray)
     {
-        // Initialize variables:
-        $count = 0;
         // Change this to TRUE to force BOOLEAN SEARCH MODE (useful if fulltext index is still empty)
         $searchBoolean = false;
         $fulltextIndex = 'index_fulltext.fulltextdata';
@@ -425,7 +423,6 @@ class IndexSearchRepository
                     $booleanSearchString .= ' +' . $searchWord . $wildcard;
                     $naturalSearchString .= ' ' . $searchWord;
             }
-            $count++;
         }
         if ($searchType == '20') {
             $searchString = '"' . trim($naturalSearchString) . '"';

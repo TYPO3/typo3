@@ -3170,7 +3170,6 @@ class DatabaseRecordList
         $colsp = '';
         $lastKey = '';
         $c = 0;
-        $ccount = 0;
         // __label is used as the label key to circumvent problems with uid used as label (see #67756)
         // as it was introduced later on, check if it really exists before using it
         $fields = $this->fieldArray;
@@ -3187,7 +3186,6 @@ class DatabaseRecordList
                 }
                 $lastKey = $vKey;
                 $c = 1;
-                $ccount++;
             } else {
                 if (!$lastKey) {
                     $lastKey = $vKey;

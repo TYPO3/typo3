@@ -145,7 +145,6 @@ class LanguagePackService
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         $activePackages = $packageManager->getActivePackages();
         $extensions = [];
-        $activeExtensions = [];
         foreach ($activePackages as $package) {
             $path = $package->getPackagePath();
             $finder = new Finder();
@@ -160,7 +159,6 @@ class LanguagePackService
                 continue;
             }
             $key = $package->getPackageKey();
-            $activeExtensions[] = $key;
             $title = $package->getValueFromComposerManifest('description') ?? '';
             if (is_file($path . 'ext_emconf.php')) {
                 $_EXTKEY = $key;
