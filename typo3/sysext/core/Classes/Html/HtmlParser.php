@@ -200,12 +200,18 @@ class HtmlParser
      */
     public function removeFirstAndLastTag($str)
     {
-        // End of first tag:
-        $start = strpos($str, '>');
-        // Begin of last tag:
-        $end = strrpos($str, '<');
-        // Return
-        return substr($str, $start + 1, $end - $start - 1);
+        $parser = SimpleParser::fromString($str);
+        $first = $parser->getFirstNode(SimpleNode::TYPE_ELEMENT);
+        $last = $parser->getLastNode(SimpleNode::TYPE_ELEMENT);
+        if ($first === null || $first === $last) {
+            return '';
+        }
+        $sequence = array_slice(
+            $parser->getNodes(),
+            $first->getIndex() + 1,
+            $last->getIndex() - $first->getIndex() - 1
+        );
+        return implode('', array_map('strval', $sequence));
     }
 
     /**
@@ -217,9 +223,17 @@ class HtmlParser
      */
     public function getFirstTag($str)
     {
-        // First:
-        $endLen = strpos($str, '>');
-        return $endLen !== false ? substr($str, 0, $endLen + 1) : '';
+        $parser = SimpleParser::fromString($str);
+        $first = $parser->getFirstNode(SimpleNode::TYPE_ELEMENT);
+        if ($first === null) {
+            return '';
+        }
+        $sequence = array_slice(
+            $parser->getNodes(),
+            0,
+            $first->getIndex() + 1
+        );
+        return implode('', array_map('strval', $sequence));
     }
 
     /**
@@ -232,12 +246,14 @@ class HtmlParser
      */
     public function getFirstTagName($str, $preserveCase = false)
     {
-        $matches = [];
-        if (preg_match('/^\\s*\\<([^\\s\\>]+)(\\s|\\>)/', $str, $matches) === 1) {
-            if (!$preserveCase) {
-                return strtoupper($matches[1]);
+        $parser = SimpleParser::fromString($str);
+        $elements = $parser->getNodes(SimpleNode::TYPE_ELEMENT);
+        foreach ($elements as $element) {
+            $name = $element->getElementName();
+            if ($name === null) {
+                continue;
             }
-            return $matches[1];
+            return $preserveCase ? $name : strtoupper($name);
         }
         return '';
     }

@@ -90,3 +90,10 @@ processing:
 
     ## PROTECT CUSTOM TAGS
     keepNonMatchedTags: protect
+
+    # HTML Sanitizer
+    # `htmlSanitize = false | null` to disable individually
+    htmlSanitize:
+      # either preset name as declared in `$GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer']`
+      # or class-name implementing interface `\TYPO3\HtmlSanitizer\Builder\BuilderInterface`
+      build: default

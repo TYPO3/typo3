@@ -73,6 +73,7 @@ return [
         'features' => [
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
+            'rte.htmlSanitize' => true,
             'unifiedPageTranslationHandling' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false
@@ -246,6 +247,9 @@ return [
                     'groups' => ['system']
                 ],
             ],
+        ],
+        'htmlSanitizer' => [
+            'default' => \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder::class,
         ],
         'defaultCategorizedTables' => '',
         'displayErrors' => -1,

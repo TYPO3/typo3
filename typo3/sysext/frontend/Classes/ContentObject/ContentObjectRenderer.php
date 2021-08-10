@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -76,6 +77,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
+use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
 /**
  * This class contains all main TypoScript features.
@@ -253,6 +255,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'editIcons.' => 'array',
         'editPanel' => 'boolean',
         'editPanel.' => 'array',
+        'htmlSanitize' => 'boolean',
+        'htmlSanitize.' => 'array',
         'cacheStore' => 'hook',
         // this is a placeholder for storing the content in cache
         'stdWrapPostProcess' => 'hook',
@@ -2534,6 +2538,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $content;
     }
 
+    public function stdWrap_htmlSanitize(string $content = '', array $conf = []): string
+    {
+        $build = $conf['build'] ?? 'default';
+        if (class_exists($build) && is_a($build, BuilderInterface::class, true)) {
+            $builder = GeneralUtility::makeInstance($build);
+        } else {
+            $factory = GeneralUtility::makeInstance(SanitizerBuilderFactory::class);
+            $builder = $factory->build($build);
+        }
+        $sanitizer = $builder->build();
+        return $sanitizer->sanitize($content);
+    }
+
     /**
      * Store content into cache
      *
@@ -3329,7 +3346,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         // Process:
         if ((string)($conf['externalBlocks'] ?? '') === '') {
-            return $this->_parseFunc($theValue, $conf);
+            $result = $this->_parseFunc($theValue, $conf);
+            if ($conf['htmlSanitize'] ?? true) {
+                $result = $this->stdWrap_htmlSanitize($result, $conf['htmlSanitize.'] ?? []);
+            }
+            return $result;
         }
         $tags = strtolower(implode(',', GeneralUtility::trimExplode(',', $conf['externalBlocks'])));
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
@@ -3409,7 +3430,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $parts[$k] = $this->_parseFunc($parts[$k], $conf);
             }
         }
-        return implode('', $parts);
+        $result = implode('', $parts);
+        if ($conf['htmlSanitize'] ?? true) {
+            $result = $this->stdWrap_htmlSanitize($result, ['htmlSanitize.' => $conf['htmlSanitize.'] ?? []]);
+        }
+        return $result;
     }
 
     /**
