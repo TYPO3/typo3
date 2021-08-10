@@ -70,6 +70,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -2174,13 +2175,13 @@ class ContentObjectRendererTest extends UnitTestCase
                         'wrap'    => '<li>LI:|</li>',
                         'current' => '1'
                     ]
-                ]
+                ],
             ]
         ];
 
         return [
             'parent & child tags with same beginning are processed' => [
-                '<div><any data-skip><anyother data-skip>content</anyother></any>',
+                '<div><any data-skip><anyother data-skip>content</anyother></any></div>',
                 [
                     'parseFunc'  => '',
                     'parseFunc.' => [
@@ -2196,9 +2197,13 @@ class ContentObjectRendererTest extends UnitTestCase
                                 'current' => 1,
                             ],
                         ],
+                        'htmlSanitize' => true,
+                        'htmlSanitize.' => [
+                            'build' => TestSanitizerBuilder::class,
+                        ],
                     ],
                 ],
-                '<div><any data-processed><anyother data-processed>content</anyother></any>',
+                '<div><any data-processed><anyother data-processed>content</anyother></any></div>',
             ],
             'list with empty and filled li' => [
                 '<ul>
@@ -2382,12 +2387,12 @@ class ContentObjectRendererTest extends UnitTestCase
     <li>
         <ul>
             <li>
-                <p>
+                <span>
                     <ul>
                         <li>first sub sub</li>
                         <li>first sub sub</li>
                     </ul>
-                </p>
+                </span>
             </li>
             <li>second sub</li>
         </ul>
@@ -2399,12 +2404,12 @@ class ContentObjectRendererTest extends UnitTestCase
     <li>LI:
         <ul>
             <li>LI:
-                <p>
+                <span>
                     <ul>
                         <li>LI:first sub sub</li>
                         <li>LI:first sub sub</li>
                     </ul>
-                </p>
+                </span>
             </li>
             <li>LI:second sub</li>
         </ul>
@@ -3470,7 +3475,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         self::assertSame(1, $notCallable);
-        self::assertSame(82, $callable);
+        self::assertSame(83, $callable);
     }
 
     /**
@@ -3515,7 +3520,7 @@ class ContentObjectRendererTest extends UnitTestCase
             }
         }
         self::assertSame($expectExceptions, $exceptions);
-        self::assertSame(82, $count);
+        self::assertSame(83, $count);
     }
 
     /***************************************************************************

@@ -1,0 +1,30 @@
+__variables:
+  - &pageStandard 0
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType'}
+    defaultValues: {hidden: 0, CType: 'text'}
+
+entities:
+  page:
+    - self: {id: 1000, title: 'ACME Inc', root: true, slug: '/'}
+      children:
+        - self: {id: 1100, title: 'EN: Welcome', slug: '/welcome', subtitle: 'hello-and-welcome'}
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1'}
+              - self: {title: 'EN: Content Element #2'}

@@ -202,6 +202,9 @@ SYS:
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'
+              rte.htmlSanitize:
+                type: bool
+                description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'
               security.backend.enforceReferrer:
                 type: bool
                 description: 'If on, HTTP referrer headers are enforced for backend and install tool requests to mitigate
