@@ -77,8 +77,7 @@
 	"replace": {
 		"typo3/cms-lang": "*",
 		"typo3/cms-saltedpasswords": "*",
-		"typo3/cms-sv": "*",
-		"t3g/svg-sanitizer": "*"
+		"typo3/cms-sv": "*"
 	},
 	"extra": {
 		"typo3/cms": {
