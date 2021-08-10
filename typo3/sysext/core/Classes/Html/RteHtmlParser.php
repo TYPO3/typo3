@@ -890,9 +890,9 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     {
         $features = GeneralUtility::makeInstance(Features::class);
         // either `htmlSanitize = null` or `htmlSanitize = false`
-        // or feature flag `rte.htmlSanitize` is explicitly disabled
+        // or feature flag `security.backend.htmlSanitizeRte` is disabled
         if (array_key_exists('htmlSanitize', $configuration) && empty($configuration['htmlSanitize'])
-            || !$features->isFeatureEnabled('rte.htmlSanitize')
+            || !$features->isFeatureEnabled('security.backend.htmlSanitizeRte')
         ) {
             return $content;
         }
