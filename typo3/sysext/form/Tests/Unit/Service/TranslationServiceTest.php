@@ -1034,10 +1034,10 @@ class TranslationServiceTest extends UnitTestCase
 
         $expected = 'form-element-identifier ADDITIONAL LABEL EN';
 
-        $this->store->flushData($formRuntimeXlfPaths);
+        $this->store->flushData($formRuntimeXlfPaths[0]);
 
-        foreach ($textElementXlfPaths as $textElementXlfPaths) {
-            $this->store->flushData($textElementXlfPaths);
+        foreach ($textElementXlfPaths as $textElementXlfPath) {
+            $this->store->flushData($textElementXlfPath);
         }
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
