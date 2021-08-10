@@ -518,7 +518,8 @@ $tree-line-height: 20px;
 #t3-form-stage-container {
     overflow: auto;
     position: relative;
-    height: 100%;
+    height: calc(100% - #{$module-docheader-height});
+    max-height: 100%;
     text-align: center;
 
     ol,
