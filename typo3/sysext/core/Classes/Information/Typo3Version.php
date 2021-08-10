@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Information;
 
 class Typo3Version
 {
-    protected const VERSION = '10.4.19-dev';
+    protected const VERSION = '10.4.19';
     protected const BRANCH = '10.4';
 
     /**
