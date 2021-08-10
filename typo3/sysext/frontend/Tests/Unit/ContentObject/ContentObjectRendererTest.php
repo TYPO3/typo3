@@ -5786,7 +5786,6 @@ class ContentObjectRendererTest extends UnitTestCase
             'zero is not null' => [0, 0, $conf],
             'float zero is not null' => [0.0, 0.0, $conf],
             'false is not null' => [false, false, $conf],
-            'zero is not null' => [0, 0, $conf],
             'zero string is not null' => ['0', '0', $conf],
             'empty string is not null' => ['', '', $conf],
             'whitespace is not null' => ["\t" . '', "\t" . '', $conf],

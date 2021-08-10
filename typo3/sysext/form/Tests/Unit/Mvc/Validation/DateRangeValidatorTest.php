@@ -126,7 +126,7 @@ class DateRangeValidatorTest extends UnitTestCase
     public function DateRangeValidatorReturnsFalseIfInputIsLowerThanMaximumOption()
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
-        $options = ['maximum' => '', 'maximum' => '2018-03-18'];
+        $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
@@ -141,7 +141,7 @@ class DateRangeValidatorTest extends UnitTestCase
     public function DateRangeValidatorReturnsFalseIfInputIsEqualsMaximumOption()
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
-        $options = ['maximum' => '', 'maximum' => '2018-03-18'];
+        $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
@@ -156,7 +156,7 @@ class DateRangeValidatorTest extends UnitTestCase
     public function DateRangeValidatorReturnsTrueIfInputIsGreaterThanMaximumOption()
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
-        $options = ['maximum' => '', 'maximum' => '2018-03-18'];
+        $options = ['maximum' => '2018-03-18'];
         $validator = $this->getMockBuilder(DateRangeValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
