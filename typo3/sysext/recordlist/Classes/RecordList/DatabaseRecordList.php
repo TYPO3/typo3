@@ -1911,7 +1911,7 @@ class DatabaseRecordList
         }
         // Now, looking for selected elements from the current table:
         $elFromTable = $this->clipObj->elFromTable($table);
-        if (!empty($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$isRecordDeletePlaceholder) {
+        if (!empty($elFromTable) && !empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) && !$isRecordDeletePlaceholder) {
             // IF elements are found, they can be individually ordered and are not locked by editlock, then add a "paste after" icon:
             $cells['pasteAfter'] = $isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)
                 ? $this->spaceIcon
