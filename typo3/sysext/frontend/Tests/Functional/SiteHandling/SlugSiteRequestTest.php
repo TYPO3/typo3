@@ -1258,4 +1258,51 @@ class SlugSiteRequestTest extends AbstractTestCase
             $responseStructure->getScopePath('getpost/testing.value')
         );
     }
+
+    public function crossSiteShortcutsAreRedirectedDataProvider(): array
+    {
+        return [
+            'shortcut is redirected' => [
+                'https://website.local/cross-site-shortcut',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider crossSiteShortcutsAreRedirectedDataProvider
+     */
+    public function crossSiteShortcutsAreRedirected(string $uri, int $expectedStatusCode, array $expectedHeaders): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+        $this->writeSiteConfiguration(
+            'blog-local',
+            $this->buildSiteConfiguration(2000, 'https://blog.local/')
+        );
+        $this->setUpFrontendRootPage(
+            2000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Blog',
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+    }
 }

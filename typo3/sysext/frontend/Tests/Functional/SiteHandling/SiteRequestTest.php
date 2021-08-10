@@ -1014,4 +1014,134 @@ class SiteRequestTest extends AbstractTestCase
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
+
+    public function crossSiteShortcutsAreRedirectedDataProvider(): array
+    {
+        return [
+            'shortcut is redirected #1' => [
+                'https://website.local/index.php?id=2030',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors'],
+                ],
+            ],
+            'shortcut is redirected #2' => [
+                'https://website.local/?id=2030',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors'],
+                ],
+            ],
+            'shortcut is redirected #3' => [
+                'https://website.local/index.php?id=2030&type=0',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors'],
+                ],
+            ],
+            'shortcut is redirected #4' => [
+                'https://website.local/?id=2030&type=0',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider crossSiteShortcutsAreRedirectedDataProvider
+     */
+    public function crossSiteShortcutsAreRedirected(string $uri, int $expectedStatusCode, array $expectedHeaders): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+        $this->writeSiteConfiguration(
+            'blog-local',
+            $this->buildSiteConfiguration(2000, 'https://blog.local/')
+        );
+        $this->setUpFrontendRootPage(
+            2000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Blog',
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+    }
+
+    public function crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider(): array
+    {
+        return [
+            'shortcut requested by id on wrong site #1' => [
+                'https://blog.local/index.php?id=2030',
+            ],
+            'shortcut requested by id on wrong site #2' => [
+                'https://blog.local/?id=2030',
+            ],
+            'shortcut requested by id on wrong site #3' => [
+                'https://blog.local/index.php?id=2030&type=0',
+            ],
+            'shortcut requested by id on wrong site #4' => [
+                'https://blog.local/?id=2030&type=0',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandlingDataProvider
+     */
+    public function crossSiteShortcutsWithWrongSiteHostSendsPageNotFoundWithoutHavingErrorHandling(string $uri): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [404])
+        );
+        $this->writeSiteConfiguration(
+            'blog-local',
+            $this->buildSiteConfiguration(2000, 'https://blog.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [404])
+        );
+
+        $this->setUpFrontendRootPage(
+            2000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Blog',
+            ]
+        );
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        $json = json_decode((string)$response->getBody(), true);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertThat(
+            $json['message'] ?? null,
+            self::stringContains('ID was outside the domain')
+        );
+    }
 }
