@@ -443,7 +443,22 @@ class HtmlParserTest extends UnitTestCase
             ['<body><span></span></body>', '<body>'],
             ['<span>Wrapper<div>Some content</div></span>', '<span>'],
             ['Something before<span>Wrapper<div>Some content</div></span>Something after', 'Something before<span>'],
-            ['Something without tag', '']
+            ['Something without tag', ''],
+            ['text</span>', 'text</span>'],
+            ['<span class=<other><inner></span>', '<span class=<other>'],
+            ['<sp-an class=<other><inner></sp-an>', '<sp-an class=<other>'],
+            ['<span/class=<other><inner></span>', '<span/class=<other>'],
+            ['<span class="<other>"><inner></span>', '<span class="<other>">'],
+            ['<span class=""<other>""><inner></span>', '<span class=""<other>'],
+            ['<span class=<other>>><inner></span>', '<span class=<other>'],
+            ['<span class="', ''],
+            ['<span class=""', ''],
+            ['<span class="<"', ''],
+            ['<span class=">"', ''],
+            ['<span class="<other><inner></span>', ''],
+            ["<span class='<other><inner></span>", ''],
+            ['<span class="<other>\'<inner></span>', ''],
+            ["<span class='<other>\"<inner></span>", ''],
         ];
     }
 
@@ -500,6 +515,22 @@ class HtmlParserTest extends UnitTestCase
                 false,
                 'IMG'
             ],
+            ['text</span>', false, ''],
+            ['<span class=<other><inner></span>', false, 'SPAN'],
+            ['<sp-an class=<other><inner></sp-an>', false, 'SP-AN'],
+            ['<span/class=<other><inner></span>', false, 'SPAN'],
+            ['<span class="<other>"><inner></span>', false, 'SPAN'],
+            ['<span class=""<other>""><inner></span>', false, 'SPAN'],
+            ['<span class=<other>>><inner></span>', false, 'SPAN'],
+            ['<span class="', false, ''],
+            ['<span class=""', false, ''],
+            ['<span class="<"', false, ''],
+            ['<span class=">"', false, ''],
+            ['<span class="<other><inner></span>', false, ''],
+            ["<span class='<other><inner></span>", false, ''],
+            ['<span class="<other>\'<inner></span>', false, ''],
+            ["<span class='<other>\"<inner></span>", false, ''],
+
         ];
     }
 
@@ -539,6 +570,23 @@ class HtmlParserTest extends UnitTestCase
                 'Some stuff before <span>Wrapper<div class="hidden">Some content</div></span> and after',
                 'Wrapper<div class="hidden">Some content</div>'
             ],
+            ['text', ''],
+            ['<span>text', ''],
+            ['text</span>', ''],
+            ['<span class=<other><inner></span>', '<inner>'],
+            ['<sp-an class=<other><inner></sp-an>', '<inner>'],
+            ['<span/class=<other><inner></span>', '<inner>'],
+            ['<span class="<other>"><inner></span>', '<inner>'],
+            ['<span class=""<other>""><inner></span>', '""><inner>'],
+            ['<span class=<other>>><inner></span>', '>><inner>'],
+            ['<span class="', ''],
+            ['<span class=""', ''],
+            ['<span class="<"', ''],
+            ['<span class=">"', ''],
+            ['<span class="<other><inner></span>', ''],
+            ["<span class='<other><inner></span>", ''],
+            ['<span class="<other>\'<inner></span>', ''],
+            ["<span class='<other>\"<inner></span>", ''],
         ];
     }
 

@@ -19,12 +19,14 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
+use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
@@ -294,6 +296,11 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     }
                 }
             }
+        }
+
+        if ($direction === 'db') {
+            // process markup with HTML Sanitizer
+            $value = $this->htmlSanitize($value, $this->procOptions['HTMLparser_db.'] ?? []);
         }
 
         // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
@@ -758,6 +765,13 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     $blockSplit[$k] = preg_replace('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>[' . LF . ']+/', '<$1$2/>', $blockSplit[$k]);
                     // Replace other linebreaks with space
                     $blockSplit[$k] = preg_replace('/[' . LF . ']+/', ' ', $blockSplit[$k]);
+                    // process allowed/removed tags
+                    $blockSplit[$k] = $this->HTMLcleaner(
+                        (string)$blockSplit[$k],
+                        $this->getKeepTags('db'),
+                        $this->procOptions['HTMLparser_db.']['keepNonMatchedTags'] ?? '',
+                        (int)($this->procOptions['HTMLparser_db.']['htmlSpecialChars'] ?? 0)
+                    );
                     $blockSplit[$k] = $this->divideIntoLines($blockSplit[$k]);
                 } else {
                     unset($blockSplit[$k]);
@@ -1375,5 +1389,27 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 . '</a>';
         }
         return implode('', $blocks);
+    }
+
+    protected function htmlSanitize(string $content, array $configuration): string
+    {
+        $features = GeneralUtility::makeInstance(Features::class);
+        // either `htmlSanitize = null` or `htmlSanitize = false`
+        // or feature flag `rte.htmlSanitize` is explicitly disabled
+        if (array_key_exists('htmlSanitize', $configuration) && empty($configuration['htmlSanitize'])
+            || !$features->isFeatureEnabled('rte.htmlSanitize')
+        ) {
+            return $content;
+        }
+
+        $build = $configuration['htmlSanitize.']['build'] ?? 'default';
+        if (class_exists($build) && is_a($build, BuilderInterface::class, true)) {
+            $builder = GeneralUtility::makeInstance($build);
+        } else {
+            $factory = GeneralUtility::makeInstance(SanitizerBuilderFactory::class);
+            $builder = $factory->build($build);
+        }
+        $sanitizer = $builder->build();
+        return $sanitizer->sanitize($content);
     }
 }

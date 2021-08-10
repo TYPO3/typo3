@@ -73,6 +73,7 @@ return [
         'folderCreateMask' => '2775',
         'features' => [
             'redirects.hitCount' => false,
+            'rte.htmlSanitize' => true,
             'unifiedPageTranslationHandling' => false,
             'TypoScript.strictSyntax' => true,
             'simplifiedControllerActionDispatching' => false,
@@ -224,6 +225,9 @@ return [
                     'groups' => ['system'],
                 ],
             ],
+        ],
+        'htmlSanitizer' => [
+            'default' => \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder::class,
         ],
         'defaultCategorizedTables' => '',
         'displayErrors' => -1,

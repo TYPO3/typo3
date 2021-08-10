@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\TestSanitizerBuilder;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
@@ -404,7 +405,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9911',
-                '<a href="/test/good"><good></a>',
+                '<a href="/test/good"><good></good></a>', // expanded from `<good>` to `<good></good>`
                 true,
             ],
             [
@@ -414,7 +415,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9912',
-                '<a href="/test/good-a-b-spaced"><good></a>',
+                '<a href="/test/good-a-b-spaced"><good></good></a>', // expanded from `<good>` to `<good></good>`
                 true,
             ],
             [
@@ -424,7 +425,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9913',
-                '<a href="/test/good-a-b-enc-a">&lt;good%20a=&quot;a/&quot;%20b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/test/good-a-b-enc-a">&lt;good%20a="a/"%20b="thing(1)"&gt;</a>',
                 true,
             ],
             [
@@ -434,7 +435,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9914',
-                '<a href="/test/good-a-b-enc-b">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/test/good-a-b-enc-b">&lt;good/a="a/"/b="thing(1)"&gt;</a>',
                 true,
             ],
             [
@@ -473,6 +474,10 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
+                ],
+                'htmlSanitize' => true,
+                'htmlSanitize.' => [
+                    'build' => TestSanitizerBuilder::class,
                 ],
             ]);
         }
