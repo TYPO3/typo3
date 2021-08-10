@@ -72,9 +72,10 @@ return [
         'folderCreateMask' => '2775',
         'features' => [
             'redirects.hitCount' => false,
-            'rte.htmlSanitize' => true,
             'runtimeDbQuotingOfTcaConfiguration' => true,
             'unifiedPageTranslationHandling' => false,
+            'security.frontend.htmlSanitizeParseFuncDefault' => true,
+            'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false
         ],

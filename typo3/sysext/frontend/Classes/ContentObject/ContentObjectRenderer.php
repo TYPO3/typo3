@@ -24,6 +24,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -3349,10 +3350,25 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
         }
+        // early return, no processing in case no configuration is given
+        if (empty($conf)) {
+            // @deprecated Invoking ContentObjectRenderer::parseFunc without any configuration will trigger an exception in TYPO3 v12.0
+            trigger_error('Invoking ContentObjectRenderer::parseFunc without any configuration will trigger an exception in TYPO3 v12.0', E_USER_DEPRECATED);
+            return $theValue;
+        }
+        // Handle HTML sanitizer invocation
+        if (!isset($conf['htmlSanitize'])) {
+            // @deprecated Property htmlSanitize was not defined, but will be mandatory in TYPO3 v12.0
+            trigger_error('Property htmlSanitize was not defined, but will be mandatory in TYPO3 v12.0', E_USER_DEPRECATED);
+            $features = GeneralUtility::makeInstance(Features::class);
+            $conf['htmlSanitize'] = $features->isFeatureEnabled('security.frontend.htmlSanitizeParseFuncDefault');
+        }
+        $conf['htmlSanitize'] = (bool)$conf['htmlSanitize'];
+
         // Process:
         if ((string)($conf['externalBlocks'] ?? '') === '') {
             $result = $this->_parseFunc($theValue, $conf);
-            if ($conf['htmlSanitize'] ?? true) {
+            if ($conf['htmlSanitize']) {
                 $result = $this->stdWrap_htmlSanitize($result, $conf['htmlSanitize.'] ?? []);
             }
             return $result;
@@ -3436,8 +3452,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         $result = implode('', $parts);
-        if ($conf['htmlSanitize'] ?? true) {
-            $result = $this->stdWrap_htmlSanitize($result, ['htmlSanitize.' => $conf['htmlSanitize.'] ?? []]);
+        if ($conf['htmlSanitize']) {
+            $result = $this->stdWrap_htmlSanitize($result, $conf['htmlSanitize.'] ?? []);
         }
         return $result;
     }

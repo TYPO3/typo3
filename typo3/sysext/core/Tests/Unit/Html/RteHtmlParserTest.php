@@ -109,7 +109,7 @@ class RteHtmlParserTest extends UnitTestCase
     public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult)
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize'] = false;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
         self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
@@ -187,7 +187,7 @@ class RteHtmlParserTest extends UnitTestCase
     public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize'] = false;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
