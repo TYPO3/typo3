@@ -46,8 +46,8 @@ class TypoScriptParserTest extends FunctionalTestCase
 
             'RTE.default.FE < RTE.default',
 
-            'RTE.default.enableWordClean = 1',
-            'RTE.default.enableWordClean.HTMLparser < RTE.default.proc.entryHTMLparser_db',
+            'RTE.default.anyOtherOption = 1',
+            'RTE.default.anyOtherOption.HTMLparser < RTE.default.proc.entryHTMLparser_db',
             '',
         ]);
 
