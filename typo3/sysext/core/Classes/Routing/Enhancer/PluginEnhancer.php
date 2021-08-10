@@ -157,22 +157,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     }
 
     /**
-     * Add the namespace of the plugin to all requirements, so they are unique for this plugin.
-     *
-     * @return array
-     * @deprecated Since TYPO3 v10.3, will be removed in TYPO3 v11.0. Use AbstractEnhancer::applyRequirements() instead.
-     */
-    protected function getNamespacedRequirements(): array
-    {
-        trigger_error('PluginEnhancer::getNamespacedRequirements will be removed in TYPO3 v11.0. Use AbstractEnhancer::applyRequirements() instead.', E_USER_DEPRECATED);
-        $requirements = [];
-        foreach ($this->configuration['requirements'] ?? [] as $name => $value) {
-            $requirements[$this->namespace . '_' . $name] = $value;
-        }
-        return $requirements;
-    }
-
-    /**
      * @param Route $route
      * @param array $parameters
      * @return array
