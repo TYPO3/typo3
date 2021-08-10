@@ -1374,7 +1374,12 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                     rowDescription,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-            '
+            ',
+            'columnsOverrides' => [
+                'header' => [
+                    'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT'
+                ],
+            ],
         ],
         'header' => [
             'showitem' => '
@@ -1538,7 +1543,12 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                     rowDescription,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-            '
+            ',
+            'columnsOverrides' => [
+                'header' => [
+                    'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT'
+                ],
+            ],
         ],
         'list' => [
             'showitem' => '
@@ -1866,7 +1876,12 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                     rowDescription,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-            '
+            ',
+            'columnsOverrides' => [
+                'header' => [
+                    'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT'
+                ],
+            ],
         ],
         'table' => [
             'showitem' => '

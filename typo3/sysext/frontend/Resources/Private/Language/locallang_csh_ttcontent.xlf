@@ -183,7 +183,7 @@ _MOD_web_layout:columns_single</source>
 			<trans-unit id="header.details" resname="header.details" xml:space="preserve">
 				<source>Almost all Content Elements will display this header above the content. If you don't want the header displayed, set the header Layout to "Hidden". You can also choose not to enter any content in this field.
 
-Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element.</source>
+Some content element types do not display the header by default. In those cases the Header field is typically labeled "Name" instead. One example is the HTML Content Element. The chosen name will then only be displayed in menus, e.g. the section index.</source>
 			</trans-unit>
 			<trans-unit id="_header.seeAlso" resname="_header.seeAlso" xml:space="preserve">
 				<source>tt_content:header_position,

@@ -162,6 +162,9 @@
 			<trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
+			<trans-unit id="header.description.ALT" resname="header.description.ALT">
+				<source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+			</trans-unit>
 			<trans-unit id="header_position" resname="header_position">
 				<source>Align</source>
 			</trans-unit>
