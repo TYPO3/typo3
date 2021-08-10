@@ -194,6 +194,14 @@ $toolbar-item-padding-horizontal: 15px;
     display: none;
     padding-right: 0.5em;
 
+    img {
+        max-width: 180px;
+        height: auto;
+        max-height: 35px;
+        width: auto;
+        object-fit: contain;
+    }
+
     @media (min-width: 320px) {
         display: inline-block;
     }
