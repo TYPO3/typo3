@@ -45,7 +45,9 @@ use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
@@ -61,6 +63,7 @@ use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -1477,21 +1480,29 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
     {
         $this->getPageAndRootline($request);
+        $rootPageId = (int)$rootPageId;
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
         if (is_array($this->rootLine) && $this->rootLine !== []) {
             $idFound = false;
-            foreach ($this->rootLine as $key => $val) {
-                if ($val['uid'] == $rootPageId) {
+            foreach ($this->rootLine as $pageInRootLine) {
+                if ((int)$pageInRootLine['uid'] === $rootPageId) {
                     $idFound = true;
                     break;
                 }
             }
             if (!$idFound) {
                 // Page is 'not found' in case the id was outside the domain, code 3
-                $this->pageNotFound = 3;
-                $this->id = $rootPageId;
-                // re-get the page and rootline if the id was not found.
-                $this->getPageAndRootline($request);
+                // This can only happen if there was a shortcut. So $this->page is now the shortcut target
+                // But the original page is in $this->originalShortcutPage.
+                // This only happens if people actually call TYPO3 with index.php?id=123 where 123 is in a different
+                // page tree. This is not allowed.
+                $directlyRequestedId = (int)($request->getQueryParams()['id'] ?? 0);
+                if ($directlyRequestedId && (int)($this->originalShortcutPage['uid'] ?? 0) !== $directlyRequestedId) {
+                    $this->pageNotFound = 3;
+                    $this->id = $rootPageId;
+                    // re-get the page and rootline if the id was not found.
+                    $this->getPageAndRootline($request);
+                }
             }
         }
     }
@@ -2244,6 +2255,23 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getRedirectUriForShortcut(ServerRequestInterface $request): ?string
     {
         if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
+            // Check if the shortcut page is actually on the current site, if not, this is a "page not found"
+            // because the request was www.mydomain.com/?id=23 where page ID 23 (which is a shortcut) is on another domain/site.
+            if ((int)($request->getQueryParams()['id'] ?? 0) > 0) {
+                try {
+                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($this->originalShortcutPage['l10n_parent'] ?: $this->originalShortcutPage['uid']);
+                } catch (SiteNotFoundException $e) {
+                    $site = null;
+                }
+                if ($site !== $this->site) {
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                        $request,
+                        'ID was outside the domain',
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH)
+                    );
+                    throw new ImmediateResponseException($response, 1638022483);
+                }
+            }
             return $this->getUriToCurrentPageForRedirect($request);
         }
 

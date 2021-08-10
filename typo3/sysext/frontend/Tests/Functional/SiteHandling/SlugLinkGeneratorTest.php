@@ -733,6 +733,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'That page is forbidden to you', 'link' => '/403'],
                     ['title' => 'That page was not found', 'link' => '/404'],
                     ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/authors'],
+                    ['title' => 'Cross Site Shortcut', 'link' => 'https://blog.acme.com/authors'],
                 ],
             ],
             'ACME Blog' => [

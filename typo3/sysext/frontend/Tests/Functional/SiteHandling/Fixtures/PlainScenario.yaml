@@ -127,6 +127,7 @@ entities:
           children:
             - self: {id: 2021, title: 'FEGroups Restricted', visitorGroups: 30}
             - self: {id: 2022, title: 'FEGroups Restricted', hidden: 1, visitorGroups: 30}
+        - self: {id: 2030, title: 'Cross Site Shortcut', type: *pageShortcut, shortcut: 2100}
     - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true}
       children:
         - self: {id: 2100, title: 'Authors'}

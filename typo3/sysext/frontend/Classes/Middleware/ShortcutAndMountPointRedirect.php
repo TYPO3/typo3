@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,7 +41,11 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         $exposeInformation = $GLOBALS['TYPO3_CONF_VARS']['FE']['exposeRedirectInformation'] ?? false;
 
         // Check for shortcut page and mount point redirect
-        $redirectToUri = $this->getRedirectUri($request);
+        try {
+            $redirectToUri = $this->getRedirectUri($request);
+        } catch (ImmediateResponseException $e) {
+            return $e->getResponse();
+        }
         if ($redirectToUri !== null && $redirectToUri !== (string)$request->getUri()) {
             /** @var PageArguments $pageArguments */
             $pageArguments = $request->getAttribute('routing', null);
