@@ -84,26 +84,13 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
     }
 
     /**
-     * Is an update necessary?
-     *
-     * Is used to determine whether a wizard needs to be run.
-     * Check if data for migration exists.
+     * To avoid timeout issues, no check is performed in advance
      *
      * @return bool
      */
     public function updateNecessary(): bool
     {
-        foreach ($this->resolveLocalStorages() as $storage) {
-            try {
-                $svgFiles = $this->resolveSvgFiles($storage);
-            } catch (InsufficientFolderAccessPermissionsException $exception) {
-                continue;
-            }
-            if (count($svgFiles) > 0) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     /**
