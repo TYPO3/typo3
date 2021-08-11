@@ -64,7 +64,7 @@ class PageRendererTest extends FunctionalTestCase
 
         $favouriteIcon = 'http://google.com/favicon.ico';
         $subject->setFavIcon($favouriteIcon);
-        $expectedFavouriteIconPartOne = '<link rel="shortcut icon" href="' . $favouriteIcon . '" />';
+        $expectedFavouriteIconPartOne = '<link rel="icon" href="' . $favouriteIcon . '" />';
 
         $baseUrl = 'http://google.com/';
         $subject->setBaseUrl($baseUrl);
