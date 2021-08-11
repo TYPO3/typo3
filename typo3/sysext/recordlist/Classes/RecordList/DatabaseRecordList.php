@@ -1854,7 +1854,6 @@ class DatabaseRecordList
                         (int)$row['uid'],
                         true,
                         $isSel === 'copy',
-                        ['returnUrl' => $this->listURL()]
                     )) . '"'
                     . ' title="' . htmlspecialchars($copyTitle) . '"'
                     . ' aria-label="' . htmlspecialchars($copyTitle) . '">'
@@ -1876,7 +1875,6 @@ class DatabaseRecordList
                             (int)$row['uid'],
                             false,
                             $isSel === 'cut',
-                            ['returnUrl' => $this->listURL()]
                         )) . '"'
                         . ' title="' . htmlspecialchars($cutTitle) . '"'
                         . ' aria-label="' . htmlspecialchars($cutTitle) . '">'
@@ -2902,7 +2900,7 @@ class DatabaseRecordList
 
         return (string)$this->uriBuilder->buildUriFromRoutePath(
             $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath(),
-            array_merge_recursive($urlParameters, $this->overrideUrlParameters)
+            array_replace($urlParameters, $this->overrideUrlParameters)
         );
     }
 

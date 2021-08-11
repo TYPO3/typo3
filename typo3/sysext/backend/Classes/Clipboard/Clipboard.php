@@ -504,23 +504,15 @@ class Clipboard
      * @param int $uid Uid of record
      * @param bool $copy If set, copymode will be enabled
      * @param bool $deselect If set, the link will deselect, otherwise select.
-     * @param array $getParameters The base array of GET parameters to be sent in addition.
-     *                             Notice that current GET vars WILL automatically be included.
      * @return string URL linking to the current script but with the CB array set to select the element with table/uid
      */
-    public function selUrlDB(
-        string $table,
-        int $uid,
-        bool $copy = false,
-        bool $deselect = false,
-        array $getParameters = []
-    ): string {
+    public function selUrlDB(string $table, int $uid, bool $copy = false, bool $deselect = false): string
+    {
         $CB = ['el' => [$table . '|' . $uid => $deselect ? 0 : 1]];
         if ($copy) {
             $CB['setCopyMode'] = 1;
         }
-        $getParameters['CB'] = $CB;
-        return $this->buildUrl($getParameters);
+        return $this->buildUrl(['CB' => $CB]);
     }
 
     /**
@@ -848,7 +840,7 @@ class Clipboard
     {
         return (string)$this->uriBuilder->buildUriFromRoutePath(
             $this->request->getAttribute('route')->getPath(),
-            array_replace_recursive($this->request->getQueryParams(), $parameters)
+            array_replace($this->request->getQueryParams(), $parameters)
         );
     }
 }
