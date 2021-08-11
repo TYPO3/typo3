@@ -110,9 +110,9 @@ class ConstantConfigurationParser
     protected function buildConfigurationArray(array $configurationOption): array
     {
         $hierarchicConfiguration = [];
-        if (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
+        if (str_starts_with((string)$configurationOption['type'], 'user')) {
             $configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
-        } elseif (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
+        } elseif (str_starts_with((string)$configurationOption['type'], 'options')) {
             $configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
         }
         $languageService = $this->getLanguageService();

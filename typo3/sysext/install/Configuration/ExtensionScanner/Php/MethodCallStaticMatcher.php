@@ -1170,4 +1170,11 @@ return [
             'Deprecation-94791-GeneralUtilityminifyJavaScript.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-95257-GeneralUtilityisFirstPartOfStr.rst'
+        ],
+    ],
 ];

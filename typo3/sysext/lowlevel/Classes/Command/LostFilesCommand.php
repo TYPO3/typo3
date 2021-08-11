@@ -200,7 +200,7 @@ If you want to get more detailed information, use the --verbose option.')
             $customPaths = GeneralUtility::trimExplode(',', $customPaths, true);
             foreach ($customPaths as $customPath) {
                 if (false === realpath(Environment::getPublicPath() . '/' . $customPath)
-                    || !GeneralUtility::isFirstPartOfStr((string)realpath(Environment::getPublicPath() . '/' . $customPath), (string)realpath(Environment::getPublicPath()))) {
+                    || !str_starts_with((string)realpath(Environment::getPublicPath() . '/' . $customPath), (string)realpath(Environment::getPublicPath()))) {
                     throw new \Exception('The path: "' . $customPath . '" is invalid', 1450086736);
                 }
                 $files = GeneralUtility::getAllFilesAndFoldersInPath($files, Environment::getPublicPath() . '/' . $customPath);
@@ -224,7 +224,7 @@ If you want to get more detailed information, use the --verbose option.')
 
             $fileIsInExcludedPath = false;
             foreach ($excludedPaths as $exclPath) {
-                if (GeneralUtility::isFirstPartOfStr($value, $exclPath)) {
+                if (str_starts_with($value, $exclPath)) {
                     $fileIsInExcludedPath = true;
                     break;
                 }

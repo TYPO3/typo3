@@ -58,6 +58,6 @@ class PharStreamWrapperInterceptor implements Assertable
         }
         $baseName = $invocation->getBaseName();
         return GeneralUtility::validPathStr($baseName)
-            && GeneralUtility::isFirstPartOfStr($baseName, Environment::getExtensionsPath());
+            && str_starts_with($baseName, Environment::getExtensionsPath());
     }
 }

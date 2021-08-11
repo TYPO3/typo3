@@ -123,12 +123,12 @@ class TableManualRepository
         }
         foreach ($cshKeys as $cshKey => $value) {
             // Extensions
-            if (GeneralUtility::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
+            if (str_starts_with($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
                 $lang->loadSingleTableDescription($cshKey);
                 $this->renderTableOfContentItem($mode, $cshKey, 'extensions', $outputSections, $tocArray, $cshKeys);
             }
             // Other
-            if (!GeneralUtility::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
+            if (!str_starts_with($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
                 $lang->loadSingleTableDescription($cshKey);
                 $this->renderTableOfContentItem($mode, $cshKey, 'other', $outputSections, $tocArray, $cshKeys);
             }

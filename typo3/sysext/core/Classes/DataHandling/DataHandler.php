@@ -8749,7 +8749,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         // flush cache by tag
-        if (GeneralUtility::isFirstPartOfStr(strtolower($cacheCmd), 'cachetag:')) {
+        if (str_starts_with(strtolower($cacheCmd), 'cachetag:')) {
             $cacheTag = substr($cacheCmd, 9);
             $tagsToFlush[] = $cacheTag;
         }

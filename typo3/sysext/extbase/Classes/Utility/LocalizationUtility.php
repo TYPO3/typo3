@@ -76,7 +76,7 @@ class LocalizationUtility
             return null;
         }
         $value = null;
-        if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
+        if (str_starts_with($key, 'LLL:')) {
             $keyParts = explode(':', $key);
             unset($keyParts[0]);
             $key = array_pop($keyParts);

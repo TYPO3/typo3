@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -162,7 +161,7 @@ class ListUtility implements SingletonInterface
     protected function getInstallTypeForPackage(PackageInterface $package)
     {
         foreach (Extension::returnInstallPaths() as $installType => $installPath) {
-            if (GeneralUtility::isFirstPartOfStr($package->getPackagePath(), $installPath)) {
+            if (str_starts_with($package->getPackagePath(), $installPath)) {
                 return $installType;
             }
         }

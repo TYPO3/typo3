@@ -724,9 +724,11 @@ class GeneralUtility
      * @param string $str Full string to check
      * @param string $partStr Reference string which must be found as the "first part" of the full string
      * @return bool TRUE if $partStr was found to be equal to the first part of $str
+     * @deprecated will be removed in TYPO3 v12.0. Use native PHP str_starts_with() with proper casting instead.
      */
     public static function isFirstPartOfStr($str, $partStr)
     {
+        trigger_error('GeneralUtility::isFirstPartOfStr() will be removed in TYPO3 v12.0. Use PHPs str_starts_with() method instead', E_USER_DEPRECATED);
         $str = is_array($str) ? '' : (string)$str;
         $partStr = is_array($partStr) ? '' : (string)$partStr;
         return $partStr !== '' && strpos($str, $partStr, 0) === 0;
@@ -893,7 +895,7 @@ class GeneralUtility
         // our original $url might only contain <scheme>: (e.g. mail:)
         // so we convert that to the double-slashed version to ensure
         // our check against the $recomposedUrl is proper
-        if (!self::isFirstPartOfStr($url, $parsedUrl['scheme'] . '://')) {
+        if (!str_starts_with($url, $parsedUrl['scheme'] . '://')) {
             $url = str_replace($parsedUrl['scheme'] . ':', $parsedUrl['scheme'] . '://', $url);
         }
         $recomposedUrl = HttpUtility::buildUrl($parsedUrl);
@@ -1832,7 +1834,7 @@ class GeneralUtility
         foreach ($allowedPathPrefixes as $pathPrefix => $prefixLabel) {
             $dirName = $pathPrefix . '/';
             // Invalid file path, let's check for the other path, if it exists
-            if (!static::isFirstPartOfStr($fI['dirname'], $dirName)) {
+            if (!str_starts_with($fI['dirname'], $dirName)) {
                 if ($errorMessage === null) {
                     $errorMessage = '"' . $fI['dirname'] . '" was not within directory ' . $prefixLabel;
                 }
@@ -2132,10 +2134,10 @@ class GeneralUtility
      * @param string $prefixToRemove The prefix path to remove (if found as first part of string!)
      * @return string[]|string The input $fileArr processed, or a string with an error message, when an error occurred.
      */
-    public static function removePrefixPathFromList(array $fileArr, $prefixToRemove)
+    public static function removePrefixPathFromList(array $fileArr, string $prefixToRemove)
     {
-        foreach ($fileArr as $k => &$absFileRef) {
-            if (self::isFirstPartOfStr($absFileRef, $prefixToRemove)) {
+        foreach ($fileArr as &$absFileRef) {
+            if (str_starts_with($absFileRef, $prefixToRemove)) {
                 $absFileRef = substr($absFileRef, strlen($prefixToRemove));
             } else {
                 return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
@@ -2822,8 +2824,8 @@ class GeneralUtility
             // is relative. Prepended with the public web folder
             $filename = Environment::getPublicPath() . '/' . $filename;
         } elseif (!(
-            static::isFirstPartOfStr($filename, Environment::getProjectPath())
-                  || static::isFirstPartOfStr($filename, Environment::getPublicPath())
+            str_starts_with($filename, Environment::getProjectPath())
+                  || str_starts_with($filename, Environment::getPublicPath())
         )) {
             // absolute, but set to blank if not allowed
             $filename = '';
@@ -2883,9 +2885,9 @@ class GeneralUtility
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? '';
         return static::isAbsPath($path) && static::validPathStr($path)
             && (
-                static::isFirstPartOfStr($path, Environment::getProjectPath())
-                || static::isFirstPartOfStr($path, Environment::getPublicPath())
-                || ($lockRootPath && static::isFirstPartOfStr($path, $lockRootPath))
+                str_starts_with($path, Environment::getProjectPath())
+                || str_starts_with($path, Environment::getPublicPath())
+                || ($lockRootPath && str_starts_with($path, $lockRootPath))
             );
     }
 
@@ -3041,8 +3043,8 @@ class GeneralUtility
             if (
                 self::validPathStr($uploadedTempFileName)
                 && (
-                    self::isFirstPartOfStr($uploadedTempFileName, Environment::getPublicPath() . '/typo3temp/')
-                    || self::isFirstPartOfStr($uploadedTempFileName, Environment::getVarPath() . '/')
+                    str_starts_with($uploadedTempFileName, Environment::getPublicPath() . '/typo3temp/')
+                    || str_starts_with($uploadedTempFileName, Environment::getVarPath() . '/')
                 )
                 && @is_file($uploadedTempFileName)
             ) {

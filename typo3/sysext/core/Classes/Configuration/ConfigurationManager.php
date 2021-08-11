@@ -441,7 +441,7 @@ class ConfigurationManager
     {
         // Early return for white listed paths
         foreach ($this->whiteListedLocalConfigurationPaths as $whiteListedPath) {
-            if (GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
+            if (str_starts_with($path, $whiteListedPath)) {
                 return true;
             }
         }

@@ -114,7 +114,7 @@ class SimpleLockStrategy implements LockingStrategyInterface
         $success = true;
         if (
             GeneralUtility::isAllowedAbsPath($this->filePath)
-            && GeneralUtility::isFirstPartOfStr($this->filePath, Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER)
+            && str_starts_with($this->filePath, Environment::getVarPath() . '/' . self::FILE_LOCK_FOLDER)
         ) {
             if (@unlink($this->filePath) === false) {
                 $success = false;

@@ -297,7 +297,7 @@ class ResourceFactory implements SingletonInterface
         // This is done in all considered sub functions anyway
         $input = str_replace(Environment::getPublicPath() . '/', '', $input);
 
-        if (GeneralUtility::isFirstPartOfStr($input, 'file:')) {
+        if (str_starts_with($input, 'file:')) {
             $input = substr($input, 5);
             return $this->retrieveFileOrFolderObject($input);
         }
@@ -354,7 +354,7 @@ class ResourceFactory implements SingletonInterface
             // auto-detecting the best-matching storage to use
             $folderIdentifier = $parts[0];
             // make sure to not use an absolute path, and remove Environment::getPublicPath if it is prepended
-            if (GeneralUtility::isFirstPartOfStr($folderIdentifier, Environment::getPublicPath() . '/')) {
+            if (str_starts_with($folderIdentifier, Environment::getPublicPath() . '/')) {
                 $folderIdentifier = PathUtility::stripPathSitePrefix($parts[0]);
             }
         }

@@ -38,7 +38,7 @@ class AddRecord extends AbstractNode
     {
         $options = $this->data['renderData']['fieldControlOptions'];
         $parameterArray = $this->data['parameterArray'];
-        $itemName = $parameterArray['itemFormElName'];
+        $itemName = (string)$parameterArray['itemFormElName'];
 
         // Handle options and fallback
         $title = $options['title'] ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew';
@@ -70,7 +70,7 @@ class AddRecord extends AbstractNode
         $pid = $this->resolvePid($options, $table);
         $prefixOfFormElName = 'data[' . $this->data['tableName'] . '][' . $this->data['databaseRow']['uid'] . '][' . $this->data['fieldName'] . ']';
         $flexFormPath = '';
-        if (GeneralUtility::isFirstPartOfStr($itemName, $prefixOfFormElName)) {
+        if (str_starts_with($itemName, $prefixOfFormElName)) {
             $flexFormPath = str_replace('][', '/', substr($itemName, strlen($prefixOfFormElName) + 1, -1));
         }
 

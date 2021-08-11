@@ -591,8 +591,8 @@ class Export extends ImportExport
         foreach ($relations as &$relation) {
             if (isset($relation['type']) && $relation['type'] === 'file') {
                 foreach ($relation['newValueFiles'] as &$fileRelationData) {
-                    $absoluteFilePath = $fileRelationData['ID_absFile'];
-                    if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
+                    $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
+                    if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
                         $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                         $fileRelationData['ID'] = md5($relatedFilePath);
                     }
@@ -603,8 +603,8 @@ class Export extends ImportExport
                 if (is_array($relation['flexFormRels']['file'] ?? null)) {
                     foreach ($relation['flexFormRels']['file'] as &$subList) {
                         foreach ($subList as &$fileRelationData) {
-                            $absoluteFilePath = $fileRelationData['ID_absFile'];
-                            if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
+                            $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
+                            if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
                                 $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                                 $fileRelationData['ID'] = md5($relatedFilePath);
                             }
@@ -1062,7 +1062,7 @@ class Export extends ImportExport
                         $resAbsolutePath = GeneralUtility::resolveBackPath(PathUtility::dirname($fileData['ID_absFile']) . '/' . $resRelativePath);
                         $resAbsolutePath = GeneralUtility::getFileAbsFileName($resAbsolutePath);
                         if ($resAbsolutePath !== ''
-                            && GeneralUtility::isFirstPartOfStr($resAbsolutePath, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')
+                            && str_starts_with($resAbsolutePath, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')
                             && @is_file($resAbsolutePath)
                         ) {
                             $resourceCaptured = true;

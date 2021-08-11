@@ -32,7 +32,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      */
     public static function isAbsPath($path): bool
     {
-        return self::isFirstPartOfStr($path, 'vfs://') || parent::isAbsPath($path);
+        return str_starts_with($path, 'vfs://') || parent::isAbsPath($path);
     }
 
     /**
@@ -43,7 +43,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      */
     public static function isAllowedAbsPath($path): bool
     {
-        return self::isFirstPartOfStr($path, 'vfs://') || parent::isAllowedAbsPath($path);
+        return str_starts_with($path, 'vfs://') || parent::isAllowedAbsPath($path);
     }
 
     /**
@@ -54,7 +54,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      */
     public static function validPathStr($theFile): bool
     {
-        return self::isFirstPartOfStr($theFile, 'vfs://') || parent::validPathStr($theFile);
+        return str_starts_with($theFile, 'vfs://') || parent::validPathStr($theFile);
     }
 
     /**

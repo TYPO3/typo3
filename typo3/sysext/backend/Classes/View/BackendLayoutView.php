@@ -507,7 +507,7 @@ class BackendLayoutView implements SingletonInterface
     {
         $columnName = $column['name'];
 
-        if (GeneralUtility::isFirstPartOfStr($columnName, 'LLL:')) {
+        if (str_starts_with($columnName, 'LLL:')) {
             $columnName = $this->getLanguageService()->sL($columnName);
         }
 

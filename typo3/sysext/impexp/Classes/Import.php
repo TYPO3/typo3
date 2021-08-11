@@ -1588,7 +1588,7 @@ class Import extends ImportExport
         if ($this->dat['header']['files'][$softref['file_ID']]) {
             // Initialize; Get directory prefix for file and find possible RTE filename
             $dirPrefix = PathUtility::dirname($relFileName) . '/';
-            if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->getFileadminFolderName() . '/')) {
+            if (str_starts_with($dirPrefix, $this->getFileadminFolderName() . '/')) {
                 // File in fileadmin/ folder:
                 // Create file (and possible resources)
                 $newFileName = $this->processSoftReferencesSaveFileCreateRelFile($dirPrefix, PathUtility::basename($relFileName), $softref['file_ID'], $table, $uid) ?: '';
@@ -1653,7 +1653,7 @@ class Import extends ImportExport
                                 $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
                                 $absResourceFileName = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName);
                                 $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-                                if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
+                                if ($absResourceFileName && str_starts_with($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
                                     $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
                                     if ($this->resolveStoragePath($destDir, false) !== null && $this->checkOrCreateDir($destDir)) {
                                         $this->writeFileVerify($absResourceFileName, $res_fileID);

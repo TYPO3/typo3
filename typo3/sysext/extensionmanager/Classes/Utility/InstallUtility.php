@@ -608,7 +608,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     {
         $allowedPaths = Extension::returnAllowedInstallPaths();
         foreach ($allowedPaths as $allowedPath) {
-            if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
+            if (str_starts_with($path, $allowedPath)) {
                 return true;
             }
         }

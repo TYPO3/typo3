@@ -256,7 +256,7 @@ class ResourceCompressor
             if (GeneralUtility::isValidUrl($filename)) {
                 // check if it is possibly a local file with fully qualified URL
                 if (GeneralUtility::isOnCurrentHost($filename) &&
-                    GeneralUtility::isFirstPartOfStr(
+                    str_starts_with(
                         $filename,
                         $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
                     )
@@ -295,7 +295,7 @@ class ResourceCompressor
                     $contents = substr($contents, 3);
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)
-                if ($type === 'css' && !GeneralUtility::isFirstPartOfStr($filename, $this->targetDirectory)) {
+                if ($type === 'css' && !str_starts_with($filename, $this->targetDirectory)) {
                     $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
                 }
                 $concatenated .= LF . $contents;
@@ -494,7 +494,7 @@ class ResourceCompressor
     {
         foreach ($baseDirectories as $baseDirectory) {
             // check, if $filename starts with base directory
-            if (GeneralUtility::isFirstPartOfStr($filename, $baseDirectory)) {
+            if (str_starts_with($filename, $baseDirectory)) {
                 return true;
             }
         }

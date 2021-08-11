@@ -121,7 +121,7 @@ class TranslationService implements SingletonInterface
         }
 
         $keyParts = explode(':', $key);
-        if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
+        if (str_starts_with($key, 'LLL:')) {
             $locallangPathAndFilename = $keyParts[1] . ':' . $keyParts[2];
             $key = $keyParts[3];
         } elseif (PathUtility::isExtensionPath($key)) {

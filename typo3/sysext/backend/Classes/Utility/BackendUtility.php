@@ -3065,7 +3065,7 @@ class BackendUtility
 
             // Look up the path:
             if ($table === '_FILE') {
-                if (!GeneralUtility::isFirstPartOfStr($ref, Environment::getPublicPath())) {
+                if (!str_starts_with($ref, Environment::getPublicPath())) {
                     return '';
                 }
 
