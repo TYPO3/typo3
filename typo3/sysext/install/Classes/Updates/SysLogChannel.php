@@ -73,11 +73,19 @@ END;
 
         // Ensure the level field is a varchar, otherwise we are in trouble when logging into TYPO3 Backend.
         $schema = $this->sysLogTable->getSchemaManager();
-        $schema->alterTable(new TableDiff(
-            'sys_log',
-            [],
-            [new ColumnDiff('level', new Column('level', new StringType(), ['length' => 10, 'default' => 'info', 'notnull' => true]))],
-        ));
+        $table = $schema->listTableDetails('sys_log');
+        if (!$table->getColumn('level')->getType() instanceof StringType) {
+            $schema->alterTable(new TableDiff(
+                'sys_log',
+                [],
+                [new ColumnDiff('level', new Column('level', new StringType(), ['length' => 10, 'default' => 'info', 'notnull' => true]))],
+                [],
+                [],
+                [],
+                [],
+                $table
+            ));
+        }
 
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET level = ? WHERE type = ?');
         foreach (Type::levelMap() as $type => $level) {
