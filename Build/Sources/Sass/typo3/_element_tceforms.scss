@@ -110,6 +110,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 // this is required for the eval=null field checkbox
 .t3-form-field-eval-null-checkbox {
     z-index: 150;
+    position: relative;
 }
 
 .icon-list {
