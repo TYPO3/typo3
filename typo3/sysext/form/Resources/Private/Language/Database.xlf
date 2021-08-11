@@ -177,9 +177,6 @@
             <trans-unit id="formManager.create_new_form" resname="formManager.create_new_form" xml:space="preserve">
                 <source>Create new form</source>
             </trans-unit>
-            <trans-unit id="formManager.edit_existing_forms" resname="formManager.edit_existing_forms" xml:space="preserve">
-                <source>Edit existing forms</source>
-            </trans-unit>
             <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve">
                 <source>Form name</source>
             </trans-unit>
@@ -202,7 +199,7 @@
                 <source>Duplicate this form</source>
             </trans-unit>
             <trans-unit id="formManager.delete_form" resname="formManager.delete_form" xml:space="preserve">
-                <source>Remove this form</source>
+                <source>Delete this form</source>
             </trans-unit>
             <trans-unit id="formManager.forms_not_found.title" resname="formManager.forms_not_found.title" xml:space="preserve">
                 <source>No forms found!</source>
@@ -215,9 +212,6 @@
             </trans-unit>
             <trans-unit id="formManager.duplicate_form_not_allowed" resname="formManager.duplicate_form_not_allowed" xml:space="preserve">
                 <source>Duplicate this form is not allowed.</source>
-            </trans-unit>
-            <trans-unit id="formManager.delete_form_not_allowed" resname="formManager.delete_form_not_allowed" xml:space="preserve">
-                <source>Delete this form is not allowed.</source>
             </trans-unit>
             <trans-unit id="formManager.invalid" resname="formManager.invalid" xml:space="preserve">
                 <source>Invalid YAML file!</source>
