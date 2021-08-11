@@ -11,10 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult} from 'lit';
+import {html, LitElement, TemplateResult, render} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
+import Severity = require('TYPO3/CMS/Backend/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 
 /**
  * Module: TYPO3/CMS/Backend/Element/TableWizardElement
@@ -165,6 +168,10 @@ export class TableWizardElement extends LitElement {
           @click="${(evt: Event) => this.toggleType(evt)}">
           <typo3-backend-icon identifier="${this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract'}" size="small"></typo3-backend-icon>
         </button>
+        <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
+            @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
+          <span class="t3-icon fa fa-fw fa-plus"></span>
+        </button>
       </span>
     `;
   }
@@ -233,5 +240,98 @@ export class TableWizardElement extends LitElement {
         </button>
       </span>
     `;
+  }
+
+  private showTableConfigurationModal(evt: Event): void {
+    const lastColIndex: number = this.firstRow.length;
+    const lastRowIndex: number = this.table.length;
+    const initRowValue: number = lastRowIndex || 1;
+    const initTableValue: number = lastColIndex || 1;
+
+    Modal.advanced({
+      content: '', // Callback is used to fill in content
+      title: lll('table_setCountHeadline'),
+      severity: SeverityEnum.notice,
+      size: Modal.sizes.small,
+      buttons: [
+        {
+          text: lll('button.close') || 'Close',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: (): void => Modal.dismiss(),
+        },
+        {
+          text: lll('table_buttonApply') || 'Apply',
+          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
+          name: 'apply',
+          trigger: (): void => {
+            const rows: HTMLInputElement = Modal.currentModal[0].querySelector('#t3js-expand-rows');
+            const cols: HTMLInputElement = Modal.currentModal[0].querySelector('#t3js-expand-cols');
+
+            if (rows === null || cols === null) {
+              return;
+            }
+
+            if (rows.checkValidity() && cols.checkValidity()) {
+              const modifyRows: number = Number(rows.value) - lastRowIndex;
+              const modifyCols: number = Number(cols.value) - lastColIndex;
+              this.setColAndRowCount(evt, modifyCols, modifyRows);
+              Modal.dismiss();
+            } else {
+              rows.reportValidity();
+              cols.reportValidity();
+            }
+          }
+        }
+      ],
+      callback: (currentModal: HTMLCollection): void => {
+        render(
+          html`
+            <div class="form-group ">
+              <label>${lll('table_rowCount')}</label>
+              <input id="t3js-expand-rows" class="form-control" type="number" min="1" required value="${initRowValue}">
+            </div>
+            <div class="form-group ">
+              <label>${lll('table_colCount')}</label>
+              <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${initTableValue}">
+            </div>
+          `,
+          currentModal[0].querySelector('.t3js-modal-body') as HTMLElement
+        );
+      }
+    });
+  }
+
+  /**
+   * Allow user to set a specific row/col count
+   *
+   * @param evt
+   * @param colCount
+   * @param rowCount
+   * @private
+   */
+  private setColAndRowCount(evt: Event, colCount: number, rowCount: number) {
+    const lastRowIndex: number = this.table.length;
+
+    if (rowCount > 0) {
+      for (let count = 0; count < rowCount; count++) {
+        this.appendRow(evt, lastRowIndex);
+      }
+    } else {
+      for (let count = 0; count < Math.abs(rowCount); count++) {
+        this.removeRow(evt, this.table.length - 1);
+      }
+    }
+
+    if (colCount > 0) {
+      for (let count = 0; count < colCount; count++) {
+        this.appendColumn(evt, colCount);
+      }
+    } else {
+      for (let count = 0; count < Math.abs(colCount); count++) {
+        this.removeColumn(evt, this.firstRow.length - 1);
+      }
+    }
   }
 }

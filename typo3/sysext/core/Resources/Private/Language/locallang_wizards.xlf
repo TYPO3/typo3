@@ -81,6 +81,21 @@
 			<trans-unit id="table_noData" resname="table_noData">
 				<source>No table,field or uid given</source>
 			</trans-unit>
+			<trans-unit id="table_setCount" resname="table_setCount">
+				<source>Set row and column count</source>
+			</trans-unit>
+			<trans-unit id="table_colCount" resname="table_colCount">
+				<source>Column count</source>
+			</trans-unit>
+			<trans-unit id="table_rowCount" resname="table_rowCount">
+				<source>Row count</source>
+			</trans-unit>
+			<trans-unit id="table_setCountHeadline" resname="table_setCountHeadline">
+				<source>Change table size</source>
+			</trans-unit>
+			<trans-unit id="table_buttonApply" resname="table_buttonApply">
+				<source>Apply</source>
+			</trans-unit>
 			<trans-unit id="forms_title" resname="forms_title">
 				<source>Forms wizard</source>
 			</trans-unit>
