@@ -54,7 +54,6 @@ corresponding possibilities.
                        ...$this->globalAttrs
                    )
                );
-           }
        }
    }
 
@@ -119,6 +118,35 @@ can be disabled. This is not recommended, but occasionally might be necessary.
      parseFunc.htmlSanitize = 0
    }
 
+Troubleshooting
+---------------
+
+Since any invocation of :typoscript:`stdWrap.parseFunc` triggers HTML
+sanitization per default - except it is disabled explicitly - the following
+example lead to lots of generated markup being sanitized - and was solved by
+explicitly disabling it using :typoscript:`htmlSanitize = 0`.
+
+.. code-block:: typoscript
+
+   10 = FLUIDTEMPLATE
+   10 {
+     templateRootPaths {
+       // ...
+     }
+     variables {
+       // ...
+     }
+     stdWrap.parseFunc {
+       // replace --- with soft-hyphen
+       short.--- = &shy;
+       // sanitization of ALL MARKUP is NOT DESIRED here
+       htmlSanitize = 0
+     }
+   }
+
+HTML sanitization should be used for user-submitted input like rich-text
+data - but not for the overall markup of a complete website.
+
 
 Backend RTE configuration
 =========================
@@ -143,6 +171,47 @@ can be adjusted in a similar way, e.g. in :file:`Configuration/Processing.yaml`.
 
 Sanitization for persisting data can be disabled globally using corresponding
 feature flag :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['rte.htmlSanitize']`.
+
+
+Debugging & Logging
+===================
+
+In order to debug and log occurrences that have been modified during the sanitization
+process, following configuration can be configured in corresponding :php:`LOG` section
+of :file:`typo3conf/LocalConfiguration.php`.
+
+.. code-block:: php
+
+    // ...
+    'LOG' => [
+        'TYPO3' => [
+            'HtmlSanitizer' => [
+                'writerConfiguration' => [
+                    'debug' => [
+                        'TYPO3\CMS\Core\Log\Writer\FileWriter' => [
+                            'logFileInfix' => 'html',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    // ...
+
+
+Which produces log entries in e.g. :file:`typo3temp/var/log/typo3_html_[hash-value].log` like below
+
+.. code-block::
+
+   Wed, 11 Aug 2021 09:03:08 +0200 [DEBUG] request="b62c11bcbd3d7"
+     component="TYPO3.HtmlSanitizer.Visitor.CommonVisitor":
+     Found invalid attribute a.href - {"behavior":"default","nodeName":"a","attrName":"href"}
+   Wed, 11 Aug 2021 09:03:08 +0200 [DEBUG] request="b62c11bcbd3d7"
+     component="TYPO3.HtmlSanitizer.Visitor.CommonVisitor":
+     Found invalid attribute div.onmouseover - {"behavior":"default","nodeName":"div","attrName":"onmouseover"}
+   Wed, 11 Aug 2021 09:03:08 +0200 [DEBUG] request="b62c11bcbd3d7"
+     component="TYPO3.HtmlSanitizer.Visitor.CommonVisitor":
+     Found unexpected tag script - {"behavior":"default","nodeName":"script"}
 
 
 .. index:: Backend, Frontend, ext:core
