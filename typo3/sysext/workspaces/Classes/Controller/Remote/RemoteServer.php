@@ -115,21 +115,6 @@ class RemoteServer
     }
 
     /**
-     * Get List of available workspace actions
-     *
-     * @return array $data
-     */
-    public function getStageActions()
-    {
-        $stages = $this->stagesService->getStagesForWSUser();
-        $data = [
-            'total' => count($stages),
-            'data' => $stages
-        ];
-        return $data;
-    }
-
-    /**
      * Fetch further information to current selected workspace record.
      *
      * @param \stdClass $parameter
@@ -456,39 +441,6 @@ class RemoteServer
             $sysLogReturnArray[] = $sysLogEntry;
         }
         return $sysLogReturnArray;
-    }
-
-    /**
-     * Gets all available system languages.
-     *
-     * @param \stdClass $parameters
-     * @return array
-     */
-    public function getSystemLanguages(\stdClass $parameters)
-    {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $systemLanguages = [
-            [
-                'uid' => 'all',
-                'title' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:language.allLanguages'),
-                'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
-            ]
-        ];
-        foreach ($this->gridDataService->getSystemLanguages($parameters->pageUid ?? 0) as $id => $systemLanguage) {
-            if ($id < 0) {
-                continue;
-            }
-            $systemLanguages[] = [
-                'uid' => $id,
-                'title' => htmlspecialchars($systemLanguage['title']),
-                'icon' => $iconFactory->getIcon($systemLanguage['flagIcon'], Icon::SIZE_SMALL)->render()
-            ];
-        }
-        $result = [
-            'total' => count($systemLanguages),
-            'data' => $systemLanguages
-        ];
-        return $result;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

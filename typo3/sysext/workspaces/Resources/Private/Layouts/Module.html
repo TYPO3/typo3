@@ -1,5 +1,7 @@
-<f:if condition="{pageTitle}"><h1>{pageTitle}</h1></f:if>
+<f:if condition="{pageTitle}"><h1 class="mb-2">{pageTitle}</h1></f:if>
 
-<f:render section="main" />
+<main data-workspace-switch-action="{workspaceSwitched -> f:format.raw()}">
+    <f:render section="main" />
+</main>
 
 <f:if condition="{showLegend}"><f:render partial="legend" /></f:if>

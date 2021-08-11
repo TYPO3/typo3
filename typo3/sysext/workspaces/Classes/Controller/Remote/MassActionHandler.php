@@ -31,13 +31,6 @@ class MassActionHandler
     const MAX_RECORDS_TO_PROCESS = 30;
 
     /**
-     * Path to the locallang file
-     *
-     * @var string
-     */
-    private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
-
-    /**
      * @var WorkspaceService
      */
     protected $workspaceService;
@@ -45,33 +38,6 @@ class MassActionHandler
     public function __construct()
     {
         $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
-    }
-
-    /**
-     * Get list of available mass workspace actions.
-     *
-     * @return array $data
-     */
-    public function getMassStageActions()
-    {
-        $actions = [];
-        $currentWorkspace = $this->getCurrentWorkspace();
-        $backendUser = $this->getBackendUser();
-        $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
-        if ($massActionsEnabled) {
-            $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
-            if ($publishAccess && !(($backendUser->workspaceRec['publish_access'] ?? 0) & 1)) {
-                $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_publish')];
-            }
-            if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
-                $actions[] = ['action' => 'discard', 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':label_doaction_discard')];
-            }
-        }
-        $result = [
-            'total' => count($actions),
-            'data' => $actions
-        ];
-        return $result;
     }
 
     /**
@@ -247,7 +213,7 @@ class MassActionHandler
      *
      * @return int The current workspace ID
      */
-    protected function getCurrentWorkspace()
+    protected function getCurrentWorkspace(): int
     {
         return $this->workspaceService->getCurrentWorkspace();
     }

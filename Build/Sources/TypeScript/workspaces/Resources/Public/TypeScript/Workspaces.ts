@@ -15,6 +15,7 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import $ from 'jquery';
+import NProgress = require('nprogress');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 
 export default class Workspaces {
@@ -119,24 +120,14 @@ export default class Workspaces {
   }
 
   /**
-   * Checks the integrity of a record
-   *
-   * @param {Array} payload
-   * @return {$}
-   */
-  protected checkIntegrity(payload: object): Promise<AjaxResponse> {
-    return this.sendRemoteRequest(
-      this.generateRemotePayload('checkIntegrity', payload),
-    );
-  }
-
-  /**
    * Sends an AJAX request
    *
    * @param {Object} payload
    * @return {$}
    */
   protected sendRemoteRequest(payload: object): Promise<AjaxResponse> {
+    NProgress.configure({ parent: '#workspace-content-wrapper', showSpinner: false });
+    NProgress.start();
     return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
       payload,
       {
@@ -144,7 +135,7 @@ export default class Workspaces {
           'Content-Type': 'application/json; charset=utf-8'
         }
       }
-    );
+    ).finally(() => NProgress.done());
   }
 
   /**

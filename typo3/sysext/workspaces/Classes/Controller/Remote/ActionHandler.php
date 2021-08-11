@@ -210,20 +210,6 @@ class ActionHandler
     }
 
     /**
-     * Saves the selected language.
-     *
-     * @param int|string $language
-     */
-    public function saveLanguageSelection($language)
-    {
-        if (MathUtility::canBeInterpretedAsInteger($language) === false && $language !== 'all') {
-            $language = 'all';
-        }
-        $this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['language'] = $language;
-        $this->getBackendUser()->writeUC();
-    }
-
-    /**
      * Gets the dialog window to be displayed before a record can be sent to the next stage.
      *
      * @param int $uid

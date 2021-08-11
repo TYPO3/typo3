@@ -13,7 +13,6 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import $ from 'jquery';
-import 'nprogress';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import Workspaces from './Workspaces';
@@ -21,7 +20,6 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 import Persistent = require('TYPO3/CMS/Backend/Storage/Persistent');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import Utility = require('TYPO3/CMS/Backend/Utility');
-import Viewport = require('TYPO3/CMS/Backend/Viewport');
 import Wizard = require('TYPO3/CMS/Backend/Wizard');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 import windowManager = require('TYPO3/CMS/Backend/WindowManager');
@@ -36,6 +34,8 @@ enum Identifiers {
   chooseSelectionAction = '#workspace-actions-form [name="selection-action"]',
   chooseMassAction = '#workspace-actions-form [name="mass-action"]',
   container = '#workspace-panel',
+  contentsContainer = '#workspace-contents',
+  noContentsContainer = '#workspace-contents-empty',
   actionIcons = '#workspace-action-icons',
   toggleAll = '.t3js-toggle-all',
   previewLinksButton = '.t3js-preview-link',
@@ -51,7 +51,8 @@ class Backend extends Workspaces {
   private settings: { [key: string]: string | number } = {
     dir: 'ASC',
     id: TYPO3.settings.Workspaces.id,
-    language: TYPO3.settings.Workspaces.language,
+    depth: 1,
+    language: 'all',
     limit: 30,
     query: '',
     sort: 'label_Live',
@@ -193,20 +194,38 @@ class Backend extends Workspaces {
     super();
 
     $((): void => {
-      let persistedDepth;
       this.getElements();
       this.registerEvents();
+      this.notifyWorkspaceSwitchAction();
 
-      if (Persistent.isset('this.Module.depth')) {
-        persistedDepth = Persistent.get('this.Module.depth');
-        this.elements.$depthSelector.val(persistedDepth);
-        this.settings.depth = persistedDepth;
-      } else {
-        this.settings.depth = TYPO3.settings.Workspaces.depth;
-      }
-
-      this.loadWorkspaceComponents();
+      // Set the depth from the main element
+      this.settings.depth = this.elements.$depthSelector.val();
+      this.settings.language = this.elements.$languageSelector.val();
+      this.getWorkspaceInfos();
     });
+  }
+
+  private notifyWorkspaceSwitchAction(): void {
+    const mainElement = document.querySelector('main[data-workspace-switch-action]') as HTMLElement;
+    if (mainElement.dataset.workspaceSwitchAction) {
+      const workspaceSwitchInformation = JSON.parse(mainElement.dataset.workspaceSwitchAction);
+      // we need to do this manually, but this should be done better via proper events
+      top.TYPO3.WorkspacesMenu.performWorkspaceSwitch(workspaceSwitchInformation.id, workspaceSwitchInformation.title);
+      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+      top.TYPO3.ModuleMenu.App.refreshMenu();
+    }
+  }
+
+  /**
+   * Checks the integrity of a record
+   *
+   * @param {Array} payload
+   * @return {$}
+   */
+  private checkIntegrity(payload: object): Promise<AjaxResponse> {
+    return this.sendRemoteRequest(
+      this.generateRemotePayload('checkIntegrity', payload),
+    );
   }
 
   private getElements(): void {
@@ -216,7 +235,9 @@ class Backend extends Workspaces {
     this.elements.$depthSelector = $(Identifiers.depthSelector);
     this.elements.$languageSelector = $(Identifiers.languageSelector);
     this.elements.$container = $(Identifiers.container);
-    this.elements.$tableBody = this.elements.$container.find('tbody');
+    this.elements.$contentsContainer = $(Identifiers.contentsContainer);
+    this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
+    this.elements.$tableBody = this.elements.$contentsContainer.find('tbody');
     this.elements.$actionIcons = $(Identifiers.actionIcons);
     this.elements.$toggleAll = $(Identifiers.toggleAll);
     this.elements.$chooseStageAction = $(Identifiers.chooseStageAction);
@@ -347,7 +368,7 @@ class Backend extends Workspaces {
     // Listen for depth changes
     this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
       const depth = (<HTMLSelectElement>e.target).value;
-      Persistent.set('this.Module.depth', depth);
+      Persistent.set('moduleData.workspaces.settings.depth', depth);
       this.settings.depth = depth;
       this.getWorkspaceInfos();
     });
@@ -358,14 +379,14 @@ class Backend extends Workspaces {
     // Listen for language changes
     this.elements.$languageSelector.on('change', (e: JQueryEventObject): void => {
       const $me = $(e.target);
+      Persistent.set('moduleData.workspaces.settings.language', $me.val());
       this.settings.language = $me.val();
-
-      this.sendRemoteRequest([
-        this.generateRemoteActionsPayload('saveLanguageSelection', [$me.val()]),
+      this.sendRemoteRequest(
         this.generateRemotePayload('getWorkspaceInfos', this.settings),
-      ]).then((response: any): void => {
+      ).then(async (response: AjaxResponse): Promise<void> => {
+        const actionResponse = await response.resolve();
         this.elements.$languageSelector.prev().html($me.find(':selected').data('icon'));
-        this.renderWorkspaceInfos(response[1].result);
+        this.renderWorkspaceInfos(actionResponse[0].result);
       });
     });
 
@@ -489,60 +510,7 @@ class Backend extends Workspaces {
   }
 
   /**
-   * Loads the workspace components, like available stage actions and items of the workspace
-   */
-  private loadWorkspaceComponents(): void {
-    this.sendRemoteRequest([
-      this.generateRemotePayload('getWorkspaceInfos', this.settings),
-      this.generateRemotePayload('getStageActions', {}),
-      this.generateRemoteMassActionsPayload('getMassStageActions', {}),
-      this.generateRemotePayload('getSystemLanguages', {
-        pageUid: this.elements.$container.data('pageUid'),
-      }),
-    ]).then(async (response: AjaxResponse): Promise<void> => {
-      const resolvedResponse = await response.resolve();
-      this.elements.$depthSelector.prop('disabled', false);
-
-      // Records
-      this.renderWorkspaceInfos(resolvedResponse[0].result);
-
-      // Stage actions
-      const stageActions = resolvedResponse[1].result.data;
-      let i;
-      for (i = 0; i < stageActions.length; ++i) {
-        this.elements.$chooseStageAction.append(
-          $('<option />').val(stageActions[i].uid).text(stageActions[i].title),
-        );
-      }
-
-      // Mass actions
-      const massActions = resolvedResponse[2].result.data;
-      for (i = 0; i < massActions.length; ++i) {
-        this.elements.$chooseSelectionAction.append(
-          $('<option />').val(massActions[i].action).text(massActions[i].title),
-        );
-
-        this.elements.$chooseMassAction.append(
-          $('<option />').val(massActions[i].action).text(massActions[i].title),
-        );
-      }
-
-      // Languages
-      const languages = resolvedResponse[3].result.data;
-      for (i = 0; i < languages.length; ++i) {
-        const $option = $('<option />').val(languages[i].uid).text(languages[i].title).data('icon', languages[i].icon);
-        if (String(languages[i].uid) === String(TYPO3.settings.Workspaces.language)) {
-          $option.prop('selected', true);
-          this.elements.$languageSelector.prev().html(languages[i].icon);
-        }
-        this.elements.$languageSelector.append($option);
-      }
-      this.elements.$languageSelector.prop('disabled', false);
-    });
-  }
-
-  /**
-   * Gets the workspace infos
+   * Gets the workspace infos (= filling the contents).
    *
    * @return {Promise}
    * @protected
@@ -556,7 +524,7 @@ class Backend extends Workspaces {
   }
 
   /**
-   * Renders fetched workspace informations
+   * Renders fetched workspace information
    *
    * @param {Object} result
    */
@@ -568,6 +536,15 @@ class Backend extends Workspaces {
     this.elements.$chooseMassAction.prop('disabled', result.data.length === 0);
 
     this.buildPagination(result.total);
+
+    // disable the contents area
+    if (result.total === 0) {
+      this.elements.$contentsContainer.hide();
+      this.elements.$noContentsContainer.show();
+    } else {
+      this.elements.$contentsContainer.show();
+      this.elements.$noContentsContainer.hide();
+    }
 
     for (let i = 0; i < result.data.length; ++i) {
       const item = result.data[i];
@@ -1267,6 +1244,7 @@ class Backend extends Workspaces {
   private getPreRenderedIcon(identifier: string): JQuery {
     return this.elements.$actionIcons.find('[data-identifier="' + identifier + '"]').clone();
   }
+
 }
 
 /**

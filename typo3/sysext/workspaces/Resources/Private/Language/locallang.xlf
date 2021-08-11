@@ -27,6 +27,9 @@
 			<trans-unit id="title" resname="title">
 				<source>Workspaces</source>
 			</trans-unit>
+			<trans-unit id="noResults" resname="noResults">
+				<source>No records found</source>
+			</trans-unit>
 			<trans-unit id="ok" resname="ok">
 				<source>Ok</source>
 			</trans-unit>
@@ -72,6 +75,9 @@
 			</trans-unit>
 			<trans-unit id="admin.noWorkspaceSetup.buttonCreate" resname="admin.noWorkspaceSetup.buttonCreate" xml:space="preserve">
 				<source>Create a workspace</source>
+			</trans-unit>
+			<trans-unit id="button.editWorkspaceSettings" resname="button.editWorkspaceSettings" xml:space="preserve">
+				<source>Edit workspace settings</source>
 			</trans-unit>
 			<trans-unit id="actionSendToStage" resname="actionSendToStage">
 				<source>Send to stage</source>

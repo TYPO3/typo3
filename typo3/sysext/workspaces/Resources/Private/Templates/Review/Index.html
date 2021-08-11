@@ -2,17 +2,9 @@
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:layout name="module" />
+<f:layout name="Module" />
 
 <f:section name="main">
-
-    <f:if condition="{performWorkspaceSwitch}">
-        <script>
-            top.TYPO3.ModuleMenu.App.refreshMenu();
-            top.TYPO3.WorkspacesMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
-        </script>
-    </f:if>
-
     <f:if condition="{showGrid}">
         <f:then>
             <f:render partial="WorkingTable" arguments="{_all}" />
@@ -29,6 +21,5 @@
             <f:be.infobox message="{f:translate(key: 'editorInLive')}" state="-1" />
         </f:else>
     </f:if>
-
 </f:section>
 </html>
