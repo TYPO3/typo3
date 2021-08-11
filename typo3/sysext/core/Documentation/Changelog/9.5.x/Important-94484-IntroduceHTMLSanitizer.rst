@@ -201,7 +201,7 @@ of :file:`typo3conf/LocalConfiguration.php`.
 
 Which produces log entries in e.g. :file:`typo3temp/var/log/typo3_html_[hash-value].log` like below
 
-.. code-block::
+.. code-block:: text
 
    Wed, 11 Aug 2021 09:03:08 +0200 [DEBUG] request="b62c11bcbd3d7"
      component="TYPO3.HtmlSanitizer.Visitor.CommonVisitor":
