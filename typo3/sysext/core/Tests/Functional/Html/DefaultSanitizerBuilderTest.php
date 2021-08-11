@@ -22,7 +22,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class DefaultSanitizerBuilderTest extends FunctionalTestCase
 {
-    public function isSanitizedDataProvider(): array
+    /**
+     * @var bool Speed up this test case, it needs no database
+     */
+    protected $initializeDatabase = false;
+
+    public static function isSanitizedDataProvider(): array
     {
         return [
             '#010' => [
