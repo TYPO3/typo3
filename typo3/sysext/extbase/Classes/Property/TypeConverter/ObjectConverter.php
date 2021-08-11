@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException;
@@ -129,7 +130,7 @@ class ObjectConverter extends AbstractTypeConverter
      * @param string $propertyName
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
@@ -183,7 +184,7 @@ class ObjectConverter extends AbstractTypeConverter
      * @param array $convertedChildProperties
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return object|null the target type
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
@@ -242,41 +243,82 @@ class ObjectConverter extends AbstractTypeConverter
 
     /**
      * Builds a new instance of $objectType with the given $possibleConstructorArgumentValues. If
-     * constructor argument values are missing from the given array the method
-     * looks for a default value in the constructor signature. Furthermore, the constructor arguments are removed from $possibleConstructorArgumentValues
+     * constructor argument values are missing from the given array the method looks for a default
+     * value in the constructor signature. Furthermore, the constructor arguments are removed from
+     * $possibleConstructorArgumentValues: They are considered "handled" by __construct and will
+     * not be mapped calling setters later.
      *
      * @param array $possibleConstructorArgumentValues
      * @param string $objectType
      * @return object The created instance
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing
+     * @throws InvalidTargetException if a required constructor argument is missing
      */
     protected function buildObject(array &$possibleConstructorArgumentValues, string $objectType): object
     {
-        if (empty($possibleConstructorArgumentValues) && $this->container->has($objectType)) {
+        // The ObjectConverter typically kicks in, if request arguments are to be mapped to
+        // a domain model. An example is ext:belog:Domain/Model/Demand.
+        // Domain models are data objects and should thus be fetched via makeInstance(), should
+        // not be registered as service, and should thus not be DI aware.
+        // However, historically, ObjectManager->get() made *all* classes DI aware.
+        // Additionally, all to-be-mapped arguments are hand over as "possible constructor arguments" here,
+        // and extbase is able to use single arguments as constructor arguments to domain models,
+        // if a __construct() with an argument having the same name as a to-be-mapped argument exists.
+        // This is the reason that &$possibleConstructorArgumentValues is hand over as reference here:
+        // If an argument can be hand over as constructor argument, it is considered "already mapped" and
+        // is not manually mapped calling setters later.
+        // To be as backwards compatible as possible, without using ObjectManager, the following logic
+        // is applied for now:
+        // * If the class is registered as service (container->has()=true), and if there are no
+        //   $possibleConstructorArgumentValues, instantiate the class via container->get(). Easy
+        //   scenario - the target class is DI aware and will get dependencies injected. A different target
+        //   class can be specified using service configuration if needed.
+        // * If the class is registered as service, and if there are $possibleConstructorArgumentValues,
+        //   the class is instantiated via container->get(). $possibleConstructorArgumentValues are *not* hand
+        //   over to the constructor. The target class can then use constructor injection and inject* methods
+        //   for DI. A different target class can be specified using service configuration if needed. Mapping
+        //   of arguments is done using setters by follow-up code.
+        // * If the class is *not* registered as service, makeInstance() is used for object retrieval.
+        // * @todo delete in v12: As compat layer, if a different implementation has been registered
+        //   for the ObjectManager (extbase Container->registerImplementation()), the ObjectManager target class is
+        //   still used in v11, but this is marked deprecated, with makeInstance(), a different implementation should
+        //   be registered as XCLASS if really needed.
+        // * If there are no $possibleConstructorArgumentValues, makeInstance() is used right away.
+        // * If there are $possibleConstructorArgumentValues and __construct() does not exist, makeInstance()
+        //   is used without constructor arguments. Mapping of argument values via setters is done by follow-up code.
+        // * If there are $possibleConstructorArgumentValues and if __construct() exists, extbase reflection
+        //   is used to map single arguments to constructor arguments with the same name and
+        //   makeInstance() is used to instantiate the class. Mapping remaining arguments is done by follow-up code.
+        if ($this->container->has($objectType)) {
+            // @todo: consider dropping container->get() to prevent domain models being treated as services in >=v12.
             return $this->container->get($objectType);
         }
 
-        // @deprecated since v11, will be removed in v12: ContainerInterface resolves class names. v12: Drop everything below.
         $specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
-        $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
-
-        if ($classSchema->hasConstructor()) {
-            $constructor = $classSchema->getMethod('__construct');
-            $constructorArguments = [];
-            foreach ($constructor->getParameters() as $parameterName => $parameter) {
-                if (array_key_exists($parameterName, $possibleConstructorArgumentValues)) {
-                    $constructorArguments[] = $possibleConstructorArgumentValues[$parameterName];
-                    unset($possibleConstructorArgumentValues[$parameterName]);
-                } elseif ($parameter->isOptional()) {
-                    $constructorArguments[] = $parameter->getDefaultValue();
-                } else {
-                    throw new InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
-                }
-            }
-            // @deprecated since v11, will be removed in v12
-            return $this->objectManager->get(...[$objectType, ...$constructorArguments]);
+        if ($specificObjectType !== $objectType) {
+            // @deprecated since v11, will be removed in v12: makeInstance() overrides should be done as XCLASS
+            trigger_error(
+                'Container->registerImplemenation() for class ' . $objectType . ' is deprecated. Use XCLASS instead.',
+                E_USER_DEPRECATED
+            );
         }
-        // @deprecated since v11, will be removed in v12
-        return $this->objectManager->get($objectType);
+
+        if (empty($possibleConstructorArgumentValues) || !method_exists($specificObjectType, '__construct')) {
+            return GeneralUtility::makeInstance($specificObjectType);
+        }
+
+        $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
+        $constructor = $classSchema->getMethod('__construct');
+        $constructorArguments = [];
+        foreach ($constructor->getParameters() as $parameterName => $parameter) {
+            if (array_key_exists($parameterName, $possibleConstructorArgumentValues)) {
+                $constructorArguments[] = $possibleConstructorArgumentValues[$parameterName];
+                unset($possibleConstructorArgumentValues[$parameterName]);
+            } elseif ($parameter->isOptional()) {
+                $constructorArguments[] = $parameter->getDefaultValue();
+            } else {
+                throw new InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
+            }
+        }
+        return GeneralUtility::makeInstance(...[$specificObjectType, ...$constructorArguments]);
     }
 }
