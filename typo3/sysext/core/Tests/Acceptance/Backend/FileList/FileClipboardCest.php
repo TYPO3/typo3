@@ -58,6 +58,7 @@ class FileClipboardCest extends AbstractFileCest
         $I->switchToMainFrame();
         $I->click('//*[text()="styleguide"]');
         $I->switchToContentFrame();
+        $this->openActionDropdown($I, $fileName)->click();
         $this->getActionByTitle($I, $fileName, 'Cut')->click();
         $I->see($fileName, '#clipboard_form');
         $I->click('#clipboard_form a[title="Remove item"]');

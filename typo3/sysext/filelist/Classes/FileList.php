@@ -607,7 +607,7 @@ class FileList
                             $theData[$field] = $this->makeEdit($folderObject);
                             break;
                         case '_CLIPBOARD_':
-                            $theData[$field] = $this->makeClip($folderObject);
+                            $theData[$field] = $this->makeClipboardCheckbox($folderObject);
                             break;
                         case '_REF_':
                             $theData[$field] = $this->makeRef($folderObject);
@@ -753,7 +753,7 @@ class FileList
                         $theData[$field] = $this->makeEdit($fileObject);
                         break;
                     case '_CLIPBOARD_':
-                        $theData[$field] = $this->makeClip($fileObject);
+                        $theData[$field] = $this->makeClipboardCheckbox($fileObject);
                         break;
                     case '_LOCALIZATION_':
                         if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !empty($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? null)) {
@@ -898,92 +898,103 @@ class FileList
     }
 
     /**
-     * Creates the clipboard control pad
+     * Creates the clipboard actions
      *
-     * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
-     * @return string HTML-table
+     * @param File|Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard actions for the listing.
+     * @return array clipboard actions
      */
-    public function makeClip($fileOrFolderObject)
+    public function makeClip($fileOrFolderObject): array
     {
         if (!$fileOrFolderObject->checkActionPermission('read')) {
-            return '';
+            return [];
         }
-        $cells = [];
+        $actions = [];
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $fullName = $fileOrFolderObject->getName();
         $md5 = GeneralUtility::shortMD5($fullIdentifier);
-        // For normal clipboard, add copy/cut buttons:
+
+        // Add copy/cut buttons in "normal" mode:
         if ($this->clipObj->current === 'normal') {
             $isSel = $this->clipObj->isSelected('_FILE', $md5);
-            $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy');
-            $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut');
-            $copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render();
-            $cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL)->render();
-
-            if ($isSel === 'copy') {
-                $copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL)->render();
-                $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copyrelease');
-            } elseif ($isSel === 'cut') {
-                $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL)->render();
-                $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease');
-            }
 
             if ($fileOrFolderObject->checkActionPermission('copy')) {
-                $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
-                    $fullIdentifier,
-                    true,
-                    $isSel === 'copy'
-                )) . '" title="' . htmlspecialchars($copyTitle) . '">' . $copyIcon . '</a>';
-            } else {
-                $cells[] = $this->spaceIcon;
+                $copyTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'copy' ? 'copyrelease' : 'copy'));
+                $copyUrl = $this->clipObj->selUrlFile($fullIdentifier, true, $isSel === 'copy');
+                $actions['copy'] = '
+                    <a class="btn btn-default" href="' . htmlspecialchars($copyUrl) . '" title="' . htmlspecialchars($copyTitle) . '">
+                        ' . $this->iconFactory->getIcon($isSel === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', Icon::SIZE_SMALL)->render() . '
+                    </a>';
             }
-            // we can only cut if file can be moved
+
             if ($fileOrFolderObject->checkActionPermission('move')) {
-                $cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile(
-                    $fullIdentifier,
-                    false,
-                    $isSel === 'cut'
-                )) . '" title="' . htmlspecialchars($cutTitle) . '">' . $cutIcon . '</a>';
-            } else {
-                $cells[] = $this->spaceIcon;
+                $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'cut' ? 'cutrelease' : 'cut'));
+                $cutUrl = $this->clipObj->selUrlFile($fullIdentifier, false, $isSel === 'cut');
+                $actions['cut'] = '
+                    <a class="btn btn-default" href="' . htmlspecialchars($cutUrl) . '" title="' . htmlspecialchars($cutTitle) . '">
+                        ' . $this->iconFactory->getIcon($isSel === 'cut' ? 'actions-edit-cut-release' : 'actions-edit-cut', Icon::SIZE_SMALL)->render() . '
+                    </a>';
             }
-        } else {
-            // For numeric pads, add select checkboxes:
-            $n = '_FILE|' . $md5;
-            $this->CBnames[] = $n;
-            $checked = $this->clipObj->isSelected('_FILE', $md5) ? ' checked="checked"' : '';
-            $cells[] = '<label class="btn btn-default btn-checkbox"><input type="checkbox" name="CBC[' . $n . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . $checked . ' /><span class="t3-icon fa"></span><input type="hidden" name="CBH[' . $n . ']" value="0" /></label>';
         }
-        // Display PASTE button, if directory:
+
         $elFromTable = $this->clipObj->elFromTable('_FILE');
-        if ($fileOrFolderObject instanceof Folder && !empty($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
-            $clipboardMode = $this->clipObj->clipData[$this->clipObj->current]['mode'] ?? '';
-            $permission = $clipboardMode === 'copy' ? 'copy' : 'move';
-            $addPasteButton = $this->folderObject->checkActionPermission($permission);
-            $elToConfirm = [];
-            foreach ($elFromTable as $key => $element) {
-                $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-                if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)) {
-                    $addPasteButton = false;
-                }
-                $elToConfirm[$key] = $clipBoardElement->getName();
-            }
-            if ($addPasteButton) {
-                $cells[] = '<a class="btn btn-default t3js-modal-trigger" '
-                    . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '"'
-                    . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm)) . '"'
-                    . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_pasteInto')) . '"'
-                    . '>'
-                    . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-                    . '</a>';
-            } else {
-                $cells[] = $this->spaceIcon;
-            }
+        $addPasteButton = $this->folderObject->checkActionPermission(
+            ($this->clipObj->clipData[$this->clipObj->current]['mode'] ?? '') === 'copy' ? 'copy' : 'move'
+        );
+        if (!$fileOrFolderObject instanceof Folder
+            || $elFromTable === []
+            || !$addPasteButton
+            || !$fileOrFolderObject->checkActionPermission('write')
+        ) {
+            //early return actions, in case paste should not be displayed
+            return $actions;
         }
-        // Compile items into a DIV-element:
-        return ' <div class="btn-group" role="group">' . implode('', $cells) . '</div>';
+
+        $elToConfirm = [];
+        foreach ($elFromTable as $key => $element) {
+            $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
+            if ($clipBoardElement instanceof Folder
+                && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)
+            ) {
+                // In case folder is already present in the target folder, return actions without paste button
+                return $actions;
+            }
+            $elToConfirm[$key] = $clipBoardElement->getName();
+        }
+
+        $pasteUrl = $this->clipObj->pasteUrl('_FILE', $fullIdentifier);
+        $pasteTitle = $this->getLanguageService()->getLL('clip_pasteInto');
+        $pasteContent = $this->clipObj->confirmMsgText('_FILE', $fullName, 'into', $elToConfirm);
+        $actions[] = '
+                <a class="btn btn-default t3js-modal-trigger" data-severity="warning"  href="' . htmlspecialchars($pasteUrl) . '" data-bs-content="' . htmlspecialchars($pasteContent) . '" data-title="' . htmlspecialchars($pasteTitle) . '" title="' . htmlspecialchars($pasteTitle) . '">
+                    ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
+                </a>';
+
+        return $actions;
+    }
+
+    /**
+     * Adds the clipboard checkbox for a file/folder in the listing
+     *
+     * @param File|Folder $fileOrFolderObject
+     * @return string
+     */
+    protected function makeClipboardCheckbox($fileOrFolderObject): string
+    {
+        if ($this->clipObj->current === 'normal' || !$fileOrFolderObject->checkActionPermission('read')) {
+            return '';
+        }
+
+        $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
+        $md5 = GeneralUtility::shortMD5($fullIdentifier);
+        $identifier = '_FILE|' . $md5;
+        $this->CBnames[] = $identifier;
+
+        return '
+            <label class="btn btn-default btn-checkbox">
+                <input type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($this->clipObj->isSelected('_FILE', $md5) ? ' checked="checked"' : '') . ' />
+                <span class="t3-icon fa"></span>
+                <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
+            </label>';
     }
 
     /**
@@ -1130,6 +1141,16 @@ class FileList
             $hookObject->manipulateEditIcons($cells, $this);
         }
         unset($cells['__fileOrFolderObject']);
+
+        // Get clipboard actions
+        $clipboardActions = $this->makeClip($fileOrFolderObject);
+        if ($clipboardActions !== []) {
+            // Add divider in case at least one clipboard action is displayed
+            $cells['divider'] = '<hr class="dropdown-divider me-0 ms-0 border-white">';
+        }
+        // Merge the clipboard actions into the existing cells
+        $cells = array_merge($cells, $clipboardActions);
+
         // Compile items into a dropdown
         $cellOutput = '';
         $output = '';

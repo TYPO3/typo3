@@ -67,4 +67,23 @@ abstract class AbstractFileCest
             }
         );
     }
+
+    /**
+     * @param BackendTester $I
+     * @param string $title
+     * @return RemoteWebElement
+     */
+    protected function openActionDropdown(BackendTester $I, string $title): RemoteWebElement
+    {
+        $I->comment('Get open action dropdown "' . $title . '"');
+        return $I->executeInSelenium(
+            function (RemoteWebDriver $webDriver) use ($title) {
+                return $webDriver->findElement(
+                    \Facebook\WebDriver\WebDriverBy::xpath(
+                        '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[@data-bs-toggle="dropdown"]'
+                    )
+                );
+            }
+        );
+    }
 }
