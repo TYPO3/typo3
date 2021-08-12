@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "616ecb3595b3354d717301e4c312b12b",
+    "content-hash": "bbdb61f2f0d6bbf8683f61b6dfda371b",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2857,16 +2857,16 @@
         },
         {
             "name": "typo3/html-sanitizer",
-            "version": "v2.0.7",
+            "version": "v2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/html-sanitizer.git",
-                "reference": "c5f1e2eb37f3b7799029ab01e145028e35b2e61a"
+                "reference": "8df823ea5aa2335a2740e121c3f3d6db2c01626e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/c5f1e2eb37f3b7799029ab01e145028e35b2e61a",
-                "reference": "c5f1e2eb37f3b7799029ab01e145028e35b2e61a",
+                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/8df823ea5aa2335a2740e121c3f3d6db2c01626e",
+                "reference": "8df823ea5aa2335a2740e121c3f3d6db2c01626e",
                 "shasum": ""
             },
             "require": {
@@ -2902,9 +2902,9 @@
             "description": "HTML sanitizer aiming to provide XSS-safe markup based on explicitly allowed tags, attributes and values.",
             "support": {
                 "issues": "https://github.com/TYPO3/html-sanitizer/issues",
-                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.0.7"
+                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.0.8"
             },
-            "time": "2021-08-08T20:57:41+00:00"
+            "time": "2021-08-12T15:11:29+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
