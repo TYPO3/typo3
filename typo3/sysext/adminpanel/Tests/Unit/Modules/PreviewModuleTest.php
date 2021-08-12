@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Modules;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
@@ -28,19 +29,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PreviewModuleTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     public function simulateDateDataProvider(): array
     {
         return [
             'timestamp' => [
                 (string)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
-                (int)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
-                (int)(new \DateTime('2018-01-01 12:00:00 UTC'))->getTimestamp(),
+                (new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
+                (new \DateTime('2018-01-01 12:00:00 UTC'))->getTimestamp(),
             ],
             'timestamp_1970' => [
                 (string)(new \DateTime('1970-01-01 00:00:15 UTC'))->getTimestamp(),
-                (int)(new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
-                (int)(new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
+                (new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
+                (new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
             ],
         ];
     }
@@ -73,7 +75,7 @@ class PreviewModuleTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeFrontendPreviewSetsUsergroupForSimulation(): void
+    public function initializeFrontendPreviewSetsUserGroupForSimulation(): void
     {
         $this->resetSingletonInstances = true;
         $request = $this->prophesize(ServerRequestInterface::class);

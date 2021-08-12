@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Middleware;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,7 +34,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AdminPanelInitiatorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -115,11 +117,10 @@ class AdminPanelInitiatorTest extends UnitTestCase
     }
 
     /**
-     * @param $tsConfig
-     * @param $uc
-     * @param $typoScript
+     * @param array $tsConfig
+     * @param array $uc
      */
-    protected function checkAdminPanelDoesNotCallInitialize($tsConfig, $uc): void
+    protected function checkAdminPanelDoesNotCallInitialize(array $tsConfig, array $uc): void
     {
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
         $userAuthentication->getTSConfig()->willReturn($tsConfig);

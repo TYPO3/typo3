@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Adminpanel\Exceptions\InvalidConfigurationException;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\DisabledMainModuleFixture;
@@ -27,11 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ModuleLoaderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function validateSortAndInitializeModulesReturnsEmptyArrayIfNoModulesAreConfigured()
+    public function validateSortAndInitializeModulesReturnsEmptyArrayIfNoModulesAreConfigured(): void
     {
         $moduleLoader = new ModuleLoader();
         $result = $moduleLoader->validateSortAndInitializeModules([]);
@@ -50,8 +52,9 @@ class ModuleLoaderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider missingConfigurationDataProvider
+     * @param array $configuration
      */
-    public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasMissingConfiguration($configuration): void
+    public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasMissingConfiguration(array $configuration): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionCode(1519490105);
@@ -89,8 +92,9 @@ class ModuleLoaderTest extends UnitTestCase
     /**
      * @test
      * @dataProvider  invalidConfigurationDataProvider
+     * @param array $configuration
      */
-    public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasInvalidConfiguration($configuration): void
+    public function validateSortAndInitializeModulesThrowsExceptionIfModuleHasInvalidConfiguration(array $configuration): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionCode(1519490112);

@@ -51,7 +51,7 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
     /**
      * Sub-Module content as rendered HTML
      *
-     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $data
+     * @param ModuleData $data
      * @return string
      */
     public function getContent(ModuleData $data): string
@@ -82,8 +82,8 @@ class SubModuleFixture implements ModuleInterface, ContentProviderInterface, Mod
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
+     * @param ServerRequestInterface $request
+     * @return ModuleData
      */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {

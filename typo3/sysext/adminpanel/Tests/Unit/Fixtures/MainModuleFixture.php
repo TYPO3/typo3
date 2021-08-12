@@ -32,7 +32,7 @@ class MainModuleFixture implements
     ShortInfoProviderInterface,
     SubmoduleProviderInterface,
     RequestEnricherInterface,
-               ResourceProviderInterface,
+    ResourceProviderInterface,
     PageSettingsProviderInterface,
     OnSubmitActorInterface,
     ConfigurableInterface

@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures\MainModuleFixture;
@@ -27,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConfigurationServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $beUserProphecy;
+    protected ObjectProphecy $beUserProphecy;
 
     public function setUp(): void
     {
@@ -131,10 +134,10 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getConfigurationOptionEmptyArgumentDataProvider
-     * @param $identifier
-     * @param $option
+     * @param string $identifier
+     * @param string $option
      */
-    public function getConfigurationOptionThrowsExceptionOnEmptyArgument($identifier, $option): void
+    public function getConfigurationOptionThrowsExceptionOnEmptyArgument(string $identifier, string $option): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1532861423);
@@ -222,9 +225,9 @@ class ConfigurationServiceTest extends UnitTestCase
     }
 
     /**
-     * @param $userTsAdmPanelConfig
+     * @param array $userTsAdmPanelConfig
      */
-    private function setUpUserTsConfigForAdmPanel($userTsAdmPanelConfig): void
+    private function setUpUserTsConfigForAdmPanel(array $userTsAdmPanelConfig): void
     {
         $this->beUserProphecy->getTSConfig()->willReturn(
             ['admPanel.' => $userTsAdmPanelConfig]
