@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -31,7 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RemoteServerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -40,12 +42,12 @@ class RemoteServerTest extends UnitTestCase
     /**
      * @var FileReference[]|ObjectProphecy[]
      */
-    protected $fileReferenceProphecies;
+    protected array $fileReferenceProphecies;
 
     /**
      * @return array
      */
-    public function prepareFileReferenceDifferencesAreCorrectDataProvider()
+    public function prepareFileReferenceDifferencesAreCorrectDataProvider(): array
     {
         return [
             // without thumbnails
@@ -106,12 +108,12 @@ class RemoteServerTest extends UnitTestCase
     /**
      * @param string $fileFileReferenceList
      * @param string $versionFileReferenceList
-     * @param $useThumbnails
+     * @param bool $useThumbnails
      * @param array|null $expected
      * @dataProvider prepareFileReferenceDifferencesAreCorrectDataProvider
      * @test
      */
-    public function prepareFileReferenceDifferencesAreCorrect($fileFileReferenceList, $versionFileReferenceList, $useThumbnails, array $expected = null)
+    public function prepareFileReferenceDifferencesAreCorrect(string $fileFileReferenceList, string $versionFileReferenceList, bool $useThumbnails, array $expected = null): void
     {
         $liveFileReferences = $this->getFileReferenceProphecies($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceProphecies($versionFileReferenceList);
@@ -131,7 +133,7 @@ class RemoteServerTest extends UnitTestCase
      * @param string $idList List of ids
      * @return FileReference[]|ObjectProphecy[]
      */
-    protected function getFileReferenceProphecies($idList)
+    protected function getFileReferenceProphecies(string $idList): array
     {
         $fileReferenceProphecies = [];
         $ids = GeneralUtility::trimExplode(',', $idList, true);
@@ -144,10 +146,10 @@ class RemoteServerTest extends UnitTestCase
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return ObjectProphecy|FileReference
      */
-    protected function getFileReferenceProphecy($id)
+    protected function getFileReferenceProphecy(string $id): FileReference
     {
         if (isset($this->fileReferenceProphecies[$id])) {
             return $this->fileReferenceProphecies[$id];

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Unit\XmlSitemap;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider;
@@ -24,13 +25,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PagesXmlSitemapDataProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     /**
      * @var array
      */
-    protected $items;
+    protected array $items;
 
     public function setUp(): void
     {
@@ -77,7 +79,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
      * @dataProvider numberOfItemsPerPageProvider
      * @test
      */
-    public function checkGetItemsReturnsDefinedItems($numberOfItemsPerPage): void
+    public function checkGetItemsReturnsDefinedItems(int $numberOfItemsPerPage): void
     {
         $key = 'dummyKey';
         $cObj = $this->prophesize(ContentObjectRenderer::class);
@@ -93,7 +95,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $subject->_set('items', $this->items);
         $subject->_set('numberOfItemsPerPage', $numberOfItemsPerPage);
 
-        $subject->expects(self::any())->method('defineUrl')->willReturnCallback(
+        $subject->method('defineUrl')->willReturnCallback(
             function ($input) {
                 return $input;
             }

@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AddonRegistryTest extends UnitTestCase
 {
-    /**
-     * @var AddonRegistry
-     */
-    protected $subject;
+    protected AddonRegistry $subject;
 
     protected function setUp(): void
     {
@@ -67,8 +64,7 @@ class AddonRegistryTest extends UnitTestCase
                         'foobar' => false,
                         'randomInt' => 4 // chosen by fair dice roll
                     ])
-            )
-        ;
+            );
     }
 
     /**

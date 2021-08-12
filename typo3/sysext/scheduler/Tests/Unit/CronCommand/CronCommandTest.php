@@ -28,12 +28,12 @@ class CronCommandTest extends UnitTestCase
     /**
      * @var int timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
      */
-    const TIMESTAMP = 1262304000;
+    private const TIMESTAMP = 1262304000;
 
     /**
      * @var string Selected timezone backup
      */
-    protected $timezoneBackup = '';
+    protected string $timezoneBackup = '';
 
     /**
      * We're fiddling with hard timestamps in the tests, but time methods in
@@ -57,7 +57,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsNormalizedCronCommandSections()
+    public function constructorSetsNormalizedCronCommandSections(): void
     {
         $instance = new CronCommand('2-3 * * * *');
         self::assertSame(['2,3', '*', '*', '*', '*'], $instance->getCronCommandSections());
@@ -66,7 +66,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionForInvalidCronCommand()
+    public function constructorThrowsExceptionForInvalidCronCommand(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1291470170);
@@ -76,7 +76,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds()
+    public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *');
         $currentTime = time();
@@ -87,7 +87,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds()
+    public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP);
         self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
@@ -96,7 +96,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds()
+    public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds(): void
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP + 1);
         self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
@@ -105,7 +105,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @return array
      */
-    public static function expectedTimestampDataProvider()
+    public static function expectedTimestampDataProvider(): array
     {
         return [
             'every minute' => [
@@ -186,7 +186,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @return array
      */
-    public static function expectedCalculatedTimestampDataProvider()
+    public static function expectedCalculatedTimestampDataProvider(): array
     {
         return [
             'every first day of month' => [
@@ -247,7 +247,7 @@ class CronCommandTest extends UnitTestCase
      * @param int $startTimestamp Timestamp for start of calculation
      * @param int $expectedTimestamp Expected result (next time of execution)
      */
-    public function calculateNextValueDeterminesCorrectNextTimestamp($cronCommand, $startTimestamp, $expectedTimestamp)
+    public function calculateNextValueDeterminesCorrectNextTimestamp(string $cronCommand, int $startTimestamp, int $expectedTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();
@@ -261,7 +261,7 @@ class CronCommandTest extends UnitTestCase
      * @param int $startTimestamp Timestamp for start of calculation
      * @param string $expectedTimestamp Expected result (next time of execution), to be fed to strtotime
      */
-    public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp($cronCommand, $startTimestamp, $expectedTimestamp)
+    public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp(string $cronCommand, int $startTimestamp, string $expectedTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();
@@ -276,7 +276,7 @@ class CronCommandTest extends UnitTestCase
      * @param int $firstTimestamp Timestamp of the next execution
      * @param int $secondTimestamp Timestamp of the further execution
      */
-    public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp)
+    public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall(string $cronCommand, int $startTimestamp, int $firstTimestamp, int $secondTimestamp): void
     {
         $instance = new CronCommand($cronCommand, $firstTimestamp);
         $instance->calculateNextValue();
@@ -291,7 +291,7 @@ class CronCommandTest extends UnitTestCase
      * @param string $firstTimestamp Timestamp of the next execution, to be fed to strtotime
      * @param string $secondTimestamp Timestamp of the further execution, to be fed to strtotime
      */
-    public function calculateNextValueDeterminesCorrectNextCalculatedTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp)
+    public function calculateNextValueDeterminesCorrectNextCalculatedTimestampOnConsecutiveCall(string $cronCommand, int $startTimestamp, string $firstTimestamp, string $secondTimestamp): void
     {
         $instance = new CronCommand($cronCommand, strtotime($firstTimestamp));
         $instance->calculateNextValue();
@@ -301,7 +301,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function calculateNextValueDeterminesCorrectNextTimestampOnChangeToSummertime()
+    public function calculateNextValueDeterminesCorrectNextTimestampOnChangeToSummertime(): void
     {
         $backupTimezone = date_default_timezone_get();
         date_default_timezone_set('Europe/Berlin');
@@ -314,7 +314,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function calculateNextValueThrowsExceptionWithImpossibleCronCommand()
+    public function calculateNextValueThrowsExceptionWithImpossibleCronCommand(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1291501280);
@@ -325,7 +325,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTimestampReturnsInteger()
+    public function getTimestampReturnsInteger(): void
     {
         $instance = new CronCommand('* * * * *');
         self::assertIsInt($instance->getTimestamp());
@@ -334,7 +334,7 @@ class CronCommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCronCommandSectionsReturnsArray()
+    public function getCronCommandSectionsReturnsArray(): void
     {
         $instance = new CronCommand('* * * * *');
         self::assertIsArray($instance->getCronCommandSections());

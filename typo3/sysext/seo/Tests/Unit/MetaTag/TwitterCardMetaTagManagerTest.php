@@ -28,7 +28,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray()
+    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
         $manager = new TwitterCardMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
@@ -45,7 +45,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
      * @param array $expected
      * @param string $expectedRenderedTag
      */
-    public function checkIfPropertyIsStoredAfterAddingProperty(array $property, array $expected, string $expectedRenderedTag)
+    public function checkIfPropertyIsStoredAfterAddingProperty(array $property, array $expected, string $expectedRenderedTag): void
     {
         $manager = new TwitterCardMetaTagManager();
         $manager->addProperty(
@@ -61,7 +61,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function propertiesProvider()
+    public function propertiesProvider(): array
     {
         return [
             'title is set' => [
@@ -129,7 +129,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfAddingOnlySubPropertyAndNoMainPropertyIsReturningException()
+    public function checkIfAddingOnlySubPropertyAndNoMainPropertyIsReturningException(): void
     {
         $manager = new TwitterCardMetaTagManager();
 
@@ -140,7 +140,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkRenderAllPropertiesRendersCorrectMetaTags()
+    public function checkRenderAllPropertiesRendersCorrectMetaTags(): void
     {
         $properties = [
             [
@@ -195,7 +195,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfRemovePropertyReallyRemovesProperty()
+    public function checkIfRemovePropertyReallyRemovesProperty(): void
     {
         $manager = new TwitterCardMetaTagManager();
         $manager->addProperty('twitter:title', 'Title');

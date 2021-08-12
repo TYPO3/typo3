@@ -29,7 +29,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessagesIfSetupIsUpdated()
+    public function addFlashMessagesAddsMessagesIfSetupIsUpdated(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,
@@ -54,7 +54,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessageIfSettingsAreResetToDefault()
+    public function addFlashMessagesAddsMessageIfSettingsAreResetToDefault(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,
@@ -79,7 +79,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessageIfPasswordWasSuccessfullyUpdated()
+    public function addFlashMessagesAddsMessageIfPasswordWasSuccessfullyUpdated(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,
@@ -104,7 +104,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessageIfOldPasswordWasWrong()
+    public function addFlashMessagesAddsMessageIfOldPasswordWasWrong(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,
@@ -129,7 +129,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessageIfPasswordsNotTheSame()
+    public function addFlashMessagesAddsMessageIfPasswordsNotTheSame(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,
@@ -154,7 +154,7 @@ class SetupModuleControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFlashMessagesAddsMessagesToQueue()
+    public function addFlashMessagesAddsMessagesToQueue(): void
     {
         $setupModuleControllerMock = $this->getAccessibleMock(
             SetupModuleController::class,

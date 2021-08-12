@@ -67,7 +67,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $expression Cron command to test
      * @param string $expected Expected result (normalized cron command syntax)
      */
-    public function normalizeConvertsCronCommand($expression, $expected): void
+    public function normalizeConvertsCronCommand(string $expression, string $expected): void
     {
         $result = NormalizeCommand::normalize($expression);
         self::assertEquals($expected, $result);
@@ -95,7 +95,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $keyword Cron command keyword
      * @param string $expectedCronCommand Expected result (normalized cron command syntax)
      */
-    public function convertKeywordsToCronCommandConvertsValidKeywords($keyword, $expectedCronCommand): void
+    public function convertKeywordsToCronCommandConvertsValidKeywords(string $keyword, string $expectedCronCommand): void
     {
         $result = NormalizeCommandAccessibleProxy::convertKeywordsToCronCommand($keyword);
         self::assertEquals($expectedCronCommand, $result);
@@ -131,7 +131,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $expression Cron command to normalize
      * @param string $expected Expected result (normalized cron command syntax)
      */
-    public function normalizeFieldsConvertsField($expression, $expected): void
+    public function normalizeFieldsConvertsField(string $expression, string $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeFields($expression);
         self::assertEquals($expected, $result);
@@ -173,9 +173,9 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $expected Expected result (normalized months or weekdays)
      */
     public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression(
-        $expression,
-        $isMonthField,
-        $expected
+        string $expression,
+        bool $isMonthField,
+        string $expected
     ): void {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
         self::assertSame($expected, $result);
@@ -204,9 +204,9 @@ class NormalizeCommandTest extends UnitTestCase
      * @param int $expectedExceptionCode Expected exception code from provider
      */
     public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression(
-        $expression,
-        $isMonthField,
-        $expectedExceptionCode
+        string $expression,
+        bool $isMonthField,
+        int $expectedExceptionCode
     ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
@@ -238,10 +238,10 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider normalizeIntegerFieldValidDataProvider
-     * @param string $expression Cron command partial integer expression
+     * @param string|int $expression Cron command partial integer expression
      * @param string $expected Expected result (normalized integer or integer list)
      */
-    public function normalizeIntegerFieldReturnsNormalizedListForValidExpression($expression, $expected): void
+    public function normalizeIntegerFieldReturnsNormalizedListForValidExpression($expression, string $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeIntegerField($expression);
         self::assertSame($expected, $result);
@@ -275,10 +275,10 @@ class NormalizeCommandTest extends UnitTestCase
      * @param int $expectedExceptionCode Expected exception code
      */
     public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions(
-        $expression,
-        $lowerBound,
-        $upperBound,
-        $expectedExceptionCode
+        string $expression,
+        int $lowerBound,
+        int $upperBound,
+        int $expectedExceptionCode
     ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
@@ -319,7 +319,7 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidCronCommandFieldsDataProvider
-     * @param string $cronCommand Invalid cron command
+     * @param string|int $cronCommand Invalid cron command
      */
     public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields($cronCommand): void
     {
@@ -346,10 +346,10 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validRangeDataProvider
-     * @param string $range Cron command range expression
+     * @param string|int $range Cron command range expression
      * @param string $expected Expected result (normalized range)
      */
-    public function convertRangeToListOfValuesReturnsCorrectListForValidRanges($range, $expected): void
+    public function convertRangeToListOfValuesReturnsCorrectListForValidRanges($range, string $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
         self::assertSame($expected, $result);
@@ -380,7 +380,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $range Cron command range expression (invalid)
      * @param int $expectedExceptionCode Expected exception code from provider
      */
-    public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range, $expectedExceptionCode): void
+    public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges(string $range, int $expectedExceptionCode): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
@@ -406,7 +406,7 @@ class NormalizeCommandTest extends UnitTestCase
      * @param string $stepExpression Cron command step expression
      * @param string $expected Expected result (normalized range)
      */
-    public function reduceListOfValuesByStepValueReturnsCorrectListOfValues($stepExpression, $expected): void
+    public function reduceListOfValuesByStepValueReturnsCorrectListOfValues(string $stepExpression, string $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::reduceListOfValuesByStepValue($stepExpression);
         self::assertSame($expected, $result);
@@ -437,8 +437,8 @@ class NormalizeCommandTest extends UnitTestCase
      * @param int $expectedExceptionCode Expected exception code
      */
     public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions(
-        $stepExpression,
-        $expectedExceptionCode
+        string $stepExpression,
+        int $expectedExceptionCode
     ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
@@ -501,10 +501,10 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validMonthNamesDataProvider
-     * @param string $monthName Month name
+     * @param string|int $monthName Month name
      * @param int $expectedInteger Number of the month
      */
-    public function normalizeMonthConvertsName($monthName, $expectedInteger): void
+    public function normalizeMonthConvertsName($monthName, int $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
         self::assertEquals($expectedInteger, $result);
@@ -513,10 +513,9 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validMonthNamesDataProvider
-     * @param string $monthName Month name
-     * @param int $expectedInteger Number of the month (not used)
+     * @param string|int $monthName Month name
      */
-    public function normalizeMonthReturnsInteger($monthName, $expectedInteger): void
+    public function normalizeMonthReturnsInteger($monthName): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
         self::assertIsInt($result);
@@ -553,12 +552,12 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidMonthNamesDataProvider
-     * @param string $invalidMonthName Month name (invalid)
+     * @param string|int $invalidMonthName Month name (invalid)
      * @param int $expectedExceptionCode Expected exception code
      */
     public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation(
         $invalidMonthName,
-        $expectedExceptionCode
+        int $expectedExceptionCode
     ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
@@ -604,10 +603,10 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validWeekdayDataProvider
-     * @param string $weekday Weekday expression
+     * @param string|int $weekday Weekday expression
      * @param int $expectedInteger Number of weekday
      */
-    public function normalizeWeekdayConvertsName($weekday, $expectedInteger): void
+    public function normalizeWeekdayConvertsName($weekday, int $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
         self::assertEquals($expectedInteger, $result);
@@ -616,10 +615,9 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validWeekdayDataProvider
-     * @param string $weekday Weekday expression
-     * @param int $expectedInteger Number of weekday (not used)
+     * @param string|int $weekday Weekday expression
      */
-    public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger): void
+    public function normalizeWeekdayReturnsInteger($weekday): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
         self::assertIsInt($result);
@@ -654,7 +652,7 @@ class NormalizeCommandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidWeekdayDataProvider
-     * @param string $weekday Weekday expression (invalid)
+     * @param string|int $weekday Weekday expression (invalid)
      */
     public function normalizeWeekdayThrowsExceptionForInvalidWeekdayRepresentation($weekday): void
     {

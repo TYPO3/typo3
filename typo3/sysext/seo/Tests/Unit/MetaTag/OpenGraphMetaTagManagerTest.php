@@ -28,7 +28,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray()
+    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
         $manager = new OpenGraphMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
@@ -41,7 +41,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
      *
      * @test
      */
-    public function checkIfPropertyIsStoredAfterAddingProperty($property, $expected, $expectedRenderedTag)
+    public function checkIfPropertyIsStoredAfterAddingProperty(array $property, array $expected, string $expectedRenderedTag): void
     {
         $manager = new OpenGraphMetaTagManager();
         $manager->addProperty(
@@ -57,7 +57,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfAddingOnlySubPropertyAndNoMainPropertyIsReturningException()
+    public function checkIfAddingOnlySubPropertyAndNoMainPropertyIsReturningException(): void
     {
         $manager = new OpenGraphMetaTagManager();
 
@@ -68,7 +68,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkRenderAllPropertiesRendersCorrectMetaTags()
+    public function checkRenderAllPropertiesRendersCorrectMetaTags(): void
     {
         $properties = [
             [
@@ -133,7 +133,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfRemovePropertyReallyRemovesProperty()
+    public function checkIfRemovePropertyReallyRemovesProperty(): void
     {
         $manager = new OpenGraphMetaTagManager();
         $manager->addProperty('og:title', 'Title');
@@ -154,7 +154,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function propertiesProvider()
+    public function propertiesProvider(): array
     {
         return [
             [

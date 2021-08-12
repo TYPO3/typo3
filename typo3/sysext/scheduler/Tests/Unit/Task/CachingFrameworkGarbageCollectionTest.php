@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -38,10 +39,10 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeCallsCollectGarbageOfConfiguredBackend()
+    public function executeCallsCollectGarbageOfConfiguredBackend(): void
     {
         $cache = $this->createMock(VariableFrontend::class);
-        $cache->expects(self::any())->method('getIdentifier')->willReturn('cache');
+        $cache->method('getIdentifier')->willReturn('cache');
         $cache->expects(self::atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
@@ -52,7 +53,7 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
                 'backend' => AbstractBackend::class,
             ]
         ];
-        /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit\Framework\MockObject\MockObject $subject */
+        /** @var CachingFrameworkGarbageCollectionTask|MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -64,10 +65,10 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend()
+    public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend(): void
     {
         $cache = $this->createMock(VariableFrontend::class);
-        $cache->expects(self::any())->method('getIdentifier')->willReturn('cache');
+        $cache->method('getIdentifier')->willReturn('cache');
         $cache->expects(self::never())->method('collectGarbage');
         $mockCacheManager = new CacheManager();
         $mockCacheManager->registerCache($cache);
@@ -78,7 +79,7 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
                 'backend' => AbstractBackend::class,
             ]
         ];
-        /** @var \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask|\PHPUnit\Framework\MockObject\MockObject $subject */
+        /** @var CachingFrameworkGarbageCollectionTask|MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
