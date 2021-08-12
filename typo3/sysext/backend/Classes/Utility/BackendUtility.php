@@ -2922,12 +2922,12 @@ class BackendUtility
      * @param string $spKey softRef parser key
      * @return mixed If available, returns Soft link parser object, otherwise false.
      * @internal should only be used from within TYPO3 Core
-     * @deprecated will be removed in TYPO3 v12.0. Use SoftReferenceParserFactory->getParserByKey instead.
+     * @deprecated will be removed in TYPO3 v12.0. Use SoftReferenceParserFactory->getSoftReferenceParser instead.
      */
     public static function softRefParserObj($spKey)
     {
         trigger_error(
-            'BackendUtility::softRefParserObj will be removed in TYPO3 v12.0, use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory->getParserByKey instead.',
+            'BackendUtility::softRefParserObj will be removed in TYPO3 v12.0, use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory->getSoftReferenceParser instead.',
             E_USER_DEPRECATED
         );
 

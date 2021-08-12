@@ -168,7 +168,7 @@ Example after:
 .. code-block:: php
 
     $softReferenceParserFactory = GeneralUtility::makeInstance(SoftReferenceParserFactory::class);
-    $softReferenceParser = $softReferenceParserFactory->getParserByKey('typolink');
+    $softReferenceParser = $softReferenceParserFactory->getSoftReferenceParser('typolink');
 
 The method :php:`BackendUtility::explodeSoftRefParserList` should be replaced by
 instantiating :php:`TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory`
