@@ -828,6 +828,21 @@ those).
      ...
 
 
+.. note::
+
+   In general, you can override each and every ``form definition`` with the help
+   of TypoScript (see ':ref:`TypoScript overrides<concepts-frontendrendering-runtimemanipulation-typoscriptoverrides>`').
+   This feature is not supported when you are rendering forms via the ``RenderViewHelper``.
+
+   Luckily, there is a solution for your problem: use the ':ref:`overrideConfiguration<apireference-frontendrendering-renderviewHelper-overrideconfiguration>`'
+   parameter instead. This way, you can override the form definition within your template.
+   Provide an according array as shown in the example below.
+
+   .. code-block:: html
+
+      <formvh:render persistenceIdentifier="EXT:my_site_package/Resources/Private/Forms/MyForm.yaml" overrideConfiguration="{renderables: {0: {renderables: {0: {label: 'My shiny new label'}}}}}"/>
+
+
 .. _concepts-frontendrendering-programmatically:
 
 Build forms programmatically
