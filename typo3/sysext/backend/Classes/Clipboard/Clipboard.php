@@ -56,7 +56,7 @@ class Clipboard
      * 'el'	:	Array of elements:
      * DB: keys = '[tablename]|[uid]'	eg. 'tt_content:123'
      * DB: values = 1 (basically insignificant)
-     * FILE: keys = '_FILE|[shortmd5 of path]'	eg. '_FILE|9ebc7e5c74'
+     * FILE: keys = '_FILE|[md5 of path]'	eg. '_FILE|9ebc7e5c74'
      * FILE: values = The full filepath, eg. '/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
      * or 'C:/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
      *
@@ -161,7 +161,7 @@ class Clipboard
         if ($cmd['setP'] ?? false) {
             $this->setCurrentPad((string)$cmd['setP']);
         }
-        // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[shortmd5 hash of path]'
+        // Remove element	(value = item ident: DB; '[tablename]|[uid]'    FILE: '_FILE|[md5 hash of path]'
         if ($cmd['remove'] ?? false) {
             $this->removeElement((string)$cmd['remove']);
             $this->changed = true;
@@ -567,10 +567,10 @@ class Clipboard
 
     /**
      * Returns the remove-url (file and db)
-     * for file $table='_FILE' and $uid = shortmd5 hash of path
+     * for file $table='_FILE' and $uid = md5 hash of path
      *
      * @param string $table Tablename
-     * @param string $identifier Either the records uid or the shortmd5 hash for files
+     * @param string $identifier Either the records uid or the md5 hash for files
      * @return string URL
      */
     protected function removeUrl(string $table, string $identifier): string

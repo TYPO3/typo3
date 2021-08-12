@@ -981,7 +981,7 @@ class FileList
         }
 
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-        $md5 = GeneralUtility::shortMD5($fullIdentifier);
+        $md5 = md5($fullIdentifier);
         $identifier = '_FILE|' . $md5;
         $this->CBnames[] = $identifier;
 
