@@ -948,10 +948,8 @@ class EditDocumentController
         if (!$previewPageId) {
             $rootPageData = null;
             $rootLine = BackendUtility::BEgetRootLine($currentPageId);
-            $currentPage = reset($rootLine);
-            // Allow all doktypes below 200
-            // This makes custom doktype work as well with opening a frontend page.
-            if ((int)$currentPage['doktype'] <= PageRepository::DOKTYPE_SPACER) {
+            $currentPage = (array)(reset($rootLine) ?: []);
+            if ($this->canViewDoktype($currentPage)) {
                 // try the current page
                 $previewPageId = $currentPageId;
             } else {
@@ -971,6 +969,26 @@ class EditDocumentController
         $this->popViewId = $previewPageId;
 
         return $previewPageId;
+    }
+
+    /**
+     * Check whether the current page has a "no view doktype" assigned
+     *
+     * @param array $currentPage
+     * @return bool
+     */
+    protected function canViewDoktype(array $currentPage): bool
+    {
+        if (!isset($currentPage['uid']) || !($currentPage['doktype'] ?? false)) {
+            // In case the current page record is invalid, the element can not be viewed
+            return false;
+        }
+
+        return !in_array((int)$currentPage['doktype'], [
+            PageRepository::DOKTYPE_SPACER,
+            PageRepository::DOKTYPE_SYSFOLDER,
+            PageRepository::DOKTYPE_RECYCLER,
+        ], true);
     }
 
     /**
