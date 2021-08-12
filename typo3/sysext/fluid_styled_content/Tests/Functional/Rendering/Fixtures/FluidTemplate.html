@@ -1,0 +1,10 @@
+<f:spaceless>
+    <f:switch expression="{type}">
+        <f:defaultCase>
+            <f:format.html>{payload}</f:format.html>
+        </f:defaultCase>
+        <f:case value="empty-parseFuncTSPath">
+            <f:format.html parseFuncTSPath="">{payload}</f:format.html>
+        </f:case>
+    </f:switch>
+</f:spaceless>
