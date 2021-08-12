@@ -139,6 +139,7 @@ class SlugService implements LoggerAwareInterface
                 $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
             }
             $this->sendNotification();
+            GeneralUtility::makeInstance(RedirectCacheService::class)->rebuild();
         }
     }
 
