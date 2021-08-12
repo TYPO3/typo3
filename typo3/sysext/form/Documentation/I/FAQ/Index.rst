@@ -37,7 +37,7 @@ TypoScript.
        settings {
            yamlConfigurations {
                # register your own additional configuration
-               # choose a number higher than 30 (below is reserved)
+               # choose a number higher than 10 (10 is reserved)
                100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
            }
        }
