@@ -77,7 +77,7 @@ class ImportCommand extends Command
             )
             ->addOption(
                 'importMode',
-                'm',
+                null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 sprintf(
                     'Set the import mode of this specific record. ' . PHP_EOL .

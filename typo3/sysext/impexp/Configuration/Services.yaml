@@ -21,3 +21,9 @@ services:
       - name: 'console.command'
         command: 'impexp:import'
         description: 'Imports a T3D / XML file with content into a page tree'
+
+  TYPO3\CMS\Impexp\Command\ExportCommand:
+    tags:
+      - name: 'console.command'
+        command: 'impexp:export'
+        description: 'Exports a T3D / XML file with content of a page tree'
