@@ -799,7 +799,7 @@ export class SvgTree extends LitElement {
     nodes = nodes
       .enter()
       .append('g')
-      .attr('class', this.getNodeClass)
+      .attr('class', 'node')
       .attr('id', (node: TreeNode) => {
         return 'identifier-' + node.stateIdentifier;
       })
@@ -866,10 +866,6 @@ export class SvgTree extends LitElement {
       label = label.replace(regexp, '<tspan class="node-highlight-text">$&</tspan>');
     }
     return label;
-  }
-
-  protected getNodeClass(node: TreeNode): string {
-    return 'node identifier-' + node.stateIdentifier;
   }
 
   /**

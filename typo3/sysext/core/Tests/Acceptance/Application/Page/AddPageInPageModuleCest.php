@@ -47,7 +47,7 @@ class AddPageInPageModuleCest
         $typo3NavigationContainer = '.scaffold-content-navigation-component';
         $I->waitForElement($typo3NavigationContainer);
         $rootNode = 'a.x-tree-node-anchor > span';
-        $rootNodeIcon = '.node.identifier-0_0 .node-icon';
+        $rootNodeIcon = '#identifier-0_0 .node-icon';
         $rootNodeContextMenuMore = '#contentMenu0 a.list-group-item-submenu';
         //create new wizard
         $contextMenuNew = '#contentMenu1 .list-group-item[data-callback-action=newPageWizard]';

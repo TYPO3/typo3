@@ -156,7 +156,7 @@ class UsersCest extends AbstractCest
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
         $importPageSectionTitle = 'Select file to import';
 
-        $I->click($this->inPageTree . ' .node.identifier-0_0 .node-icon-container');
+        $I->click($this->inPageTree . ' #identifier-0_0 .node-icon-container');
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForText($importPageSectionTitle);
