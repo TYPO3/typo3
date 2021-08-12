@@ -31,6 +31,8 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    private const TYPE_PLAIN = 'plain';
+    private const TYPE_EMPTY_PARSEFUNCTSPATH = 'empty-parseFuncTSPath';
     private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
 
     private const TYPO3_CONF_VARS = [
@@ -171,6 +173,80 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public static function htmlViewHelperAvoidsCrossSiteScriptingDataProvider(): array
+    {
+        return [
+            '#01 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '01: <script>alert(1)</script>',
+                '<p>01: &lt;script&gt;alert(1)&lt;/script&gt;</p>',
+            ],
+            '#01 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '01: <script>alert(1)</script>',
+                '01: &lt;script&gt;alert(1)&lt;/script&gt;',
+            ],
+            '#03 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '03: <img img="img" alt="alt" onerror="alert(1)">',
+                '<p>03: <img alt="alt"></p>',
+            ],
+            '#03 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '03: <img img="img" alt="alt" onerror="alert(1)">',
+                '03: <img alt="alt">',
+            ],
+            '#07 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
+                '<p>07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a></p>',
+            ],
+            '#07 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
+                // expected, with empty parseFunc configuration internal link URN is not resolved
+                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a>',
+            ],
+            '#08 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '08: <meta whatever="whatever">',
+                '<p>08: &lt;meta whatever="whatever"&gt;</p>',
+            ],
+            '#08 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '08: <meta whatever="whatever">',
+                '08: &lt;meta whatever="whatever"&gt;',
+            ],
+            // `sdfield` is in `styles.content.allowTags` constant
+            '#09 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '09: <sdfield onmouseover="alert(1)">',
+                '<p>09: &lt;sdfield onmouseover="alert(1)"&gt;&lt;/sdfield&gt;</p>',
+            ],
+            '#09 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '09: <sdfield onmouseover="alert(1)">',
+                '09: &lt;sdfield onmouseover="alert(1)"&gt;&lt;/sdfield&gt;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $type
+     * @param string $payload
+     * @param string $expectation
+     * @test
+     * @dataProvider htmlViewHelperAvoidsCrossSiteScriptingDataProvider
+     */
+    public function htmlViewHelperAvoidsCrossSiteScripting(string $type, string $payload, string $expectation): void
+    {
+        $instructions = [
+            $this->createFluidTemplateContentObject($type, $payload),
+        ];
+        $response = $this->invokeFrontendRendering(...$instructions);
+        self::assertSame($expectation, trim((string)$response->getBody(), "\n"));
+    }
+
     /**
      * @param AbstractInstruction ...$instructions
      * @return InternalResponse
@@ -226,40 +302,25 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             ]);
     }
 
-    /**
-     * @param array $parseFunc
-     * @return TypoScriptInstruction
-     */
-    private function createParseFuncInstruction(array $parseFunc): TypoScriptInstruction
+    private function createFluidTemplateContentObject(string $type, string $payload): TypoScriptInstruction
     {
         return (new TypoScriptInstruction(TemplateService::class))
             ->withTypoScript([
-                'lib.' => [
-                    'parseFunc.' => array_replace_recursive(
-                        [
-                            'makelinks' => 1,
-                            'makelinks.' => [
-                                'http.' => [
-                                    'keep' => 'path',
-                                    'extTarget' => '_blank',
-                                ],
-                                'mailto.' => [
-                                    'keep' => 'path',
-                                ],
+                'page.' => [
+                    '10' => 'FLUIDTEMPLATE',
+                    '10.' => [
+                        'file' => 'EXT:fluid_styled_content/Tests/Functional/Rendering/Fixtures/FluidTemplate.html',
+                        'variables.' => [
+                            'type' => 'TEXT',
+                            'type.' => [
+                                'value' => $type,
                             ],
-                            'allowTags' => '',
-                            'denyTags' => '',
-                            'constants' => 1,
-                            'nonTypoTagStdWrap.' => [
-                                'HTMLparser' => 1,
-                                'HTMLparser.' => [
-                                    'keepNonMatchedTags' => 1,
-                                    'htmlSpecialChars' => 2,
-                                ],
+                            'payload' => 'TEXT',
+                            'payload.' => [
+                                'value' => $payload,
                             ],
                         ],
-                        $parseFunc
-                    ),
+                    ],
                 ],
             ]);
     }
