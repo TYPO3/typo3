@@ -1171,11 +1171,17 @@ class FileList
             }
             $cellOutput .= '<li>' . $action . '</li>';
         }
-        $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
-        $output .= '<div class="btn-group dropdown position-static">' .
-            '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-            '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
-            '</div>';
+
+        if ($cellOutput !== '') {
+            $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
+            $output .= '<div class="btn-group dropdown position-static">' .
+                '<a href="#actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
+                '<ul id="actions_' . $fileOrFolderObject->getHashedIdentifier() . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
+                '</div>';
+        } else {
+            $output .= $this->spaceIcon;
+        }
+
         return '<div class="btn-group position-static">' . $output . '</div>';
     }
 

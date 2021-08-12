@@ -1789,11 +1789,16 @@ class DatabaseRecordList
                     }
                     $cellOutput .= '<li>' . $action . '</li>';
                 }
-                $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
-                $output .= ' <div class="btn-group dropdown position-static">' . // @todo add label / tooltip
-                    '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                    '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
-                    '</div>';
+
+                if ($cellOutput !== '') {
+                    $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
+                    $output .= ' <div class="btn-group dropdown position-static">' . // @todo add label / tooltip
+                        '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
+                        '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
+                        '</div>';
+                } else {
+                    $output .= ' <div class="btn-group">' . $this->spaceIcon . '</div>';
+                }
             } else {
                 $output .= ' <div class="btn-group">' . implode('', $actions) . '</div>';
             }
