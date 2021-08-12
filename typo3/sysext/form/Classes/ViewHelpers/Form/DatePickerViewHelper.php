@@ -72,7 +72,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('previewMode', 'bool', 'Preview mde flag', true, false);
         $this->registerArgument('dateFormat', 'string', 'The date format', false, 'Y-m-d');
         // use the default value if custom templates have not yet adapted this property
-        $this->registerArgument('datePickerInitializationJavaScripFile', 'string', 'The JavaScript file to initialize the date picker', false, 'EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js');
+        $this->registerArgument('datePickerInitializationJavaScriptFile', 'string', 'The JavaScript file to initialize the date picker', false, 'EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js');
         $this->registerUniversalTagAttributes();
     }
 
@@ -110,11 +110,11 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
                 $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
                 $this->tag->addAttribute('data-format', $datePickerDateFormat);
                 $this->tag->addAttribute('data-t3-form-datepicker', '');
-                if (!empty($this->arguments['datePickerInitializationJavaScripFile'])) {
+                if (!empty($this->arguments['datePickerInitializationJavaScriptFile'])) {
                     GeneralUtility::makeInstance(AssetCollector::class)
                         ->addJavaScript(
                             't3-form-datepicker',
-                            $this->arguments['datePickerInitializationJavaScripFile'],
+                            $this->arguments['datePickerInitializationJavaScriptFile'],
                             []
                         );
                 }

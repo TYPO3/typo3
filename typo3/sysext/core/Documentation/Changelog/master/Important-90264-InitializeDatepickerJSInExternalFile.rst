@@ -12,9 +12,9 @@ Description
 The initialization of the datepicker has been moved into an external
 file residing in `EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js`.
 Some installations might restrict requesting public resources from `/typo3/`.
-Therefore, a new Yaml configuration has been introduced:
+Therefore, a new YAML configuration has been introduced:
 
-:yaml:`TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.DatePicker.properties.datePickerInitializationJavaScripFile`
+:yaml:`TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.DatePicker.properties.datePickerInitializationJavaScriptFile`
 
 That way, integrators are able to move the file to a different folder
 which is publicly accessible.
