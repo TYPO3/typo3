@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\Tests\Unit\Browser;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -31,7 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FileBrowserTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -39,9 +41,9 @@ class FileBrowserTest extends UnitTestCase
     {
         [$moduleTemplate, $beUser] = $this->setupProphecies();
 
-        $bparams = '|||gif,png,svg|data-4-pages-4-nav_icon-sys_file_reference';
+        $bParams = '|||gif,png,svg|data-4-pages-4-nav_icon-sys_file_reference';
         $fileBrowser = $this->getAccessibleMock(FileBrowser::class, ['dummy'], [], '', false);
-        $fileBrowser->_set('bparams', $bparams);
+        $fileBrowser->_set('bparams', $bParams);
         $fileBrowser->_set('moduleTemplate', $moduleTemplate);
         $fileBrowser->_set('request', $this->prophesize(ServerRequestInterface::class)->reveal());
         $fileBrowser->render();

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -36,7 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RedirectServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -45,27 +47,24 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @var RedirectCacheService|ObjectProphecy
      */
-    protected $redirectCacheServiceProphecy;
+    protected ObjectProphecy $redirectCacheServiceProphecy;
 
     /**
      * @var LinkService|ObjectProphecy
      */
-    protected $linkServiceProphecy;
+    protected ObjectProphecy $linkServiceProphecy;
+
+    protected RedirectService $redirectService;
 
     /**
-     * @var RedirectService
+     * @var ObjectProphecy|SiteFinder
      */
-    protected $redirectService;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
+    protected ObjectProphecy $siteFinder;
 
     /**
      * @var ObjectProphecy|RedirectRepository
      */
-    protected $redirectRepository;
+    protected ObjectProphecy $redirectRepository;
 
     protected function setUp(): void
     {
@@ -85,7 +84,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsNullIfNoRedirectsExist()
+    public function matchRedirectReturnsNullIfNoRedirectsExist(): void
     {
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn([]);
 
@@ -99,7 +98,7 @@ class RedirectServiceTest extends UnitTestCase
      * @dataProvider matchRedirectReturnsRedirectOnFlatMatchDataProvider
      * @param string $path
      */
-    public function matchRedirectReturnsRedirectOnFlatMatch(string $path = '')
+    public function matchRedirectReturnsRedirectOnFlatMatch(string $path = ''): void
     {
         $row = [
             'target' => 'https://example.com',
@@ -154,7 +153,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatch()
+    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatch(): void
     {
         $row = [
             'target' => 'https://example.com',
@@ -186,7 +185,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithSlash()
+    public function matchRedirectReturnsRedirectOnRespectQueryParametersMatchWithSlash(): void
     {
         $row = [
             'target' => 'https://example.com',
@@ -218,7 +217,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsRedirectOnFullRespectQueryParametersMatch()
+    public function matchRedirectReturnsRedirectOnFullRespectQueryParametersMatch(): void
     {
         $row = [
             'target' => 'https://example.com/target',
@@ -250,7 +249,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsNullOnPartialRespectQueryParametersMatch()
+    public function matchRedirectReturnsNullOnPartialRespectQueryParametersMatch(): void
     {
         $row = [
             'target' => 'https://example.com/target',
@@ -282,7 +281,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsMatchingRedirectWithMatchingQueryParametersOverMatchingPath()
+    public function matchRedirectReturnsMatchingRedirectWithMatchingQueryParametersOverMatchingPath(): void
     {
         $row1 = [
             'target' => 'https://example.com/no-promotion',
@@ -330,7 +329,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsRedirectSpecificToDomainOnFlatMatchIfSpecificAndNonSpecificExist()
+    public function matchRedirectReturnsRedirectSpecificToDomainOnFlatMatchIfSpecificAndNonSpecificExist(): void
     {
         $row1 = [
             'target' => 'https://example.com',
@@ -377,7 +376,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsRedirectOnRegexMatch()
+    public function matchRedirectReturnsRedirectOnRegexMatch(): void
     {
         $row = [
             'target' => 'https://example.com',
@@ -408,7 +407,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRedirectReturnsOnlyActiveRedirects()
+    public function matchRedirectReturnsOnlyActiveRedirects(): void
     {
         $row1 = [
             'target' => 'https://example.com',
@@ -449,7 +448,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved()
+    public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved(): void
     {
         $this->linkServiceProphecy->resolve(Argument::any())->willThrow(new InvalidPathException('', 1516531195));
 
@@ -461,7 +460,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlReturnsUrlForTypeUrl()
+    public function getTargetUrlReturnsUrlForTypeUrl(): void
     {
         $redirectTargetMatch = [
             'target' => 'https://example.com',
@@ -486,7 +485,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlReturnsUrlForTypeFile()
+    public function getTargetUrlReturnsUrlForTypeFile(): void
     {
         $fileProphecy = $this->prophesize(File::class);
         $fileProphecy->getPublicUrl()->willReturn('https://example.com/file.txt');
@@ -513,7 +512,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlReturnsUrlForTypeFolder()
+    public function getTargetUrlReturnsUrlForTypeFolder(): void
     {
         $folderProphecy = $this->prophesize(Folder::class);
         $folderProphecy->getPublicUrl()->willReturn('https://example.com/folder/');
@@ -541,7 +540,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlRespectsForceHttps()
+    public function getTargetUrlRespectsForceHttps(): void
     {
         $redirectTargetMatch = [
             'target' => 'https://example.com',
@@ -566,7 +565,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlAddsExistingQueryParams()
+    public function getTargetUrlAddsExistingQueryParams(): void
     {
         $redirectTargetMatch = [
             'target' => 'https://example.com',
@@ -592,7 +591,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlRespectsAdditionalParametersFromTypolink()
+    public function getTargetUrlRespectsAdditionalParametersFromTypolink(): void
     {
         /** @var RedirectService $redirectService */
         $redirectService = $this->getAccessibleMock(
@@ -629,7 +628,7 @@ class RedirectServiceTest extends UnitTestCase
         $request = $request->withQueryParams($queryParams);
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('frontend.user', $frontendUserAuthentication);
-        $redirectService->expects(self::any())->method('getUriFromCustomLinkDetails')
+        $redirectService->method('getUriFromCustomLinkDetails')
             ->with($redirectTargetMatch, $site, $linkDetails, $queryParams, $request)
             ->willReturn($uri);
         $result = $redirectService->getTargetUrl($redirectTargetMatch, $request);
@@ -640,7 +639,7 @@ class RedirectServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetUrlReplaceRegExpCaptureGroup()
+    public function getTargetUrlReplaceRegExpCaptureGroup(): void
     {
         $redirectTargetMatch = [
             'source_path' => '#^/foo/(.*)#',

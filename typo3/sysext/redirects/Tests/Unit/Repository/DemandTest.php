@@ -42,10 +42,10 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getParametersRespectsDemandStateStateDataProvider
-     * @param string $input
-     * @param string $expected
+     * @param array $input
+     * @param array $expected
      */
-    public function getParametersRespectsDemandState(array $input, array $expected)
+    public function getParametersRespectsDemandState(array $input, array $expected): void
     {
         self::assertEquals($expected, (new Demand(...$input))->getParameters());
     }

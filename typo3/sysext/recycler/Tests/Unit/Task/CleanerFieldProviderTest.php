@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Unit\Task;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Recycler\Task\CleanerFieldProvider;
@@ -44,31 +45,31 @@ class CleanerFieldProviderTest extends UnitTestCase
             ->onlyMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects(self::any())->method('sL')->willReturn('titleTest');
+        $languageServiceMock->method('sL')->willReturn('titleTest');
         $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
             ->onlyMethods(['getLanguageService', 'addMessage'])
             ->getMock();
-        $this->subject->expects(self::any())->method('getLanguageService')->willReturn($languageServiceMock);
+        $this->subject->method('getLanguageService')->willReturn($languageServiceMock);
     }
 
     /**
      * @param array $mockedMethods
-     * @return \PHPUnit\Framework\MockObject\MockObject|SchedulerModuleController
+     * @return MockObject|SchedulerModuleController
      */
-    protected function getScheduleModuleControllerMock($mockedMethods = [])
+    protected function getScheduleModuleControllerMock(array $mockedMethods = [])
     {
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)
             ->onlyMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects(self::any())->method('sL')->willReturn('titleTest');
+        $languageServiceMock->method('sL')->willReturn('titleTest');
 
         $mockedMethods = array_merge(['getLanguageService'], $mockedMethods);
         $scheduleModuleMock = $this->getMockBuilder(SchedulerModuleController::class)
             ->onlyMethods($mockedMethods)
             ->disableOriginalConstructor()
             ->getMock();
-        $scheduleModuleMock->expects(self::any())->method('getLanguageService')->willReturn($languageServiceMock);
+        $scheduleModuleMock->method('getLanguageService')->willReturn($languageServiceMock);
 
         return $scheduleModuleMock;
     }
@@ -76,7 +77,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validateAdditionalFieldsLogsPeriodErrorDataProvider()
+    public function validateAdditionalFieldsLogsPeriodErrorDataProvider(): array
     {
         return [
             ['abc'],
@@ -93,7 +94,7 @@ class CleanerFieldProviderTest extends UnitTestCase
      * @test
      * @dataProvider validateAdditionalFieldsLogsPeriodErrorDataProvider
      */
-    public function validateAdditionalFieldsLogsPeriodError($period)
+    public function validateAdditionalFieldsLogsPeriodError($period): void
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => $period,
@@ -111,7 +112,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validateAdditionalFieldsDataProvider()
+    public function validateAdditionalFieldsDataProvider(): array
     {
         return [
             ['abc'],
@@ -126,7 +127,7 @@ class CleanerFieldProviderTest extends UnitTestCase
      * @test
      * @dataProvider validateAdditionalFieldsDataProvider
      */
-    public function validateAdditionalFieldsLogsTableError($table)
+    public function validateAdditionalFieldsLogsTableError($table): void
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,
@@ -139,7 +140,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAdditionalFieldsIsTrueIfValid()
+    public function validateAdditionalFieldsIsTrueIfValid(): void
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,
@@ -154,7 +155,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function saveAdditionalFieldsSavesFields()
+    public function saveAdditionalFieldsSavesFields(): void
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,

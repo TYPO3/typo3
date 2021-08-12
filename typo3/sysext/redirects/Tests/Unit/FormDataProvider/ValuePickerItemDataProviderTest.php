@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Unit\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
@@ -24,8 +25,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ValuePickerItemDataProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    protected $sysRedirectResultSet = [
+    use ProphecyTrait;
+
+    protected array $sysRedirectResultSet = [
         'tableName' => 'sys_redirect',
         'processedTca' => [
             'columns' => [
@@ -43,7 +45,7 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNothingIfNoRedirectDataGiven()
+    public function addDataDoesNothingIfNoRedirectDataGiven(): void
     {
         $result = [
             'tableName' => 'tt_content',
@@ -59,7 +61,7 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsHostsAsKeyAndValueToRedirectValuePicker()
+    public function addDataAddsHostsAsKeyAndValueToRedirectValuePicker(): void
     {
         // no results for now
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
@@ -80,7 +82,7 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotChangeResultSetIfNoSitesAreFound()
+    public function addDataDoesNotChangeResultSetIfNoSitesAreFound(): void
     {
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteFinderProphecy->getAllSites()->willReturn([]);

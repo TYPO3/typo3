@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\Tests\Unit\RecordList;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -29,7 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseRecordListTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     protected DatabaseRecordList $subject;
