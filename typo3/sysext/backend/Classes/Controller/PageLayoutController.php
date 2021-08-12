@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -599,6 +601,7 @@ class PageLayoutController
             $content .= '</form>';
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
+            $this->initializeClipboard($request);
 
             // Create LanguageMenu
             $this->makeLanguageMenu();
@@ -619,6 +622,30 @@ class PageLayoutController
     }
 
     /**
+     * Initializes the clipboard for generating paste links dynamically via JavaScript after each "+ Content" symbol
+     */
+    protected function initializeClipboard(ServerRequestInterface $request): void
+    {
+        $clipboard = GeneralUtility::makeInstance(Clipboard::class);
+        $clipboard->initializeClipboard($request);
+        $clipboard->lockToNormal();
+        $clipboard->cleanCurrent();
+        $clipboard->endClipboard();
+        $elFromTable = $clipboard->elFromTable('tt_content');
+        if (!empty($elFromTable) && $this->isContentEditable($this->current_sys_language)) {
+            $pasteItem = (int)substr((string)key($elFromTable), 11);
+            $pasteRecord = BackendUtility::getRecordWSOL('tt_content', $pasteItem);
+            $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord, false, true);
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste', '
+            function(Paste) {
+                Paste.itemOnClipboardUid = ' . $pasteItem . ';
+                Paste.itemOnClipboardTitle = ' . GeneralUtility::quoteJSvalue($pasteTitle) . ';
+                Paste.copyMode = ' . GeneralUtility::quoteJSvalue($clipboard->clipData['normal']['mode']) . ';
+            }');
+        }
+    }
+
+    /**
      * Rendering content
      *
      * @return string
@@ -630,7 +657,6 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $this->pageRenderer->loadRequireJsModule(ImmediateActionElement::MODULE_NAME);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
@@ -654,8 +680,6 @@ class PageLayoutController
 
             $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
 
-            $pageLayoutDrawer = $this->context->getBackendLayoutRenderer();
-
             $pageActionsCallback = null;
             if ($this->context->isPageEditable()) {
                 $languageOverlayId = 0;
@@ -672,7 +696,7 @@ class PageLayoutController
                 }';
             }
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
-            $tableOutput = $pageLayoutDrawer->drawContent();
+            $tableOutput = GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this->context)->drawContent();
         }
 
         if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {
@@ -979,6 +1003,7 @@ class PageLayoutController
 
         return !$this->pageinfo['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+            && $this->getBackendUser()->check('tables_modify', 'tt_content')
             && $this->getBackendUser()->checkLanguageAccess($languageId);
     }
 

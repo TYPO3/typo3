@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\Drawing;
 
-use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\Grid;
@@ -29,13 +27,9 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\RecordRememberer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -47,46 +41,18 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  * which renders the Resources/Private/PageLayout/PageLayout template
  * with necessary assigned template variables.
  *
- * - Initializes the clipboard used in the page layout
- * - Inserts an encoded paste icon as JS which is made visible when clipboard elements are registered
- *
  * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
 class BackendLayoutRenderer
 {
-    use LoggerAwareTrait;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var PageLayoutContext
-     */
-    protected $context;
-
-    /**
-     * @var ContentFetcher
-     */
-    protected $contentFetcher;
-
-    /**
-     * @var Clipboard
-     */
-    protected $clipboard;
-
-    /**
-     * @var TemplateView
-     */
-    protected $view;
+    protected PageLayoutContext $context;
+    protected ContentFetcher $contentFetcher;
+    protected TemplateView $view;
 
     public function __construct(PageLayoutContext $context)
     {
         $this->context = $context;
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->initializeClipboard();
         $this->view = GeneralUtility::makeInstance(TemplateView::class);
         $this->view->getRenderingContext()->setRequest(GeneralUtility::makeInstance(Request::class));
         $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('backend');
@@ -125,7 +91,7 @@ class BackendLayoutRenderer
     /**
      * @return LanguageColumn[]
      */
-    public function getLanguageColumnsForPageLayoutContext(PageLayoutContext $context): iterable
+    protected function getLanguageColumnsForPageLayoutContext(PageLayoutContext $context): iterable
     {
         $languageColumns = [];
         foreach ($context->getLanguagesToShow() as $siteLanguage) {
@@ -277,79 +243,6 @@ class BackendLayoutRenderer
             }
         }
         return $rendered;
-    }
-
-    /**
-     * Initializes the clipboard for generating paste links
-     *
-     * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
-     * @see \TYPO3\CMS\Filelist\Controller\FileListController::indexAction()
-     */
-    protected function initializeClipboard(): void
-    {
-        $this->clipboard = GeneralUtility::makeInstance(Clipboard::class);
-        $this->clipboard->initializeClipboard();
-        $this->clipboard->lockToNormal();
-        $this->clipboard->cleanCurrent();
-        $this->clipboard->endClipboard();
-
-        $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->isContentEditable()) {
-            $pasteItem = (int)substr((string)key($elFromTable), 11);
-            $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
-            $pasteTitle = (string)($pasteRecord['header'] ?: $pasteItem);
-            $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';
-            $addExtOnReadyCode = '
-                     top.pasteIntoLinkTemplate = '
-                . $this->drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-into', 'pasteIntoColumn')
-                . ';
-                    top.pasteAfterLinkTemplate = '
-                . $this->drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-after', 'pasteAfterRecord')
-                . ';';
-        } else {
-            $addExtOnReadyCode = '
-                top.pasteIntoLinkTemplate = \'\';
-                top.pasteAfterLinkTemplate = \'\';';
-        }
-        GeneralUtility::makeInstance(PageRenderer::class)->addJsInlineCode('pasteLinkTemplates', $addExtOnReadyCode);
-    }
-
-    /**
-     * Draw a paste icon either for pasting into a column or for pasting after a record
-     *
-     * @param int $pasteItem ID of the item in the clipboard
-     * @param string $pasteTitle Title for the JS modal
-     * @param string $copyMode copy or cut
-     * @param string $cssClass CSS class to determine if pasting is done into column or after record
-     * @param string $title title attribute of the generated link
-     *
-     * @return string Generated HTML code with link and icon
-     */
-    private function drawPasteIcon(int $pasteItem, string $pasteTitle, string $copyMode, string $cssClass, string $title): string
-    {
-        $pasteIcon = json_encode(
-            ' <button type="button"'
-            . ' data-bs-content="' . htmlspecialchars((string)$pasteItem) . '"'
-            . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
-            . ' data-severity="warning"'
-            . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
-            . ' title="' . htmlspecialchars($this->getLanguageService()->getLL($title)) . '">'
-            . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-            . '</button>'
-        );
-        return $pasteIcon;
-    }
-
-    protected function isContentEditable(): bool
-    {
-        if ($this->getBackendUser()->isAdmin()) {
-            return true;
-        }
-
-        $pageRecord = $this->context->getPageRecord();
-        return !$pageRecord['editlock']
-            && $this->getBackendUser()->check('tables_modify', 'tt_content')
-            && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT);
     }
 
     protected function getBackendUser(): BackendUserAuthentication

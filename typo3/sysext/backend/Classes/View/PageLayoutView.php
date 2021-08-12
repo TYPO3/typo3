@@ -20,7 +20,6 @@ use Doctrine\DBAL\Statement;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -147,11 +146,6 @@ class PageLayoutView implements LoggerAwareInterface
     protected $siteLanguages = [];
 
     /**
-     * @var Clipboard
-     */
-    protected $clipboard;
-
-    /**
      * Current ids page record
      *
      * @var array
@@ -243,7 +237,6 @@ class PageLayoutView implements LoggerAwareInterface
     {
         $this->resolveSiteLanguages($this->id);
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
-        $this->initializeClipboard();
         $this->pageinfo = BackendUtility::readPageAccess($this->id, '') ?: [];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageActionsCallback = null;
@@ -651,26 +644,6 @@ class PageLayoutView implements LoggerAwareInterface
                 $out .= $grid . '</table></div>';
             }
         }
-        $elFromTable = $this->clipboard->elFromTable('tt_content');
-        if (!empty($elFromTable) && $this->isContentEditable()) {
-            $pasteItem = (int)substr((string)key($elFromTable), 11);
-            $pasteRecord = BackendUtility::getRecord('tt_content', $pasteItem);
-            $pasteTitle = $pasteRecord['header'] ?: (string)$pasteItem;
-            $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';
-            $inlineJavaScript = '
-                     top.pasteIntoLinkTemplate = '
-                . $this->tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-into', 'pasteIntoColumn')
-                . ';
-                    top.pasteAfterLinkTemplate = '
-                . $this->tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, 't3js-paste-after', 'pasteAfterRecord')
-                . ';';
-        } else {
-            $inlineJavaScript = '
-                top.pasteIntoLinkTemplate = \'\';
-                top.pasteAfterLinkTemplate = \'\';';
-        }
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addJsInlineCode('pasteLinkTemplates', $inlineJavaScript);
         // If language mode, then make another presentation:
         // Notice that THIS presentation will override the value of $out!
         // But it needs the code above to execute since $languageColumn is filled with content we need!
@@ -949,32 +922,6 @@ class PageLayoutView implements LoggerAwareInterface
 					' . $icons . '
 					<div class="t3-page-column-header-label">' . htmlspecialchars($colName) . '</div>
 				</div>';
-    }
-
-    /**
-     * Draw a paste icon either for pasting into a column or for pasting after a record
-     *
-     * @param int $pasteItem ID of the item in the clipboard
-     * @param string $pasteTitle Title for the JS modal
-     * @param string $copyMode copy or cut
-     * @param string $cssClass CSS class to determine if pasting is done into column or after record
-     * @param string $title title attribute of the generated link
-     *
-     * @return string Generated HTML code with link and icon
-     */
-    protected function tt_content_drawPasteIcon($pasteItem, $pasteTitle, $copyMode, $cssClass, $title)
-    {
-        $pasteIcon = json_encode(
-            ' <button type="button"'
-            . ' data-bs-content="' . htmlspecialchars((string)$pasteItem) . '"'
-            . ' data-title="' . htmlspecialchars($pasteTitle) . '"'
-            . ' data-severity="warning"'
-            . ' class="t3js-paste t3js-paste' . htmlspecialchars($copyMode) . ' ' . htmlspecialchars($cssClass) . ' btn btn-default btn-sm"'
-            . ' title="' . htmlspecialchars($this->getLanguageService()->getLL($title)) . '">'
-            . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-            . '</button>'
-        );
-        return $pasteIcon;
     }
 
     /**
@@ -1644,31 +1591,6 @@ class PageLayoutView implements LoggerAwareInterface
      * Various helper functions
      *
      ********************************/
-
-    /**
-     * Initializes the clipboard for generating paste links
-     *
-     *
-     * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
-     * @see \TYPO3\CMS\Filelist\Controller\FileListController::indexAction()
-     */
-    protected function initializeClipboard()
-    {
-        // Start clipboard
-        $this->clipboard = GeneralUtility::makeInstance(Clipboard::class);
-
-        // Initialize - reads the clipboard content from the user session
-        $this->clipboard->initializeClipboard();
-
-        // This locks the clipboard to the Normal for this request.
-        $this->clipboard->lockToNormal();
-
-        // Clean up pad
-        $this->clipboard->cleanCurrent();
-
-        // Save the clipboard content
-        $this->clipboard->endClipboard();
-    }
 
     /**
      * Generates the data for previous and next elements which is needed for movements.

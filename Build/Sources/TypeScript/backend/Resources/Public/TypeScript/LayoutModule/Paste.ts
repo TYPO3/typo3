@@ -13,14 +13,17 @@
 
 /**
  * Module: TYPO3/CMS/Backend/LayoutModule/Paste
- * this JS code does the paste logic for the Layout module (Web => Page)
- * based on jQuery UI
+ * Dynamically adds "Paste" Icons in the Page Layout module (Web => Page)
+ * and triggers a modal window. which then calls the AjaxDataHandler
+ * to execute the action to paste the current clipboard contents.
  */
 import $ from 'jquery';
 import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
 import DataHandler = require('../AjaxDataHandler');
 import Modal = require('../Modal');
 import Severity = require('../Severity');
+import 'TYPO3/CMS/Backend/Element/IconElement';
+import {SeverityEnum} from '../Enum/Severity';
 
 interface Button {
   text: string;
@@ -30,7 +33,12 @@ interface Button {
 }
 
 class Paste {
+  public itemOnClipboardUid: number = 0;
+  public itemOnClipboardTitle: string = '';
+  public copyMode: string = '';
   private elementIdentifier: string = '.t3js-page-ce';
+  private pasteAfterLinkTemplate: string = '';
+  private pasteIntoLinkTemplate: string = '';
 
   /**
    * @param {JQuery} $element
@@ -51,33 +59,57 @@ class Paste {
   constructor() {
     $((): void => {
       if ($('.t3js-page-columns').length) {
+        this.generateButtonTemplates();
         this.activatePasteIcons();
+        this.initializeEvents();
       }
     });
+  }
+
+  private initializeEvents(): void
+  {
+    $(document).on('click', '.t3js-paste', (evt: Event): void => {
+      evt.preventDefault();
+      this.activatePasteModal($(evt.currentTarget));
+    });
+  }
+
+  private generateButtonTemplates(): void
+  {
+    if (!this.itemOnClipboardUid) {
+      return;
+    }
+    this.pasteAfterLinkTemplate = '<button'
+      + ' type="button"'
+      + ' class="t3js-paste t3js-paste' + (this.copyMode ? '-' + this.copyMode : '') + ' t3js-paste-after btn btn-default btn-sm"'
+      + ' title="' + TYPO3.lang?.pasteAfterRecord + '">'
+      + '<typo3-backend-icon identifier="actions-document-paste-into" size="small"></typo3-backend-icon>'
+      + '</button>';
+    this.pasteIntoLinkTemplate = '<button'
+      + ' type="button"'
+      + ' class="t3js-paste t3js-paste' + (this.copyMode ? '-' + this.copyMode : '') + ' t3js-paste-into btn btn-default btn-sm"'
+      + ' title="' + TYPO3.lang?.pasteIntoColumn + '">'
+      + '<typo3-backend-icon identifier="actions-document-paste-into" size="small"></typo3-backend-icon>'
+      + '</button>';
   }
 
   /**
    * activates the paste into / paste after icons outside of the context menus
    */
   private activatePasteIcons(): void {
-    const me = this;
-
     $('.t3-page-ce-wrapper-new-ce').each((index: number, el: HTMLElement): void => {
       if (!$(el).find('.t3js-toggle-new-content-element-wizard').length) {
         return;
       }
       $('.t3js-page-lang-column .t3-page-ce > .t3-page-ce').removeClass('t3js-page-ce');
-      if (top.pasteAfterLinkTemplate && top.pasteIntoLinkTemplate) {
+      if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
         const parent = $(el).parent();
+        // append the buttons
         if (parent.data('page')) {
-          $(el).append(top.pasteIntoLinkTemplate);
+          $(el).append(this.pasteIntoLinkTemplate);
         } else {
-          $(el).append(top.pasteAfterLinkTemplate);
+          $(el).append(this.pasteAfterLinkTemplate);
         }
-        $(el).find('.t3js-paste').on('click', (evt: Event): void => {
-          evt.preventDefault();
-          me.activatePasteModal($(evt.currentTarget));
-        });
       }
     });
   }
@@ -85,15 +117,9 @@ class Paste {
   /**
    * generates the paste into / paste after modal
    */
-  private activatePasteModal(element: JQuery): void {
-    const me = this;
-    const $element = $(element);
-    const url = $element.data('url') || null;
-    const title = (TYPO3.lang['paste.modal.title.paste'] || 'Paste record') + ': "' + $element.data('title') + '"';
+  private activatePasteModal($element: JQuery): void {
+    const title = (TYPO3.lang['paste.modal.title.paste'] || 'Paste record') + ': "' + this.itemOnClipboardTitle + '"';
     const content = TYPO3.lang['paste.modal.paste'] || 'Do you want to paste the record to this position?';
-    const severity = (typeof top.TYPO3.Severity[$element.data('severity')] !== 'undefined') ?
-      top.TYPO3.Severity[$element.data('severity')] :
-      top.TYPO3.Severity.info;
 
     let buttons: Array<Button> = [];
     buttons = [
@@ -107,20 +133,15 @@ class Paste {
       },
       {
         text: TYPO3.lang['paste.modal.button.paste'] || 'Paste',
-        btnClass: 'btn-' + Severity.getCssClass(severity),
+        btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
         trigger: (): void => {
           Modal.currentModal.trigger('modal-dismiss');
-          me.execute($element);
+          this.execute($element);
         },
       },
     ];
-    if (url !== null) {
-      const separator = url.contains('?') ? '&' : '?';
-      const params = $.param({data: $element.data()});
-      Modal.loadUrl(title, severity, buttons, url + separator + params);
-    } else {
-      Modal.show(title, content, severity, buttons);
-    }
+
+    Modal.show(title, content, SeverityEnum.warning, buttons);
   }
 
   /**
@@ -150,11 +171,9 @@ class Paste {
     };
 
     DataHandler.process(parameters).then((result: ResponseInterface): void => {
-      if (result.hasErrors) {
-        return;
+      if (!result.hasErrors) {
+        window.location.reload();
       }
-
-      window.location.reload();
     });
   }
 }

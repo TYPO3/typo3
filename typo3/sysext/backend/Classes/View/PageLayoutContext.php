@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
-use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -55,11 +54,6 @@ class PageLayoutContext
      * @var ContentFetcher
      */
     protected $contentFetcher;
-
-    /**
-     * @var BackendLayoutRenderer
-     */
-    protected $backendLayoutRenderer;
 
     /**
      * @var array
@@ -125,7 +119,6 @@ class PageLayoutContext
         $this->backendLayout = $backendLayout;
         $this->drawingConfiguration = GeneralUtility::makeInstance(DrawingConfiguration::class);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
-        $this->backendLayoutRenderer = GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this);
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
     }
@@ -166,11 +159,6 @@ class PageLayoutContext
     public function getDrawingConfiguration(): DrawingConfiguration
     {
         return $this->drawingConfiguration;
-    }
-
-    public function getBackendLayoutRenderer(): BackendLayoutRenderer
-    {
-        return $this->backendLayoutRenderer;
     }
 
     public function getBackendUser(): BackendUserAuthentication
