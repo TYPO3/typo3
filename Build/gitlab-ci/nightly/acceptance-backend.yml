@@ -9,6 +9,7 @@ acceptance backend mariadb php 7.2 min:
   artifacts:
     when: on_failure
     paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
@@ -26,6 +27,7 @@ acceptance backend mariadb php 7.3 max:
   artifacts:
     when: on_failure
     paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
@@ -39,6 +41,7 @@ acceptance backend mariadb php 7.4 locked:
   artifacts:
     when: on_failure
     paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
