@@ -105,6 +105,7 @@ Options:
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
+            - checkTestMethodsPrefix: check tests methods do not start with "test"
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
@@ -512,6 +513,12 @@ case ${TEST_SUITE} in
     checkAnnotations)
         setUpDockerComposeDotEnv
         docker-compose run check_annotations
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    checkTestMethodsPrefix)
+        setUpDockerComposeDotEnv
+        docker-compose run check_test_methods_prefix
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
