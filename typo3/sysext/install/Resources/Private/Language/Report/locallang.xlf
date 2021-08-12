@@ -75,6 +75,9 @@
 			<trans-unit id="status_newVersion" resname="status_newVersion">
 				<source>There is a new version of TYPO3 available. You can update to version %s.</source>
 			</trans-unit>
+			<trans-unit id="status_elts_information" resname="status_elts_information">
+				<source>The currently installed TYPO3 version %s doesn't receive any community-driven updates anymore, consider subscribing to Extended Long Term Support (ELTS) releases. Get more information at %s.</source>
+			</trans-unit>
 			<trans-unit id="status_elts_download" resname="status_elts_download">
 				<source>Please visit %s to download the release in your ELTS area.</source>
 			</trans-unit>
