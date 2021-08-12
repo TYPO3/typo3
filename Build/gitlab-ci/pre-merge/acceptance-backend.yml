@@ -7,6 +7,7 @@ acceptance backend mariadb php 7.4 pre-merge:
   artifacts:
     when: on_failure
     paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 10
   script:
@@ -22,6 +23,7 @@ acceptance backend mariadb php 8.0 pre-merge:
   artifacts:
     when: on_failure
     paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 10
   script:
