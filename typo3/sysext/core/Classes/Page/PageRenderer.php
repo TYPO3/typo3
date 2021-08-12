@@ -344,7 +344,7 @@ class PageRenderer implements SingletonInterface
     /**
      * @var FrontendInterface
      */
-    protected static $cache = null;
+    protected static $cache;
 
     /**
      * @param string $templateFile Declare the used template file. Omit this parameter will use default template

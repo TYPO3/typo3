@@ -18,7 +18,7 @@
 filestype=commit
 # non-dryrun is default
 DRYRUN=""
-DRYRUN_OPTIONS="--dry-run --diff --diff-format udiff"
+DRYRUN_OPTIONS="--dry-run --diff"
 
 # ----------------------
 # --- automatic vars ---

@@ -547,7 +547,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
             ->onlyMethods(['createTotalUrlAndLinkData'])
             ->setConstructorArgs([$subject])
             ->getMock();
-        $pageLinkBuilder->expects($this::once())->method('createTotalUrlAndLinkData')->willReturn([
+        $pageLinkBuilder->expects(self::once())->method('createTotalUrlAndLinkData')->willReturn([
             'url' => '/index.php?id=1',
             'target' => '',
             'type' => '',

@@ -27,6 +27,7 @@ nbproject
 # Temporary files and folders
 .cache
 .php_cs.cache
+.php-cs-fixer.cache
 .sass-cache
 .session
 *.log

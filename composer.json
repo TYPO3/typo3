@@ -94,7 +94,7 @@
 		"codeception/module-filesystem": "^1.0.3",
 		"codeception/module-webdriver": "^1.2.1",
 		"composer/package-versions-deprecated": "^1.11.99.2",
-		"friendsofphp/php-cs-fixer": "^2.19 || ^3.0",
+		"friendsofphp/php-cs-fixer": "^3.0",
 		"friendsoftypo3/phpstan-typo3": "^0.8.1",
 		"php-webdriver/webdriver": "^1.11.1",
 		"phpspec/prophecy": "^1.12.2",
