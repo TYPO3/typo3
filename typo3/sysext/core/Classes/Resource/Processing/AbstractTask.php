@@ -102,7 +102,7 @@ abstract class AbstractTask implements TaskInterface
      */
     public function getConfigurationChecksum()
     {
-        return md5(implode('|', $this->getChecksumData()));
+        return substr((string)md5(implode('|', $this->getChecksumData())), 0, 10);
     }
 
     /**
