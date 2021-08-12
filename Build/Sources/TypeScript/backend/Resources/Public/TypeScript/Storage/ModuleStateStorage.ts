@@ -47,7 +47,7 @@ export class ModuleStateStorage {
     }
     if (typeof mount === 'number') {
       mount = mount.toString(10);
-    } else if (typeof mount !== 'string' && typeof mount !== 'undefined') {
+    } else if (typeof mount !== 'string' && typeof mount !== 'undefined' && mount !== null) {
       throw new SyntaxError('mount must be of type string');
     }
     const state = ModuleStateStorage.assignProperties(
