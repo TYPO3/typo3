@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
+use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -2933,7 +2934,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $builder = $factory->build($build);
         }
         $sanitizer = $builder->build();
-        return $sanitizer->sanitize($content);
+        $initiator = $this->shallDebug()
+            ? GeneralUtility::makeInstance(SanitizerInitiator::class, DebugUtility::debugTrail())
+            : null;
+        return $sanitizer->sanitize($content, $initiator);
     }
 
     /**
@@ -7206,5 +7210,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         return $endingOffset;
+    }
+
+    protected function shallDebug(): bool
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe !== null && isset($tsfe->config['config']['debug'])) {
+            return (bool)($tsfe->config['config']['debug']);
+        }
+        return !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
     }
 }
