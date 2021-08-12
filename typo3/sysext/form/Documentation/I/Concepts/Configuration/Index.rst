@@ -71,13 +71,14 @@ module.
    parsed YAML form setup. If the module is not available install the lowlevel
    system extension.
 
+
 .. _concepts-configuration-yamlregistration-frontend:
 
 YAML registration for the frontend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-EXT:form registers two YAML configuration files which are required for the
-frontend.
+For the frontend the whole YAML configuration is loaded via the following
+TypoScript (see ``EXT:form/Configuration/TypoScript/setup.typoscript``):
 
 .. code-block:: typoscript
 
@@ -89,8 +90,8 @@ frontend.
        }
    }
 
-Since the keys 10 and 20 are already taken, we recommend registering your
-own configuration beginning with the key ``100``.
+Since the key ``10`` is already taken, we recommend registering your own configuration
+beginning with the key ``100``.
 
 .. code-block:: typoscript
 
@@ -102,13 +103,14 @@ own configuration beginning with the key ``100``.
        }
    }
 
+
 .. _concepts-configuration-yamlregistration-backend:
 
 YAML registration for the backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-EXT:form registers three YAML configuration files which are required for
-the backend.
+For the backend the whole YAML configuration is loaded via the following
+TypoScript (see ``EXT:form/ext_localconf.php``):
 
 .. code-block:: typoscript
 
@@ -120,7 +122,7 @@ the backend.
        }
    }
 
-Since the keys 10, 20, and 30 are already taken, we recommend registering
+Since the key ``10`` is already taken, we recommend registering
 your own configuration beginning with the key ``100``.
 
 .. code-block:: typoscript
@@ -155,6 +157,7 @@ being on the root page (uid 0) would still be a problem.
 
 To sum it up: choose either method a or b, and you will be fine.
 
+
 .. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
 
 YAML registration for the backend via addTypoScriptSetup()
@@ -178,6 +181,38 @@ package::
             ')
         );
    });
+
+
+.. _concepts-configuration-yamlloading:
+
+YAML loading
+------------
+
+TYPO3 is using a custom ':ref:`YAML loader<t3coreapi:yamlFileLoader>`' for handling
+YAML in TYPO3 based on the Symfony YAML package. This YAML loader is able to resolve
+environment variables. In addition, EXT:form comes with an own YAML loader which
+has some limitations/ restrictions, especially when it comes to resolve environment
+variables. Those limitations are necessary security-wise.
+
+EXT:form differentiates between :ref:`form configuration and form definition<concepts-formdefinition-vs-formconfiguration>`.
+In addition, a form definition can be :ref:`stored<concepts-form-file-storages>`
+in the file system (FAL) or can be shipped with a custom extension. Depending on those
+parameters different YAML loaders are used and thus, different features are available.
+
+.. t3-field-list-table::
+ :header-rows: 1
+
+ - :a: YAML file
+   :b: YAML loader
+
+ - :a: YAML configuration
+   :b: TYPO3 core
+
+ - :a: YAML definition stored in file system (default when using the ``form editor``)
+   :b: TYPO3 Form Framework
+
+ - :a: YAML definition stored in custom extension
+   :b: TYPO3 core
 
 
 .. _concepts-configuration-configurationaspects:

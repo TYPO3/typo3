@@ -7,7 +7,7 @@ Form configuration vs. form definition
 ======================================
 
 So far, we have only described the configuration of the form framework.
-Once again, based on prototypes, the form configuration allows you to
+Once again, based on prototypes, the **form configuration** allows you to
 define:
 
 - which form elements, finishers, and validators are available,

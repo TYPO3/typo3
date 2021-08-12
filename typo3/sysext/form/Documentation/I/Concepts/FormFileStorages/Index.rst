@@ -6,7 +6,7 @@
 Form/ File storages
 ===================
 
-EXT:form stores the form definitions within the file system and thus needs
+EXT:form stores the form definitions within the file system (FAL) and thus needs
 write access to this storage. By default, the filemount ``form_definitions`` is
 used. It is possible to configure a different and/ or an additional
 filemount, which is then utilized for storing and reading forms.
