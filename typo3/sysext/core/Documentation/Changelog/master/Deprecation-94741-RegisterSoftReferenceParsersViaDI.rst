@@ -61,7 +61,7 @@ After:
 Related
 =======
 
-- :ref:`changelog-Feature-94741-RegisterSoftReferenceParsersViaDI`
-- :ref:`changelog-Deprecation-94687-SoftReferenceIndex`
+*  :doc:`RegisterSoftReferenceParsersViaDI (Feature) <./Feature-94741-RegisterSoftReferenceParsersViaDI.rst>`
+*  :doc:`SoftReferenceIndex (Deprecation) <./Deprecation-94687-SoftReferenceIndex.rst>`
 
 .. index:: PHP-API, NotScanned, ext:core

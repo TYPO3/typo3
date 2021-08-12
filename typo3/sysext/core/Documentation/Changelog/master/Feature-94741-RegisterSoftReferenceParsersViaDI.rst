@@ -53,7 +53,7 @@ implement the new interface
 Related
 =======
 
-- :ref:`changelog-Deprecation-94741-RegisterSoftReferenceParsersViaDI`
-- :ref:`changelog-Deprecation-94687-SoftReferenceIndex`
+*  :doc:`RegisterSoftReferenceParsersViaDI (Deprecation) <./Deprecation-94741-RegisterSoftReferenceParsersViaDI.rst>`
+*  :doc:`SoftReferenceIndex (Deprecation) <./Deprecation-94687-SoftReferenceIndex.rst>`
 
 .. index:: PHP-API, ext:core

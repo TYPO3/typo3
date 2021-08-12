@@ -201,7 +201,7 @@ Example after:
 Related
 =======
 
-- :ref:`changelog-Feature-94741-RegisterSoftReferenceParsersViaDI`
-- :ref:`changelog-Deprecation-94741-RegisterSoftReferenceParsersViaDI`
+*  :doc:`RegisterSoftReferenceParsersViaDI (Feature) <./Feature-94741-RegisterSoftReferenceParsersViaDI.rst>`
+*  :doc:`RegisterSoftReferenceParsersViaDI (Deprecation) <./Deprecation-94741-RegisterSoftReferenceParsersViaDI.rst>`
 
 .. index:: Backend, PHP-API, PartiallyScanned, ext:core
