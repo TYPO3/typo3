@@ -239,6 +239,9 @@ class InstallStatusReport implements StatusProviderInterface
             $message = $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_versionOutdated');
             $status = Status::ERROR;
         } else {
+            $message = '';
+            $status = Status::OK;
+
             // There is an update available
             $availableReleases = [];
             $latestRelease = $coreVersionService->getYoungestPatchRelease();
@@ -254,14 +257,21 @@ class InstallStatusReport implements StatusProviderInterface
                     if ($coreVersionService->isPatchReleaseSuitableForUpdate($latestCommunityDrivenRelease)) {
                         $availableReleases[] = $latestCommunityDrivenRelease;
                     }
+                } elseif (!$isCurrentVersionElts) {
+                    // Inform user about ELTS being available soon if:
+                    // - regular support ran out
+                    // - the current installed version is no ELTS
+                    // - no ELTS update was released, yet
+                    $message = sprintf(
+                        $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_elts_information'),
+                        TYPO3_version,
+                        '<a href="https://typo3.com/elts" target="_blank" rel="noopener">https://typo3.com/elts</a>'
+                    );
+                    $status = Status::WARNING;
                 }
             }
 
-            if ($availableReleases === []) {
-                // Everything is fine, working with the latest version
-                $message = '';
-                $status = Status::OK;
-            } else {
+            if ($availableReleases !== []) {
                 $messages = [];
                 $status = Status::WARNING;
                 foreach ($availableReleases as $availableRelease) {
