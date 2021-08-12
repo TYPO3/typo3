@@ -535,38 +535,12 @@ define(['jquery',
         /**
          * Wizard step 1
          */
-        MultiStepWizard.addSlide('duplicate-form-step-1', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.info, null, function(slide, settings) {
+        MultiStepWizard.addSlide('duplicate-form-step-1', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.info, top.TYPO3.lang['wizard.progressStep.configure'], function(slide, settings) {
           var addOnTemplateChangeEvents, folders, html, modal, nextButton, prototypes, prototypeNameSelect,
             savePathSelect, templates, templateSelect;
 
-          modal = MultiStepWizard.setup.$carousel.closest('.modal');
-          nextButton = modal.find('.modal-footer').find('button[name="next"]');
-
-          nextButton.trigger('click');
-
-          html = '<div class="new-form-modal">'
-            + '<div class="form-horizontal">'
-            + '<div>';
-
-          html += '</div>'
-            + '</div>'
-            + '</div>';
-
-          slide.html(html);
-
-          nextButton.on('click', function() {
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
-              slide.html($('<div />', {class: 'text-center'}).append(markup));
-            });
-          });
-        });
-
-        /**
-         * Wizard step 2
-         */
-        MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.info, top.TYPO3.lang['wizard.progressStep.configure'], function(slide, settings) {
-          var addOnTemplateChangeEvents, folders, html, modal, nextButton, prototypes, prototypeNameSelect,
-            savePathSelect, templates, templateSelect;
+          MultiStepWizard.lockPrevStep();
+          MultiStepWizard.lockNextStep();
 
           modal = MultiStepWizard.setup.$carousel.closest('.modal');
           nextButton = modal.find('.modal-footer').find('button[name="next"]');
@@ -616,6 +590,7 @@ define(['jquery',
           });
 
           nextButton.on('click', function(e) {
+            MultiStepWizard.setup.forceSelection = false;
             Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               MultiStepWizard.set('confirmationDuplicateFormName', that.data('formName'));
 
@@ -633,10 +608,13 @@ define(['jquery',
         });
 
         /**
-         * Wizard step 3
+         * Wizard step 2
          */
-        MultiStepWizard.addSlide('duplicate-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, null, function(slide, settings) {
+        MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.info, null, function(slide, settings) {
           var html, modal, nextButton;
+
+          MultiStepWizard.unlockPrevStep();
+          MultiStepWizard.unlockNextStep();
 
           modal = MultiStepWizard.setup.$carousel.closest('.modal');
           nextButton = modal.find('.modal-footer').find('button[name="next"]');
@@ -645,7 +623,7 @@ define(['jquery',
             + '<div class="form-horizontal">'
             + '<div>';
 
-          html += '<h3 class="modal-title">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h3>'
+          html += '<h3 class="modal-title">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h3>'
             + '<hr />'
             + '<div class="row">'
             + '<div class="col-sm-3">'
@@ -687,6 +665,7 @@ define(['jquery',
           nextButton.focus();
 
           nextButton.on('click', function(e) {
+            MultiStepWizard.setup.forceSelection = false;
             Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               slide.html($('<div />', {class: 'text-center'}).append(markup));
             });
@@ -694,7 +673,7 @@ define(['jquery',
         });
 
         /**
-         * Wizard step 4
+         * Wizard step 3
          */
         MultiStepWizard.addFinalProcessingSlide(function() {
           $.post(_formManagerApp.getAjaxEndpoint('duplicate'), {
@@ -707,7 +686,7 @@ define(['jquery',
             if (data['status'] === 'success') {
               document.location = data.url;
             } else {
-              Notification.error(TYPO3.lang['formManager.duplicateFormWizard.step2.errorTitle'], TYPO3.lang['formManager.duplicateFormWizard.step2.errorMessage'] + " " + data['message']);
+              Notification.error(TYPO3.lang['formManager.duplicateFormWizard.step3.errorTitle'], TYPO3.lang['formManager.duplicateFormWizard.step3.errorMessage'] + " " + data['message']);
             }
             MultiStepWizard.dismiss();
           }).fail(function(jqXHR, textStatus, errorThrown) {

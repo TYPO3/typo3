@@ -60,10 +60,16 @@
             <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
                 <source>Duplicate form "{0}"</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.errorTitle" resname="formManager.duplicateFormWizard.step2.errorTitle" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step2.title" resname="formManager.duplicateFormWizard.step2.title" xml:space="preserve">
+                <source>Ready</source>
+            </trans-unit>
+            <trans-unit id="formManager.duplicateFormWizard.step2.check" resname="formManager.duplicateFormWizard.step2.check" xml:space="preserve">
+                <source>Please check and confirm your entered settings</source>
+            </trans-unit>
+            <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" resname="formManager.duplicateFormWizard.step3.errorTitle" xml:space="preserve">
                 <source>Duplicate</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.errorMessage" resname="formManager.duplicateFormWizard.step2.errorMessage" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" resname="formManager.duplicateFormWizard.step3.errorMessage" xml:space="preserve">
                 <source>The form could not be saved</source>
             </trans-unit>
             <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve">
