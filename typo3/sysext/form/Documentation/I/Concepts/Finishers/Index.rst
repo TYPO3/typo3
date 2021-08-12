@@ -10,6 +10,14 @@ The form framework ships a bunch of finishers, which will be briefly
 described here. For more details, please head to the API reference and check
 out the section regarding :ref:`Finisher Options<apireference-finisheroptions>`.
 
+.. note::
+
+   Finishers are executed in the order defined in your form definition. This is
+   especially important when you are using the ``Redirect finisher``. Make sure
+   this finisher is the very last one to be executed. The ``Redirect finisher``
+   stops the execution of all subsequent finishers in order to perform the redirect.
+   I.e. finishers defined after the ``Redirect finisher`` will not be executed in
+   any case.
 
 .. _concepts-finishers-closurefinisher:
 
@@ -73,8 +81,9 @@ Additional link parameters can be added to the URL.
 
 .. note::
 
-   This finisher stops the execution of all subsequent finishers in order to perform a redirect.
-   Therefore, this finisher should always be the last finisher to be executed.
+   This finisher stops the execution of all subsequent finishers in order to perform
+   the redirect. Therefore, this finisher should always be the last finisher to be
+   executed.
 
 
 .. _concepts-finishers-savetodatabasefinisher:
