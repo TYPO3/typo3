@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 
 /**
@@ -191,21 +190,6 @@ class InheritancesResolverService
 
                     //and replace the __inheritance operator by the respective partial
                     if (is_array($inheritances)) {
-                        $deprecatedMixinInheritances = array_filter(
-                            $inheritances,
-                            function (string $inheritance): bool {
-                                return StringUtility::beginsWith($inheritance, 'TYPO3.CMS.Form.mixins.');
-                            }
-                        );
-
-                        if (!empty($deprecatedMixinInheritances)) {
-                            trigger_error(sprintf(
-                                'Deprecated form mixins used in "%s": %s',
-                                $path,
-                                implode(', ', $deprecatedMixinInheritances)
-                            ), E_USER_DEPRECATED);
-                        }
-
                         $inheritedConfigurations = $this->resolveInheritancesRecursive($inheritances);
                         $configuration[$key] = array_replace_recursive($inheritedConfigurations, $configuration[$key]);
                     }

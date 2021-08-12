@@ -50,8 +50,6 @@ imports:
     - { resource: "./Finishers/Redirect.yaml" }
     - { resource: "./Finishers/SaveToDatabase.yaml" }
 
-    - { resource: "./Legacy/mixins.yaml" }
-
 TYPO3:
   CMS:
     Form:
