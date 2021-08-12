@@ -73,6 +73,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/FileStorageBrowser');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
 
         $thumbnailConfig = $this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.'] ?? [];
         if (isset($thumbnailConfig['width']) && MathUtility::canBeInterpretedAsInteger($thumbnailConfig['width'])) {
@@ -244,30 +245,27 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 <tr>
                     <th colspan="3" class="nowrap">
                         <div class="btn-group dropdown position-static me-1">
-                            <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="actions_filebrowser" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' .
+                            <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' .
                                 $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) .
                             '</button>
-                            <ul id="actions_filebrowser" class="dropdown-menu">
+                            <ul id="multi-record-selection-check-actions" class="dropdown-menu">
                                 <li>
-                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-all">' .
+                                    <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">' .
                                         $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) .
                                     '</button>
                                 </li>
                                 <li>
-                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-none">' .
+                                    <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">' .
                                         $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) .
                                     '</button>
                                 </li>
                                 <li>
-                                    <button type="button" class="btn btn-link dropdown-item typo3-selection-toggle" data-action="select-toggle">' .
-                                        $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('toggleSelection')) .
+                                    <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">' .
+                                        $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) .
                                     '</button>
                                 </li>
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-default disabled" data-action="import" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">' .
-                            $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('importSelection')) .
-                        '</button>
                     </th>
                     <th class="col-control nowrap"></th>
                 </tr>
@@ -304,7 +302,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $ATag_e = '</a>';
                 $bulkCheckBox = '
                     <span class="form-check form-toggle">
-                        <input type="checkbox" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" name="file_' . $fileObject->getUid() . '" value="0" autocomplete="off" class="form-check-input typo3-list-check"  />
+                        <input type="checkbox" data-file-name="' . htmlspecialchars($fileObject->getName()) . '" data-file-uid="' . $fileObject->getUid() . '" name="file_' . $fileObject->getUid() . '" value="0" autocomplete="off" class="form-check-input t3js-multi-record-selection-check"  />
                     </span>';
             } else {
                 $ATag = '';
@@ -343,8 +341,17 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup = [];
         $markup[] = '<div class="mt-4 mb-4">' . $searchBox . '</div>';
         $markup[] = '<div id="filelist">';
-        $markup[] = '  <div class="list-header">';
-        $markup[] = '   ' . $this->getBulkSelector();
+        $markup[] = '  <div class="row row-cols-auto justify-content-between list-header">';
+        $markup[] = '      <div class="col-auto">';
+        $markup[] = '          <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">';
+        $markup[] = '              <div class="col">';
+        $markup[] = '                  <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="import" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">';
+        $markup[] = '                      ' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('importSelection'));
+        $markup[] = '                  </button>';
+        $markup[] = '              </div>';
+        $markup[] = '          </div>';
+        $markup[] = '      </div>';
+        $markup[] = '      ' . $this->getThumbnailSelector();
         $markup[] = '   </div>';
         $markup[] = '   <table class="mt-1 table table-sm table-responsive table-striped table-hover" id="typo3-filelist" data-list-container="files">';
         $markup[] = '       ' . $tableHeader;
@@ -375,38 +382,33 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     }
 
     /**
-     * Get the HTML data required for a bulk selection of files of the TYPO3 Element Browser.
+     * Get the HTML for the thumbnail selector, if enabled
      *
-     * @return string HTML data required for a bulk selection of files
+     * @return string HTML data required for the thumbnail selector
      */
-    protected function getBulkSelector(): string
+    protected function getThumbnailSelector(): string
     {
-        $lang = $this->getLanguageService();
-        $out = '';
-
         // Getting flag for showing/not showing thumbnails:
-        $noThumbsInEB = $this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false;
-        if (!$noThumbsInEB && $this->selectedFolder) {
-            // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
-            $_MOD_MENU = ['displayThumbs' => ''];
-            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list');
-            $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
-            $thumbNailCheck = '<div class="form-check form-switch">'
-                . BackendUtility::getFuncCheck(
-                    '',
-                    'SET[displayThumbs]',
-                    $_MOD_SETTINGS['displayThumbs'] ?? true,
-                    $this->thisScript,
-                    $addParams,
-                    'id="checkDisplayThumbs"'
-                )
-                . '<label for="checkDisplayThumbs" class="form-check-label">'
-                . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '</label></div>';
-            $out .= '<div class="float-end ps-2">' . $thumbNailCheck . '</div>';
-        } else {
-            $out .= '';
+        if (!$this->selectedFolder || ($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
+            return '';
         }
-        return $out;
+
+        $lang = $this->getLanguageService();
+
+        // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
+        $_MOD_MENU = ['displayThumbs' => ''];
+        $currentValue = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list')['displayThumbs'] ?? true;
+        $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
+
+        return '
+            <div class="col-auto">
+                <div class="form-check form-switch">
+                    ' . BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $currentValue, $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . '
+                    <label for="checkDisplayThumbs" class="form-check-label">
+                        ' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:displayThumbs')) . '
+                    </label>
+                </div>
+            </div>';
     }
 
     /**

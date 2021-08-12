@@ -12,11 +12,14 @@
 			<trans-unit id="clip_pasteInto" resname="clip_pasteInto">
 				<source>Paste into: Clipboard content is inserted into this folder</source>
 			</trans-unit>
-			<trans-unit id="clip_markRecords" resname="clip_markRecords">
-				<source>Mark All/Mark none</source>
+			<trans-unit id="selection" resname="selection">
+				<source>Selection:</source>
+			</trans-unit>
+			<trans-unit id="editMarked" resname="editMarked">
+				<source>Edit Metadata</source>
 			</trans-unit>
 			<trans-unit id="clip_selectMarked" resname="clip_selectMarked">
-				<source>Transfer the selection of files to clipboard</source>
+				<source>Transfer to clipboard</source>
 			</trans-unit>
 			<trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
 				<source>Delete marked</source>

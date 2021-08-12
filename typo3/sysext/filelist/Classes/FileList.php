@@ -135,7 +135,8 @@ class FileList
      */
     public $addElement_tdCssClass = [
         '_CONTROL_' => 'col-control',
-        '_CLIPBOARD_' => 'col-clipboard',
+        '_SELECTOR_' => 'col-selector',
+        'icon' => 'col-icon',
         'file' => 'col-title col-responsive',
         '_LOCALIZATION_' => 'col-localizationa',
     ];
@@ -177,6 +178,8 @@ class FileList
 
     protected ?FileSearchDemand $searchDemand = null;
 
+    protected array $selectedElements = [];
+
     public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
@@ -204,9 +207,8 @@ class FileList
      * @param int $pointer Pointer
      * @param string $sort Sorting column
      * @param bool $sortRev Sorting direction
-     * @param bool $clipBoard
      */
-    public function start(Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = false)
+    public function start(Folder $folderObject, $pointer, $sort, $sortRev)
     {
         $this->folderObject = $folderObject;
         $this->counter = 0;
@@ -214,36 +216,9 @@ class FileList
         $this->sort = $sort;
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
-        // Cleaning rowlist for duplicates and place the $titleCol as the first column always!
-        $rowlist = 'file,_LOCALIZATION_,_CONTROL_,fileext,tstamp,size,rw,_REF_';
-        if ($clipBoard) {
-            $rowlist = str_replace('_CONTROL_,', '_CONTROL_,_CLIPBOARD_,', $rowlist);
-        }
-        $this->fieldArray = explode(',', $rowlist);
-    }
-
-    /**
-     * Wrapping input string in a link with clipboard command.
-     *
-     * @param string $string String to be linked - must be htmlspecialchar'ed / prepared before.
-     * @param string $cmd "cmd" value
-     * @param string $warning Warning for JS confirm message
-     * @return string Linked string
-     */
-    public function linkClipboardHeaderIcon($string, $cmd, $warning = '')
-    {
-        if ($warning) {
-            $attributes['class'] = 'btn btn-default t3js-modal-trigger';
-            $attributes['data-severity'] = 'warning';
-            $attributes['data-bs-content'] = $warning;
-            $attributes['data-event-name'] = 'filelist:clipboard:cmd';
-            $attributes['data-event-payload'] = $cmd;
-        } else {
-            $attributes['class'] = 'btn btn-default';
-            $attributes['data-filelist-clipboard-cmd'] = $cmd;
-        }
-
-        return '<button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $string . '</button>';
+        $this->fieldArray = [
+            '_SELECTOR_', 'icon', 'file', '_LOCALIZATION_', '_CONTROL_', 'fileext', 'tstamp', 'size', 'rw', '_REF_'
+        ];
     }
 
     /**
@@ -285,7 +260,7 @@ class FileList
             $files = array_slice($files, $this->firstElementNumber, $filesNum);
 
             // Add special "Path" field for the search result
-            array_unshift($this->fieldArray, '_PATH_');
+            array_splice($this->fieldArray, 3, 0, '_PATH_');
         } else {
             // @todo use folder methods directly when they support filters
             $storage = $this->folderObject->getStorage();
@@ -353,14 +328,14 @@ class FileList
         // Header line is drawn
         $theData = [];
         foreach ($this->fieldArray as $v) {
-            if ($v === '_CLIPBOARD_') {
-                $theData[$v] = $this->renderClipboardHeaderRow(!empty($iOut));
+            if ($v === '_SELECTOR_') {
+                $theData[$v] = $this->renderCheckboxActions();
             } elseif ($v === '_REF_') {
                 $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_'));
             } elseif ($v === '_PATH_') {
                 $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_'));
-            } else {
-                // Normal row
+            } elseif ($v !== 'icon') {
+                // Normal row - except "icon", which does not need a table header col
                 $theData[$v]  = $this->linkWrapSort($v);
             }
         }
@@ -369,87 +344,25 @@ class FileList
             <div class="mb-4 mt-2">
                 <div class="table-fit mb-0">
                     <table class="table table-striped table-hover" id="typo3-filelist">
-                        <thead>' . $this->addElement('', $theData, true) . '</thead>
+                        <thead>' . $this->addElement($theData, [], true) . '</thead>
                         <tbody>' . $iOut . '</tbody>
                     </table>
                 </div>
             </div>';
     }
 
-    protected function renderClipboardHeaderRow(bool $hasContent): string
-    {
-        $cells = [];
-        $elFromTable = $this->clipObj->elFromTable('_FILE');
-        if (!empty($elFromTable) && $this->folderObject->checkActionPermission('write')) {
-            $clipboardMode = $this->clipObj->clipData[$this->clipObj->current]['mode'] ?? '';
-            $permission = $clipboardMode === 'copy' ? 'copy' : 'move';
-            $addPasteButton = $this->folderObject->checkActionPermission($permission);
-            $elToConfirm = [];
-            foreach ($elFromTable as $key => $element) {
-                $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-                if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $this->folderObject)) {
-                    $addPasteButton = false;
-                }
-                $elToConfirm[$key] = $clipBoardElement->getName();
-            }
-            if ($addPasteButton) {
-                $cells[] = '<a class="btn btn-default t3js-modal-trigger"' .
-                    ' href="' . htmlspecialchars($this->clipObj->pasteUrl(
-                        '_FILE',
-                        $this->folderObject->getCombinedIdentifier()
-                    )) . '"'
-                    . ' data-bs-content="' . htmlspecialchars($this->clipObj->confirmMsgText(
-                        '_FILE',
-                        $this->folderObject->getReadablePath(),
-                        'into',
-                        $elToConfirm
-                    )) . '"'
-                    . ' data-severity="warning"'
-                    . ' data-title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '"'
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_paste')) . '">'
-                    . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)
-                        ->render()
-                    . '</a>';
-            } else {
-                $cells[] = $this->spaceIcon;
-            }
-        }
-        if ($this->clipObj->current !== 'normal' && $hasContent) {
-            $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_selectMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . '</span>', 'setCB');
-            $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_deleteMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span>', 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
-            $cells[] = '<a class="btn btn-default t3js-toggle-all-checkboxes" data-checkboxes-names="' . htmlspecialchars(implode(',', $this->CBnames)) . '" rel="" href="#" title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_markRecords')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
-        }
-        if (!empty($cells)) {
-            return '<div class="btn-group">' . implode('', $cells) . '</div>';
-        }
-        return '';
-    }
-
     /**
      * Returns a table-row with the content from the fields in the input data array.
      * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
-     * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
      * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
+     * @param array $attributes Attributes for the table row. Values will be htmlspecialchar'ed!
      * @param bool $isTableHeader Whether the element to be added is a table header
      *
      * @return string HTML content for the table row
      */
-    public function addElement(string $icon, array $data, bool $isTableHeader = false): string
+    public function addElement(array $data, array $attributes = [], bool $isTableHeader = false): string
     {
-        // Initialize additional data attributes for the row
-        // Note: To be consistent with the other $data values, the additional data attributes
-        // are not htmlspecialchar'ed before being added to the table row. Therefore it
-        // has to be ensured they are properly escaped when applied to the $data array!
-        $dataAttributes = [];
-        foreach (['type', 'file-uid', 'metadata-uid', 'folder-identifier', 'combined-identifier'] as $dataAttribute) {
-            if (isset($data[$dataAttribute])) {
-                $dataAttributes['data-' . $dataAttribute] = $data[$dataAttribute];
-                // Unset as we don't need them anymore, when building the table cells
-                unset($data[$dataAttribute]);
-            }
-        }
-
         // Initialize rendering.
         $cols = [];
         $colType = $isTableHeader ? 'th' : 'td';
@@ -480,10 +393,9 @@ class FileList
 
         // Add the the table row
         return '
-            <tr ' . GeneralUtility::implodeAttributes($dataAttributes) . '>
-                <' . $colType . ' class="col-icon nowrap">' . ($icon ?: '') . '</' . $colType . '>'
-                . implode(PHP_EOL, $cols) .
-            '</tr>';
+            <tr ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                ' . implode(PHP_EOL, $cols) . '
+            </tr>';
     }
 
     /**
@@ -503,7 +415,7 @@ class FileList
                     'actions-move-up',
                     Icon::SIZE_SMALL
                 )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
-                $code = $this->addElement('', $theData);
+                $code = $this->addElement($theData);
             }
             return $code;
         }
@@ -515,7 +427,7 @@ class FileList
                 'actions-move-down',
                 Icon::SIZE_SMALL
             )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
-            $code = $this->addElement('', $theData);
+            $code = $this->addElement($theData);
         }
         return $code;
     }
@@ -562,22 +474,28 @@ class FileList
             // Initialization
             $this->counter++;
 
-            // The icon with link
-            $theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL)->render() . '</span>';
-            if (!$isLocked) {
-                $theIcon = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
-            }
+            // The icon - will be linked later on, if not locked
+            $theIcon = $this->getFileOrFolderIcon($folderName, $folderObject);
 
             // Preparing and getting the data-array
-            $theData = [
-                'type' => 'folder',
-                'folder-identifier' => htmlspecialchars($folderObject->getIdentifier()),
-                'combined-identifier' => htmlspecialchars($folderObject->getCombinedIdentifier()),
+            $theData = [];
+
+            // Preparing table row attributes
+            $attributes = [
+                'data-type' => 'folder',
+                'data-folder-identifier' => $folderObject->getIdentifier(),
+                'data-combined-identifier' => $folderObject->getCombinedIdentifier(),
             ];
+            if ($this->clipObj->current !== 'normal'
+                && $this->clipObj->isSelected('_FILE', md5($folderObject->getCombinedIdentifier()))
+            ) {
+                $attributes['class'] = 'success';
+            }
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
                     $theData[$field] = '';
                 }
+                $theData['icon'] = $theIcon;
                 $theData['file'] = $displayName;
             } else {
                 foreach ($this->fieldArray as $field) {
@@ -600,14 +518,17 @@ class FileList
                             $tstamp = $folderObject->getModificationTime();
                             $theData[$field] = $tstamp ? BackendUtility::date($tstamp) : '-';
                             break;
+                        case 'icon':
+                            $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
+                            break;
                         case 'file':
                             $theData[$field] = $this->linkWrapDir($displayName, $folderObject);
                             break;
                         case '_CONTROL_':
                             $theData[$field] = $this->makeEdit($folderObject);
                             break;
-                        case '_CLIPBOARD_':
-                            $theData[$field] = $this->makeClipboardCheckbox($folderObject);
+                        case '_SELECTOR_':
+                            $theData[$field] = $this->makeCheckbox($folderObject);
                             break;
                         case '_REF_':
                             $theData[$field] = $this->makeRef($folderObject);
@@ -620,7 +541,7 @@ class FileList
                     }
                 }
             }
-            $out .= $this->addElement($theIcon, $theData);
+            $out .= $this->addElement($theData, $attributes);
         }
         return $out;
     }
@@ -689,6 +610,11 @@ class FileList
         return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
     }
 
+    public function getSelectedElements(): array
+    {
+        return $this->selectedElements;
+    }
+
     protected function getAvailableSystemLanguages(): array
     {
         // first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
@@ -717,19 +643,22 @@ class FileList
             $ext = $fileObject->getExtension();
             $fileUid = $fileObject->getUid();
             $fileName = trim($fileObject->getName());
-            // The icon with link
-            $theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . $fileUid . ']') . '">'
-                . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
-            $theIcon = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $fileObject->getCombinedIdentifier());
             // Preparing and getting the data-array
-            $theData = [
-                'type' => 'file',
-                'file-uid' => $fileUid
+            $theData = [];
+            // Preparing table row attributes
+            $attributes = [
+                'data-type' => 'file',
+                'data-file-uid' => $fileUid
             ];
             if ($this->isEditMetadataAllowed($fileObject)
                 && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
             ) {
-                $theData['metadata-uid'] = htmlspecialchars((string)$metaDataUid);
+                $attributes['data-metadata-uid'] = (string)$metaDataUid;
+            }
+            if ($this->clipObj->current !== 'normal'
+                && $this->clipObj->isSelected('_FILE', md5($fileObject->getCombinedIdentifier()))
+            ) {
+                $attributes['class'] = 'success';
             }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
@@ -748,8 +677,8 @@ class FileList
                     case '_CONTROL_':
                         $theData[$field] = $this->makeEdit($fileObject);
                         break;
-                    case '_CLIPBOARD_':
-                        $theData[$field] = $this->makeClipboardCheckbox($fileObject);
+                    case '_SELECTOR_':
+                        $theData[$field] = $this->makeCheckbox($fileObject);
                         break;
                     case '_LOCALIZATION_':
                         if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !empty($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? null)) {
@@ -803,6 +732,9 @@ class FileList
                     case '_PATH_':
                         $theData[$field] = $this->makePath($fileObject);
                         break;
+                    case 'icon':
+                        $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
+                        break;
                     case 'file':
                         // Edit metadata of file
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
@@ -833,7 +765,7 @@ class FileList
                         }
                 }
             }
-            $out .= $this->addElement($theIcon, $theData);
+            $out .= $this->addElement($theData, $attributes);
         }
         return $out;
     }
@@ -969,28 +901,32 @@ class FileList
     }
 
     /**
-     * Adds the clipboard checkbox for a file/folder in the listing
+     * Adds the checkbox to select a file/folder in the listing
      *
      * @param File|Folder $fileOrFolderObject
      * @return string
      */
-    protected function makeClipboardCheckbox($fileOrFolderObject): string
+    protected function makeCheckbox($fileOrFolderObject): string
     {
-        if ($this->clipObj->current === 'normal' || !$fileOrFolderObject->checkActionPermission('read')) {
+        if (!$fileOrFolderObject->checkActionPermission('read')) {
             return '';
         }
 
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $md5 = md5($fullIdentifier);
         $identifier = '_FILE|' . $md5;
+        $isSelected = $this->clipObj->isSelected('_FILE', $md5) && $this->clipObj->current !== 'normal';
         $this->CBnames[] = $identifier;
 
+        if ($isSelected) {
+            $this->selectedElements[] = $identifier;
+        }
+
         return '
-            <label class="btn btn-default btn-checkbox">
-                <input type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($this->clipObj->isSelected('_FILE', $md5) ? ' checked="checked"' : '') . ' />
-                <span class="t3-icon fa"></span>
+            <span class="form-check form-toggle">
+                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($isSelected ? ' checked="checked"' : '') . ' />
                 <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
-            </label>';
+            </span>';
     }
 
     /**
@@ -1246,26 +1182,6 @@ class FileList
     }
 
     /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Generates HTML code for a Reference tooltip out of
      * sys_refindex records you hand over
      *
@@ -1296,5 +1212,86 @@ class FileList
         return $file->isIndexed()
             && $file->checkActionPermission('editMeta')
             && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata');
+    }
+
+    /**
+     * Get the icon for a file or folder object
+     *
+     * @param string $title The icon title
+     * @param File|Folder $fileOrFolderObject
+     * @return string The wrapped icon for the file or folder
+     */
+    protected function getFileOrFolderIcon(string $title, $fileOrFolderObject): string
+    {
+        return '
+            <span title="' . htmlspecialchars($title) . '">
+                ' . $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)->render() . '
+            </span>';
+    }
+
+    /**
+     * Render convenience actions, such as "check all"
+     *
+     * @return string HTML markup for the checkbox actions
+     */
+    protected function renderCheckboxActions(): string
+    {
+        // Early return in case there are no items
+        if (!$this->totalItems) {
+            return '';
+        }
+
+        $lang = $this->getLanguageService();
+
+        $dropdownItems['checkAll'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
+                    ' . $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
+                </button>
+            </li>';
+
+        $dropdownItems['checkNone'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
+                    ' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
+                </button>
+            </li>';
+
+        $dropdownItems['toggleSelection'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
+                    ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
+                </button>
+            </li>';
+
+        return '
+            <div class="btn-group dropdown position-static">
+                 <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                    ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
+                </button>
+                <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                    ' . implode(PHP_EOL, $dropdownItems) . '
+                </ul>
+            </div>';
+    }
+
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Returns the current BE user.
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

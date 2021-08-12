@@ -29,7 +29,7 @@
 
 <f:section name="content">
     <form method="post" name="fileListForm">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-6">
                 <div class="input-group">
                     <input type="hidden" name="pointer" value="0" />
@@ -43,16 +43,46 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-end">
-            <f:if condition="{listHtml} && {displayThumbs.enabled}">
-                <div class="col-6">
-                    <div class="float-end">
-                        <div class="form-check form-switch">
-                            {displayThumbs.html -> f:format.raw()}
-                            <label for="checkDisplayThumbs" class="form-check-label">
-                                {displayThumbs.label}
-                            </label>
+        <div class="row row-cols-auto justify-content-between">
+            <div class="col-auto">
+                <f:if condition="{listHtml} && {totalItems}">
+                    <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions {f:if(condition: '!{hasSelectedElements}', then: 'hidden')}">
+                        <div class="col">
+                            <strong><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:selection"/></strong>
                         </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration}">
+                                <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
+                                    <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
+                                </span>
+                            </button>
+                        </div>
+                        <f:if condition="{enableClipBoard.enabled}">
+                            <div class="col">
+                                <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="setCB" data-filelist-clipboard-cmd="setCB">
+                                    <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked')}">
+                                        <core:icon identifier="actions-edit-copy" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked" />
+                                    </span>
+                                </button>
+                            </div>
+                        </f:if>
+                        <div class="col">
+                            <button type="button" class="btn btn-default btn-sm t3js-modal-trigger" data-multi-record-selection-action="delete" data-event-name="filelist:clipboard:cmd" data-event-payload="delete" data-severity="warning" data-bs-content="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning')}">
+                                <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')}">
+                                    <core:icon identifier="actions-edit-delete" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete" />
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+            <f:if condition="{listHtml} && {displayThumbs.enabled}">
+                <div class="col-auto">
+                    <div class="form-check form-switch">
+                        {displayThumbs.html -> f:format.raw()}
+                        <label for="checkDisplayThumbs" class="form-check-label">
+                            {displayThumbs.label}
+                        </label>
                     </div>
                 </div>
             </f:if>

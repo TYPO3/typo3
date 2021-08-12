@@ -269,7 +269,7 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             'buttons'
@@ -368,8 +368,7 @@ class FileListController implements LoggerAwareInterface
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
             (string)($this->MOD_SETTINGS['sort'] ?? ''),
-            (bool)($this->MOD_SETTINGS['reverse'] ?? false),
-            (bool)($this->MOD_SETTINGS['clipBoard'] ?? false)
+            (bool)($this->MOD_SETTINGS['reverse'] ?? false)
         );
     }
 
@@ -384,7 +383,10 @@ class FileListController implements LoggerAwareInterface
 
         // Generate the list, if accessible
         if ($this->folderObject->getStorage()->isBrowsable()) {
-            $this->view->assign('listHtml', $this->filelist->getTable($searchDemand));
+            $this->view->assignMultiple([
+                'listHtml' => $this->filelist->getTable($searchDemand),
+                'totalItems' => $this->filelist->totalItems
+            ]);
             if ($this->filelist->totalItems === 0 && $searchDemand !== null) {
                 // In case this is a search and no results were found, add a flash message
                 // @todo This info should in the future also be displayed for folders without any file.
@@ -393,6 +395,15 @@ class FileListController implements LoggerAwareInterface
                     $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_results')
                 );
             }
+            // Assign meta information for the multi record selection
+            $this->view->assignMultiple([
+                'hasSelectedElements' => $this->filelist->getSelectedElements() !== [],
+                'editActionConfiguration' => json_encode([
+                    'idField' => 'metadataUid',
+                    'table' => 'sys_file_metadata',
+                    'returnUrl' => $this->filelist->listURL()
+                ])
+            ]);
         } else {
             $this->addFlashMessage(
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:storageNotBrowsableMessage'),
@@ -450,6 +461,7 @@ class FileListController implements LoggerAwareInterface
         $this->view->assign('enableClipBoard', [
             'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
+            'mode' => $this->filelist->clipObj->current,
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
                 'SET[clipBoard]',

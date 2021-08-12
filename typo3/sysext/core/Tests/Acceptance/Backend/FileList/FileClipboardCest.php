@@ -77,8 +77,9 @@ class FileClipboardCest extends AbstractFileCest
 
         $I->amGoingTo('add multiple elements to clipboard');
         $I->click('Clipboard #1 (multi-selection mode)');
-        $I->click('.t3js-toggle-all-checkboxes');
-        $I->click('span[title="Transfer the selection of files to clipboard"]');
+        $I->click('.dropdown-toggle');
+        $I->click('button[data-multi-record-selection-check-action="check-all"]');
+        $I->click('button[data-multi-record-selection-action="setCB"]');
 
         foreach ($expectedFiles as $file) {
             $I->see($file, '#clipboard_form');
