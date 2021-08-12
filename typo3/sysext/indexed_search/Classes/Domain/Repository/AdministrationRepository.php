@@ -259,7 +259,7 @@ class AdministrationRepository
             $itemType = $row['item_type'];
             $counts[] = [
                 'count' => $row['count'],
-                'name' => $revTypes[$itemType],
+                'name' => $revTypes[$itemType] ?? '',
                 'type' => $itemType,
                 'uniqueCount' => $this->countUniqueTypes($itemType),
             ];
