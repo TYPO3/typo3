@@ -36,11 +36,12 @@ class AssetCollectorTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $files
      * @param array $expectedResult
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
-    public function testStyleSheets(array $files, array $expectedResult): void
+    public function styleSheets(array $files, array $expectedResult): void
     {
         foreach ($files as $file) {
             [$identifier, $source, $attributes, $options] = $file;
@@ -63,11 +64,12 @@ class AssetCollectorTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $files
      * @param array $expectedResult
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
-    public function testJavaScript(array $files, array $expectedResult): void
+    public function javaScript(array $files, array $expectedResult): void
     {
         foreach ($files as $file) {
             [$identifier, $source, $attributes, $options] = $file;
@@ -90,11 +92,12 @@ class AssetCollectorTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $sources
      * @param array $expectedResult
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
-    public function testInlineJavaScript(array $sources, array $expectedResult): void
+    public function inlineJavaScript(array $sources, array $expectedResult): void
     {
         foreach ($sources as $source) {
             [$identifier, $source, $attributes, $options] = $source;
@@ -117,11 +120,12 @@ class AssetCollectorTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $sources
      * @param array $expectedResult
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
-    public function testInlineStyles(array $sources, array $expectedResult): void
+    public function inlineStyles(array $sources, array $expectedResult): void
     {
         foreach ($sources as $source) {
             [$identifier, $source, $attributes, $options] = $source;
@@ -144,11 +148,12 @@ class AssetCollectorTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $images
      * @param array $expectedResult
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::mediaDataProvider
      */
-    public function testMedia(array $images, array $expectedResult): void
+    public function media(array $images, array $expectedResult): void
     {
         foreach ($images as $image) {
             [$fileName, $additionalInformation] = $image;

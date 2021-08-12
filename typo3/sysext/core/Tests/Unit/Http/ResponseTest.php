@@ -39,12 +39,18 @@ class ResponseTest extends UnitTestCase
         $this->response = new Response();
     }
 
-    public function testStatusCodeIs200ByDefault()
+    /**
+     * @test
+     */
+    public function statusCodeIs200ByDefault()
     {
         self::assertEquals(200, $this->response->getStatusCode());
     }
 
-    public function testStatusCodeMutatorReturnsCloneWithChanges()
+    /**
+     * @test
+     */
+    public function statusCodeMutatorReturnsCloneWithChanges()
     {
         $response = $this->response->withStatus(400);
         self::assertNotSame($this->response, $response);
@@ -68,33 +74,46 @@ class ResponseTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @dataProvider invalidStatusCodesDataProvider
      */
-    public function testCannotSetInvalidStatusCode($code)
+    public function cannotSetInvalidStatusCode($code)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->response->withStatus($code);
     }
 
-    public function testReasonPhraseDefaultsToStandards()
+    /**
+     * @test
+     */
+    public function reasonPhraseDefaultsToStandards()
     {
         $response = $this->response->withStatus(422);
         self::assertEquals('Unprocessable Entity', $response->getReasonPhrase());
     }
 
-    public function testCanSetCustomReasonPhrase()
+    /**
+     * @test
+     */
+    public function canSetCustomReasonPhrase()
     {
         $response = $this->response->withStatus(422, 'Foo Bar!');
         self::assertEquals('Foo Bar!', $response->getReasonPhrase());
     }
 
-    public function testConstructorRaisesExceptionForInvalidStream()
+    /**
+     * @test
+     */
+    public function constructorRaisesExceptionForInvalidStream()
     {
         $this->expectException(\InvalidArgumentException::class);
         new Response(['TOTALLY INVALID']);
     }
 
-    public function testConstructorCanAcceptAllMessageParts()
+    /**
+     * @test
+     */
+    public function constructorCanAcceptAllMessageParts()
     {
         $body = new Stream('php://memory');
         $status = 302;
@@ -126,9 +145,10 @@ class ResponseTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @dataProvider invalidStatusDataProvider
      */
-    public function testConstructorRaisesExceptionForInvalidStatus($code)
+    public function constructorRaisesExceptionForInvalidStatus($code)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717278);
@@ -151,9 +171,10 @@ class ResponseTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @dataProvider invalidResponseBodyDataProvider
      */
-    public function testConstructorRaisesExceptionForInvalidBody($body)
+    public function constructorRaisesExceptionForInvalidBody($body)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717277);

@@ -48,12 +48,13 @@ class AbstractLoginControllerTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @dataProvider \TYPO3\CMS\FrontendLogin\Tests\Unit\Controller\SettingsDataProvider::storageFoldersDataProvider
      * @param string $settingsPages
      * @param int $settingsRecursive
      * @param array $expected
      */
-    public function testGetStorageFolders(string $settingsPages, int $settingsRecursive, array $expected): void
+    public function getStorageFolders(string $settingsPages, int $settingsRecursive, array $expected): void
     {
         $this->cObj->method('getTreeList')
             ->willReturnCallback([SettingsDataProvider::class, 'treeListMethodMock']);

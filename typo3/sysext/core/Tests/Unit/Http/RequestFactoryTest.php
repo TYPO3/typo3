@@ -36,14 +36,20 @@ class RequestFactoryTest extends UnitTestCase
         self::assertInstanceOf(RequestFactoryInterface::class, $factory);
     }
 
-    public function testRequestHasMethodSet()
+    /**
+     * @test
+     */
+    public function requestHasMethodSet()
     {
         $factory = new RequestFactory();
         $request = $factory->createRequest('POST', '/');
         self::assertSame('POST', $request->getMethod());
     }
 
-    public function testRequestFactoryHasAWritableEmptyBody()
+    /**
+     * @test
+     */
+    public function requestFactoryHasAWritableEmptyBody()
     {
         $factory = new RequestFactory();
         $request = $factory->createRequest('GET', '/');

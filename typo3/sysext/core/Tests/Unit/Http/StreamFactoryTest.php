@@ -37,28 +37,40 @@ class StreamFactoryTest extends UnitTestCase
         self::assertInstanceOf(StreamFactoryInterface::class, $factory);
     }
 
-    public function testCreateStreamReturnsEmptyStreamByDefault()
+    /**
+     * @test
+     */
+    public function createStreamReturnsEmptyStreamByDefault()
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream();
         self::assertSame('', $stream->__toString());
     }
 
-    public function testCreateStreamFromEmptyString()
+    /**
+     * @test
+     */
+    public function createStreamFromEmptyString()
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('');
         self::assertSame('', $stream->__toString());
     }
 
-    public function testCreateStreamFromNonEmptyString()
+    /**
+     * @test
+     */
+    public function createStreamFromNonEmptyString()
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
         self::assertSame('Foo', $stream->__toString());
     }
 
-    public function testCreateStreamReturnsWritableStream()
+    /**
+     * @test
+     */
+    public function createStreamReturnsWritableStream()
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream();
@@ -66,7 +78,10 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    public function testCreateStreamReturnsAppendableStream()
+    /**
+     * @test
+     */
+    public function createStreamReturnsAppendableStream()
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
@@ -74,7 +89,10 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('FooBar', $stream->__toString());
     }
 
-    public function testCreateStreamFromFile()
+    /**
+     * @test
+     */
+    public function createStreamFromFile()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'Foo');
@@ -84,7 +102,10 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    public function testCreateStreamFromFileWithMode()
+    /**
+     * @test
+     */
+    public function createStreamFromFileWithMode()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
 
@@ -96,7 +117,10 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $contents);
     }
 
-    public function testCreateStreamFromFileWithInvalidMode()
+    /**
+     * @test
+     */
+    public function createStreamFromFileWithInvalidMode()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         touch($fileName);
@@ -107,7 +131,10 @@ class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($fileName, 'z');
     }
 
-    public function testCreateStreamFromFileWithMissingFile()
+    /**
+     * @test
+     */
+    public function createStreamFromFileWithMissingFile()
     {
         $unavailableFileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         $this->expectException(\RuntimeException::class);
@@ -116,7 +143,10 @@ class StreamFactoryTest extends UnitTestCase
         $factory->createStreamFromFile($unavailableFileName, 'r');
     }
 
-    public function testCreateStreamFromResource()
+    /**
+     * @test
+     */
+    public function createStreamFromResource()
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         touch($fileName);
@@ -129,7 +159,10 @@ class StreamFactoryTest extends UnitTestCase
         self::assertSame('Foo', $stream->__toString());
     }
 
-    public function testCreateStreamResourceFromInvalidResource()
+    /**
+     * @test
+     */
+    public function createStreamResourceFromInvalidResource()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1566853697);

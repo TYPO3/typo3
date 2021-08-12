@@ -90,7 +90,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         return $container;
     }
 
-    public function testSimpleServiceProvider()
+    /**
+     * @test
+     */
+    public function simpleServiceProvider()
     {
         $container = $this->getContainer([
             TestServiceProvider::class
@@ -104,7 +107,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals(42, $container->get('function'));
     }
 
-    public function testServiceProviderOverrides()
+    /**
+     * @test
+     */
+    public function serviceProviderOverrides()
     {
         $container = $this->getContainer([
             TestServiceProvider::class,
@@ -121,7 +127,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('localhost', $serviceC->serviceB->parameter);
     }
 
-    public function testServiceProviderFactoryOverrides()
+    /**
+     * @test
+     */
+    public function serviceProviderFactoryOverrides()
     {
         $container = $this->getContainer([
             TestServiceProvider::class,
@@ -134,7 +143,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('remotehost', $serviceA->serviceB->parameter);
     }
 
-    public function testServiceProviderFactoryOverridesForSymfonyDefinedServices()
+    /**
+     * @test
+     */
+    public function serviceProviderFactoryOverridesForSymfonyDefinedServices()
     {
         $container = $this->getContainer(
             [
@@ -158,7 +170,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
     }
 
-    public function testServiceProviderFactoryOverrideResetsAutowiring()
+    /**
+     * @test
+     */
+    public function serviceProviderFactoryOverrideResetsAutowiring()
     {
         $container = $this->getContainer(
             [
@@ -184,7 +199,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         self::assertFalse($container->getDefinition('serviceB')->isAutowired());
     }
 
-    public function testExceptionForNonNullableExtensionArgument()
+    /**
+     * @test
+     */
+    public function exceptionForNonNullableExtensionArgument()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('A registered extension for the service "serviceA" requires the service to be available, which is missing.');
@@ -194,7 +212,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         ]);
     }
 
-    public function testExceptionForInvalidFactories()
+    /**
+     * @test
+     */
+    public function exceptionForInvalidFactories()
     {
         $this->expectException(\TypeError::class);
 

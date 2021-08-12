@@ -204,9 +204,10 @@ class MessageTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @dataProvider invalidGeneralHeaderValuesDataProvider
      */
-    public function testWithHeaderRaisesExceptionForInvalidNestedHeaderValue($value)
+    public function withHeaderRaisesExceptionForInvalidNestedHeaderValue($value)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717266);

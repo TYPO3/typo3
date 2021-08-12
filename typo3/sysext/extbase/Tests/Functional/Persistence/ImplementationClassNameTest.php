@@ -40,7 +40,10 @@ class ImplementationClassNameTest extends FunctionalTestCase
         ));
     }
 
-    public function testARepositoryObjectsAreTakenFromSession(): void
+    /**
+     * @test
+     */
+    public function aRepositoryObjectsAreTakenFromSession(): void
     {
         $aRepository = $this->getContainer()->get(ARepository::class);
         $a1 = $aRepository->findByUid(1);
@@ -49,7 +52,10 @@ class ImplementationClassNameTest extends FunctionalTestCase
         self::assertSame($a1, $a2);
     }
 
-    public function testBRepositoryObjectsAreTakenFromSession(): void
+    /**
+     * @test
+     */
+    public function bRepositoryObjectsAreTakenFromSession(): void
     {
         $bRepository = $this->getContainer()->get(BRepository::class);
         $b1 = $bRepository->findByUid(1);

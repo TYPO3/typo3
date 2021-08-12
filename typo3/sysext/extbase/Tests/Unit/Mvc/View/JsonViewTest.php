@@ -161,13 +161,14 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param object|array $object
      * @param array $configuration
      * @param array|string $expected
      * @param string $description
      * @dataProvider jsonViewTestData
      */
-    public function testTransformValue($object, array $configuration, $expected, string $description): void
+    public function transformValue($object, array $configuration, $expected, string $description): void
     {
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
 
@@ -333,6 +334,7 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param object|array $object
      * @param array $configuration
      * @param array|string $expected
@@ -340,7 +342,7 @@ class JsonViewTest extends UnitTestCase
      * @param string $description
      * @dataProvider jsonViewTestDataRecursive
      */
-    public function testRecursive($object, array $configuration, $expected, string $variableToRender, string $description): void
+    public function recursive($object, array $configuration, $expected, string $variableToRender, string $description): void
     {
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('configuration', $configuration);
@@ -382,6 +384,7 @@ class JsonViewTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param object $object
      * @param array $configuration
      * @param array $expected
@@ -389,7 +392,7 @@ class JsonViewTest extends UnitTestCase
      * @param string $description
      * @dataProvider objectIdentifierExposureTestData
      */
-    public function testTransformValueWithObjectIdentifierExposure(
+    public function transformValueWithObjectIdentifierExposure(
         object $object,
         array $configuration,
         array $expected,

@@ -38,13 +38,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ClientTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
-    public function testImplementsPsr18ClientInterface(): void
+
+    /**
+     * @test
+     */
+    public function implementsPsr18ClientInterface(): void
     {
         $client = new Client();
         self::assertInstanceOf(ClientInterface::class, $client);
     }
 
-    public function testSendRequest(): void
+    /**
+     * @test
+     */
+    public function sendRequest(): void
     {
         $transactions = [];
         // Create a guzzle mock and queue two responses.
@@ -74,7 +81,10 @@ class ClientTest extends UnitTestCase
         self::assertSame('Baz', $response2->getHeaderLine('X-Foo'));
     }
 
-    public function testRequestException(): void
+    /**
+     * @test
+     */
+    public function requestException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $exception = $this->prophesize(GuzzleRequestException::class);
@@ -89,7 +99,10 @@ class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    public function testNetworkException(): void
+    /**
+     * @test
+     */
+    public function networkException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $exception = $this->prophesize(GuzzleConnectException::class);
@@ -104,7 +117,10 @@ class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    public function testGenericGuzzleException(): void
+    /**
+     * @test
+     */
+    public function genericGuzzleException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $mock = new GuzzleMockHandler([
@@ -118,7 +134,10 @@ class ClientTest extends UnitTestCase
         $client->sendRequest($request);
     }
 
-    public function testRedirectIsNotHandledRecursivelyButReturnedAsResponse(): void
+    /**
+     * @test
+     */
+    public function redirectIsNotHandledRecursivelyButReturnedAsResponse(): void
     {
         $transactions = [];
         $mock = new GuzzleMockHandler([
@@ -136,7 +155,10 @@ class ClientTest extends UnitTestCase
         self::assertSame('https://example.com', $response->getHeaderLine('Location'));
     }
 
-    public function testErrorResponsesDoNotThrowAnException(): void
+    /**
+     * @test
+     */
+    public function errorResponsesDoNotThrowAnException(): void
     {
         $mock = new GuzzleMockHandler([
             new GuzzleResponse(404),

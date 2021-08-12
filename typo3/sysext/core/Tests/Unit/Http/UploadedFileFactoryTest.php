@@ -38,7 +38,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         self::assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
     }
 
-    public function testCreateUploadedFile()
+    /**
+     * @test
+     */
+    public function createUploadedFile()
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $factory = new UploadedFileFactory();
@@ -50,7 +53,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         self::assertNull($uploadedFile->getClientMediaType());
     }
 
-    public function testCreateUploadedFileWithParams()
+    /**
+     * @test
+     */
+    public function createUploadedFileWithParams()
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $factory = new UploadedFileFactory();
@@ -62,7 +68,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         self::assertSame('text/html', $uploadedFile->getClientMediaType());
     }
 
-    public function testCreateUploadedFileCreateSizeFromStreamSize()
+    /**
+     * @test
+     */
+    public function createUploadedFileCreateSizeFromStreamSize()
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $streamProphecy->getSize()->willReturn(5);
@@ -73,7 +82,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         self::assertSame(5, $uploadedFile->getSize());
     }
 
-    public function testCreateUploadedFileThrowsExceptionWhenStreamSizeCanNotBeDetermined()
+    /**
+     * @test
+     */
+    public function createUploadedFileThrowsExceptionWhenStreamSizeCanNotBeDetermined()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1566823423);

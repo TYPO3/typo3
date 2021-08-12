@@ -51,7 +51,10 @@ class ListenerProviderPassTest extends UnitTestCase
         return $container;
     }
 
-    public function testSimpleChainsAndDependencies()
+    /**
+     * @test
+     */
+    public function simpleChainsAndDependencies()
     {
         $container = $this->getContainerWithListenerProvider([
             __DIR__ . '/Fixtures/Package1',
@@ -85,7 +88,10 @@ class ListenerProviderPassTest extends UnitTestCase
         );
     }
 
-    public function testCycleException()
+    /**
+     * @test
+     */
+    public function cycleException()
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Your dependencies have cycles. That will not work out. Cycles found: legacy-hook->package4.listener, package4.listener->legacy-hook');
@@ -96,7 +102,10 @@ class ListenerProviderPassTest extends UnitTestCase
         ]);
     }
 
-    public function testWithoutConfiguration()
+    /**
+     * @test
+     */
+    public function withoutConfiguration()
     {
         $container = $this->getContainerWithListenerProvider([]);
 

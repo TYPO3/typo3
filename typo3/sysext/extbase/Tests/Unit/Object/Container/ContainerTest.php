@@ -266,13 +266,19 @@ class ContainerTest extends UnitTestCase
         self::assertTrue($object->isInitialized());
     }
 
-    public function test_canGetChildClass()
+    /**
+     * @test
+     */
+    public function canGetChildClass()
     {
         $object = $this->subject->getInstance('t3lib_object_tests_b_child');
         self::assertInstanceOf('t3lib_object_tests_b_child', $object);
     }
 
-    public function test_canInjectInterfaceInClass()
+    /**
+     * @test
+     */
+    public function canInjectInterfaceInClass()
     {
         $this->subject->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
         $object = $this->subject->getInstance('t3lib_object_tests_needsinterface');
@@ -281,7 +287,10 @@ class ContainerTest extends UnitTestCase
         self::assertInstanceOf('t3lib_object_tests_someimplementation', $object->dependency);
     }
 
-    public function test_canBuildCyclicDependenciesOfSingletonsWithSetter()
+    /**
+     * @test
+     */
+    public function canBuildCyclicDependenciesOfSingletonsWithSetter()
     {
         $object = $this->subject->getInstance('t3lib_object_tests_resolveablecyclic1');
         self::assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object);

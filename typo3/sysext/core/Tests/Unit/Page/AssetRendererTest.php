@@ -48,12 +48,13 @@ class AssetRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $files
      * @param array $expectedResult
      * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
-    public function testStyleSheets(array $files, array $expectedResult, array $expectedMarkup): void
+    public function styleSheets(array $files, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
         foreach ($files as $file) {
@@ -65,12 +66,13 @@ class AssetRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $files
      * @param array $expectedResult
      * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::filesDataProvider
      */
-    public function testJavaScript(array $files, array $expectedResult, array $expectedMarkup): void
+    public function javaScript(array $files, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
         foreach ($files as $file) {
@@ -82,12 +84,13 @@ class AssetRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $sources
      * @param array $expectedResult
      * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
-    public function testInlineJavaScript(array $sources, array $expectedResult, array $expectedMarkup): void
+    public function inlineJavaScript(array $sources, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
         foreach ($sources as $source) {
@@ -99,12 +102,13 @@ class AssetRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param array $sources
      * @param array $expectedResult
      * @param array $expectedMarkup
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::inlineDataProvider
      */
-    public function testInlineStyleSheets(array $sources, array $expectedResult, array $expectedMarkup): void
+    public function inlineStyleSheets(array $sources, array $expectedResult, array $expectedMarkup): void
     {
         $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
         foreach ($sources as $source) {
@@ -116,13 +120,14 @@ class AssetRendererTest extends UnitTestCase
     }
 
     /**
+     * @test
      * @param string $renderMethodName
      * @param bool $isInline
      * @param bool $priority
      * @param string $eventClassName
      * @dataProvider \TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::renderMethodsAndEventsDataProvider
      */
-    public function testBeforeRenderingEvent(
+    public function beforeRenderingEvent(
         string $renderMethodName,
         bool $isInline,
         bool $priority,
