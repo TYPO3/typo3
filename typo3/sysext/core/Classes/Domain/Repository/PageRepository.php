@@ -972,7 +972,13 @@ class PageRepository implements LoggerAwareInterface
         switch ($shortcutMode) {
             case self::SHORTCUT_MODE_FIRST_SUBPAGE:
             case self::SHORTCUT_MODE_RANDOM_SUBPAGE:
-                $pageArray = $this->getMenu($idArray[0] ?: $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . self::DOKTYPE_BE_USER_SECTION);
+                $excludedDoktypes = [
+                    self::DOKTYPE_SPACER,
+                    self::DOKTYPE_SYSFOLDER,
+                    self::DOKTYPE_RECYCLER,
+                    self::DOKTYPE_BE_USER_SECTION,
+                ];
+                $pageArray = $this->getMenu($idArray[0] ?: $thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')');
                 $pO = 0;
                 if ($shortcutMode == self::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
                     $pO = (int)random_int(0, count($pageArray) - 1);
