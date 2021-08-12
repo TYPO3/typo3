@@ -2131,7 +2131,7 @@ class QueryGenerator
         $out = [];
         foreach ($codeArr as $k => $v) {
             $out[] = '<div class="card">';
-            $out[] = '<div class="card-content">';
+            $out[] = '<div class="card-body">';
             $out[] = $v['html'];
 
             if ($this->enableQueryParts) {

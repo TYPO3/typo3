@@ -493,17 +493,16 @@ class ElementInformationController
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
                 $keyLabelPair['uid'] = [
-                    'value' => BackendUtility::getProcessedValueExtra($this->table, 'uid', $this->row['uid']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid')), ':'),
+                    'value' => (int)$this->row['uid']
                 ];
                 $keyLabelPair['creation_date'] = [
                     'value' => BackendUtility::datetime($this->row['creation_date']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')), ':'),
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')),
                     'isDatetime' => true,
                 ];
                 $keyLabelPair['modification_date'] = [
                     'value' => BackendUtility::datetime($this->row['modification_date']),
-                    'fieldLabel' => rtrim(htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')), ':'),
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')),
                     'isDatetime' => true,
                 ];
             }

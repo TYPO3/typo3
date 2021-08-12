@@ -18,7 +18,7 @@
 //             <h1 class="card-title">Simple Card</h1>
 //             <span class="card-subtitle">Subtitle</span>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Nulla at mattis lectus. Duis pulvinar sollicitudin aliquam. Praesent id convallis ante, id auctor sem. Duis vestibulum nisl sit amet feugiat blandit. Cras in neque sit amet eros iaculis dapibus sed sit amet tortor.
 //             </p>
@@ -44,7 +44,7 @@
 //         <div class="card-header">
 //             <h1 class="card-title">Action Card</h1>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Etiam posuere tristique arcu, a elementum justo semper eget. Etiam malesuada consectetur risus nec hendrerit. Mauris velit arcu, efficitur at erat eget, luctus consequat felis.
 //             </p>
@@ -62,7 +62,7 @@
 //         <div class="card-header">
 //             <h1 class="card-title">Linked Card</h1>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Etiam posuere tristique arcu, a elementum justo semper eget. Etiam malesuada consectetur risus nec hendrerit. Mauris velit arcu, efficitur at erat eget, luctus consequat felis.
 //             </p>
@@ -76,7 +76,7 @@
 //             <h1 class="card-title">Product Card</h1>
 //             <span class="card-subtitle">Subtitle</span>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse erat justo, hendrerit vitae arcu eget.
 //             </p>
@@ -111,7 +111,7 @@
 //         <h1 class="card-title">The official Introduction Package</h1>
 //         <span class="card-subtitle">introduction</span>
 //     </div>
-//     <div class="card-content">
+//     <div class="card-body">
 //         <p class="card-text">
 //             This package delivers a new website (page tree) and shows all out-of-the-box features of TYPO3, and includes a theme based on Twitter Bootstrap 3, and...
 //         </p>
@@ -143,7 +143,7 @@
 //         <h1 class="card-title">The official Introduction Package</h1>
 //         <span class="card-subtitle">introduction</span>
 //     </div>
-//     <div class="card-content">
+//     <div class="card-body">
 //         <p class="card-text">
 //             This package delivers a new website (page tree) and shows all out-of-the-box features of TYPO3, and includes a theme based on Twitter Bootstrap 3, and...
 //         </p>
@@ -176,7 +176,7 @@
 //         <div class="card-header">
 //             <h1 class="card-title">Card with a lot of content</h1>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Curabitur semper tellus ac odio dignissim, maximus ornare eros tempor. Integer tempus vestibulum leo, elementum cursus arcu euismod non. Aenean quam nisi, laoreet vitae diam eget, posuere efficitur eros. Curabitur id arcu purus. Suspendisse ullamcorper dictum neque ut pellentesque. Integer pharetra dui eu justo rutrum accumsan. Aenean vehicula dictum purus, sit amet consequat ante malesuada vitae. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 //             </p>
@@ -189,7 +189,7 @@
 //         <div class="card-header">
 //             <h1 class="card-title">Card with little to none content</h1>
 //         </div>
-//         <div class="card-content">
+//         <div class="card-body">
 //             <p class="card-text">
 //                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 //             </p>
@@ -220,11 +220,8 @@ $card-shadow-hover-color: transparentize($card-base-color, 0.7);
 //
 .card {
     overflow: hidden;
-    border-radius: 2px;
-    display: flex;
-    flex-direction: column;
     box-shadow: 0 1px 1px $card-shadow-color;
-    border: 1px solid $card-border-color;
+    border-color: $card-border-color;
     margin-bottom: ($card-spacing*2);
     transition: all 0.2s ease-in-out;
     transition-property: box-shadow, border, transform;
@@ -273,12 +270,6 @@ a.card:hover {
     }
 }
 
-.card-size-large {
-    @media (min-width: $screen-sm-min) {
-        width: calc(100% - #{$card-spacing*2});
-    }
-}
-
 //
 // Fixed sizes
 //
@@ -306,7 +297,7 @@ a.card:hover {
 //
 .card-image,
 .card-header,
-.card-content,
+.card-body,
 .card-footer {
     padding: $card-padding $card-padding 0 $card-padding;
 
@@ -393,13 +384,6 @@ a.card:hover {
     .card-longdesc {
         margin-top: 1em;
     }
-}
-
-//
-// Content
-//
-.card-content {
-    height: 100%;
 }
 
 //
