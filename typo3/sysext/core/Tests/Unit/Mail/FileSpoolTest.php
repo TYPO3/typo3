@@ -21,6 +21,7 @@ use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\RawMessage;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,7 +46,7 @@ class FileSpoolTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new FileSpool('./spool');
+        $this->subject = new FileSpool(Environment::getVarPath() . '/spool/');
         $this->subject->setMessageLimit(10);
         $this->subject->setTimeLimit(1);
     }
