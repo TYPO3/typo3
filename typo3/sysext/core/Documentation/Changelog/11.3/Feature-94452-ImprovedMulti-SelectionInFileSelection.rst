@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ============================================================
-Feature: #94452 - Improved multi-selection in file felection
+Feature: #94452 - Improved multi-selection in file selection
 ============================================================
 
 See :issue:`94452`
