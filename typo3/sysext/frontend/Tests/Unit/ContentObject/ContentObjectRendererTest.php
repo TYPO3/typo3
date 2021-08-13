@@ -3020,20 +3020,20 @@ class ContentObjectRendererTest extends UnitTestCase
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample'
         ];
-        $expectedResult = '<a href="https://example.com" target="myexample" onclick="vHWin=window.open(\'https:\/\/example.com\',\'myexample\',\'width=13,height=84\');vHWin.focus();return false;" rel="noreferrer">Nice Text</a>';
+        $expectedResult = '<a href="https://example.com" target="myexample" onclick="openPic(\'https:\/\/example.com\',\'myexample\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
         $linkText = 'Nice Text with default window name';
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="vHWin=window.open(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');vHWin.focus();return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 
         $linkText = 'Nice Text with default window name';
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="vHWin=window.open(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');vHWin.focus();return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 
         $GLOBALS['TSFE']->xhtmlDoctype = 'xhtml_strict';
@@ -3041,7 +3041,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" onclick="vHWin=window.open(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');vHWin.focus();return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 

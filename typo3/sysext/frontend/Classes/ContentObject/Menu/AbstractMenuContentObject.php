@@ -1369,9 +1369,10 @@ abstract class AbstractMenuContentObject
             if (($matches[3] ?? false) && ($matches[4] ?? false)) {
                 $target = $LD['target'] ?? 'FEopenLink';
                 $JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
-                $onClick = 'vHWin=window.open('
+                $onClick = 'openPic('
                     . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($LD['totalURL']))
                     . ',' . GeneralUtility::quoteJSvalue($target) . ',' . GeneralUtility::quoteJSvalue($JSparamWH) . ');vHWin.focus();return false;';
+                GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
                 $LD['target'] = '';
             }
         }
