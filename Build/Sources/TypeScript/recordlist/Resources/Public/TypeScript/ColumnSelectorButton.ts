@@ -251,46 +251,49 @@ class ColumnSelectorButton extends LitElement {
       ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
     });
 
-    // Add event listener for selector actions
-    columnsSelectorActions.addEventListener('click', (e: Event): void => {
-      e.preventDefault();
+    // Add event listener for all columns select actions. querySelectorAll will return
+    // at least two actions (selectAll and selectNone) which we checked above already
+    columnsSelectorActions.querySelectorAll('button[data-action]').forEach((action: HTMLButtonElement) => {
+      action.addEventListener('click', (e: Event): void => {
+        e.preventDefault();
 
-      const target: HTMLElement = e.target as HTMLElement;
-      if (target.nodeName !== 'BUTTON' || !target.dataset.action) {
-        // Return if we don't deal with a valid action (Either no button or no action defined)
-        return;
-      }
+        const target: HTMLButtonElement = e.currentTarget as HTMLButtonElement;
+        if (!target.dataset.action) {
+          // Return if we don't deal with a valid action (No action defined)
+          return;
+        }
 
-      // Perform requested action
-      switch (target.dataset.action) {
-        case SelectorActions.toggle:
-          columns.forEach((column: HTMLInputElement) => {
-            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
-              column.checked = !column.checked;
-            }
-          });
-          break;
-        case SelectorActions.all:
-          columns.forEach((column: HTMLInputElement) => {
-            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
-              column.checked = true;
-            }
-          });
-          break;
-        case SelectorActions.none:
-          columns.forEach((column: HTMLInputElement) => {
-            if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
-              column.checked = false;
-            }
-          });
-          break;
-        default:
-          // Unknown action
-          Notification.warning('Unknown selector action');
-      }
+        // Perform requested action
+        switch (target.dataset.action) {
+          case SelectorActions.toggle:
+            columns.forEach((column: HTMLInputElement) => {
+              if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
+                column.checked = !column.checked;
+              }
+            });
+            break;
+          case SelectorActions.all:
+            columns.forEach((column: HTMLInputElement) => {
+              if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
+                column.checked = true;
+              }
+            });
+            break;
+          case SelectorActions.none:
+            columns.forEach((column: HTMLInputElement) => {
+              if (!column.disabled && !ColumnSelectorButton.isColumnHidden(column)) {
+                column.checked = false;
+              }
+            });
+            break;
+          default:
+            // Unknown action
+            Notification.warning('Unknown selector action');
+        }
 
-      // After performing the action always toggle selector actions
-      ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
+        // After performing the action always toggle selector actions
+        ColumnSelectorButton.toggleSelectorActions(columns, selectAll, selectNone);
+      });
     });
   }
 
