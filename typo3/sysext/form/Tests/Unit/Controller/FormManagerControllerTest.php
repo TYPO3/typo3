@@ -52,23 +52,29 @@ class FormManagerControllerTest extends UnitTestCase
 
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
 
-        $mockStorage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
         $mockController->_set('formPersistenceManager', $formPersistenceManagerProphecy->reveal());
-
         $mockController->_set('formSettings', [
             'persistenceManager' => [
                 'allowSaveToExtensionPaths' => true,
             ],
         ]);
 
-        $folder1 = new Folder($mockStorage, '/user_upload/', 'user_upload');
-        $folder2 = new Folder($mockStorage, '/forms/', 'forms');
+        $storageProphecy1 = $this->prophesize(ResourceStorage::class);
+        $storageProphecy2 = $this->prophesize(ResourceStorage::class);
+
+        $storageProphecy1->isPublic()->willReturn(true);
+        $storageProphecy2->isPublic()->willReturn(false);
+
+        $folder1Prophecy = $this->prophesize(Folder::class);
+        $folder1Prophecy->getPublicUrl()->willReturn('/fileadmin/user_upload/');
+        $folder1Prophecy->getStorage()->willReturn($storageProphecy1->reveal());
+
+        $folder2Prophecy = $this->prophesize(Folder::class);
+        $folder2Prophecy->getStorage()->willReturn($storageProphecy2->reveal());
 
         $formPersistenceManagerProphecy->getAccessibleFormStorageFolders(Argument::cetera())->willReturn([
-            '1:/user_upload/' => $folder1,
-            '2:/forms/' => $folder2,
+            '1:/user_upload/' => $folder1Prophecy->reveal(),
+            '2:/forms/' => $folder2Prophecy->reveal(),
         ]);
 
         $formPersistenceManagerProphecy->getAccessibleExtensionFolders(Argument::cetera())->willReturn([
@@ -78,11 +84,11 @@ class FormManagerControllerTest extends UnitTestCase
 
         $expected = [
             0 => [
-                'label' => 'user_upload',
+                'label' => '/fileadmin/user_upload/',
                 'value' => '1:/user_upload/',
             ],
             1 => [
-                'label' => 'forms',
+                'label' => '2:/forms/',
                 'value' => '2:/forms/',
             ],
             2 => [

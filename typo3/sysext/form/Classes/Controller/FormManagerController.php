@@ -360,7 +360,7 @@ class FormManagerController extends AbstractBackendController
         $preparedAccessibleFormStorageFolders = [];
         foreach ($this->formPersistenceManager->getAccessibleFormStorageFolders() as $identifier => $folder) {
             $preparedAccessibleFormStorageFolders[] = [
-                'label' => $folder->getName(),
+                'label' => $folder->getStorage()->isPublic() ? $folder->getPublicUrl() : $identifier,
                 'value' => $identifier
             ];
         }
