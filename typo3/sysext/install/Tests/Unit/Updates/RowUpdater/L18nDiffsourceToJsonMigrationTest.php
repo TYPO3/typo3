@@ -25,7 +25,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasPotentialUpdateForTableReturnsFalseIfTableIsNotLocalizable()
+    public function hasPotentialUpdateForTableReturnsFalseIfTableIsNotLocalizable(): void
     {
         $GLOBALS['TCA']['testTable'] = [];
         self::assertFalse((new L18nDiffsourceToJsonMigration())->hasPotentialUpdateForTable('testTable'));
@@ -34,7 +34,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasPotentialUpdateForTableReturnsTrueIfTableIsLocalizable()
+    public function hasPotentialUpdateForTableReturnsTrueIfTableIsLocalizable(): void
     {
         $GLOBALS['TCA']['testTable'] = [
             'ctrl' => [
@@ -49,7 +49,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateTableRowDoesNothingIfFieldIsNotSet()
+    public function updateTableRowDoesNothingIfFieldIsNotSet(): void
     {
         $GLOBALS['TCA']['testTable'] = [
             'ctrl' => [
@@ -60,7 +60,7 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
         self::assertSame($row, (new L18nDiffsourceToJsonMigration())->updateTableRow('testTable', $row));
     }
 
-    public function updateTableRowUpdatesFieldDataProvider()
+    public function updateTableRowUpdatesFieldDataProvider(): array
     {
         $object = new \stdClass();
         $json = json_encode(['foo' => 'bar']);
@@ -109,8 +109,11 @@ class L18nDiffsourceToJsonMigrationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider updateTableRowUpdatesFieldDataProvider
+     *
+     * @param mixed $input
+     * @param mixed $expected
      */
-    public function updateTableRowUpdatesField($input, $expected)
+    public function updateTableRowUpdatesField($input, $expected): void
     {
         $GLOBALS['TCA']['testTable'] = [
             'ctrl' => [

@@ -31,7 +31,7 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function hitsFromFixtureAreFound()
+    public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/MethodArgumentRequiredStaticMatcherFixture.php';
@@ -203,7 +203,7 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
      * @param string $phpCode
      * @param array $expected
      */
-    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
+    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $statements = $parser->parse($phpCode);

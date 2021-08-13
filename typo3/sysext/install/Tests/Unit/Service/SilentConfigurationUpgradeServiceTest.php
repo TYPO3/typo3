@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -27,12 +28,14 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
+use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,12 +46,12 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     use ProphecyTrait;
 
     /**
-     * @var ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var ConfigurationManager|MockObject
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Core\Package\UnitTestPackageManager A backup of unit test package manager
+     * @var UnitTestPackageManager A backup of unit test package manager
      */
     protected $backupPackageManager;
 
@@ -73,7 +76,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @param array $methods
      */
-    protected function createConfigurationManagerWithMockedMethods(array $methods)
+    protected function createConfigurationManagerWithMockedMethods(array $methods): void
     {
         $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)
             ->onlyMethods($methods)
@@ -83,9 +86,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings()
+    public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -121,9 +124,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function doNotRemoveObsoleteLocalConfigurationSettingsIfThereAreNoOldSettings()
+    public function doNotRemoveObsoleteLocalConfigurationSettingsIfThereAreNoOldSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -157,9 +160,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function doNotGenerateEncryptionKeyIfExists()
+    public function doNotGenerateEncryptionKeyIfExists(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -192,9 +195,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateEncryptionKeyIfNotExists()
+    public function generateEncryptionKeyIfNotExists(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -333,9 +336,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      * @param array $newSettings
      * @param bool $localConfigurationNeedsUpdate
      */
-    public function transferHttpSettingsIfSet($currentLocalConfiguration, $newSettings, $localConfigurationNeedsUpdate)
+    public function transferHttpSettingsIfSet(array $currentLocalConfiguration, array $newSettings, bool $localConfigurationNeedsUpdate): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -352,7 +355,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ]
         );
 
-        $this->configurationManager->expects(self::any())
+        $this->configurationManager
             ->method('getLocalConfiguration')
             ->willReturn(['HTTP' => $currentLocalConfiguration]);
         if ($localConfigurationNeedsUpdate) {
@@ -376,9 +379,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
+    public function disableImageMagickDetailSettingsIfImageMagickIsDisabled(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -422,9 +425,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function doNotDisableImageMagickDetailSettingsIfImageMagickIsEnabled()
+    public function doNotDisableImageMagickDetailSettingsIfImageMagickIsEnabled(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -463,9 +466,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function setImageMagickDetailSettings()
+    public function setImageMagickDetailSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -509,9 +512,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function doNotSetImageMagickDetailSettings()
+    public function doNotSetImageMagickDetailSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -552,7 +555,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      * @param mixed $currentValue
      * @param bool $expectedMigratedValue
      */
-    public function migratesGraphicsProcessorEffects($currentValue, $expectedMigratedValue)
+    public function migratesGraphicsProcessorEffects($currentValue, bool $expectedMigratedValue): void
     {
         /** @var ConfigurationManager|\Prophecy\Prophecy\ObjectProphecy */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
@@ -608,9 +611,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateNonExistingLangDebug()
+    public function migrateNonExistingLangDebug(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -642,9 +645,9 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateExistingLangDebug()
+    public function migrateExistingLangDebug(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -680,7 +683,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateCacheHashOptions()
+    public function migrateCacheHashOptions(): void
     {
         $oldConfig = [
             'FE/cHashOnlyForParameters' => 'foo,bar',
@@ -704,7 +707,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -720,7 +723,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreNotSet()
+    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreNotSet(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerException = new MissingArrayPathException('Path does not exist in array', 1533989414);
@@ -739,7 +742,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreEmpty()
+    public function migrateSaltedPasswordsSettingsDoesNothingIfExtensionConfigsAreEmpty(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
@@ -757,7 +760,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable()
+    public function migrateSaltedPasswordsSettingsRemovesExtensionsConfigAndSetsNothingElseIfArgon2iIsAvailable(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
@@ -783,7 +786,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable()
+    public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
@@ -825,7 +828,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateCachingFrameworkCachesMigratesData()
+    public function migrateCachingFrameworkCachesMigratesData(): void
     {
         $oldCacheConfigurations = [
             'cache_rootline' => [
@@ -868,7 +871,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -884,7 +887,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateCachingFrameworkCachesDoesNotMigrateWithoutPrefix()
+    public function migrateCachingFrameworkCachesDoesNotMigrateWithoutPrefix(): void
     {
         $oldCacheConfigurations = [
             'rootline' => [
@@ -909,7 +912,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $configurationManager->setLocalConfigurationValueByPath(Argument::cetera())->shouldNotBeCalled();
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],

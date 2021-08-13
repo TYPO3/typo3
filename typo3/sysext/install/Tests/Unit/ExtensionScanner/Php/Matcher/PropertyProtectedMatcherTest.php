@@ -31,7 +31,7 @@ class PropertyProtectedMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function hitsFromFixtureAreFound()
+    public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/PropertyProtectedMatcherFixture.php';
@@ -64,7 +64,7 @@ class PropertyProtectedMatcherTest extends UnitTestCase
     /**
      * @return array
      */
-    public function matchesReturnsExpectedRestFilesDataProvider()
+    public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two candidates' => [
@@ -127,7 +127,7 @@ class PropertyProtectedMatcherTest extends UnitTestCase
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
      */
-    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
+    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $statements = $parser->parse($phpCode);

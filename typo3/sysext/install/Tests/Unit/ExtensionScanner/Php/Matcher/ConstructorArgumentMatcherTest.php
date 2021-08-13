@@ -82,7 +82,7 @@ class ConstructorArgumentMatcherTest extends TestCase
      * @test
      * @dataProvider hitsFromFixtureAreFoundDataProvider
      */
-    public function hitsFromFixtureAreFound(array $configuration, array $expectation)
+    public function hitsFromFixtureAreFound(array $configuration, array $expectation): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/ConstructorArgumentMatcherFixture.php';

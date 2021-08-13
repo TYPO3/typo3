@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\UpgradeAnalysis;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
@@ -27,21 +29,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DocumentationFileTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var DocumentationFile
-     */
-    protected $documentationFileService;
+    use ProphecyTrait;
+
+    protected DocumentationFile $documentationFileService;
+    protected vfsStreamDirectory $docRoot;
 
     /**
-     * @var  vfsStreamDirectory
+     * @var Registry|ObjectProphecy
      */
-    protected $docRoot;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
+    protected ObjectProphecy $registry;
 
     /**
      * set up test environment
@@ -125,7 +121,7 @@ class DocumentationFileTest extends UnitTestCase
      * dataprovider with invalid dir path. They should raise an exception and don't process.
      * @return array
      */
-    public function invalidDirProvider()
+    public function invalidDirProvider(): array
     {
         return [
             [
@@ -144,7 +140,7 @@ class DocumentationFileTest extends UnitTestCase
      * @dataProvider invalidDirProvider
      * @test
      */
-    public function findDocumentationFilesThrowsExceptionIfPathIsNotInGivenChangelogDir(string $path)
+    public function findDocumentationFilesThrowsExceptionIfPathIsNotInGivenChangelogDir(string $path): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1485425530);
@@ -155,7 +151,7 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function findDocumentationFilesReturnsArrayOfFilesForTheLastThreeMajorVersions()
+    public function findDocumentationFilesReturnsArrayOfFilesForTheLastThreeMajorVersions(): void
     {
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $expected = [
@@ -172,7 +168,7 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function findDocumentsRespectsFilesWithSameIssueNumber()
+    public function findDocumentsRespectsFilesWithSameIssueNumber(): void
     {
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/master'));
         self::assertCount(2, $result);
@@ -181,7 +177,7 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractingTagsProvidesTagsAsDesired()
+    public function extractingTagsProvidesTagsAsDesired(): void
     {
         $expected = [
             'unittest',
@@ -195,7 +191,7 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function filesAreFilteredByUsersChoice()
+    public function filesAreFilteredByUsersChoice(): void
     {
         $ignoredFiles = ['vfs://root/Changelog/1.2/Breaking-12345-Issue.rst'];
         $this->registry->get(
@@ -224,7 +220,7 @@ class DocumentationFileTest extends UnitTestCase
      * @param string $path
      * @test
      */
-    public function getListEntryThrowsExceptionForFilesNotBelongToChangelogDir(string $path)
+    public function getListEntryThrowsExceptionForFilesNotBelongToChangelogDir(string $path): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1485425531);

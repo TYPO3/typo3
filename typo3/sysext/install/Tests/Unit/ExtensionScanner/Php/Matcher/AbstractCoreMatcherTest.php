@@ -28,7 +28,7 @@ class AbstractCoreMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateMatcherDefinitionsRunsFineWithProperDefinition()
+    public function validateMatcherDefinitionsRunsFineWithProperDefinition(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
         $configuration = [
@@ -46,7 +46,7 @@ class AbstractCoreMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateMatcherDefinitionsThrowsIfRequiredArgIsNotInConfig()
+    public function validateMatcherDefinitionsThrowsIfRequiredArgIsNotInConfig(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
         $configuration = [
@@ -66,7 +66,7 @@ class AbstractCoreMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateMatcherDefinitionsThrowsWithMissingRestFiles()
+    public function validateMatcherDefinitionsThrowsWithMissingRestFiles(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
         $configuration = [
@@ -83,7 +83,7 @@ class AbstractCoreMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateMatcherDefinitionsThrowsWithEmptySingleRestFile()
+    public function validateMatcherDefinitionsThrowsWithEmptySingleRestFile(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
         $configuration = [
@@ -103,7 +103,7 @@ class AbstractCoreMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeMethodNameArrayThrowsWithInvalidKeys()
+    public function initializeMethodNameArrayThrowsWithInvalidKeys(): void
     {
         $matcher = $this->getAccessibleMockForAbstractClass(AbstractCoreMatcher::class, [], '', false);
         $configuration = [

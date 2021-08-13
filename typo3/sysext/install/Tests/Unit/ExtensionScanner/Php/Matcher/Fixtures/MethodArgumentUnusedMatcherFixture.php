@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class MethodArgumentUnusedMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: RTE_transform() should have arg2 as null if given
         $foo->RTE_transform('arg1', 'arg2');

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
+use TYPO3\CMS\install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNode;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -37,11 +39,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfParentIsNotNull()
+    public function constructorThrowsExceptionIfParentIsNotNull(): void
     {
         $this->expectException(RootNodeException::class);
         $this->expectExceptionCode(1366140117);
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $falseParent = $this->createMock(RootNodeInterface::class);
         $node->__construct([], $falseParent);
@@ -50,11 +52,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfAbsolutePathIsNotSet()
+    public function constructorThrowsExceptionIfAbsolutePathIsNotSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366141329);
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $structure = [
             'type' => 'root',
@@ -65,14 +67,13 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnWindows()
+    public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnWindows(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366141329);
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(true);
         $structure = [
@@ -84,14 +85,13 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnUnix()
+    public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnUnix(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366141329);
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $structure = [
@@ -103,12 +103,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsParentToNull()
+    public function constructorSetsParentToNull(): void
     {
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $structure = [
@@ -121,12 +120,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getChildrenReturnsChildCreatedByConstructor()
+    public function getChildrenReturnsChildCreatedByConstructor(): void
     {
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $childName = StringUtility::getUniqueId('test_');
@@ -141,7 +139,7 @@ class RootNodeTest extends UnitTestCase
         ];
         $node->__construct($structure, null);
         $children = $node->_call('getChildren');
-        /** @var $child \TYPO3\CMS\install\FolderStructure\NodeInterface */
+        /** @var $child NodeInterface */
         $child = $children[0];
         self::assertInstanceOf(DirectoryNode::class, $child);
         self::assertSame($childName, $child->getName());
@@ -150,12 +148,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsTargetPermission()
+    public function constructorSetsTargetPermission(): void
     {
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $targetPermission = '2550';
@@ -170,12 +167,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsName()
+    public function constructorSetsName(): void
     {
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $name = '/' . StringUtility::getUniqueId('test_');
@@ -186,9 +182,9 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatusReturnsArrayWithOkStatusAndCallsOwnStatusMethods()
+    public function getStatusReturnsArrayWithOkStatusAndCallsOwnStatusMethods(): void
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(
             RootNode::class,
             ['getAbsolutePath', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -200,7 +196,7 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::once())->method('exists')->willReturn(true);
         $node->expects(self::once())->method('isDirectory')->willReturn(true);
         $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
@@ -212,9 +208,9 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatusCallsGetChildrenStatusForStatus()
+    public function getStatusCallsGetChildrenStatusForStatus(): void
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(
             RootNode::class,
             ['getAbsolutePath', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect', 'getChildrenStatus'],
@@ -226,11 +222,11 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
-        $node->expects(self::any())->method('exists')->willReturn(true);
-        $node->expects(self::any())->method('isDirectory')->willReturn(true);
-        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
-        $node->expects(self::any())->method('isWritable')->willReturn(true);
+        $node->method('getAbsolutePath')->willReturn($path);
+        $node->method('exists')->willReturn(true);
+        $node->method('isDirectory')->willReturn(true);
+        $node->method('isPermissionCorrect')->willReturn(true);
+        $node->method('isWritable')->willReturn(true);
         $childStatus = new FlashMessage('foo', '', FlashMessage::ERROR);
         $node->expects(self::once())->method('getChildrenStatus')->willReturn([$childStatus]);
         $statusArray = $node->getStatus();
@@ -243,12 +239,11 @@ class RootNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAbsolutePathReturnsGivenName()
+    public function getAbsolutePathReturnsGivenName(): void
     {
-        /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $node RootNode|AccessibleObjectInterface|MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
         $path = '/foo/bar';

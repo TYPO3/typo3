@@ -79,7 +79,7 @@ class ContentSecurityPolicyHeaderTest extends TestCase
      * @test
      * @dataProvider mitigatesCrossSiteScriptingDataProvider
      */
-    public function mitigatesCrossSiteScripting(string $header, bool $expectation)
+    public function mitigatesCrossSiteScripting(string $header, bool $expectation): void
     {
         $subject = new ContentSecurityPolicyHeader($header);
         self::assertSame($expectation, $subject->mitigatesCrossSiteScripting());

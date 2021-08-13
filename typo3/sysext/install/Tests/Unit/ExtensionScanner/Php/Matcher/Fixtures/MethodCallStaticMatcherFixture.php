@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class MethodCallStaticMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Matches
         BackendUtility::getAjaxUrl();

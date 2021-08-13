@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class MethodArgumentDroppedMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: euc_char_mapping() shouldn't be called with more than 2 args
         $foo->euc_char_mapping('arg1', 'arg2', 'arg3');

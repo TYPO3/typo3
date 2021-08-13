@@ -30,7 +30,7 @@ class CodeStatisticsTest extends UnitTestCase
     /**
      * @test
      */
-    public function enterNodeSumsStatistics()
+    public function enterNodeSumsStatistics(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/CodeStatisticsFixture.php';

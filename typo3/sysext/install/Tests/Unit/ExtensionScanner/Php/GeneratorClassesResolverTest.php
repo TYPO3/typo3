@@ -36,7 +36,7 @@ class GeneratorClassesResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function visitorCreatesFullyQualifiedNameFromStringArgumentInMakeInstance()
+    public function visitorCreatesFullyQualifiedNameFromStringArgumentInMakeInstance(): void
     {
         $phpCode = <<<'EOC'
 <?php
@@ -59,7 +59,7 @@ EOC;
     /**
      * @test
      */
-    public function visitorDoesNotTransformDynamicallyCreatesFullyQualifiedNameFromStringArgumentInMakeInstance()
+    public function visitorDoesNotTransformDynamicallyCreatesFullyQualifiedNameFromStringArgumentInMakeInstance(): void
     {
         $phpCode = <<<'EOC'
 <?php

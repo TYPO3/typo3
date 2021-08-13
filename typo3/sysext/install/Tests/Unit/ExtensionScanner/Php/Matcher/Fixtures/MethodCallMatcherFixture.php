@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class MethodCallMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: confirmMsg() needs at least 4 args
         $foo->confirmMsg('arg1', 'arg2', 'arg3', 'arg4');

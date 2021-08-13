@@ -31,7 +31,7 @@ class FunctionCallMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function hitsFromFixtureAreFound()
+    public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/FunctionCallMatcherFixture.php';
@@ -65,7 +65,7 @@ class FunctionCallMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchIsIgnoredIfIgnoreFileIsSet()
+    public function matchIsIgnoredIfIgnoreFileIsSet(): void
     {
         $phpCode = <<<'EOC'
 <?php

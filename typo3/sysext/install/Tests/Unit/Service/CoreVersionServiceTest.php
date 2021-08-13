@@ -17,12 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\Service\CoreVersionService;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,13 +33,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CoreVersionServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
-    public function setUpApiResponse(string $url, array $responseData)
+    public function setUpApiResponse(string $url, array $responseData): void
     {
         $response = new JsonResponse($responseData);
         $requestFactory = $this->prophesize(RequestFactory::class);
@@ -594,7 +598,7 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $instance CoreVersionService|AccessibleObjectInterface|MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.2.0');
         self::assertTrue($instance->isInstalledVersionAReleasedVersion());
@@ -603,9 +607,9 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion()
+    public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion(): void
     {
-        /** @var $instance CoreVersionService|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $instance CoreVersionService|AccessibleObjectInterface|MockObject */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.4-dev');
         self::assertFalse($instance->isInstalledVersionAReleasedVersion());

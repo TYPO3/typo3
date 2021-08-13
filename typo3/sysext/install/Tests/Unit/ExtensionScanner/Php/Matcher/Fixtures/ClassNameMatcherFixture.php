@@ -29,7 +29,7 @@ use TYPO3\CMS\Backend\Console as Con2;
  */
 class ClassNameMatcherFixture extends App2 implements App3, Con\Application
 {
-    public function aMethod(Con2\Application $app)
+    public function aMethod(Con2\Application $app): void
     {
         // Matches
         $foo = new \RemoveXSS();

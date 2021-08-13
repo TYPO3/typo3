@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class PropertyProtectedMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match
         $foo->recUpdateAccessCache;

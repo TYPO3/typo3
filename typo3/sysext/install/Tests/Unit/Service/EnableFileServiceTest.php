@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -38,7 +39,7 @@ class EnableFileServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function getFirstInstallFilePathsDataProvider()
+    public function getFirstInstallFilePathsDataProvider(): array
     {
         return [
             'first-install-file-present' => [
@@ -74,11 +75,11 @@ class EnableFileServiceTest extends UnitTestCase
      * @test
      * @dataProvider getFirstInstallFilePathsDataProvider
      */
-    public function getFirstInstallFilePaths($structure, $expected)
+    public function getFirstInstallFilePaths(array $structure, array $expected): void
     {
-        $vfs = vfsStream::setup('root');
+        $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var $subject EnableFileService|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $subject EnableFileService|AccessibleObjectInterface|MockObject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),
@@ -99,7 +100,7 @@ class EnableFileServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function removeFirstInstallFileDataProvider()
+    public function removeFirstInstallFileDataProvider(): array
     {
         return [
             'first-install-file-present' => [
@@ -146,11 +147,11 @@ class EnableFileServiceTest extends UnitTestCase
      * @test
      * @dataProvider removeFirstInstallFileDataProvider
      */
-    public function removeFirstInstallFile($structure, $expected)
+    public function removeFirstInstallFile(array $structure, array $expected): void
     {
-        $vfs = vfsStream::setup('root');
+        $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var $subject EnableFileService|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $subject EnableFileService|AccessibleObjectInterface|MockObject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class MethodArgumentRequiredStaticMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: addNavigationComponent() uses less than three arguments
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent('foo', 'bar');
