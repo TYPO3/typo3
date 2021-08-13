@@ -1540,7 +1540,9 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' */';
                 $phpCodeToCache[] = '';
                 // Add ext_localconf.php content of extension
+                $phpCodeToCache[] = 'namespace {';
                 $phpCodeToCache[] = trim((string)file_get_contents($extLocalconfPath));
+                $phpCodeToCache[] = '}';
                 $phpCodeToCache[] = '';
                 $phpCodeToCache[] = '';
             }
@@ -1768,13 +1770,16 @@ tt_content.' . $key . $suffix . ' {
                 $phpCodeToCache[] = ' */';
                 $phpCodeToCache[] = '';
                 // Add ext_tables.php content of extension
+                $phpCodeToCache[] = 'namespace {';
                 $phpCodeToCache[] = trim((string)file_get_contents($extTablesPath));
+                $phpCodeToCache[] = '}';
                 $phpCodeToCache[] = '';
             }
         }
         $phpCodeToCache = implode(LF, $phpCodeToCache);
         // Remove all start and ending php tags from content
         $phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
+        $phpCodeToCache = preg_replace('/declare\\s?+\\(\\s?+strict_types\\s?+=\\s?+1\\s?+\\);/is', '', (string)$phpCodeToCache);
         self::getCacheManager()->getCache('core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
     }
 
