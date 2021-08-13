@@ -142,13 +142,19 @@ TYPO3:
                 elementClassAttribute: lightbox
                 elementErrorClassAttribute: error
                 saveToFileMount: '1:/user_upload/'
-                allowedMimeTypes:
-                  - image/jpeg
-                  - image/png
-                  - image/bmp
+                allowedMimeTypes: []
                 imageLinkMaxWidth: 500
                 imageMaxWidth: 500
                 imageMaxHeight: 500
+              variants:
+                -
+                  identifier: legacy-mime-types
+                  properties:
+                    allowedMimeTypes:
+                      - image/jpeg
+                      - image/png
+                      - image/bmp
+                  condition: feature("form.legacyUploadMimeTypes")
           formEditor:
             formEditorPartials:
               FormElement-ImageUpload: Stage/FileUploadTemplate
