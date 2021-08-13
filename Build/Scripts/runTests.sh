@@ -88,7 +88,7 @@ No arguments: Run all unit tests with PHP 7.4
 Options:
     -s <...>
         Specifies which test suite to run
-            - acceptance: main backend acceptance tests
+            - acceptance: main application acceptance tests
             - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
@@ -247,8 +247,8 @@ Examples:
     # Run functional tests on postgres 11
     ./Build/Scripts/runTests.sh -s functional -d postgres -k 11
 
-    # Run restricted set of backend acceptance tests
-    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Backend/Login/BackendLoginCest.php:loginButtonMouseOver
+    # Run restricted set of application acceptance tests
+    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
 
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
@@ -425,19 +425,19 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_backend_mysql
-                docker-compose run acceptance_backend_mysql
+                docker-compose run prepare_acceptance_application_mysql
+                docker-compose run acceptance_application_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
             mariadb)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_acceptance_backend_mariadb
-                docker-compose run acceptance_backend_mariadb
+                docker-compose run prepare_acceptance_application_mariadb
+                docker-compose run acceptance_application_mariadb
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                docker-compose run prepare_acceptance_backend_postgres
-                docker-compose run acceptance_backend_postgres
+                docker-compose run prepare_acceptance_application_postgres
+                docker-compose run acceptance_application_postgres
                 SUITE_EXIT_CODE=$?
                 ;;
             *)

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,24 +15,27 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
-use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
+namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Topbar;
 
-class FileTree extends AbstractPageTree
+use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+
+/**
+ * Topbar username and avatar module tests.
+ */
+class UsernameOnAvatarCest
 {
-    // Selectors
-    public static $pageTreeFrameSelector = '#typo3-filestoragetree';
-    public static $pageTreeSelector = '#navigation-tree-container';
-    public static $treeItemSelector = 'g.nodes > .node';
-    public static $treeItemAnchorSelector = 'text.node-name';
+    public function _before(ApplicationTester $I)
+    {
+        $I->useExistingSession('admin');
+    }
 
     /**
-     * Inject our core AcceptanceTester actor into PageTree
+     * This test case is used to check if username is visible in the toolbar.
      *
      * @param ApplicationTester $I
      */
-    public function __construct(ApplicationTester $I)
+    public function usernameIsShown(ApplicationTester $I)
     {
-        $this->tester = $I;
+        $I->see('admin', '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem');
     }
 }

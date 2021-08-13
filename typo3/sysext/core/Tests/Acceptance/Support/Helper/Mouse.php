@@ -26,16 +26,16 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverMouse;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
  * Several mouse actions for Backend usage.
  */
 class Mouse
 {
-    protected BackendTester $tester;
+    protected ApplicationTester $tester;
 
-    public function __construct(BackendTester $I)
+    public function __construct(ApplicationTester $I)
     {
         $this->tester = $I;
     }

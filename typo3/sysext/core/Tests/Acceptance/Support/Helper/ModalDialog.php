@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
-use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog;
 
 /**
@@ -49,9 +49,9 @@ class ModalDialog extends AbstractModalDialog
     /**
      * Inject our core AcceptanceTester actor into ModalDialog
      *
-     * @param BackendTester $I
+     * @param ApplicationTester $I
      */
-    public function __construct(BackendTester $I)
+    public function __construct(ApplicationTester $I)
     {
         $this->tester = $I;
     }

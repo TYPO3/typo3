@@ -45,7 +45,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  * Verbose output with 8 chunks:
  * ./Build/Scripts/splitAcceptanceTests.php 8 -v
  *
- * It's purpose is to find all core Backend acceptance tests and split them into
+ * It's purpose is to find all core Application acceptance tests and split them into
  * pieces. In CI, there are for example 8 jobs for the ac tests and each picks one
  * chunk of tests. This way, acceptance tests are run in parallel
  * and thus reduce the overall runtime of the test suite.
@@ -80,7 +80,7 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
         // Find functional test files
         $testFiles = (new Finder())
             ->files()
-            ->in(__DIR__ . '/../../typo3/sysext/core/Tests/Acceptance/Backend')
+            ->in(__DIR__ . '/../../typo3/sysext/core/Tests/Acceptance/Application')
             ->name('/Cest\.php$/')
             ->sortByName()
         ;
