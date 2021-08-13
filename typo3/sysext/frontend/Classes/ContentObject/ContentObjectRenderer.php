@@ -5528,8 +5528,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         if ($JSwindowParams) {
-            $onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url'])) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');vHWin.focus();return false;';
+            $onClick = 'openPic(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url'])) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');return false;';
             $tagAttributes['onclick'] = htmlspecialchars($onClick);
+            $this->getTypoScriptFrontendController()->setJS('openPic');
         }
 
         if (!empty($resolvedLinkParameters['class'])) {

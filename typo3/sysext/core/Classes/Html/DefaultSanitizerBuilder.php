@@ -59,6 +59,19 @@ class DefaultSanitizerBuilder extends CommonBuilder
         return GeneralUtility::makeInstance(Sanitizer::class, $visitor);
     }
 
+    protected function createBasicTags(): array
+    {
+        /** @var Behavior\Tag[] $tags */
+        $tags = parent::createBasicTags();
+        // `... onclick="openPic(...)"` used in ContentObjectRenderer and AbstractMenuContentObject
+        // @todo get rid of `onclick` since it conflicts with Content-Security-Policy
+        $tags['a']->addAttrs(
+            (new Behavior\Attr('onclick'))
+                ->addValues(new Behavior\RegExpAttrValue('#^openPic\(#'))
+        );
+        return $tags;
+    }
+
     protected function createBehavior(): Behavior
     {
         return parent::createBehavior()
