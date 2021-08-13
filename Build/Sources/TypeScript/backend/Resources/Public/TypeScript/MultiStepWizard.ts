@@ -319,7 +319,6 @@ class MultiStepWizard {
 
     let $modalTitle = $modal.find('.modal-title');
     let $modalFooter = $modal.find('.modal-footer');
-    let $modalButtonGroup = $modal.find('.modal-btn-group');
     let $nextButton = $modalFooter.find('button[name="next"]');
     let nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
     let currentIndex = this.setup.$carousel.data('currentIndex') + 1;
@@ -350,8 +349,6 @@ class MultiStepWizard {
       $modalFooter.find('.progress-bar.step')
         .width('0%')
         .text('');
-
-      $modalButtonGroup.slideDown();
     }
 
     $nextButton
@@ -374,7 +371,6 @@ class MultiStepWizard {
 
     let $modalTitle = $modal.find('.modal-title');
     let $modalFooter = $modal.find('.modal-footer');
-    let $modalButtonGroup = $modal.find('.modal-btn-group');
     let $nextButton = $modalFooter.find('button[name="next"]');
     let nextSlideNumber = this.setup.$carousel.data('currentSlide') - 1;
     let currentIndex = this.setup.$carousel.data('currentIndex') - 1;
@@ -399,8 +395,6 @@ class MultiStepWizard {
       $modalFooter.find('.progress-bar.step')
         .width(this.setup.$carousel.data('initialStep') + '%')
         .text(this.getProgressBarTitle(currentIndex + 1));
-
-      $modalButtonGroup.slideUp();
     } else {
       $modalFooter.find('.progress-bar.first-step')
         .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
