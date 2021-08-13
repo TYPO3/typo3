@@ -34,6 +34,7 @@ abstract class AbstractCest
         $I->waitForElement($this->inPageTree . ' .node', 5);
         $pageTree->openPath($pagePath);
         $I->switchToContentFrame();
+        $I->waitForElementVisible('//table[@id="typo3-permissionList"]/tbody/tr[1]/td[2]/a[@title="Change permissions"]');
         $I->click('//table[@id="typo3-permissionList"]/tbody/tr[1]/td[2]/a[@title="Change permissions"]');
         $I->waitForElementVisible('#PermissionControllerEdit');
         $I->selectOption('//select[@id="selectGroup"]', ['value' => $userGroupId]);
@@ -52,9 +53,9 @@ abstract class AbstractCest
             $I->switchToContentFrame();
         }
 
+        $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
         $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text'=>'Backend user groups']);
         $I->waitForText('Backend User Group Listing');
-        $I->makeScreenshot('setModAccess');
         $I->click('//table/tbody/tr[descendant::a[@data-uid="' . $userGroupId . '"]]/td[2]/a');
         $I->waitForElementVisible('#EditDocumentController');
         $I->click('//form[@id="EditDocumentController"]//ul/li[2]/a');
@@ -83,6 +84,7 @@ abstract class AbstractCest
             $I->switchToContentFrame();
         }
 
+        $I->waitForElementVisible($this->inModuleHeader . ' [name=BackendUserModuleMenu]');
         $I->selectOption($this->inModuleHeader . ' [name=BackendUserModuleMenu]', ['text'=>'Backend users']);
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::a[@data-uid="' . $userId . '"]]//a[@title="Edit"]');

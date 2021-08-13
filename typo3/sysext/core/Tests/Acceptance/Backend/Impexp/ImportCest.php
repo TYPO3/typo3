@@ -92,6 +92,8 @@ class ImportCest
         $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
         $I->click($pageInPageTreeIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -110,6 +112,8 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -117,6 +121,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -165,6 +170,8 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -172,6 +179,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/unsupported.json';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -194,16 +202,18 @@ class ImportCest
         $I->wantToTest('rejecting import if prerequisites not met.');
 
         $sysCategoryTable = '#recordlist-sys_category';
-
-        $I->switchToContentFrame();
-        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
-        $I->switchToMainFrame();
-
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
 
+        $I->switchToContentFrame();
+        $I->waitForText($page1Title);
+        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
+        $I->switchToMainFrame();
+
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -211,6 +221,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table_with_bootstrap_package.xml';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -233,6 +244,7 @@ class ImportCest
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->waitForText($page1Title);
         $sysCategoryRecords = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
         $sysCategoryRecordsNew = array_diff($sysCategoryRecords, $sysCategoryRecordsBefore);
         $I->assertCount(0, $sysCategoryRecordsNew);
@@ -253,6 +265,8 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -260,6 +274,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -296,16 +311,18 @@ class ImportCest
         $I->wantToTest('importing a table of records.');
 
         $sysCategoryTable = '#recordlist-sys_category';
-
-        $I->switchToContentFrame();
-        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
-        $I->switchToMainFrame();
-
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
 
+        $I->switchToContentFrame();
+        $I->waitForText($page1Title);
+        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
+        $I->switchToMainFrame();
+
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -313,6 +330,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table.xml';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -334,6 +352,7 @@ class ImportCest
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->waitForElementVisible($sysCategoryTable . ' .t3js-entity');
         $sysCategoryRecords = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
         $sysCategoryRecordsNew = array_diff($sysCategoryRecords, $sysCategoryRecordsBefore);
         $I->assertCount(5, $sysCategoryRecordsNew);
@@ -351,16 +370,18 @@ class ImportCest
         $I->wantToTest('importing a single record.');
 
         $sysCategoryTable = '#recordlist-sys_category';
-
-        $I->switchToContentFrame();
-        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
-        $I->switchToMainFrame();
-
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
 
+        $I->switchToContentFrame();
+        $I->waitForText($page1Title);
+        $sysCategoryRecordsBefore = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
+        $I->switchToMainFrame();
+
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -368,6 +389,7 @@ class ImportCest
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_record.xml';
 
         $I->switchToContentFrame();
+        $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
         $I->waitForElementVisible($this->inputUploadFile, 5);
         $I->attachFile($this->inputUploadFile, $fixtureFilePath);
@@ -389,6 +411,7 @@ class ImportCest
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
+        $I->waitForElementVisible($sysCategoryTable . ' .t3js-entity');
         $sysCategoryRecords = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
         $sysCategoryRecordsNew = array_diff($sysCategoryRecords, $sysCategoryRecordsBefore);
         $I->assertCount(1, $sysCategoryRecordsNew);

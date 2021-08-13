@@ -67,6 +67,8 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->seeElement($this->contextMenuExport);
@@ -90,6 +92,8 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->seeElement($this->contextMenuExport);
@@ -107,9 +111,12 @@ class UsersCest extends AbstractCest
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -120,10 +127,13 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
         $I->switchToContentFrame();
+        $I->waitForText($importPageSectionTitle);
         $I->dontSeeElement($this->checkboxForceAllUids);
 
         $I->useExistingSession('admin');
@@ -138,9 +148,12 @@ class UsersCest extends AbstractCest
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -152,10 +165,13 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
         $I->switchToContentFrame();
+        $I->waitForText($importPageSectionTitle);
         $I->dontSee('From path:', $this->inModuleTabsBody);
         $I->dontSeeElement($this->inModuleTabs . ' ' . $this->tabUpload);
 
@@ -175,13 +191,17 @@ class UsersCest extends AbstractCest
     {
         $selectedPageTitle = 'Root';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $importPageSectionTitle = 'Select file to import';
 
         $I->click($this->inPageTree . ' .node.identifier-0_0 .node-icon-container');
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);
         $I->switchToContentFrame();
+        $I->waitForText($importPageSectionTitle);
         $I->dontSeeElement($this->inModuleHeader . ' ' . $this->buttonViewPage);
 
         $I->switchToMainFrame();
@@ -189,6 +209,8 @@ class UsersCest extends AbstractCest
         $I->click('List');
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);
@@ -202,6 +224,8 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);

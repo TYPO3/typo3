@@ -84,10 +84,14 @@ class ExportCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
         $I->switchToContentFrame();
+        $I->waitForText($selectedPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->see($selectedPageTitle, $this->inModuleHeader);
 
         $buttonUpdate = '.btn[value=Update]';
@@ -109,6 +113,9 @@ class ExportCest
 
         $pageTree->openPath([$tablePageTitle]);
         $I->switchToContentFrame();
+        // List module single table mode
+        $I->waitForText($tableTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->click($tableTitle);
 
         $listModuleHeader = '.module-docheader';
@@ -143,8 +150,13 @@ class ExportCest
 
         $pageTree->openPath([$recordPageTitle]);
         $I->switchToContentFrame();
+        // List module single table mode
+        $I->waitForText($recordPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->click($recordIcon, $recordTable);
         $I->waitForElementVisible($contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
@@ -164,17 +176,20 @@ class ExportCest
      *
      * @throws \Exception
      */
-    public function exportPageAndRecords(BackendTester $I)
+    public function exportPageAndRecordsFromPageTree(BackendTester $I)
     {
         $I->wantToTest('exporting a page with records.');
 
         $pageTitle = 'staticdata';
+        $exportPageTitle = 'Export pagetree configuration';
         $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
         $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
         $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
 
         $I->click($pageIcon);
         $I->waitForElementVisible($contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
@@ -184,6 +199,8 @@ class ExportCest
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $I->switchToContentFrame();
+        $I->waitForText($exportPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->cantSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
         $I->see('Inside pagetree', $this->inModulePreview);
         $I->dontSee('Outside pagetree', $this->inModulePreview);
@@ -211,12 +228,14 @@ class ExportCest
         $I->wantToTest('exporting a table of records.');
 
         $rootPage = '.node.identifier-0_0 .node-name';
-        $I->canSeeElement($rootPage);
-        $I->click($rootPage);
-
+        $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTableTitle = 'Website Language';
 
+        $I->canSeeElement($rootPage);
+        $I->click($rootPage);
         $I->switchToContentFrame();
+        $I->waitForText($rootPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->click($sysLanguageTableTitle);
 
         $listModuleHeader = '.module-docheader';
@@ -257,19 +276,25 @@ class ExportCest
     {
         $I->wantToTest('exporting a single record.');
 
-        $rootPage = '.node.identifier-0_0 .node-name';
-        $I->canSeeElement($rootPage);
-        $I->click($rootPage);
-
+        $rootPage = '#identifier-0_0 .node-name';
+        $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-sys_language';
         $sysLanguageIcon = 'tr:first-child a.t3js-contextmenutrigger';
         $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
         $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
 
+        // select root page in list module
+        $I->canSeeElement($rootPage);
+        $I->click($rootPage);
         $I->switchToContentFrame();
+        $I->waitForText($rootPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
         $I->click($sysLanguageIcon, $sysLanguageTable);
         $I->waitForElementVisible($contextMenuMore, 5);
+        // Give JS 2 seconds for event registration, so click on 'more' works
+        $I->wait(1);
         $I->click($contextMenuMore);
+        $I->waitForText('Export');
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
 
