@@ -189,7 +189,7 @@ class SiteMatcher implements SingletonInterface
                 array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                 ['utf8' => true],
                 $uri->getHost() ?: '',
-                $uri->getScheme()
+                $uri->getScheme() === '' ? [] : [$uri->getScheme()]
             );
             $identifier = 'site_' . $site->getIdentifier();
             $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;
@@ -202,7 +202,7 @@ class SiteMatcher implements SingletonInterface
                     array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
                     (string)idn_to_ascii($uri->getHost()),
-                    $uri->getScheme()
+                    $uri->getScheme() === '' ? [] : [$uri->getScheme()]
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
                 $groupedRoutes[($uri->getScheme() ?: '-') . ($uri->getHost() ?: '-')][$uri->getPath() ?: '/'][$identifier] = $route;

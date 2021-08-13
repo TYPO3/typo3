@@ -45,7 +45,7 @@ class Uri implements UriInterface
      * The default scheme for the URI
      * @var string
      */
-    protected $scheme;
+    protected $scheme = '';
 
     /**
      * @var int[] Associative array containing schemes and their default ports.

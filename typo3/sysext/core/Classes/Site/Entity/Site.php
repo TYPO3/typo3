@@ -114,7 +114,7 @@ class Site implements SiteInterface
                 );
                 $base = new Uri($this->sanitizeBaseUrl($base));
                 // no host given by the language-specific base, so lets prefix the main site base
-                if ($base->getScheme() === null && $base->getHost() === '') {
+                if ($base->getScheme() === '' && $base->getHost() === '') {
                     $base = rtrim((string)$this->base, '/') . '/' . ltrim((string)$base, '/');
                     $base = new Uri($this->sanitizeBaseUrl($base));
                 }
