@@ -125,6 +125,7 @@ class FormEngineUtility
         $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
         if (!empty($absoluteFilePath) && is_file($absoluteFilePath)) {
             return '<img'
+                . ' loading="lazy" '
                 . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
                 . ' alt="' . htmlspecialchars($alt) . '" '
                 . ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
