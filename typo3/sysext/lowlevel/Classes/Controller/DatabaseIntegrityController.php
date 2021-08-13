@@ -371,6 +371,7 @@ class DatabaseIntegrityController
         switch ($searchMode) {
             case 'query':
                 $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/QueryGenerator');
+                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
                 $this->view->assign('queryMaker', $fullsearch->queryMaker());
                 break;
             case 'raw':

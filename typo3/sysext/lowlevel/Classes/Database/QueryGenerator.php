@@ -1685,7 +1685,7 @@ class QueryGenerator
     protected function cleanUpQueryConfig($queryConfig)
     {
         // Since we don't traverse the array using numeric keys in the upcoming while-loop make sure it's fresh and clean before displaying
-        if (is_array($queryConfig)) {
+        if (!empty($queryConfig) && is_array($queryConfig)) {
             ksort($queryConfig);
         } else {
             // queryConfig should never be empty!
