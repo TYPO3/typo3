@@ -132,4 +132,67 @@ class TemplateCest
         $I->see('page.10.value = HELLO WORLD!');
         $I->see('[value] = HELLO WORLD!');
     }
+
+    /**
+     * @param ApplicationTester $I
+     */
+    public function checkClosestTemplateButton(ApplicationTester $I)
+    {
+        $I->wantTo('click on the button to go to the closest page with a template');
+        $I->switchToMainFrame();
+        // Open the pagetree
+        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
+        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $I->switchToContentFrame();
+        $I->waitForText('No template');
+        $I->see('There was no template on this page!');
+        $I->see('You need to create a template record below in order to edit your configuration.');
+        $I->seeLink('Click here to go.');
+        $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Click here to go."]]');
+
+        $I->wantTo('see that the page has a template');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->waitForElement('.table-striped');
+        $I->see('Title');
+        $I->see('Description');
+        $I->see('Constants');
+        $I->see('Setup');
+        $I->see('Edit the whole template record');
+        $I->click('Edit the whole template record');
+    }
+
+    /**
+     * @param ApplicationTester $I
+     */
+    public function createExtensionTemplate(ApplicationTester $I)
+    {
+        $I->wantTo('see the button to create a extension template');
+        $I->switchToMainFrame();
+        //Open the pagetree
+        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
+        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+        $I->switchToContentFrame();
+        $I->waitForText('No template');
+        $I->see('There was no template on this page!');
+        $I->see('You need to create a template record below in order to edit your configuration.');
+
+        $I->seeInFormFields(
+            '#TypoScriptTemplateModuleController',
+            [
+                'createExtension' => 'Click here to create an extension template.',
+            ]
+        );
+
+        $I->clickWithLeftButton('//input[@name=\'createExtension\']');
+
+        $I->wantTo('see that the page has a template');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');
+        $I->waitForElement('.table-striped');
+        $I->see('Title');
+        $I->see('Description');
+        $I->see('Constants');
+        $I->see('Setup');
+        $I->see('Edit the whole template record');
+        $I->click('Edit the whole template record');
+    }
 }
