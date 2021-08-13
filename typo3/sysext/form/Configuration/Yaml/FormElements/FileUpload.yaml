@@ -154,11 +154,7 @@ TYPO3:
                 elementClassAttribute: ''
                 elementErrorClassAttribute: error
                 saveToFileMount: '1:/user_upload/'
-                allowedMimeTypes:
-                  - application/msword
-                  - application/vnd.openxmlformats-officedocument.wordprocessingml.document
-                  - application/vnd.oasis.opendocument.text
-                  - application/pdf
+                allowedMimeTypes: []
           formEditor:
             formEditorPartials:
               FormElement-FileUpload: Stage/FileUploadTemplate

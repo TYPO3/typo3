@@ -164,7 +164,9 @@ class SilentConfigurationUpgradeService
         'BE/enabledBeUserIPLock',
         // #94312
         'BE/loginSecurityLevel',
-        'FE/loginSecurityLevel'
+        'FE/loginSecurityLevel',
+        // #94871
+        'SYS/features/form.legacyUploadMimeTypes',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

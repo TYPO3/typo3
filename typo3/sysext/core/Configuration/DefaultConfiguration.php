@@ -71,7 +71,6 @@ return [
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [
-            'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
             'rte.htmlSanitize' => true,
             'runtimeDbQuotingOfTcaConfiguration' => true,
