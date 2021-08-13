@@ -8,6 +8,494 @@ Frontend rendering
 ==================
 
 
+.. _concepts-frontendrendering-templates:
+
+Templates
+=========
+
+The Fluid templates of the form framework are based on Twitter Bootstrap.
+
+
+.. _concepts-frontendrendering-templates-customtemplates:
+
+Custom templates
+----------------
+
+If you want to use custom Fluid templates for the frontend output of the
+form elements, you cannot register an additional template path using
+TypoScript. Instead, the registration of new template paths has to be done
+via YAML. The settings are part of the ``prototypes`` configuration.
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   templateRootPaths:
+                     100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
+                   partialRootPaths:
+                     100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
+                   layoutRootPaths:
+                     100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
+
+For each ``form definition`` - which references the prototype ``standard`` -
+the form framework will additionally look for Fluid templates within the
+path 'EXT:my_site_package/Resources/Private/Frontend/[*]' as set above.
+Apart from the 'Form' element, the process will search for templates within
+the ``partialRootPaths`` folder. The name of the partial is derived from the
+property ``formElementTypeIdentifier``. For example, the template of the
+form element ``Text`` must be stored within the ``partialRootPaths`` folder
+named ``Text.html``. In contrast, the template of the ``Form`` element must
+reside within the ``templateRootPaths`` folder. According to the introduced
+logic, the template name must be ``Form.html``.
+
+
+.. _concepts-frontendrendering-templates-singlevalues:
+
+Access single values in finisher templates
+------------------------------------------
+
+You can access single form values and place them freely in your finisher templates.
+The ``RenderFormValueViewHelper`` does the job. The viewhelper accepts a single form
+element and renders it. Have a look at the following example. In order to output
+the value of the field ``message`` the "RenderFormValueViewHelper"
+is called with two parameters. ``{formValue.processedValue}`` contains the specific
+value which can be manipulated with Fluid or styled etc.
+
+.. code-block:: html
+
+   <formvh:renderFormValue renderable="{page.rootForm.elements.message}" as="formValue">
+       {formValue.processedValue}
+   </formvh:renderFormValue>
+
+If you don't know the names of your form elements, you could look them up in your
+form definition. In addition, you can use the following snippet to lists all of
+the available elements.
+
+.. code-block:: html
+
+   <f:debug>{page.rootForm.elements}</f:debug>
+
+
+.. _concepts-frontendrendering-translation:
+
+Translation
+===========
+
+
+.. _concepts-frontendrendering-translation-formdefinition:
+
+Translate form definition
+-------------------------
+
+The translation of ``form definitions`` works differently to the translation
+of the backend aspects. Currently, there is no graphical user interface
+supporting the translation process.
+
+If the backend editor needed to translate the ``form definition`` properties
+in the same way the backend aspects are translated, he/ she would see long
+and unwieldy translation keys while editing a form within the ``form editor``.
+In order to avoid this, rather the element properties are translated than
+their values. Thus, the form framework does not look for translation keys
+within the translation file. Instead, the system searches for translations
+of the form element properties independent of their property values. The
+property values are ignored if the process finds a proper entry within the
+translation file. As a result, the property values are overridden by the
+translated value.
+
+This approach is a compromise between two scenarios: the exclusive usage of
+the ``form editor`` and/ or the manual creation of ``form definitions``
+which can afterwards (theoretically) be edited with the ``form editor``. In
+addition, the described compromise allows the editor to create forms in the
+default language whose form element property values are displayed as
+specified in the ``form editor``. Based on this, an integrator could provide
+additional language files which automatically translate the specific form.
+
+Additional translation files can be defined as follows:
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               Form:
+                 renderingOptions:
+                   translation:
+                     translationFiles:
+                       # custom translation file
+                       20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
+
+The array is processed from the highest key to the lowest, i.e. your
+translation file with the key ``20`` is processed first. If the look-up
+process does not find a key within all of the provided files, the
+property value will be displayed unmodified.
+
+The following properties can be translated:
+
+- label
+- properties.[*]
+- properties.options.[*]
+- properties.fluidAdditionalAttributes.[*]
+- renderingOptions.[*]
+
+The translation keys are put together based on a specific pattern. In
+addition, a fallback chain that depends on the form element identifiers
+exists. As a result, the following translation scenarios are possible:
+
+- translation of a form element property for a specific form and form
+  element
+- translation of a form element property for a specific form element and
+  various forms
+- translation of a form element property for an element type and various
+  forms, e.g. the ``Page`` element
+
+The look-up process searches for translation keys in all given translation
+files based on the following order:
+
+- ``<formDefinitionIdentifier>.element.<elementIdentifier>.properties.<propertyName>``
+- ``element.<formElementIdentifier>.properties.<propertyName>``
+- ``element.<elementType>.properties.<propertyName>``
+
+Form elements with option properties (``properties.options``), like the
+``Select`` element, feature the following look-up process:
+
+- ``<formDefinitionIdentifier>.element.<elementIdentifier>.properties.options.<propertyValue>``
+- ``element.<elementIdentifier>.properties.options.<propertyValue>``
+
+
+Example
+"""""""
+
+.. code-block:: yaml
+
+   identifier: ApplicationForm
+   type: Form
+   prototypeName: standard
+   label: 'Application form'
+
+   renderables:
+     -
+       identifier: GeneralInformation
+       type: Page
+       label: 'General information'
+
+       renderables:
+         -
+           identifier: LastName
+           type: Text
+           label: 'Last name'
+           properties:
+             placeholder: 'Please enter your last name.'
+           defaultValue: ''
+         -
+           identifier: Software
+           type: MultiSelect
+           label: 'Known software'
+           properties:
+             options:
+               value1: TYPO3
+               value2: Neos
+
+For the form element ``LastName``, the process will look for the following
+translation keys within the translation files:
+
+- ``ApplicationForm.element.LastName.properties.label``
+- ``element.LastName.properties.label``
+- ``element.Text.properties.label``
+
+If none of the above-mentioned keys exist, 'Last name' will be displayed.
+
+For the form element ``Software``, the process will look for the following
+translation keys within the translation files:
+
+- ``ApplicationForm.element.Software.properties.label``
+- ``element.Software.properties.label``
+- ``element.MultiSelect.properties.label``
+
+If none of the above-mentioned keys exist, 'Known software' will be
+displayed. The option properties are addressed as follows:
+
+- ``ApplicationForm.element.Software.properties.options.value1``
+- ``element.Software.properties.options.value1``
+- ``ApplicationForm.element.Software.properties.options.value2``
+- ``element.Software.properties.options.value2``
+
+If none of the above-mentioned keys exist, 'TYPO3' will be displayed as
+label for the first option and 'Neos' as label for the second option.
+
+
+.. _concepts-frontendrendering-translation-validationerrors:
+
+Translation of validation messages
+----------------------------------
+
+The translation of validation messages is similar to the translation of
+``form definitions``. The same translation files can be used. If the look-up
+process does not find a key within the provided files, the appropriate
+message of the Extbase framework will be displayed. EXT:form already
+translates all of those validators by default.
+
+As mentioned above, the translation keys are put together based on a
+specific pattern. Furthermore, the fallback chain exists here as well. Thus,
+the following translation scenarios are possible:
+
+- translation of validation messages for a specific validator of a concrete
+  form element and concrete form
+- translation of validation messages for a specific validator of various
+  form elements within a concrete form
+- translation of validation messages for a specific validator of a concrete
+  form element in various forms
+- translation of validation messages for a specific validator within various
+  forms
+
+In Extbase, the validation messages are identified with the help of
+numerical codes (UNIX timestamps). For the same validator, different codes
+are valid. Read more about :ref:`concrete validator configurations <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`.
+
+The look-up process searches for translation keys in all given translation
+files based on the following order:
+
+- ``<formDefinitionIdentifier>.validation.error.<elementIdentifier>.<validationErrorCode>``
+- ``<formDefinitionIdentifier>.validation.error.<validationErrorCode>``
+- ``validation.error.<elementIdentifier>.<validationErrorCode>``
+- ``validation.error.<validationErrorCode>``
+
+
+Example
+"""""""
+
+.. code-block:: yaml
+
+   identifier: ContactForm
+   type: Form
+   prototypeName: standard
+   label: 'Contact us'
+
+   renderables:
+     -
+       identifier: Page1
+       type: Page
+       label: 'Page 1'
+
+       renderables:
+         -
+           identifier: LastName
+           type: Text
+           label: 'Last name'
+           properties:
+             fluidAdditionalAttributes:
+               required: required
+           validators:
+             -
+               identifier: NotEmpty
+
+Amongst others, the ``NotEmpty`` validator sends 1221560910 as ``<validationErrorCode>``.
+If a user submits this form without providing a value for the field "Last
+name", the ``NotEmpty`` validator fails. Now, the look-up process searches
+for the following translation keys for the ``NotEmpty`` validator combined
+with the form element ``LastName``:
+
+- ContactForm.validation.error.LastName.1221560910
+- ContactForm.validation.error.1221560910
+- validation.error.LastName.1221560910
+- validation.error.1221560910
+
+As mentioned above, if there is no corresponding translation key available,
+the default message of the Extbase framework will be shown.
+
+
+.. _concepts-frontendrendering-translation-finishers:
+
+Translation of finisher options
+-------------------------------
+
+The translation of finisher options is similar to the translation of
+``form definitions``. The same translation files can be used. If the look-up
+process does not find a key within all provided files, the property value
+will be displayed unmodified.
+
+As mentioned above, the translation keys are put together based on a
+specific pattern. Furthermore, the fallback chain exists here as well. Thus,
+the following translation scenarios are possible:
+
+- translation of finisher options for a specific finisher of a concrete form
+- translation of finisher options for a specific finisher of various forms
+
+The look-up process searches for translation keys in all given translation
+files based on the following order:
+
+- ``<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>``
+- ``finisher.<finisherIdentifier>.<optionName>``
+
+
+Example
+"""""""
+
+.. code-block:: yaml
+
+   identifier: ContactForm
+   type: Form
+   prototypeName: standard
+   label: 'Contact us'
+
+   finishers:
+     -
+       identifier: Confirmation
+       options:
+         message: 'Thank you for your inquiry.'
+
+   renderables:
+     ...
+
+The look-up process searches for the following translation keys for the
+``<finisherIdentifier>`` 'Confirmation' and the option 'message':
+
+- ``ContactForm.finisher.Confirmation.message``
+- ``finisher.Confirmation.message``
+
+If no translation key exists, the message 'Thank you for your inquiry.' will
+be shown.
+
+
+.. _concepts-frontendrendering-translation-arguments:
+
+Form element translation arguments
+==================================
+
+Form element property translations and finisher option translations can use
+placeholders to output translation arguments. Translations can be enriched
+with variable values by passing arguments to form element properties. The
+feature was introduced with :issue:`81363`.
+
+
+Form element properties
+-----------------------
+
+Pure YAML is sufficient to add simple, static values:
+
+.. code-block:: yaml
+
+   renderables:
+     - identifier: field-with-translation-arguments
+       type: Checkbox
+       label: This is a %s feature
+       renderingOptions:
+         translation:
+           translationFiles:
+             10: path/to/locallang.xlf
+           arguments:
+             label:
+               - useful
+
+This will produce the label: `This is a useful feature`.
+
+Alternatively, translation arguments can be set via
+:ts:`formDefinitionOverrides` in TypoScript. A common usecase is a checkbox for
+user confirmation linking to details of the topic. Here it makes sense to use
+YAML hashes instead of YAML lists to give sections named keys. This simplifies
+references in TypoScript a lot since named keys are way more readable and also
+keep the setup working in case elements are reordered. With lists and numeric
+keys the TypoScript setup would also need to be updated in this case.
+
+In the following example the list of :yaml:`renderables` has been replaced with
+a hash of :yaml:`renderables` and the field :yaml:`field-with-translation-arguments`
+has received a named key :yaml:`fieldWithTranslationArguments`. This key can be anything
+as long as it is unique on the same level, usually simply copying the :yaml:`identifier`
+should be enough:
+
+.. code-block:: yaml
+
+   renderables:
+     fieldWithTranslationArguments:
+       identifier: field-with-translation-arguments
+       type: Checkbox
+       label: I agree to the <a href="%s">terms and conditions</a>
+       renderingOptions:
+         translation:
+           translationFiles:
+             10: path/to/locallang.xlf
+
+The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
+to the field and adds a page URL as translation argument:
+
+.. code-block:: typoscript
+
+   plugin.tx_form {
+      settings {
+         formDefinitionOverrides {
+            <form-id> {
+               renderables {
+                  0 {
+                     # Page
+                     renderables {
+                        fieldWithTranslationArguments {
+                           renderingOptions {
+                              translation {
+                                 arguments {
+                                    label {
+                                       0 = TEXT
+                                       0.typolink {
+                                          # Terms and conditions page, could be
+                                          # set also via TypoScript constants
+                                          parameter = 42
+                                          returnLast = url
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+The :yaml:`Page` element of the form definition was not registered with a named key so a numeric
+key :yaml:`0` must be used which, as mentioned above, is prone to errors when more pages are added
+or pages are reordered.
+
+.. important::
+
+   There must be at least one translation file with a translation for the
+   configured form element property. Arguments are not inserted into default
+   values defined in a form definition.
+
+
+Finishers
+---------
+
+The same mechanism (YAML, YAML + TypoScript) works for finisher options:
+
+.. code-block:: yaml
+
+   finishers:
+     finisherWithTranslationArguments:
+       identifier: EmailToReceiver
+       options:
+         subject: My %s subject
+         recipientAddress: foo@example.org
+         senderAddress: bar@example.org
+         translation:
+           translationFiles:
+             10: path/to/locallang.xlf
+           arguments:
+             subject:
+               - awesome
+
+This will produce `My awesome subject`.
+
+
 .. _concepts-frontendrendering-basiccodecomponents:
 
 Basic code components
@@ -424,464 +912,3 @@ form elements using the above-mentioned concept of :ref:`hooks<concepts-frontend
            }
        }
    }
-
-
-.. _concepts-frontendrendering-templates:
-
-Templates
-=========
-
-The Fluid templates of the form framework are based on Twitter Bootstrap.
-
-
-.. _concepts-frontendrendering-templates-customtemplates:
-
-Custom templates
-----------------
-
-If you want to use custom Fluid templates for the frontend output of the
-form elements, you cannot register an additional template path using
-TypoScript. Instead, the registration of new template paths has to be done
-via YAML. The settings are part of the ``prototypes`` configuration.
-
-.. code-block:: yaml
-
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   templateRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Templates/'
-                   partialRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Partials/'
-                   layoutRootPaths:
-                     100: 'EXT:my_site_package/Resources/Private/Frontend/Layouts/'
-
-For each ``form definition`` - which references the prototype ``standard`` -
-the form framework will additionally look for Fluid templates within the
-path 'EXT:my_site_package/Resources/Private/Frontend/[*]' as set above.
-Apart from the 'Form' element, the process will search for templates within
-the ``partialRootPaths`` folder. The name of the partial is derived from the
-property ``formElementTypeIdentifier``. For example, the template of the
-form element ``Text`` must be stored within the ``partialRootPaths`` folder
-named ``Text.html``. In contrast, the template of the ``Form`` element must
-reside within the ``templateRootPaths`` folder. According to the introduced
-logic, the template name must be ``Form.html``.
-
-
-.. _concepts-frontendrendering-translation:
-
-Translation
-===========
-
-
-.. _concepts-frontendrendering-translation-formdefinition:
-
-Translate form definition
--------------------------
-
-The translation of ``form definitions`` works differently to the translation
-of the backend aspects. Currently, there is no graphical user interface
-supporting the translation process.
-
-If the backend editor needed to translate the ``form definition`` properties
-in the same way the backend aspects are translated, he/ she would see long
-and unwieldy translation keys while editing a form within the ``form editor``.
-In order to avoid this, rather the element properties are translated than
-their values. Thus, the form framework does not look for translation keys
-within the translation file. Instead, the system searches for translations
-of the form element properties independent of their property values. The
-property values are ignored if the process finds a proper entry within the
-translation file. As a result, the property values are overridden by the
-translated value.
-
-This approach is a compromise between two scenarios: the exclusive usage of
-the ``form editor`` and/ or the manual creation of ``form definitions``
-which can afterwards (theoretically) be edited with the ``form editor``. In
-addition, the described compromise allows the editor to create forms in the
-default language whose form element property values are displayed as
-specified in the ``form editor``. Based on this, an integrator could provide
-additional language files which automatically translate the specific form.
-
-Additional translation files can be defined as follows:
-
-.. code-block:: yaml
-
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formElementsDefinition:
-               Form:
-                 renderingOptions:
-                   translation:
-                     translationFiles:
-                       # custom translation file
-                       20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
-
-The array is processed from the highest key to the lowest, i.e. your
-translation file with the key ``20`` is processed first. If the look-up
-process does not find a key within all of the provided files, the
-property value will be displayed unmodified.
-
-The following properties can be translated:
-
-- label
-- properties.[*]
-- properties.options.[*]
-- properties.fluidAdditionalAttributes.[*]
-- renderingOptions.[*]
-
-The translation keys are put together based on a specific pattern. In
-addition, a fallback chain that depends on the form element identifiers
-exists. As a result, the following translation scenarios are possible:
-
-- translation of a form element property for a specific form and form
-  element
-- translation of a form element property for a specific form element and
-  various forms
-- translation of a form element property for an element type and various
-  forms, e.g. the ``Page`` element
-
-The look-up process searches for translation keys in all given translation
-files based on the following order:
-
-- ``<formDefinitionIdentifier>.element.<elementIdentifier>.properties.<propertyName>``
-- ``element.<formElementIdentifier>.properties.<propertyName>``
-- ``element.<elementType>.properties.<propertyName>``
-
-Form elements with option properties (``properties.options``), like the
-``Select`` element, feature the following look-up process:
-
-- ``<formDefinitionIdentifier>.element.<elementIdentifier>.properties.options.<propertyValue>``
-- ``element.<elementIdentifier>.properties.options.<propertyValue>``
-
-
-Example
-"""""""
-
-.. code-block:: yaml
-
-   identifier: ApplicationForm
-   type: Form
-   prototypeName: standard
-   label: 'Application form'
-
-   renderables:
-     -
-       identifier: GeneralInformation
-       type: Page
-       label: 'General information'
-
-       renderables:
-         -
-           identifier: LastName
-           type: Text
-           label: 'Last name'
-           properties:
-             placeholder: 'Please enter your last name.'
-           defaultValue: ''
-         -
-           identifier: Software
-           type: MultiSelect
-           label: 'Known software'
-           properties:
-             options:
-               value1: TYPO3
-               value2: Neos
-
-For the form element ``LastName``, the process will look for the following
-translation keys within the translation files:
-
-- ``ApplicationForm.element.LastName.properties.label``
-- ``element.LastName.properties.label``
-- ``element.Text.properties.label``
-
-If none of the above-mentioned keys exist, 'Last name' will be displayed.
-
-For the form element ``Software``, the process will look for the following
-translation keys within the translation files:
-
-- ``ApplicationForm.element.Software.properties.label``
-- ``element.Software.properties.label``
-- ``element.MultiSelect.properties.label``
-
-If none of the above-mentioned keys exist, 'Known software' will be
-displayed. The option properties are addressed as follows:
-
-- ``ApplicationForm.element.Software.properties.options.value1``
-- ``element.Software.properties.options.value1``
-- ``ApplicationForm.element.Software.properties.options.value2``
-- ``element.Software.properties.options.value2``
-
-If none of the above-mentioned keys exist, 'TYPO3' will be displayed as
-label for the first option and 'Neos' as label for the second option.
-
-
-.. _concepts-frontendrendering-translation-validationerrors:
-
-Translation of validation messages
-----------------------------------
-
-The translation of validation messages is similar to the translation of
-``form definitions``. The same translation files can be used. If the look-up
-process does not find a key within the provided files, the appropriate
-message of the Extbase framework will be displayed. EXT:form already
-translates all of those validators by default.
-
-As mentioned above, the translation keys are put together based on a
-specific pattern. Furthermore, the fallback chain exists here as well. Thus,
-the following translation scenarios are possible:
-
-- translation of validation messages for a specific validator of a concrete
-  form element and concrete form
-- translation of validation messages for a specific validator of various
-  form elements within a concrete form
-- translation of validation messages for a specific validator of a concrete
-  form element in various forms
-- translation of validation messages for a specific validator within various
-  forms
-
-In Extbase, the validation messages are identified with the help of
-numerical codes (UNIX timestamps). For the same validator, different codes
-are valid. Read more about :ref:`concrete validator configurations <typo3.cms.form.prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`.
-
-The look-up process searches for translation keys in all given translation
-files based on the following order:
-
-- ``<formDefinitionIdentifier>.validation.error.<elementIdentifier>.<validationErrorCode>``
-- ``<formDefinitionIdentifier>.validation.error.<validationErrorCode>``
-- ``validation.error.<elementIdentifier>.<validationErrorCode>``
-- ``validation.error.<validationErrorCode>``
-
-
-Example
-"""""""
-
-.. code-block:: yaml
-
-   identifier: ContactForm
-   type: Form
-   prototypeName: standard
-   label: 'Contact us'
-
-   renderables:
-     -
-       identifier: Page1
-       type: Page
-       label: 'Page 1'
-
-       renderables:
-         -
-           identifier: LastName
-           type: Text
-           label: 'Last name'
-           properties:
-             fluidAdditionalAttributes:
-               required: required
-           validators:
-             -
-               identifier: NotEmpty
-
-Amongst others, the ``NotEmpty`` validator sends 1221560910 as ``<validationErrorCode>``.
-If a user submits this form without providing a value for the field "Last
-name", the ``NotEmpty`` validator fails. Now, the look-up process searches
-for the following translation keys for the ``NotEmpty`` validator combined
-with the form element ``LastName``:
-
-- ContactForm.validation.error.LastName.1221560910
-- ContactForm.validation.error.1221560910
-- validation.error.LastName.1221560910
-- validation.error.1221560910
-
-As mentioned above, if there is no corresponding translation key available,
-the default message of the Extbase framework will be shown.
-
-
-.. _concepts-frontendrendering-translation-finishers:
-
-Translation of finisher options
--------------------------------
-
-The translation of finisher options is similar to the translation of
-``form definitions``. The same translation files can be used. If the look-up
-process does not find a key within all provided files, the property value
-will be displayed unmodified.
-
-As mentioned above, the translation keys are put together based on a
-specific pattern. Furthermore, the fallback chain exists here as well. Thus,
-the following translation scenarios are possible:
-
-- translation of finisher options for a specific finisher of a concrete form
-- translation of finisher options for a specific finisher of various forms
-
-The look-up process searches for translation keys in all given translation
-files based on the following order:
-
-- ``<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>``
-- ``finisher.<finisherIdentifier>.<optionName>``
-
-
-Example
-"""""""
-
-.. code-block:: yaml
-
-   identifier: ContactForm
-   type: Form
-   prototypeName: standard
-   label: 'Contact us'
-
-   finishers:
-     -
-       identifier: Confirmation
-       options:
-         message: 'Thank you for your inquiry.'
-
-   renderables:
-     ...
-
-The look-up process searches for the following translation keys for the
-``<finisherIdentifier>`` 'Confirmation' and the option 'message':
-
-- ``ContactForm.finisher.Confirmation.message``
-- ``finisher.Confirmation.message``
-
-If no translation key exists, the message 'Thank you for your inquiry.' will
-be shown.
-
-
-.. _concepts-frontendrendering-translation-arguments:
-
-Form element translation arguments are supported
-================================================
-
-Form element property translations and finisher option translations can use
-placeholders to output translation arguments. Translations can be enriched
-with variable values by passing arguments to form element properties. The
-feature was introduced with :issue:`81363`.
-
-
-Form element properties
------------------------
-
-Pure YAML is sufficient to add simple, static values:
-
-.. code-block:: yaml
-
-   renderables:
-     - identifier: field-with-translation-arguments
-       type: Checkbox
-       label: This is a %s feature
-       renderingOptions:
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
-           arguments:
-             label:
-               - useful
-
-This will produce the label: `This is a useful feature`.
-
-Alternatively, translation arguments can be set via
-:ts:`formDefinitionOverrides` in TypoScript. A common usecase is a checkbox for
-user confirmation linking to details of the topic. Here it makes sense to use
-YAML hashes instead of YAML lists to give sections named keys. This simplifies
-references in TypoScript a lot since named keys are way more readable and also
-keep the setup working in case elements are reordered. With lists and numeric
-keys the TypoScript setup would also need to be updated in this case.
-
-In the following example the list of :yaml:`renderables` has been replaced with
-a hash of :yaml:`renderables` and the field :yaml:`field-with-translation-arguments`
-has received a named key :yaml:`fieldWithTranslationArguments`. This key can be anything
-as long as it is unique on the same level, usually simply copying the :yaml:`identifier`
-should be enough:
-
-.. code-block:: yaml
-
-   renderables:
-     fieldWithTranslationArguments:
-       identifier: field-with-translation-arguments
-       type: Checkbox
-       label: I agree to the <a href="%s">terms and conditions</a>
-       renderingOptions:
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
-
-The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
-to the field and adds a page URL as translation argument:
-
-.. code-block:: typoscript
-
-   plugin.tx_form {
-      settings {
-         formDefinitionOverrides {
-            <form-id> {
-               renderables {
-                  0 {
-                     # Page
-                     renderables {
-                        fieldWithTranslationArguments {
-                           renderingOptions {
-                              translation {
-                                 arguments {
-                                    label {
-                                       0 = TEXT
-                                       0.typolink {
-                                          # Terms and conditions page, could be
-                                          # set also via TypoScript constants
-                                          parameter = 42
-                                          returnLast = url
-                                       }
-                                    }
-                                 }
-                              }
-                           }
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      }
-   }
-
-The :yaml:`Page` element of the form definition was not registered with a named key so a numeric
-key :yaml:`0` must be used which, as mentioned above, is prone to errors when more pages are added
-or pages are reordered.
-
-.. important::
-
-   There must be at least one translation file with a translation for the
-   configured form element property. Arguments are not inserted into default
-   values defined in a form definition.
-
-
-Finishers
----------
-
-The same mechanism (YAML, YAML + TypoScript) works for finisher options:
-
-.. code-block:: yaml
-
-   finishers:
-     finisherWithTranslationArguments:
-       identifier: EmailToReceiver
-       options:
-         subject: My %s subject
-         recipientAddress: foo@example.org
-         senderAddress: bar@example.org
-         translation:
-           translationFiles:
-             10: path/to/locallang.xlf
-           arguments:
-             subject:
-               - awesome
-
-This will produce `My awesome subject`.
