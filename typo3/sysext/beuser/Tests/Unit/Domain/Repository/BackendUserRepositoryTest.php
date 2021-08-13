@@ -29,7 +29,7 @@ class BackendUserRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function classCanBeInstantiated()
+    public function classCanBeInstantiated(): void
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
         new BackendUserRepository($objectManager);

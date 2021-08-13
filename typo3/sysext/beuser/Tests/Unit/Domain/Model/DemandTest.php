@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DemandTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
-     */
-    protected $subject;
+    protected Demand $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserTypeAllExpectedValueForInt()
+    public function setUserTypeAllExpectedValueForInt(): void
     {
         $userType = Demand::ALL;
         $this->subject->setUserType($userType);
@@ -49,7 +46,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserTypeAdminOnlyExpectedValueForInt()
+    public function setUserTypeAdminOnlyExpectedValueForInt(): void
     {
         $userType = Demand::USERTYPE_ADMINONLY;
         $this->subject->setUserType($userType);
@@ -59,7 +56,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserTypeUserOnlyExpectedValueForInt()
+    public function setUserTypeUserOnlyExpectedValueForInt(): void
     {
         $userType = Demand::USERTYPE_USERONLY;
         $this->subject->setUserType($userType);
@@ -69,7 +66,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setStatusAllExpectedValueForInt()
+    public function setStatusAllExpectedValueForInt(): void
     {
         $status = Demand::ALL;
         $this->subject->setStatus($status);
@@ -79,7 +76,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setStatusActiveExpectedValueForInt()
+    public function setStatusActiveExpectedValueForInt(): void
     {
         $status = Demand::STATUS_ACTIVE;
         $this->subject->setStatus($status);
@@ -89,7 +86,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setStatusInactiveExpectedValueForInt()
+    public function setStatusInactiveExpectedValueForInt(): void
     {
         $status = Demand::STATUS_INACTIVE;
         $this->subject->setStatus($status);
@@ -99,7 +96,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLoginAllExpectedValueForInt()
+    public function setLoginAllExpectedValueForInt(): void
     {
         $login = Demand::ALL;
         $this->subject->setLogins($login);
@@ -109,7 +106,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLoginNoneExpectedValueForInt()
+    public function setLoginNoneExpectedValueForInt(): void
     {
         $login = Demand::LOGIN_NONE;
         $this->subject->setLogins($login);
@@ -119,7 +116,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLoginSameExpectedValueForInt()
+    public function setLoginSameExpectedValueForInt(): void
     {
         $login = Demand::LOGIN_SOME;
         $this->subject->setLogins($login);
@@ -129,7 +126,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUserNameInitialValueForString()
+    public function getUserNameInitialValueForString(): void
     {
         self::assertSame($this->subject->getUserName(), '', 'UserName must be empty string.');
     }
@@ -137,7 +134,7 @@ class DemandTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserNameReturnExpectedValueForString()
+    public function setUserNameReturnExpectedValueForString(): void
     {
         $newUserName = 'User#ää*%^name';
         $this->subject->setUserName($newUserName);

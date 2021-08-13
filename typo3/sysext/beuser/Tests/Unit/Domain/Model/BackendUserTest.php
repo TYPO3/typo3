@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUserTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser
-     */
-    protected $subject;
+    protected BackendUser $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUidReturnsInitialValueForInt()
+    public function getUidReturnsInitialValueForInt(): void
     {
         self::assertNull($this->subject->getUid(), 'Not uid set after initialization.');
     }
@@ -47,7 +44,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUserNameReturnsInitialValueForString()
+    public function getUserNameReturnsInitialValueForString(): void
     {
         self::assertSame($this->subject->getUserName(), '', 'Username not empty');
     }
@@ -55,7 +52,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserNameForStringSetsUserName()
+    public function setUserNameForStringSetsUserName(): void
     {
         $newUserName = 'DonJuan';
         $this->subject->setUserName($newUserName);
@@ -65,7 +62,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRealNameReturnInitialValueForString()
+    public function getRealNameReturnInitialValueForString(): void
     {
         self::assertSame($this->subject->getRealName(), '', 'Real name not empty');
     }
@@ -73,7 +70,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRealNameForStringSetsName()
+    public function setRealNameForStringSetsName(): void
     {
         $realName = 'Conceived at T3CON2018';
         $this->subject->setRealName($realName);
@@ -83,7 +80,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAdminReturnInitialValueForBoolean()
+    public function getAdminReturnInitialValueForBoolean(): void
     {
         self::assertFalse($this->subject->getIsAdministrator(), 'Admin status is correct.');
     }
@@ -91,7 +88,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAdminToTrueSetsAdmin()
+    public function setAdminToTrueSetsAdmin(): void
     {
         $this->subject->setIsAdministrator(true);
         self::assertTrue($this->subject->getIsAdministrator(), 'Admin status is not true, after setting to true.');
@@ -100,7 +97,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAdminToFalseSetsAdmin()
+    public function setAdminToFalseSetsAdmin(): void
     {
         $this->subject->setIsAdministrator(false);
         self::assertFalse($this->subject->getIsAdministrator(), 'Admin status is not false, after setting to false.');

@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LogEntryTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry
-     */
-    protected $subject;
+    protected LogEntry $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class LogEntryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogDataInitiallyReturnsEmptyArray()
+    public function getLogDataInitiallyReturnsEmptyArray(): void
     {
         self::assertSame([], $this->subject->getLogData());
     }
@@ -47,7 +44,7 @@ class LogEntryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogDataForEmptyStringLogDataReturnsEmptyArray()
+    public function getLogDataForEmptyStringLogDataReturnsEmptyArray(): void
     {
         $this->subject->setLogData('');
         self::assertSame([], $this->subject->getLogData());
@@ -56,7 +53,7 @@ class LogEntryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogDataForGarbageStringLogDataReturnsEmptyArray()
+    public function getLogDataForGarbageStringLogDataReturnsEmptyArray(): void
     {
         $this->subject->setLogData('foo bar');
         self::assertSame([], $this->subject->getLogData());
@@ -65,7 +62,7 @@ class LogEntryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogDataForSerializedArrayReturnsThatArray()
+    public function getLogDataForSerializedArrayReturnsThatArray(): void
     {
         $logData = ['foo', 'bar'];
         $this->subject->setLogData(serialize($logData));
@@ -75,7 +72,7 @@ class LogEntryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLogDataForSerializedObjectReturnsEmptyArray()
+    public function getLogDataForSerializedObjectReturnsEmptyArray(): void
     {
         $this->subject->setLogData(serialize(new \stdClass()));
         self::assertSame([], $this->subject->getLogData());

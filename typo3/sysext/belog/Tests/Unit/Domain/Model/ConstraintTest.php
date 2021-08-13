@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConstraintTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Belog\Domain\Model\Constraint
-     */
-    protected $subject;
+    protected Constraint $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class ConstraintTest extends UnitTestCase
     /**
      * @test
      */
-    public function setManualDateStartForDateTimeSetsManualDateStart()
+    public function setManualDateStartForDateTimeSetsManualDateStart(): void
     {
         $date = new \DateTime();
         $this->subject->setManualDateStart($date);
@@ -49,7 +46,7 @@ class ConstraintTest extends UnitTestCase
     /**
      * @test
      */
-    public function setManualDateStartForNoArgumentSetsManualDateStart()
+    public function setManualDateStartForNoArgumentSetsManualDateStart(): void
     {
         $this->subject->setManualDateStart();
         self::assertNull($this->subject->getManualDateStart());
@@ -58,7 +55,7 @@ class ConstraintTest extends UnitTestCase
     /**
      * @test
      */
-    public function setManualDateStopForDateTimeSetsManualDateStop()
+    public function setManualDateStopForDateTimeSetsManualDateStop(): void
     {
         $date = new \DateTime();
         $this->subject->setManualDateStop($date);
@@ -68,7 +65,7 @@ class ConstraintTest extends UnitTestCase
     /**
      * @test
      */
-    public function setManualDateStopForNoArgumentSetsManualDateStop()
+    public function setManualDateStopForNoArgumentSetsManualDateStop(): void
     {
         $this->subject->setManualDateStop();
         self::assertNull($this->subject->getManualDateStop());

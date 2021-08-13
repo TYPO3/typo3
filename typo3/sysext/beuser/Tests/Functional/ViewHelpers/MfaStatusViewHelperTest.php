@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Beuser\Tests\Functional\ViewHelpers;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -25,7 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaStatusViewHelperTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected StandaloneView $view;
 
     protected function setUp(): void
