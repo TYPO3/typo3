@@ -123,6 +123,16 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 // decodes those entities, which is good to have normalized attr values
                 '<a href="mailto:some.body@test.typo3.org">some.body(at)test.typo3(dot)org</a>',
             ],
+            '#058' => [
+                // `... onclick="openPic(...)"` used in ContentObjectRenderer and AbstractMenuContentObject
+                '<a href="/" target="FEopenLink" onclick="openPic(\'\/\',\'FEopenLink\',\'width=200,height=300\');return false;">Link</a>',
+                '<a href="/" target="FEopenLink" onclick="openPic(\'\/\',\'FEopenLink\',\'width=200,height=300\');return false;">Link</a>'
+            ],
+            '#059' => [
+                // `... onclick="openPic(...)"` used in ContentObjectRenderer and AbstractMenuContentObject
+                '<a href="/index.php?eID=tx_cms_showpic" onclick="openPic(\'\/index.php?eID=tx_cms_showpic\u0026file=77\u0026md5=45a4b6287f68a61cf617a470e853d857461bc1d2\u0026parameters%5B0%5D=W10%3D\',\'thePicture\',\'width=1200,height=1799,status=0,menubar=0,=\'); return false;" target="thePicture"><img src="/logo.png"></a>',
+                '<a href="/index.php?eID=tx_cms_showpic" onclick="openPic(\'\/index.php?eID=tx_cms_showpic\u0026file=77\u0026md5=45a4b6287f68a61cf617a470e853d857461bc1d2\u0026parameters%5B0%5D=W10%3D\',\'thePicture\',\'width=1200,height=1799,status=0,menubar=0,=\'); return false;" target="thePicture"><img src="/logo.png"></a>'
+            ],
             '#090' => [
                 '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>',
                 '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>'
