@@ -65,7 +65,6 @@ class SwitchUserControllerTest extends UnitTestCase
     public function listOfLatestSwitchedUsersDoesNotContainTheSameUserTwice(): void
     {
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);
-        $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);
 
         self::assertCount(1, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
     }

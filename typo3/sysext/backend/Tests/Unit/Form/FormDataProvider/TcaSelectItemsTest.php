@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -49,7 +50,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaSelectItemsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Set up
      */
@@ -87,7 +89,7 @@ class TcaSelectItemsTest extends UnitTestCase
      * @param string $tableName
      * @return array
      */
-    protected function mockDatabaseConnection($tableName = 'fTable'): array
+    protected function mockDatabaseConnection(string $tableName = 'fTable'): array
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
@@ -276,7 +278,7 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsDividersIfItemGroupsAreDefined()
+    public function addDataAddsDividersIfItemGroupsAreDefined(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -957,7 +959,7 @@ class TcaSelectItemsTest extends UnitTestCase
      * @test
      * @dataProvider addDataReplacesMarkersInForeignTableClauseDataProvider
      */
-    public function addDataReplacesMarkersInForeignTableClause($foreignTableWhere, $expectedWhere, array $inputOverride): void
+    public function addDataReplacesMarkersInForeignTableClause(string $foreignTableWhere, array $expectedWhere, array $inputOverride): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1036,7 +1038,7 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignTableIsNotDefinedInTca()
+    public function addDataThrowsExceptionIfForeignTableIsNotDefinedInTca(): void
     {
         $input = [
             'tableName' => 'aTable',

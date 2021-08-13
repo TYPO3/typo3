@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
 {
-    /**
-     * @var TcaColumnsProcessPlaceholders
-     */
-    protected $subject;
+    protected TcaColumnsProcessPlaceholders $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersPlaceholderColumns()
+    public function addDataRegistersPlaceholderColumns(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -63,7 +60,7 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersFirstPlaceholderColumn()
+    public function addDataRegistersFirstPlaceholderColumn(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -87,7 +84,7 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersAlternativeLabelColumn()
+    public function addDataRegistersAlternativeLabelColumn(): void
     {
         $input = [
             'columnsToProcess' => [],

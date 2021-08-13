@@ -48,9 +48,6 @@ class ShortcutButtonTest extends FunctionalTestCase
     /**
      * @dataProvider rendersCorrectMarkupDataProvider
      * @test
-     *
-     * @param ShortcutButton $button
-     * @param string $expectedMarkupFile
      */
     public function rendersCorrectMarkup(ShortcutButton $button, string $expectedMarkupFile): void
     {

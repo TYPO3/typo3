@@ -24,10 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class LabelFromItemListMergedReturnsCorrectFieldsFixture extends BackendUtility
 {
-    /**
-     * @return array
-     */
-    public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false)
+    public static function getPagesTSconfig($id, $rootLine = null, $returnPartArray = false): array
     {
         return [];
     }

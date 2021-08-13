@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\Container\SingleFieldContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -30,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PaletteAndSingleContainerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function renderUsesPaletteLabelFromFieldArray()
+    public function renderUsesPaletteLabelFromFieldArray(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
@@ -91,7 +93,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderUsesPaletteValuesFromPaletteArray()
+    public function renderUsesPaletteValuesFromPaletteArray(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
@@ -152,7 +154,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderPrefersFieldArrayPaletteValuesOverPaletteValues()
+    public function renderPrefersFieldArrayPaletteValuesOverPaletteValues(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);

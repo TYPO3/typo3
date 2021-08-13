@@ -14,7 +14,7 @@ class BarResolver implements NodeResolverInterface
     {
     }
 
-    public function resolve()
+    public function resolve(): string
     {
         return BarElement::class;
     }

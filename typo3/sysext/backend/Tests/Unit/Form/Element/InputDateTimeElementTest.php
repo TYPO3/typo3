@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
@@ -33,11 +34,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InputDateTimeElementTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var string Selected timezone backup
      */
-    protected $timezoneBackup = '';
+    protected string $timezoneBackup = '';
 
     /**
      * We're fiddling with hard timestamps in the tests, but time methods in
@@ -50,9 +52,6 @@ class InputDateTimeElementTest extends UnitTestCase
         $this->timezoneBackup = date_default_timezone_get();
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         date_default_timezone_set($this->timezoneBackup);
@@ -61,10 +60,8 @@ class InputDateTimeElementTest extends UnitTestCase
 
     /**
      * Data provider for renderAppliesCorrectTimestampConversion
-     *
-     * @return array
      */
-    public function renderAppliesCorrectTimestampConversionDataProvider()
+    public function renderAppliesCorrectTimestampConversionDataProvider(): array
     {
         // Three elements: input (UTC), timezone of output, expected output
         return [
@@ -88,11 +85,8 @@ class InputDateTimeElementTest extends UnitTestCase
     /**
      * @test
      * @dataProvider renderAppliesCorrectTimestampConversionDataProvider
-     * @param int $input
-     * @param string $serverTimezone
-     * @param int $expectedOutput
      */
-    public function renderAppliesCorrectTimestampConversion($input, $serverTimezone, $expectedOutput)
+    public function renderAppliesCorrectTimestampConversion(int $input, string $serverTimezone, string $expectedOutput): void
     {
         date_default_timezone_set($serverTimezone);
         $data = [

@@ -32,7 +32,7 @@ class SplitButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBlankCallExpectFalse()
+    public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new SplitButton();
         $isValid = $button->isValid();
@@ -44,7 +44,7 @@ class SplitButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidInvalidButtonGivenExpectFalse()
+    public function isButtonValidInvalidButtonGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1441706330);
@@ -62,7 +62,7 @@ class SplitButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse()
+    public function isButtonValidBrokenSetupMultiplePrimaryActionsGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1441706340);
@@ -86,7 +86,7 @@ class SplitButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse()
+    public function isButtonValidBrokenSetupInvalidButtonAsSecondParametersGivenExpectFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1441706330);
@@ -110,7 +110,7 @@ class SplitButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidValidSetupExpectTrue()
+    public function isButtonValidValidSetupExpectTrue(): void
     {
         $button = new SplitButton();
 

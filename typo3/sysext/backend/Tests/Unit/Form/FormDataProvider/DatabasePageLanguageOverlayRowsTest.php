@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
 {
     /**
-     * @var DatabasePageLanguageOverlayRows|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabasePageLanguageOverlayRows|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -40,7 +41,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPageLanguageOverlayRows()
+    public function addDataSetsPageLanguageOverlayRows(): void
     {
         $input = [
             'effectivePid' => '23',

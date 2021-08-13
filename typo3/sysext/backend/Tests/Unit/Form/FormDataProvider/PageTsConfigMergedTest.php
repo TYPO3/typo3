@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PageTsConfigMergedTest extends UnitTestCase
 {
-    /**
-     * @var PageTsConfigMerged
-     */
-    protected $subject;
+    protected PageTsConfigMerged $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class PageTsConfigMergedTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsMergedTsConfigToTsConfig()
+    public function addDataSetsMergedTsConfigToTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -56,7 +53,7 @@ class PageTsConfigMergedTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsTableSpecificConfigurationWithoutType()
+    public function addDataKeepsTableSpecificConfigurationWithoutType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -79,7 +76,7 @@ class PageTsConfigMergedTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesTypeSpecificConfiguration()
+    public function addDataMergesTypeSpecificConfiguration(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -114,7 +111,7 @@ class PageTsConfigMergedTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTypeSpecificConfigurationOverwritesMainConfiguration()
+    public function addDataTypeSpecificConfigurationOverwritesMainConfiguration(): void
     {
         $input = [
             'tableName' => 'aTable',

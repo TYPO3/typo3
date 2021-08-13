@@ -42,7 +42,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkInExplicitFormat()
+    public function renderReturnsValidLinkInExplicitFormat(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidAndTable.html');
@@ -55,7 +55,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkForRoot()
+    public function renderReturnsValidLinkForRoot(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithTable.html');
@@ -68,7 +68,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkInInlineFormat()
+    public function renderReturnsValidLinkInInlineFormat(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/InlineWithPidAndTable.html');
@@ -81,7 +81,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithReturnUrl()
+    public function renderReturnsValidLinkWithReturnUrl(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndReturnUrl.html');
@@ -95,7 +95,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWitPosition()
+    public function renderReturnsValidLinkWitPosition(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithNegativeUid.html');
@@ -108,7 +108,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithDefaultValue()
+    public function renderReturnsValidLinkWithDefaultValue(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValue.html');
@@ -122,7 +122,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithDefaultValues()
+    public function renderReturnsValidLinkWithDefaultValues(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValues.html');
@@ -136,7 +136,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderThrowsExceptionForUidAndPid()
+    public function renderThrowsExceptionForUidAndPid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526136338);
@@ -149,7 +149,7 @@ class NewRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderThrowsExceptionForInvalidUidArgument()
+    public function renderThrowsExceptionForInvalidUidArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526136362);

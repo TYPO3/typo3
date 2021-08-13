@@ -28,7 +28,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTimestampZeroForDefaultDateField()
+    public function addDataSetsTimestampZeroForDefaultDateField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -50,7 +50,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTimestampZeroForDefaultDateTimeField()
+    public function addDataSetsTimestampZeroForDefaultDateTimeField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -72,7 +72,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTimestampZeroForDefaultTimeField()
+    public function addDataSetsTimestampZeroForDefaultTimeField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -94,7 +94,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataConvertsDateStringToTimestamp()
+    public function addDataConvertsDateStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -122,7 +122,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataConvertsDateTimeStringToTimestamp()
+    public function addDataConvertsDateTimeStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -150,7 +150,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataConvertsTimeStringToTimestamp()
+    public function addDataConvertsTimeStringToTimestamp(): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');

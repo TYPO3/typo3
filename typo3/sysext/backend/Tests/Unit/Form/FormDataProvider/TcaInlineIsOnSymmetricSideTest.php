@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
 {
-    /**
-     * @var TcaInlineIsOnSymmetricSide
-     */
-    protected $subject;
+    protected TcaInlineIsOnSymmetricSide $subject;
 
     /**
      * Initializes the mock object.
@@ -42,7 +39,7 @@ class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsIsOnSymmetricSideToTrue()
+    public function addDataSetsIsOnSymmetricSideToTrue(): void
     {
         $input = [
             'databaseRow' => [

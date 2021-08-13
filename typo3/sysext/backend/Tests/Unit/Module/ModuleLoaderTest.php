@@ -35,7 +35,7 @@ class ModuleLoaderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function addModuleLabelsDataProvider()
+    public function addModuleLabelsDataProvider(): array
     {
         return [
             'extbase only with string' => [
@@ -182,7 +182,7 @@ class ModuleLoaderTest extends UnitTestCase
      * @param string|array $labels
      * @param array $expectedResult
      */
-    public function validateLabelsString($moduleName, $labels, array $expectedResult)
+    public function validateLabelsString(string $moduleName, $labels, array $expectedResult): void
     {
         $moduleLoader = new ModuleLoader();
         $moduleLoader->addLabelsForModule($moduleName, $labels);

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
@@ -28,9 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseEditRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseEditRow|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabaseEditRow|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -42,7 +43,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRetrievesRecordInformationFromDatabase()
+    public function addDataRetrievesRecordInformationFromDatabase(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -63,7 +64,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRetrievedRowHasNoPid()
+    public function addDataThrowsExceptionIfRetrievedRowHasNoPid(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -84,7 +85,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfGivenUidIsNotPositive()
+    public function addDataThrowsExceptionIfGivenUidIsNotPositive(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -101,7 +102,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfDatabaseFetchingReturnsNoRow()
+    public function addDataThrowsExceptionIfDatabaseFetchingReturnsNoRow(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -119,7 +120,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionDatabaseRecordExceptionWithAdditionalInformationSet()
+    public function addDataThrowsExceptionDatabaseRecordExceptionWithAdditionalInformationSet(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -139,7 +140,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsWorkspaceDeletePlaceholderExeptionWithDeletePlaceholderRecord()
+    public function addDataThrowsWorkspaceDeletePlaceholderExceptionWithDeletePlaceholderRecord(): void
     {
         $this->expectException(DatabaseRecordWorkspaceDeletePlaceholderException::class);
         $this->expectExceptionCode(1608658396);
@@ -161,7 +162,7 @@ class DatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSkipsDatabaseLookupIfDatabaseRowIsPopulated()
+    public function addDataSkipsDatabaseLookupIfDatabaseRowIsPopulated(): void
     {
         $virtualRow = [
             'uid' => 10,

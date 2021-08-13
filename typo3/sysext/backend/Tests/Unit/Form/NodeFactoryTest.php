@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\SelectSingleElement;
 use TYPO3\CMS\Backend\Form\Element\SelectTreeElement;
 use TYPO3\CMS\Backend\Form\Element\UnknownElement;
@@ -35,11 +36,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class NodeFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function constructThrowsExceptionIfOverrideMissesNodeNameKey()
+    public function constructThrowsExceptionIfOverrideMissesNodeNameKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
@@ -55,7 +57,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfOverrideMissesPriorityKey()
+    public function constructThrowsExceptionIfOverrideMissesPriorityKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
@@ -71,7 +73,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfOverrideMissesClassKey()
+    public function constructThrowsExceptionIfOverrideMissesClassKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432207533);
@@ -87,7 +89,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfOverridePriorityIsLowerThanZero()
+    public function constructThrowsExceptionIfOverridePriorityIsLowerThanZero(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223531);
@@ -103,7 +105,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfOverridePriorityIsHigherThanHundred()
+    public function constructThrowsExceptionIfOverridePriorityIsHigherThanHundred(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223531);
@@ -120,7 +122,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfOverrideTwoNodesWithSamePriorityAndSameNodeNameAreRegistered()
+    public function constructorThrowsExceptionIfOverrideTwoNodesWithSamePriorityAndSameNodeNameAreRegistered(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1432223893);
@@ -142,7 +144,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfResolverMissesNodeNameKey()
+    public function constructThrowsExceptionIfResolverMissesNodeNameKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
@@ -158,7 +160,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfResolverMissesPriorityKey()
+    public function constructThrowsExceptionIfResolverMissesPriorityKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
@@ -174,7 +176,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfResolverMissesClassKey()
+    public function constructThrowsExceptionIfResolverMissesClassKey(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155522);
@@ -190,7 +192,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfResolverPriorityIsLowerThanZero()
+    public function constructThrowsExceptionIfResolverPriorityIsLowerThanZero(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155563);
@@ -206,7 +208,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionIfResolverPriorityIsHigherThanHundred()
+    public function constructThrowsExceptionIfResolverPriorityIsHigherThanHundred(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155563);
@@ -223,7 +225,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfResolverTwoNodesWithSamePriorityAndSameNodeNameAreRegistered()
+    public function constructorThrowsExceptionIfResolverTwoNodesWithSamePriorityAndSameNodeNameAreRegistered(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433155705);
@@ -245,7 +247,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsNoExceptionIfResolverWithSamePriorityButDifferentNodeNameAreRegistered()
+    public function constructorThrowsNoExceptionIfResolverWithSamePriorityButDifferentNodeNameAreRegistered(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'] = [
             1433154909 => [
@@ -265,7 +267,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createThrowsExceptionIfRenderTypeIsNotGiven()
+    public function createThrowsExceptionIfRenderTypeIsNotGiven(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1431452406);
@@ -276,7 +278,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createThrowsExceptionIfNodeDoesNotImplementNodeInterface()
+    public function createThrowsExceptionIfNodeDoesNotImplementNodeInterface(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1431872546);
@@ -293,7 +295,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered()
+    public function createReturnsInstanceOfUnknownElementIfTypeIsNotRegistered(): void
     {
         $unknownElementProphecy = $this->prophesize(UnknownElement::class);
         $unknownElementRevelation = $unknownElementProphecy->reveal();
@@ -305,7 +307,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createReturnsInstanceOfSelectTreeElementIfNeeded()
+    public function createReturnsInstanceOfSelectTreeElementIfNeeded(): void
     {
         $data = [
             'type' => 'select',
@@ -321,7 +323,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createReturnsInstanceOfSelectSingleElementIfNeeded()
+    public function createReturnsInstanceOfSelectSingleElementIfNeeded(): void
     {
         $data = [
             'type' => 'select',
@@ -342,7 +344,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesNewRegisteredElement()
+    public function createInstantiatesNewRegisteredElement(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
@@ -360,7 +362,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesElementRegisteredWithHigherPriorityWithOneGivenOrder()
+    public function createInstantiatesElementRegisteredWithHigherPriorityWithOneGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
@@ -382,7 +384,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesElementRegisteredWithHigherPriorityWithOtherGivenOrder()
+    public function createInstantiatesElementRegisteredWithHigherPriorityWithOtherGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
@@ -404,7 +406,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createThrowsExceptionIfResolverDoesNotImplementNodeResolverInterface()
+    public function createThrowsExceptionIfResolverDoesNotImplementNodeResolverInterface(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1433157422);
@@ -423,7 +425,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesResolverWithHighestPriorityFirstWithOneGivenOrder()
+    public function createInstantiatesResolverWithHighestPriorityFirstWithOneGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
@@ -453,7 +455,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesResolverWithHighestPriorityFirstWithOtherGivenOrder()
+    public function createInstantiatesResolverWithHighestPriorityFirstWithOtherGivenOrder(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [
@@ -483,7 +485,7 @@ class NodeFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createInstantiatesNodeClassReturnedByResolver()
+    public function createInstantiatesNodeClassReturnedByResolver(): void
     {
         $data = ['renderType' => 'foo'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'] = [

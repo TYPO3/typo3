@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\View;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BackendLayoutViewTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Backend\View\BackendLayoutView|\PHPUnit\Framework\MockObject\MockObject
+     * @var BackendLayoutView|MockObject
      */
-    protected $backendLayoutView;
+    protected MockObject $backendLayoutView;
 
     /**
      * Sets up this test case.
@@ -52,7 +53,7 @@ class BackendLayoutViewTest extends UnitTestCase
      * @test
      * @dataProvider selectedCombinedIdentifierIsDeterminedDataProvider
      */
-    public function selectedCombinedIdentifierIsDetermined($expected, array $page, array $rootLine)
+    public function selectedCombinedIdentifierIsDetermined($expected, array $page, array $rootLine): void
     {
         $pageId = $page['uid'];
 
@@ -70,7 +71,7 @@ class BackendLayoutViewTest extends UnitTestCase
     /**
      * @return array
      */
-    public function selectedCombinedIdentifierIsDeterminedDataProvider()
+    public function selectedCombinedIdentifierIsDeterminedDataProvider(): array
     {
         return [
             'first level w/o layout' => [

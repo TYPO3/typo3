@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,11 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInlineTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $beUserProphecy;
+    protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void
     {
@@ -43,7 +45,7 @@ class TcaInlineTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataWithoutModifyRightsButWithInlineTypeWillNotParseChildren()
+    public function addDataWithoutModifyRightsButWithInlineTypeWillNotParseChildren(): void
     {
         $input = [
             'processedTca' => [
@@ -75,7 +77,7 @@ class TcaInlineTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataWithUserRightsButWithoutInlineTypeWillNotParseChildren()
+    public function addDataWithUserRightsButWithoutInlineTypeWillNotParseChildren(): void
     {
         $input = [
             'processedTca' => [
@@ -106,7 +108,7 @@ class TcaInlineTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataWithInlineTypeAndModifyRightsWillAddChildren()
+    public function addDataWithInlineTypeAndModifyRightsWillAddChildren(): void
     {
         $input = [
             'processedTca' => [

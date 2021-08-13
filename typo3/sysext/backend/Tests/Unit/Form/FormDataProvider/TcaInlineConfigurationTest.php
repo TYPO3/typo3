@@ -28,7 +28,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @var array Set of default controls
      */
-    protected $defaultConfig = [
+    protected array $defaultConfig = [
         'type' => 'inline',
         'foreign_table' => 'aForeignTableName',
         'minitems' => 0,
@@ -51,7 +51,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForInlineFieldWithoutForeignTableConfig()
+    public function addDataThrowsExceptionForInlineFieldWithoutForeignTableConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -74,7 +74,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaults()
+    public function addDataSetsDefaults(): void
     {
         $input = [
             'processedTca' => [
@@ -96,7 +96,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsGivenMinitems()
+    public function addDataKeepsGivenMinitems(): void
     {
         $input = [
             'processedTca' => [
@@ -120,7 +120,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataForcesMinitemsPositive()
+    public function addDataForcesMinitemsPositive(): void
     {
         $input = [
             'processedTca' => [
@@ -144,7 +144,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsGivenMaxitems()
+    public function addDataKeepsGivenMaxitems(): void
     {
         $input = [
             'processedTca' => [
@@ -168,7 +168,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataForcesMaxitemsPositive()
+    public function addDataForcesMaxitemsPositive(): void
     {
         $input = [
             'processedTca' => [
@@ -192,7 +192,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesWithGivenAppearanceSettings()
+    public function addDataMergesWithGivenAppearanceSettings(): void
     {
         $input = [
             'processedTca' => [
@@ -267,7 +267,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsLevelLinksPositionWithForeignSelectorAndUseCombination()
+    public function addDataKeepsLevelLinksPositionWithForeignSelectorAndUseCombination(): void
     {
         $input = [
             'processedTca' => [
@@ -311,7 +311,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanTrue()
+    public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanTrue(): void
     {
         $input = [
             'processedTca' => [
@@ -337,7 +337,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanFalse()
+    public function addDataKeepsShowPossibleLocalizationRecordsButForcesBooleanFalse(): void
     {
         $input = [
             'processedTca' => [
@@ -363,7 +363,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignSelectorAndForeignUniquePointToDifferentFields()
+    public function addDataThrowsExceptionIfForeignSelectorAndForeignUniquePointToDifferentFields(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -388,7 +388,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignSelectorPointsToANotExistingField()
+    public function addDataThrowsExceptionIfForeignSelectorPointsToANotExistingField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -412,7 +412,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignUniquePointsToANotExistingField()
+    public function addDataThrowsExceptionIfForeignUniquePointsToANotExistingField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -436,7 +436,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignUniqueTargetIsNotTypeSelectOrGroup()
+    public function addDataThrowsExceptionIfForeignUniqueTargetIsNotTypeSelectOrGroup(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -463,7 +463,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInternalTypeDb()
+    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInternalTypeDb(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -491,7 +491,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable()
+    public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -518,7 +518,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignUniqueGroupDoesNotDefineForeignTable()
+    public function addDataThrowsExceptionIfForeignUniqueGroupDoesNotDefineForeignTable(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -546,7 +546,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsSelectorOrUniqueConfigurationForForeignUnique()
+    public function addDataAddsSelectorOrUniqueConfigurationForForeignUnique(): void
     {
         $input = [
             'processedTca' => [
@@ -584,7 +584,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesForeignSelectorFieldTcaOverride()
+    public function addDataMergesForeignSelectorFieldTcaOverride(): void
     {
         $input = [
             'processedTca' => [

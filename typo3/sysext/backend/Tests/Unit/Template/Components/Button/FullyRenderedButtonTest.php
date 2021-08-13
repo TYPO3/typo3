@@ -30,7 +30,7 @@ class FullyRenderedButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBlankCallExpectFalse()
+    public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new FullyRenderedButton();
         $isValid = $button->isValid();
@@ -42,7 +42,7 @@ class FullyRenderedButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidHtmlSourceGivenExpectTrue()
+    public function isButtonValidHtmlSourceGivenExpectTrue(): void
     {
         $button = new FullyRenderedButton();
         $button->setHtmlSource('<span>Husel</span>');

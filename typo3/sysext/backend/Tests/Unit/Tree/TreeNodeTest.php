@@ -30,7 +30,7 @@ class TreeNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function serializeFixture()
+    public function serializeFixture(): void
     {
         $expected = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
         $fixture = new TreeNode();
@@ -63,7 +63,7 @@ class TreeNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function deserializeFixture()
+    public function deserializeFixture(): void
     {
         $source = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
         $node = new TreeNode();
@@ -75,7 +75,7 @@ class TreeNodeTest extends UnitTestCase
     /**
      * @test
      */
-    public function compareNodes()
+    public function compareNodes(): void
     {
         $node = new TreeNode(['id' => '15']);
         $otherNode = new TreeNode(['id' => '5']);

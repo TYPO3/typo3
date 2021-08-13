@@ -258,6 +258,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider handleRequestForwardsToCorrectActionTestDataProvider
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function handleRequestForwardsToCorrectActionTest(
         string $action,

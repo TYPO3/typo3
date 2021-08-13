@@ -30,14 +30,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ThumbnailControllerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Backend\Controller\File\ThumbnailController|MockObject
+     * @var ThumbnailController|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
      * @var array
      */
-    protected static $parameters = [
+    protected static array $parameters = [
         'fileId' => 123,
         'configuration' => [
             'width' => 64,
@@ -56,12 +56,12 @@ class ThumbnailControllerTest extends UnitTestCase
     }
 
     /**
-     * @param string $hmac
+     * @param string|null $hmac
      *
      * @test
      * @dataProvider exceptionIsThrownOnInvalidHMACDataProvider
      */
-    public function exceptionIsThrownOnInvalidHMAC(string $hmac = null)
+    public function exceptionIsThrownOnInvalidHMAC(string $hmac = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1534484203);
@@ -94,7 +94,7 @@ class ThumbnailControllerTest extends UnitTestCase
      * @test
      * @dataProvider generateThumbnailIsInvokedDataProvider
      */
-    public function generateThumbnailIsInvoked(array $parameters = null)
+    public function generateThumbnailIsInvoked(array $parameters = null): void
     {
         $this->subject->expects(self::once())
             ->method('generateThumbnail')

@@ -32,7 +32,7 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validRoutesAreBuiltDataProvider()
+    public function validRoutesAreBuiltDataProvider(): array
     {
         return [
             'plain route' => [
@@ -88,10 +88,10 @@ class UriBuilderTest extends UnitTestCase
         string $routeName,
         array $routeParameters,
         string $expectation
-    ) {
+    ): void {
         $router = new Router();
-        foreach ($routes as $routeName => $route) {
-            $router->addRoute($routeName, $route);
+        foreach ($routes as $nameRoute => $route) {
+            $router->addRoute($nameRoute, $route);
         }
         $subject = new UriBuilder($router);
         $uri = $subject->buildUriFromRoute(
@@ -105,7 +105,7 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function nonExistingRouteThrowsException()
+    public function nonExistingRouteThrowsException(): void
     {
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1476050190);

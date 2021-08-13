@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SortedTreeNodeCollectionTest extends UnitTestCase
 {
-    protected function createTestCollection()
+    protected function createTestCollection(): SortedTreeNodeCollection
     {
         $nodeCollection = new SortedTreeNodeCollection();
         $node = new TreeNode(['id' => 5]);
@@ -38,7 +38,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
         return $nodeCollection;
     }
 
-    protected function createTestCollectionWithTwoNodes()
+    protected function createTestCollectionWithTwoNodes(): SortedTreeNodeCollection
     {
         $nodeCollection = new SortedTreeNodeCollection();
         $node = new TreeNode(['id' => 5]);
@@ -51,7 +51,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function appendsSorted()
+    public function appendsSorted(): void
     {
         $nodeCollection = $this->createTestCollection();
         $expected = [3, 5, 15];
@@ -65,7 +65,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionContainsNode()
+    public function collectionContainsNode(): void
     {
         $nodeCollection = $this->createTestCollection();
         $node = new TreeNode(['id' => 5]);
@@ -75,7 +75,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function searchDataWithBinarySearch()
+    public function searchDataWithBinarySearch(): void
     {
         $nodeCollection = $this->createTestCollection();
         $node = new TreeNode(['id' => 15]);

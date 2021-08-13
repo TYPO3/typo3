@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
@@ -32,7 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaGroupTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -41,7 +43,7 @@ class TcaGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsFieldUnchangedIfFieldIsNotTypeGroup()
+    public function addDataReturnsFieldUnchangedIfFieldIsNotTypeGroup(): void
     {
         $input = [
             'databaseRow' => [
@@ -64,7 +66,7 @@ class TcaGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithTypeGroupAndNoValidInternalType()
+    public function addDataThrowsExceptionWithTypeGroupAndNoValidInternalType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -87,7 +89,7 @@ class TcaGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsFolderData()
+    public function addDataSetsFolderData(): void
     {
         $input = [
             'databaseRow' => [
@@ -129,7 +131,7 @@ class TcaGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDatabaseData()
+    public function addDataSetsDatabaseData(): void
     {
         $aFieldConfig = [
             'type' => 'group',

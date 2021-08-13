@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -30,7 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -51,7 +53,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExistingDataStructure()
+    public function addDataKeepsExistingDataStructure(): void
     {
         $input = [
             'systemLanguageRows' => [],
@@ -98,7 +100,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsParsedDataStructureArray()
+    public function addDataSetsParsedDataStructureArray(): void
     {
         $input = [
             'systemLanguageRows' => [],
@@ -169,7 +171,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsParsedDataStructureArrayWithSheets()
+    public function addDataSetsParsedDataStructureArrayWithSheets(): void
     {
         $input = [
             'systemLanguageRows' => [],
@@ -248,7 +250,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataInitializesDatabaseRowValueIfNoDataStringIsGiven()
+    public function addDataInitializesDatabaseRowValueIfNoDataStringIsGiven(): void
     {
         $input = [
             'databaseRow' => [],

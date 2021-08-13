@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
@@ -30,11 +31,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteConfigurationDataGroupTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var SiteConfigurationDataGroup
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected SiteConfigurationDataGroup $subject;
 
     protected function setUp(): void
     {
@@ -44,7 +43,7 @@ class SiteConfigurationDataGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsIncomingData()
+    public function compileReturnsIncomingData(): void
     {
         /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
@@ -61,7 +60,7 @@ class SiteConfigurationDataGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsResultChangedByDataProvider()
+    public function compileReturnsResultChangedByDataProvider(): void
     {
         /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
@@ -83,7 +82,7 @@ class SiteConfigurationDataGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface()
+    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
         /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);

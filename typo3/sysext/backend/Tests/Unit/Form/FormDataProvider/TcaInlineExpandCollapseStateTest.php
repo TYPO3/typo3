@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,11 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInlineExpandCollapseStateTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataAddsInlineStatusForTableUid()
+    public function addDataAddsInlineStatusForTableUid(): void
     {
         $input = [
             'command' => 'edit',
@@ -67,7 +69,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsInlineStatusForSecondLevelChild()
+    public function addDataAddsInlineStatusForSecondLevelChild(): void
     {
         $input = [
             'command' => 'edit',
@@ -111,7 +113,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
     /**
      * @return array
      */
-    public function addDataAddsCorrectIsInlineChildExpandedDataProvider()
+    public function addDataAddsCorrectIsInlineChildExpandedDataProvider(): array
     {
         return [
             'Inline child is expanded because of state in expandCollapseStateArray' => [
@@ -331,7 +333,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
      * @param array $input
      * @param bool $expectedIsInlineChildExpanded
      */
-    public function addDataAddsCorrectIsInlineChildExpanded(array $input, $expectedIsInlineChildExpanded)
+    public function addDataAddsCorrectIsInlineChildExpanded(array $input, bool $expectedIsInlineChildExpanded): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();

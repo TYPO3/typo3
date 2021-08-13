@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldLabels;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,11 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataKeepsLabelAsIsIfNoOverrideIsGiven()
+    public function addDataKeepsLabelAsIsIfNoOverrideIsGiven(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -54,7 +56,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsLabelFromShowitem()
+    public function addDataSetsLabelFromShowitem(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -84,7 +86,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsLabelFromPalettesShowitem()
+    public function addDataSetsLabelFromPalettesShowitem(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -119,7 +121,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsLabelFromPageTsConfig()
+    public function addDataSetsLabelFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -153,7 +155,7 @@ class TcaColumnsProcessFieldLabelsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsLabelFromPageTsConfigForSpecificLanguage()
+    public function addDataSetsLabelFromPageTsConfigForSpecificLanguage(): void
     {
         $input = [
             'tableName' => 'aTable',

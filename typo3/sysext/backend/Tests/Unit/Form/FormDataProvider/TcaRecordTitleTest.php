@@ -18,21 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaRecordTitleTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var string
-     */
-    protected $timeZone;
+    use ProphecyTrait;
+
+    protected string $timeZone;
 
     public function setUp(): void
     {
@@ -50,7 +46,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithMissingLabel()
+    public function addDataThrowsExceptionWithMissingLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -67,7 +63,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForLabelUserFunction()
+    public function addDataReturnsRecordTitleForLabelUserFunction(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -93,7 +89,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForFormattedLabelUserFunction()
+    public function addDataReturnsRecordTitleForFormattedLabelUserFunction(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -125,7 +121,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForInlineChildWithForeignLabel()
+    public function addDataReturnsRecordTitleForInlineChildWithForeignLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -161,7 +157,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataOverridesRecordTitleWithFormattedLabelUserFuncForInlineChildWithForeignLabel()
+    public function addDataOverridesRecordTitleWithFormattedLabelUserFuncForInlineChildWithForeignLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -198,7 +194,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForInlineChildWithSymmetricLabel()
+    public function addDataReturnsRecordTitleForInlineChildWithSymmetricLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -231,7 +227,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForUid()
+    public function addDataReturnsRecordTitleForUid(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -263,10 +259,8 @@ class TcaRecordTitleTest extends UnitTestCase
      *  - TCA field ['config'] section
      *  - Database value for field
      *  - expected title to be generated
-     *
-     * @returns array
      */
-    public function addDataReturnsRecordTitleForInputTypeDataProvider()
+    public function addDataReturnsRecordTitleForInputTypeDataProvider(): array
     {
         return [
             'new record' => [
@@ -367,12 +361,8 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addDataReturnsRecordTitleForInputTypeDataProvider
-     *
-     * @param array $fieldConfig
-     * @param string $fieldValue
-     * @param string $expectedTitle
      */
-    public function addDataReturnsRecordTitleForInputType($fieldConfig, $fieldValue, $expectedTitle)
+    public function addDataReturnsRecordTitleForInputType(array $fieldConfig, string $fieldValue, string $expectedTitle): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -409,7 +399,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleWithAlternativeLabel()
+    public function addDataReturnsRecordTitleWithAlternativeLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -447,7 +437,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleWithMultipleAlternativeLabels()
+    public function addDataReturnsRecordTitleWithMultipleAlternativeLabels(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -491,7 +481,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleWithForcedAlternativeLabel()
+    public function addDataReturnsRecordTitleWithForcedAlternativeLabel(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -530,7 +520,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleWithMultipleForcedAlternativeLabels()
+    public function addDataReturnsRecordTitleWithMultipleForcedAlternativeLabels(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -575,7 +565,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleIgnoresEmptyAlternativeLabels()
+    public function addDataReturnsRecordTitleIgnoresEmptyAlternativeLabels(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -620,7 +610,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForRadioType()
+    public function addDataReturnsRecordTitleForRadioType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -656,7 +646,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForInlineType()
+    public function addDataReturnsRecordTitleForInlineType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -696,10 +686,8 @@ class TcaRecordTitleTest extends UnitTestCase
      *  - TCA field configuration (merged with base config)
      *  - Database value for field
      *  - expected title to be generated
-     *
-     * @returns array
      */
-    public function addDataReturnsRecordTitleForGroupTypeDataProvider()
+    public function addDataReturnsRecordTitleForGroupTypeDataProvider(): array
     {
         return [
             'new record' => [
@@ -789,12 +777,8 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addDataReturnsRecordTitleForGroupTypeDataProvider
-     *
-     * @param array $fieldConfig
-     * @param string $fieldValue
-     * @param string $expectedTitle
      */
-    public function addDataReturnsRecordTitleForGroupType($fieldConfig, $fieldValue, $expectedTitle)
+    public function addDataReturnsRecordTitleForGroupType(array $fieldConfig, array $fieldValue, string $expectedTitle): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -833,7 +817,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForGroupTypeWithInternalTypeDb()
+    public function addDataReturnsRecordTitleForGroupTypeWithInternalTypeDb(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -877,7 +861,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForSingleCheckboxType()
+    public function addDataReturnsRecordTitleForSingleCheckboxType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -912,7 +896,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForArrayCheckboxType()
+    public function addDataReturnsRecordTitleForArrayCheckboxType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -952,7 +936,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsEmptyRecordTitleForFlexType()
+    public function addDataReturnsEmptyRecordTitleForFlexType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1010,7 +994,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForSelectType()
+    public function addDataReturnsRecordTitleForSelectType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1048,7 +1032,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsStrippedAndTrimmedValueForTextType()
+    public function addDataReturnsStrippedAndTrimmedValueForTextType(): void
     {
         $input = [
             'tableName' => 'aTable',

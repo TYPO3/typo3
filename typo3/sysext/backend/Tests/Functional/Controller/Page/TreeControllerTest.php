@@ -49,12 +49,12 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @var BackendUserAuthentication
      */
-    private $backendUser;
+    private BackendUserAuthentication $backendUser;
 
     /**
      * @var BackendUserAuthentication
      */
-    private $regularBackendUser;
+    private BackendUserAuthentication $regularBackendUser;
 
     /**
      * @var Context
@@ -87,7 +87,7 @@ class TreeControllerTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         Bootstrap::initializeLanguageObject();
         $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
@@ -102,7 +102,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllEntryPointPageTrees()
+    public function getAllEntryPointPageTrees(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
@@ -211,7 +211,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllEntryPointPageTreesWithSearch()
+    public function getAllEntryPointPageTreesWithSearch(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
         $keepProperties = array_flip(['uid', 'title', '_children']);
@@ -250,7 +250,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSubtreeForAccessiblePage()
+    public function getSubtreeForAccessiblePage(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
@@ -283,7 +283,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSubtreeForNonAccessiblePage()
+    public function getSubtreeForNonAccessiblePage(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1510);
         $keepProperties = array_flip(['uid', 'title', '_children']);
@@ -297,7 +297,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSubtreeForPageOutsideMountPoint()
+    public function getSubtreeForPageOutsideMountPoint(): void
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 7000);
         $keepProperties = array_flip(['uid', 'title', '_children']);
@@ -311,7 +311,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllEntryPointPageTreesInWorkspace()
+    public function getAllEntryPointPageTreesInWorkspace(): void
     {
         $this->setWorkspace(1);
         $actual = $this->subject->_call('getAllEntryPointPageTrees');
@@ -491,7 +491,7 @@ class TreeControllerTest extends FunctionalTestCase
      * @test
      * @dataProvider getAllEntryPointPageTreesInWorkspaceWithSearchDataProvider
      */
-    public function getAllEntryPointPageTreesInWorkspaceWithSearch(string $search, array $expectedChildren)
+    public function getAllEntryPointPageTreesInWorkspaceWithSearch(string $search, array $expectedChildren): void
     {
         $this->setWorkspace(1);
         // the record was changed from live "Groups" to "Teams modified" in a workspace
@@ -519,7 +519,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSubtreeForAccessiblePageInWorkspace()
+    public function getSubtreeForAccessiblePageInWorkspace(): void
     {
         $this->setWorkspace(1);
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
@@ -558,7 +558,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @param int $workspaceId
      */
-    private function setWorkspace(int $workspaceId)
+    private function setWorkspace(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
         $this->context->setAspect('workspace', new WorkspaceAspect($workspaceId));

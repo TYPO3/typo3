@@ -31,15 +31,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class EditDocumentControllerTest extends FunctionalTestCase
 {
-    /**
-     * @var EditDocumentController
-     */
-    protected $subject;
+    protected EditDocumentController $subject;
 
     /**
      * @var NormalizedParams
      */
-    protected $normalizedParams;
+    protected NormalizedParams $normalizedParams;
 
     /**
      * Sets up this test case.

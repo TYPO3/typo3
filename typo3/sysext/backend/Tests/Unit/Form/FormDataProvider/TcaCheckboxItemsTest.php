@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -27,24 +28,16 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaCheckboxItemsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * Tear down
-     */
+    use ProphecyTrait;
+
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();
     }
 
-    /**
-     * @return array
-     */
     public function checkboxConfigurationDataProvider(): array
     {
         return [
@@ -407,7 +400,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
      * @test
      * @dataProvider checkboxConfigurationDataProvider
      */
-    public function addDataKeepExistingItems($input, $expectedResult)
+    public function addDataKeepExistingItems(array $input, array $expectedResult): void
     {
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
@@ -419,7 +412,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfItemsAreNoArray()
+    public function addDataThrowsExceptionIfItemsAreNoArray(): void
     {
         $input = [
             'processedTca' => [
@@ -449,7 +442,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfItemLabelIsNotSet()
+    public function addDataThrowsExceptionIfItemLabelIsNotSet(): void
     {
         $input = [
             'processedTca' => [
@@ -481,7 +474,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTranslatesItemLabels()
+    public function addDataTranslatesItemLabels(): void
     {
         $input = [
             'processedTca' => [
@@ -518,7 +511,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataCallsItemsProcFunc()
+    public function addDataCallsItemsProcFunc(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -564,7 +557,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataItemsProcFuncReceivesParameters()
+    public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -653,7 +646,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataItemsProcFuncEnqueuesFlashMessageOnException()
+    public function addDataItemsProcFuncEnqueuesFlashMessageOnException(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -719,7 +712,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTranslatesItemLabelsFromPageTsConfig()
+    public function addDataTranslatesItemLabelsFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',

@@ -34,7 +34,7 @@ class FormTestService
      * @param array $defaults
      * @return array
      */
-    public function createNewRecordForm(string $table, array $defaults = [])
+    public function createNewRecordForm(string $table, array $defaults = []): array
     {
         $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);

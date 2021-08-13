@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -26,15 +27,10 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaLanguageTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * Set up
-     */
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,9 +41,6 @@ class TcaLanguageTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -554,8 +547,6 @@ class TcaLanguageTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addDataAddsAllSiteLanguagesDataProvider
-     *
-     * @param array $config
      */
     public function addDataAddsAllSiteLanguagesFromAllSites(array $config): void
     {

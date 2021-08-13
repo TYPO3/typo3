@@ -30,7 +30,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function fixVersioningPidDoesNotChangeValuesForNoBeUserAvailable()
+    public function fixVersioningPidDoesNotChangeValuesForNoBeUserAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
@@ -49,7 +49,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function viewOnClickReturnsOnClickCodeWithAlternativeUrl()
+    public function viewOnClickReturnsOnClickCodeWithAlternativeUrl(): void
     {
         // Make sure the hook inside viewOnClick is not fired. This may be removed if unit tests
         // bootstrap does not initialize TYPO3_CONF_VARS anymore.

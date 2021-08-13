@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -31,7 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PageLayoutViewTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var PageLayoutView|AccessibleObjectInterface
      */
@@ -92,7 +94,7 @@ class PageLayoutViewTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function languageSelectorShowsAllAvailableLanguagesForTranslation()
+    public function languageSelectorShowsAllAvailableLanguagesForTranslation(): void
     {
         $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/View/Fixtures/LanguageSelectorScenarioDefault.csv');
 
@@ -112,7 +114,7 @@ class PageLayoutViewTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function languageSelectorDoesNotOfferLanguageIfTranslationHasBeenDoneAlready()
+    public function languageSelectorDoesNotOfferLanguageIfTranslationHasBeenDoneAlready(): void
     {
         $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/View/Fixtures/LanguageSelectorScenarioTranslationDone.csv');
         $result = $this->subject->languageSelector(17);

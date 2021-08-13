@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaColumnsOverridesTest extends UnitTestCase
 {
-    /**
-     * @var TcaColumnsOverrides
-     */
-    protected $subject;
+    protected TcaColumnsOverrides $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class TcaColumnsOverridesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesGivenColumnsOverrides()
+    public function addDataRemovesGivenColumnsOverrides(): void
     {
         $input = [
             'command' => 'new',
@@ -65,7 +62,7 @@ class TcaColumnsOverridesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesColumnsOverridesIntoColumns()
+    public function addDataMergesColumnsOverridesIntoColumns(): void
     {
         $input = [
             'command' => 'new',
@@ -101,7 +98,7 @@ class TcaColumnsOverridesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesColumnsOverridesDefaultValueIntoDatabaseRow()
+    public function addDataMergesColumnsOverridesDefaultValueIntoDatabaseRow(): void
     {
         $input = [
             'command' => 'new',

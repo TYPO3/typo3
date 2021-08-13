@@ -17,13 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldControl;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ElementBrowserTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */

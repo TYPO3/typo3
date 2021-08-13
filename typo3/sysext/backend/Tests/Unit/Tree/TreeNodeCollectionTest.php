@@ -29,7 +29,7 @@ class TreeNodeCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function sortNodes()
+    public function sortNodes(): void
     {
         $nodeCollection = new TreeNodeCollection([
             ['serializeClassName' => TreeNode::class, 'id' => 15],

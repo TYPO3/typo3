@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
@@ -30,16 +32,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseLanguageRowsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var DatabaseLanguageRows|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabaseLanguageRows|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $beUserProphecy;
+    protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void
     {
@@ -54,7 +57,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsUnchangedResultIfTableProvidesNoTranslations()
+    public function addDataReturnsUnchangedResultIfTableProvidesNoTranslations(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -73,7 +76,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfDefaultOfLocalizedRecordIsNotFound()
+    public function addDataThrowsExceptionIfDefaultOfLocalizedRecordIsNotFound(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -102,7 +105,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultLanguageRow()
+    public function addDataSetsDefaultLanguageRow(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -138,7 +141,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDiffSourceFieldIfGiven()
+    public function addDataSetsDiffSourceFieldIfGiven(): void
     {
         $diffSource = [
             'uid' => 42,
@@ -183,7 +186,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsAdditionalLanguageRowsIfRequestedInUserTypoScript()
+    public function addDataSetsAdditionalLanguageRowsIfRequestedInUserTypoScript(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -270,7 +273,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDoesNotAddHandledRowAsAdditionalLanguageRows()
+    public function addDataSetsDoesNotAddHandledRowAsAdditionalLanguageRows(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -362,7 +365,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSourceLanguageRow()
+    public function addDataSetsSourceLanguageRow(): void
     {
         $input = [
             'tableName' => 'tt_content',

@@ -42,7 +42,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkInExplicitFormat()
+    public function renderReturnsValidLinkInExplicitFormat(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/EditRecordViewHelper/WithUidAndTable.html');
@@ -55,7 +55,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkInInlineFormat()
+    public function renderReturnsValidLinkInInlineFormat(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/EditRecordViewHelper/InlineWithUidAndTable.html');
@@ -68,7 +68,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithReturnUrl()
+    public function renderReturnsValidLinkWithReturnUrl(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/EditRecordViewHelper/WithUidTableAndReturnUrl.html');
@@ -82,7 +82,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithField()
+    public function renderReturnsValidLinkWithField(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/EditRecordViewHelper/WithUidTableAndField.html');
@@ -96,7 +96,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsValidLinkWithFields()
+    public function renderReturnsValidLinkWithFields(): void
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/EditRecordViewHelper/WithUidTableAndFields.html');
@@ -110,7 +110,7 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderThrowsExceptionForInvalidUidArgument()
+    public function renderThrowsExceptionForInvalidUidArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526128259);

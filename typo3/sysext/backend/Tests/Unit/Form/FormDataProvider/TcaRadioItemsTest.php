@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -32,7 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaRadioItemsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Tear down
      */
@@ -45,7 +47,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRadioItemsNotDefined()
+    public function addDataThrowsExceptionIfRadioItemsNotDefined(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -72,7 +74,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepExistingItems()
+    public function addDataKeepExistingItems(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -103,7 +105,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfItemsAreNoArray()
+    public function addDataThrowsExceptionIfItemsAreNoArray(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -133,7 +135,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfItemLabelIsNotSet()
+    public function addDataThrowsExceptionIfItemLabelIsNotSet(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -165,7 +167,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfItemValueIsNotSet()
+    public function addDataThrowsExceptionIfItemValueIsNotSet(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -197,7 +199,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTranslatesItemLabels()
+    public function addDataTranslatesItemLabels(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -234,7 +236,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataCallsItemsProcFunc()
+    public function addDataCallsItemsProcFunc(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -280,7 +282,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataItemsProcFuncReceivesParameters()
+    public function addDataItemsProcFuncReceivesParameters(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -363,7 +365,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataItemsProcFuncEnqueuesFlashMessageOnException()
+    public function addDataItemsProcFuncEnqueuesFlashMessageOnException(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -429,7 +431,7 @@ class TcaRadioItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTranslatesItemLabelsFromPageTsConfig()
+    public function addDataTranslatesItemLabelsFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',

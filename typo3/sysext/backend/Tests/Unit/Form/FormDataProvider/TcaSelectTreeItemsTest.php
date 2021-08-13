@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -45,7 +46,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaSelectTreeItemsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -55,7 +57,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
      * Setup a mock database connection with expectations for
      * the testsuite.
      */
-    protected function mockDatabaseConnection()
+    protected function mockDatabaseConnection(): void
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
@@ -119,7 +121,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsTreeConfigurationForSelectTreeElement()
+    public function addDataAddsTreeConfigurationForSelectTreeElement(): void
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 
@@ -191,7 +193,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataHandsPageTsConfigSettingsOverToTableConfigurationTree()
+    public function addDataHandsPageTsConfigSettingsOverToTableConfigurationTree(): void
     {
         $GLOBALS['TCA']['foreignTable'] = [];
 

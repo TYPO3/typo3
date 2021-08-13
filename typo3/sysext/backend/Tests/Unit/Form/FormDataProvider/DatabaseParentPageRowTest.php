@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseParentPageRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseParentPageRow|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabaseParentPageRow|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -40,7 +41,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataFetchesParentPageRowOfRecordIfNeighbourGiven()
+    public function addDataFetchesParentPageRowOfRecordIfNeighbourGiven(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -65,7 +66,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsNeighborRowIfNegativeUidGiven()
+    public function addDataSetsNeighborRowIfNegativeUidGiven(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -93,7 +94,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsParentPageRowToNullIfParentIsRoot()
+    public function addDataSetsParentPageRowToNullIfParentIsRoot(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -114,7 +115,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsParentPageToGivenPageIdIfCommandIsNew()
+    public function addDataSetsParentPageToGivenPageIdIfCommandIsNew(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -139,7 +140,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsParentPageRowOnParentIfCommandIsEdit()
+    public function addDataSetsParentPageRowOnParentIfCommandIsEdit(): void
     {
         $input = [
             'tableName' => 'tt_content',

@@ -31,7 +31,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBlankCallExpectFalse()
+    public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new InputButton();
         $isValid = $button->isValid();
@@ -43,7 +43,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedIconExpectFalse()
+    public function isButtonValidOmittedIconExpectFalse(): void
     {
         $button = new InputButton();
         $button->setName('husel')->setValue('1')->setTitle('huhu');
@@ -56,7 +56,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedTitleExpectFalse()
+    public function isButtonValidOmittedTitleExpectFalse(): void
     {
         $button = new InputButton();
         $icon = new Icon();
@@ -70,7 +70,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedNameExpectFalse()
+    public function isButtonValidOmittedNameExpectFalse(): void
     {
         $button = new InputButton();
         $icon = new Icon();
@@ -84,7 +84,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedValueExpectFalse()
+    public function isButtonValidOmittedValueExpectFalse(): void
     {
         $button = new InputButton();
         $icon = new Icon();
@@ -98,7 +98,7 @@ class InputButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidAllValuesSetExpectTrue()
+    public function isButtonValidAllValuesSetExpectTrue(): void
     {
         $button = new InputButton();
         $icon = new Icon();

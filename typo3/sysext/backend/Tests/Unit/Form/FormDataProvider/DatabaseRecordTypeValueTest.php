@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseRecordTypeValueTest extends UnitTestCase
 {
     /**
-     * @var DatabaseRecordTypeValue|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabaseRecordTypeValue|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -40,7 +41,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTcaTypesAreEmpty()
+    public function addDataThrowsExceptionIfTcaTypesAreEmpty(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -58,7 +59,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExistingTcaRecordTypeValue()
+    public function addDataKeepsExistingTcaRecordTypeValue(): void
     {
         $input = [
             'recordTypeValue' => 'egon',
@@ -75,7 +76,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExistingTcaRecordTypeValueWithValueZero()
+    public function addDataKeepsExistingTcaRecordTypeValueWithValueZero(): void
     {
         $input = [
             'recordTypeValue' => 0,
@@ -92,7 +93,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToHistoricalOneIfTypeZeroIsNotDefined()
+    public function addDataSetsRecordTypeValueToHistoricalOneIfTypeZeroIsNotDefined(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -110,7 +111,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToZero()
+    public function addDataSetsRecordTypeValueToZero(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -130,7 +131,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTypePointsToANotExistingField()
+    public function addDataThrowsExceptionIfTypePointsToANotExistingField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -157,7 +158,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToValueOfDatabaseField()
+    public function addDataSetsRecordTypeValueToValueOfDatabaseField(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -183,7 +184,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsNotDefinedInTca()
+    public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsNotDefinedInTca(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -209,7 +210,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsEmptyString()
+    public function addDataSetsRecordTypeValueToZeroIfValueOfDatabaseFieldIsEmptyString(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -235,7 +236,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfValueTypesNotExistsAndNoFallbackExists()
+    public function addDataThrowsExceptionIfValueTypesNotExistsAndNoFallbackExists(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -262,7 +263,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForForeignTypeConfigurationNotAsSelectOrGroup()
+    public function addDataThrowsExceptionForForeignTypeConfigurationNotAsSelectOrGroup(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -292,7 +293,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForForeignTypeIfPointerConfigurationHasNoTable()
+    public function addDataThrowsExceptionForForeignTypeIfPointerConfigurationHasNoTable(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -326,7 +327,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTypeValueFromForeignTableRecord()
+    public function addDataSetsTypeValueFromForeignTableRecord(): void
     {
         $input = [
             'recordTypeValue' => '',
@@ -370,7 +371,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTypeValueFromNestedTcaGroupField()
+    public function addDataSetsTypeValueFromNestedTcaGroupField(): void
     {
         $input = [
             'recordTypeValue' => '',

@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaColumnsRemoveUnusedTest extends UnitTestCase
 {
-    /**
-     * @var TcaColumnsRemoveUnused
-     */
-    protected $subject;
+    protected TcaColumnsRemoveUnused $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class TcaColumnsRemoveUnusedTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsColumnsToProcess()
+    public function addDataKeepsColumnsToProcess(): void
     {
         $input = [
             'columnsToProcess' => ['keepMe', 'keepMeToo'],

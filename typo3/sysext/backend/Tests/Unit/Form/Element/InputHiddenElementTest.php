@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\InputHiddenElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -28,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InputHiddenElementTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function renderReturnsElementsAsAdditionalHiddenFields()
+    public function renderReturnsElementsAsAdditionalHiddenFields(): void
     {
         $data = [
                 'parameterArray' => [

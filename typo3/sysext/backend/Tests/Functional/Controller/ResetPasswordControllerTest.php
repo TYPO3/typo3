@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\ResetPasswordController;
@@ -40,7 +41,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ResetPasswordControllerTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected ResetPasswordController $subject;
     protected ServerRequestInterface $request;
 
@@ -167,6 +169,9 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->getContents());
     }
 
+    /**
+     * @return mixed|object|\Psr\Log\LoggerAwareInterface|\TYPO3\CMS\Core\SingletonInterface
+     */
     protected function getService(string $service, array $constructorArguments = [])
     {
         $container = $this->getContainer();

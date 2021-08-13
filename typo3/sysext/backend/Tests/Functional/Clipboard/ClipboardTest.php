@@ -39,15 +39,8 @@ class ClipboardTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var Clipboard
-     */
-    private $subject;
-
-    /**
-     * @var BackendUserAuthentication
-     */
-    private $backendUser;
+    private Clipboard $subject;
+    private BackendUserAuthentication $backendUser;
 
     public static function setUpBeforeClass(): void
     {
@@ -79,7 +72,7 @@ class ClipboardTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         Bootstrap::initializeLanguageObject();
 
@@ -154,7 +147,7 @@ class ClipboardTest extends FunctionalTestCase
      * @dataProvider localizationsAreResolvedDataProvider
      * @test
      */
-    public function localizationsAreResolved(int $pageId, int $workspaceId, array $expectation)
+    public function localizationsAreResolved(int $pageId, int $workspaceId, array $expectation): void
     {
         $this->backendUser->workspace = $workspaceId;
         $record = BackendUtility::getRecordWSOL('pages', $pageId);
