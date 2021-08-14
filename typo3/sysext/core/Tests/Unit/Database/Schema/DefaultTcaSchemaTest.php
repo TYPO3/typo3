@@ -32,15 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DefaultTcaSchemaTest extends UnitTestCase
 {
-    /**
-     * @var DefaultTcaSchema
-     */
-    protected $subject;
-
-    /**
-     * @var Table
-     */
-    protected $defaultTable;
+    protected ?DefaultTcaSchema $subject;
+    protected ?Table $defaultTable;
 
     public function setUp(): void
     {
@@ -52,7 +45,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichKeepsGivenTablesArrayWithEmptyTca()
+    public function enrichKeepsGivenTablesArrayWithEmptyTca(): void
     {
         $GLOBALS['TCA'] = [];
         self::assertEquals([$this->defaultTable], $this->subject->enrich([$this->defaultTable]));
@@ -61,7 +54,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddColumnIfExists()
+    public function enrichDoesNotAddColumnIfExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
 
@@ -83,7 +76,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddColumnIfTableExistsMultipleTimesAndUidExists()
+    public function enrichDoesNotAddColumnIfTableExistsMultipleTimesAndUidExists(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
 
@@ -111,7 +104,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsFieldToFirstTableDefinitionOfThatName()
+    public function enrichAddsFieldToFirstTableDefinitionOfThatName(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
 
@@ -131,7 +124,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsUidAndPrimaryKey()
+    public function enrichAddsUidAndPrimaryKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([$this->defaultTable]);
@@ -152,7 +145,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsPid()
+    public function enrichAddsPid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([$this->defaultTable]);
@@ -171,7 +164,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsSignedPidWithEnabledWorkspace()
+    public function enrichAddsSignedPidWithEnabledWorkspace(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -192,7 +185,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsTstamp()
+    public function enrichAddsTstamp(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'tstamp' => 'updatedon',
@@ -213,7 +206,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsCrdate()
+    public function enrichAddsCrdate(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'crdate' => 'createdon',
@@ -234,7 +227,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsCruserid()
+    public function enrichAddsCruserid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'cruser_id' => 'createdby',
@@ -255,7 +248,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsDeleted()
+    public function enrichAddsDeleted(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',
@@ -276,7 +269,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsDisabled()
+    public function enrichAddsDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -299,7 +292,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsStarttime()
+    public function enrichAddsStarttime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -322,7 +315,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsEndtime()
+    public function enrichAddsEndtime(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -345,7 +338,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsFegroup()
+    public function enrichAddsFegroup(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -368,7 +361,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsSorting()
+    public function enrichAddsSorting(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'sortby' => 'sorting',
@@ -389,7 +382,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsParentKey()
+    public function enrichAddsParentKey(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([$this->defaultTable]);
@@ -400,7 +393,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsParentKeyWithDelete()
+    public function enrichAddsParentKeyWithDelete(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',
@@ -413,7 +406,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsParentKeyWithDisabled()
+    public function enrichAddsParentKeyWithDisabled(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -428,7 +421,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsParentKeyInCorrectOrder()
+    public function enrichAddsParentKeyInCorrectOrder(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',
@@ -444,7 +437,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsSysLanguageUid()
+    public function enrichAddsSysLanguageUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
@@ -465,7 +458,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsL10nParent()
+    public function enrichAddsL10nParent(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
@@ -487,7 +480,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddL10nParentIfLanguageFieldIsNotDefined()
+    public function enrichDoesNotAddL10nParentIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigPointerField' => 'l10n_parent',
@@ -500,7 +493,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsDescription()
+    public function enrichAddsDescription(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'descriptionColumn' => 'rowDescription',
@@ -520,7 +513,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsEditlock()
+    public function enrichAddsEditlock(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'editlock' => 'editlock'
@@ -541,7 +534,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsL10nSource()
+    public function enrichAddsL10nSource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
@@ -563,7 +556,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddL10nSourceIfLanguageFieldIsNotDefined()
+    public function enrichDoesNotAddL10nSourceIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'translationSource' => 'l10n_source',
@@ -576,7 +569,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsL10nState()
+    public function enrichAddsL10nState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
@@ -597,7 +590,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddL10nStateIfLanguageFieldIsNotDefined()
+    public function enrichDoesNotAddL10nStateIfLanguageFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigPointerField' => 'l10n_parent',
@@ -610,7 +603,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichDoesNotAddL10nStateIfTransOrigPointerFieldIsNotDefined()
+    public function enrichDoesNotAddL10nStateIfTransOrigPointerFieldIsNotDefined(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'languageField' => 'sys_language_uid',
@@ -623,7 +616,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3origUid()
+    public function enrichAddsT3origUid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'origUid' => 't3_origuid',
@@ -644,7 +637,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsL10nDiffsource()
+    public function enrichAddsL10nDiffsource(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'transOrigDiffSourceField' => 'l18n_diffsource',
@@ -664,7 +657,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verOid()
+    public function enrichAddsT3verOid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -685,7 +678,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verWsid()
+    public function enrichAddsT3verWsid(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -706,7 +699,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verState()
+    public function enrichAddsT3verState(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -727,7 +720,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verStage()
+    public function enrichAddsT3verStage(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -748,7 +741,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function enrichAddsT3verOidIndex()
+    public function enrichAddsT3verOidIndex(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,

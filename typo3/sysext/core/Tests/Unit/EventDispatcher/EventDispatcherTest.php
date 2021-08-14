@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -29,16 +30,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EventDispatcherTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ListenerProviderInterface|ObjectProphecy
      */
     protected $containerProphecy;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
+    protected ?EventDispatcher $eventDispatcher;
 
     protected function setUp(): void
     {
@@ -55,7 +53,7 @@ class EventDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsrInterface()
+    public function implementsPsrInterface(): void
     {
         self::assertInstanceOf(EventDispatcherInterface::class, $this->eventDispatcher);
     }
@@ -64,7 +62,7 @@ class EventDispatcherTest extends UnitTestCase
      * @test
      * @dataProvider callables
      */
-    public function dispatchesEvent(callable $callable)
+    public function dispatchesEvent(callable $callable): void
     {
         $event = new \stdClass();
         $event->invoked = 0;
@@ -82,7 +80,7 @@ class EventDispatcherTest extends UnitTestCase
      * @test
      * @dataProvider callables
      */
-    public function doesNotDispatchStoppedEvent(callable $callable)
+    public function doesNotDispatchStoppedEvent(callable $callable): void
     {
         $event = new class() implements StoppableEventInterface {
             public $invoked = 0;
@@ -106,7 +104,7 @@ class EventDispatcherTest extends UnitTestCase
      * @test
      * @dataProvider callables
      */
-    public function dispatchesMultipleListeners(callable $callable)
+    public function dispatchesMultipleListeners(callable $callable): void
     {
         $event = new \stdClass();
         $event->invoked = 0;
@@ -125,7 +123,7 @@ class EventDispatcherTest extends UnitTestCase
      * @test
      * @dataProvider callables
      */
-    public function stopsOnStoppedEvent(callable $callable)
+    public function stopsOnStoppedEvent(callable $callable): void
     {
         $event = new class() implements StoppableEventInterface {
             public $invoked = 0;
@@ -154,7 +152,7 @@ class EventDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function listenerExceptionIsPropagated()
+    public function listenerExceptionIsPropagated(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionCode(1563270337);

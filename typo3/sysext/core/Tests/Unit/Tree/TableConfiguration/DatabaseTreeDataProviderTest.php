@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
 use Doctrine\DBAL\Statement;
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -27,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -34,16 +38,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseTreeDataProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|DatabaseTreeDataProvider|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var MockObject|DatabaseTreeDataProvider|AccessibleObjectInterface
      */
     protected $subject;
 
-    /**
-     * @var TreeNode
-     */
-    protected $treeData;
+    protected ?TreeNode $treeData;
 
     /**
      * Set up
@@ -58,7 +60,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      * Setup prophecies for database stack
      *
      * @param int $instanceCount Number of instances of ConnectionPool::class to register
-     * @return \Prophecy\Prophecy\ObjectProphecy|\TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @return ObjectProphecy|QueryBuilder
      */
     protected function setupDatabaseMock(int $instanceCount = 1)
     {
@@ -119,7 +121,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * @param array $mockMethods
      */
-    protected function initializeSubjectMock(array $mockMethods)
+    protected function initializeSubjectMock(array $mockMethods): void
     {
         $this->subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, $mockMethods, [], '', false);
         $this->subject->expects(self::any())->method('getRootUid')->willReturn(0);
@@ -129,7 +131,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadTreeDataLevelMaximumSetToZeroWorks()
+    public function loadTreeDataLevelMaximumSetToZeroWorks(): void
     {
         $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid', 'getChildrenOf']);
         $this->subject->_set('levelMaximum', 0);
@@ -140,7 +142,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadTreeDataLevelMaximumSetToOneWorks()
+    public function loadTreeDataLevelMaximumSetToOneWorks(): void
     {
         $this->initializeSubjectMock(['getRelatedRecords', 'getRootUid', 'getChildrenOf']);
         $this->subject->_set('levelMaximum', 1);
@@ -151,7 +153,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getChildrenOfLevelMaximumSetToOneWorks()
+    public function getChildrenOfLevelMaximumSetToOneWorks(): void
     {
         $this->setupDatabaseMock();
 
@@ -171,7 +173,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getChildrenOfLevelMaximumSetToTwoWorks()
+    public function getChildrenOfLevelMaximumSetToTwoWorks(): void
     {
         $this->setupDatabaseMock(2);
 

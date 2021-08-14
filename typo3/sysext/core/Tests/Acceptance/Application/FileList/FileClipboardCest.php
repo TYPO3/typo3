@@ -31,7 +31,7 @@ class FileClipboardCest extends AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I, FileTree $tree)
+    public function _before(ApplicationTester $I, FileTree $tree): void
     {
         parent::_before($I, $tree);
         $I->click('#checkClipBoard');
@@ -40,7 +40,7 @@ class FileClipboardCest extends AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeSwitchModes(ApplicationTester $I)
+    public function seeSwitchModes(ApplicationTester $I): void
     {
         $I->seeCheckboxIsChecked($this->copyModeMove);
         $I->dontSeeCheckboxIsChecked($this->copyModeCopy);
@@ -52,7 +52,7 @@ class FileClipboardCest extends AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeAddRemoveSingleRecord(ApplicationTester $I)
+    public function seeAddRemoveSingleRecord(ApplicationTester $I): void
     {
         $fileName = 'bus_lane.jpg';
         $I->switchToMainFrame();
@@ -67,7 +67,7 @@ class FileClipboardCest extends AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeAddRemoveMultipleRecords(ApplicationTester $I)
+    public function seeAddRemoveMultipleRecords(ApplicationTester $I): void
     {
         $expectedFiles = ['bus_lane.jpg', 'telephone_box.jpg', 'underground.jpg'];
 

@@ -30,7 +30,7 @@ class LocalPreviewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function processProvidesDefaultSizeIfNotConfigured()
+    public function processProvidesDefaultSizeIfNotConfigured(): void
     {
         $file = $this->createMock(File::class);
         // Use size slightly larger than default size to ensure processing
@@ -58,7 +58,7 @@ class LocalPreviewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function processDoesNotScaleUpImages()
+    public function processDoesNotScaleUpImages(): void
     {
         $file = $this->createMock(File::class);
         $file->expects(self::any())->method('getProperty')->willReturnMap([
@@ -81,7 +81,7 @@ class LocalPreviewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function processGeneratesPreviewEvenIfSourceFileHasNoSize()
+    public function processGeneratesPreviewEvenIfSourceFileHasNoSize(): void
     {
         $file = $this->createMock(File::class);
         $file->expects(self::any())->method('getProperty')->willReturnMap([

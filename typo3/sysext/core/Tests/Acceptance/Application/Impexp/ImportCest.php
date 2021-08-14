@@ -27,36 +27,31 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class ImportCest extends AbstractCest
 {
-    /**
-     * Absolute path to files that must be removed
-     * after a test - handled in _after
-     *
-     * @var array
-     */
-    protected $testFilesToDelete = [];
+    /** Absolute path to files that must be removed */
+    protected array $testFilesToDelete = [];
 
-    protected $inPageTree = '#typo3-pagetree-treeContainer .nodes';
-    protected $inModuleHeader = '.module-docheader';
-    protected $inModuleTabs = '#ImportExportController .nav-tabs';
-    protected $inModuleTabsBody = '#ImportExportController .tab-content';
-    protected $inTabImport = '#import-import';
-    protected $inFlashMessages = '.typo3-messages';
+    protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    protected string $inModuleHeader = '.module-docheader';
+    protected string $inModuleTabs = '#ImportExportController .nav-tabs';
+    protected string $inModuleTabsBody = '#ImportExportController .tab-content';
+    protected string $inTabImport = '#import-import';
+    protected string $inFlashMessages = '.typo3-messages';
 
-    protected $tabUpload = 'a[href="#import-upload"]';
-    protected $tabMessages = 'a[href="#import-errors"]';
-    protected $inputUploadFile = 'input[type=file]';
-    protected $checkboxOverwriteFile = 'input#checkOverwriteExistingFiles';
-    protected $buttonUploadFile = '_upload';
-    protected $buttonPreview = '.btn[value=Preview]';
-    protected $buttonImport = 'button[name="tx_impexp[import_file]"]';
-    protected $buttonNewImport = 'input[name="tx_impexp[new_import]"]';
+    protected string $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
+    protected string $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
+    protected string $tabUpload = 'a[href="#import-upload"]';
+    protected string $tabMessages = 'a[href="#import-errors"]';
+    protected string $inputUploadFile = 'input[type=file]';
+    protected string $checkboxOverwriteFile = 'input#checkOverwriteExistingFiles';
+    protected string $buttonUploadFile = '_upload';
+    protected string $buttonPreview = '.btn[value=Preview]';
+    protected string $buttonImport = 'button[name="tx_impexp[import_file]"]';
+    protected string $buttonNewImport = 'input[name="tx_impexp[new_import]"]';
 
     /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -65,10 +60,7 @@ class ImportCest extends AbstractCest
         $I->waitForElement($this->inPageTree . ' .node', 5);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _after(ApplicationTester $I)
+    public function _after(ApplicationTester $I): void
     {
         $I->amGoingTo('clean up created files');
 
@@ -80,8 +72,6 @@ class ImportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function importDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I): void
@@ -146,8 +136,6 @@ class ImportCest extends AbstractCest
      * Skip this test by declaring it private instead of using skip annotation or $I->markTestSkipped()
      * as it seems to break the preceding test.
      *
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     private function rejectUploadedFileOfUnsupportedFileFormat(ApplicationTester $I): void
@@ -171,13 +159,9 @@ class ImportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     * @param PageTree $pageTree
-     *
      * @throws \Exception
      */
-    public function rejectImportIfPrerequisitesNotMet(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree)
+    public function rejectImportIfPrerequisitesNotMet(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $I->wantToTest('rejecting import if prerequisites not met.');
 
@@ -224,13 +208,9 @@ class ImportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     * @param PageTree $pageTree
-     *
      * @throws \Exception
      */
-    public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree)
+    public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $I->wantToTest('importing a page with records.');
 
@@ -268,13 +248,9 @@ class ImportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     * @param PageTree $pageTree
-     *
      * @throws \Exception
      */
-    public function importTable(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree)
+    public function importTable(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $I->wantToTest('importing a table of records.');
 
@@ -320,13 +296,9 @@ class ImportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     * @param PageTree $pageTree
-     *
      * @throws \Exception
      */
-    public function importRecord(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree)
+    public function importRecord(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $I->wantToTest('importing a single record.');
 

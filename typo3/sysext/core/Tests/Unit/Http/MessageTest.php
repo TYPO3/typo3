@@ -28,15 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MessageTest extends UnitTestCase
 {
-    /**
-     * @var Stream
-     */
-    protected $stream;
-
-    /**
-     * @var Message
-     */
-    protected $message;
+    protected ?Stream $stream;
+    protected ?Message $message;
 
     protected function setUp(): void
     {
@@ -48,7 +41,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function protocolHasAcceptableDefault()
+    public function protocolHasAcceptableDefault(): void
     {
         self::assertEquals('1.1', $this->message->getProtocolVersion());
     }
@@ -56,7 +49,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function protocolMutatorReturnsCloneWithChanges()
+    public function protocolMutatorReturnsCloneWithChanges(): void
     {
         $message = $this->message->withProtocolVersion('1.0');
         self::assertNotSame($this->message, $message);
@@ -66,7 +59,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function usesStreamProvidedInConstructorAsBody()
+    public function usesStreamProvidedInConstructorAsBody(): void
     {
         self::assertSame($this->stream, $this->message->getBody());
     }
@@ -74,7 +67,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function bodyMutatorReturnsCloneWithChanges()
+    public function bodyMutatorReturnsCloneWithChanges(): void
     {
         $stream = new Stream('php://memory', 'wb+');
         $message = $this->message->withBody($stream);
@@ -85,7 +78,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderReturnsHeaderValueAsArray()
+    public function getHeaderReturnsHeaderValueAsArray(): void
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
         self::assertNotSame($this->message, $message);
@@ -95,7 +88,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineReturnsHeaderValueAsCommaConcatenatedString()
+    public function getHeaderLineReturnsHeaderValueAsCommaConcatenatedString(): void
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
         self::assertNotSame($this->message, $message);
@@ -105,7 +98,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersKeepsHeaderCaseSensitivity()
+    public function getHeadersKeepsHeaderCaseSensitivity(): void
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
         self::assertNotSame($this->message, $message);
@@ -115,7 +108,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersReturnsCaseWithWhichHeaderFirstRegistered()
+    public function getHeadersReturnsCaseWithWhichHeaderFirstRegistered(): void
     {
         $message = $this->message
             ->withHeader('X-Foo', 'Foo')
@@ -127,7 +120,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasHeaderReturnsFalseIfHeaderIsNotPresent()
+    public function hasHeaderReturnsFalseIfHeaderIsNotPresent(): void
     {
         self::assertFalse($this->message->hasHeader('X-Foo'));
     }
@@ -135,7 +128,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasHeaderReturnsTrueIfHeaderIsPresent()
+    public function hasHeaderReturnsTrueIfHeaderIsPresent(): void
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
         self::assertNotSame($this->message, $message);
@@ -145,7 +138,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function addHeaderAppendsToExistingHeader()
+    public function addHeaderAppendsToExistingHeader(): void
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
         self::assertNotSame($this->message, $message);
@@ -157,7 +150,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRemoveHeaders()
+    public function canRemoveHeaders(): void
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
         self::assertNotSame($this->message, $message);
@@ -171,7 +164,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function headerRemovalIsCaseInsensitive()
+    public function headerRemovalIsCaseInsensitive(): void
     {
         $message = $this->message
             ->withHeader('X-Foo', 'Foo')
@@ -190,7 +183,7 @@ class MessageTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidGeneralHeaderValuesDataProvider()
+    public function invalidGeneralHeaderValuesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -207,7 +200,7 @@ class MessageTest extends UnitTestCase
      * @test
      * @dataProvider invalidGeneralHeaderValuesDataProvider
      */
-    public function withHeaderRaisesExceptionForInvalidNestedHeaderValue($value)
+    public function withHeaderRaisesExceptionForInvalidNestedHeaderValue($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717266);
@@ -217,7 +210,7 @@ class MessageTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidHeaderValuesDataProvider()
+    public function invalidHeaderValuesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -232,7 +225,7 @@ class MessageTest extends UnitTestCase
     /**
      * @dataProvider invalidHeaderValuesDataProvider
      */
-    public function withHeaderRaisesExceptionForInvalidValueType($value)
+    public function withHeaderRaisesExceptionForInvalidValueType($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717266);
@@ -242,7 +235,7 @@ class MessageTest extends UnitTestCase
     /**
      * @dataProvider invalidHeaderValuesDataProvider
      */
-    public function withAddedHeaderRaisesExceptionForNonStringNonArrayValue($value)
+    public function withAddedHeaderRaisesExceptionForNonStringNonArrayValue($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717267);
@@ -252,7 +245,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function withoutHeaderDoesNothingIfHeaderDoesNotExist()
+    public function withoutHeaderDoesNothingIfHeaderDoesNotExist(): void
     {
         self::assertFalse($this->message->hasHeader('X-Foo'));
         $message = $this->message->withoutHeader('X-Foo');
@@ -263,7 +256,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderReturnsAnEmptyArrayWhenHeaderDoesNotExist()
+    public function getHeaderReturnsAnEmptyArrayWhenHeaderDoesNotExist(): void
     {
         self::assertSame([], $this->message->getHeader('X-Foo-Bar'));
     }
@@ -271,7 +264,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineReturnsEmptyStringWhenHeaderDoesNotExist()
+    public function getHeaderLineReturnsEmptyStringWhenHeaderDoesNotExist(): void
     {
         self::assertSame('', $this->message->getHeaderLine('X-Foo-Bar'));
     }
@@ -279,7 +272,7 @@ class MessageTest extends UnitTestCase
     /**
      * @return array
      */
-    public function headersWithInjectionVectorsDataProvider()
+    public function headersWithInjectionVectorsDataProvider(): array
     {
         return [
             'name-with-cr'            => ["X-Foo\r-Bar", 'value'],
@@ -308,7 +301,7 @@ class MessageTest extends UnitTestCase
      * @dataProvider headersWithInjectionVectorsDataProvider
      * @test
      */
-    public function doesNotAllowCRLFInjectionWhenCallingWithHeader($name, $value)
+    public function doesNotAllowCRLFInjectionWhenCallingWithHeader($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->message->withHeader($name, $value);
@@ -318,7 +311,7 @@ class MessageTest extends UnitTestCase
      * @dataProvider headersWithInjectionVectorsDataProvider
      * @test
      */
-    public function doesNotAllowCRLFInjectionWhenCallingWithAddedHeader($name, $value)
+    public function doesNotAllowCRLFInjectionWhenCallingWithAddedHeader($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->message->withAddedHeader($name, $value);

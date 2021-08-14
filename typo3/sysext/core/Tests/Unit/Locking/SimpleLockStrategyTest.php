@@ -32,7 +32,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorCreatesLockDirectoryIfNotExisting()
+    public function constructorCreatesLockDirectoryIfNotExisting(): void
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER, true);
         new SimpleLockStrategy('999999999');
@@ -42,7 +42,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking()
+    public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking(): void
     {
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . SimpleLockStrategy::FILE_LOCK_FOLDER . 'simple_' . md5('999999999'), $lock->_get('filePath'));
@@ -51,7 +51,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function acquireFixesPermissionsOnLockFile()
+    public function acquireFixesPermissionsOnLockFile(): void
     {
         if (Environment::isWindows()) {
             self::markTestSkipped('Test not available on Windows.');
@@ -75,7 +75,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function releaseRemovesLockfileInTypo3TempLocks()
+    public function releaseRemovesLockfileInTypo3TempLocks(): void
     {
         /** @var SimpleLockStrategy|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $lock */
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
@@ -91,7 +91,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * Dataprovider for releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory
      */
-    public function invalidFileReferences()
+    public function invalidFileReferences(): array
     {
         return [
             'not within project path' => [tempnam(sys_get_temp_dir(), 'foo')],
@@ -106,7 +106,7 @@ class SimpleLockStrategyTest extends UnitTestCase
      * @param string $file
      * @throws SkippedTestError
      */
-    public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file)
+    public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory($file): void
     {
         // Create test file
         @touch($file);
@@ -132,7 +132,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsDefaultPriority()
+    public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(SemaphoreLockStrategy::DEFAULT_PRIORITY, SemaphoreLockStrategy::getPriority());
     }
@@ -140,7 +140,7 @@ class SimpleLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPriority()
+    public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SimpleLockStrategy::class]['priority'] = 10;
 

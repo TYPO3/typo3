@@ -32,7 +32,7 @@ class PhpFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setChecksIfTheIdentifierIsValid()
+    public function setChecksIfTheIdentifierIsValid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1264023823);
@@ -48,7 +48,7 @@ class PhpFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPassesPhpSourceCodeTagsAndLifetimeToBackend()
+    public function setPassesPhpSourceCodeTagsAndLifetimeToBackend(): void
     {
         $originalSourceCode = 'return "hello world!";';
         $modifiedSourceCode = '<?php' . chr(10) . $originalSourceCode . chr(10) . '#';
@@ -61,7 +61,7 @@ class PhpFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsInvalidDataExceptionOnNonStringValues()
+    public function setThrowsInvalidDataExceptionOnNonStringValues(): void
     {
         $this->expectException(InvalidDataException::class);
         $this->expectExceptionCode(1264023824);
@@ -76,7 +76,7 @@ class PhpFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function requireOnceCallsTheBackendsRequireOnceMethod()
+    public function requireOnceCallsTheBackendsRequireOnceMethod(): void
     {
         $mockBackend = $this->createMock(PhpCapableBackendInterface::class);
         $mockBackend->expects(self::once())->method('requireOnce')->with('Foo-Bar')->willReturn('hello world!');
@@ -88,7 +88,7 @@ class PhpFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function requireCallsTheBackendsRequireMethod()
+    public function requireCallsTheBackendsRequireMethod(): void
     {
         $mockBackend = $this->createMock(SimpleFileBackend::class);
         $mockBackend->expects(self::once())->method('require')->with('Foo-Bar')->willReturn('hello world!');

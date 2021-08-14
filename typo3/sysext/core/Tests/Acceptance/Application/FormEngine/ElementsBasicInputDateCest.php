@@ -33,7 +33,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
@@ -59,7 +59,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     /**
      * dbTypeDateEvalDate data provider
      */
-    protected function dbTypeDateEvalDateDataProvider()
+    protected function dbTypeDateEvalDateDataProvider(): array
     {
         return [
             [
@@ -95,7 +95,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
      * @param Example $testData
      * @throws \Exception
      */
-    public function dbTypeDateEvalDate(ApplicationTester $I, Example $testData)
+    public function dbTypeDateEvalDate(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
@@ -103,7 +103,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     /**
      * dbType date eval datetime data provider
      */
-    protected function dbTypeDateEvalDatetimeDataProvider()
+    protected function dbTypeDateEvalDatetimeDataProvider(): array
     {
         return [
             [
@@ -139,7 +139,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
      * @param Example $testData
      * @throws \Exception
      */
-    public function dbTypeDateEvalDatetime(ApplicationTester $I, Example $testData)
+    public function dbTypeDateEvalDatetime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
@@ -147,7 +147,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     /**
      * db type date eval time data provider
      */
-    protected function dbTypeDateEvalTimeDataProvider()
+    protected function dbTypeDateEvalTimeDataProvider(): array
     {
         return [
             [
@@ -167,7 +167,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
      * @param Example $testData
      * @throws \Exception
      */
-    public function dbTypeDateEvalTime(ApplicationTester $I, Example $testData)
+    public function dbTypeDateEvalTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }
@@ -175,7 +175,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     /**
      * db type date eval time data provider
      */
-    protected function dbTypeDateEvalTimeDataProvider_DbTypeDateTime()
+    protected function dbTypeDateEvalTimeDataProvider_DbTypeDateTime(): array
     {
         return [
             [
@@ -211,7 +211,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
      * @param Example $testData
      * @throws \Exception
      */
-    public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData)
+    public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }

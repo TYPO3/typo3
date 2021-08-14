@@ -24,5 +24,5 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class MissingDefaultEnumeration extends Enumeration
 {
-    const FOO = 1;
+    public const FOO = 1;
 }

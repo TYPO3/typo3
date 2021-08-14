@@ -31,7 +31,7 @@ class ElementsGroupCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
@@ -51,7 +51,7 @@ class ElementsGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function sortElementsInGroup(ApplicationTester $I)
+    public function sortElementsInGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -96,7 +96,7 @@ class ElementsGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function addARecordWithRecordBrowserGroup(ApplicationTester $I)
+    public function addARecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -118,7 +118,7 @@ class ElementsGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function addTwoRecordWithRecordBrowserGroup(ApplicationTester $I)
+    public function addTwoRecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';
@@ -142,7 +142,7 @@ class ElementsGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function searchForARecordWithRecordBrowserGroup(ApplicationTester $I)
+    public function searchForARecordWithRecordBrowserGroup(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(1)';

@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ModuleMenuCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
@@ -35,7 +32,7 @@ class ModuleMenuCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkIfModuleMenuIsCollapsible(ApplicationTester $I)
+    public function checkIfModuleMenuIsCollapsible(ApplicationTester $I): void
     {
         // A sub-element of web module is shown
         $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
@@ -55,10 +52,7 @@ class ModuleMenuCest
         $I->seeElement('#web + .modulemenu-group-container .modulemenu-action');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function selectingAModuleDoesHighlightIt(ApplicationTester $I)
+    public function selectingAModuleDoesHighlightIt(ApplicationTester $I): void
     {
         $I->seeNumberOfElements('#web + .modulemenu-group-container .modulemenu-action', [2, 20]);
 

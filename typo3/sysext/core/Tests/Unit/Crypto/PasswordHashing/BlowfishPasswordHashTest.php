@@ -28,7 +28,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooLow()
+    public function constructorThrowsExceptionIfHashCountIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533903545);
@@ -38,7 +38,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooHigh()
+    public function constructorThrowsExceptionIfHashCountIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533903545);
@@ -48,7 +48,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordWithEmptyPasswordResultsInNullSaltedPassword()
+    public function getHashedPasswordWithEmptyPasswordResultsInNullSaltedPassword(): void
     {
         $password = '';
         self::assertNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
@@ -57,7 +57,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordWithNonEmptyPasswordResultsInNonNullSaltedPassword()
+    public function getHashedPasswordWithNonEmptyPasswordResultsInNonNullSaltedPassword(): void
     {
         $password = 'a';
         self::assertNotNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
@@ -66,7 +66,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordValidates()
+    public function getHashedPasswordValidates(): void
     {
         $password = 'password';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
@@ -82,7 +82,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5Na';
@@ -94,7 +94,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsFalseFailsWithBrokenHash()
+    public function checkPasswordReturnsFalseFailsWithBrokenHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5N';
@@ -109,7 +109,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
@@ -125,7 +125,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
@@ -141,7 +141,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
@@ -157,7 +157,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -177,7 +177,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsReturnsTrueWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
@@ -197,7 +197,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordReturnsFalseWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -209,7 +209,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword()
+    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword(): void
     {
         $password = 'password';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
@@ -220,7 +220,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
+    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $hash = $subject->getHashedPassword('password');

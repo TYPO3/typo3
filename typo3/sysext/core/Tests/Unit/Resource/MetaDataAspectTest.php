@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -34,9 +36,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MetaDataAspectTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject
+     * @var ResourceStorage|MockObject
      */
     protected $storageMock;
 
@@ -113,7 +116,7 @@ class MetaDataAspectTest extends UnitTestCase
 
         $file = new File(['uid' => 12], $this->storageMock);
 
-        /** @var MetaDataAspect|\PHPUnit\Framework\MockObject\MockObject $metaDataAspectMock */
+        /** @var MetaDataAspect|MockObject $metaDataAspectMock */
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
             ->setConstructorArgs([$file])
             ->onlyMethods(['getMetaDataRepository'])

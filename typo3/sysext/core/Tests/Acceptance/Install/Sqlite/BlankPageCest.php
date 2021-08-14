@@ -28,7 +28,7 @@ class BlankPageCest
      * @param InstallTester $I
      * @env sqlite
      */
-    public function installTypo3OnSqlite(InstallTester $I)
+    public function installTypo3OnSqlite(InstallTester $I): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

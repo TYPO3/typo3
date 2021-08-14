@@ -29,7 +29,7 @@ class ResponseFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new ResponseFactory();
         self::assertInstanceOf(ResponseFactoryInterface::class, $factory);
@@ -38,7 +38,7 @@ class ResponseFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function responseHasStatusCode200ByDefault()
+    public function responseHasStatusCode200ByDefault(): void
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse();
@@ -48,7 +48,7 @@ class ResponseFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function responseHasStatusCodeSet()
+    public function responseHasStatusCodeSet(): void
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(201);
@@ -58,7 +58,7 @@ class ResponseFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function responseHasDefaultReasonPhrase()
+    public function responseHasDefaultReasonPhrase(): void
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(301);
@@ -68,7 +68,7 @@ class ResponseFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function responseHasCustomReasonPhrase()
+    public function responseHasCustomReasonPhrase(): void
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(201, 'custom message');

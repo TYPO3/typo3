@@ -25,7 +25,7 @@ class TreeDataProviderFixture
     /**
      * @param array $configuration
      */
-    public function __construct($configuration)
+    public function __construct(array $configuration)
     {
     }
 }

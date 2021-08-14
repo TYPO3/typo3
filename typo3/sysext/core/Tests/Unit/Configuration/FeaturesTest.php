@@ -28,7 +28,7 @@ class FeaturesTest extends UnitTestCase
     /**
      * @test
      */
-    public function nonExistingFeatureReturnsFalse()
+    public function nonExistingFeatureReturnsFalse(): void
     {
         $features = new Features();
         self::assertFalse($features->isFeatureEnabled('nonExistingFeature'));
@@ -37,7 +37,7 @@ class FeaturesTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfExistingDisabledFeatureIsDisabled()
+    public function checkIfExistingDisabledFeatureIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = false;
         $features = new Features();
@@ -47,7 +47,7 @@ class FeaturesTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfExistingEnabledFeatureIsEnabled()
+    public function checkIfExistingEnabledFeatureIsEnabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = true;
         $features = new Features();
@@ -57,7 +57,7 @@ class FeaturesTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfExistingEnabledFeatureIsDisabled()
+    public function checkIfExistingEnabledFeatureIsDisabled(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['nativeFunctionality'] = false;
         $features = new Features();

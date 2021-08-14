@@ -23,13 +23,13 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 class PageTreeFilterCest
 {
-    protected $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
-    protected $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
-    protected $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
-    protected $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
-    protected $inPageTree = '#typo3-pagetree-tree .nodes';
+    protected string $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
+    protected string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
+    protected string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
+    protected string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
+    protected string $inPageTree = '#typo3-pagetree-tree .nodes';
 
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -40,11 +40,9 @@ class PageTreeFilterCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
-    public function filterTreeForPage(ApplicationTester $I)
+    public function filterTreeForPage(ApplicationTester $I): void
     {
         $I->cantSeeElement($this->filterInputFieldClearButton);
 
@@ -77,10 +75,7 @@ class PageTreeFilterCest
         $I->seeInField($this->filterInputField, 'Group');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function clearFilterReloadsPageTreeWithoutFilterApplied(ApplicationTester $I)
+    public function clearFilterReloadsPageTreeWithoutFilterApplied(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
@@ -98,12 +93,9 @@ class PageTreeFilterCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog   $modalDialog
-     *
      * @throws \Exception
      */
-    public function deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload(ApplicationTester $I, ModalDialog $modalDialog)
+    public function deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
@@ -127,21 +119,14 @@ class PageTreeFilterCest
         $I->cantSee('inline expandsingle', $this->inPageTree);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    protected function clearPageTreeFilters(
-        ApplicationTester $I
-    ): void {
+    protected function clearPageTreeFilters(ApplicationTester $I): void
+    {
         $I->click($this->filterInputFieldClearButton);
         $I->click($this->pageTreeSecondaryOptions);
         $I->click($this->pageTreeReloadButton);
         $I->cantSeeElement($this->filterInputFieldClearButton);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     protected function waitForAjaxRequestToFinish(ApplicationTester $I): void
     {
         $I->waitForJS('return $.active == 0;', 10);

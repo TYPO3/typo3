@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -42,11 +43,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUserAuthenticationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var array
-     */
-    protected $defaultFilePermissions = [
+    use ProphecyTrait;
+
+    protected array $defaultFilePermissions = [
         // File permissions
         'addFile' => false,
         'readFile' => false,
@@ -798,7 +797,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @param string $authMode
      * @param bool $expectedResult
      */
-    public function checkAuthModeReturnsExpectedValue(string $theValue, string $authMode, bool $expectedResult)
+    public function checkAuthModeReturnsExpectedValue(string $theValue, string $authMode, bool $expectedResult): void
     {
         /** @var BackendUserAuthentication|MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)

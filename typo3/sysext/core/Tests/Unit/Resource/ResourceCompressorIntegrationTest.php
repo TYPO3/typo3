@@ -31,20 +31,9 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
      */
     protected $backupEnvironment = true;
 
-    /**
-     * @var TestableResourceCompressor
-     */
-    protected $resourceCompressor;
-
-    /**
-     * @var string
-     */
-    protected $fixtureDir;
-
-    /**
-     * @var string
-     */
-    protected $fixtureDirFromTest;
+    protected ?TestableResourceCompressor $resourceCompressor;
+    protected ?string $fixtureDir;
+    protected ?string $fixtureDirFromTest;
 
     public function setUp(): void
     {

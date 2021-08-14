@@ -32,7 +32,7 @@ class FalMetadataCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $this->goToPageModule($I, $pageTree);
@@ -51,7 +51,7 @@ class FalMetadataCest
      * @param FileTree $fileTree
      * @throws \Exception
      */
-    public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree)
+    public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree): void
     {
         $I->amGoingTo('Create new CE with image');
         $I->click('.t3js-page-new-ce a');
@@ -143,7 +143,7 @@ class FalMetadataCest
      * @throws \Exception
      * @depends checkIfUpdatedFileMetadataIsUpdatedInContent
      */
-    public function checkIfFileMetadataIsInheritedInContent(ApplicationTester $I)
+    public function checkIfFileMetadataIsInheritedInContent(ApplicationTester $I): void
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
         $I->click('.t3js-page-new-ce a');
@@ -245,7 +245,7 @@ class FalMetadataCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    private function goToPageModule(ApplicationTester $I, PageTree $pageTree)
+    private function goToPageModule(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->switchToMainFrame();
         $I->click('Page');

@@ -29,7 +29,7 @@ class YamlFileLoaderTest extends UnitTestCase
      * Generic method to check if the load method returns an array from a YAML file
      * @test
      */
-    public function load()
+    public function load(): void
     {
         $fileName = 'Berta.yml';
         $fileContents = '
@@ -59,7 +59,7 @@ betterthanbefore: 1
      * Method checking for imports that they have been processed properly
      * @test
      */
-    public function loadWithAnImport()
+    public function loadWithAnImport(): void
     {
         $fileName = 'Berta.yml';
         $fileContents = '
@@ -104,7 +104,7 @@ betterthanbefore: 2
      * Method checking for mulitple imports that they have been loaded in the right order
      * @test
      */
-    public function loadWithMultipleImports()
+    public function loadWithMultipleImports(): void
     {
         $fileName = 'Berta.yml';
         $fileContents = '
@@ -175,7 +175,7 @@ options:
      * Method checking for imports that they have been processed properly
      * @test
      */
-    public function loadWithImportAndRelativePaths()
+    public function loadWithImportAndRelativePaths(): void
     {
         $subject = new YamlFileLoader();
         $result = $subject->load(__DIR__ . '/Fixtures/Berta.yaml');
@@ -420,7 +420,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
      * dataprovider for tests isPlaceholderTest
      * @return array
      */
-    public function isPlaceholderDataProvider()
+    public function isPlaceholderDataProvider(): array
     {
         return [
             'regular string' => [
@@ -473,7 +473,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
      * @param bool $expected
      * @skip
      */
-    public function containsPlaceholderTest($placeholderValue, bool $expected)
+    public function containsPlaceholderTest($placeholderValue, bool $expected): void
     {
         $subject = $this->getAccessibleMock(YamlFileLoader::class, ['dummy']);
         $output = $subject->_call('containsPlaceholder', $placeholderValue);

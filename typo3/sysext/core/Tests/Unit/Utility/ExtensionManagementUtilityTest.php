@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -38,16 +39,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionManagementUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var \TYPO3\CMS\Core\Package\PackageManager
-     */
-    protected $backUpPackageManager;
+    protected ?PackageManager $backUpPackageManager;
 
     /**
      * Set up
@@ -73,7 +72,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param array $packageMethods
      * @return PackageManager|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = ['getPackagePath', 'getPackageKey'])
+    protected function createMockPackageManagerWithMockPackage(string $packageKey, array $packageMethods = ['getPackagePath', 'getPackageKey'])
     {
         $packagePath = Environment::getVarPath() . '/tests/' . $packageKey . '/';
         GeneralUtility::mkdir_deep($packagePath);
@@ -114,7 +113,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isLoadedReturnsFalseIfExtensionIsNotLoaded()
+    public function isLoadedReturnsFalseIfExtensionIsNotLoaded(): void
     {
         self::assertFalse(ExtensionManagementUtility::isLoaded(StringUtility::getUniqueId('foobar')));
     }
@@ -125,7 +124,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function extPathThrowsExceptionIfExtensionIsNotLoaded()
+    public function extPathThrowsExceptionIfExtensionIsNotLoaded(): void
     {
         $this->expectException(\BadFunctionCallException::class);
         $this->expectExceptionCode(1365429656);
@@ -147,7 +146,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function extPathAppendsScriptNameToPath()
+    public function extPathAppendsScriptNameToPath(): void
     {
         $package = $this->getMockBuilder(Package::class)
                 ->disableOriginalConstructor()
@@ -182,7 +181,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param string $table name of the table, must not be empty
      * @return array generated TCA for the given table, will not be empty
      */
-    private function generateTCAForTable($table)
+    private function generateTCAForTable($table): array
     {
         $tca = [];
         $tca[$table] = [];
@@ -209,7 +208,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function extensionKeyDataProvider()
+    public function extensionKeyDataProvider(): array
     {
         return [
             'Without underscores' => [
@@ -237,7 +236,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param string $expectedPrefix
      * @dataProvider extensionKeyDataProvider
      */
-    public function getClassNamePrefixForExtensionKey($extensionName, $expectedPrefix)
+    public function getClassNamePrefixForExtensionKey(string $extensionName, string $expectedPrefix): void
     {
         self::assertSame($expectedPrefix, ExtensionManagementUtility::getCN($extensionName));
     }
@@ -251,7 +250,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToAllTCATypesBeforeExistingOnes()
+    public function canAddFieldsToAllTCATypesBeforeExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -268,7 +267,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToAllTCATypesAfterExistingOnes()
+    public function canAddFieldsToAllTCATypesAfterExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -285,7 +284,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToAllTCATypesRespectsPalettes()
+    public function canAddFieldsToAllTCATypesRespectsPalettes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -301,7 +300,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToAllTCATypesRespectsPositionFieldInPalette()
+    public function canAddFieldsToAllTCATypesRespectsPositionFieldInPalette(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -316,7 +315,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToTCATypeBeforeExistingOnes()
+    public function canAddFieldsToTCATypeBeforeExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -333,7 +332,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addToAllTCAtypes()
      */
-    public function canAddFieldsToTCATypeAfterExistingOnes()
+    public function canAddFieldsToTCATypeAfterExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -347,7 +346,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function canAddFieldWithPartOfAlreadyExistingFieldname()
+    public function canAddFieldWithPartOfAlreadyExistingFieldname(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -362,7 +361,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()
      */
-    public function canAddFieldsToTCATypeAndReplaceExistingOnes()
+    public function canAddFieldsToTCATypeAndReplaceExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -380,7 +379,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addToAllTCAtypesReplacesExistingOnes()
+    public function addToAllTCAtypesReplacesExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -401,7 +400,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addFieldsToPalette()
      */
-    public function canAddFieldsToPaletteBeforeExistingOnes()
+    public function canAddFieldsToPaletteBeforeExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -415,7 +414,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addFieldsToPalette()
      */
-    public function canAddFieldsToPaletteAfterExistingOnes()
+    public function canAddFieldsToPaletteAfterExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -429,7 +428,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @test
      * @see ExtensionManagementUtility::addFieldsToPalette()
      */
-    public function canAddFieldsToPaletteAfterNotExistingOnes()
+    public function canAddFieldsToPaletteAfterNotExistingOnes(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
@@ -440,7 +439,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider()
+    public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider(): array
     {
         return [
             'Simple' => [
@@ -468,7 +467,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $list
      * @param $expected
      */
-    public function removeDuplicatesForInsertionRemovesDuplicates($insertionList, $list, $expected)
+    public function removeDuplicatesForInsertionRemovesDuplicates($insertionList, $list, $expected): void
     {
         $result = ExtensionManagementUtilityAccessibleProxy::removeDuplicatesForInsertion($insertionList, $list);
         self::assertSame($expected, $result);
@@ -481,7 +480,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldDoesNotAddAnythingIfFieldIsNotRegisteredInColumns()
+    public function addFieldsToAllPalettesOfFieldDoesNotAddAnythingIfFieldIsNotRegisteredInColumns(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -509,7 +508,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsFieldsToPaletteAndSuppressesDuplicates()
+    public function addFieldsToAllPalettesOfFieldAddsFieldsToPaletteAndSuppressesDuplicates(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -556,7 +555,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldDoesNotAddAFieldThatIsPartOfPaletteAlready()
+    public function addFieldsToAllPalettesOfFieldDoesNotAddAFieldThatIsPartOfPaletteAlready(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -603,7 +602,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsFieldsToMultiplePalettes()
+    public function addFieldsToAllPalettesOfFieldAddsFieldsToMultiplePalettes(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -662,7 +661,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsMultipleFields()
+    public function addFieldsToAllPalettesOfFieldAddsMultipleFields(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -709,7 +708,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsBeforeExistingIfRequested()
+    public function addFieldsToAllPalettesOfFieldAddsBeforeExistingIfRequested(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -757,7 +756,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfBeforeRequestedDoesNotExist()
+    public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfBeforeRequestedDoesNotExist(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -805,7 +804,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsAfterExistingIfRequested()
+    public function addFieldsToAllPalettesOfFieldAddsAfterExistingIfRequested(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -853,7 +852,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfAfterRequestedDoesNotExist()
+    public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfAfterRequestedDoesNotExist(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -901,7 +900,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYet()
+    public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYet(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -943,7 +942,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYetAndKeepsExistingLabel()
+    public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYetAndKeepsExistingLabel(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -990,7 +989,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * Data provider for executePositionedStringInsertionTrimsCorrectCharacters
      * @return array
      */
-    public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider()
+    public function executePositionedStringInsertionTrimsCorrectCharactersDataProvider(): array
     {
         return [
             'normal characters' => [
@@ -1026,7 +1025,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $string
      * @param $expectedResult
      */
-    public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult)
+    public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult): void
     {
         $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, ['dummy']);
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
@@ -1039,7 +1038,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString()
+    public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236963);
@@ -1050,7 +1049,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString()
+    public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236964);
@@ -1061,7 +1060,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString()
+    public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236965);
@@ -1072,7 +1071,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString()
+    public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236966);
@@ -1083,7 +1082,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords()
+    public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1303236967);
@@ -1094,7 +1093,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca()
+    public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1303237468);
@@ -1106,7 +1105,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * Data provider for addTcaSelectItemInsertsItemAtSpecifiedPosition
      */
-    public function addTcaSelectItemDataProvider()
+    public function addTcaSelectItemDataProvider(): array
     {
         // Every array splits into:
         // - relativeToField
@@ -1172,7 +1171,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $relativePosition
      * @param $expectedResultArray
      */
-    public function addTcaSelectItemInsertsItemAtSpecifiedPosition($relativeToField, $relativePosition, $expectedResultArray)
+    public function addTcaSelectItemInsertsItemAtSpecifiedPosition($relativeToField, $relativePosition, $expectedResultArray): void
     {
         $GLOBALS['TCA'] = [
             'testTable' => [
@@ -1199,7 +1198,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied()
+    public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied(): void
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
@@ -1215,7 +1214,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed()
+    public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1239,7 +1238,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt()
+    public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1340559079);
@@ -1260,7 +1259,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * Data provider for addModule tests
      * @return array
      */
-    public function addModulePositionTestsDataProvider()
+    public function addModulePositionTestsDataProvider(): array
     {
         return [
             'can add new main module if none exists' => [
@@ -1313,7 +1312,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $existing
      * @param $expected
      */
-    public function addModuleCanAddModule($position, $existing, $expected)
+    public function addModuleCanAddModule($position, $existing, $expected): void
     {
         $mainModule = 'foobar';
         $subModule = 'newModule';
@@ -1334,7 +1333,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $existing
      * @param $expected
      */
-    public function addModuleCanAddMainModule($position, $existing, $expected)
+    public function addModuleCanAddMainModule($position, $existing, $expected): void
     {
         $mainModule = 'newModule';
         if ($existing) {
@@ -1357,7 +1356,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtLocalconf()
+    public function createExtLocalconfCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtLocalconf(): void
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
@@ -1379,7 +1378,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtLocalconfExists()
+    public function createExtLocalconfCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtLocalconfExists(): void
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
@@ -1400,7 +1399,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags()
+    public function createExtLocalconfCacheEntryWritesCacheEntryWithNoTags(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1419,7 +1418,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix()
+    public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
     {
         $prefix = 'ext_localconf_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getExtLocalconfCacheIdentifier();
@@ -1435,7 +1434,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadBaseTcaDoesNotReadFromCacheIfCachingIsDenied()
+    public function loadBaseTcaDoesNotReadFromCacheIfCachingIsDenied(): void
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
@@ -1449,7 +1448,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed()
+    public function loadBaseTcaRequiresCacheFileIfExistsAndCachingIsAllowed(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1463,7 +1462,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadBaseTcaCreatesCacheFileWithContentOfAnExtensionsConfigurationTcaPhpFile()
+    public function loadBaseTcaCreatesCacheFileWithContentOfAnExtensionsConfigurationTcaPhpFile(): void
     {
         $extensionName = StringUtility::getUniqueId('test_baseTca_');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
@@ -1502,7 +1501,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadBaseTcaWritesCacheEntryWithNoTags()
+    public function loadBaseTcaWritesCacheEntryWithNoTags(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1527,7 +1526,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getBaseTcaCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix()
+    public function getBaseTcaCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
     {
         $prefix = 'tca_base_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getBaseTcaCacheIdentifier();
@@ -1542,7 +1541,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied()
+    public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied(): void
     {
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
@@ -1558,7 +1557,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed()
+    public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1585,7 +1584,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables()
+    public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables(): void
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
@@ -1607,7 +1606,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtTablesCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtTablesExists()
+    public function createExtTablesCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtTablesExists(): void
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
@@ -1627,7 +1626,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createExtTablesCacheEntryWritesCacheEntryWithNoTags()
+    public function createExtTablesCacheEntryWritesCacheEntryWithNoTags(): void
     {
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1647,7 +1646,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix()
+    public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix(): void
     {
         $prefix = 'ext_tables_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getExtTablesCacheIdentifier();
@@ -1664,7 +1663,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function getExtensionVersionFaultyDataProvider()
+    public function getExtensionVersionFaultyDataProvider(): array
     {
         return [
             [''],
@@ -1680,7 +1679,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param $key
      * @throws \TYPO3\CMS\Core\Package\Exception
      */
-    public function getExtensionVersionForFaultyExtensionKeyThrowsException($key)
+    public function getExtensionVersionForFaultyExtensionKeyThrowsException($key): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1294586096);
@@ -1691,7 +1690,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtensionVersionForNotLoadedExtensionReturnsEmptyString()
+    public function getExtensionVersionForNotLoadedExtensionReturnsEmptyString(): void
     {
         $uniqueSuffix = StringUtility::getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
@@ -1701,7 +1700,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion()
+    public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion(): void
     {
         $uniqueSuffix = StringUtility::getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
@@ -1726,7 +1725,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadExtensionThrowsExceptionIfExtensionIsLoaded()
+    public function loadExtensionThrowsExceptionIfExtensionIsLoaded(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1342345486);
@@ -1743,7 +1742,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded()
+    public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1342345487);
@@ -1765,7 +1764,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function unloadExtensionCallsPackageManagerToDeactivatePackage()
+    public function unloadExtensionCallsPackageManagerToDeactivatePackage(): void
     {
         $packageName = StringUtility::getUniqueId('foo');
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
@@ -1790,7 +1789,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addPluginSetsTcaCorrectlyForGivenExtKeyAsParameter()
+    public function addPluginSetsTcaCorrectlyForGivenExtKeyAsParameter(): void
     {
         $extKey = 'indexed_search';
         $expectedTCA = [
@@ -1809,7 +1808,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addPluginThrowsExceptionForMissingExtkey()
+    public function addPluginThrowsExceptionForMissingExtkey(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1404068038);
@@ -1817,7 +1816,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtility::addPlugin('test');
     }
 
-    public function addTcaSelectItemGroupAddsGroupDataProvider()
+    public function addTcaSelectItemGroupAddsGroupDataProvider(): array
     {
         return [
             'add the first group' => [
@@ -1922,7 +1921,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      * @param array $expectedGroups
      * @dataProvider addTcaSelectItemGroupAddsGroupDataProvider
      */
-    public function addTcaSelectItemGroupAddsGroup(string $groupId, string $groupLabel, ?string $position, ?array $existingGroups, array $expectedGroups)
+    public function addTcaSelectItemGroupAddsGroup(string $groupId, string $groupLabel, ?string $position, ?array $existingGroups, array $expectedGroups): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['CType']['config'] = [];
         if (is_array($existingGroups)) {

@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RelationHandlerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Database\RelationHandler
+     * @var RelationHandler
      */
     protected $subject;
 
@@ -41,7 +41,7 @@ class RelationHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled()
+    public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled(): void
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = false;
 
@@ -55,7 +55,7 @@ class RelationHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged()
+    public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged(): void
     {
         $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = true;
 

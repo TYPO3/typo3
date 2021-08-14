@@ -30,7 +30,7 @@ class BootstrapRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCreatesCorrectOutputForFlashMessage()
+    public function renderCreatesCorrectOutputForFlashMessage(): void
     {
         $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);
         $flashMessage = GeneralUtility::makeInstance(
@@ -50,7 +50,7 @@ class BootstrapRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCreatesCorrectOutputForFlashMessageWithoutTitle()
+    public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
         $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);
         $flashMessage = GeneralUtility::makeInstance(

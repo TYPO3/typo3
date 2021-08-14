@@ -30,20 +30,14 @@ class SearchCest
      *
      * @var string
      */
-    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
+    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function searchAndTestIfAutocompletionWorks(ApplicationTester $I)
+    public function searchAndTestIfAutocompletionWorks(ApplicationTester $I): void
     {
         $I->cantSeeElement(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
         $I->fillField('#live-search-box', 'adm');
@@ -57,10 +51,7 @@ class SearchCest
         $I->canSee('Edit Backend user "admin" on root level');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function searchForFancyTextAndCheckEmptyResultInfo(ApplicationTester $I)
+    public function searchForFancyTextAndCheckEmptyResultInfo(ApplicationTester $I): void
     {
         $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
@@ -73,10 +64,7 @@ class SearchCest
         $I->cantSeeInField('#live-search-box', 'Kasper = Jesus # joh316');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I)
+    public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I): void
     {
         $I->fillField('#live-search-box', 'fileadmin');
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);

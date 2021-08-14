@@ -24,17 +24,14 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 */
 class FrontendFixture implements FrontendInterface
 {
-    /**
-     * @var string
-     */
-    protected $identifier;
+    protected string $identifier;
 
     public function __construct($identifier)
     {
         $this->identifier = $identifier;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -43,7 +40,7 @@ class FrontendFixture implements FrontendInterface
     {
     }
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
     }
 
@@ -59,19 +56,19 @@ class FrontendFixture implements FrontendInterface
     {
     }
 
-    public function flush()
+    public function flush(): void
     {
     }
 
-    public function flushByTag($tag)
+    public function flushByTag($tag): void
     {
     }
 
-    public function flushByTags(array $tags)
+    public function flushByTags(array $tags): void
     {
     }
 
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
     }
 

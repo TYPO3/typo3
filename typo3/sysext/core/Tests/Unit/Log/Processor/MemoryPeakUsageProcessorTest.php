@@ -30,7 +30,7 @@ class MemoryPeakUsageProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function memoryPeakUsageProcessorAddsMemoryPeakUsageDataToLogRecord()
+    public function memoryPeakUsageProcessorAddsMemoryPeakUsageDataToLogRecord(): void
     {
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $processor = new MemoryPeakUsageProcessor();

@@ -24,18 +24,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class LogoCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkIfTypo3LogoIsLinked(ApplicationTester $I)
+    public function checkIfTypo3LogoIsLinked(ApplicationTester $I): void
     {
         $I->seeElement('//div[@class="topbar-header-site"]/a[@href="./"]');
     }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -32,21 +33,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IconTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var Icon
-     */
-    protected $subject;
+    use ProphecyTrait;
 
-    /**
-     * @var string
-     */
-    protected $iconIdentifier = 'actions-close';
-
-    /**
-     * @var string
-     */
-    protected $overlayIdentifier = 'overlay-readonly';
+    protected ?Icon $subject;
+    protected string $iconIdentifier = 'actions-close';
+    protected string $overlayIdentifier = 'overlay-readonly';
 
     /**
      * Set up
@@ -66,7 +57,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderAndCastToStringReturnsTheSameCode()
+    public function renderAndCastToStringReturnsTheSameCode(): void
     {
         self::assertEquals($this->subject->render(), (string)$this->subject);
     }
@@ -74,7 +65,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIdentifierReturnsCorrectIdentifier()
+    public function getIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals($this->iconIdentifier, $this->subject->getIdentifier());
     }
@@ -82,7 +73,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function getOverlayIdentifierReturnsCorrectIdentifier()
+    public function getOverlayIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals($this->overlayIdentifier, $this->subject->getOverlayIcon()->getIdentifier());
     }
@@ -90,7 +81,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSizeIdentifierReturnsCorrectIdentifier()
+    public function getSizeIdentifierReturnsCorrectIdentifier(): void
     {
         self::assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
     }
@@ -98,7 +89,7 @@ class IconTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStateReturnsCorrectIdentifier()
+    public function getStateReturnsCorrectIdentifier(): void
     {
         self::assertTrue($this->subject->getState()->equals(IconState::STATE_DISABLED));
     }

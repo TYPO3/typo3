@@ -24,7 +24,7 @@ use Symfony\Component\Mime\RawMessage;
  */
 class FakeInvalidSpoolFixture
 {
-    private $settings;
+    private array $settings;
 
     public function __construct(array $settings)
     {
@@ -36,7 +36,7 @@ class FakeInvalidSpoolFixture
         return $this->settings;
     }
 
-    public function queueMessage(RawMessage $message)
+    public function queueMessage(RawMessage $message): void
     {
     }
 }

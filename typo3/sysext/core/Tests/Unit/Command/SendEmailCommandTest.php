@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Command;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Command\SendEmailCommand;
@@ -30,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SendEmailCommandTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function executeWillFlushTheQueue()
+    public function executeWillFlushTheQueue(): void
     {
         $delayedTransportProphecy = $this->prophesize(DelayedTransportInterface::class);
         $delayedTransportProphecy->flushQueue(Argument::any())->willReturn(5);

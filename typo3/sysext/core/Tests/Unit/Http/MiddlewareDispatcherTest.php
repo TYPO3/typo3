@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,11 +34,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MiddlewareDispatcherTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function executesKernelWithEmptyMiddlewareStack()
+    public function executesKernelWithEmptyMiddlewareStack(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -55,7 +57,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function executesMiddlewaresLastInFirstOut()
+    public function executesMiddlewaresLastInFirstOut(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -100,7 +102,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function doesNotInstantiateLazyMiddlewareInCaseOfAnEarlyReturningOuterMiddleware()
+    public function doesNotInstantiateLazyMiddlewareInCaseOfAnEarlyReturningOuterMiddleware(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -126,7 +128,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function throwsExceptionForLazyNonMiddlewareInterfaceClasses()
+    public function throwsExceptionForLazyNonMiddlewareInterfaceClasses(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1516821342);
@@ -147,7 +149,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function canBeExecutedMultipleTimes()
+    public function canBeExecutedMultipleTimes(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -175,7 +177,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function canBeReExecutedRecursivelyDuringDispatch()
+    public function canBeReExecutedRecursivelyDuringDispatch(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -215,7 +217,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function fetchesMiddlewareFromContainer()
+    public function fetchesMiddlewareFromContainer(): void
     {
         $kernel = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface

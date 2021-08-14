@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
@@ -29,14 +30,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class StorageRepositoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**********************************
      * Drivers
      **********************************/
     /**
      * @test
      */
-    public function getDriverObjectAcceptsDriverClassName()
+    public function getDriverObjectAcceptsDriverClassName(): void
     {
         $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $driverFixtureClass = get_class($mockedDriver);
@@ -65,7 +67,7 @@ class StorageRepositoryTest extends UnitTestCase
      * @test
      * @dataProvider storageDetectionDataProvider
      */
-    public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId)
+    public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId): void
     {
         $subject = new StorageRepository(
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
@@ -81,7 +83,7 @@ class StorageRepositoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function storageDetectionDataProvider()
+    public function storageDetectionDataProvider(): array
     {
         return [
             'NoLocalStoragesReturnDefaultStorage' => [

@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class HtmlParserTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Html\HtmlParser
-     */
-    protected $subject;
+    protected ?HtmlParser $subject;
 
     protected function setUp(): void
     {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -31,7 +32,7 @@ class TextExtractorRegistryTest extends UnitTestCase
      * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
      *
      * @param array $createsTextExtractorInstances
-     * @return \PHPUnit\Framework\MockObject\MockObject|TextExtractorRegistry
+     * @return MockObject|TextExtractorRegistry
      */
     protected function getTextExtractorRegistry(array $createsTextExtractorInstances = [])
     {
@@ -51,7 +52,7 @@ class TextExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registeredTextExtractorClassCanBeRetrieved()
+    public function registeredTextExtractorClassCanBeRetrieved(): void
     {
         $textExtractorClass = StringUtility::getUniqueId('myTextExtractor');
         $textExtractorInstance = $this->getMockBuilder(TextExtractorInterface::class)
@@ -67,7 +68,7 @@ class TextExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerTextExtractorThrowsExceptionIfClassDoesNotExist()
+    public function registerTextExtractorThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1422906893);
@@ -79,7 +80,7 @@ class TextExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface()
+    public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1422771427);

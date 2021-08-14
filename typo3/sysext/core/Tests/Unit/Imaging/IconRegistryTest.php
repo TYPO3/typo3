@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Exception;
@@ -32,11 +33,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IconRegistryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var string
      */
-    protected $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
+    protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
 
     /**
      * @var FrontendInterface|ObjectProphecy
@@ -54,7 +56,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString()
+    public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getDefaultIconIdentifier();
         self::assertEquals('default-not-found', $result);
@@ -63,7 +65,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function isRegisteredReturnsTrueForRegisteredIcon()
+    public function isRegisteredReturnsTrueForRegisteredIcon(): void
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $result = $subject->isRegistered($subject->getDefaultIconIdentifier());
@@ -73,7 +75,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function isRegisteredReturnsFalseForNotRegisteredIcon()
+    public function isRegisteredReturnsFalseForNotRegisteredIcon(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->isRegistered($this->notRegisteredIconIdentifier);
         self::assertFalse($result);
@@ -82,7 +84,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerIconAddNewIconToRegistry()
+    public function registerIconAddNewIconToRegistry(): void
     {
         $unregisteredIcon = 'foo-bar-unregistered';
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
@@ -97,7 +99,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerIconThrowsInvalidArgumentExceptionWithInvalidIconProvider()
+    public function registerIconThrowsInvalidArgumentExceptionWithInvalidIconProvider(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437425803);
@@ -108,7 +110,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconConfigurationByIdentifierThrowsExceptionWithUnregisteredIconIdentifier()
+    public function getIconConfigurationByIdentifierThrowsExceptionWithUnregisteredIconIdentifier(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1437425804);
@@ -119,7 +121,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconConfigurationByIdentifierReturnsCorrectConfiguration()
+    public function getIconConfigurationByIdentifierReturnsCorrectConfiguration(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getIconConfigurationByIdentifier('default-not-found');
         // result must contain at least provider and options array
@@ -132,7 +134,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers()
+    public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers(): void
     {
         self::assertIsArray((new IconRegistry($this->cacheFrontendProphecy->reveal()))->getAllRegisteredIconIdentifiers());
     }
@@ -140,7 +142,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers()
+    public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getAllRegisteredIconIdentifiers();
         self::assertIsArray($result);
@@ -150,7 +152,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForEmptyFileExtension()
+    public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForEmptyFileExtension(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getIconIdentifierForFileExtension('');
         self::assertEquals('mimetypes-other-other', $result);
@@ -159,7 +161,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForUnknownFileExtension()
+    public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForUnknownFileExtension(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getIconIdentifierForFileExtension('xyz');
         self::assertEquals('mimetypes-other-other', $result);
@@ -168,7 +170,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconIdentifierForFileExtensionReturnsImageIconIdentifierForImageFileExtension()
+    public function getIconIdentifierForFileExtensionReturnsImageIconIdentifierForImageFileExtension(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getIconIdentifierForFileExtension('jpg');
         self::assertEquals('mimetypes-media-image', $result);
@@ -177,7 +179,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerFileExtensionRegisterAnIcon()
+    public function registerFileExtensionRegisterAnIcon(): void
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $subject->registerFileExtension('abc', 'xyz');
@@ -188,7 +190,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerFileExtensionOverwriteAnExistingIcon()
+    public function registerFileExtensionOverwriteAnExistingIcon(): void
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $subject->registerFileExtension('jpg', 'xyz');
@@ -199,7 +201,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerMimeTypeIconRegisterAnIcon()
+    public function registerMimeTypeIconRegisterAnIcon(): void
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $subject->registerMimeTypeIcon('foo/bar', 'mimetype-foo-bar');
@@ -210,7 +212,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerMimeTypeIconOverwriteAnExistingIcon()
+    public function registerMimeTypeIconOverwriteAnExistingIcon(): void
     {
         $subject = new IconRegistry($this->cacheFrontendProphecy->reveal());
         $subject->registerMimeTypeIcon('video/*', 'mimetype-foo-bar');
@@ -221,7 +223,7 @@ class IconRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconIdentifierForMimeTypeWithUnknownMimeTypeReturnNull()
+    public function getIconIdentifierForMimeTypeWithUnknownMimeTypeReturnNull(): void
     {
         $result = (new IconRegistry($this->cacheFrontendProphecy->reveal()))->getIconIdentifierForMimeType('bar/foo');
         self::assertNull($result);

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -32,13 +33,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractRepositoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var AbstractRepository
      */
     protected $subject;
 
-    protected function createDatabaseMock()
+    protected function createDatabaseMock(): \Prophecy\Prophecy\ObjectProphecy
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
@@ -64,7 +66,7 @@ class AbstractRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findByUidFailsIfUidIsString()
+    public function findByUidFailsIfUidIsString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1316779798);
@@ -74,7 +76,7 @@ class AbstractRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findByUidAcceptsNumericUidInString()
+    public function findByUidAcceptsNumericUidInString(): void
     {
         $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(['uid' => 123]);

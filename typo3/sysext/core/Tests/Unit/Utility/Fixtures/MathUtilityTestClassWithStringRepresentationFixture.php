@@ -22,19 +22,19 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
  */
 class MathUtilityTestClassWithStringRepresentationFixture
 {
-    protected $string = '';
+    protected string $string = '';
 
     public function __toString()
     {
         return $this->getString();
     }
 
-    public function setString($string)
+    public function setString($string): void
     {
         $this->string = $string;
     }
 
-    public function getString()
+    public function getString(): string
     {
         return $this->string;
     }

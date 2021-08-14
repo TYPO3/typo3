@@ -28,7 +28,7 @@ class UrlLinkHandlerTest extends UnitTestCase
      *
      * @return array
      */
-    public function resolveParametersForNonFilesDataProvider()
+    public function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'URL without a scheme' => [
@@ -120,8 +120,9 @@ class UrlLinkHandlerTest extends UnitTestCase
      * @param string $finalString
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
+     * @todo Defining the method parameter types results in test bench errors
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString)
+    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
@@ -135,8 +136,9 @@ class UrlLinkHandlerTest extends UnitTestCase
      * @param string $expected
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
+     * @todo Defining the method parameter types results in test bench errors
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));

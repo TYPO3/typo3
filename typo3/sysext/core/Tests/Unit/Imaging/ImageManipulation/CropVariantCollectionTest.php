@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CropVariantCollectionTest extends UnitTestCase
 {
-    /**
-     * @var array
-     */
-    private static $tca = [
+    private static array $tca = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,
@@ -74,7 +71,7 @@ class CropVariantCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function createFromJsonWorks()
+    public function createFromJsonWorks(): void
     {
         $cropVariant1 = self::$tca;
         $cropVariant2 = self::$tca;
@@ -98,7 +95,7 @@ class CropVariantCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function duplicateIdThrowsException()
+    public function duplicateIdThrowsException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $cropVariant1 = new CropVariant('foo', 'title 1', new Area(0.0, 0.0, 1.0, 1.0));
@@ -109,7 +106,7 @@ class CropVariantCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function createEmptyWorks()
+    public function createEmptyWorks(): void
     {
         self::assertTrue(CropVariantCollection::create('')->getCropArea()->isEmpty());
     }

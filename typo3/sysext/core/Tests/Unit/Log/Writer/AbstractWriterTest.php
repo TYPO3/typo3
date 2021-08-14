@@ -29,7 +29,7 @@ class AbstractWriterTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsExceptionWithInvalidConfigurationOption()
+    public function constructThrowsExceptionWithInvalidConfigurationOption(): void
     {
         $this->expectException(InvalidLogWriterConfigurationException::class);
         $this->expectExceptionCode(1321696152);

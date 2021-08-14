@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SvgIconProviderTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider
-     */
-    protected $subject;
+    protected ?SvgIconProvider $subject;
 
     /**
      * @var Icon
@@ -52,7 +49,7 @@ class SvgIconProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup()
+    public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'fileadmin/foo.svg']);
         self::assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
@@ -61,7 +58,7 @@ class SvgIconProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup()
+    public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => '/fileadmin/foo.svg']);
         self::assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
@@ -70,7 +67,7 @@ class SvgIconProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup()
+    public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.svg']);
         self::assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
@@ -79,7 +76,7 @@ class SvgIconProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconWithInlineOptionReturnsCleanSvgMarkup()
+    public function getIconWithInlineOptionReturnsCleanSvgMarkup(): void
     {
         $testFile = GeneralUtility::tempnam('svg_', '.svg');
         $this->testFilesToDelete[] = $testFile;

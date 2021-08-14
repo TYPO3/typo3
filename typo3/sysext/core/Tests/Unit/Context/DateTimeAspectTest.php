@@ -26,7 +26,7 @@ class DateTimeAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDateTimeReturnsSameObject()
+    public function getDateTimeReturnsSameObject(): void
     {
         $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
         $subject = new DateTimeAspect($dateObject);
@@ -37,7 +37,7 @@ class DateTimeAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionOnInvalidArgument()
+    public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);
         $this->expectExceptionCode(1527778767);
@@ -60,7 +60,7 @@ class DateTimeAspectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function dateFormatValuesDataProvider()
+    public function dateFormatValuesDataProvider(): array
     {
         return [
             'timestamp' => [
@@ -92,7 +92,7 @@ class DateTimeAspectTest extends UnitTestCase
      * @param string $key
      * @param string $expectedResult
      */
-    public function getReturnsValidInformationFromProperty($key, $expectedResult)
+    public function getReturnsValidInformationFromProperty($key, $expectedResult): void
     {
         $dateObject = new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow'));
         $subject = new DateTimeAspect($dateObject);

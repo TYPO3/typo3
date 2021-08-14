@@ -24,7 +24,7 @@ class DeletedRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsDeletedWhereClause()
+    public function buildRestrictionsAddsDeletedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',

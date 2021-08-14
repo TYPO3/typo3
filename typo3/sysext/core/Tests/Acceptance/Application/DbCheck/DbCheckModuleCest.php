@@ -32,7 +32,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('#system_dbint');
@@ -42,7 +42,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeOverview(ApplicationTester $I)
+    public function seeOverview(ApplicationTester $I): void
     {
         $I->see('Database integrity check', 'h1');
         $I->see('Records Statistics', 'a');
@@ -54,7 +54,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeRecordStatistics(ApplicationTester $I)
+    public function seeRecordStatistics(ApplicationTester $I): void
     {
         $this->goToPageAndSeeHeadline($I, 'Record Statistics', 'Records Statistics');
 
@@ -68,7 +68,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeDatabaseRelations(ApplicationTester $I)
+    public function seeDatabaseRelations(ApplicationTester $I): void
     {
         $this->goToPageAndSeeHeadline($I, 'Database Relations', 'Relations');
         $I->see('Select fields', 'h2');
@@ -78,7 +78,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeFullSearch(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeFullSearch(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $this->goToPageAndSeeHeadline($I, 'Full search', 'Search whole Database');
         $I->see('Search options', 'h2');
@@ -100,7 +100,7 @@ class DbCheckModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeManageReferenceIndex(ApplicationTester $I)
+    public function seeManageReferenceIndex(ApplicationTester $I): void
     {
         $this->goToPageAndSeeHeadline($I, 'Manage Reference Index', 'Manage Reference Index');
 

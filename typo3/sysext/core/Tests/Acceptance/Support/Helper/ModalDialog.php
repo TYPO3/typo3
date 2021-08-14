@@ -62,7 +62,7 @@ class ModalDialog extends AbstractModalDialog
      * @param string $buttonLinkLocator the button title
      * @see \Codeception\Module\WebDriver::click()
      */
-    public function clickButtonInDialog(string $buttonLinkLocator)
+    public function clickButtonInDialog(string $buttonLinkLocator): void
     {
         $I = $this->tester;
         $this->canSeeDialog();
@@ -73,7 +73,7 @@ class ModalDialog extends AbstractModalDialog
     /**
      * Check if modal dialog is visible in top frame
      */
-    public function canSeeDialog()
+    public function canSeeDialog(): void
     {
         $I = $this->tester;
         $I->switchToIFrame();

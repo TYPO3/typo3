@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
@@ -29,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class YouTubeRendererTest extends UnitTestCase
 {
     /**
-     * @var YouTubeRenderer|\PHPUnit\Framework\MockObject\MockObject
+     * @var YouTubeRenderer|MockObject
      */
     protected $subject;
 
@@ -41,7 +42,7 @@ class YouTubeRendererTest extends UnitTestCase
         parent::setUp();
         $_SERVER['HTTP_HOST'] = 'test.server.org';
 
-        /** @var YouTubeHelper|\PHPUnit\Framework\MockObject\MockObject $youTubeHelper */
+        /** @var YouTubeHelper|MockObject $youTubeHelper */
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youTubeHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331');
 
@@ -52,7 +53,7 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsCorrectValue()
+    public function getPriorityReturnsCorrectValue(): void
     {
         self::assertSame(1, $this->subject->getPriority());
     }
@@ -60,12 +61,12 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsTrueOnCorrectFile()
+    public function canRenderReturnsTrueOnCorrectFile(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock1 */
+        /** @var File|MockObject $fileResourceMock1 */
         $fileResourceMock1 = $this->createMock(File::class);
         $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('video/youtube');
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock2 */
+        /** @var File|MockObject $fileResourceMock2 */
         $fileResourceMock2 = $this->createMock(File::class);
         $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('video/unknown');
         $fileResourceMock2->expects(self::any())->method('getExtension')->willReturn('youtube');
@@ -77,9 +78,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsFalseOnCorrectFile()
+    public function canRenderReturnsFalseOnCorrectFile(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/vimeo');
 
@@ -89,9 +90,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithLoopIsCorrect()
+    public function renderOutputWithLoopIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -103,9 +104,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAutoplayIsCorrect()
+    public function renderOutputWithAutoplayIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -117,12 +118,12 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAutoplayFromFileReferenceIsCorrect()
+    public function renderOutputWithAutoplayFromFileReferenceIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        /** @var FileReference|\PHPUnit\Framework\MockObject\MockObject $fileReferenceMock */
+        /** @var FileReference|MockObject $fileReferenceMock */
         $fileReferenceMock = $this->createMock(FileReference::class);
         $fileReferenceMock->expects(self::any())->method('getProperty')->willReturn(1);
         $fileReferenceMock->expects(self::any())->method('getOriginalFile')->willReturn($fileResourceMock);
@@ -136,9 +137,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAutoplayAndWithoutControlsIsCorrect()
+    public function renderOutputWithAutoplayAndWithoutControlsIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -147,7 +148,7 @@ class YouTubeRendererTest extends UnitTestCase
         );
     }
 
-    public function renderOutputWithControlsDataProvider()
+    public function renderOutputWithControlsDataProvider(): array
     {
         return [
             'no options given, visible player controls (default)' => [
@@ -221,9 +222,9 @@ class YouTubeRendererTest extends UnitTestCase
      * @test
      * @dataProvider renderOutputWithControlsDataProvider
      */
-    public function renderOutputWithDefaultControlsIsCorrect($expected, $options)
+    public function renderOutputWithDefaultControlsIsCorrect($expected, $options): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -235,9 +236,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithRelatedVideosTurnedOffIsCorrect()
+    public function renderOutputWithRelatedVideosTurnedOffIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -249,9 +250,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithAdditionalAttributes()
+    public function renderOutputWithAdditionalAttributes(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -263,9 +264,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithDataAttributesForCustomization()
+    public function renderOutputWithDataAttributesForCustomization(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -277,9 +278,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithCombinationOfDataAndAdditionalAttributes()
+    public function renderOutputWithCombinationOfDataAndAdditionalAttributes(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -291,9 +292,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithDisabledNoCookieIsCorrect()
+    public function renderOutputWithDisabledNoCookieIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -305,9 +306,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithModestbrandingIsCorrect()
+    public function renderOutputWithModestbrandingIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -319,9 +320,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithCustomAllowIsCorrect()
+    public function renderOutputWithCustomAllowIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -333,9 +334,9 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputWithCustomAllowAndAutoplayIsCorrect()
+    public function renderOutputWithCustomAllowAndAutoplayIsCorrect(): void
     {
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -347,16 +348,16 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderOutputIsEscaped()
+    public function renderOutputIsEscaped(): void
     {
-        /** @var YouTubeHelper|\PHPUnit\Framework\MockObject\MockObject $youtubeHelper */
+        /** @var YouTubeHelper|MockObject $youtubeHelper */
         $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youtubeHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
         $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
         $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
 
-        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
+        /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(

@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteLanguageTest extends UnitTestCase
 {
-    public function languageFallbackIdConversionDataProvider()
+    public function languageFallbackIdConversionDataProvider(): array
     {
         return [
             'no fallback set' => [
@@ -63,7 +63,7 @@ class SiteLanguageTest extends UnitTestCase
      * @param string|array|null $input
      * @param array $expected
      */
-    public function languageFallbackIdConversion($input, array $expected)
+    public function languageFallbackIdConversion($input, array $expected): void
     {
         $configuration = [
             'fallbacks' => $input,
@@ -77,7 +77,7 @@ class SiteLanguageTest extends UnitTestCase
     /**
      * @test
      */
-    public function toArrayReturnsProperOverlaidData()
+    public function toArrayReturnsProperOverlaidData(): void
     {
         $configuration = [
             'navigationTitle' => 'NavTitle',

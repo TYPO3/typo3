@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -31,11 +32,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FailsafeContainerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var ObjectProphecy
-     */
-    protected $providerProphecy;
+    use ProphecyTrait;
+
+    protected ?ObjectProphecy $providerProphecy;
 
     protected function setUp(): void
     {

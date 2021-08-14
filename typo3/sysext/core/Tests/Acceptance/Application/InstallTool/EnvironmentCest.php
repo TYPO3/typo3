@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 class EnvironmentCest extends AbstractCest
 {
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         parent::_before($I);
         $this->logIntoInstallTool($I);
@@ -30,10 +30,9 @@ class EnvironmentCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function imageProcessingWorks(ApplicationTester $I)
+    public function imageProcessingWorks(ApplicationTester $I): void
     {
         $I->click('Test Images');
         $I->waitForElementVisible('.modal-dialog');

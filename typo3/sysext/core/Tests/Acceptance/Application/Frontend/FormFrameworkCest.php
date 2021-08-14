@@ -31,10 +31,7 @@ class FormFrameworkCest
     protected string $submitSelector = '[id^=simpleform] button[type=submit]';
     protected string $summaryValueSelector = '[id^=simpleform] table td:not(.summary-table-first-col)';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('Page');
@@ -52,9 +49,6 @@ class FormFrameworkCest
         $I->click('form_formframework', $this->sidebarSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function sentInvalidForm(ApplicationTester $I): void
     {
         $mandatory = 'This field is mandatory.';
@@ -68,9 +62,6 @@ class FormFrameworkCest
         $I->see($mandatory, $this->textareaSelector . ' + span');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function sentValidForm(ApplicationTester $I): void
     {
         $name = 'Jane Doe';

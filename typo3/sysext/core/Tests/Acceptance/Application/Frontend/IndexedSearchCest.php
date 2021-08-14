@@ -30,10 +30,7 @@ class IndexedSearchCest
     protected string $noResultsSelector = '.tx-indexedsearch-info-noresult';
     protected string $submitSelector = '.tx-indexedsearch-search-submit input[type=submit]';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('Page');
@@ -51,9 +48,6 @@ class IndexedSearchCest
         $I->click('list', $this->sidebarSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeSearchResults(ApplicationTester $I): void
     {
         $I->fillField($this->searchSelector, 'search word');
@@ -61,9 +55,6 @@ class IndexedSearchCest
         $I->see('No results found.', $this->noResultsSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeAdvancedSearch(ApplicationTester $I): void
     {
         $seeElements = [

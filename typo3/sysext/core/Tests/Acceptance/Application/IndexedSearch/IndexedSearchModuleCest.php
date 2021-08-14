@@ -27,15 +27,12 @@ class IndexedSearchModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I)
+    public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I): void
     {
         $I->click('#web_IndexedSearchIsearch');
         $I->waitForElement('svg .nodes .node');

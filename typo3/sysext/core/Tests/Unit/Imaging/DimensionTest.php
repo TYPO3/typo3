@@ -26,20 +26,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DimensionTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Imaging\Dimension
-     */
-    protected $subject;
-
-    /**
-     * @var int
-     */
-    protected $width = 32;
-
-    /**
-     * @var int
-     */
-    protected $height = 32;
+    protected ?Dimension $subject;
+    protected int $width = 32;
+    protected int $height = 32;
 
     /**
      * Set up
@@ -53,7 +42,7 @@ class DimensionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWidthReturnsValidInteger()
+    public function getWidthReturnsValidInteger(): void
     {
         $value = $this->subject->getWidth();
         self::assertEquals($this->width, $value);
@@ -63,7 +52,7 @@ class DimensionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeightReturnsValidInteger()
+    public function getHeightReturnsValidInteger(): void
     {
         $value = $this->subject->getHeight();
         self::assertEquals($this->height, $value);

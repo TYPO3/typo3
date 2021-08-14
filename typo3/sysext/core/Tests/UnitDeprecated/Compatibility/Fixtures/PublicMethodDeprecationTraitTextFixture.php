@@ -26,7 +26,7 @@ class PublicMethodDeprecationTraitTextFixture
 {
     use PublicMethodDeprecationTrait;
 
-    protected $deprecatedPublicMethods = [
+    protected array $deprecatedPublicMethods = [
         'methodMadeProtected' => 'Deprecation text',
         'methodMadeProtectedWithArguments' => 'Deprecation text',
         'methodMadeProtectedWithReturn' => 'Deprecation text',

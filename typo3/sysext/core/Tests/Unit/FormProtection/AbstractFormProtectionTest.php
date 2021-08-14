@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractFormProtectionTest extends UnitTestCase
 {
-    /**
-     * @var FormProtectionTesting
-     */
-    protected $subject;
+    protected ?FormProtectionTesting $subject;
 
     protected function setUp(): void
     {

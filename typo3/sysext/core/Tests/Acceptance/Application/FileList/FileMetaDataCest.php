@@ -27,7 +27,7 @@ class FileMetaDataCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
@@ -35,7 +35,7 @@ class FileMetaDataCest
     /**
      * @param ApplicationTester $I
      */
-    public function metaDataCanBeEdited(ApplicationTester $I)
+    public function metaDataCanBeEdited(ApplicationTester $I): void
     {
         $I->wantToTest('Metadata can be edited through search list results');
         $I->click('Filelist');

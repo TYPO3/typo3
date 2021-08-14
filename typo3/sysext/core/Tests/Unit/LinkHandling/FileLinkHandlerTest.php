@@ -40,7 +40,7 @@ class FileLinkHandlerTest extends UnitTestCase
      *
      * @return array
      */
-    public function resolveParametersForFilesDataProvider()
+    public function resolveParametersForFilesDataProvider(): array
     {
         return [
             'file without FAL - cool style' => [

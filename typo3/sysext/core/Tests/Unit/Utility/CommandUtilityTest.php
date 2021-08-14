@@ -30,7 +30,7 @@ class CommandUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function getConfiguredAppsDataProvider()
+    public function getConfiguredAppsDataProvider(): array
     {
         $defaultExpected = [
             'perl' => [
@@ -81,8 +81,9 @@ class CommandUtilityTest extends UnitTestCase
      * @param array $globalsBinSetup
      * @param array $expected
      * @test
+     * @todo When specifying parameter types test bench errors occur
      */
-    public function getConfiguredApps($globalsBinSetup, $expected)
+    public function getConfiguredApps($globalsBinSetup, $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup'] = $globalsBinSetup;
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);

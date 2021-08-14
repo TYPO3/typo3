@@ -26,19 +26,11 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class RecordDownloadCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     * @param ModalDialog $modalDialog
-     */
     public function recordsCanBeExported(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
         $I->wantToTest('whether records can be downloaded in the recordlist');

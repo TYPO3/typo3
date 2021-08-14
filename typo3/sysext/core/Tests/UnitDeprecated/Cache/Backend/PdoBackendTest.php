@@ -39,7 +39,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionIfNoFrontEndHasBeenSet()
+    public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1259515600);
@@ -53,7 +53,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndCheckExistenceInCache()
+    public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -65,7 +65,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndGetEntry()
+    public function itIsPossibleToSetAndGetEntry(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -78,7 +78,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToRemoveEntryFromCache()
+    public function itIsPossibleToRemoveEntryFromCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -91,7 +91,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToOverwriteAnEntryInTheCache()
+    public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -106,7 +106,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function findIdentifiersByTagFindsSetEntries()
+    public function findIdentifiersByTagFindsSetEntries(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -121,7 +121,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRemovesTagsFromPreviousSet()
+    public function setRemovesTagsFromPreviousSet(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -135,7 +135,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setOverwritesExistingEntryThatExceededItsLifetimeWithNewData()
+    public function setOverwritesExistingEntryThatExceededItsLifetimeWithNewData(): void
     {
         $backend = $this->setUpBackend();
         $data1 = 'data1';
@@ -150,7 +150,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasReturnsFalseIfTheEntryDoesntExist()
+    public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
         $backend = $this->setUpBackend();
         $identifier = 'NonExistingIdentifier';
@@ -160,7 +160,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeReturnsFalseIfTheEntryDoesntExist()
+    public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
         $backend = $this->setUpBackend();
         $identifier = 'NonExistingIdentifier';
@@ -170,7 +170,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagRemovesCacheEntriesWithSpecifiedTag()
+    public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -186,7 +186,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -202,7 +202,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushRemovesAllCacheEntries()
+    public function flushRemovesAllCacheEntries(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -218,7 +218,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushRemovesOnlyOwnEntries()
+    public function flushRemovesOnlyOwnEntries(): void
     {
         $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
@@ -238,7 +238,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectGarbageReallyRemovesAnExpiredCacheEntry()
+    public function collectGarbageReallyRemovesAnExpiredCacheEntry(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -253,7 +253,7 @@ class PdoBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectGarbageReallyRemovesAllExpiredCacheEntries()
+    public function collectGarbageReallyRemovesAllExpiredCacheEntries(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -279,7 +279,7 @@ class PdoBackendTest extends UnitTestCase
      *
      * @return \TYPO3\CMS\Core\Cache\Backend\PdoBackend
      */
-    protected function setUpBackend()
+    protected function setUpBackend(): PdoBackend
     {
         $mockCache = $this->createMock(FrontendInterface::class);
         $mockCache->expects(self::any())->method('getIdentifier')->willReturn('TestCache');

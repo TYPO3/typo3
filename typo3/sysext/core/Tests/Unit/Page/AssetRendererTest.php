@@ -25,15 +25,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AssetRendererTest extends UnitTestCase
 {
-    /**
-     * @var AssetRenderer
-     */
-    protected $assetRenderer;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected ?AssetRenderer $assetRenderer;
+    protected ?EventDispatcherInterface $eventDispatcher;
 
     public function setUp(): void
     {

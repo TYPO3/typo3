@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -37,7 +39,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PackageManagerTest extends UnitTestCase
 {
     /**
-     * @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
+     * @var PackageManager|MockObject|AccessibleObjectInterface $packageManager
      */
     protected $packageManager;
 
@@ -49,7 +51,7 @@ class PackageManagerTest extends UnitTestCase
         parent::setUp();
         vfsStream::setup('Test');
 
-        /** @var PhpFrontend|\PHPUnit\Framework\MockObject\MockObject $mockCache */
+        /** @var PhpFrontend|MockObject $mockCache */
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['has', 'set', 'getBackend'])
             ->disableOriginalConstructor()
@@ -179,7 +181,7 @@ class PackageManagerTest extends UnitTestCase
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|MockObject|AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
@@ -224,7 +226,7 @@ class PackageManagerTest extends UnitTestCase
             $packagePaths[] = $packagePath;
         }
 
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|MockObject|AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'registerTransientClassLoadingInformationForPackage'], [new DependencyOrderingService()]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
@@ -685,9 +687,13 @@ class PackageManagerTest extends UnitTestCase
      * @dataProvider packageSortingDataProvider
      * @param array $unsortedPackageStatesConfiguration
      * @param array $frameworkPackageKeys
+     * @param $expectedSortedPackageKeys
      */
-    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys): void
-    {
+    public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays(
+        array $unsortedPackageStatesConfiguration,
+        array $frameworkPackageKeys,
+        $expectedSortedPackageKeys
+    ): void {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
         $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 

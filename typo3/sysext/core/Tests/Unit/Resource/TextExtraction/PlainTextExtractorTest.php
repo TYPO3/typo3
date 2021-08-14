@@ -29,7 +29,7 @@ class PlainTextExtractorTest extends UnitTestCase
     /**
      * @test
      */
-    public function canExtractTextReturnsTrueForPlainTextFiles()
+    public function canExtractTextReturnsTrueForPlainTextFiles(): void
     {
         $plainTextExtractor = new PlainTextExtractor();
 
@@ -42,7 +42,7 @@ class PlainTextExtractorTest extends UnitTestCase
     /**
      * @test
      */
-    public function canExtractTextReturnsFalseForNonPlainTextFiles()
+    public function canExtractTextReturnsFalseForNonPlainTextFiles(): void
     {
         $plainTextExtractor = new PlainTextExtractor();
 

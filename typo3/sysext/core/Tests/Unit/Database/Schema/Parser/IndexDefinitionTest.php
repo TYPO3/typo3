@@ -540,7 +540,7 @@ class IndexDefinitionTest extends UnitTestCase
         bool $isSpatial,
         string $indexType,
         array $indexOptions
-    ) {
+    ): void {
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11), %s);', $indexDefinition);
         $subject = $this->createSubject($statement);
 

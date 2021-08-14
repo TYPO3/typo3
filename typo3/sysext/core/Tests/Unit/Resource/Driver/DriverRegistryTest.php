@@ -28,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DriverRegistryTest extends UnitTestCase
 {
-    /**
-     * @var DriverRegistry
-     */
-    protected $subject;
+    protected ?DriverRegistry $subject;
 
     protected function setUp(): void
     {

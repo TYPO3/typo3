@@ -29,7 +29,7 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsCorrectValue()
+    public function getPriorityReturnsCorrectValue(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
 
@@ -39,7 +39,7 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsTrueOnCorrectFile()
+    public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
 
@@ -58,7 +58,7 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsFalseOnCorrectFile()
+    public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $audioTagRenderer = new AudioTagRenderer();
 
@@ -71,7 +71,7 @@ class AudioTagRendererTest extends UnitTestCase
     /**
      * Array of configurations
      */
-    public function renderArgumentsDataProvider()
+    public function renderArgumentsDataProvider(): array
     {
         return [
             [
@@ -125,7 +125,7 @@ class AudioTagRendererTest extends UnitTestCase
      * @param array $arguments
      * @param string $expected
      */
-    public function renderOutputIsCorrect($url, $arguments, $expected)
+    public function renderOutputIsCorrect(string $url, array $arguments, string $expected): void
     {
         $audioTagRenderer = new AudioTagRenderer();
 

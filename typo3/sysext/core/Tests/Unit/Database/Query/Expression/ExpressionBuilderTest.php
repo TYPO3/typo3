@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
 use Doctrine\DBAL\Platforms\TrimMode;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -31,21 +32,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExpressionBuilderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var Connection
      */
     protected $connectionProphet;
-
-    /**
-     * @var ExpressionBuilder
-     */
-    protected $subject;
-
-    /**
-     * @var string
-     */
-    protected $testTable = 'testTable';
+    protected ?ExpressionBuilder $subject;
+    protected string $testTable = 'testTable';
 
     /**
      * Create a new database connection mock object for every test.
@@ -64,7 +58,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function andXReturnType()
+    public function andXReturnType(): void
     {
         $result = $this->subject->andX('"uid" = 1', '"pid" = 0');
 
@@ -75,7 +69,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function orXReturnType()
+    public function orXReturnType(): void
     {
         $result = $this->subject->orX('"uid" = 1', '"uid" = 7');
 
@@ -86,7 +80,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function eqQuotesIdentifier()
+    public function eqQuotesIdentifier(): void
     {
         $result = $this->subject->eq('aField', 1);
 
@@ -97,7 +91,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function neqQuotesIdentifier()
+    public function neqQuotesIdentifier(): void
     {
         $result = $this->subject->neq('aField', 1);
 
@@ -108,7 +102,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function ltQuotesIdentifier()
+    public function ltQuotesIdentifier(): void
     {
         $result = $this->subject->lt('aField', 1);
 
@@ -119,7 +113,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function lteQuotesIdentifier()
+    public function lteQuotesIdentifier(): void
     {
         $result = $this->subject->lte('aField', 1);
 
@@ -130,7 +124,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function gtQuotesIdentifier()
+    public function gtQuotesIdentifier(): void
     {
         $result = $this->subject->gt('aField', 1);
 
@@ -141,7 +135,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function gteQuotesIdentifier()
+    public function gteQuotesIdentifier(): void
     {
         $result = $this->subject->gte('aField', 1);
 
@@ -152,7 +146,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isNullQuotesIdentifier()
+    public function isNullQuotesIdentifier(): void
     {
         $result = $this->subject->isNull('aField');
 
@@ -163,7 +157,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isNotNullQuotesIdentifier()
+    public function isNotNullQuotesIdentifier(): void
     {
         $result = $this->subject->isNotNull('aField');
 
@@ -174,7 +168,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function likeQuotesIdentifier()
+    public function likeQuotesIdentifier(): void
     {
         $result = $this->subject->like('aField', "'aValue%'");
 
@@ -185,7 +179,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notLikeQuotesIdentifier()
+    public function notLikeQuotesIdentifier(): void
     {
         $result = $this->subject->notLike('aField', "'aValue%'");
 
@@ -196,7 +190,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inWithStringQuotesIdentifier()
+    public function inWithStringQuotesIdentifier(): void
     {
         $result = $this->subject->in('aField', '1,2,3');
 
@@ -207,7 +201,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inWithArrayQuotesIdentifier()
+    public function inWithArrayQuotesIdentifier(): void
     {
         $result = $this->subject->in('aField', [1, 2, 3]);
 
@@ -218,7 +212,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInWithStringQuotesIdentifier()
+    public function notInWithStringQuotesIdentifier(): void
     {
         $result = $this->subject->notIn('aField', '1,2,3');
 
@@ -229,7 +223,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInWithArrayQuotesIdentifier()
+    public function notInWithArrayQuotesIdentifier(): void
     {
         $result = $this->subject->notIn('aField', [1, 2, 3]);
 
@@ -240,7 +234,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetThrowsExceptionWithEmptyValue()
+    public function inSetThrowsExceptionWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1459696089);
@@ -250,7 +244,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetThrowsExceptionWithInvalidValue()
+    public function inSetThrowsExceptionWithInvalidValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1459696090);
@@ -260,7 +254,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForMySQL()
+    public function inSetForMySQL(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
@@ -279,7 +273,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForPostgreSQL()
+    public function inSetForPostgreSQL(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
@@ -301,7 +295,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForPostgreSQLWithColumn()
+    public function inSetForPostgreSQLWithColumn(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
@@ -321,7 +315,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForSQLite()
+    public function inSetForSQLite(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -343,7 +337,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForSQLiteWithQuoteCharactersInValue()
+    public function inSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -366,7 +360,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForSQLiteThrowsExceptionOnPositionalPlaceholder()
+    public function inSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -383,7 +377,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForSQLiteThrowsExceptionOnNamedPlaceholder()
+    public function inSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -400,7 +394,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function inSetForMssql()
+    public function inSetForMssql(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mssql');
@@ -424,7 +418,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetThrowsExceptionWithEmptyValue()
+    public function notInSetThrowsExceptionWithEmptyValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1627573099);
@@ -434,7 +428,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetThrowsExceptionWithInvalidValue()
+    public function notInSetThrowsExceptionWithInvalidValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1627573100);
@@ -444,7 +438,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForMySQL()
+    public function notInSetForMySQL(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
@@ -463,7 +457,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForPostgreSQL()
+    public function notInSetForPostgreSQL(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
@@ -485,7 +479,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForPostgreSQLWithColumn()
+    public function notInSetForPostgreSQLWithColumn(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
@@ -505,7 +499,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForSQLite()
+    public function notInSetForSQLite(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -527,7 +521,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForSQLiteWithQuoteCharactersInValue()
+    public function notInSetForSQLiteWithQuoteCharactersInValue(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -550,7 +544,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder()
+    public function notInSetForSQLiteThrowsExceptionOnPositionalPlaceholder(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -567,7 +561,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder()
+    public function notInSetForSQLiteThrowsExceptionOnNamedPlaceholder(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('sqlite');
@@ -584,7 +578,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function notInSetForMssql()
+    public function notInSetForMssql(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mssql');
@@ -608,7 +602,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultBitwiseAnd()
+    public function defaultBitwiseAnd(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
 
@@ -624,7 +618,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function bitwiseAndForOracle()
+    public function bitwiseAndForOracle(): void
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('pdo_oracle');
@@ -641,7 +635,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function maxQuotesIdentifier()
+    public function maxQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -658,7 +652,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function minQuotesIdentifier()
+    public function minQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -675,7 +669,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function sumQuotesIdentifier()
+    public function sumQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -692,7 +686,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function avgQuotesIdentifier()
+    public function avgQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -709,7 +703,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function countQuotesIdentifier()
+    public function countQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -726,7 +720,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function lengthQuotesIdentifier()
+    public function lengthQuotesIdentifier(): void
     {
         $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
             $platform = new MockPlatform();
@@ -743,7 +737,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function trimQuotesIdentifierWithDefaultValues()
+    public function trimQuotesIdentifierWithDefaultValues(): void
     {
         $platform = new MockPlatform();
         $this->connectionProphet->getDatabasePlatform(Argument::cetera())
@@ -766,7 +760,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @return array
      */
-    public function trimQuotesIdentifierDataProvider()
+    public function trimQuotesIdentifierDataProvider(): array
     {
         return  [
             'trim leading character' => [
@@ -800,7 +794,7 @@ class ExpressionBuilderTest extends UnitTestCase
      * @test
      * @dataProvider trimQuotesIdentifierDataProvider
      */
-    public function trimQuotesIdentifier(int $position, string $char, string $expected)
+    public function trimQuotesIdentifier(int $position, string $char, string $expected): void
     {
         $platform = new MockPlatform();
         $this->connectionProphet->getDatabasePlatform(Argument::cetera())
@@ -830,7 +824,7 @@ class ExpressionBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function literalQuotesValue()
+    public function literalQuotesValue(): void
     {
         $this->connectionProphet->quote('aField', 'Doctrine\DBAL\Types\StringType')
             ->shouldBeCalled()

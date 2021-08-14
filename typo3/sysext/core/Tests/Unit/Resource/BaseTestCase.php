@@ -29,14 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 abstract class BaseTestCase extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $basedir = 'basedir';
-
-    protected $mountDir;
-
-    protected $vfsContents = [];
+    protected string $basedir = 'basedir';
+    protected ?string $mountDir;
+    protected array $vfsContents = [];
 
     protected function setUp(): void
     {
@@ -48,17 +43,17 @@ abstract class BaseTestCase extends UnitTestCase
         $this->vfsContents = [$this->mountDir => []];
     }
 
-    protected function getMountRootUrl()
+    protected function getMountRootUrl(): string
     {
         return $this->getUrlInMount('');
     }
 
-    protected function mergeToVfsContents($contents)
+    protected function mergeToVfsContents($contents): void
     {
         ArrayUtility::mergeRecursiveWithOverrule($this->vfsContents, $contents);
     }
 
-    protected function initializeVfs()
+    protected function initializeVfs(): void
     {
         vfsStream::create($this->vfsContents);
     }
@@ -68,7 +63,7 @@ abstract class BaseTestCase extends UnitTestCase
      *
      * @param array $dirStructure
      */
-    protected function addToMount(array $dirStructure)
+    protected function addToMount(array $dirStructure): void
     {
         $this->mergeToVfsContents([$this->mountDir => $dirStructure]);
     }
@@ -79,7 +74,7 @@ abstract class BaseTestCase extends UnitTestCase
      * @param $path
      * @return string
      */
-    protected function getUrlInMount($path)
+    protected function getUrlInMount($path): string
     {
         return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
     }
@@ -89,7 +84,7 @@ abstract class BaseTestCase extends UnitTestCase
      *
      * @param array $dirStructure
      */
-    protected function addToVfs(array $dirStructure)
+    protected function addToVfs(array $dirStructure): void
     {
         $this->mergeToVfsContents($dirStructure);
     }
@@ -100,7 +95,7 @@ abstract class BaseTestCase extends UnitTestCase
      * @param $path
      * @return string
      */
-    protected function getUrl($path)
+    protected function getUrl($path): string
     {
         return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
     }
@@ -139,7 +134,7 @@ abstract class BaseTestCase extends UnitTestCase
      * @param array $mockedMethods the methods to mock
      * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getSimpleFileMock($identifier, $mockedMethods = [])
+    protected function getSimpleFileMock(string $identifier, array $mockedMethods = [])
     {
         return $this->_createFileFolderMock(File::class, $identifier, $mockedMethods);
     }
@@ -151,7 +146,7 @@ abstract class BaseTestCase extends UnitTestCase
      * @param array $mockedMethods the methods to mock
      * @return \TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getSimpleFolderMock($identifier, $mockedMethods = [])
+    protected function getSimpleFolderMock(string $identifier, array $mockedMethods = [])
     {
         return $this->_createFileFolderMock(Folder::class, $identifier, $mockedMethods);
     }
@@ -165,7 +160,7 @@ abstract class BaseTestCase extends UnitTestCase
      * @param \TYPO3\CMS\Core\Resource\File[] $files
      * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getFolderMock($identifier, $mockedMethods = [], $subfolders = [], $files = [])
+    protected function getFolderMock($identifier, array $mockedMethods = [], array $subfolders = [], array $files = [])
     {
         $folder = $this->_createFileFolderMock(Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
         $folder->expects(self::any())->method('getSubfolders')->willReturn($subfolders);

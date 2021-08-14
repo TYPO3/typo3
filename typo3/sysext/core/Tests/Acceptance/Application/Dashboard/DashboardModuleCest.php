@@ -34,7 +34,7 @@ class DashboardModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('#dashboard');
@@ -44,7 +44,7 @@ class DashboardModuleCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeInitialDashboardAndWidgets(ApplicationTester $I)
+    public function seeInitialDashboardAndWidgets(ApplicationTester $I): void
     {
         $I->see(self::$defaultDashboardTitle, self::$dashboardActiveSelector);
         $I->see('About TYPO3', self::$widgetTitleSelector);
@@ -56,7 +56,7 @@ class DashboardModuleCest
      * @param ApplicationTester $I
      * @param ModalDialog $modalDialog
      */
-    public function createCustomDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog)
+    public function createCustomDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Create Dashboard
         $I->click('.dashboard-button-tab-add');
@@ -81,7 +81,7 @@ class DashboardModuleCest
      * @param ApplicationTester $I
      * @param ModalDialog $modalDialog
      */
-    public function deleteDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog)
+    public function deleteDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Delete widget
         $I->click(self::$customDashboardTitle, '.dashboard-tabs');

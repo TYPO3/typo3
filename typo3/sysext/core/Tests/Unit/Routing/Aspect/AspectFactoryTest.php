@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Routing\Aspect;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
@@ -29,11 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AspectFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var AspectFactory
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected ?AspectFactory $subject;
 
     /**
      * @var SiteLanguage|ObjectProphecy
@@ -45,15 +44,8 @@ class AspectFactoryTest extends UnitTestCase
      */
     protected $siteProphecy;
 
-    /**
-     * @var string
-     */
-    protected $persistedMockClass;
-
-    /**
-     * @var string
-     */
-    protected $aspectMockClass;
+    protected ?string $persistedMockClass;
+    protected ?string $aspectMockClass;
 
     protected function setUp(): void
     {
@@ -90,7 +82,7 @@ class AspectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAspectsThrowsExceptionOnMissingType()
+    public function createAspectsThrowsExceptionOnMissingType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1538079481);
@@ -104,7 +96,7 @@ class AspectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAspectsThrowsExceptionOnUnregisteredType()
+    public function createAspectsThrowsExceptionOnUnregisteredType(): void
     {
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1538079482);
@@ -185,7 +177,7 @@ class AspectFactoryTest extends UnitTestCase
      * @test
      * @dataProvider aspectsDataProvider
      */
-    public function aspectsAreCreatedAndSorted(array $settings, array $expectation)
+    public function aspectsAreCreatedAndSorted(array $settings, array $expectation): void
     {
         $aspects = $this->subject->createAspects(
             $settings,

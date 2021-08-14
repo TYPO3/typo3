@@ -37,7 +37,7 @@ class RedisSessionBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function databaseConfigurationMustBeInteger()
+    public function databaseConfigurationMustBeInteger(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1481270871);
@@ -54,7 +54,7 @@ class RedisSessionBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function databaseConfigurationMustBeZeroOrGreater()
+    public function databaseConfigurationMustBeZeroOrGreater(): void
     {
         $subject = new RedisSessionBackend();
         $subject->initialize(

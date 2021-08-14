@@ -33,7 +33,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      * @param string $afterKey
      * @param array $expectedOrderedItems
      */
-    public function orderByDependenciesBuildsCorrectOrder(array $items, $beforeKey, $afterKey, array $expectedOrderedItems)
+    public function orderByDependenciesBuildsCorrectOrder(array $items, string $beforeKey, string $afterKey, array $expectedOrderedItems): void
     {
         $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
         self::assertSame($expectedOrderedItems, $orderedItems);
@@ -42,7 +42,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function orderByDependenciesBuildsCorrectOrderDataProvider()
+    public function orderByDependenciesBuildsCorrectOrderDataProvider(): array
     {
         return [
             'unordered' => [
@@ -167,7 +167,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      * @param $expectedDependencies
      * @throws \InvalidArgumentException
      */
-    public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies)
+    public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void
     {
         /** @var DependencyOrderingService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
@@ -178,7 +178,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function prepareDependenciesBuildsFullIdentifierListDataProvider()
+    public function prepareDependenciesBuildsFullIdentifierListDataProvider(): array
     {
         return [
             'simple' => [
@@ -225,7 +225,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      * @param array $dependencies
      * @param array $expectedGraph
      */
-    public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph)
+    public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph): void
     {
         $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
         self::assertEquals($expectedGraph, $graph);
@@ -234,7 +234,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function buildDependencyGraphBuildsValidGraphDataProvider()
+    public function buildDependencyGraphBuildsValidGraphDataProvider(): array
     {
         return [
             'graph1' => [
@@ -597,7 +597,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      * @param array $graph
      * @param array $expectedList
      */
-    public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList)
+    public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList): void
     {
         $list = (new DependencyOrderingService())->calculateOrder($graph);
         self::assertSame($expectedList, $list);
@@ -606,7 +606,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function calculateOrderResolvesCorrectOrderDataProvider()
+    public function calculateOrderResolvesCorrectOrderDataProvider(): array
     {
         return [
             'list1' => [
@@ -652,7 +652,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function calculateOrderDetectsCyclicGraph()
+    public function calculateOrderDetectsCyclicGraph(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381960494);
@@ -672,7 +672,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function findPathInGraphReturnsCorrectPathDataProvider()
+    public function findPathInGraphReturnsCorrectPathDataProvider(): array
     {
         return [
             'Simple path' => [
@@ -716,7 +716,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      * @test
      * @dataProvider findPathInGraphReturnsCorrectPathDataProvider
      */
-    public function findPathInGraphReturnsCorrectPath(array $graph, $from, $to, array $expected)
+    public function findPathInGraphReturnsCorrectPath(array $graph, string $from, string $to, array $expected): void
     {
         /** @var DependencyOrderingService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);

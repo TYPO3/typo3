@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
  */
 class FakeValidSpoolFixture implements DelayedTransportInterface
 {
-    private $settings;
+    private array $settings;
 
     public function __construct(array $settings)
     {

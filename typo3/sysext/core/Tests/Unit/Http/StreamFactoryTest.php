@@ -31,7 +31,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new StreamFactory();
         self::assertInstanceOf(StreamFactoryInterface::class, $factory);
@@ -40,7 +40,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamReturnsEmptyStreamByDefault()
+    public function createStreamReturnsEmptyStreamByDefault(): void
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream();
@@ -50,7 +50,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromEmptyString()
+    public function createStreamFromEmptyString(): void
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('');
@@ -60,7 +60,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromNonEmptyString()
+    public function createStreamFromNonEmptyString(): void
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
@@ -70,7 +70,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamReturnsWritableStream()
+    public function createStreamReturnsWritableStream(): void
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream();
@@ -81,7 +81,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamReturnsAppendableStream()
+    public function createStreamReturnsAppendableStream(): void
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
@@ -92,7 +92,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromFile()
+    public function createStreamFromFile(): void
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         file_put_contents($fileName, 'Foo');
@@ -105,7 +105,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromFileWithMode()
+    public function createStreamFromFileWithMode(): void
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
 
@@ -120,7 +120,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromFileWithInvalidMode()
+    public function createStreamFromFileWithInvalidMode(): void
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         touch($fileName);
@@ -134,7 +134,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromFileWithMissingFile()
+    public function createStreamFromFileWithMissingFile(): void
     {
         $unavailableFileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         $this->expectException(\RuntimeException::class);
@@ -146,7 +146,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamFromResource()
+    public function createStreamFromResource(): void
     {
         $fileName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_');
         touch($fileName);
@@ -162,7 +162,7 @@ class StreamFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createStreamResourceFromInvalidResource()
+    public function createStreamResourceFromInvalidResource(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1566853697);

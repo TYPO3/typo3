@@ -88,7 +88,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
      * @param string $className
      * @param int $length
      */
-    public function canParseDataType(string $columnDefinition, string $className, int $length = null)
+    public function canParseDataType(string $columnDefinition, string $className, int $length = null): void
     {
         $subject = $this->createSubject($columnDefinition);
 
@@ -103,7 +103,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      */
-    public function parseDateTimeTypeWithInvalidLowerBound()
+    public function parseDateTimeTypeWithInvalidLowerBound(): void
     {
         $this->expectException(StatementException::class);
         $this->expectDeprecationMessageMatches(
@@ -115,7 +115,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      */
-    public function parseDateTimeTypeWithInvalidUpperBound()
+    public function parseDateTimeTypeWithInvalidUpperBound(): void
     {
         $this->expectException(StatementException::class);
         $this->expectDeprecationMessageMatches(

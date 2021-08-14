@@ -25,22 +25,24 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class UsersCest extends AbstractCest
 {
-    protected $inPageTree = '#typo3-pagetree-treeContainer .nodes';
-    protected $inModuleHeader = '.module-docheader';
-    protected $inModuleTabs = '#ImportExportController .nav-tabs';
-    protected $inModuleTabsBody = '#ImportExportController .tab-content';
+    protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    protected string $inModuleHeader = '.module-docheader';
+    protected string $inModuleTabs = '#ImportExportController .nav-tabs';
+    protected string $inModuleTabsBody = '#ImportExportController .tab-content';
 
-    protected $buttonUser = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
-    protected $buttonLogout = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem button.btn.btn-danger';
-    protected $buttonViewPage = 'span[data-identifier="actions-view-page"]';
-    protected $tabUpload = 'a[href="#import-upload"]';
-    protected $checkboxForceAllUids = 'input#checkForce_all_UIDS';
+    protected string $buttonUser = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
+    protected string $buttonLogout = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem button.btn.btn-danger';
+    protected string $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
+    protected string $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
+    protected string $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
+    protected string $buttonViewPage = 'span[data-identifier="actions-view-page"]';
+    protected string $tabUpload = 'a[href="#import-upload"]';
+    protected string $checkboxForceAllUids = 'input#checkForce_all_UIDS';
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -48,8 +50,6 @@ class UsersCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function doNotShowImportInContextMenuForNonAdminUser(ApplicationTester $I, PageTree $pageTree): void
@@ -72,8 +72,6 @@ class UsersCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function showImportInContextMenuForNonAdminUserIfFlagSet(ApplicationTester $I): void
@@ -94,8 +92,6 @@ class UsersCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function hideImportCheckboxForceAllUidsForNonAdmin(ApplicationTester $I): void
@@ -121,8 +117,6 @@ class UsersCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function hideUploadTabAndImportPathIfNoImportFolderAvailable(ApplicationTester $I, PageTree $pageTree): void
@@ -154,8 +148,6 @@ class UsersCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function checkVisualElements(ApplicationTester $I, PageTree $pageTree): void

@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class TemplateCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -39,10 +36,7 @@ class TemplateCest
         $I->waitForText('Template tools');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(ApplicationTester $I)
+    public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(ApplicationTester $I): void
     {
         $I->wantTo('show templates overview on root page (uid = 0)');
         // Select the root page
@@ -73,10 +67,7 @@ class TemplateCest
         );
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function addANewSiteTemplate(ApplicationTester $I)
+    public function addANewSiteTemplate(ApplicationTester $I): void
     {
         $I->wantTo('create a new site template');
         $I->switchToMainFrame();

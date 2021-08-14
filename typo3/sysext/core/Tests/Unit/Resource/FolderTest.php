@@ -35,7 +35,7 @@ class FolderTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    protected $basedir = 'basedir';
+    protected string $basedir = 'basedir';
 
     protected function setUp(): void
     {
@@ -43,7 +43,7 @@ class FolderTest extends UnitTestCase
         vfsStream::setup($this->basedir);
     }
 
-    protected function createFolderFixture($path, $name, $mockedStorage = null)
+    protected function createFolderFixture($path, $name, $mockedStorage = null): Folder
     {
         if ($mockedStorage === null) {
             $mockedStorage = $this->createMock(ResourceStorage::class);
@@ -54,7 +54,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorArgumentsAreAvailableAtRuntime()
+    public function constructorArgumentsAreAvailableAtRuntime(): void
     {
         $path = StringUtility::getUniqueId('path_');
         $name = StringUtility::getUniqueId('name_');
@@ -68,7 +68,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function propertiesCanBeUpdated()
+    public function propertiesCanBeUpdated(): void
     {
         $fixture = $this->createFolderFixture('/somePath', 'someName');
         $fixture->updateProperties(['identifier' => '/someOtherPath', 'name' => 'someNewName']);
@@ -79,7 +79,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function propertiesAreNotUpdatedIfNotSetInInput()
+    public function propertiesAreNotUpdatedIfNotSetInInput(): void
     {
         $fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
         $fixture->updateProperties(['identifier' => '/someOtherPath']);
@@ -89,7 +89,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFilesReturnsArrayWithFilenamesAsKeys()
+    public function getFilesReturnsArrayWithFilenamesAsKeys(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects(self::once())->method('getFilesInFolder')->willReturn(
@@ -112,7 +112,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet()
+    public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage
@@ -128,7 +128,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFilesHandsOverRecursiveTRUEifSet()
+    public function getFilesHandsOverRecursiveTRUEifSet(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage
@@ -144,7 +144,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSubfolderCallsFactoryWithCorrectArguments()
+    public function getSubfolderCallsFactoryWithCorrectArguments(): void
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects(self::once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
@@ -171,7 +171,7 @@ class FolderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParentFolderGetsParentFolderFromStorage()
+    public function getParentFolderGetsParentFolderFromStorage(): void
     {
         $parentIdentifier = '/parent/';
         $currentIdentifier = '/parent/current/';

@@ -33,7 +33,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getNameGetsLoggerName()
+    public function getNameGetsLoggerName(): void
     {
         $logger = new Logger('test.core.log');
         self::assertSame('test.core.log', $logger->getName());
@@ -42,7 +42,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerDoesNotLogRecordsLessCriticalThanLogLevel()
+    public function loggerDoesNotLogRecordsLessCriticalThanLogLevel(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -55,7 +55,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerReturnsItselfAfterLogging()
+    public function loggerReturnsItselfAfterLogging(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -67,7 +67,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerReturnsItselfAfterLoggingWithoutWriter()
+    public function loggerReturnsItselfAfterLoggingWithoutWriter(): void
     {
         $logger = new Logger('test.core.log');
         $returnValue = $logger->log(LogLevel::WARNING, 'test message');
@@ -77,7 +77,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerReturnsItselfAfterLoggingLessCritical()
+    public function loggerReturnsItselfAfterLoggingLessCritical(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -89,7 +89,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerCallsProcessor()
+    public function loggerCallsProcessor(): void
     {
         $component = 'test.core.log';
         $level = LogLevel::DEBUG;
@@ -109,7 +109,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerLogsRecord()
+    public function loggerLogsRecord(): void
     {
         $logger = new Logger('test.core.log');
         /** @var NullWriter|\PHPUnit\Framework\MockObject\MockObject $writer */
@@ -124,7 +124,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerLogsRecordsAtLeastAsCriticalAsLogLevel()
+    public function loggerLogsRecordsAtLeastAsCriticalAsLogLevel(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -137,7 +137,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function loggerLogsRecordsThroughShorthandMethodDataProvider()
+    public function loggerLogsRecordsThroughShorthandMethodDataProvider(): array
     {
         return [
             ['emergency'],
@@ -156,7 +156,7 @@ class LoggerTest extends UnitTestCase
      * @param string $shorthandMethod
      * @dataProvider loggerLogsRecordsThroughShorthandMethodDataProvider
      */
-    public function loggerLogsRecordsThroughShorthandMethod($shorthandMethod)
+    public function loggerLogsRecordsThroughShorthandMethod(string $shorthandMethod): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -168,7 +168,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerLogsRecordsMoreCriticalThanLogLevel()
+    public function loggerLogsRecordsMoreCriticalThanLogLevel(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -181,7 +181,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addWriterAddsWriterToTheSpecifiedLevel()
+    public function addWriterAddsWriterToTheSpecifiedLevel(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();
@@ -193,7 +193,7 @@ class LoggerTest extends UnitTestCase
     /**
      * @test
      */
-    public function addWriterAddsWriterAlsoToHigherLevelsThanSpecified()
+    public function addWriterAddsWriterAlsoToHigherLevelsThanSpecified(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new WriterFixture();

@@ -23,6 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
+ * @todo Defining the method parameter types further leads to test bench errors
  */
 class PathUtilityTest extends UnitTestCase
 {
@@ -38,7 +39,7 @@ class PathUtilityTest extends UnitTestCase
      * @dataProvider isCommonPrefixResolvedCorrectlyDataProvider
      * @test
      */
-    public function isCommonPrefixResolvedCorrectly(array $paths, $expected)
+    public function isCommonPrefixResolvedCorrectly(array $paths, $expected): void
     {
         $commonPrefix = PathUtility::getCommonPrefix($paths);
         self::assertEquals($expected, $commonPrefix);
@@ -47,7 +48,7 @@ class PathUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function isCommonPrefixResolvedCorrectlyDataProvider()
+    public function isCommonPrefixResolvedCorrectlyDataProvider(): array
     {
         return [
             [
@@ -146,7 +147,7 @@ class PathUtilityTest extends UnitTestCase
      * @dataProvider isRelativePathResolvedCorrectlyDataProvider
      * @test
      */
-    public function isRelativePathResolvedCorrectly($source, $target, $expected)
+    public function isRelativePathResolvedCorrectly($source, $target, $expected): void
     {
         $relativePath = PathUtility::getRelativePath($source, $target);
         self::assertEquals($expected, $relativePath);
@@ -155,7 +156,7 @@ class PathUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function isRelativePathResolvedCorrectlyDataProvider()
+    public function isRelativePathResolvedCorrectlyDataProvider(): array
     {
         return [
             [
@@ -198,7 +199,7 @@ class PathUtilityTest extends UnitTestCase
      * @dataProvider isTrailingSeparatorSanitizedCorrectlyDataProvider
      * @test
      */
-    public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected)
+    public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected): void
     {
         $sanitizedPath = PathUtility::sanitizeTrailingSeparator($path, $separator);
         self::assertEquals($expected, $sanitizedPath);
@@ -207,7 +208,7 @@ class PathUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function isTrailingSeparatorSanitizedCorrectlyDataProvider()
+    public function isTrailingSeparatorSanitizedCorrectlyDataProvider(): array
     {
         return [
             ['/var/www//', '/', '/var/www/'],
@@ -221,7 +222,7 @@ class PathUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider()
+    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider(): array
     {
         return [
             'basic' => [

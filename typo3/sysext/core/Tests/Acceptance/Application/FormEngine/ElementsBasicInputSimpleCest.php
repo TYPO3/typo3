@@ -32,7 +32,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -53,7 +53,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
     /**
      * Data provider to check various type=input variants
      */
-    protected function simpleInputFieldsDataProvider()
+    protected function simpleInputFieldsDataProvider(): array
     {
         return [
             [
@@ -200,7 +200,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param Example $testData
      */
-    public function simpleInputFields(ApplicationTester $I, Example $testData)
+    public function simpleInputFields(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }

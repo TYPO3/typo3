@@ -28,10 +28,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class FileCollectionRegistryTest extends BaseTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry
-     */
-    protected $testSubject;
+    protected ?FileCollectionRegistry $testSubject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class FileCollectionRegistryTest extends BaseTestCase
         $this->initializeTestSubject();
     }
 
-    protected function initializeTestSubject()
+    protected function initializeTestSubject(): void
     {
         $this->testSubject = new FileCollectionRegistry();
     }
@@ -47,7 +44,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function registeredFileCollectionClassesCanBeRetrieved()
+    public function registeredFileCollectionClassesCanBeRetrieved(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
@@ -58,7 +55,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function registerFileCollectionClassThrowsExceptionIfClassDoesNotExist()
+    public function registerFileCollectionClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295613);
@@ -69,7 +66,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function registerFileCollectionClassThrowsExceptionIfTypeIsTooLong()
+    public function registerFileCollectionClassThrowsExceptionIfTypeIsTooLong(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295611);
@@ -82,7 +79,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function registerFileCollectionClassThrowsExceptionIfTypeIsAlreadyRegistered()
+    public function registerFileCollectionClassThrowsExceptionIfTypeIsAlreadyRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295643);
@@ -96,7 +93,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass()
+    public function registerFileCollectionClassOverridesExistingRegisteredFileCollectionClass(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $className2 = get_class($this->getMockForAbstractClass(StaticFileCollection::class));
@@ -107,7 +104,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function getFileCollectionClassThrowsExceptionIfClassIsNotRegistered()
+    public function getFileCollectionClassThrowsExceptionIfClassIsNotRegistered(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295644);
@@ -118,7 +115,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function getFileCollectionClassAcceptsClassNameIfClassIsRegistered()
+    public function getFileCollectionClassAcceptsClassNameIfClassIsRegistered(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
@@ -128,7 +125,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections()
+    public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = substr(StringUtility::getUniqueId('type_'), 0, 30);
@@ -142,7 +139,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function fileCollectionExistsReturnsTrueForAllExistingFileCollections()
+    public function fileCollectionExistsReturnsTrueForAllExistingFileCollections(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = 'foo';
@@ -157,7 +154,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function fileCollectionExistsReturnsFalseIfFileCollectionDoesNotExist()
+    public function fileCollectionExistsReturnsFalseIfFileCollectionDoesNotExist(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
         $this->initializeTestSubject();
@@ -167,7 +164,7 @@ class FileCollectionRegistryTest extends BaseTestCase
     /**
      * @test
      */
-    public function addNewTypeToTCA()
+    public function addNewTypeToTCA(): void
     {
 
         // Create a TCA fixture for sys_file_collection

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtendedFileUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Sets up this testcase
      */
@@ -51,7 +53,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function folderHasFilesInUseReturnsTrueIfItHasFiles()
+    public function folderHasFilesInUseReturnsTrueIfItHasFiles(): void
     {
         $fileUid = 1;
         $file = $this->getMockBuilder(File::class)
@@ -111,7 +113,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function folderHasFilesInUseReturnsFalseIfItHasNoFiles()
+    public function folderHasFilesInUseReturnsFalseIfItHasNoFiles(): void
     {
         $folder = $this->getMockBuilder(Folder::class)
             ->onlyMethods(['getFiles'])

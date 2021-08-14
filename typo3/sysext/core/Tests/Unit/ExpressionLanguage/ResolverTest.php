@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\ExpressionLanguage;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResolverTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -79,7 +81,7 @@ class ResolverTest extends UnitTestCase
      * @param string $expression
      * @param mixed $expectedResult
      */
-    public function basicExpressionHandlingResultsWorksAsExpected(string $expression, $expectedResult)
+    public function basicExpressionHandlingResultsWorksAsExpected(string $expression, $expectedResult): void
     {
         $request = new ServerRequest();
         $expressionLanguageResolver = new Resolver('default', [], $request);
@@ -89,7 +91,7 @@ class ResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse()
+    public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse(): void
     {
         $request = new ServerRequest();
         $expressionLanguageResolver = new Resolver('default', [], $request);
@@ -118,7 +120,7 @@ class ResolverTest extends UnitTestCase
      * @param string $expression
      * @param mixed $expectedResult
      */
-    public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, $expectedResult)
+    public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, $expectedResult): void
     {
         $contextProphecy = $this->prophesize(DefaultProvider::class);
         $contextProphecy->getExpressionLanguageProviders()->willReturn([]);
@@ -153,7 +155,7 @@ class ResolverTest extends UnitTestCase
      * @param string $expression
      * @param mixed $expectedResult
      */
-    public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, $expectedResult)
+    public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, $expectedResult): void
     {
         $expressionProvider = $this->prophesize(DefaultFunctionsProvider::class);
         $expressionProvider->getFunctions()->willReturn([

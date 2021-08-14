@@ -25,10 +25,7 @@ use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
  */
 class WriterFixture extends AbstractWriter
 {
-    /**
-     * @var array
-     */
-    protected $records = [];
+    protected array $records = [];
 
     public function writeLog(LogRecord $record)
     {

@@ -24,11 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class RedirectModuleCest
 {
-
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -37,10 +33,7 @@ class RedirectModuleCest
         $I->canSee('Redirect Management', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function createNewRecordIfNoneExist(ApplicationTester $I)
+    public function createNewRecordIfNoneExist(ApplicationTester $I): void
     {
         $I->amGoingTo('create a new redirects record while none are in the system, yet');
         $I->canSee('No redirects found!');
@@ -63,10 +56,7 @@ class RedirectModuleCest
         $I->canSeeNumberOfElements('table.table-striped > tbody > tr', 1);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function canEditRecordFromListView(ApplicationTester $I)
+    public function canEditRecordFromListView(ApplicationTester $I): void
     {
         $sourceHost = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(1)');
         $sourcePath = $I->grabTextFrom('table.table-striped > tbody > tr > td:nth-child(2) > a');
@@ -80,10 +70,6 @@ class RedirectModuleCest
         $this->openAndCloseTheEditForm($I, $sourceHost . ', ' . $sourcePath);
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param string $name
-     */
     private function openAndCloseTheEditForm(ApplicationTester $I, string $name): void
     {
         $I->waitForElementNotVisible('#t3js-ui-block');

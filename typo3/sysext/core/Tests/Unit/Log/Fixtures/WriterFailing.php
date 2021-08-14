@@ -28,8 +28,8 @@ class WriterFailing implements WriterInterface
     /**
      * Try to write the log entry - but throw an exception in our case
      *
-     * @param \TYPO3\CMS\Core\Log\LogRecord $record
-     * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface|void
+     * @param LogRecord $record
+     * @return WriterInterface|void
      * @throws \RuntimeException
      */
     public function writeLog(LogRecord $record)

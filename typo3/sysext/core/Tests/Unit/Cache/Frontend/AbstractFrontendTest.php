@@ -30,7 +30,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorAcceptsValidIdentifiers()
+    public function theConstructorAcceptsValidIdentifiers(): void
     {
         $mockBackend = $this->getMockBuilder(AbstractBackend::class)
             ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
@@ -48,7 +48,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorRejectsInvalidIdentifiers()
+    public function theConstructorRejectsInvalidIdentifiers(): void
     {
         $mockBackend = $this->getMockBuilder(AbstractBackend::class)
             ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
@@ -70,7 +70,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCallsBackend()
+    public function flushCallsBackend(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -89,7 +89,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagRejectsInvalidTags()
+    public function flushByTagRejectsInvalidTags(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233057359);
@@ -107,7 +107,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagCallsBackendIfItIsATaggableBackend()
+    public function flushByTagCallsBackendIfItIsATaggableBackend(): void
     {
         $tag = 'sometag';
         $identifier = 'someCacheIdentifier';
@@ -126,7 +126,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagsCallsBackendIfItIsATaggableBackend()
+    public function flushByTagsCallsBackendIfItIsATaggableBackend(): void
     {
         $tag = 'sometag';
         $identifier = 'someCacheIdentifier';
@@ -145,7 +145,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectGarbageCallsBackend()
+    public function collectGarbageCallsBackend(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -164,7 +164,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidEntryIdentifiersAreRecognizedAsInvalid()
+    public function invalidEntryIdentifiersAreRecognizedAsInvalid(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(AbstractBackend::class);
@@ -180,7 +180,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function validEntryIdentifiersAreRecognizedAsValid()
+    public function validEntryIdentifiersAreRecognizedAsValid(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(AbstractBackend::class);
@@ -196,7 +196,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidTagsAreRecognizedAsInvalid()
+    public function invalidTagsAreRecognizedAsInvalid(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(AbstractBackend::class);
@@ -212,7 +212,7 @@ class AbstractFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function validTagsAreRecognizedAsValid()
+    public function validTagsAreRecognizedAsValid(): void
     {
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(AbstractBackend::class);

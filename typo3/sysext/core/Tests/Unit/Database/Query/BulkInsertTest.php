@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
@@ -29,15 +30,8 @@ class BulkInsertTest extends UnitTestCase
      */
     protected $connection;
 
-    /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform
-     */
-    protected $platform;
-
-    /**
-     * @var string
-     */
-    protected $testTable = 'testTable';
+    protected ?AbstractPlatform $platform;
+    protected string $testTable = 'testTable';
 
     /**
      * Create a new database connection mock object for every test.
@@ -59,7 +53,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSQLWithoutSpecifiedValuesThrowsException()
+    public function getSQLWithoutSpecifiedValuesThrowsException(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You need to add at least one set of values before generating the SQL.');
@@ -72,7 +66,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function insertWithoutColumnAndTypeSpecification()
+    public function insertWithoutColumnAndTypeSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -83,7 +77,7 @@ class BulkInsertTest extends UnitTestCase
         self::assertSame([], $query->getParameterTypes());
     }
 
-    public function insertWithoutColumnSpecification()
+    public function insertWithoutColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -97,7 +91,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function singleInsertWithoutColumnSpecification()
+    public function singleInsertWithoutColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -122,7 +116,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function multiInsertWithoutColumnSpecification()
+    public function multiInsertWithoutColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -165,7 +159,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function singleInsertWithColumnSpecificationAndPositionalTypeValues()
+    public function singleInsertWithColumnSpecificationAndPositionalTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -187,7 +181,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function singleInsertWithColumnSpecificationAndNamedTypeValues()
+    public function singleInsertWithColumnSpecificationAndNamedTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -209,7 +203,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function singleInsertWithColumnSpecificationAndMixedTypeValues()
+    public function singleInsertWithColumnSpecificationAndMixedTypeValues(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -231,7 +225,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function multiInsertWithColumnSpecification()
+    public function multiInsertWithColumnSpecification(): void
     {
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -280,7 +274,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function emptyInsertWithColumnSpecificationThrowsException()
+    public function emptyInsertWithColumnSpecificationThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No value specified for column bar (index 0).');
@@ -292,7 +286,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function insertWithColumnSpecificationAndMultipleValuesForColumnThrowsException()
+    public function insertWithColumnSpecificationAndMultipleValuesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Multiple values specified for column baz (index 1).');
@@ -304,7 +298,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function insertWithColumnSpecificationAndMultipleTypesForColumnThrowsException()
+    public function insertWithColumnSpecificationAndMultipleTypesForColumnThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Multiple types specified for column baz (index 1).');
@@ -319,7 +313,7 @@ class BulkInsertTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeWithMaxInsertRowsPerStatementExceededThrowsException()
+    public function executeWithMaxInsertRowsPerStatementExceededThrowsException(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You can only insert 10 rows in a single INSERT statement with platform "mock".');

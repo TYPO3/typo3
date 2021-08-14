@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -29,11 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FontawesomeIconProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected ?FontawesomeIconProvider $subject;
 
     /**
      * @var Icon
@@ -57,7 +56,7 @@ class FontawesomeIconProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareIconMarkupWithNameReturnsInstanceOfIconWithCorrectMarkup()
+    public function prepareIconMarkupWithNameReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['name' => 'times']);
         self::assertEquals('<span class="icon-unify"><i class="fa fa-times"></i></span>', $this->icon->getMarkup());
@@ -68,7 +67,7 @@ class FontawesomeIconProviderTest extends UnitTestCase
      *
      * @return array
      */
-    public function wrongNamesDataProvider()
+    public function wrongNamesDataProvider(): array
     {
         return [
             'name with spaces' => ['name with spaces', 1440754979],
@@ -85,7 +84,7 @@ class FontawesomeIconProviderTest extends UnitTestCase
      * @param int $expectedExceptionCode
      * @test
      */
-    public function prepareIconMarkupWithInvalidNameThrowsException($name, $expectedExceptionCode)
+    public function prepareIconMarkupWithInvalidNameThrowsException(string $name, int $expectedExceptionCode): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);

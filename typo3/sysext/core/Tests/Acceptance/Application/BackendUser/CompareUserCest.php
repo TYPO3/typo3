@@ -27,7 +27,7 @@ class CompareUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -39,7 +39,7 @@ class CompareUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function editingBeUserRecordsFromCompareViewWorks(ApplicationTester $I)
+    public function editingBeUserRecordsFromCompareViewWorks(ApplicationTester $I): void
     {
         // put two users into compare list
         $I->see('Backend User Listing');

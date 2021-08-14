@@ -24,18 +24,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class NavigationComponentTreeCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkTreeExpandsAndCollapseByPageModule(ApplicationTester $I)
+    public function checkTreeExpandsAndCollapseByPageModule(ApplicationTester $I): void
     {
         $treeArea = '.scaffold-content-navigation-expanded';
         $I->wantTo('check Page Module for Expands And Collapse');
@@ -54,10 +48,7 @@ class NavigationComponentTreeCest
         $I->see('New TYPO3 site', $treeArea);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkTreeExpandsAndCollapseByFileModule(ApplicationTester $I)
+    public function checkTreeExpandsAndCollapseByFileModule(ApplicationTester $I): void
     {
         $treeArea = '.scaffold-content-navigation-expanded';
 

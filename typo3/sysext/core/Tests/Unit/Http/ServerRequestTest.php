@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ServerRequestTest extends UnitTestCase
 {
-    /**
-     * @var ServerRequest
-     */
-    protected $request;
+    protected ?ServerRequest $request;
 
     protected function setUp(): void
     {
@@ -43,7 +40,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServerParamsAreEmptyByDefault()
+    public function getServerParamsAreEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getServerParams());
     }
@@ -51,7 +48,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueryParamsAreEmptyByDefault()
+    public function getQueryParamsAreEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getQueryParams());
     }
@@ -59,7 +56,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withQueryParamsMutatorReturnsCloneWithChanges()
+    public function withQueryParamsMutatorReturnsCloneWithChanges(): void
     {
         $value = ['foo' => 'bar'];
         $request = $this->request->withQueryParams($value);
@@ -70,7 +67,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCookieParamsAreEmptyByDefault()
+    public function getCookieParamsAreEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getCookieParams());
     }
@@ -78,7 +75,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withCookieParamsMutatorReturnsCloneWithChanges()
+    public function withCookieParamsMutatorReturnsCloneWithChanges(): void
     {
         $value = ['foo' => 'bar'];
         $request = $this->request->withCookieParams($value);
@@ -89,7 +86,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUploadedFilesAreEmptyByDefault()
+    public function getUploadedFilesAreEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getUploadedFiles());
     }
@@ -97,7 +94,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParsedBodyIsEmptyByDefault()
+    public function getParsedBodyIsEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getParsedBody());
     }
@@ -105,7 +102,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withParsedBodyMutatorReturnsCloneWithChanges()
+    public function withParsedBodyMutatorReturnsCloneWithChanges(): void
     {
         $value = ['foo' => 'bar'];
         $request = $this->request->withParsedBody($value);
@@ -116,7 +113,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAttributesAreEmptyByDefault()
+    public function getAttributesAreEmptyByDefault(): void
     {
         self::assertEmpty($this->request->getAttributes());
     }
@@ -124,7 +121,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withAttributeMutatorReturnsCloneWithChanges()
+    public function withAttributeMutatorReturnsCloneWithChanges(): ServerRequest
     {
         $request = $this->request->withAttribute('foo', 'bar');
         self::assertNotSame($this->request, $request);
@@ -136,7 +133,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withoutAttributeReturnsCloneWithoutAttribute()
+    public function withoutAttributeReturnsCloneWithoutAttribute(): void
     {
         $request = $this->request;
         $new = $request->withoutAttribute('foo');
@@ -147,7 +144,7 @@ class ServerRequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorUsesProvidedArguments()
+    public function constructorUsesProvidedArguments(): void
     {
         $server = [
             'foo' => 'bar',

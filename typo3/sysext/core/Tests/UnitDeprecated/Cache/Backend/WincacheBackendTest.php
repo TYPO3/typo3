@@ -33,7 +33,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionIfNoFrontEndHasBeenSet()
+    public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
     {
         $this->expectException(Exception::class);
         // @todo Add exception code with wincache extension
@@ -47,7 +47,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndCheckExistenceInCache()
+    public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -60,7 +60,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndGetEntry()
+    public function itIsPossibleToSetAndGetEntry(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -73,7 +73,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToRemoveEntryFromCache()
+    public function itIsPossibleToRemoveEntryFromCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -87,7 +87,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function itIsPossibleToOverwriteAnEntryInTheCache()
+    public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -102,7 +102,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function findIdentifiersByTagFindsSetEntries()
+    public function findIdentifiersByTagFindsSetEntries(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -117,7 +117,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRemovesTagsFromPreviousSet()
+    public function setRemovesTagsFromPreviousSet(): void
     {
         $backend = $this->setUpBackend();
         $data = 'Some data';
@@ -131,7 +131,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasReturnsFalseIfTheEntryDoesntExist()
+    public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
         $backend = $this->setUpBackend();
         $identifier = StringUtility::getUniqueId('NonExistingIdentifier');
@@ -142,7 +142,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeReturnsFalseIfTheEntryDoesntExist()
+    public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
         $backend = $this->setUpBackend();
         $identifier = StringUtility::getUniqueId('NonExistingIdentifier');
@@ -153,7 +153,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagRemovesCacheEntriesWithSpecifiedTag()
+    public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -169,7 +169,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -185,7 +185,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushRemovesAllCacheEntries()
+    public function flushRemovesAllCacheEntries(): void
     {
         $backend = $this->setUpBackend();
         $data = 'some data' . microtime();
@@ -201,7 +201,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushRemovesOnlyOwnEntries()
+    public function flushRemovesOnlyOwnEntries(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
         $thisCache = $this->createMock(FrontendInterface::class);
@@ -226,7 +226,7 @@ class WincacheBackendTest extends UnitTestCase
      *
      * @test
      */
-    public function largeDataIsStored()
+    public function largeDataIsStored(): void
     {
         $backend = $this->setUpBackend();
         $data = str_repeat('abcde', 1024 * 1024);
@@ -239,7 +239,7 @@ class WincacheBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTagsOnlyOnceToIdentifier()
+    public function setTagsOnlyOnceToIdentifier(): void
     {
         $identifier = StringUtility::getUniqueId('MyIdentifier');
         $tags = ['UnitTestTag%test', 'UnitTestTag%boring'];
@@ -264,7 +264,7 @@ class WincacheBackendTest extends UnitTestCase
      * @param bool $accessible TRUE if backend should be encapsulated in accessible proxy otherwise FALSE.
      * @return \TYPO3\TestingFramework\Core\AccessibleObjectInterface|WincacheBackend
      */
-    protected function setUpBackend($accessible = false)
+    protected function setUpBackend(bool $accessible = false)
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = $this->createMock(FrontendInterface::class);

@@ -25,10 +25,8 @@ class EmailLinkHandlerTest extends UnitTestCase
 
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
-     *
-     * @return array
      */
-    public function resolveParametersForNonFilesDataProvider()
+    public function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'email without protocol' => [
@@ -65,12 +63,13 @@ class EmailLinkHandlerTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $expected
+     * @param array $expected
      * @param string $finalString
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
+     * @todo Defining the method parameter types results in test bench errors
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString)
+    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
     {
         $subject = new EmailLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
@@ -80,12 +79,13 @@ class EmailLinkHandlerTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $parameters
+     * @param array $parameters
      * @param string $expected
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
+     * @todo Defining the method parameter types results in test bench errors
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
     {
         $subject = new EmailLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));

@@ -32,7 +32,7 @@ class AllowAccessHookFixture implements DataHandlerCheckModifyAccessListHookInte
      * @param string $table
      * @param DataHandler $parent
      */
-    public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent)
+    public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent): void
     {
         $accessAllowed = true;
     }

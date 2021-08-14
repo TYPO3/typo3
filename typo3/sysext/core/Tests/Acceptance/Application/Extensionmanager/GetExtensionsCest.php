@@ -28,7 +28,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -46,7 +46,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkRetrievedExtensionsFromTerAreDisplayed(ApplicationTester $I)
+    public function checkRetrievedExtensionsFromTerAreDisplayed(ApplicationTester $I): void
     {
         $I->see('superext');
         $I->see('neededext');
@@ -55,7 +55,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkPageBrowserDisplaysTwoRecords(ApplicationTester $I)
+    public function checkPageBrowserDisplaysTwoRecords(ApplicationTester $I): void
     {
         $I->seeElement('.pagination-wrap');
         $I->see('Extensions 1 - 2');
@@ -64,7 +64,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I)
+    public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'superext');
         $I->click('Go');
@@ -89,7 +89,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I)
+    public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I): void
     {
         $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'ext');
         $I->click('Go');

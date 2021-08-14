@@ -48,7 +48,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidStreamsDataProvider()
+    public function invalidStreamsDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -69,7 +69,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidStreamsDataProvider
      * @test
      */
-    public function constructorRaisesExceptionOnInvalidStreamOrFile($streamOrFile)
+    public function constructorRaisesExceptionOnInvalidStreamOrFile($streamOrFile): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
@@ -78,7 +78,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidSizesDataProvider()
+    public function invalidSizesDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -95,7 +95,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidSizesDataProvider
      * @test
      */
-    public function constructorRaisesExceptionOnInvalidSize($size)
+    public function constructorRaisesExceptionOnInvalidSize($size): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717302);
@@ -105,7 +105,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidErrorStatusesDataProvider()
+    public function invalidErrorStatusesDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -124,7 +124,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidErrorStatusesDataProvider
      * @test
      */
-    public function constructorRaisesExceptionOnInvalidErrorStatus($status)
+    public function constructorRaisesExceptionOnInvalidErrorStatus($status): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717303);
@@ -134,7 +134,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidFilenamesAndMediaTypesDataProvider()
+    public function invalidFilenamesAndMediaTypesDataProvider(): array
     {
         return [
             'true'   => [true],
@@ -150,7 +150,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidFilenamesAndMediaTypesDataProvider
      * @test
      */
-    public function constructorRaisesExceptionOnInvalidClientFilename($filename)
+    public function constructorRaisesExceptionOnInvalidClientFilename($filename): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717304);
@@ -161,7 +161,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidFilenamesAndMediaTypesDataProvider
      * @test
      */
-    public function constructorRaisesExceptionOnInvalidClientMediaType($mediaType)
+    public function constructorRaisesExceptionOnInvalidClientMediaType($mediaType): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717305);
@@ -171,7 +171,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStreamReturnsOriginalStreamObject()
+    public function getStreamReturnsOriginalStreamObject(): void
     {
         $stream = new Stream('php://temp');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
@@ -181,7 +181,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStreamReturnsWrappedPhpStream()
+    public function getStreamReturnsWrappedPhpStream(): void
     {
         $stream = fopen('php://temp', 'wb+');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
@@ -192,7 +192,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStreamReturnsStreamForFile()
+    public function getStreamReturnsStreamForFile(): void
     {
         $this->tmpFile = $stream = tempnam(sys_get_temp_dir(), 'phly');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
@@ -205,7 +205,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function moveToMovesFileToDesignatedPath()
+    public function moveToMovesFileToDesignatedPath(): void
     {
         $stream = new Stream('php://temp', 'wb+');
         $stream->write('Foo bar!');
@@ -221,7 +221,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidMovePathsDataProvider()
+    public function invalidMovePathsDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -239,7 +239,7 @@ class UploadedFileTest extends UnitTestCase
      * @dataProvider invalidMovePathsDataProvider
      * @test
      */
-    public function moveToRaisesExceptionForInvalidPath($path)
+    public function moveToRaisesExceptionForInvalidPath($path): void
     {
         $stream = new Stream('php://temp', 'wb+');
         $stream->write('Foo bar!');
@@ -254,7 +254,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function moveToCannotBeCalledMoreThanOnce()
+    public function moveToCannotBeCalledMoreThanOnce(): void
     {
         $stream = new Stream('php://temp', 'wb+');
         $stream->write('Foo bar!');
@@ -272,7 +272,7 @@ class UploadedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function getGetStreamRaisesExceptionAfterMove()
+    public function getGetStreamRaisesExceptionAfterMove(): void
     {
         $stream = new Stream('php://temp', 'wb+');
         $stream->write('Foo bar!');

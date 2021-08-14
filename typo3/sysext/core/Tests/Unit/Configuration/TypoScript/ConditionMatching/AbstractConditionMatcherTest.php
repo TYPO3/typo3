@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\TypoScript\ConditionMatching;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -41,7 +42,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConditionMatcherTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $backupEnvironment = true;
 
     /**
@@ -49,10 +51,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     protected $conditionMatcher;
 
-    /**
-     * @var \ReflectionMethod
-     */
-    protected $evaluateExpressionMethod;
+    protected ?\ReflectionMethod $evaluateExpressionMethod;
 
     /**
      * Set up
@@ -86,7 +85,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->initConditionMatcher();
     }
 
-    protected function initConditionMatcher()
+    protected function initConditionMatcher(): void
     {
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             GeneralUtility::makeInstance(PackageManager::class),

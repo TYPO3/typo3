@@ -47,7 +47,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsCorrectComponent()
+    public function constructorSetsCorrectComponent(): void
     {
         $component = 'test.core.log';
         $record = $this->getRecord(['component' => $component]);
@@ -57,7 +57,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsCorrectLogLevel()
+    public function constructorSetsCorrectLogLevel(): void
     {
         $logLevel = LogLevel::CRITICAL;
         $record = $this->getRecord(['level' => $logLevel]);
@@ -67,7 +67,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsCorrectMessage()
+    public function constructorSetsCorrectMessage(): void
     {
         $logMessage = 'test message';
         $record = $this->getRecord(['message' => $logMessage]);
@@ -77,7 +77,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsCorrectData()
+    public function constructorSetsCorrectData(): void
     {
         $dataArray = [
             'foo' => 'bar'
@@ -89,7 +89,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setComponentSetsComponent()
+    public function setComponentSetsComponent(): void
     {
         $record = $this->getRecord();
         $component = 'testcomponent';
@@ -99,7 +99,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLevelSetsLevel()
+    public function setLevelSetsLevel(): void
     {
         $record = $this->getRecord();
         $level = LogLevel::EMERGENCY;
@@ -109,7 +109,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLevelValidatesLevel()
+    public function setLevelValidatesLevel(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1550247164);
@@ -121,7 +121,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMessageSetsMessage()
+    public function setMessageSetsMessage(): void
     {
         $record = $this->getRecord();
         $message = 'testmessage';
@@ -131,7 +131,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCreatedSetsCreated()
+    public function setCreatedSetsCreated(): void
     {
         $record = $this->getRecord();
         $created = 123.45;
@@ -141,7 +141,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRequestIdSetsRequestId()
+    public function setRequestIdSetsRequestId(): void
     {
         $record = $this->getRecord();
         $requestId = 'testrequestid';
@@ -151,7 +151,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function toArrayReturnsCorrectValues()
+    public function toArrayReturnsCorrectValues(): void
     {
         $component = 'test.core.log';
         $level = LogLevel::DEBUG;
@@ -169,7 +169,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function toStringIncludesDataAsJson()
+    public function toStringIncludesDataAsJson(): void
     {
         $dataArray = ['foo' => 'bar'];
         $record = $this->getRecord(['data' => $dataArray]);
@@ -179,7 +179,7 @@ class LogRecordTest extends UnitTestCase
     /**
      * @test
      */
-    public function toStringIncludesExceptionDataAsJson()
+    public function toStringIncludesExceptionDataAsJson(): void
     {
         $dataArray = ['exception' => new \Exception('foo', 1476049451)];
         $record = $this->getRecord(['data' => $dataArray]);

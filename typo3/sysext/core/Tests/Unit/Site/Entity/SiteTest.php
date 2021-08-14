@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -40,7 +41,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     public function tearDown(): void
     {
@@ -48,7 +49,7 @@ class SiteTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
-    public function getBaseReturnsProperUriDataProvider()
+    public function getBaseReturnsProperUriDataProvider(): array
     {
         return [
             'URL with scheme and domain' => ['https://www.typo3.org', 'https://www.typo3.org'],
@@ -69,7 +70,7 @@ class SiteTest extends UnitTestCase
      * @test
      * @dataProvider getBaseReturnsProperUriDataProvider
      */
-    public function getBaseReturnsProperUri($input, $expected)
+    public function getBaseReturnsProperUri($input, $expected): void
     {
         $subject = new Site('all-your-base-belongs-to-us', 13, [
             'base' => $input,
@@ -84,7 +85,7 @@ class SiteTest extends UnitTestCase
      * - input "site language" base
      * - expected "site language" base after it is glued together
      */
-    public function getBaseForSiteLanguageReturnsProperUriDataProvider()
+    public function getBaseForSiteLanguageReturnsProperUriDataProvider(): array
     {
         return [
             'Language as a regular path segment' => [
@@ -127,7 +128,7 @@ class SiteTest extends UnitTestCase
      * @test
      * @dataProvider getBaseForSiteLanguageReturnsProperUriDataProvider
      */
-    public function getBaseForSiteLanguageReturnsProperUri($siteBase, $languageBase, $expected)
+    public function getBaseForSiteLanguageReturnsProperUri($siteBase, $languageBase, $expected): void
     {
         $subject = new Site('all-of-base', 13, [
             'base' => $siteBase,
@@ -145,7 +146,7 @@ class SiteTest extends UnitTestCase
     /**
      * @test
      */
-    public function getErrorHandlerReturnsConfiguredErrorHandler()
+    public function getErrorHandlerReturnsConfiguredErrorHandler(): void
     {
         $subject = new Site('aint-misbehaving', 13, [
             'languages' => [],
@@ -218,7 +219,7 @@ class SiteTest extends UnitTestCase
     /**
      * @test
      */
-    public function getErrorHandlerThrowsExceptionOnInvalidErrorHandler()
+    public function getErrorHandlerThrowsExceptionOnInvalidErrorHandler(): void
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
         $this->expectExceptionCode(1527432330);
@@ -239,7 +240,7 @@ class SiteTest extends UnitTestCase
     /**
      * @test
      */
-    public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerIsConfigured()
+    public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerIsConfigured(): void
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);
@@ -251,7 +252,7 @@ class SiteTest extends UnitTestCase
     /**
      * @test
      */
-    public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerForStatusCodeIsConfigured()
+    public function getErrorHandlerThrowsExceptionWhenNoErrorHandlerForStatusCodeIsConfigured(): void
     {
         $this->expectException(PageErrorHandlerNotConfiguredException::class);
         $this->expectExceptionCode(1522495914);

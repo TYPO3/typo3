@@ -41,7 +41,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getBooleanTypeDeclarationSQL(array $columnDef)
+    public function getBooleanTypeDeclarationSQL(array $columnDef): ?string
     {
     }
 
@@ -52,7 +52,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getIntegerTypeDeclarationSQL(array $columnDef)
+    public function getIntegerTypeDeclarationSQL(array $columnDef): ?string
     {
     }
 
@@ -63,7 +63,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getBigIntTypeDeclarationSQL(array $columnDef)
+    public function getBigIntTypeDeclarationSQL(array $columnDef): ?string
     {
     }
 
@@ -74,7 +74,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getSmallIntTypeDeclarationSQL(array $columnDef)
+    public function getSmallIntTypeDeclarationSQL(array $columnDef): ?string
     {
     }
 
@@ -85,7 +85,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
+    public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): ?string
     {
     }
 
@@ -96,7 +96,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getVarcharTypeDeclarationSQL(array $field)
+    public function getVarcharTypeDeclarationSQL(array $field): string
     {
         return 'DUMMYVARCHAR()';
     }
@@ -108,7 +108,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getClobTypeDeclarationSQL(array $field)
+    public function getClobTypeDeclarationSQL(array $field): string
     {
         return 'DUMMYCLOB';
     }
@@ -123,7 +123,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getJsonTypeDeclarationSQL(array $field)
+    public function getJsonTypeDeclarationSQL(array $field): string
     {
         return 'DUMMYJSON';
     }
@@ -135,7 +135,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getBinaryTypeDeclarationSQL(array $field)
+    public function getBinaryTypeDeclarationSQL(array $field): string
     {
         return 'DUMMYBINARY';
     }
@@ -145,7 +145,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return 'mock';
     }
@@ -153,7 +153,7 @@ class MockPlatform extends AbstractPlatform
     /**
      * Lazy load Doctrine Type Mappings.
      */
-    protected function initializeDoctrineTypeMappings()
+    protected function initializeDoctrineTypeMappings(): void
     {
     }
 
@@ -165,7 +165,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed): ?string
     {
     }
 
@@ -176,7 +176,7 @@ class MockPlatform extends AbstractPlatform
      *
      * @throws \Doctrine\DBAL\Exception If not supported on this platform.
      */
-    protected function getReservedKeywordsClass()
+    protected function getReservedKeywordsClass(): string
     {
         return MockKeywordList::class;
     }

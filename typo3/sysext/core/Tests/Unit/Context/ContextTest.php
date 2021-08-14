@@ -49,7 +49,7 @@ class ContextTest extends UnitTestCase
      * @dataProvider validAspectKeysDataProvider
      * @param string $aspectName
      */
-    public function hasAspectReturnsTrueOnExistingAspect(string $aspectName)
+    public function hasAspectReturnsTrueOnExistingAspect(string $aspectName): void
     {
         $subject = new Context([
             'myfirst' => new UserAspect(),
@@ -77,7 +77,7 @@ class ContextTest extends UnitTestCase
      * @dataProvider invalidAspectKeysDataProvider
      * @param string $aspectName
      */
-    public function hasAspectReturnsFalseOnNonExistingAspect(string $aspectName)
+    public function hasAspectReturnsFalseOnNonExistingAspect(string $aspectName): void
     {
         $subject = new Context([
             'myfirst' => new UserAspect(),
@@ -89,7 +89,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorAddsValidAspect()
+    public function constructorAddsValidAspect(): void
     {
         $subject = new Context([
             'coolio' => new UserAspect(),
@@ -102,7 +102,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAspectThrowsExceptionOnInvalidAspect()
+    public function getAspectThrowsExceptionOnInvalidAspect(): void
     {
         $aspect = new UserAspect();
         $subject = new Context([
@@ -117,7 +117,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAspectReturnsValidAspect()
+    public function getAspectReturnsValidAspect(): void
     {
         $aspect = new UserAspect();
         $subject = new Context([
@@ -130,7 +130,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidAspectFromgetPropertyFromAspectThrowsException()
+    public function invalidAspectFromgetPropertyFromAspectThrowsException(): void
     {
         $aspect = new UserAspect();
         $subject = new Context([
@@ -145,7 +145,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidPropertyFromgetPropertyFromAspectReturnsDefault()
+    public function invalidPropertyFromgetPropertyFromAspectReturnsDefault(): void
     {
         $defaultValue = 'default value';
         $aspect = new UserAspect();
@@ -160,7 +160,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function validPropertyFromgetPropertyFromAspectReturnsValue()
+    public function validPropertyFromgetPropertyFromAspectReturnsValue(): void
     {
         $aspect = new WorkspaceAspect(13);
         $subject = new Context([
@@ -174,7 +174,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAspectSetsAnAspectAndCanReturnIt()
+    public function setAspectSetsAnAspectAndCanReturnIt(): void
     {
         $aspect = new UserAspect();
         $subject = new Context();
@@ -186,7 +186,7 @@ class ContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAspectOverridesAnExisting()
+    public function setAspectOverridesAnExisting(): void
     {
         $initialAspect = new UserAspect();
         $aspectOverride = new UserAspect();

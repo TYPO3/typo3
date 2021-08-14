@@ -30,31 +30,22 @@ class FlushCest
      *
      * @var string
      */
-    protected static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
+    protected static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @return ApplicationTester
-     */
-    public function canSeeModuleInTopbar(ApplicationTester $I)
+    public function canSeeModuleInTopbar(ApplicationTester $I): void
     {
         $I->canSeeElement(self::$topBarModuleSelector);
-        return $I;
     }
 
     /**
      * @depends canSeeModuleInTopbar
-     * @param ApplicationTester $I
      */
-    public function seeFlushCachesLinksInClearCacheModule(ApplicationTester $I)
+    public function seeFlushCachesLinksInClearCacheModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         // Ensure existence of link for flush frontend caches

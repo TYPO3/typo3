@@ -28,7 +28,7 @@ class Md5PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNullWithEmptyPassword()
+    public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
         self::assertNull((new Md5PasswordHash())->getHashedPassword(''));
     }
@@ -36,7 +36,7 @@ class Md5PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNotNullWithNonEmptyPassword()
+    public function getHashedPasswordReturnsNotNullWithNonEmptyPassword(): void
     {
         self::assertNotNull((new Md5PasswordHash())->getHashedPassword('a'));
     }
@@ -44,7 +44,7 @@ class Md5PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordCreatesAHashThatValidates()
+    public function getHashedPasswordCreatesAHashThatValidates(): void
     {
         $password = 'password';
         $subject = new Md5PasswordHash();
@@ -60,7 +60,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
@@ -72,7 +72,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsFalseWithBrokenHash()
+    public function checkPasswordReturnsFalseWithBrokenHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY';
@@ -87,7 +87,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $subject = new Md5PasswordHash();
@@ -103,7 +103,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $subject = new Md5PasswordHash();
@@ -119,7 +119,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new Md5PasswordHash();
@@ -135,7 +135,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -155,7 +155,7 @@ class Md5PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
@@ -175,7 +175,7 @@ class Md5PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordReturnsFalseWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -187,7 +187,7 @@ class Md5PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalse()
+    public function isHashUpdateNeededReturnsFalse(): void
     {
         $password = 'password';
         $subject = new Md5PasswordHash();

@@ -28,20 +28,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class SiteModuleCest
 {
-
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function editExistingRecord(ApplicationTester $I, ModalDialog $modalDialog)
+    public function editExistingRecord(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $acceptanceUrl = $I->grabModuleConfig('WebDriver', 'url');
         $acceptanceUrlWithTrailingSlash = rtrim($acceptanceUrl, '/') . '/';
@@ -149,11 +141,8 @@ class SiteModuleCest
      * Add a default FE ts snipped to the existing site config and verify FE is rendered
      *
      * @depends editExistingRecord
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     * @param ModalDialog $modalDialog
      */
-    public function defaultFrontendRendering(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog)
+    public function defaultFrontendRendering(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
         $I->amGoingTo('Create a default FE typoscript for the created site configuration');
 
@@ -229,11 +218,9 @@ page.10.value = This is a default text for default rendering without dynamic con
 
     /**
      * @depends defaultFrontendRendering
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function createSiteConfigIfNoneExists(ApplicationTester $I, ModalDialog $modalDialog)
+    public function createSiteConfigIfNoneExists(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $acceptanceUrl = $I->grabModuleConfig('WebDriver', 'url');
         $acceptanceUrlWithTrailingSlash = rtrim($acceptanceUrl, '/') . '/';
@@ -300,10 +287,6 @@ page.10.value = This is a default text for default rendering without dynamic con
 
     /**
      * Find input field by label name
-     *
-     * @param ApplicationTester $I
-     * @param string $fieldLabel
-     * @return RemoteWebElement
      */
     protected function getInputByLabel(ApplicationTester $I, string $labelName, string $tag = 'input[@type="text"]'): RemoteWebElement
     {

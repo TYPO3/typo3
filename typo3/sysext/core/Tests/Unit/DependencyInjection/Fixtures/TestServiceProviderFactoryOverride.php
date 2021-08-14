@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 
 class TestServiceProviderFactoryOverride implements ServiceProviderInterface
 {
-    public function getFactories()
+    public function getFactories(): array
     {
         return [
             'serviceB' => [ self::class, 'createServiceB' ],
@@ -36,7 +36,7 @@ class TestServiceProviderFactoryOverride implements ServiceProviderInterface
         return $instance;
     }
 
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return [];
     }

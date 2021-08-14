@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\PageRouter;
@@ -30,7 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageRouterTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool
      */
@@ -84,7 +86,7 @@ class PageRouterTest extends UnitTestCase
      * Let's see if the slug is "/blabla" and the base does not have a trailing slash ("/en")
      * @test
      */
-    public function properSiteConfigurationWithoutTrailingSlashFindsRoute()
+    public function properSiteConfigurationWithoutTrailingSlashFindsRoute(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];

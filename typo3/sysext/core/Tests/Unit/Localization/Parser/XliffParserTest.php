@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -31,11 +32,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class XliffParserTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var array
-     */
-    protected $xliffFileNames;
+    use ProphecyTrait;
+
+    protected ?array $xliffFileNames;
 
     /**
      * @var ObjectProphecy|CacheManager
@@ -69,7 +68,7 @@ class XliffParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function canParseXliffInEnglish()
+    public function canParseXliffInEnglish(): void
     {
         $LOCAL_LANG = (new XliffParser())->getParsedData($this->xliffFileNames['locallang'], 'default');
         self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
@@ -86,7 +85,7 @@ class XliffParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function canParseXliffInFrench()
+    public function canParseXliffInFrench(): void
     {
         $LOCAL_LANG = (new XliffParser())->getParsedData($this->xliffFileNames['locallang'], 'fr');
         self::assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
@@ -103,7 +102,7 @@ class XliffParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function canOverrideXliff()
+    public function canOverrideXliff(): void
     {
         /** @var $factory LocalizationFactory */
         $factory = new LocalizationFactory(new LanguageStore(), $this->cacheManagerProphecy->reveal());
@@ -141,7 +140,7 @@ class XliffParserTest extends UnitTestCase
      *
      * @test
      */
-    public function canOverrideXliffWithFrenchOnly()
+    public function canOverrideXliffWithFrenchOnly(): void
     {
         $factory = new LocalizationFactory(new LanguageStore(), $this->cacheManagerProphecy->reveal());
 

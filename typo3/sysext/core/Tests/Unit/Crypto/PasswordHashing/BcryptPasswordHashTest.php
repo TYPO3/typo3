@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BcryptPasswordHashTest extends UnitTestCase
 {
-    /**
-     * @var BcryptPasswordHash
-     */
-    protected $subject;
+    protected ?BcryptPasswordHash $subject;
 
     /**
      * Sets up the fixtures for this testcase.
@@ -46,7 +43,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfMemoryCostIsTooLow()
+    public function constructorThrowsExceptionIfMemoryCostIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533902002);
@@ -56,7 +53,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfMemoryCostIsTooHigh()
+    public function constructorThrowsExceptionIfMemoryCostIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533902002);
@@ -66,7 +63,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNullOnEmptyPassword()
+    public function getHashedPasswordReturnsNullOnEmptyPassword(): void
     {
         self::assertNull($this->subject->getHashedPassword(''));
     }
@@ -74,7 +71,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsString()
+    public function getHashedPasswordReturnsString(): void
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertNotNull($hash);
@@ -84,7 +81,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword()
+    public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword(): void
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertTrue($this->subject->isValidSaltedPW($hash));
@@ -95,7 +92,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $hash = $this->subject->getHashedPassword($password);
@@ -107,7 +104,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $hash = $this->subject->getHashedPassword($password);
@@ -119,7 +116,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $hash = $this->subject->getHashedPassword($password);
@@ -131,7 +128,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -147,7 +144,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 255; $i++) {
@@ -164,7 +161,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -175,7 +172,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalseForJustGeneratedHash()
+    public function isHashUpdateNeededReturnsFalseForJustGeneratedHash(): void
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertFalse($this->subject->isHashUpdateNeeded($hash));
@@ -184,7 +181,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
+    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {
         $subject = new BcryptPasswordHash(['cost' => 10]);
         $hash = $subject->getHashedPassword('password');
@@ -197,7 +194,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function getHashedPasswordDoesNotTruncateOnNul()
+    public function getHashedPasswordDoesNotTruncateOnNul(): void
     {
         $password1 = 'pass' . "\x00" . 'word';
         $password2 = 'pass' . "\x00" . 'phrase';
@@ -210,7 +207,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function getHashedPasswordDoesNotTruncateAfter72Chars()
+    public function getHashedPasswordDoesNotTruncateAfter72Chars(): void
     {
         $prefix = str_repeat('a', 72);
         $password1 = $prefix . 'one';

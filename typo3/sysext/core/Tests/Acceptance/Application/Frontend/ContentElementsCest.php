@@ -28,10 +28,7 @@ class ContentElementsCest
 {
     protected string $sidebar = '.sidebar.list-group';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('Page');
@@ -47,9 +44,6 @@ class ContentElementsCest
         $I->see('TYPO3 Styleguide Frontend', '.content');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeAllContentElements(ApplicationTester $I): void
     {
         $I->see('styleguide frontend demo');

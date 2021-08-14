@@ -25,6 +25,7 @@ class SimplePaginationTest extends UnitTestCase
 {
     /**
      * @var array
+     * @todo Specifying the type in the declaration results in a test bench error
      */
     protected $paginator = [];
 
@@ -38,7 +39,7 @@ class SimplePaginationTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkSimplePaginationWithAPaginatorWithDefaultSettings()
+    public function checkSimplePaginationWithAPaginatorWithDefaultSettings(): void
     {
         $pagination = new SimplePagination($this->paginator);
 
@@ -54,7 +55,7 @@ class SimplePaginationTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkSimplePaginationWithAnIncreasedCurrentPageNumber()
+    public function checkSimplePaginationWithAnIncreasedCurrentPageNumber(): void
     {
         $paginator = $this->paginator
             ->withCurrentPageNumber(2)
@@ -74,7 +75,7 @@ class SimplePaginationTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkSimplePaginationWithAnIncreasedCurrentPageNumberAndItemsPerPage()
+    public function checkSimplePaginationWithAnIncreasedCurrentPageNumberAndItemsPerPage(): void
     {
         $paginator = $this->paginator
             ->withItemsPerPage(3)
@@ -94,7 +95,7 @@ class SimplePaginationTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPaginationWithAPaginatorThatOnlyHasOnePage()
+    public function checkPaginationWithAPaginatorThatOnlyHasOnePage(): void
     {
         $paginator = $this->paginator
             ->withItemsPerPage(50)

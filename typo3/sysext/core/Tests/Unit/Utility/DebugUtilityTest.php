@@ -35,7 +35,7 @@ class DebugUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function debugNotEncodesHtmlInputIfPlainText()
+    public function debugNotEncodesHtmlInputIfPlainText(): void
     {
         DebugUtility::usePlainTextOutput(true);
         DebugUtility::useAnsiColor(false);
@@ -54,7 +54,7 @@ class DebugUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function debugEncodesHtmlInputIfNoPlainText()
+    public function debugEncodesHtmlInputIfNoPlainText(): void
     {
         DebugUtility::usePlainTextOutput(false);
         DebugUtility::useAnsiColor(false);
@@ -73,7 +73,7 @@ class DebugUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function convertVariableToStringReturnsVariableContentDataProvider()
+    public function convertVariableToStringReturnsVariableContentDataProvider(): array
     {
         $object = new \stdClass();
         $object->foo = 42;
@@ -114,7 +114,7 @@ class DebugUtilityTest extends UnitTestCase
      * @param mixed $variable
      * @param string $expected
      */
-    public function convertVariableToStringReturnsVariableContent($variable, $expected)
+    public function convertVariableToStringReturnsVariableContent($variable, string $expected): void
     {
         self::assertSame($expected, DebugUtility::convertVariableToString($variable));
     }

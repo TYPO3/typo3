@@ -28,7 +28,7 @@ class DatabaseSessionBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateConfigurationThrowsExceptionIfTableNameIsMissingInConfiguration()
+    public function validateConfigurationThrowsExceptionIfTableNameIsMissingInConfiguration(): void
     {
         $subject = new DatabaseSessionBackend();
         $subject->initialize('default', []);

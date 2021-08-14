@@ -24,18 +24,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ModuleMenuButtonCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkModelMenuButtonFromBigToSmallScreen(ApplicationTester $I)
+    public function checkModelMenuButtonFromBigToSmallScreen(ApplicationTester $I): void
     {
         $I->wantTo('see the module menu button behavior when shrinking the window');
 
@@ -63,10 +57,7 @@ class ModuleMenuButtonCest
         $I->seeElement('.modulemenu-icon');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkModelMenuButtonFromSmallToBigScreen(ApplicationTester $I)
+    public function checkModelMenuButtonFromSmallToBigScreen(ApplicationTester $I): void
     {
         $I->wantTo('see the module menu button behavior when enlarging the window');
 

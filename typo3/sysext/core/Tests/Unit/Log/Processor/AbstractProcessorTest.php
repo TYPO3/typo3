@@ -35,7 +35,7 @@ class AbstractProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function processorRefusesInvalidConfigurationOptions()
+    public function processorRefusesInvalidConfigurationOptions(): void
     {
         $this->expectException(InvalidLogProcessorConfigurationException::class);
         $this->expectExceptionCode(1321696151);
@@ -49,7 +49,7 @@ class AbstractProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function loggerExecutesProcessors()
+    public function loggerExecutesProcessors(): void
     {
         $logger = new Logger('test.core.log');
         $writer = new NullWriter();

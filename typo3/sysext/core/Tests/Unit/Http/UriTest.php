@@ -30,7 +30,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsAllProperties()
+    public function constructorSetsAllProperties(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         self::assertEquals('https', $uri->getScheme());
@@ -46,7 +46,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function canSerializeToString()
+    public function canSerializeToString(): void
     {
         $url = 'https://user:pass@local.example.com:3001/foo?bar=baz#quz';
         $uri = new Uri($url);
@@ -56,7 +56,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withSchemeReturnsNewInstanceWithNewScheme()
+    public function withSchemeReturnsNewInstanceWithNewScheme(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withScheme('http');
@@ -68,7 +68,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withUserInfoReturnsNewInstanceWithProvidedUser()
+    public function withUserInfoReturnsNewInstanceWithProvidedUser(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withUserInfo('matthew');
@@ -80,7 +80,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withUserInfoReturnsNewInstanceWithProvidedUserAndPassword()
+    public function withUserInfoReturnsNewInstanceWithProvidedUserAndPassword(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withUserInfo('matthew', 'zf2');
@@ -92,7 +92,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withHostReturnsNewInstanceWithProvidedHost()
+    public function withHostReturnsNewInstanceWithProvidedHost(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withHost('framework.zend.com');
@@ -104,7 +104,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPortAndNullValueReturnsInstanceWithProvidedPort()
+    public function withPortAndNullValueReturnsInstanceWithProvidedPort(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPort(null);
@@ -116,7 +116,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validPortsDataProvider()
+    public function validPortsDataProvider(): array
     {
         return [
             'int'    => [3000],
@@ -128,7 +128,7 @@ class UriTest extends UnitTestCase
      * @dataProvider validPortsDataProvider
      * @test
      */
-    public function withPortReturnsNewInstanceWithProvidedPort($port)
+    public function withPortReturnsNewInstanceWithProvidedPort($port): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPort($port);
@@ -143,7 +143,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidPortsDataProviderType()
+    public function invalidPortsDataProviderType(): array
     {
         return [
             'false'     => [false],
@@ -157,7 +157,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidPortsDataProviderType
      * @test
      */
-    public function withPortRaisesExceptionForInvalidPortsByType($port)
+    public function withPortRaisesExceptionForInvalidPortsByType($port): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -168,7 +168,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidPortsDataProviderRange()
+    public function invalidPortsDataProviderRange(): array
     {
         return [
             'zero'      => [0],
@@ -184,7 +184,7 @@ class UriTest extends UnitTestCase
      * @todo: if the code would not accept 'true' as valid port but throw an exception instead.
      * @todo: If that is changed, 'true' should be added to the 'invalid type' data provider above.
      */
-    public function withPortAcceptsBooleanTrueAsPortOne()
+    public function withPortAcceptsBooleanTrueAsPortOne(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPort(true);
@@ -196,7 +196,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidPortsDataProviderRange
      * @test
      */
-    public function withPortRaisesExceptionForInvalidPortsByRange($port)
+    public function withPortRaisesExceptionForInvalidPortsByRange($port): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -207,7 +207,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function standardPortAndSchemeDoesNotRenderPort()
+    public function standardPortAndSchemeDoesNotRenderPort(): void
     {
         $subject = new Uri('http://www.example.com:80');
         self::assertEquals('http://www.example.com', (string)$subject);
@@ -216,7 +216,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function standardPortAndNoSchemeDoesRenderPort()
+    public function standardPortAndNoSchemeDoesRenderPort(): void
     {
         $subject = new Uri('www.example.com:80');
         self::assertEquals('//www.example.com:80', (string)$subject);
@@ -225,7 +225,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function noPortAndNoSchemeDoesNotRenderPort()
+    public function noPortAndNoSchemeDoesNotRenderPort(): void
     {
         $subject = new Uri('www.example.com');
         self::assertEquals('/www.example.com', (string)$subject);
@@ -234,7 +234,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPathReturnsNewInstanceWithProvidedPath()
+    public function withPathReturnsNewInstanceWithProvidedPath(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPath('/bar/baz');
@@ -246,7 +246,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidPathsDataProvider()
+    public function invalidPathsDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -261,7 +261,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidPathsDataProvider
      * @test
      */
-    public function withPathRaisesExceptionForInvalidPaths($path)
+    public function withPathRaisesExceptionForInvalidPaths($path): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -272,7 +272,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPathRaisesExceptionForInvalidPathsWithQuery()
+    public function withPathRaisesExceptionForInvalidPathsWithQuery(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -283,7 +283,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPathRaisesExceptionForInvalidPathsWithFragment()
+    public function withPathRaisesExceptionForInvalidPathsWithFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -294,7 +294,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withQueryReturnsNewInstanceWithProvidedQuery()
+    public function withQueryReturnsNewInstanceWithProvidedQuery(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withQuery('baz=bat');
@@ -306,7 +306,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidQueryStringsDataProvider()
+    public function invalidQueryStringsDataProvider(): array
     {
         return [
             'null'     => [null],
@@ -321,7 +321,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidQueryStringsDataProvider
      * @test
      */
-    public function withQueryRaisesExceptionForInvalidQueryStringsByType($query)
+    public function withQueryRaisesExceptionForInvalidQueryStringsByType($query): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -332,7 +332,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withQueryRaisesExceptionForInvalidQueryStringsByFragment()
+    public function withQueryRaisesExceptionForInvalidQueryStringsByFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $this->expectException(\InvalidArgumentException::class);
@@ -343,7 +343,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withFragmentReturnsNewInstanceWithProvidedFragment()
+    public function withFragmentReturnsNewInstanceWithProvidedFragment(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withFragment('qat');
@@ -355,7 +355,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function authorityInfoDataProvider()
+    public function authorityInfoDataProvider(): array
     {
         return [
             'host-only'      => ['http://foo.com/bar', 'foo.com'],
@@ -369,7 +369,7 @@ class UriTest extends UnitTestCase
      * @dataProvider authorityInfoDataProvider
      * @test
      */
-    public function getAuthorityReturnsExpectedValues($url, $expected)
+    public function getAuthorityReturnsExpectedValues($url, $expected): void
     {
         $uri = new Uri($url);
         self::assertEquals($expected, $uri->getAuthority());
@@ -378,7 +378,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function canEmitOriginFormUrl()
+    public function canEmitOriginFormUrl(): void
     {
         $url = '/foo/bar?baz=bat';
         $uri = new Uri($url);
@@ -388,7 +388,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingEmptyPathOnAbsoluteUriReturnsAnEmptyPath()
+    public function settingEmptyPathOnAbsoluteUriReturnsAnEmptyPath(): void
     {
         $uri = new Uri('http://example.com/foo');
         $new = $uri->withPath('');
@@ -398,7 +398,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringRepresentationOfAbsoluteUriWithNoPathSetsAnEmptyPath()
+    public function stringRepresentationOfAbsoluteUriWithNoPathSetsAnEmptyPath(): void
     {
         $uri = new Uri('http://example.com');
         self::assertEquals('http://example.com', (string)$uri);
@@ -407,7 +407,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathOnOriginFormRemainsAnEmptyPath()
+    public function getPathOnOriginFormRemainsAnEmptyPath(): void
     {
         $uri = new Uri('?foo=bar');
         self::assertEquals('', $uri->getPath());
@@ -416,7 +416,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringRepresentationOfOriginFormWithNoPathRetainsEmptyPath()
+    public function stringRepresentationOfOriginFormWithNoPathRetainsEmptyPath(): void
     {
         $uri = new Uri('?foo=bar');
         self::assertEquals('?foo=bar', (string)$uri);
@@ -425,7 +425,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidConstructorUrisDataProvider()
+    public function invalidConstructorUrisDataProvider(): array
     {
         return [
             'null'   => [null],
@@ -441,7 +441,7 @@ class UriTest extends UnitTestCase
     /**
      * @dataProvider invalidConstructorUrisDataProvider
      */
-    public function constructorRaisesExceptionForNonStringURI($uri)
+    public function constructorRaisesExceptionForNonStringURI($uri): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Uri($uri);
@@ -450,7 +450,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorRaisesExceptionForSeriouslyMalformedURI()
+    public function constructorRaisesExceptionForSeriouslyMalformedURI(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Uri('http:///www.php-fig.org/');
@@ -459,7 +459,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withSchemeStripsOffDelimiter()
+    public function withSchemeStripsOffDelimiter(): void
     {
         $uri = new Uri('http://example.com');
         $new = $uri->withScheme('https://');
@@ -469,7 +469,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidSchemesDataProvider()
+    public function invalidSchemesDataProvider(): array
     {
         return [
             'mailto' => ['mailto'],
@@ -484,7 +484,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidSchemesDataProvider
      * @test
      */
-    public function constructWithUnsupportedSchemeRaisesAnException($scheme)
+    public function constructWithUnsupportedSchemeRaisesAnException($scheme): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717338);
@@ -495,7 +495,7 @@ class UriTest extends UnitTestCase
      * @dataProvider invalidSchemesDataProvider
      * @test
      */
-    public function withSchemeUsingUnsupportedSchemeRaisesAnException($scheme)
+    public function withSchemeUsingUnsupportedSchemeRaisesAnException($scheme): void
     {
         $uri = new Uri('http://example.com');
         $this->expectException(\InvalidArgumentException::class);
@@ -506,7 +506,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPathIsNotPrefixedWithSlashIfSetWithoutOne()
+    public function withPathIsNotPrefixedWithSlashIfSetWithoutOne(): void
     {
         $uri = new Uri('http://example.com');
         $new = $uri->withPath('foo/bar');
@@ -516,7 +516,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withEmptySchemeReturnsNewInstanceWithAbsoluteUri()
+    public function withEmptySchemeReturnsNewInstanceWithAbsoluteUri(): void
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withScheme('');
@@ -529,7 +529,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withPathNotSlashPrefixedIsEmittedWithSlashDelimiterWhenUriIsCastToString()
+    public function withPathNotSlashPrefixedIsEmittedWithSlashDelimiterWhenUriIsCastToString(): void
     {
         $uri = new Uri('http://example.com');
         $new = $uri->withPath('foo/bar');
@@ -539,7 +539,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withQueryStripsQueryPrefixIfPresent()
+    public function withQueryStripsQueryPrefixIfPresent(): void
     {
         $uri = new Uri('http://example.com');
         $new = $uri->withQuery('?foo=bar');
@@ -549,7 +549,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function withFragmentStripsFragmentPrefixIfPresent()
+    public function withFragmentStripsFragmentPrefixIfPresent(): void
     {
         $uri = new Uri('http://example.com');
         $new = $uri->withFragment('#/foo/bar');
@@ -559,7 +559,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function standardSchemePortCombinationsDataProvider()
+    public function standardSchemePortCombinationsDataProvider(): array
     {
         return [
             'http'  => ['http', 80],
@@ -571,7 +571,7 @@ class UriTest extends UnitTestCase
      * @dataProvider standardSchemePortCombinationsDataProvider
      * @test
      */
-    public function getAuthorityOmitsPortForStandardSchemePortCombinations($scheme, $port)
+    public function getAuthorityOmitsPortForStandardSchemePortCombinations($scheme, $port): void
     {
         $uri = (new Uri())
             ->withHost('example.com')
@@ -583,7 +583,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathIsProperlyEncoded()
+    public function getPathIsProperlyEncoded(): void
     {
         $uri = (new Uri())->withPath('/foo^bar');
         $expected = '/foo%5Ebar';
@@ -593,7 +593,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathDoesNotBecomeDoubleEncoded()
+    public function getPathDoesNotBecomeDoubleEncoded(): void
     {
         $uri = (new Uri())->withPath('/foo%5Ebar');
         $expected = '/foo%5Ebar';
@@ -603,7 +603,7 @@ class UriTest extends UnitTestCase
     /**
      * @return array
      */
-    public function queryStringsForEncodingDataProvider()
+    public function queryStringsForEncodingDataProvider(): array
     {
         return [
             'key-only'        => ['k^ey', 'k%5Eey'],
@@ -618,7 +618,7 @@ class UriTest extends UnitTestCase
      * @dataProvider queryStringsForEncodingDataProvider
      * @test
      */
-    public function getQueryIsProperlyEncoded($query, $expected)
+    public function getQueryIsProperlyEncoded($query, $expected): void
     {
         $uri = (new Uri())->withQuery($query);
         self::assertEquals($expected, $uri->getQuery());
@@ -628,7 +628,7 @@ class UriTest extends UnitTestCase
      * @dataProvider queryStringsForEncodingDataProvider
      * @test
      */
-    public function getQueryIsNotDoubleEncoded($query, $expected)
+    public function getQueryIsNotDoubleEncoded($query, $expected): void
     {
         $uri = (new Uri())->withQuery($expected);
         self::assertEquals($expected, $uri->getQuery());
@@ -637,7 +637,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFragmentIsProperlyEncoded()
+    public function getFragmentIsProperlyEncoded(): void
     {
         $uri = (new Uri())->withFragment('/p^th?key^=`bar#b@z');
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';
@@ -647,7 +647,7 @@ class UriTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFragmentIsNotDoubleEncoded()
+    public function getFragmentIsNotDoubleEncoded(): void
     {
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';
         $uri = (new Uri())->withFragment($expected);

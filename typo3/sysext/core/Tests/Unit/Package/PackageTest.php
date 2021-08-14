@@ -38,7 +38,7 @@ class PackageTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructThrowsPackageDoesNotExistException()
+    public function constructThrowsPackageDoesNotExistException(): void
     {
         $this->expectException(InvalidPackagePathException::class);
         $this->expectExceptionCode(1166631890);
@@ -48,7 +48,7 @@ class PackageTest extends UnitTestCase
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
-    public function validPackageKeys()
+    public function validPackageKeys(): array
     {
         return [
             ['Doctrine.DBAL'],
@@ -63,7 +63,7 @@ class PackageTest extends UnitTestCase
      * @test
      * @dataProvider validPackageKeys
      */
-    public function constructAcceptsValidPackageKeys($packageKey)
+    public function constructAcceptsValidPackageKeys($packageKey): void
     {
         $packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
@@ -76,7 +76,7 @@ class PackageTest extends UnitTestCase
         self::assertEquals($packageKey, $package->getPackageKey());
     }
 
-    public function invalidPackageKeys()
+    public function invalidPackageKeys(): array
     {
         return [
             ['TYPO3..Flow'],
@@ -89,7 +89,7 @@ class PackageTest extends UnitTestCase
      * @test
      * @dataProvider invalidPackageKeys
      */
-    public function constructRejectsInvalidPackageKeys($packageKey)
+    public function constructRejectsInvalidPackageKeys($packageKey): void
     {
         $this->expectException(InvalidPackageKeyException::class);
         $this->expectExceptionCode(1217959511);
@@ -104,7 +104,7 @@ class PackageTest extends UnitTestCase
     /**
      * @test
      */
-    public function aPackageCanBeFlaggedAsProtected()
+    public function aPackageCanBeFlaggedAsProtected(): void
     {
         $packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
         mkdir($packagePath, 0700, true);

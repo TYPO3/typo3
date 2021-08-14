@@ -61,7 +61,7 @@ class TextTypesTest extends AbstractDataTypeBaseTestCase
      * @param string $columnDefinition
      * @param string $className
      */
-    public function canParseDataType(string $columnDefinition, string $className)
+    public function canParseDataType(string $columnDefinition, string $className): void
     {
         $subject = $this->createSubject($columnDefinition);
 

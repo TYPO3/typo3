@@ -28,7 +28,7 @@ class FileStorageTreeFilterCest
     protected string $withinTree = '#typo3-filestoragetree .nodes';
     protected string $newSubfolder = 'random_subfolder';
 
-    public function _before(ApplicationTester $I, FileTree $tree)
+    public function _before(ApplicationTester $I, FileTree $tree): void
     {
         $I->useExistingSession('admin');
         $I->click('Filelist');
@@ -39,7 +39,7 @@ class FileStorageTreeFilterCest
         $this->createNewFolder($I);
     }
 
-    public function filterTreeForFolder(ApplicationTester $I)
+    public function filterTreeForFolder(ApplicationTester $I): void
     {
         $I->cantSeeElement($this->filterInputFieldClearButton);
 
@@ -61,7 +61,7 @@ class FileStorageTreeFilterCest
         $I->seeInField($this->filterInputField, 'styleguide');
     }
 
-    public function clearFilterReloadsTreeWithoutFilterApplied(ApplicationTester $I)
+    public function clearFilterReloadsTreeWithoutFilterApplied(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'styleguide');
         $this->waitForAjaxRequestToFinish($I);

@@ -72,7 +72,7 @@ class ClassNamingUtilityTest extends UnitTestCase
      * @param string $modelName
      * @test
      */
-    public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName)
+    public function translateModelNameToRepositoryName(string $expectedRepositoryName, string $modelName): void
     {
         $translatedRepositoryName = ClassNamingUtility::translateModelNameToRepositoryName($modelName);
         self::assertSame($expectedRepositoryName, $translatedRepositoryName);
@@ -84,7 +84,7 @@ class ClassNamingUtilityTest extends UnitTestCase
      * @param string $expectedModelName
      * @test
      */
-    public function translateRepositoryNameToModelName($repositoryName, $expectedModelName)
+    public function translateRepositoryNameToModelName(string $repositoryName, string $expectedModelName): void
     {
         $translatedModelName = ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
         self::assertSame($expectedModelName, $translatedModelName);
@@ -153,7 +153,7 @@ class ClassNamingUtilityTest extends UnitTestCase
      * @param array $expectedMatches
      * @test
      */
-    public function explodeObjectControllerName($controllerObjectName, $expectedMatches)
+    public function explodeObjectControllerName(string $controllerObjectName, array $expectedMatches): void
     {
         $actualMatches = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
         self::assertSame($expectedMatches, $actualMatches);

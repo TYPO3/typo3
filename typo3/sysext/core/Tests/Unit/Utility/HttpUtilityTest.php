@@ -31,7 +31,7 @@ class HttpUtilityTest extends UnitTestCase
      * @dataProvider isUrlBuiltCorrectlyDataProvider
      * @test
      */
-    public function isUrlBuiltCorrectly(array $urlParts, $expected)
+    public function isUrlBuiltCorrectly(array $urlParts, string $expected): void
     {
         $url = HttpUtility::buildUrl($urlParts);
         self::assertEquals($expected, $url);
@@ -40,7 +40,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function isUrlBuiltCorrectlyDataProvider()
+    public function isUrlBuiltCorrectlyDataProvider(): array
     {
         return [
             'rebuild url without scheme' => [
@@ -71,7 +71,7 @@ class HttpUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function queryStringDataProvider()
+    public function queryStringDataProvider(): array
     {
         $valueArray = ['one' => '√', 'two' => 2];
 
@@ -90,7 +90,7 @@ class HttpUtilityTest extends UnitTestCase
      * @param array $input
      * @param string $expected
      */
-    public function buildQueryStringBuildsValidParameterString($name, array $input, $expected)
+    public function buildQueryStringBuildsValidParameterString(string $name, array $input, string $expected): void
     {
         if ($name === '') {
             self::assertSame($expected, HttpUtility::buildQueryString($input));
@@ -102,7 +102,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildQueryStringCanSkipEmptyParameters()
+    public function buildQueryStringCanSkipEmptyParameters(): void
     {
         $input = ['one' => '√', ''];
         $expected = 'foo%5Bone%5D=%E2%88%9A';
@@ -112,7 +112,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildQueryStringCanUrlEncodeKeyNames()
+    public function buildQueryStringCanUrlEncodeKeyNames(): void
     {
         $input = ['one' => '√', ''];
         $expected = 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
@@ -122,7 +122,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildQueryStringCanUrlEncodeKeyNamesMultidimensional()
+    public function buildQueryStringCanUrlEncodeKeyNamesMultidimensional(): void
     {
         $input = ['one' => ['two' => ['three' => '√']], ''];
         $expected = 'foo%5Bone%5D%5Btwo%5D%5Bthree%5D=%E2%88%9A&foo%5B0%5D=';
@@ -132,7 +132,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildQueryStringSkipsLeadingCharacterOnEmptyParameters()
+    public function buildQueryStringSkipsLeadingCharacterOnEmptyParameters(): void
     {
         $input = [];
         $expected = '';
@@ -142,7 +142,7 @@ class HttpUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildQueryStringSkipsLeadingCharacterOnCleanedEmptyParameters()
+    public function buildQueryStringSkipsLeadingCharacterOnCleanedEmptyParameters(): void
     {
         $input = ['one' => ''];
         $expected = '';

@@ -28,7 +28,7 @@ class RedirectResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersReturnsLocationUrlSetByConstructorArgument()
+    public function getHeadersReturnsLocationUrlSetByConstructorArgument(): void
     {
         $subject = new RedirectResponse('theRedirectUrl');
         $expected = [
@@ -42,7 +42,7 @@ class RedirectResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderReturnsLocationUrlSetByConstructorArgument()
+    public function getHeaderReturnsLocationUrlSetByConstructorArgument(): void
     {
         $subject = new RedirectResponse('theRedirectUrl');
         $expected = [
@@ -54,7 +54,7 @@ class RedirectResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersReturnsHeaderSetByConstructorArgument()
+    public function getHeadersReturnsHeaderSetByConstructorArgument(): void
     {
         $input = [
             'camelCasedHeaderName' => 'aHeaderValue',
@@ -78,7 +78,7 @@ class RedirectResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderReturnsHeaderSetByConstructorArgument()
+    public function getHeaderReturnsHeaderSetByConstructorArgument(): void
     {
         $input = [
             'lowercasedheadername' => 'anotherHeaderValue',
@@ -93,7 +93,7 @@ class RedirectResponseTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderReturnsHeaderSetByConstructorArgumentLowerCased()
+    public function getHeaderReturnsHeaderSetByConstructorArgumentLowerCased(): void
     {
         $input = [
             'camelCasedHeaderName' => 'aHeaderValue',

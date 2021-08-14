@@ -34,7 +34,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -61,7 +61,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
     /**
      * type=input range and md5 field tests
      */
-    protected function simpleRangeAndMd5FieldsDataProvider()
+    protected function simpleRangeAndMd5FieldsDataProvider(): array
     {
         return [
             /**
@@ -115,7 +115,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param Example $testData
      */
-    public function simpleRangeAndMd5Fields(ApplicationTester $I, Example $testData)
+    public function simpleRangeAndMd5Fields(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }

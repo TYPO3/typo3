@@ -29,7 +29,7 @@ class GraphicalFunctionsTest extends UnitTestCase
      *
      * @return array
      */
-    public function getScaleForImageDataProvider()
+    public function getScaleForImageDataProvider(): array
     {
         return [
             'Get image scale for a width of 150px' => [
@@ -108,7 +108,7 @@ class GraphicalFunctionsTest extends UnitTestCase
      * @test
      * @dataProvider getScaleForImageDataProvider
      */
-    public function getScaleForImage($info, $width, $height, $options, $expected)
+    public function getScaleForImage($info, $width, $height, $options, $expected): void
     {
         $result = (new GraphicalFunctions())->getImageScale($info, $width, $height, $options);
         self::assertEquals($result, $expected);
@@ -117,7 +117,7 @@ class GraphicalFunctionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function imageMagickIdentifyReturnsFormattedValues()
+    public function imageMagickIdentifyReturnsFormattedValues(): void
     {
         $file = 'myImageFile.png';
         $expected = [
@@ -138,7 +138,7 @@ class GraphicalFunctionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function imageMagickIdentifyReturnsFormattedValuesWithOffset()
+    public function imageMagickIdentifyReturnsFormattedValuesWithOffset(): void
     {
         $file = 'myImageFile.png';
         $expected = [

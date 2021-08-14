@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -34,11 +35,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractUserAuthenticationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven()
+    public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven(): void
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 

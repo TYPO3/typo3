@@ -33,22 +33,20 @@ class ExportCest extends AbstractCest
      *
      * @var array
      */
-    protected $testFilesToDelete = [];
+    protected array $testFilesToDelete = [];
 
-    protected $inPageTree = '#typo3-pagetree-treeContainer .nodes';
-    protected $inModuleHeader = '.module-docheader';
-    protected $inModuleTabs = '#ImportExportController .nav-tabs';
-    protected $inModuleTabsBody = '#ImportExportController .tab-content';
-    protected $inModulePreview = '#ImportExportController > div:last-child';
-    protected $inTabConfiguration = '#export-configuration';
-    protected $inFlashMessages = '.typo3-messages';
+    protected string $inPageTree = '#typo3-pagetree-treeContainer .nodes';
+    protected string $inModuleHeader = '.module-docheader';
+    protected string $inModuleTabs = '#ImportExportController .nav-tabs';
+    protected string $inModuleTabsBody = '#ImportExportController .tab-content';
+    protected string $inModulePreview = '#ImportExportController > div:last-child';
+    protected string $inTabConfiguration = '#export-configuration';
+    protected string $inFlashMessages = '.typo3-messages';
 
     /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -57,10 +55,7 @@ class ExportCest extends AbstractCest
         $I->waitForElement($this->inPageTree . ' .node', 5);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _after(ApplicationTester $I)
+    public function _after(ApplicationTester $I): void
     {
         $I->amGoingTo('clean up created files');
 
@@ -72,8 +67,6 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I): void
@@ -95,8 +88,6 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function exportTableDisplaysTitleOfRootPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
@@ -128,8 +119,6 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
     public function exportRecordDisplaysTitleOfRootPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
@@ -209,11 +198,9 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
-    public function exportPageAndRecordsFromPageTree(ApplicationTester $I)
+    public function exportPageAndRecordsFromPageTree(ApplicationTester $I): void
     {
         $I->wantToTest('exporting a page with records.');
 
@@ -248,11 +235,9 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
-    public function exportTable(ApplicationTester $I)
+    public function exportTable(ApplicationTester $I): void
     {
         $I->wantToTest('exporting a table of records.');
 
@@ -295,11 +280,9 @@ class ExportCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     *
      * @throws \Exception
      */
-    public function exportRecord(ApplicationTester $I)
+    public function exportRecord(ApplicationTester $I): void
     {
         $I->wantToTest('exporting a single record.');
 

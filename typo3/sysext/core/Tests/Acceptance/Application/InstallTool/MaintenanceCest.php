@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 class MaintenanceCest extends AbstractCest
 {
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         parent::_before($I);
         $this->logIntoInstallTool($I);
@@ -30,10 +30,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function flushCacheWorks(ApplicationTester $I)
+    public function flushCacheWorks(ApplicationTester $I): void
     {
         $I->click('Flush cache');
         $I->waitForElementVisible('.alert-success');
@@ -41,10 +40,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function analyzeDatabaseStructureWorks(ApplicationTester $I)
+    public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
     {
         $I->click('Analyze database');
         $I->waitForElementVisible('.modal-dialog');
@@ -56,10 +54,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function removeTemporaryAssetsWorks(ApplicationTester $I)
+    public function removeTemporaryAssetsWorks(ApplicationTester $I): void
     {
         $I->click('Scan temporary files');
         $I->waitForElementVisible('.modal-dialog');
@@ -69,10 +66,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function dumpAutoloadWorks(ApplicationTester $I)
+    public function dumpAutoloadWorks(ApplicationTester $I): void
     {
         $I->click('Dump autoload');
         $I->waitForElementVisible('.alert-success');
@@ -80,10 +76,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function clearPersistentTablesWorks(ApplicationTester $I)
+    public function clearPersistentTablesWorks(ApplicationTester $I): void
     {
         $I->click('Scan tables');
         $I->waitForElementVisible('.modal-dialog');
@@ -93,10 +88,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function createAdminUserWorks(ApplicationTester $I)
+    public function createAdminUserWorks(ApplicationTester $I): void
     {
         $I->click('Create Administrator');
         $I->waitForElementVisible('.modal-dialog');
@@ -106,10 +100,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function resetBackendUserPreferencesWorks(ApplicationTester $I)
+    public function resetBackendUserPreferencesWorks(ApplicationTester $I): void
     {
         $I->click('Reset backend user preferences');
         $I->waitForElementVisible('.alert-success');
@@ -118,10 +111,9 @@ class MaintenanceCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function manageLanguagePacksWorks(ApplicationTester $I)
+    public function manageLanguagePacksWorks(ApplicationTester $I): void
     {
         $I->click('Manage languages');
         $I->waitForElementVisible('.modal-dialog');

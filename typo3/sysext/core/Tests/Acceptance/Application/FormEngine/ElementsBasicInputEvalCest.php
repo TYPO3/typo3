@@ -32,7 +32,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -54,7 +54,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
     /**
      * Test various type=input fields having eval
      */
-    protected function simpleEvalInputFieldsDataProvider()
+    protected function simpleEvalInputFieldsDataProvider(): array
     {
         return [
             [
@@ -172,7 +172,7 @@ class ElementsBasicInputEvalCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @param Example $testData
      */
-    public function simpleEvalInputFields(ApplicationTester $I, Example $testData)
+    public function simpleEvalInputFields(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
     }

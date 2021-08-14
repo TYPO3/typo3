@@ -24,6 +24,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConnectionMigratorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform|\Prophecy\Prophecy\ObjectProphecy
      */
@@ -46,10 +48,7 @@ class ConnectionMigratorTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var int
-     */
-    protected $maxIdentifierLength = -1;
+    protected int $maxIdentifierLength = -1;
 
     /**
      * Set up the test subject
@@ -75,7 +74,7 @@ class ConnectionMigratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
+    public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
@@ -90,7 +89,7 @@ class ConnectionMigratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
+    public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $table = $this->getTable();
         $tableDiff = new TableDiff($table->getName());

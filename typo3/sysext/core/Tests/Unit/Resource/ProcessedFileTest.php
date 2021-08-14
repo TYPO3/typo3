@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -35,22 +37,19 @@ class ProcessedFileTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Folder
+     * @var MockObject|Folder
      */
     protected $folderMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ResourceStorage
+     * @var MockObject|ResourceStorage
      */
     protected $storageMock;
 
-    /**
-     * @var array
-     */
-    protected $databaseRow = [];
+    protected array $databaseRow = [];
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -78,7 +77,7 @@ class ProcessedFileTest extends UnitTestCase
      * @param ResourceStorage $storageMock
      * @return File
      */
-    protected function getFileFixture($dbRow = null, $storageMock = null)
+    protected function getFileFixture($dbRow = null, $storageMock = null): File
     {
         return new File($dbRow ?: $this->databaseRow, $storageMock ?: $this->storageMock);
     }
@@ -88,7 +87,7 @@ class ProcessedFileTest extends UnitTestCase
      * @param File $originalFile
      * @return ProcessedFile
      */
-    protected function getProcessedFileFixture($dbRow = null, $originalFile = null)
+    protected function getProcessedFileFixture($dbRow = null, $originalFile = null): ProcessedFile
     {
         if ($originalFile === null) {
             $originalFile = $this->getFileFixture();
@@ -99,7 +98,7 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function propertiesOfProcessedFileAreSetFromDatabaseRow()
+    public function propertiesOfProcessedFileAreSetFromDatabaseRow(): void
     {
         $processedFileObject = $this->getProcessedFileFixture();
         self::assertSame($this->databaseRow, $processedFileObject->getProperties());
@@ -108,7 +107,7 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function deletingProcessedFileRemovesFile()
+    public function deletingProcessedFileRemovesFile(): void
     {
         $this->storageMock->expects(self::once())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;
@@ -120,7 +119,7 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function deletingProcessedFileThatUsesOriginalFileDoesNotRemoveFile()
+    public function deletingProcessedFileThatUsesOriginalFileDoesNotRemoveFile(): void
     {
         $this->storageMock->expects(self::never())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;

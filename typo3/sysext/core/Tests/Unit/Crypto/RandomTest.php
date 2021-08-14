@@ -28,7 +28,7 @@ class RandomTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateRandomBytesReturnsExpectedAmountOfBytes()
+    public function generateRandomBytesReturnsExpectedAmountOfBytes(): void
     {
         $subject = new Random();
         self::assertEquals(4, strlen($subject->generateRandomBytes(4)));
@@ -39,7 +39,7 @@ class RandomTest extends UnitTestCase
      *
      * @return array
      */
-    public function generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider()
+    public function generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider(): array
     {
         return [
             [1],
@@ -65,7 +65,7 @@ class RandomTest extends UnitTestCase
      * @dataProvider generateRandomHexStringReturnsExpectedAmountOfCharsDataProvider
      * @param int $numberOfChars Number of Chars to generate
      */
-    public function generateRandomHexStringReturnsExpectedAmountOfChars($numberOfChars)
+    public function generateRandomHexStringReturnsExpectedAmountOfChars($numberOfChars): void
     {
         $subject = new Random();
         self::assertEquals($numberOfChars, strlen($subject->generateRandomHexString($numberOfChars)));

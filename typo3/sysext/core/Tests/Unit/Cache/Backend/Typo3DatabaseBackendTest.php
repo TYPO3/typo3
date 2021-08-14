@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
@@ -32,13 +33,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3DatabaseBackendTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     /**
      * @test
      */
-    public function setCacheCalculatesCacheTableName()
+    public function setCacheCalculatesCacheTableName(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -52,7 +54,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheCalculatesTagsTableName()
+    public function setCacheCalculatesTagsTableName(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -66,7 +68,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionIfFrontendWasNotSet()
+    public function setThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -77,7 +79,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionIfDataIsNotAString()
+    public function setThrowsExceptionIfDataIsNotAString(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -94,7 +96,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionIfFrontendWasNotSet()
+    public function getThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -105,7 +107,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasThrowsExceptionIfFrontendWasNotSet()
+    public function hasThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -116,7 +118,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeThrowsExceptionIfFrontendWasNotSet()
+    public function removeThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -127,7 +129,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectGarbageThrowsExceptionIfFrontendWasNotSet()
+    public function collectGarbageThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -138,7 +140,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet()
+    public function findIdentifiersByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -149,7 +151,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushThrowsExceptionIfFrontendWasNotSet()
+    public function flushThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -160,7 +162,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushRemovesAllCacheEntries()
+    public function flushRemovesAllCacheEntries(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -182,7 +184,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flush();
     }
 
-    public function flushByTagCallsDeleteOnConnection()
+    public function flushByTagCallsDeleteOnConnection(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -204,7 +206,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject->flushByTag('Tag');
     }
 
-    public function flushByTagsCallsDeleteOnConnection()
+    public function flushByTagsCallsDeleteOnConnection(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('test');
@@ -229,7 +231,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagThrowsExceptionIfFrontendWasNotSet()
+    public function flushByTagThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);
@@ -239,7 +241,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushByTagsThrowsExceptionIfFrontendWasNotSet()
+    public function flushByTagsThrowsExceptionIfFrontendWasNotSet(): void
     {
         $subject = new Typo3DatabaseBackend('Testing');
         $this->expectException(Exception::class);

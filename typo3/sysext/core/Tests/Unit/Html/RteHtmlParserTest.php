@@ -31,12 +31,12 @@ class RteHtmlParserTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    protected $procOptions = ['overruleMode' => 'default'];
+    protected array $procOptions = ['overruleMode' => 'default'];
 
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
      */
-    public static function hrTagCorrectlyTransformedOnWayToDataBaseDataProvider()
+    public static function hrTagCorrectlyTransformedOnWayToDataBaseDataProvider(): array
     {
         return [
             'Single hr' => [
@@ -106,7 +106,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider hrTagCorrectlyTransformedOnWayToDataBaseDataProvider
      */
-    public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult)
+    public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult): void
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
@@ -118,7 +118,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
      */
-    public static function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider()
+    public static function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider(): array
     {
         return [
             'Single hr' => [
@@ -184,7 +184,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
      */
-    public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
+    public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
@@ -196,7 +196,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for paragraphCorrectlyTransformedOnWayToDatabase
      */
-    public static function paragraphCorrectlyTransformedOnWayToDatabaseProvider()
+    public static function paragraphCorrectlyTransformedOnWayToDatabaseProvider(): array
     {
         return [
             'Empty string' => [
@@ -374,7 +374,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseProvider
      */
-    public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
+    public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
@@ -384,7 +384,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for lineBreakCorrectlyTransformedOnWayToRte
      */
-    public static function lineBreakCorrectlyTransformedOnWayToRteProvider()
+    public static function lineBreakCorrectlyTransformedOnWayToRteProvider(): array
     {
         return [
             'Empty string' => [
@@ -474,7 +474,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider lineBreakCorrectlyTransformedOnWayToRTEProvider
      */
-    public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult)
+    public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
@@ -484,7 +484,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte
      */
-    public static function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider()
+    public static function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider(): array
     {
         return [
             'Empty string' => [
@@ -626,7 +626,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @test
      * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
      */
-    public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult)
+    public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
@@ -636,7 +636,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for anchorCorrectlyTransformedOnWayToDatabase
      */
-    public static function anchorCorrectlyTransformedOnWayToDatabaseProvider()
+    public static function anchorCorrectlyTransformedOnWayToDatabaseProvider(): array
     {
         return [
             [
@@ -664,7 +664,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @param $content
      * @param $expectedResult
      */
-    public function anchorCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
+    public function anchorCorrectlyTransformedOnWayToDatabase($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
@@ -674,7 +674,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * Data provider for anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE
      */
-    public static function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider()
+    public static function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider(): array
     {
         return [
             [
@@ -702,7 +702,7 @@ class RteHtmlParserTest extends UnitTestCase
      * @param $content
      * @param $expectedResult
      */
-    public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE($content, $expectedResult)
+    public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);

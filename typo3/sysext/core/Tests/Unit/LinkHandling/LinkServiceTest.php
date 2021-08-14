@@ -27,7 +27,7 @@ class LinkServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function resolveParametersForNonFilesDataProvider()
+    public function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'simple page - old style' => [
@@ -180,14 +180,9 @@ class LinkServiceTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $input
-     * @param array  $expected
-     * @param string $finalString
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString)
+    public function resolveReturnsSplitParameters(string $input, array $expected, string $finalString): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->resolve($input));
@@ -195,14 +190,9 @@ class LinkServiceTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $input
-     * @param array  $parameters
-     * @param string $expected
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->asString($parameters));

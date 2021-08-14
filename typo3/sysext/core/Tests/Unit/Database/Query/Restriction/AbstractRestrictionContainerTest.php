@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Restriction\EnforceableQueryRestrictionInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
@@ -24,11 +25,12 @@ use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionCo
 
 class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function enforceableRestrictionsAreKeptWhenRemoveAllIsCalled()
+    public function enforceableRestrictionsAreKeptWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->prophesize();
         $restriction->willImplement(QueryRestrictionInterface::class);
@@ -49,7 +51,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function enforceableRestrictionsWillBeRemovedWhenRemovedByType()
+    public function enforceableRestrictionsWillBeRemovedWhenRemovedByType(): void
     {
         $restriction = $this->prophesize();
         $restriction->willImplement(QueryRestrictionInterface::class);
@@ -69,7 +71,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function enforceableRestrictionsWillBeRemovedWhenRemovedByTypeAndRemovedAllIsAdditionallyCalled()
+    public function enforceableRestrictionsWillBeRemovedWhenRemovedByTypeAndRemovedAllIsAdditionallyCalled(): void
     {
         $restriction = $this->prophesize();
         $restriction->willImplement(QueryRestrictionInterface::class);
@@ -90,7 +92,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function notEnforceableRestrictionsAreRemovedWhenRemoveAllIsCalled()
+    public function notEnforceableRestrictionsAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->prophesize();
         $restriction->willImplement(QueryRestrictionInterface::class);
@@ -107,7 +109,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function enforceableRestrictionsThatDeclareThemselvesNonStickyAreRemovedWhenRemoveAllIsCalled()
+    public function enforceableRestrictionsThatDeclareThemselvesNonStickyAreRemovedWhenRemoveAllIsCalled(): void
     {
         $restriction = $this->prophesize();
         $restriction->willImplement(QueryRestrictionInterface::class);

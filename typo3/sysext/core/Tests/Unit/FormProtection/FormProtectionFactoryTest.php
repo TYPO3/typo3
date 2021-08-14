@@ -43,7 +43,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForNotExistingClassThrowsException()
+    public function getForNotExistingClassThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1285352962);
@@ -54,7 +54,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForClassThatIsNoFormProtectionSubclassThrowsException()
+    public function getForClassThatIsNoFormProtectionSubclassThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1285353026);
@@ -65,7 +65,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection()
+    public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection(): void
     {
         $userMock = $this->createMock(BackendUserAuthentication::class);
         $userMock->user = ['uid' => 4711];
@@ -82,7 +82,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance()
+    public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance(): void
     {
         $userMock = $this->createMock(BackendUserAuthentication::class);
         $userMock->user = ['uid' => 4711];
@@ -100,7 +100,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForTypeInstallToolReturnsInstallToolFormProtection()
+    public function getForTypeInstallToolReturnsInstallToolFormProtection(): void
     {
         self::assertInstanceOf(
             InstallToolFormProtection::class,
@@ -111,7 +111,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance()
+    public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance(): void
     {
         self::assertSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(InstallToolFormProtection::class));
     }
@@ -119,7 +119,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getForTypesInstallToolAndDisabledReturnsDifferentInstances()
+    public function getForTypesInstallToolAndDisabledReturnsDifferentInstances(): void
     {
         self::assertNotSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(DisabledFormProtection::class));
     }
@@ -130,7 +130,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSetsInstanceForType()
+    public function setSetsInstanceForType(): void
     {
         $instance = new FormProtectionTesting();
         FormProtectionFactory::set(BackendFormProtection::class, $instance);
@@ -140,7 +140,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setNotSetsInstanceForOtherType()
+    public function setNotSetsInstanceForOtherType(): void
     {
         $instance = new FormProtectionTesting();
         FormProtectionFactory::set(BackendFormProtection::class, $instance);

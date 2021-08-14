@@ -26,7 +26,7 @@ class TreeDataProviderWithConfigurationFixture
      * @param array $configuration
      * @throws \Exception
      */
-    public function __construct($configuration)
+    public function __construct(array $configuration)
     {
         if (!is_array($configuration)) {
             throw new \Exception('Failed asserting that the constructor arguments are an array', 1438875247);

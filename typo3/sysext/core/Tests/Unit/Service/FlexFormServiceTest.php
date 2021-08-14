@@ -36,7 +36,7 @@ class FlexFormServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFlexFormContentToArrayResolvesComplexArrayStructure()
+    public function convertFlexFormContentToArrayResolvesComplexArrayStructure(): void
     {
         $input = '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <T3FlexForms>

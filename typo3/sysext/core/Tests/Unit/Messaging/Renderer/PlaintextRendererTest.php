@@ -30,7 +30,7 @@ class PlaintextRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCreatesCorrectOutputForFlashMessage()
+    public function renderCreatesCorrectOutputForFlashMessage(): void
     {
         $rendererClass = GeneralUtility::makeInstance(PlaintextRenderer::class);
         $flashMessage = GeneralUtility::makeInstance(
@@ -45,7 +45,7 @@ class PlaintextRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderCreatesCorrectOutputForFlashMessageWithoutTitle()
+    public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
         $rendererClass = GeneralUtility::makeInstance(PlaintextRenderer::class);
         $flashMessage = GeneralUtility::makeInstance(

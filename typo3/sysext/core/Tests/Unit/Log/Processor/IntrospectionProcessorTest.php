@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor;
@@ -28,16 +29,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class IntrospectionProcessorTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor
+     * @var MockObject|IntrospectionProcessor
      */
     protected $processor;
 
     /**
      * A dummy result for the debug_backtrace function
-     *
-     * @var array
      */
-    protected $dummyBacktrace = [
+    protected array $dummyBacktrace = [
         [
             'file' => '/foo/filename1.php',
             'line' => 1,
@@ -77,7 +76,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function introspectionProcessorAddsLastBacktraceItemToLogRecord()
+    public function introspectionProcessorAddsLastBacktraceItemToLogRecord(): void
     {
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
@@ -92,7 +91,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function introspectionProcessorShiftsLogRelatedFunctionsFromBacktrace()
+    public function introspectionProcessorShiftsLogRelatedFunctionsFromBacktrace(): void
     {
         $dummyBacktrace = $this->dummyBacktrace;
         array_unshift(
@@ -124,7 +123,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * DataProvider for introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace
      */
-    public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider()
+    public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider(): array
     {
         return [
             ['0'],
@@ -137,7 +136,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      * @test
      * @dataProvider introspectionProcessorShiftsGivenNumberOfEntriesFromBacktraceDataProvider
      */
-    public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number)
+    public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number): void
     {
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel($number);
@@ -154,7 +153,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels()
+    public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels(): void
     {
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel(4);
@@ -171,7 +170,7 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog()
+    public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog(): void
     {
         $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
 

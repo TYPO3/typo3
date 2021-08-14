@@ -28,7 +28,7 @@ class FileOperationsCest extends AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog)
+    public function fileCrud(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $fileTextareaSelector = 'textarea[name="data[editfile][0][data]"]';
         $fileName = 'typo3-test.txt';
@@ -72,7 +72,7 @@ class FileOperationsCest extends AbstractFileCest
      * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function seeUploadFile(ApplicationTester $I)
+    public function seeUploadFile(ApplicationTester $I): void
     {
         $alertContainer = '#alert-container';
         $fileName = 'blue_mountains.jpg';

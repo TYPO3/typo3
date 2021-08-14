@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -30,7 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaPreparationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      * @dataProvider configureCategoryRelationsDataProvider
@@ -335,7 +337,7 @@ class TcaPreparationTest extends UnitTestCase
      * @test
      * @dataProvider prepareQuotingOfTableNamesAndColumnNamesDataProvider
      */
-    public function prepareQuotingOfTableNamesAndColumnNames(array $input, array $expected)
+    public function prepareQuotingOfTableNamesAndColumnNames(array $input, array $expected): void
     {
         $connection = $this->prophesize(Connection::class);
         $connection->quoteIdentifier('tt_content')->willReturn('`tt_content`');
@@ -352,7 +354,7 @@ class TcaPreparationTest extends UnitTestCase
         self::assertEquals($expected, $subject->prepare($input));
     }
 
-    public function prepareQuotingOfTableNamesAndColumnNamesDataProvider()
+    public function prepareQuotingOfTableNamesAndColumnNamesDataProvider(): array
     {
         return [
             [

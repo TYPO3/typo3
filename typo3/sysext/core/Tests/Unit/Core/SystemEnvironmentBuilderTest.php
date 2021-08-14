@@ -43,7 +43,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathThisScriptCliReadsLocalPartFromArgv()
+    public function getPathThisScriptCliReadsLocalPartFromArgv(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
         $GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
@@ -53,7 +53,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathThisScriptCliReadsLocalPartFromEnv()
+    public function getPathThisScriptCliReadsLocalPartFromEnv(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
         unset($GLOBALS['_SERVER']['argv']);
@@ -64,7 +64,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathThisScriptCliReadsLocalPartFromServer()
+    public function getPathThisScriptCliReadsLocalPartFromServer(): void
     {
         $fakedLocalPart = StringUtility::getUniqueId('Test');
         unset($GLOBALS['_SERVER']['argv']);
@@ -76,7 +76,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathThisScriptCliAddsCurrentWorkingDirectoryFromServerEnvironmentToLocalPathOnUnix()
+    public function getPathThisScriptCliAddsCurrentWorkingDirectoryFromServerEnvironmentToLocalPathOnUnix(): void
     {
         $GLOBALS['_SERVER']['argv'][0] = 'foo';
         $fakedAbsolutePart = '/' . StringUtility::getUniqueId('Absolute') . '/';
@@ -87,7 +87,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeGlobalVariablesSetsGlobalT3ServicesArray()
+    public function initializeGlobalVariablesSetsGlobalT3ServicesArray(): void
     {
         unset($GLOBALS['T3_SERVICES']);
         $this->subject->_call('initializeGlobalVariables');
@@ -99,7 +99,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      *
      * @return array
      */
-    public function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider()
+    public function initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider(): array
     {
         return [
             'EXEC_TIME' => ['EXEC_TIME'],
@@ -114,7 +114,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      * @dataProvider initializeGlobalTimeTrackingVariablesSetsGlobalVariablesDataProvider
      * @param string $variable Variable to check for in $GLOBALS
      */
-    public function initializeGlobalTimeTrackingVariablesSetsGlobalVariables($variable)
+    public function initializeGlobalTimeTrackingVariablesSetsGlobalVariables($variable): void
     {
         unset($GLOBALS[$variable]);
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
@@ -124,7 +124,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds()
+    public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds(): void
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         self::assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
@@ -133,7 +133,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds()
+    public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds(): void
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         self::assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);

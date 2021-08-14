@@ -35,7 +35,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
@@ -60,7 +60,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeTableWizardWithContent(ApplicationTester $I)
+    public function seeTableWizardWithContent(ApplicationTester $I): void
     {
         $I->amGoingTo('check for correct data in each column');
         foreach ($this->tableDataProvider() as $keyRow => $row) {
@@ -75,7 +75,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     /**
      * @param ApplicationTester $I
      */
-    public function addAndRemoveTableColumnsAndRows(ApplicationTester $I)
+    public function addAndRemoveTableColumnsAndRows(ApplicationTester $I): void
     {
         $formSection = $this->getTable($I);
         $formSection->getLocationOnScreenOnceScrolledIntoView();
@@ -92,7 +92,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     /**
      * @param ApplicationTester $I
      */
-    public function moveTableColumnsAndRows(ApplicationTester $I)
+    public function moveTableColumnsAndRows(ApplicationTester $I): void
     {
         $formSection = $this->getTable($I);
         $formSection->getLocationOnScreenOnceScrolledIntoView();
@@ -136,7 +136,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
      * @param ApplicationTester $I
      * @throws \Exception
      */
-    public function clickSmallFieldsButton(ApplicationTester $I)
+    public function clickSmallFieldsButton(ApplicationTester $I): void
     {
         $fieldCount = 6;
         $formSection = $this->getTable($I);
@@ -155,7 +155,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
     /**
      * @param ApplicationTester $I
      */
-    public function seeTableWizardInitialWithoutContent(ApplicationTester $I)
+    public function seeTableWizardInitialWithoutContent(ApplicationTester $I): void
     {
         $I->amGoingTo('check for expected initial columns');
         $formSection = $this->getTable($I);
@@ -206,7 +206,7 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         ];
     }
 
-    private function getTable($I): RemoteWebElement
+    private function getTable(ApplicationTester $I): RemoteWebElement
     {
         return $this->getFormSectionByFieldLabel($I, 'text_17');
     }

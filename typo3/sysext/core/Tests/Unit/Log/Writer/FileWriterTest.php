@@ -33,15 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileWriterTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $logFileDirectory = 'Log';
-
-    /**
-     * @var string
-     */
-    protected $logFileName = 'test.log';
+    protected string $logFileDirectory = 'Log';
+    protected string $logFileName = 'test.log';
 
     protected function setUpVfsStream(): void
     {
@@ -52,10 +45,10 @@ class FileWriterTest extends UnitTestCase
      * Creates a test logger
      *
      * @param string $name
-     * @internal param string $component Component key
      * @return Logger
+     *@internal param string $component Component key
      */
-    protected function createLogger($name = ''): Logger
+    protected function createLogger(string $name = ''): Logger
     {
         if (empty($name)) {
             $name = StringUtility::getUniqueId('test.core.log.');
@@ -72,7 +65,7 @@ class FileWriterTest extends UnitTestCase
      * @param string $prependName
      * @return FileWriter
      */
-    protected function createWriter($prependName = ''): FileWriter
+    protected function createWriter(string $prependName = ''): FileWriter
     {
         /** @var FileWriter $writer */
         $writer = GeneralUtility::makeInstance(FileWriter::class, [
@@ -148,7 +141,7 @@ class FileWriterTest extends UnitTestCase
      * @param string $expectedResult Needle
      * @dataProvider logsToFileDataProvider
      */
-    public function logsToFile(LogRecord $record, $expectedResult): void
+    public function logsToFile(LogRecord $record, string $expectedResult): void
     {
         $this->setUpVfsStream();
         $this->createWriter()->writeLog($record);
@@ -184,7 +177,7 @@ class FileWriterTest extends UnitTestCase
      * @param string $expectedResult Needle
      * @dataProvider logsToFileDataProvider
      */
-    public function differentWritersLogToDifferentFiles(LogRecord $record, $expectedResult): void
+    public function differentWritersLogToDifferentFiles(LogRecord $record, string $expectedResult): void
     {
         $this->setUpVfsStream();
         $firstWriter = $this->createWriter();
@@ -203,7 +196,7 @@ class FileWriterTest extends UnitTestCase
     /**
      * @test
      */
-    public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice()
+    public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice(): void
     {
         $this->setUpVfsStream();
 
@@ -224,7 +217,7 @@ class FileWriterTest extends UnitTestCase
     /**
      * @test
      */
-    public function fileHandleIsNotClosedIfSecondFileWriterIsStillUsingSameFile()
+    public function fileHandleIsNotClosedIfSecondFileWriterIsStillUsingSameFile(): void
     {
         $this->setUpVfsStream();
 

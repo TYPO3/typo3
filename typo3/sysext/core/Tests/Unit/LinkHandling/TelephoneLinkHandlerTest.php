@@ -75,13 +75,9 @@ class TelephoneLinkHandlerTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param array $input
-     * @param array  $expected
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected): void
+    public function resolveReturnsSplitParameters(array $input, array $expected): void
     {
         $subject = new TelephoneLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
@@ -89,14 +85,9 @@ class TelephoneLinkHandlerTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $input
-     * @param array  $parameters
-     * @param string $expected
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new TelephoneLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));

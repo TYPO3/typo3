@@ -25,6 +25,8 @@ use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -41,24 +43,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryBuilderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var Connection|\Prophecy\Prophecy\ObjectProphecy
+     * @var Connection|ObjectProphecy
      */
     protected $connection;
 
-    /**
-     * @var AbstractPlatform
-     */
-    protected $platform;
+    protected ?AbstractPlatform $platform;
+    protected ?QueryBuilder $subject;
 
     /**
-     * @var QueryBuilder
-     */
-    protected $subject;
-
-    /**
-     * @var \Doctrine\DBAL\Query\QueryBuilder|\Prophecy\Prophecy\ObjectProphecy
+     * @var \Doctrine\DBAL\Query\QueryBuilder|ObjectProphecy
      */
     protected $concreteQueryBuilder;
 
@@ -1290,7 +1286,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor()
+    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor(): void
     {
         $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
         $queryBuilder = new QueryBuilder(
@@ -1311,7 +1307,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration()
+    public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
         $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = [];
@@ -1330,7 +1326,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingRestrictionContainerWillNotAddAdditionalRestrictionsFromConfigurationIfNotDisabled()
+    public function settingRestrictionContainerWillNotAddAdditionalRestrictionsFromConfigurationIfNotDisabled(): void
     {
         $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
@@ -1349,7 +1345,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration()
+    public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
         $restrictionClass = get_class($this->prophesize(QueryRestrictionInterface::class)->reveal());
         $queryBuilder = new QueryBuilder(

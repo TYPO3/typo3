@@ -24,7 +24,7 @@ class UpgradeCest extends AbstractCest
 {
     public static string $alertContainerSelector = '#alert-container';
 
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         parent::_before($I);
         $this->logIntoInstallTool($I);
@@ -33,11 +33,9 @@ class UpgradeCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeUpgradeCore(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeUpgradeCore(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Update Core');
         $modalDialog->canSeeDialog();
@@ -48,11 +46,9 @@ class UpgradeCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeUpgradeWizard(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeUpgradeWizard(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Run Upgrade Wizard');
         $modalDialog->canSeeDialog();
@@ -67,11 +63,9 @@ class UpgradeCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeViewUpgradeDocumentation(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeViewUpgradeDocumentation(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $versionPanel = '#version-1 .t3js-changelog-list > div:first-child';
 
@@ -105,11 +99,7 @@ class UpgradeCest extends AbstractCest
         $I->click('.t3js-modal-close');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function seeCheckTca(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeCheckTca(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Check TCA');
         $modalDialog->canSeeDialog();
@@ -118,11 +108,7 @@ class UpgradeCest extends AbstractCest
         $I->click('.t3js-modal-close');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function seeCheckForBrokenExtensions(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeCheckForBrokenExtensions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Check Extension Compatibility');
         $modalDialog->canSeeDialog();
@@ -137,11 +123,7 @@ class UpgradeCest extends AbstractCest
         $I->click('.t3js-modal-close');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function seeCheckTcaMigrations(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeCheckTcaMigrations(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Check TCA Migrations');
         $modalDialog->canSeeDialog();
@@ -150,11 +132,7 @@ class UpgradeCest extends AbstractCest
         $I->click('.t3js-modal-close');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function seeScanExtensionFiles(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeScanExtensionFiles(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $buttonText = 'Rescan';
 

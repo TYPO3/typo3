@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 class AbstractDriverTest extends BaseTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+     * @var AbstractDriver
      */
     protected $subject;
 
@@ -36,9 +36,9 @@ class AbstractDriverTest extends BaseTestCase
         $this->subject = $this->createDriver();
     }
     /**
-     * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+     * @return AbstractDriver
      */
-    protected function createDriver()
+    protected function createDriver(): AbstractDriver
     {
         return $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
     }
@@ -46,7 +46,7 @@ class AbstractDriverTest extends BaseTestCase
     /**
      * @test
      */
-    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured()
+    public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured(): void
     {
         self::assertTrue($this->subject->isCaseSensitiveFileSystem());
     }

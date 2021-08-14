@@ -50,7 +50,7 @@ class InstallToolFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function tokenFromSessionDataIsAvailableForValidateToken()
+    public function tokenFromSessionDataIsAvailableForValidateToken(): void
     {
         $sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
         $formName = 'foo';
@@ -71,7 +71,7 @@ class InstallToolFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function persistSessionTokenWritesTokensToSession()
+    public function persistSessionTokenWritesTokensToSession(): void
     {
         $_SESSION['installToolFormToken'] = 'foo';
 

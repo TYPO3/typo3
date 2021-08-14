@@ -64,7 +64,7 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateTokenReadsTokenFromSessionData()
+    public function generateTokenReadsTokenFromSessionData(): void
     {
         $this->backendUserMock
             ->expects(self::once())
@@ -77,7 +77,7 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function tokenFromSessionDataIsAvailableForValidateToken()
+    public function tokenFromSessionDataIsAvailableForValidateToken(): void
     {
         $sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
         $formName = 'foo';
@@ -102,7 +102,7 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty()
+    public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1301827270);
@@ -113,7 +113,7 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function persistSessionTokenWritesTokenToSession()
+    public function persistSessionTokenWritesTokenToSession(): void
     {
         $this->backendUserMock
             ->expects(self::once())
@@ -124,7 +124,7 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function failingTokenValidationInvokesFailingTokenClosure()
+    public function failingTokenValidationInvokesFailingTokenClosure(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1442592030);

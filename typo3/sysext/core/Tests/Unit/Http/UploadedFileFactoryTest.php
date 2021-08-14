@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -28,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UploadedFileFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new UploadedFileFactory();
         self::assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
@@ -41,7 +43,7 @@ class UploadedFileFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createUploadedFile()
+    public function createUploadedFile(): void
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $factory = new UploadedFileFactory();
@@ -56,7 +58,7 @@ class UploadedFileFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createUploadedFileWithParams()
+    public function createUploadedFileWithParams(): void
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $factory = new UploadedFileFactory();
@@ -71,7 +73,7 @@ class UploadedFileFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createUploadedFileCreateSizeFromStreamSize()
+    public function createUploadedFileCreateSizeFromStreamSize(): void
     {
         $streamProphecy = $this->prophesize(StreamInterface::class);
         $streamProphecy->getSize()->willReturn(5);
@@ -85,7 +87,7 @@ class UploadedFileFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createUploadedFileThrowsExceptionWhenStreamSizeCanNotBeDetermined()
+    public function createUploadedFileThrowsExceptionWhenStreamSizeCanNotBeDetermined(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1566823423);
