@@ -915,6 +915,9 @@ class PageTreeNodeDragHandler implements DragDropHandler {
         dropZone.remove();
         this.dropZoneDelete = null;
       });
+    } else if (this.dropZoneDelete && this.dropZoneDelete.node().dataset.open === 'false') {
+      this.dropZoneDelete.remove();
+      this.dropZoneDelete = null;
     } else {
       this.dropZoneDelete = null;
     }
