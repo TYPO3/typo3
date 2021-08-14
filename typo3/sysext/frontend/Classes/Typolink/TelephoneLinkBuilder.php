@@ -25,8 +25,8 @@ class TelephoneLinkBuilder extends AbstractTypolinkBuilder
     /**
      * @inheritdoc
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        return [$linkDetails['typoLinkParameter'], $linkText];
+        return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($conf)->withLinkText($linkText);
     }
 }

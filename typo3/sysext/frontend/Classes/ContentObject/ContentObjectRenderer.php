@@ -79,6 +79,8 @@ use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\LinkResult;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 
@@ -384,6 +386,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @var array
      */
     public $lastTypoLinkLD = [];
+
+    public ?LinkResultInterface $lastTypoLinkResult = null;
 
     /**
      * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
@@ -4702,6 +4706,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $this->lastTypoLinkTarget = '';
 
         $resolvedLinkParameters = $this->resolveMixedLinkParameter($linkText, $linkParameter, $conf);
+
         // check if the link handler hook has resolved the link completely already
         if (!is_array($resolvedLinkParameters)) {
             return $resolvedLinkParameters;
@@ -4738,10 +4743,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $tsfe instanceof TypoScriptFrontendController ? $tsfe : null
             );
             try {
-                [$this->lastTypoLinkUrl, $linkText, $target] = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
-                $this->lastTypoLinkTarget = htmlspecialchars($target);
-                $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
-                $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
+                $linkedResult = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
+                // Legacy layer, can be removed in TYPO3 v12.0.
+                if (!($linkedResult instanceof LinkResultInterface)) {
+                    if (is_array($linkedResult)) {
+                        [$url, $linkText, $target] = $linkedResult;
+                    } else {
+                        $url = '';
+                    }
+                    $linkedResult = new LinkResult($linkDetails['type'], $url);
+                    $linkedResult = $linkedResult
+                        ->withTarget($target)
+                        ->withLinkConfiguration($conf)
+                        ->withLinkText($linkText);
+                }
             } catch (UnableToLinkException $e) {
                 $this->logger->debug('Unable to link "{text}"', [
                     'text' => $e->getLinkText(),
@@ -4752,20 +4767,27 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 return $e->getLinkText();
             }
         } elseif (isset($linkDetails['url'])) {
-            $this->lastTypoLinkUrl = $linkDetails['url'];
-            $this->lastTypoLinkTarget = htmlspecialchars($target);
-            $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
-            $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
+            $linkedResult = new LinkResult($linkDetails['type'], $linkDetails['url']);
+            $linkedResult = $linkedResult
+                ->withTarget($target)
+                ->withLinkConfiguration($conf)
+                ->withLinkText($linkText);
         } else {
             return $linkText;
         }
+
+        $this->lastTypoLinkResult = $linkedResult;
+        $this->lastTypoLinkTarget = $linkedResult->getTarget();
+        $this->lastTypoLinkUrl = $linkedResult->getUrl();
+        $this->lastTypoLinkLD['target'] = htmlspecialchars($linkedResult->getTarget());
+        $this->lastTypoLinkLD['totalUrl'] = $linkedResult->getUrl();
 
         // We need to backup the URL because ATagParams might call typolink again and change the last URL.
         $url = $this->lastTypoLinkUrl;
         $finalTagParts = [
             'aTagParams' => $this->getATagParams($conf),
             'url'        => $url,
-            'TYPE'       => $linkDetails['type']
+            'TYPE'       => $linkedResult->getType()
         ];
 
         // Ensure "href" is not in the list of aTagParams to avoid double tags, usually happens within buggy parseFunc settings
@@ -4791,7 +4813,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Check, if the target is coded as a JS open window link:
         $JSwindowParts = [];
         $JSwindowParams = '';
-        if ($target && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $target, $JSwindowParts)) {
+        if ($this->lastTypoLinkResult->getTarget() && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $this->lastTypoLinkResult->getTarget(), $JSwindowParts)) {
             // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
             $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower(($conf['JSwindow_params'] ?? '') . ',' . ($JSwindowParts[4] ?? '')), true);
             $JSwindow_paramsArr = [];
@@ -4805,6 +4827,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
                 }
             }
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('target', $target);
             // Add width/height:
             $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
             $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
@@ -4812,18 +4835,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
 
-        if (!$JSwindowParams && $linkDetails['type'] === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
+        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
             $tagAttributes['href'] = $finalTagParts['url'];
         } else {
             $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
         }
         if (!empty($title)) {
             $tagAttributes['title'] = htmlspecialchars($title);
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('title', $title);
         }
 
         // Target attribute
-        if (!empty($target)) {
-            $tagAttributes['target'] = htmlspecialchars($target);
+        if (!empty($this->lastTypoLinkResult->getTarget())) {
+            $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkResult->getTarget());
         }
         if ($JSwindowParams && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
             // Create TARGET-attribute only if the right doctype is used
@@ -4832,45 +4856,58 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         if ($JSwindowParams) {
             $onClick = 'openPic(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url']))
-                . ',' . GeneralUtility::quoteJSvalue($target) . ','
+                . ',' . GeneralUtility::quoteJSvalue($this->lastTypoLinkResult->getTarget()) . ','
                 . GeneralUtility::quoteJSvalue($JSwindowParams)
                 . ');return false;';
             $tagAttributes['onclick'] = htmlspecialchars($onClick);
             GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('onclick', $onClick);
         }
 
         if (!empty($resolvedLinkParameters['class'])) {
             $tagAttributes['class'] = htmlspecialchars($resolvedLinkParameters['class']);
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('class', $tagAttributes['class']);
         }
 
         // Prevent trouble with double and missing spaces between attributes and merge params before implode
         // (skip decoding HTML entities, since `$tagAttributes` are expected to be encoded already)
         $finalTagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));
-        $finalTagAttributes = $this->addSecurityRelValues($finalTagAttributes, $target, $tagAttributes['href']);
+        $finalTagAttributes = $this->addSecurityRelValues($finalTagAttributes, $this->lastTypoLinkResult->getTarget(), $tagAttributes['href']);
+        $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($finalTagAttributes);
         $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($finalTagAttributes) . '>';
 
+        $this->lastTypoLinkTarget = $this->lastTypoLinkResult->getTarget();
         // kept for backwards-compatibility in hooks
-        $finalTagParts['targetParams'] = !empty($tagAttributes['target']) ? ' target="' . $tagAttributes['target'] . '"' : '';
-        $this->lastTypoLinkTarget = $target;
+        $finalTagParts['targetParams'] = $this->lastTypoLinkResult->getTarget() ? 'target="' . htmlspecialchars($this->lastTypoLinkResult->getTarget()) . '"' : '';
 
         // Call user function:
         if ($conf['userFunc'] ?? false) {
             $finalTagParts['TAG'] = $finalAnchorTag;
             $finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'] ?? [], $finalTagParts);
+            // Ensure to keep the result object up-to-date even after the user func was called
+            $finalAnchorTagParts = GeneralUtility::get_tag_attributes($finalAnchorTag, true);
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($finalAnchorTagParts, true);
         }
 
         // Hook: Call post processing function for link rendering:
-        $_params = [
-            'conf' => &$conf,
-            'linktxt' => &$linkText,
-            'finalTag' => &$finalAnchorTag,
-            'finalTagParts' => &$finalTagParts,
-            'linkDetails' => &$linkDetails,
-            'tagAttributes' => &$finalTagAttributes
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
-            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-            GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
+            $_params = [
+                'conf' => &$conf,
+                'linktxt' => &$linkText,
+                'finalTag' => &$finalAnchorTag,
+                'finalTagParts' => &$finalTagParts,
+                'linkDetails' => &$linkDetails,
+                'tagAttributes' => &$finalTagAttributes
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
+                $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
+            }
+            // Ensure to keep the result object up-to-date even after the user func was called
+            $finalAnchorTagParts = GeneralUtility::get_tag_attributes($finalAnchorTag, true);
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult
+                ->withAttributes($finalAnchorTagParts)
+                ->withLinkText((string)$_params['linktxt']);
         }
 
         // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
@@ -4880,15 +4917,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     return $this->lastTypoLinkUrl;
                 case 'target':
                     return $this->lastTypoLinkTarget;
+                case 'result':
+                    return $this->lastTypoLinkResult;
             }
         }
 
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
 
         if ($conf['ATagBeforeWrap'] ?? false) {
-            return $finalAnchorTag . $this->wrap($linkText, $wrap) . '</a>';
+            return $finalAnchorTag . $this->wrap((string)$this->lastTypoLinkResult->getLinkText(), $wrap) . '</a>';
         }
-        return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
+        return $this->wrap($finalAnchorTag . $this->lastTypoLinkResult->getLinkText() . '</a>', $wrap);
     }
 
     protected function addSecurityRelValues(array $tagAttributes, ?string $target, string $url): array

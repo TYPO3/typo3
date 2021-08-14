@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
 /**
@@ -291,8 +292,14 @@ class RedirectService implements LoggerAwareInterface
             if ($redirectRecord['keep_query_parameters']) {
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
-            [$url] = $linkBuilder->build($linkDetails, '', '', $configuration);
-            return new Uri($url);
+            $result = $linkBuilder->build($linkDetails, '', '', $configuration);
+            if (is_array($result)) {
+                return new Uri($result[0] ?? '');
+            }
+            if ($result instanceof LinkResultInterface) {
+                return new Uri($result->getUrl());
+            }
+            return null;
         } catch (UnableToLinkException $e) {
             // This exception is also thrown by the DatabaseRecordTypolinkBuilder
             $url = $controller->cObj->lastTypoLinkUrl;

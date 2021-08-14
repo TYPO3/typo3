@@ -29,7 +29,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
     /**
      * @inheritdoc
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf)
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $pageTsConfig = $tsfe->getPagesTSconfig();
@@ -88,6 +88,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $this->contentObjectRenderer->lastTypoLinkLD = $localContentObjectRenderer->lastTypoLinkLD;
         $this->contentObjectRenderer->lastTypoLinkUrl = $localContentObjectRenderer->lastTypoLinkUrl;
         $this->contentObjectRenderer->lastTypoLinkTarget = $localContentObjectRenderer->lastTypoLinkTarget;
+        $this->contentObjectRenderer->lastTypoLinkResult = $localContentObjectRenderer->lastTypoLinkResult;
 
         // nasty workaround so typolink stops putting a link together, there is a link already built
         throw new UnableToLinkException(

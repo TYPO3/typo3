@@ -29,7 +29,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
     /**
      * @inheritdoc
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
         if ($linkDetails['file']) {
@@ -49,6 +49,6 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
         } else {
             throw new UnableToLinkException('Unknown link detected, so ' . $linkText . ' was not linked.', 1490990031, null, $linkText);
         }
-        return [$url, $linkText, $target];
+        return (new LinkResult((string)$linkDetails['type'], (string)$url))->withTarget($target)->withLinkConfiguration($conf)->withLinkText($linkText);
     }
 }

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -50,7 +51,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * @inheritdoc
      * @throws UnableToLinkException
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
@@ -275,7 +276,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
-        return [$url, $linkText, $target];
+        $result = new LinkResult(LinkService::TYPE_PAGE, $url);
+        return $result
+            ->withLinkConfiguration($conf)
+            ->withTarget($target)
+            ->withLinkText($linkText);
     }
 
     /**

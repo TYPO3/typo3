@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+
 /**
  * Builds a TypoLink to an email address
  */
@@ -25,9 +27,12 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder
     /**
      * @inheritdoc
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         [$url, $linkText] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
-        return [$url, $linkText, $target];
+        return (new LinkResult(LinkService::TYPE_EMAIL, $url))
+            ->withTarget($target)
+            ->withLinkConfiguration($conf)
+            ->withLinkText($linkText);
     }
 }
