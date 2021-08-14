@@ -92,8 +92,6 @@ class ImportCest
         $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
         $I->click($pageInPageTreeIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -112,8 +110,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -170,8 +166,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -212,8 +206,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -265,8 +257,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -321,8 +311,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -380,8 +368,6 @@ class ImportCest
 
         $I->click($page1Icon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);

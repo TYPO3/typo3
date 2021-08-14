@@ -84,8 +84,6 @@ class ExportCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
@@ -155,8 +153,6 @@ class ExportCest
         $I->waitForElementNotVisible('#nprogress');
         $I->click($recordIcon, $recordTable);
         $I->waitForElementVisible($contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
@@ -188,8 +184,6 @@ class ExportCest
 
         $I->click($pageIcon);
         $I->waitForElementVisible($contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForElementVisible($contextMenuExport, 5);
         $I->click($contextMenuExport);
@@ -291,8 +285,6 @@ class ExportCest
         $I->waitForElementNotVisible('#nprogress');
         $I->click($sysLanguageIcon, $sysLanguageTable);
         $I->waitForElementVisible($contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($contextMenuMore);
         $I->waitForText('Export');
         $I->waitForElementVisible($contextMenuExport, 5);

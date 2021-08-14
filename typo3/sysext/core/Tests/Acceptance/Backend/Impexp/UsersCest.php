@@ -67,8 +67,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->seeElement($this->contextMenuExport);
@@ -92,8 +90,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->seeElement($this->contextMenuExport);
@@ -115,8 +111,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -127,8 +121,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -152,8 +144,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -165,8 +155,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuImport, 5);
         $I->click($this->contextMenuImport);
@@ -195,8 +183,6 @@ class UsersCest extends AbstractCest
 
         $I->click($this->inPageTree . ' .node.identifier-0_0 .node-icon-container');
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);
@@ -209,8 +195,6 @@ class UsersCest extends AbstractCest
         $I->click('List');
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);
@@ -224,8 +208,6 @@ class UsersCest extends AbstractCest
 
         $I->click($selectedPageIcon);
         $I->waitForElementVisible($this->contextMenuMore, 5);
-        // Give JS 2 seconds for event registration, so click on 'more' works
-        $I->wait(1);
         $I->click($this->contextMenuMore);
         $I->waitForElementVisible($this->contextMenuExport, 5);
         $I->click($this->contextMenuImport);
