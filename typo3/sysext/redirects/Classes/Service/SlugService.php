@@ -119,7 +119,7 @@ class SlugService implements LoggerAwareInterface
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $this->createRedirect($currentSlug, $newSlug, (int)$currentPageRecord['sys_language_uid']);
+                $this->createRedirect($currentSlug, $newSlug, (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
             }
             if ($this->autoUpdateSlugs) {
                 $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
@@ -152,7 +152,7 @@ class SlugService implements LoggerAwareInterface
         $this->correlationIdSlugUpdate = $correlationId->withAspects(self::CORRELATION_ID_IDENTIFIER, 'slug');
     }
 
-    protected function createRedirect(string $originalSlug, string $newSlug, int $languageId): void
+    protected function createRedirect(string $originalSlug, string $newSlug, int $languageId, int $pid): void
     {
         $basePath = rtrim($this->site->getLanguageById($languageId)->getBase()->getPath(), '/');
 
@@ -160,7 +160,7 @@ class SlugService implements LoggerAwareInterface
         $date = $this->context->getAspect('date');
         $endtime = $date->getDateTime()->modify('+' . $this->redirectTTL . ' days');
         $record = [
-            'pid' => 0,
+            'pid' => $pid,
             'updatedon' => $date->get('timestamp'),
             'createdon' => $date->get('timestamp'),
             'createdby' => $this->context->getPropertyFromAspect('backend.user', 'id'),
@@ -179,6 +179,7 @@ class SlugService implements LoggerAwareInterface
             'lasthiton' => 0,
             'disable_hitcount' => 0,
         ];
+        //todo use dataHandler to create records
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_redirect');
         $connection->insert('sys_redirect', $record);
@@ -196,7 +197,7 @@ class SlugService implements LoggerAwareInterface
         foreach ($subPageRecords as $subPageRecord) {
             $newSlug = $this->updateSlug($subPageRecord, $oldSlugOfParentPage, $newSlugOfParentPage);
             if ($newSlug !== null && $this->autoCreateRedirects) {
-                $this->createRedirect($subPageRecord['slug'], $newSlug, $languageUid);
+                $this->createRedirect($subPageRecord['slug'], $newSlug, $languageUid, $pageId);
             }
         }
     }

@@ -11,7 +11,7 @@ return [
         'tstamp' => 'updatedon',
         'versioningWS' => false,
         'default_sortby' => 'source_host, source_path',
-        'rootLevel' => 1,
+        'rootLevel' => -1,
         'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
