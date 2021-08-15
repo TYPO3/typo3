@@ -149,8 +149,8 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      */
     public function directoryActionDeniesInvocation(string $path)
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1539625084);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1539625084);
 
         $path = $this->instancePath . '/' . $path;
         opendir('phar://' . $path);
@@ -286,8 +286,8 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      */
     public function urlStatDeniesInvocation(string $functionName, string $path)
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1539625084);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1539625084);
 
         $path = $this->instancePath . '/' . $path;
         $functionName('phar://' . $path);
@@ -370,8 +370,8 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForFileOpen()
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1539625084);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1539625084);
 
         $allowedPath = $this->instancePath . '/fileadmin/bundle.phar';
         fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
@@ -382,8 +382,8 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForFileGetContents()
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1539625084);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1539625084);
 
         $allowedPath = $this->instancePath . '/fileadmin/bundle.phar';
         file_get_contents('phar://' . $allowedPath . '/Resources/content.txt');
@@ -403,8 +403,8 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      */
     public function streamOpenDeniesInvocationForInclude(string $path)
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1539625084);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1539625084);
 
         $allowedPath = $this->instancePath . '/' . $path;
         include('phar://' . $allowedPath . '/Classes/Domain/Model/DemoModel.php');

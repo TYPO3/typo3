@@ -100,7 +100,7 @@ class MethodParameterTest extends UnitTestCase
         self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
         self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
 
-        static::expectException(NoSuchMethodParameterException::class);
+        $this->expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
     }
 

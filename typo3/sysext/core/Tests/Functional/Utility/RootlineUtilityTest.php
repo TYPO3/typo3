@@ -314,8 +314,8 @@ class RootlineUtilityTest extends FunctionalTestCase
      */
     public function rootlineFailsForDeletedParentPageInWorkspace()
     {
-        self::expectException(PageNotFoundException::class);
-        self::expectExceptionCode(1343464101);
+        $this->expectException(PageNotFoundException::class);
+        $this->expectExceptionCode(1343464101);
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(2));
         $subject = new RootlineUtility(1310, '', $context);
