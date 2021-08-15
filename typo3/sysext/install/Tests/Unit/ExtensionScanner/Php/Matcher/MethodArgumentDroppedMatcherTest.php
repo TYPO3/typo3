@@ -33,7 +33,7 @@ class MethodArgumentDroppedMatcherTest extends UnitTestCase
      */
     public function hitsFromFixtureAreFound()
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/MethodArgumentDroppedMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

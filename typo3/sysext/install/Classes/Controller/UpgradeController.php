@@ -779,7 +779,7 @@ class UpgradeController extends AbstractController
             );
         }
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         // Parse PHP file to AST and traverse tree calling visitors
         $statements = $parser->parse(file_get_contents($absoluteFilePath));
 
