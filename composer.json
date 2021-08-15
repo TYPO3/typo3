@@ -153,7 +153,6 @@
 		"TYPO3_.+"
 	],
 	"replace": {
-		"typo3/cms-about": "self.version",
 		"typo3/cms-adminpanel": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
