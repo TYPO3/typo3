@@ -49,34 +49,34 @@ class ImportCommand extends Command
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,
-                'The path and filename to import (.t3d or .xml)'
+                'The file path to import from (.t3d or .xml).'
             )
             ->addArgument(
-                'pageId',
+                'pid',
                 InputArgument::OPTIONAL,
-                'The page ID to start from.',
+                'The page to import to.',
                 0
             )
             ->addOption(
-                'updateRecords',
+                'update-records',
                 null,
                 InputOption::VALUE_NONE,
-                'If set, existing records with the same UID will be updated instead of inserted'
+                'If set, existing records with the same UID will be updated instead of inserted.'
             )
             ->addOption(
-                'ignorePid',
+                'ignore-pid',
                 null,
                 InputOption::VALUE_NONE,
-                'If set, page IDs of updated records are not corrected (only works in conjunction with the updateRecords option)'
+                'If set, page IDs of updated records are not corrected (only works in conjunction with --update-records).'
             )
             ->addOption(
-                'forceUid',
+                'force-uid',
                 null,
                 InputOption::VALUE_NONE,
                 'If set, UIDs from file will be forced.'
             )
             ->addOption(
-                'importMode',
+                'import-mode',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 sprintf(
@@ -93,11 +93,43 @@ class ImportCommand extends Command
                 )
             )
             ->addOption(
+                'enable-log',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, all database actions are logged.'
+            )
+            // @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
+            ->addOption(
+                'updateRecords',
+                null,
+                InputOption::VALUE_NONE,
+                'Deprecated. Use --update-records instead.'
+            )
+            ->addOption(
+                'ignorePid',
+                null,
+                InputOption::VALUE_NONE,
+                'Deprecated. Use --ignore-pid instead.'
+            )
+            ->addOption(
+                'forceUid',
+                null,
+                InputOption::VALUE_NONE,
+                'Deprecated. Use --force-uid instead.'
+            )
+            ->addOption(
+                'importMode',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Deprecated. Use --import-mode instead.'
+            )
+            ->addOption(
                 'enableLog',
                 null,
                 InputOption::VALUE_NONE,
-                'If set, all database actions are logged'
-            );
+                'Deprecated. Use --enable-log instead.'
+            )
+        ;
     }
 
     /**
@@ -109,32 +141,78 @@ class ImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // @deprecated since v11, will be removed in v12. lowerCameCased options. Also look for other fallbacks in the class.
+        $deprecatedOptions = [
+            '--updateRecords' => '--update-records',
+            '--ignorePid' => '--ignore-pid',
+            '--forceUid' => '--force-uid',
+            '--importMode' => '--import-mode',
+            '--enableLog' => '--enable-log',
+        ];
+        foreach ($deprecatedOptions as $deprecatedName => $actualName) {
+            if ($input->hasParameterOption($deprecatedName, true)) {
+                $this->triggerCommandOptionDeprecation($deprecatedName, $actualName);
+            }
+        }
+
         // Ensure the _cli_ user is authenticated
         Bootstrap::initializeBackendAuthentication();
 
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->import->setPid((int)$input->getArgument('pageId'));
-            $this->import->setUpdate((bool)$input->getOption('updateRecords'));
-            $this->import->setGlobalIgnorePid((bool)$input->getOption('ignorePid'));
-            $this->import->setForceAllUids((bool)$input->getOption('forceUid'));
-            $this->import->setImportMode($this->parseAssociativeArray($input, 'importMode', '='));
-            $this->import->setEnableLogging((bool)$input->getOption('enableLog'));
+            $this->import->setPid((int)$input->getArgument('pid'));
+            $this->import->setUpdate(
+                $input->getOption('updateRecords') ||
+                $input->getOption('update-records')
+            );
+            $this->import->setGlobalIgnorePid(
+                $input->getOption('ignorePid') ||
+                $input->getOption('ignore-pid')
+            );
+            $this->import->setForceAllUids(
+                $input->getOption('forceUid') ||
+                $input->getOption('force-uid')
+            );
+            $this->import->setEnableLogging(
+                $input->getOption('enableLog') ||
+                $input->getOption('enable-log')
+            );
+            $this->import->setImportMode(
+                array_merge(
+                    $this->parseAssociativeArray($input, 'importMode', '='),
+                    $this->parseAssociativeArray($input, 'import-mode', '='),
+                )
+            );
             $this->import->loadFile((string)$input->getArgument('file'), true);
             $this->import->checkImportPrerequisites();
             $this->import->importData();
-            $io->success('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pageId') . ' succeeded.');
+            $io->success('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' succeeded.');
             return 0;
         } catch (\Exception $e) {
             // Since impexp triggers core and DataHandler with potential hooks, and exception could come from "everywhere".
-            $io->error('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pageId') . ' failed.');
+            $io->error('Importing ' . $input->getArgument('file') . ' to page ' . $input->getArgument('pid') . ' failed.');
             if ($io->isVerbose()) {
                 $io->writeln($e->getMessage());
                 $io->writeln($this->import->getErrorLog());
             }
             return 1;
         }
+    }
+
+    /**
+     * @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
+     */
+    protected function triggerCommandOptionDeprecation(string $deprecatedName, string $actualName): void
+    {
+        trigger_error(
+            sprintf(
+                'Command option "impexp:import %s" is deprecated and will be removed in v12. Use "%s" instead.',
+                $deprecatedName,
+                $actualName
+            ),
+            E_USER_DEPRECATED
+        );
     }
 
     /**

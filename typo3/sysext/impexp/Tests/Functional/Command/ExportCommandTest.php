@@ -72,15 +72,21 @@ class ExportCommandTest extends AbstractImportExportTestCase
             '--table' => ['tt_content'],
             '--record' => ['sys_category:6'],
             '--list' => ['sys_category:123'],
-            '--includeRelated' => ['be_users'],
+            '--include-related' => ['be_users'],
+            // @deprecated since v11, will be removed in v12. Drop the lowerCamelCase options.
+            '--includeRelated' => ['be_groups'],
+            '--include-static' => ['sys_category'],
             '--includeStatic' => ['sys_language'],
             '--exclude' => ['be_users:3'],
+            '--exclude-disabled-records' => false,
             '--excludeDisabledRecords' => true,
+            '--exclude-html-css' => false,
             '--excludeHtmlCss' => true,
             '--title' => 'Export Command',
             '--description' => 'The export which considers all arguments passed on the command line.',
             '--notes' => 'This export is not for production use.',
             '--dependency' => ['bootstrap_package'],
+            '--save-files-outside-export-file' => false,
             '--saveFilesOutsideExportFile' => true
         ];
 
@@ -90,23 +96,23 @@ class ExportCommandTest extends AbstractImportExportTestCase
             'setIncludeExtFileResources', 'setTitle', 'setDescription', 'setNotes', 'setExtensionDependencies',
             'setSaveFilesOutsideExportFile'
         ]);
-        $exportMock->expects(self::once())->method('setExportFileName')->with(self::equalTo($input['filename']));
-        $exportMock->expects(self::once())->method('setExportFileType')->with(self::equalTo($input['--type']));
-        $exportMock->expects(self::once())->method('setPid')->with(self::equalTo($input['--pid']));
-        $exportMock->expects(self::once())->method('setLevels')->with(self::equalTo($input['--levels']));
-        $exportMock->expects(self::once())->method('setTables')->with(self::equalTo($input['--table']));
-        $exportMock->expects(self::once())->method('setRecord')->with(self::equalTo($input['--record']));
-        $exportMock->expects(self::once())->method('setList')->with(self::equalTo($input['--list']));
-        $exportMock->expects(self::once())->method('setRelOnlyTables')->with(self::equalTo($input['--includeRelated']));
-        $exportMock->expects(self::once())->method('setRelStaticTables')->with(self::equalTo($input['--includeStatic']));
-        $exportMock->expects(self::once())->method('setExcludeMap')->with(self::equalTo($input['--exclude']));
-        $exportMock->expects(self::once())->method('setExcludeDisabledRecords')->with(self::equalTo($input['--excludeDisabledRecords']));
-        $exportMock->expects(self::once())->method('setIncludeExtFileResources')->with(self::equalTo(!$input['--excludeHtmlCss']));
-        $exportMock->expects(self::once())->method('setTitle')->with(self::equalTo($input['--title']));
-        $exportMock->expects(self::once())->method('setDescription')->with(self::equalTo($input['--description']));
-        $exportMock->expects(self::once())->method('setNotes')->with(self::equalTo($input['--notes']));
-        $exportMock->expects(self::once())->method('setExtensionDependencies')->with(self::equalTo($input['--dependency']));
-        $exportMock->expects(self::once())->method('setSaveFilesOutsideExportFile')->with(self::equalTo($input['--saveFilesOutsideExportFile']));
+        $exportMock->expects(self::once())->method('setExportFileName')->with(self::equalTo('empty_export'));
+        $exportMock->expects(self::once())->method('setExportFileType')->with(self::equalTo(Export::FILETYPE_T3D));
+        $exportMock->expects(self::once())->method('setPid')->with(self::equalTo(123));
+        $exportMock->expects(self::once())->method('setLevels')->with(self::equalTo(Export::LEVELS_RECORDS_ON_THIS_PAGE));
+        $exportMock->expects(self::once())->method('setTables')->with(self::equalTo(['tt_content']));
+        $exportMock->expects(self::once())->method('setRecord')->with(self::equalTo(['sys_category:6']));
+        $exportMock->expects(self::once())->method('setList')->with(self::equalTo(['sys_category:123']));
+        $exportMock->expects(self::once())->method('setRelOnlyTables')->with(self::equalTo(['be_groups', 'be_users']));
+        $exportMock->expects(self::once())->method('setRelStaticTables')->with(self::equalTo(['sys_language', 'sys_category']));
+        $exportMock->expects(self::once())->method('setExcludeMap')->with(self::equalTo(['be_users:3']));
+        $exportMock->expects(self::once())->method('setExcludeDisabledRecords')->with(self::equalTo(true));
+        $exportMock->expects(self::once())->method('setIncludeExtFileResources')->with(self::equalTo(false));
+        $exportMock->expects(self::once())->method('setTitle')->with(self::equalTo('Export Command'));
+        $exportMock->expects(self::once())->method('setDescription')->with(self::equalTo('The export which considers all arguments passed on the command line.'));
+        $exportMock->expects(self::once())->method('setNotes')->with(self::equalTo('This export is not for production use.'));
+        $exportMock->expects(self::once())->method('setExtensionDependencies')->with(self::equalTo(['bootstrap_package']));
+        $exportMock->expects(self::once())->method('setSaveFilesOutsideExportFile')->with(self::equalTo(true));
 
         $tester = new CommandTester(new ExportCommand($exportMock));
         $tester->execute($input);
