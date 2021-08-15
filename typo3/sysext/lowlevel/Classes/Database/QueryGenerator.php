@@ -373,13 +373,13 @@ class QueryGenerator
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
                     }
                     if (!($userTsConfig['mod.']['dbint.']['disableShowSQLQuery'] ?? false)) {
-                        $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
+                        $output .= '<h2>SQL query</h2><div><code>' . htmlspecialchars($fullQueryString) . '</code></div>';
                     }
                     $cPR = $this->getQueryResultCode($mQ, $dataRows, $this->table);
                     $output .= '<h2>' . ($cPR['header'] ?? '') . '</h2><div>' . $cPR['content'] . '</div>';
                 } catch (DBALException $e) {
                     if (!$userTsConfig['mod.']['dbint.']['disableShowSQLQuery']) {
-                        $output .= '<h2>SQL query</h2><div><pre>' . htmlspecialchars($fullQueryString) . '</pre></div>';
+                        $output .= '<h2>SQL query</h2><div><code>' . htmlspecialchars($fullQueryString) . '</code></div>';
                     }
                     $out = '<p><strong>Error: <span class="text-danger">'
                         . htmlspecialchars($e->getMessage())
@@ -1786,7 +1786,7 @@ class QueryGenerator
                     $lineHTML[] = '';
                     break;
                 case 'date':
-                    $lineHTML[] = '<div class="form-inline">';
+                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between
@@ -1798,7 +1798,7 @@ class QueryGenerator
                     $lineHTML[] = '</div>';
                     break;
                 case 'time':
-                    $lineHTML[] = '<div class="form-inline">';
+                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
                         // between:
@@ -1812,8 +1812,9 @@ class QueryGenerator
                 case 'multiple':
                 case 'binary':
                 case 'relation':
-                    $lineHTML[] = '<div class="form-inline">';
+                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
+                    $lineHTML[] = '<div class="col mb-sm-2">';
                     if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
                         $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
                     } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
@@ -1834,16 +1835,18 @@ class QueryGenerator
                         $lineHTML[] = '</select>';
                     }
                     $lineHTML[] = '</div>';
+                    $lineHTML[] = '</div>';
                     break;
                 case 'boolean':
-                    $lineHTML[] = '<div class="form-inline">';
+                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     $lineHTML[] = '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]">';
                     $lineHTML[] = '</div>';
                     break;
                 default:
-                    $lineHTML[] = '<div class="form-inline">';
+                    $lineHTML[] = '<div class="row row-cols-auto mb-2 mb-sm-0">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
+                    $lineHTML[] = '<div class="col mb-sm-2">';
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
                         $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
@@ -1852,9 +1855,11 @@ class QueryGenerator
                         $lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
                     }
                     $lineHTML[] = '</div>';
+                    $lineHTML[] = '</div>';
             }
             if ($fieldType !== 'ignore') {
-                $lineHTML[] = '<div class="btn-group" style="margin-top: .5em;">';
+                $lineHTML[] = '<div class="row row-cols-auto mb-2">';
+                $lineHTML[] = '<div class="btn-group">';
                 $lineHTML[] = $this->updateIcon();
                 if ($loopCount) {
                     $lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '"><i class="fa fa-trash fa-fw"></i></button>';
@@ -1869,6 +1874,7 @@ class QueryGenerator
                 if ($fieldType === 'newlevel') {
                     $lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-left fa-fw"></i></button>';
                 }
+                $lineHTML[] = '</div>';
                 $lineHTML[] = '</div>';
                 $codeArr[$arrCount]['html'] = implode(LF, $lineHTML);
                 $codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c === 0);
@@ -1892,12 +1898,16 @@ class QueryGenerator
     {
         $fieldPrefix = $this->name . $subscript;
         $lineHTML = [];
-        $lineHTML[] = $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
-        $lineHTML[] = '	<div class="input-group">';
-        $lineHTML[] = $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-        $lineHTML[] = '	<div class="input-group-addon">';
-        $lineHTML[] = '		<input type="checkbox" class="checkbox t3js-submit-click"' . ($conf['negate'] ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
-        $lineHTML[] = '	</div>';
+        $lineHTML[] = '<div class="col mb-sm-2">';
+        $lineHTML[] =     $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
+        $lineHTML[] = '</div>';
+        $lineHTML[] = '<div class="col mb-sm-2">';
+        $lineHTML[] = '	 <div class="input-group">';
+        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+        $lineHTML[] = '	   <span class="input-group-addon">';
+        $lineHTML[] = '		 <input type="checkbox" class="checkbox t3js-submit-click"' . ($conf['negate'] ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '	   </span>';
+        $lineHTML[] = '  </div>';
         $lineHTML[] = '	</div>';
         return implode(LF, $lineHTML);
     }
@@ -2131,22 +2141,26 @@ class QueryGenerator
     protected function printCodeArray($codeArr, $recursionLevel = 0)
     {
         $out = [];
-        foreach ($codeArr as $k => $v) {
+        foreach (array_values($codeArr) as $queryComponent) {
             $out[] = '<div class="card">';
-            $out[] = '<div class="card-body">';
-            $out[] = $v['html'];
+            $out[] =     '<div class="card-body pb-2">';
+            $out[] =         $queryComponent['html'];
 
             if ($this->enableQueryParts) {
-                $out[] = '<pre>';
-                $out[] = htmlspecialchars($v['query']);
-                $out[] = '</pre>';
-            }
-            if (is_array($v['sub'])) {
-                $out[] = '<div>';
-                $out[] = $this->printCodeArray($v['sub'], $recursionLevel + 1);
+                $out[] = '<div class="row row-cols-auto mb-2">';
+                $out[] =     '<div class="col">';
+                $out[] =         '<code class="m-0">';
+                $out[] =             htmlspecialchars($queryComponent['query']);
+                $out[] =         '</code>';
+                $out[] =     '</div>';
                 $out[] = '</div>';
             }
-            $out[] = '</div>';
+            if (is_array($queryComponent['sub'] ?? null)) {
+                $out[] = '<div class="mb-2">';
+                $out[] =     $this->printCodeArray($queryComponent['sub'], $recursionLevel + 1);
+                $out[] = '</div>';
+            }
+            $out[] =     '</div>';
             $out[] = '</div>';
         }
         return implode(LF, $out);
@@ -2165,11 +2179,13 @@ class QueryGenerator
     {
         $out = [];
         if ($draw) {
-            $out[] = '<div class="form-inline">';
-            $out[] = '<select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
-            $out[] = '	<option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
-            $out[] = '	<option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
-            $out[] = '</select>';
+            $out[] = '<div class="row row-cols-auto mb-2">';
+            $out[] = '	<div class="col">';
+            $out[] = '    <select class="form-select' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
+            $out[] = '	    <option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
+            $out[] = '	    <option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
+            $out[] = '    </select>';
+            $out[] = '	</div>';
             $out[] = '</div>';
         } else {
             $out[] = '<input type="hidden" value="' . htmlspecialchars($op) . '" name="' . htmlspecialchars($name) . '[operator]">';
@@ -2255,7 +2271,7 @@ class QueryGenerator
     protected function mkFieldToInputSelect($name, $fieldName)
     {
         $out = [];
-        $out[] = '<div class="input-group" style="margin-bottom: .5em;">';
+        $out[] = '<div class="input-group mb-2">';
         $out[] = '	<span class="input-group-btn">';
         $out[] = $this->updateIcon();
         $out[] = ' 	</span>';
@@ -2531,8 +2547,12 @@ class QueryGenerator
         // Make output
         if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
             $out[] = '<div class="form-group">';
-            $out[] = '	<label for="SET[queryTable]">Select a table:</label>';
-            $out[] =    $this->mkTableSelect('SET[queryTable]', $this->table);
+            $out[] =     '<label for="SET[queryTable]">Select a table:</label>';
+            $out[] =     '<div class="row row-cols-auto">';
+            $out[] =         '<div class="col">';
+            $out[] =             $this->mkTableSelect('SET[queryTable]', $this->table);
+            $out[] =         '</div>';
+            $out[] =     '</div>';
             $out[] = '</div>';
         }
         if ($this->table) {
@@ -2582,28 +2602,46 @@ class QueryGenerator
                 $out[] = '</div>';
             }
             if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
-                $out[] = '<div class="form-group form-inline">';
-                $out[] = '	<label for="SET[queryGroup]">Group By:</label>';
-                $out[] =     $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
+                $out[] = '<div class="form-group">';
+                $out[] =    '<label for="SET[queryGroup]">Group By:</label>';
+                $out[] =     '<div class="row row-cols-auto">';
+                $out[] =         '<div class="col">';
+                $out[] =             $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
+                $out[] =         '</div>';
+                $out[] =     '</div>';
                 $out[] = '</div>';
             }
             if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
-                $orderBy[] = $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
-                $orderBy[] = '<div class="form-check">';
-                $orderBy[] =    BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', '', '', 'id="checkQueryOrderDesc"');
-                $orderBy[] = '	<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
+                $orderBy[] = '<div class="row row-cols-auto align-items-center">';
+                $orderBy[] =     '<div class="col">';
+                $orderBy[] =         $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '');
+                $orderBy[] =     '</div>';
+                $orderBy[] =     '<div class="col mt-2">';
+                $orderBy[] =         '<div class="form-check">';
+                $orderBy[] =              BackendUtility::getFuncCheck(0, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'] ?? '', '', '', 'id="checkQueryOrderDesc"');
+                $orderBy[] =              '<label class="form-check-label" for="checkQueryOrderDesc">Descending</label>';
+                $orderBy[] =         '</div>';
+                $orderBy[] =     '</div>';
                 $orderBy[] = '</div>';
 
                 if ($orderByArr[0]) {
-                    $orderBy[] = $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '');
-                    $orderBy[] = '<div class="form-check">';
-                    $orderBy[] =    BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . ' Descending';
-                    $orderBy[] = '	<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
+                    $orderBy[] = '<div class="row row-cols-auto align-items-center mt-2">';
+                    $orderBy[] =     '<div class="col">';
+                    $orderBy[] =         '<div class="input-group">';
+                    $orderBy[] =             $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '');
+                    $orderBy[] =         '</div>';
+                    $orderBy[] =     '</div>';
+                    $orderBy[] =     '<div class="col mt-2">';
+                    $orderBy[] =         '<div class="form-check">';
+                    $orderBy[] =             BackendUtility::getFuncCheck(0, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"');
+                    $orderBy[] =             '<label class="form-check-label" for="checkQueryOrder2Desc">Descending</label>';
+                    $orderBy[] =         '</div>';
+                    $orderBy[] =     '</div>';
                     $orderBy[] = '</div>';
                 }
-                $out[] = '<div class="form-group form-inline">';
+                $out[] = '<div class="form-group">';
                 $out[] = '	<label>Order By:</label>';
                 $out[] =     implode(LF, $orderBy);
                 $out[] = '</div>';
@@ -2638,18 +2676,24 @@ class QueryGenerator
 
                 $out[] = '<div class="form-group">';
                 $out[] = '	<label>Limit:</label>';
-                $out[] = '	<div class="form-inline">';
+                $out[] = '	<div class="row row-cols-auto">';
+                $out[] = '   <div class="col">';
                 $out[] =        implode(LF, $limit);
+                $out[] = '   </div>';
+                $out[] = '   <div class="col">';
                 $out[] = '		<div class="btn-group t3js-limit-submit">';
                 $out[] =            $prevButton;
                 $out[] =            $nextButton;
                 $out[] = '		</div>';
+                $out[] = '   </div>';
+                $out[] = '   <div class="col">';
                 $out[] = '		<div class="btn-group t3js-limit-submit">';
                 $out[] = '			<input type="button" class="btn btn-default" data-value="10" value="10">';
                 $out[] = '			<input type="button" class="btn btn-default" data-value="20" value="20">';
                 $out[] = '			<input type="button" class="btn btn-default" data-value="50" value="50">';
                 $out[] = '			<input type="button" class="btn btn-default" data-value="100" value="100">';
                 $out[] = '		</div>';
+                $out[] = '   </div>';
                 $out[] = '	</div>';
                 $out[] = '</div>';
             }
@@ -2745,14 +2789,16 @@ class QueryGenerator
         $value = strtotime($timestamp) ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)strtotime($timestamp)) : '';
         $id = StringUtility::getUniqueId('dt_');
         $html = [];
-        $html[] = '<div class="input-group" id="' . $id . '-wrapper">';
-        $html[] = '		<input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
-        $html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
-        $html[] = '		<span class="input-group-btn">';
-        $html[] = '			<label class="btn btn-default" for="' . $id . '">';
-        $html[] = '				<span class="fa fa-calendar"></span>';
-        $html[] = '			</label>';
-        $html[] = ' 	</span>';
+        $html[] = '<div class="col mb-sm-2">';
+        $html[] = '  <div class="input-group" id="' . $id . '-wrapper">';
+        $html[] = '	   <input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" type="text" id="' . $id . '">';
+        $html[] = '	   <input name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($timestamp) . '" type="hidden">';
+        $html[] = '	   <span class="input-group-btn">';
+        $html[] = '	     <label class="btn btn-default" for="' . $id . '">';
+        $html[] = '		   <span class="fa fa-calendar"></span>';
+        $html[] = '		 </label>';
+        $html[] = '    </span>';
+        $html[] = '  </div>';
         $html[] = '</div>';
         return implode(LF, $html);
     }
