@@ -63,7 +63,7 @@
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^2.0",
 		"typo3/cms-composer-installers": "^2.0 || ^3.0",
-		"typo3/html-sanitizer": "^2.0.8",
+		"typo3/html-sanitizer": "^2.0.9",
 		"typo3/phar-stream-wrapper": "^3.1.6",
 		"typo3fluid/fluid": "^2.6.10"
 	},
