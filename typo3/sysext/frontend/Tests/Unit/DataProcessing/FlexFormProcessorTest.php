@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -29,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FlexFormProcessorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var ContentObjectRenderer
+     * @var ContentObjectRenderer|ObjectProphecy
      */
-    protected $contentObjectRenderer;
+    protected ObjectProphecy $contentObjectRenderer;
 
     protected function setUp(): void
     {

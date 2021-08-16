@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -27,9 +28,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
     /**
-     * @var TypoScriptFrontendController
+     * @var TypoScriptFrontendController|MockObject
      */
-    protected $tsFrontendController;
+    protected MockObject $tsFrontendController;
 
     protected function setUp(): void
     {
@@ -50,7 +51,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getFirstTimeValueForRecordReturnCorrectData()
+    public function getFirstTimeValueForRecordReturnCorrectData(): void
     {
         self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:2', 1),
@@ -89,7 +90,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      * @param int $now
      * @return int
      */
-    public function getFirstTimeValueForRecordCall($tablePid, $now)
+    public function getFirstTimeValueForRecordCall(string $tablePid, int $now): int
     {
         return $this->tsFrontendController->_call('getFirstTimeValueForRecord', $tablePid, $now);
     }

@@ -31,10 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 class SlugLinkGeneratorTest extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -100,7 +97,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -185,7 +182,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedDataProvider
      */
-    public function linkIsGenerated(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGenerated(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -257,7 +254,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedFromMountPointDataProvider
      */
-    public function linkIsGeneratedFromMountPoint(string $hostPrefix, array $pageMount, int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGeneratedFromMountPoint(string $hostPrefix, array $pageMount, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -334,7 +331,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForLanguageDataProvider
      */
-    public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
+    public function linkIsGeneratedForLanguageWithLanguageProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -397,7 +394,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedWithQueryParametersDataProvider
      */
-    public function linkIsGeneratedWithQueryParameters(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation)
+    public function linkIsGeneratedWithQueryParameters(string $hostPrefix, int $sourcePageId, int $targetPageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -465,7 +462,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageDataProvider
      */
-    public function linkIsGeneratedForRestrictedPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation)
+    public function linkIsGeneratedForRestrictedPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -535,7 +532,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageUsingLoginPageDataProvider
      */
-    public function linkIsGeneratedForRestrictedPageUsingLoginPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation)
+    public function linkIsGeneratedForRestrictedPageUsingLoginPage(string $hostPrefix, int $sourcePageId, int $targetPageId, int $loginPageId, int $frontendUserId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -595,7 +592,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPagesDataProvider
      */
-    public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPages(string $hostPrefix, int $sourcePageId, int $targetPageId, int $languageId, string $expectation)
+    public function linkIsGeneratedForRestrictedPageForGuestsUsingTypolinkLinkAccessRestrictedPages(string $hostPrefix, int $sourcePageId, int $targetPageId, int $languageId, string $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -658,7 +655,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedForPageVersionDataProvider
      */
-    public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, int $backendUserId, string $expectation)
+    public function linkIsGeneratedForPageVersion(string $hostPrefix, int $sourcePageId, int $targetPageId, bool $resolveVersion, int $backendUserId, string $expectation): void
     {
         $workspaceId = 1;
         if ($resolveVersion) {
@@ -809,7 +806,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
-    public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    public function hierarchicalMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
@@ -883,7 +880,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider languageMenuIsGeneratedDataProvider
      */
-    public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation)
+    public function languageMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))

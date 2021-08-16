@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -29,16 +30,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CaseContentObjectTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
     /**
-     * @var CaseContentObject|\PHPUnit\Framework\MockObject\MockObject
+     * @var CaseContentObject
      */
-    protected $subject;
+    protected CaseContentObject $subject;
 
     /**
      * Set up

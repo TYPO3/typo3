@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteProcessorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -36,7 +38,7 @@ class SiteProcessorTest extends UnitTestCase
     {
         $processorConfiguration = ['as' => 'variable'];
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $mockedContentObjectRenderer->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
         $site = new Site('site123', 123, []);
         $tsfeProphecy = $this->prophesize(TypoScriptFrontendController::class);
@@ -54,7 +56,7 @@ class SiteProcessorTest extends UnitTestCase
     {
         $processorConfiguration = ['as' => 'variable'];
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $mockedContentObjectRenderer->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
         $subject = new SiteProcessor();
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);

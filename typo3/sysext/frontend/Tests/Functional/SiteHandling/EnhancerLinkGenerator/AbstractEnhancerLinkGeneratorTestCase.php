@@ -32,10 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    protected $internalRequestContext;
+    protected InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -88,7 +85,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         parent::tearDown();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

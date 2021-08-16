@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
 use Doctrine\DBAL\Statement;
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -49,11 +51,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractMenuContentObjectTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     /**
-     * @var AbstractMenuContentObject
+     * @var AbstractMenuContentObject|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
      * Set up this testcase
@@ -109,7 +111,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * Prepares a test for the method sectionIndex
      */
-    protected function prepareSectionIndexTest()
+    protected function prepareSectionIndexTest(): void
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->getExpressionBuilder()->willReturn(new ExpressionBuilder($connectionProphet->reveal()));
@@ -123,7 +125,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched()
+    public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched(): void
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
@@ -136,7 +138,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven()
+    public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven(): void
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
@@ -150,7 +152,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails()
+    public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1337334849);
@@ -170,7 +172,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage()
+    public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage(): void
     {
         $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetchAssociative()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
@@ -200,7 +202,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function sectionIndexFiltersDataProvider()
+    public function sectionIndexFiltersDataProvider(): array
     {
         return [
             'unfiltered fields' => [
@@ -244,7 +246,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @param int $expectedAmount
      * @param array $dataRow
      */
-    public function sectionIndexFilters($expectedAmount, array $dataRow)
+    public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
         $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetchAssociative()->willReturn($dataRow, false);
@@ -272,7 +274,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function sectionIndexQueriesWithDifferentColPosDataProvider()
+    public function sectionIndexQueriesWithDifferentColPosDataProvider(): array
     {
         return [
             'no configuration' => [
@@ -310,10 +312,10 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @test
      * @dataProvider sectionIndexQueriesWithDifferentColPosDataProvider
      * @param array $configuration
-     * @param array $colPosFromStdWrapValue
+     * @param string $colPosFromStdWrapValue
      * @param string $whereClausePrefix
      */
-    public function sectionIndexQueriesWithDifferentColPos($configuration, $colPosFromStdWrapValue, $whereClausePrefix)
+    public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
         $statementProphet = $this->prophesize(Statement::class);
         $statementProphet->fetchAssociative()->willReturn([]);
@@ -354,7 +356,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function ifsubHasToCheckExcludeUidListDataProvider()
+    public function ifsubHasToCheckExcludeUidListDataProvider(): array
     {
         return [
             'none excluded' => [
@@ -392,7 +394,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @param string $excludeUidList
      * @param bool $expectedResult
      */
-    public function ifsubHasToCheckExcludeUidList($menuItems, $excludeUidList, $expectedResult)
+    public function ifsubHasToCheckExcludeUidList(array $menuItems, string $excludeUidList, bool $expectedResult): void
     {
         $menu = [];
         foreach ($menuItems as $page) {
@@ -427,7 +429,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider()
+    public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider(): array
     {
         return [
             'standard parameter without access protected setting' => [
@@ -602,11 +604,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @param array $mconf
      * @param array $page
      * @param mixed $oTarget
-     * @param string $addParams
-     * @param string $typeOverride
-     * @param int $overrideId
+     * @param string|int $addParams
+     * @param string|int $typeOverride
+     * @param int|string|null $overrideId
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, $oTarget, $addParams = '', $typeOverride = '', int $overrideId = null)
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, string $oTarget, $addParams = '', $typeOverride = '', $overrideId = null): void
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['typoLink'])

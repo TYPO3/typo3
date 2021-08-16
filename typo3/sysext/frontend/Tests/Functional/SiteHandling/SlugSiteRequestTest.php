@@ -39,10 +39,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         ],
     ];
 
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -69,7 +66,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -122,7 +119,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider requestsAreRedirectedWithoutHavingDefaultSiteLanguageDataProvider
      */
-    public function requestsAreRedirectedWithoutHavingDefaultSiteLanguage(string $uri)
+    public function requestsAreRedirectedWithoutHavingDefaultSiteLanguage(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -165,7 +162,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
-    public function shortcutsAreRedirectedToDefaultSiteLanguage(string $uri)
+    public function shortcutsAreRedirectedToDefaultSiteLanguage(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -194,7 +191,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
-    public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri)
+    public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -229,7 +226,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function invalidSiteResultsInNotFoundResponse()
+    public function invalidSiteResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -248,7 +245,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function invalidSlugOutsideSiteLanguageResultsInNotFoundResponse()
+    public function invalidSlugOutsideSiteLanguageResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -278,7 +275,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function invalidSlugInsideSiteLanguageResultsInNotFoundResponse()
+    public function invalidSlugInsideSiteLanguageResultsInNotFoundResponse(): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -308,7 +305,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function unconfiguredTypeNumResultsIn500Error()
+    public function unconfiguredTypeNumResultsIn500Error(): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -368,7 +365,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithPathsDataProvider
      */
-    public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle)
+    public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -431,7 +428,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithDomainsDataProvider
      */
-    public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle)
+    public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -464,7 +461,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function pageIsRenderedWithTrailingSlash()
+    public function pageIsRenderedWithTrailingSlash(): void
     {
         $uri = 'https://website.us/features/frontend-editing/';
 
@@ -524,7 +521,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageIsRenderedDataProvider
      */
-    public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle)
+    public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -581,7 +578,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -614,7 +611,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -653,7 +650,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -690,7 +687,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -737,7 +734,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider
      */
-    public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId)
+    public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -796,7 +793,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestNotFoundInvalidCacheHashWithoutHavingErrorHandling(string $uri)
+    public function pageRequestNotFoundInvalidCacheHashWithoutHavingErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -816,7 +813,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -849,7 +846,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -879,7 +876,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -944,7 +941,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
      */
-    public function pageIsRenderedWithValidCacheHash($uri)
+    public function pageIsRenderedWithValidCacheHash($uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',

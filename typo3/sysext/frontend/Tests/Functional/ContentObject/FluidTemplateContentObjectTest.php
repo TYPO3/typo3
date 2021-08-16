@@ -45,7 +45,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderWorksWithNestedFluidtemplate()
+    public function renderWorksWithNestedFluidtemplate(): void
     {
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
@@ -88,7 +88,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderWorksWithNestedFluidtemplateWithLayouts()
+    public function renderWorksWithNestedFluidtemplateWithLayouts(): void
     {
         /** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);

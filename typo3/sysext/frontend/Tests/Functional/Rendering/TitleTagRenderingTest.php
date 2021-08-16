@@ -56,7 +56,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
      *
      * @param int $pageId
      */
-    protected function setUpFrontendSite(int $pageId)
+    protected function setUpFrontendSite(int $pageId): void
     {
         $configuration = [
             'rootPageId' => $pageId,

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,13 +29,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ErrorControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     protected $resetSingletonInstances = true;
 
     /**
      * @test
      */
-    public function pageNotFoundHandlingReturns404ResponseIfNotConfigured()
+    public function pageNotFoundHandlingReturns404ResponseIfNotConfigured(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -49,7 +50,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function unavailableHandlingReturns503ResponseIfNotConfigured()
+    public function unavailableHandlingReturns503ResponseIfNotConfigured(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -64,7 +65,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function unavailableHandlingDoesNotTriggerDueToDevIpMask()
+    public function unavailableHandlingDoesNotTriggerDueToDevIpMask(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
@@ -78,7 +79,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function internalErrorHandlingReturns500ResponseIfNotConfigured()
+    public function internalErrorHandlingReturns500ResponseIfNotConfigured(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -92,7 +93,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function internalErrorHandlingDoesNotTriggerDueToDevIpMask()
+    public function internalErrorHandlingDoesNotTriggerDueToDevIpMask(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
@@ -106,7 +107,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction()
+    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -121,7 +122,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction()
+    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
         $subject = new ErrorController();
         $response = $subject->pageNotFoundAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
@@ -134,7 +135,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForUnavailableAction()
+    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -149,7 +150,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForUnavailableAction()
+    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
         $subject = new ErrorController();
         $response = $subject->unavailableAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
@@ -162,7 +163,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction()
+    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -177,7 +178,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction()
+    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
         $subject = new ErrorController();
         $response = $subject->internalErrorAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
@@ -190,7 +191,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction()
+    public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -205,7 +206,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction()
+    public function defaultErrorHandlerWithJsonResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
         $subject = new ErrorController();
         $response = $subject->accessDeniedAction((new ServerRequest())->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');

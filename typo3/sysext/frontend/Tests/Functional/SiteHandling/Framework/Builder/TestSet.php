@@ -22,22 +22,22 @@ class TestSet
     /**
      * @var VariableValue|null
      */
-    private $url;
+    private ?VariableValue $url;
 
     /**
      * @var int|null
      */
-    private $targetPageId;
+    private ?int $targetPageId;
 
     /**
      * @var Applicable[]
      */
-    private $applicables;
+    private array $applicables;
 
     /**
-     * @var Variables
+     * @var Variables|null
      */
-    private $variables;
+    private ?Variables $variables = null;
 
     public static function create($parentSet = null): self
     {

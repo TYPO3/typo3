@@ -465,7 +465,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
      * @test
      * @dataProvider routeIdentifiersAreResolvedDataProvider
      */
-    public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, string $failureReason = null)
+    public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, string $failureReason = null): void
     {
         $query = [];
         $routeValue = 'route-value';

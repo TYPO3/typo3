@@ -63,7 +63,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
      * @test
      * @dataProvider defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArgumentsDataProvider
      */
-    public function defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArguments(string $additionalParameters, string $expectation)
+    public function defaultExtbaseControllerActionNamesAreAppliedWithAdditionalNonMappedQueryArguments(string $additionalParameters, string $expectation): void
     {
         $targetLanguageId = 0;
         $this->mergeSiteConfiguration('acme-com', [
@@ -146,7 +146,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
      * @test
      * @dataProvider defaultExtbaseControllerActionNamesAreAppliedDataProvider
      */
-    public function defaultExtbaseControllerActionNamesAreApplied(string $additionalParameters, string $expectation)
+    public function defaultExtbaseControllerActionNamesAreApplied(string $additionalParameters, string $expectation): void
     {
         $targetLanguageId = 0;
         $this->mergeSiteConfiguration('acme-com', [

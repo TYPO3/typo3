@@ -33,10 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    protected $internalRequestContext;
+    protected InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -89,7 +86,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         parent::tearDown();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -172,7 +169,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
     /**
      * @param TestSet $testSet
      */
-    protected function assertPageArgumentsEquals(TestSet $testSet)
+    protected function assertPageArgumentsEquals(TestSet $testSet): void
     {
         $builder = Builder::create();
         $enhancerConfiguration = $builder->compileEnhancerConfiguration($testSet);

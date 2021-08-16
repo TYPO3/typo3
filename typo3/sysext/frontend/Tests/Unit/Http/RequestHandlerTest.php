@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
@@ -38,10 +39,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RequestHandlerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
-    public function generateHtmlTagIncludesAllPossibilitiesDataProvider()
+    public function generateHtmlTagIncludesAllPossibilitiesDataProvider(): array
     {
         return [
             'no original values' => [
@@ -90,13 +92,13 @@ class RequestHandlerTest extends UnitTestCase
     /**
      * Does not test stdWrap functionality.
      *
-     * @param $htmlTagAttributes
-     * @param $configuration
-     * @param $expectedResult
+     * @param array $htmlTagAttributes
+     * @param array $configuration
+     * @param string $expectedResult
      * @test
      * @dataProvider generateHtmlTagIncludesAllPossibilitiesDataProvider
      */
-    public function generateHtmlTagIncludesAllPossibilities($htmlTagAttributes, $configuration, $expectedResult)
+    public function generateHtmlTagIncludesAllPossibilities(array $htmlTagAttributes, array $configuration, string $expectedResult): void
     {
         $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
@@ -109,7 +111,7 @@ class RequestHandlerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function generateMetaTagHtmlGeneratesCorrectTagsDataProvider()
+    public function generateMetaTagHtmlGeneratesCorrectTagsDataProvider(): array
     {
         return [
             'simple meta' => [
@@ -221,7 +223,7 @@ class RequestHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateMetaTagExpectExceptionOnBogusTags()
+    public function generateMetaTagExpectExceptionOnBogusTags(): void
     {
         $stdWrapResult = '10';
 
@@ -263,7 +265,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
     }
@@ -276,7 +278,7 @@ class RequestHandlerTest extends UnitTestCase
      * @param string $stdWrapResult
      * @param array $expectedTags
      */
-    public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags)
+    public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
@@ -308,7 +310,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
 
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
@@ -317,7 +319,7 @@ class RequestHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateMetaTagHtmlGenerateNoTagWithEmptyContent()
+    public function generateMetaTagHtmlGenerateNoTagWithEmptyContent(): void
     {
         $stdWrapResult = '';
 
@@ -350,7 +352,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
         $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
@@ -362,7 +364,7 @@ class RequestHandlerTest extends UnitTestCase
         $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
     }
 
-    public function generateMultipleMetaTagsDataProvider()
+    public function generateMultipleMetaTagsDataProvider(): array
     {
         return [
             'multi value attribute name' => [
@@ -425,7 +427,7 @@ class RequestHandlerTest extends UnitTestCase
      * @param string $stdWrapResult
      * @param array $expectedTags
      */
-    public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags)
+    public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags): void
     {
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
@@ -452,7 +454,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $requestProphecy = $this->prophesize(ServerRequestInterface::class)->reveal();
         $modifyHrefLangTagsEvent = new ModifyHrefLangTagsEvent($requestProphecy);
@@ -470,7 +472,7 @@ class RequestHandlerTest extends UnitTestCase
      *
      * @test
      */
-    public function resetGlobalsToCurrentRequestDoesNotModifyAnything()
+    public function resetGlobalsToCurrentRequestDoesNotModifyAnything(): void
     {
         $getVars = ['outside' => '1'];
         $postVars = ['world' => 'yo'];
@@ -492,7 +494,7 @@ class RequestHandlerTest extends UnitTestCase
      *
      * @test
      */
-    public function resetGlobalsToCurrentRequestWithModifiedRequestOverridesGlobals()
+    public function resetGlobalsToCurrentRequestWithModifiedRequestOverridesGlobals(): void
     {
         $getVars = ['typical' => '1'];
         $postVars = ['mixtape' => 'wheels'];

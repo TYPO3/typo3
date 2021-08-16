@@ -24,22 +24,22 @@ class VariableValue
     /**
      * @var string
      */
-    private $value;
+    private string $value;
 
     /**
      * @var string[]
      */
-    private $variableNames;
+    private array $variableNames;
 
     /**
-     * @var Variables
+     * @var Variables|null
      */
-    private $defaultVariables;
+    private ?Variables $defaultVariables;
 
     /**
      * @var string[]
      */
-    private $requiredDefinedVariableNames;
+    private array $requiredDefinedVariableNames;
 
     public static function create(string $value, Variables $defaultVariables = null): self
     {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteResolverTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -44,17 +46,10 @@ class SiteResolverTest extends UnitTestCase
     /**
      * @var SiteFinder|AccessibleObjectInterface
      */
-    protected $siteFinder;
+    protected AccessibleObjectInterface $siteFinder;
 
-    /**
-     * @var RequestHandlerInterface
-     */
-    protected $siteFoundRequestHandler;
-
-    /**
-     * @var string
-     */
-    protected $originalLocale;
+    protected RequestHandlerInterface $siteFoundRequestHandler;
+    protected string $originalLocale;
 
     /**
      * Set up
@@ -108,7 +103,7 @@ class SiteResolverTest extends UnitTestCase
      *
      * @test
      */
-    public function detectASingleSiteWhenProperRequestIsGiven()
+    public function detectASingleSiteWhenProperRequestIsGiven(): void
     {
         $incomingUrl = 'https://a-random-domain.com/mysite/';
         $siteIdentifier = 'full-site';
@@ -152,7 +147,7 @@ class SiteResolverTest extends UnitTestCase
      *
      * @test
      */
-    public function detectSubsiteInsideNestedUrlStructure()
+    public function detectSubsiteInsideNestedUrlStructure(): void
     {
         $incomingUrl = 'https://www.random-result.com/mysubsite/you-know-why/';
         $this->siteFinder->_set('sites', [
@@ -193,7 +188,7 @@ class SiteResolverTest extends UnitTestCase
         }
     }
 
-    public function detectSubSubsiteInsideNestedUrlStructureDataProvider()
+    public function detectSubSubsiteInsideNestedUrlStructureDataProvider(): array
     {
         return [
             'matches second site' => [
@@ -233,7 +228,7 @@ class SiteResolverTest extends UnitTestCase
      * @test
      * @dataProvider detectSubSubsiteInsideNestedUrlStructureDataProvider
      */
-    public function detectSubSubsiteInsideNestedUrlStructure($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedBase)
+    public function detectSubSubsiteInsideNestedUrlStructure($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedBase): void
     {
         $this->siteFinder->_set('sites', [
             'outside-site' => new Site('outside-site', 13, [
@@ -284,7 +279,7 @@ class SiteResolverTest extends UnitTestCase
         }
     }
 
-    public function detectProperLanguageByIncomingUrlDataProvider()
+    public function detectProperLanguageByIncomingUrlDataProvider(): array
     {
         return [
             'matches second site' => [
@@ -338,7 +333,7 @@ class SiteResolverTest extends UnitTestCase
      * @test
      * @dataProvider detectProperLanguageByIncomingUrlDataProvider
      */
-    public function detectProperLanguageByIncomingUrl($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedLanguageId, $expectedBase)
+    public function detectProperLanguageByIncomingUrl($incomingUrl, $expectedSiteIdentifier, $expectedRootPageId, $expectedLanguageId, $expectedBase): void
     {
         $this->siteFinder->_set('sites', [
             'outside-site' => new Site('outside-site', 13, [

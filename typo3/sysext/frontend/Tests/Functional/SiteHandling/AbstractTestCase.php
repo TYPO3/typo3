@@ -197,7 +197,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
         array $menu,
         array $keepNames = ['title', 'link']
     ): array {
-        if (!in_array('children', $keepNames)) {
+        if (!in_array('children', $keepNames, true)) {
             $keepNames[] = 'children';
         }
         return array_map(

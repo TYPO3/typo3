@@ -30,7 +30,7 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
      *
      * @var array
      */
-    protected static $defaultPagesLanguageOverlayFields = [
+    protected static array $defaultPagesLanguageOverlayFields = [
         'title',
         'nav_title',
         'subtitle',
@@ -50,7 +50,7 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
      *
      * @var array
      */
-    protected static $pageFormFields = [
+    protected static array $pageFormFields = [
         PageRepository::DOKTYPE_BE_USER_SECTION => [],
         PageRepository::DOKTYPE_DEFAULT => [],
         PageRepository::DOKTYPE_SHORTCUT => [
@@ -165,7 +165,7 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
         int $doktype,
         array $expectedFields,
         array $hiddenFields
-    ) {
+    ): void {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 

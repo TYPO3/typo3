@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ContentVisibleFieldsTest extends FunctionalTestCase
 {
-    protected static $commonContentFields = [
+    protected static array $commonContentFields = [
         'CType',
         'colPos',
         'sys_language_uid',
@@ -40,14 +40,14 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
         'categories',
     ];
 
-    protected static $headerFields = [
+    protected static array $headerFields = [
         'header',
         'header_layout',
         'date',
         'header_link',
     ];
 
-    protected static $imageFields = [
+    protected static array $imageFields = [
         'image',
         'image_zoom',
         'imagewidth',
@@ -57,7 +57,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
         'imagecols',
     ];
 
-    protected static $contentFieldsByType = [
+    protected static array $contentFieldsByType = [
         'header' => [
             'additionalFields' => ['subheader'],
         ],
@@ -115,7 +115,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function contentFormContainsExpectedFields()
+    public function contentFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

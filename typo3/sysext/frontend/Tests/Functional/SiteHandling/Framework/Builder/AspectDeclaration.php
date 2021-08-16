@@ -19,15 +19,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class AspectDeclaration implements Applicable
 {
-    /**
-     * @var string
-     */
-    private $identifier;
-
-    /**
-     * @var array
-     */
-    private $configuration = [];
+    private string $identifier;
+    private array $configuration = [];
 
     public static function create(string $identifier): self
     {
@@ -39,9 +32,6 @@ class AspectDeclaration implements Applicable
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return array
-     */
     public function getConfiguration(): array
     {
         return $this->configuration;

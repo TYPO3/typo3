@@ -39,10 +39,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
  */
 class TypoLinkGeneratorTest extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     protected $pathsToProvideInTestInstance = [
         'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png'
@@ -83,7 +80,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -125,7 +122,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     /**
      * @todo Provide functionality of creating and indexing fileadmin/ in Testing Framework
      */
-    private function setUpFileStorage()
+    private function setUpFileStorage(): void
     {
         $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         $storageId = $storageRepository->createLocalStorage(
@@ -214,7 +211,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsGeneratedDataProvider
      */
-    public function linkIsGenerated(string $parameter, string $expectation)
+    public function linkIsGenerated(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter);
         self::assertSame($expectation, (string)$response->getBody());
@@ -361,7 +358,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsEncodedDataProvider
      */
-    public function linkIsEncodedPerDefault(string $parameter, string $expectation)
+    public function linkIsEncodedPerDefault(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter);
         self::assertSame($expectation, (string)$response->getBody());
@@ -374,7 +371,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkIsEncodedDataProvider
      */
-    public function linkIsEncodedHavingParseFunc(string $parameter, string $expectation)
+    public function linkIsEncodedHavingParseFunc(string $parameter, string $expectation): void
     {
         $response = $this->invokeTypoLink($parameter, $this->createParseFuncInstruction([
             'allowTags' => 'good',
@@ -459,7 +456,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider linkToPageIsProcessedDataProvider
      */
-    public function linkToPageIsProcessed(string $parameter, string $expectation, bool $parseFuncEnabled)
+    public function linkToPageIsProcessed(string $parameter, string $expectation, bool $parseFuncEnabled): void
     {
         $instructions = [];
         if ($parseFuncEnabled) {

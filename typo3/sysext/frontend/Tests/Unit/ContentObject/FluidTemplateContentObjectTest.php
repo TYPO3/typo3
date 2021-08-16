@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -29,6 +31,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
@@ -45,24 +48,24 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var FluidTemplateContentObject|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var FluidTemplateContentObject|MockObject|AccessibleObjectInterface
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
-     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
+     * @var ContentObjectRenderer|ObjectProphecy
      */
-    protected $contentObjectRenderer;
+    protected ObjectProphecy $contentObjectRenderer;
 
     /**
-     * @var StandaloneView|\PHPUnit\Framework\MockObject\MockObject
+     * @var StandaloneView|MockObject
      */
-    protected $standaloneView;
+    protected MockObject $standaloneView;
 
     /**
-     * @var Request|\PHPUnit\Framework\MockObject\MockObject
+     * @var Request|MockObject
      */
-    protected $request;
+    protected MockObject $request;
 
     /**
      * Set up
@@ -79,7 +82,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         /** @var $tsfe TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
-            ->disableOriginalConstructor(true)
+            ->disableOriginalConstructor()
             ->getMock();
         $GLOBALS['TSFE'] = $tsfe;
     }
@@ -92,7 +95,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView = $this->createMock(StandaloneView::class);
         $this->request = $this->getMockBuilder(Request::class)->getMock();
         $this->standaloneView
-            ->expects(self::any())
             ->method('getRequest')
             ->willReturn($this->request);
         $this->subject->_set('view', $this->standaloneView);
@@ -766,7 +768,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
-        /** @var TypoScriptService|\PHPUnit\Framework\MockObject\MockObject $typoScriptServiceMock */
+        /** @var TypoScriptService|MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $typoScriptServiceMock
             ->expects(self::once())
@@ -951,9 +953,9 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      * @dataProvider headerAssetDataProvider
      */
     public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets(
-        $viewMock,
-        $expectedHeader,
-        $expectedFooter
+        AbstractTemplateView $viewMock,
+        ?string $expectedHeader,
+        ?string $expectedFooter
     ): void {
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->onlyMethods([
             'addHeaderData',

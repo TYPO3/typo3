@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ContentDataProcessorTest extends UnitTestCase
 {
-    /**
-     * @var ContentDataProcessor
-     */
-    protected $contentDataProcessor;
+    protected ContentDataProcessor $contentDataProcessor;
 
     /**
      * Set up

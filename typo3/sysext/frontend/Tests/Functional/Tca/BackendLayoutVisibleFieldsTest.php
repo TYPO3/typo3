@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendLayoutVisibleFieldsTest extends FunctionalTestCase
 {
-    protected static $backendLayoutFields = [
+    protected static array $backendLayoutFields = [
         'title',
         'icon',
         'config',
@@ -35,7 +35,7 @@ class BackendLayoutVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function backendLayoutsFormContainsExpectedFields()
+    public function backendLayoutsFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

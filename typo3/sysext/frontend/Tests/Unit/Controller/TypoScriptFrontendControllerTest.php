@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -44,6 +46,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -51,16 +54,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TypoScriptFrontendControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|TypoScriptFrontendController
+     * @var MockObject|AccessibleObjectInterface|TypoScriptFrontendController
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -83,7 +87,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function headerAndFooterMarkersAreReplacedDuringIntProcessing()
+    public function headerAndFooterMarkersAreReplacedDuringIntProcessing(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -99,7 +103,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * This is the callback that mimics a USER_INT extension
      */
-    public function processNonCacheableContentPartsAndSubstituteContentMarkers()
+    public function processNonCacheableContentPartsAndSubstituteContentMarkers(): void
     {
         $GLOBALS['TSFE']->additionalHeaderData[] = 'headerData';
         $GLOBALS['TSFE']->additionalFooterData[] = 'footerData';
@@ -109,11 +113,11 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * Setup a \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object only for testing the header and footer
      * replacement during USER_INT rendering
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController
+     * @return MockObject|TypoScriptFrontendController
      */
     protected function setupTsfeMockForHeaderFooterReplacementCheck()
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController $tsfe */
+        /** @var MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->onlyMethods([
                 'processNonCacheableContentPartsAndSubstituteContentMarkers',
@@ -156,7 +160,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function localizationReturnsUnchangedStringIfNotLocallangLabel()
+    public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
     {
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
@@ -188,7 +192,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getSysDomainCacheDataProvider()
+    public function getSysDomainCacheDataProvider(): array
     {
         return [
             'typo3.org' => [
@@ -206,7 +210,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function baseUrlWrapHandlesDifferentUrlsDataProvider()
+    public function baseUrlWrapHandlesDifferentUrlsDataProvider(): array
     {
         return [
             'without base url' => [
@@ -239,7 +243,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * @param string $url
      * @param string $expected
      */
-    public function baseUrlWrapHandlesDifferentUrls($baseUrl, $url, $expected)
+    public function baseUrlWrapHandlesDifferentUrls(string $baseUrl, string $url, string $expected): void
     {
         $this->subject->baseUrl = $baseUrl;
         self::assertSame($expected, $this->subject->baseUrlWrap($url));
@@ -248,7 +252,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function initializeSearchWordDataBuildsCorrectRegexDataProvider()
+    public function initializeSearchWordDataBuildsCorrectRegexDataProvider(): array
     {
         return [
             'one simple search word' => [
@@ -287,7 +291,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * @param bool $enableStandaloneSearchWords If TRUE the sword_standAlone option will be enabled.
      * @param string $expectedRegex The expected regex after processing the search words.
      */
-    public function initializeSearchWordDataBuildsCorrectRegex(array $searchWordGetParameters, $enableStandaloneSearchWords, $expectedRegex)
+    public function initializeSearchWordDataBuildsCorrectRegex(array $searchWordGetParameters, bool $enableStandaloneSearchWords, string $expectedRegex): void
     {
         $_GET['sword_list'] = $searchWordGetParameters;
         $_SERVER['HTTP_HOST'] = 'localhost';
@@ -307,10 +311,10 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * @test
      * @dataProvider splitLinkVarsDataProvider
      *
-     * @param $string
-     * @param $expected
+     * @param string $string
+     * @param array $expected
      */
-    public function splitLinkVarsStringSplitsStringByComma($string, $expected)
+    public function splitLinkVarsStringSplitsStringByComma(string $string, array $expected): void
     {
         self::assertEquals($expected, $this->subject->_call('splitLinkVarsString', $string));
     }
@@ -318,7 +322,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function splitLinkVarsDataProvider()
+    public function splitLinkVarsDataProvider(): array
     {
         return [
             [
@@ -429,7 +433,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * @param array $getVars
      * @param string $expected
      */
-    public function calculateLinkVarsConsidersCorrectVariables(string $linkVars, array $getVars, string $expected)
+    public function calculateLinkVarsConsidersCorrectVariables(string $linkVars, array $getVars, string $expected): void
     {
         $this->subject->config['config']['linkVars'] = $linkVars;
         $this->subject->calculateLinkVars($getVars);
@@ -478,7 +482,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeSearchWordDataDoesNothingWithNullValue()
+    public function initializeSearchWordDataDoesNothingWithNullValue(): void
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', null);
@@ -489,7 +493,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeSearchWordDataDoesNothingWithEmptyStringValue()
+    public function initializeSearchWordDataDoesNothingWithEmptyStringValue(): void
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', '');
@@ -500,7 +504,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeSearchWordDataDoesNothingWithEmptyArrayValue()
+    public function initializeSearchWordDataDoesNothingWithEmptyArrayValue(): void
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', []);
@@ -511,7 +515,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeSearchWordDataFillsProperRegexpWithArray()
+    public function initializeSearchWordDataFillsProperRegexpWithArray(): void
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', ['stop', 'word']);
@@ -522,7 +526,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeSearchWordDataFillsProperRegexpWithArrayAndStandaloneOption()
+    public function initializeSearchWordDataFillsProperRegexpWithArrayAndStandaloneOption(): void
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->config['config']['sword_standAlone'] = 1;

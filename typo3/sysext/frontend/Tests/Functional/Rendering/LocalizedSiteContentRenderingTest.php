@@ -159,7 +159,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      *
      * @test
      */
-    public function onlyEnglishContentIsRenderedForDefaultLanguage()
+    public function onlyEnglishContentIsRenderedForDefaultLanguage(): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -321,7 +321,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      * @param string $fallbackChain
      * @param string $overlayType
      */
-    public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayType)
+    public function renderingOfDutchLanguage(array $languageConfiguration, array $visibleRecords, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
         $this->writeSiteConfiguration(
             'test',
@@ -662,7 +662,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      * @param string $overlayMode
      * @param int $statusCode 200 or 404
      */
-    public function contentOnNonTranslatedPageGerman(array $languageConfiguration, array $visibleRecords, string $pageTitle, int $languageId, int $contentLanguageId, string $fallbackType, string $fallbackChain, string $overlayMode, int $statusCode = 200)
+    public function contentOnNonTranslatedPageGerman(array $languageConfiguration, array $visibleRecords, string $pageTitle, int $languageId, int $contentLanguageId, string $fallbackType, string $fallbackChain, string $overlayMode, int $statusCode = 200): void
     {
         $this->writeSiteConfiguration(
             'main',
@@ -841,7 +841,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      * @param string $fallbackChain
      * @param string $overlayType
      */
-    public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleHeaders, string $fallbackType, string $fallbackChain, string $overlayType)
+    public function contentOnPartiallyTranslatedPage(array $languageConfiguration, array $visibleHeaders, string $fallbackType, string $fallbackChain, string $overlayType): void
     {
         $this->writeSiteConfiguration(
             'test',

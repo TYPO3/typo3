@@ -24,22 +24,22 @@ class Permutation
     /**
      * @var TestSet[]
      */
-    private $targets;
+    private array $targets;
 
     /**
      * @var Applicable[][]
      */
-    private $applicableSets;
+    private array $applicableSets;
 
     /**
      * @var Variables
      */
-    private $variables;
+    private Variables $variables;
 
     /**
      * @var TestSet[]
      */
-    private $results = [];
+    private array $results = [];
 
     public static function create(Variables $variables): self
     {

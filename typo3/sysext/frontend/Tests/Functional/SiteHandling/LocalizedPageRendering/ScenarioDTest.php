@@ -133,7 +133,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
      */
     public function pageNotFound(string $url): void
     {
-        $this->assertResponseStatusCode($url, 404);
+        $this->assertResponseStatusCode($url);
     }
 
     /**
