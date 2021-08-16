@@ -426,6 +426,23 @@ class SiteRequestTest extends AbstractTestCase
             ['https://website.local/?id=1515', 3, 'Research'],
             ['https://website.local/?id=1520', 3, 'Forecasts'],
             ['https://website.local/?id=1521', 3, 'Current Year'],
+            // frontend user 1 with index
+            ['https://website.local/index.php?id=1510', 1, 'Whitepapers'],
+            ['https://website.local/index.php?id=1511', 1, 'Products'],
+            ['https://website.local/index.php?id=1512', 1, 'Solutions'],
+            // frontend user 2
+            ['https://website.local/index.php?id=1510', 2, 'Whitepapers'],
+            ['https://website.local/index.php?id=1511', 2, 'Products'],
+            ['https://website.local/index.php?id=1515', 2, 'Research'],
+            ['https://website.local/index.php?id=1520', 2, 'Forecasts'],
+            ['https://website.local/index.php?id=1521', 2, 'Current Year'],
+            // frontend user 3
+            ['https://website.local/index.php?id=1510', 3, 'Whitepapers'],
+            ['https://website.local/index.php?id=1511', 3, 'Products'],
+            ['https://website.local/index.php?id=1512', 3, 'Solutions'],
+            ['https://website.local/index.php?id=1515', 3, 'Research'],
+            ['https://website.local/index.php?id=1520', 3, 'Forecasts'],
+            ['https://website.local/index.php?id=1521', 3, 'Current Year'],
         ];
 
         return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');

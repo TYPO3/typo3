@@ -54,21 +54,6 @@ class EidRequestTest extends AbstractTestCase
         static::failIfArrayIsNotEmpty(
             $writer->getErrors()
         );
-
-        $this->setUpFrontendRootPage(
-            1000,
-            [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-            ]
-        );
-        $this->writeSiteConfiguration(
-            'website-local',
-            $this->buildSiteConfiguration(1000, 'https://website.local/')
-        );
     }
 
     /**
@@ -218,15 +203,119 @@ class EidRequestTest extends AbstractTestCase
                 [],
                 null,
             ],
+            // without id/type parameters
+            'eid with index.php without id parameter' => [
+                'https://website.local/index.php?eID=test_eid&some_parameter=1',
+                200,
+                [
+                    'content-type' => [
+                        'application/json',
+                    ],
+                    'eid_responder' => [
+                        'responded',
+                    ],
+                ],
+                [
+                    'eid_responder' => true,
+                    'uri' => 'https://website.local/index.php?eID=test_eid&some_parameter=1',
+                    'method' => 'GET',
+                    'queryParams' => [
+                        'eID' => 'test_eid',
+                        'some_parameter' => '1',
+                    ],
+                ],
+            ],
+            'eid on slug page without id parameter' => [
+                'https://website.local/en-welcome/?eID=test_eid&some_parameter=1',
+                200,
+                [
+                    'content-type' => [
+                        'application/json',
+                    ],
+                    'eid_responder' => [
+                        'responded',
+                    ],
+                ],
+                [
+                    'eid_responder' => true,
+                    'uri' => 'https://website.local/en-welcome/?eID=test_eid&some_parameter=1',
+                    'method' => 'GET',
+                    'queryParams' => [
+                        'eID' => 'test_eid',
+                        'some_parameter' => '1',
+                    ],
+                ],
+            ],
+            'eid without index.php with type without id parameter' => [
+                'https://website.local/?eID=test_eid&some_parameter=1&type=0',
+                200,
+                [
+                    'content-type' => [
+                        'application/json',
+                    ],
+                    'eid_responder' => [
+                        'responded',
+                    ],
+                ],
+                [
+                    'eid_responder' => true,
+                    'uri' => 'https://website.local/?eID=test_eid&some_parameter=1&type=0',
+                    'method' => 'GET',
+                    'queryParams' => [
+                        'eID' => 'test_eid',
+                        'some_parameter' => '1',
+                        'type' => '0',
+                    ],
+                ],
+            ],
+            'eid with index.php with type without id parameter' => [
+                'https://website.local/index.php?eID=test_eid&some_parameter=1&type=0',
+                200,
+                [
+                    'content-type' => [
+                        'application/json',
+                    ],
+                    'eid_responder' => [
+                        'responded',
+                    ],
+                ],
+                [
+                    'eid_responder' => true,
+                    'uri' => 'https://website.local/index.php?eID=test_eid&some_parameter=1&type=0',
+                    'method' => 'GET',
+                    'queryParams' => [
+                        'eID' => 'test_eid',
+                        'some_parameter' => '1',
+                        'type' => '0',
+                    ],
+                ],
+            ],
+            'eid on slug page with type without id parameter' => [
+                'https://website.local/en-welcome/?eID=test_eid&some_parameter=1&type=0',
+                200,
+                [
+                    'content-type' => [
+                        'application/json',
+                    ],
+                    'eid_responder' => [
+                        'responded',
+                    ],
+                ],
+                [
+                    'eid_responder' => true,
+                    'uri' => 'https://website.local/en-welcome/?eID=test_eid&some_parameter=1&type=0',
+                    'method' => 'GET',
+                    'queryParams' => [
+                        'eID' => 'test_eid',
+                        'some_parameter' => '1',
+                        'type' => '0',
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * @param string $uri
-     * @param int $expectedStatusCode
-     * @param array $expectedHeaders
-     * @param array $expectedResponseData
-     *
      * @test
      * @dataProvider ensureEidRequestsWorkDataProvider
      */
@@ -236,6 +325,66 @@ class EidRequestTest extends AbstractTestCase
         array $expectedHeaders,
         ?array $expectedResponseData
     ): void {
+        $this->setUpFrontendRootPage(
+            1000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Root',
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+        if ($expectedResponseData !== null) {
+            self::assertSame($expectedResponseData, json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR));
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider ensureEidRequestsWorkDataProvider
+     */
+    public function ensureEidRequestsWorkWithDotPhpPageTypeSuffixRoutingConfiguration(
+        string $uri,
+        int $expectedStatusCode,
+        array $expectedHeaders,
+        ?array $expectedResponseData
+    ): void {
+        $this->setUpFrontendRootPage(
+            1000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Root',
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'website-local',
+            array_replace(
+                $this->buildSiteConfiguration(1000, 'https://website.local/'),
+                [
+                    'routeEnhancers' => [
+                        'PageTypeSuffix' => [
+                            'type' => 'PageType',
+                            'default' => '.php',
+                            'index' => 'index',
+                            'map' => [],
+                        ],
+                    ],
+                ]
+            )
+        );
+
         $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());

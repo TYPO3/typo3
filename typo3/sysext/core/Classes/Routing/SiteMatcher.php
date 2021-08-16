@@ -24,6 +24,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
@@ -116,6 +117,20 @@ class SiteMatcher implements SingletonInterface
             }
         }
 
+        $uri = $request->getUri();
+        if (!empty($uri->getPath())) {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            if ($normalizedParams instanceof NormalizedParams) {
+                $urlPath = ltrim($uri->getPath(), '/');
+                $scriptName = ltrim($normalizedParams->getScriptName(), '/');
+                $scriptPath = ltrim($normalizedParams->getSitePath(), '/');
+                if ($scriptName !== '' && str_starts_with($urlPath, $scriptName)) {
+                    $urlPath = '/' . $scriptPath . substr($urlPath, mb_strlen($scriptName));
+                    $uri = $uri->withPath($urlPath);
+                }
+            }
+        }
+
         // No language found at this point means that the URL was not used with a valid "?id=1&L=2" parameter
         // which resulted in a site / language combination that was found. Now, the matching is done
         // on the incoming URL.
@@ -124,18 +139,18 @@ class SiteMatcher implements SingletonInterface
             $context = new RequestContext(
                 '',
                 $request->getMethod(),
-                (string)idn_to_ascii($request->getUri()->getHost()),
-                $request->getUri()->getScheme(),
+                (string)idn_to_ascii($uri->getHost()),
+                $uri->getScheme(),
                 // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
                 80,
                 443,
-                $request->getUri()->getPath()
+                $uri->getPath()
             );
             $matcher = new UrlMatcher($collection, $context);
             try {
-                $result = $matcher->match($request->getUri()->getPath());
+                $result = $matcher->match($uri->getPath());
                 return new SiteRouteResult(
-                    $request->getUri(),
+                    $uri,
                     $result['site'],
                     // if no language is found, this usually results due to "/" called instead of "/fr/"
                     // but it could also be the reason that "/index.php?id=23" was called, so the default
@@ -152,7 +167,7 @@ class SiteMatcher implements SingletonInterface
             }
         }
 
-        return new SiteRouteResult($request->getUri(), $site, $language);
+        return new SiteRouteResult($uri, $site, $language);
     }
 
     /**

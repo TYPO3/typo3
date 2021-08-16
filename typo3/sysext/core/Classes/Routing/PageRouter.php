@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableProcessor;
@@ -141,17 +140,6 @@ class PageRouter implements RouterInterface
         }
 
         $urlPath = $previousResult->getTail();
-        // Remove the script name (e.g. index.php), if given
-        if (!empty($urlPath)) {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            if ($normalizedParams instanceof NormalizedParams) {
-                $scriptName = ltrim($normalizedParams->getScriptName(), '/');
-                if ($scriptName !== '' && str_contains($urlPath, $scriptName)) {
-                    $urlPath = str_replace($scriptName, '', $urlPath);
-                }
-            }
-        }
-
         $language = $previousResult->getLanguage();
         // Keep possible existing "/" at the end (no trim, just ltrim), even though the page slug might not
         // contain a "/" at the end. This way we find page candidates where pages MIGHT have a trailing slash
