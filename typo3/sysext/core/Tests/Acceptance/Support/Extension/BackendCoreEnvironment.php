@@ -67,6 +67,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'adminpanel',
             'form',
             'felogin',
+            'seo',
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide',
@@ -104,6 +105,13 @@ class BackendCoreEnvironment extends BackendEnvironment
         $GLOBALS['BE_USER']->user['uid'] = 1;
         $GLOBALS['BE_USER']->workspace = 0;
         Bootstrap::initializeLanguageObject();
+
+        // Create favicon.ico to suppress potential javascript errors in console
+        // which are caused by calling a non html in the browser, e.g. seo sitemap xml
+        $faviconTargetPath = '../../../../favicon.ico';
+        if (!is_file($faviconTargetPath)) {
+            symlink('typo3/sysext/backend/Resources/Public/Icons/favicon.ico', '../../../../favicon.ico');
+        }
 
         $styleguideGenerator = new Generator();
         $styleguideGenerator->create();
