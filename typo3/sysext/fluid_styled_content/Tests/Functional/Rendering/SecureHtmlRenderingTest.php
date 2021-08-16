@@ -275,7 +275,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#08 ' . self::TYPE_PLAIN => [
                 self::TYPE_PLAIN,
                 '08: <meta whatever="whatever">',
-                '<p>08: &lt;meta whatever="whatever"&gt;</p>',
+                '<p>08: </p>',
             ],
             '#08 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
@@ -302,6 +302,21 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                 self::TYPE_DISABLE_HTML_SANITIZE,
                 '09: <sdfield onmouseover="alert(1)">',
                 '<p>09: <sdfield onmouseover="alert(1)"></p>',
+            ],
+            '#10 ' . self::TYPE_PLAIN => [
+                self::TYPE_PLAIN,
+                '10: <meta itemprop="type" content="voice">',
+                '<p>10: <meta itemprop="type" content="voice"></p>',
+            ],
+            '#10 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
+                '10: <meta itemprop="type" content="voice">',
+                '10: <meta itemprop="type" content="voice">',
+            ],
+            '#10 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
+                self::TYPE_DISABLE_HTML_SANITIZE,
+                '10: <meta itemprop="type" content="voice">',
+                '<p>10: <meta itemprop="type" content="voice"></p>',
             ],
         ];
     }
