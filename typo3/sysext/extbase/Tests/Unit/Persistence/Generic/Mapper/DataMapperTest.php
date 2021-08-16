@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -46,7 +47,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DataMapperTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * This test does not actually test anything rather than map calls both mocked methods getTargetType and mapSingleRow
      * while completely ignoring the result of the method.
@@ -54,7 +56,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function mapMapsArrayToObjectByCallingmapToObject()
+    public function mapMapsArrayToObjectByCallingmapToObject(): void
     {
         $rows = [['uid' => '1234']];
         $object = new \stdClass();
@@ -86,7 +88,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function mapSingleRowReturnsObjectFromPersistenceSessionIfAvailable()
+    public function mapSingleRowReturnsObjectFromPersistenceSessionIfAvailable(): void
     {
         $row = ['uid' => '1234'];
         $object = new \stdClass();
@@ -118,7 +120,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function thawPropertiesSetsPropertyValues()
+    public function thawPropertiesSetsPropertyValues(): void
     {
         $className = DummyEntity::class;
         $object = new DummyEntity();
@@ -223,7 +225,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function fetchRelatedEagerReturnsNullForEmptyRelationHasOne()
+    public function fetchRelatedEagerReturnsNullForEmptyRelationHasOne(): void
     {
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
@@ -246,7 +248,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function fetchRelatedEagerReturnsEmptyArrayForEmptyRelationNotHasOne()
+    public function fetchRelatedEagerReturnsEmptyArrayForEmptyRelationNotHasOne(): void
     {
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_BELONGS_TO_MANY);
@@ -270,7 +272,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function MapObjectToClassPropertyReturnsNullForEmptyRelationHasOne()
+    public function MapObjectToClassPropertyReturnsNullForEmptyRelationHasOne(): void
     {
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
@@ -296,7 +298,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @test
      */
-    public function mapObjectToClassPropertyReturnsExistingObjectWithoutCallingFetchRelated()
+    public function mapObjectToClassPropertyReturnsExistingObjectWithoutCallingFetchRelated(): void
     {
         $columnMap = new ColumnMap('columnName', 'propertyName');
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
@@ -357,7 +359,7 @@ class DataMapperTest extends UnitTestCase
      *
      * @return array
      */
-    public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider()
+    public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider(): array
     {
         return [
             'nothing' => [null, null, null],
@@ -376,7 +378,7 @@ class DataMapperTest extends UnitTestCase
      * @test
      * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsDataProvider
      */
-    public function mapDateTimeHandlesDifferentFieldEvaluations($value, $storageFormat, $expectedValue)
+    public function mapDateTimeHandlesDifferentFieldEvaluations($value, $storageFormat, $expectedValue): void
     {
         /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
@@ -394,7 +396,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider()
+    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider(): array
     {
         return [
             'nothing' => [null, null, null],
@@ -413,7 +415,7 @@ class DataMapperTest extends UnitTestCase
      * @test
      * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider
      */
-    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZone($value, ?string $storageFormat, ?string $expectedValue)
+    public function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZone($value, ?string $storageFormat, ?string $expectedValue): void
     {
         $originalTimeZone = date_default_timezone_get();
         date_default_timezone_set('America/Chicago');
@@ -436,7 +438,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapDateTimeHandlesSubclassesOfDateTime()
+    public function mapDateTimeHandlesSubclassesOfDateTime(): void
     {
         /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
@@ -453,7 +455,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPlainValueReturnsCorrectDateTimeFormat()
+    public function getPlainValueReturnsCorrectDateTimeFormat(): void
     {
         /** @var DataMapper $subject */
         $subject = $this->createPartialMock(DataMapper::class, []);
@@ -470,7 +472,7 @@ class DataMapperTest extends UnitTestCase
      * @test
      * @dataProvider getPlainValueReturnsExpectedValuesDataProvider
      */
-    public function getPlainValueReturnsExpectedValues($expectedValue, $input)
+    public function getPlainValueReturnsExpectedValues($expectedValue, $input): void
     {
         /** @var DataMapper $dataMapper */
         $dataMapper = $this->createPartialMock(DataMapper::class, []);
@@ -481,7 +483,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getPlainValueReturnsExpectedValuesDataProvider()
+    public function getPlainValueReturnsExpectedValuesDataProvider(): array
     {
         $traversableDomainObject = $this->prophesize()
             ->willImplement(\Iterator::class)
@@ -505,7 +507,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy()
+    public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionCode(1274799934);
@@ -520,7 +522,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPlainValueCallsGetUidOnDomainObjectInterfaceInput()
+    public function getPlainValueCallsGetUidOnDomainObjectInterfaceInput(): void
     {
         /** @var DataMapper $dataMapper */
         $dataMapper = $this->createPartialMock(DataMapper::class, []);

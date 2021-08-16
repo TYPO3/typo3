@@ -28,7 +28,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheMessageMessageCorrectly()
+    public function theConstructorSetsTheMessageMessageCorrectly(): void
     {
         $messageMessage = 'The message';
         $error = new Message($messageMessage, 0);
@@ -38,7 +38,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheMessageCodeCorrectly()
+    public function theConstructorSetsTheMessageCodeCorrectly(): void
     {
         $messageCode = 123456789;
         $error = new Message('', $messageCode);
@@ -48,7 +48,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheMessageArgumentsCorrectly()
+    public function theConstructorSetsTheMessageArgumentsCorrectly(): void
     {
         $messageArguments = ['foo', 'bar'];
         $error = new Message('', 1, $messageArguments);
@@ -58,7 +58,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheMessageTitleCorrectly()
+    public function theConstructorSetsTheMessageTitleCorrectly(): void
     {
         $messageTitle = 'Title';
         $error = new Message('', 1, [], $messageTitle);
@@ -68,7 +68,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderRendersCorrectlyWithoutArguments()
+    public function renderRendersCorrectlyWithoutArguments(): void
     {
         $error = new Message('Message', 1);
         self::assertEquals('Message', $error->render());
@@ -77,7 +77,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderRendersCorrectlyWithArguments()
+    public function renderRendersCorrectlyWithArguments(): void
     {
         $error = new Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);
         self::assertEquals('Foo is baz and Bar is qux', $error->render());
@@ -86,7 +86,7 @@ class MessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function toStringCallsRender()
+    public function toStringCallsRender(): void
     {
         $error = new Message('Foo is %s and Bar is %s', 1, ['baz', 'qux']);
         self::assertEquals('Foo is baz and Bar is qux', $error);

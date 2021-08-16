@@ -45,7 +45,7 @@ class ClassWithGettersAndSetters
     /**
      * @param mixed $value
      */
-    public function setProperty1($value)
+    public function setProperty1($value): void
     {
         $this->property1 = $value;
     }
@@ -53,7 +53,7 @@ class ClassWithGettersAndSetters
     /**
      * @param mixed $value
      */
-    public function setProperty2($value)
+    public function setProperty2($value): void
     {
         $this->property2 = $value;
     }

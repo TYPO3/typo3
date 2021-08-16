@@ -29,7 +29,7 @@ class DateTimeValidatorTest extends UnitTestCase
      * @test
      * @dataProvider dateTimeValues
      */
-    public function acceptsDateTimeValues($value)
+    public function acceptsDateTimeValues($value): void
     {
         $validator = new DateTimeValidator();
         $result = $validator->validate($value);
@@ -63,7 +63,7 @@ class DateTimeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function addsErrorForInvalidValue()
+    public function addsErrorForInvalidValue(): void
     {
         $validator = $this->getMockBuilder(DateTimeValidator::class)
             ->onlyMethods(['translateErrorMessage'])

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -25,10 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResultTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Error\Result
-     */
-    protected $result;
+    protected Result $result;
 
     protected function setUp(): void
     {
@@ -36,10 +34,7 @@ class ResultTest extends UnitTestCase
         $this->result = new Result();
     }
 
-    /**
-     * @return array
-     */
-    public function dataTypes()
+    public function dataTypes(): array
     {
         return [
             ['Error', 'Errors'],
@@ -50,9 +45,9 @@ class ResultTest extends UnitTestCase
 
     /**
      * @param string $type
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      */
-    protected function getMockMessage($type)
+    protected function getMockMessage(string $type): MockObject
     {
         return $this->createMock('TYPO3\\CMS\\Extbase\\Error\\' . $type);
     }
@@ -63,7 +58,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function addedMessagesShouldBeRetrievableAgain($dataTypeInSingular, $dataTypeInPlural)
+    public function addedMessagesShouldBeRetrievableAgain(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
@@ -78,7 +73,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function getMessageShouldNotBeRecursive($dataTypeInSingular, $dataTypeInPlural)
+    public function getMessageShouldNotBeRecursive(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
@@ -93,7 +88,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function getFirstMessageShouldReturnFirstMessage($dataTypeInSingular, $dataTypeInPlural)
+    public function getFirstMessageShouldReturnFirstMessage(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
         $message2 = $this->getMockMessage($dataTypeInSingular);
@@ -107,7 +102,7 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyShouldReturnSubResult()
+    public function forPropertyShouldReturnSubResult(): void
     {
         $container2 = $this->result->forProperty('foo.bar');
         self::assertInstanceOf(Result::class, $container2);
@@ -117,7 +112,7 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyWithEmptyStringShouldReturnSelf()
+    public function forPropertyWithEmptyStringShouldReturnSelf(): void
     {
         $container2 = $this->result->forProperty('');
         self::assertSame($container2, $this->result);
@@ -126,7 +121,7 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyWithNullShouldReturnSelf()
+    public function forPropertyWithNullShouldReturnSelf(): void
     {
         $container2 = $this->result->forProperty(null);
         self::assertSame($container2, $this->result);
@@ -138,7 +133,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages($dataTypeInSingular, $dataTypeInPlural)
+    public function hasMessagesShouldReturnTrueIfTopLevelObjectHasMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message = $this->getMockMessage($dataTypeInSingular);
         $addMethodName = 'add' . $dataTypeInSingular;
@@ -153,7 +148,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function hasMessagesShouldReturnTrueIfSubObjectHasErrors($dataTypeInSingular, $dataTypeInPlural)
+    public function hasMessagesShouldReturnTrueIfSubObjectHasErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $addMethodName = 'add' . $dataTypeInSingular;
         $methodName = 'has' . $dataTypeInPlural;
@@ -168,7 +163,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function hasMessagesShouldReturnFalseIfSubObjectHasNoErrors($dataTypeInSingular, $dataTypeInPlural)
+    public function hasMessagesShouldReturnFalseIfSubObjectHasNoErrors(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $methodName = 'has' . $dataTypeInPlural;
         $this->result->forProperty('foo.baz');
@@ -182,7 +177,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function getFlattenedMessagesShouldReturnAllSubMessages($dataTypeInSingular, $dataTypeInPlural)
+    public function getFlattenedMessagesShouldReturnAllSubMessages(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
         $message2 = $this->getMockMessage($dataTypeInSingular);
@@ -211,7 +206,7 @@ class ResultTest extends UnitTestCase
      * @param string $dataTypeInSingular
      * @param string $dataTypeInPlural
      */
-    public function getFlattenedMessagesShouldNotContainEmptyResults($dataTypeInSingular, $dataTypeInPlural)
+    public function getFlattenedMessagesShouldNotContainEmptyResults(string $dataTypeInSingular, string $dataTypeInPlural): void
     {
         $message1 = $this->getMockMessage($dataTypeInSingular);
         $message2 = $this->getMockMessage($dataTypeInSingular);
@@ -229,7 +224,7 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      */
-    public function mergeShouldMergeTwoResults()
+    public function mergeShouldMergeTwoResults(): void
     {
         $notice1 = $this->getMockMessage('Notice');
         $notice2 = $this->getMockMessage('Notice');
@@ -262,7 +257,7 @@ class ResultTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFirstReturnsFalseOnEmptyResult()
+    public function getFirstReturnsFalseOnEmptyResult(): void
     {
         $subject = new Result();
         self::assertFalse($subject->getFirstError());

@@ -42,12 +42,12 @@ class ClassWithSetters
      */
     public $property4;
 
-    public function setProperty3($value)
+    public function setProperty3($value): void
     {
         $this->property3 = $value;
     }
 
-    protected function setProperty4($value)
+    protected function setProperty4($value): void
     {
         $this->property4 = $value;
     }

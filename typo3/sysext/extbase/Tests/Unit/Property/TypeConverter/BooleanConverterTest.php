@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BooleanConverterTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter
-     */
-    protected $converter;
+    protected BooleanConverter $converter;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class BooleanConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata()
+    public function checkMetadata(): void
     {
         self::assertEquals(['boolean', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         self::assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
@@ -49,7 +46,7 @@ class BooleanConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromDoesNotModifyTheBooleanSource()
+    public function convertFromDoesNotModifyTheBooleanSource(): void
     {
         $source = true;
         self::assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
@@ -58,7 +55,7 @@ class BooleanConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromCastsSourceStringToBoolean()
+    public function convertFromCastsSourceStringToBoolean(): void
     {
         $source = 'true';
         self::assertTrue($this->converter->convertFrom($source, 'boolean'));
@@ -67,7 +64,7 @@ class BooleanConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromCastsNumericSourceStringToBoolean()
+    public function convertFromCastsNumericSourceStringToBoolean(): void
     {
         $source = '1';
         self::assertTrue($this->converter->convertFrom($source, 'boolean'));

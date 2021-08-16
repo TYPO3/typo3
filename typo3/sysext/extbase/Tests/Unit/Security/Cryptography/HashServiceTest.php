@@ -27,10 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class HashServiceTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     */
-    protected $hashService;
+    protected HashService $hashService;
 
     protected function setUp(): void
     {
@@ -42,7 +39,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateHmacReturnsHashStringIfStringIsGiven()
+    public function generateHmacReturnsHashStringIfStringIsGiven(): void
     {
         $hash = $this->hashService->generateHmac('asdf');
         self::assertIsString($hash);
@@ -51,7 +48,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateHmacReturnsHashStringWhichContainsSomeSalt()
+    public function generateHmacReturnsHashStringWhichContainsSomeSalt(): void
     {
         $hash = $this->hashService->generateHmac('asdf');
         self::assertNotEquals(sha1('asdf'), $hash);
@@ -60,7 +57,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateHmacReturnsDifferentHashStringsForDifferentInputStrings()
+    public function generateHmacReturnsDifferentHashStringsForDifferentInputStrings(): void
     {
         $hash1 = $this->hashService->generateHmac('asdf');
         $hash2 = $this->hashService->generateHmac('blubb');
@@ -70,7 +67,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generatedHmacCanBeValidatedAgain()
+    public function generatedHmacCanBeValidatedAgain(): void
     {
         $string = 'asdf';
         $hash = $this->hashService->generateHmac($string);
@@ -80,7 +77,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function generatedHmacWillNotBeValidatedIfHashHasBeenChanged()
+    public function generatedHmacWillNotBeValidatedIfHashHasBeenChanged(): void
     {
         $string = 'asdf';
         $hash = 'myhash';
@@ -90,7 +87,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function appendHmacAppendsHmacToGivenString()
+    public function appendHmacAppendsHmacToGivenString(): void
     {
         $string = 'This is some arbitrary string ';
         $hashedString = $this->hashService->appendHmac($string);
@@ -100,7 +97,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort()
+    public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort(): void
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode(1320830276);
@@ -110,7 +107,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended()
+    public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended(): void
     {
         $this->expectException(InvalidHashException::class);
         $this->expectExceptionCode(1320830018);
@@ -120,7 +117,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid()
+    public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid(): void
     {
         $this->expectException(InvalidHashException::class);
         $this->expectExceptionCode(1320830018);
@@ -130,7 +127,7 @@ class HashServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAndStripHmacReturnsTheStringWithoutHmac()
+    public function validateAndStripHmacReturnsTheStringWithoutHmac(): void
     {
         $string = ' Some arbitrary string with special characters: öäüß!"§$ ';
         $hashedString = $this->hashService->appendHmac($string);

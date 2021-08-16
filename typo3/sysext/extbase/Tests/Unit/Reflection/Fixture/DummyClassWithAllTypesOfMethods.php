@@ -22,15 +22,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class DummyClassWithAllTypesOfMethods
 {
-    public function publicMethod()
+    public function publicMethod(): void
     {
     }
 
-    protected function protectedMethod()
+    protected function protectedMethod(): void
     {
     }
 
-    private function privateMethod()
+    private function privateMethod(): void
     {
     }
 
@@ -40,54 +40,54 @@ class DummyClassWithAllTypesOfMethods
      * @author
      * @version
      */
-    public function methodWithIgnoredTags()
+    public function methodWithIgnoredTags(): void
     {
     }
 
-    public function injectSettings()
+    public function injectSettings(): void
     {
         // Will fail, as injectSettings is blacklisted
     }
 
-    public function injectMethodWithoutParam()
+    public function injectMethodWithoutParam(): void
     {
         // Will fail, as there is no param
     }
 
-    protected function injectMethodThatIsProtected()
+    protected function injectMethodThatIsProtected(): void
     {
         // Will fail, as method is protected
     }
 
-    public function injectFoo(DummyClassWithAllTypesOfMethods $foo)
+    public function injectFoo(DummyClassWithAllTypesOfMethods $foo): void
     {
         // Will succeed
     }
 
-    public static function staticMethod()
+    public static function staticMethod(): void
     {
     }
 
-    public static function methodWithMandatoryParam($param)
+    public static function methodWithMandatoryParam($param): void
     {
     }
 
-    public static function methodWithNullableParam($param = null)
+    public static function methodWithNullableParam($param = null): void
     {
     }
 
-    public static function methodWithDefaultValueParam($param = 'foo')
+    public static function methodWithDefaultValueParam($param = 'foo'): void
     {
     }
 
-    public static function methodWithTypeHintedParam(string $param)
+    public static function methodWithTypeHintedParam(string $param): void
     {
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods $param
      */
-    public function methodWithDocBlockTypeHintOnly($param)
+    public function methodWithDocBlockTypeHintOnly($param): void
     {
     }
 }

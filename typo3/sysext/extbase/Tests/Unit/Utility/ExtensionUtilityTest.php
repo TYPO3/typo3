@@ -69,7 +69,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginWorksForMinimalisticSetup()
+    public function configurePluginWorksForMinimalisticSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
@@ -86,7 +86,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginCreatesCorrectDefaultTypoScriptSetup()
+    public function configurePluginCreatesCorrectDefaultTypoScriptSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
@@ -98,7 +98,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginWorksForASingleControllerAction()
+    public function configurePluginWorksForASingleControllerAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
@@ -126,7 +126,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginThrowsExceptionIfExtensionNameIsEmpty()
+    public function configurePluginThrowsExceptionIfExtensionNameIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891990);
@@ -139,7 +139,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginThrowsExceptionIfPluginNameIsEmpty()
+    public function configurePluginThrowsExceptionIfPluginNameIsEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891988);
@@ -152,7 +152,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginRespectsDefaultActionAsANonCacheableAction()
+    public function configurePluginRespectsDefaultActionAsANonCacheableAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
@@ -183,7 +183,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginRespectsNonDefaultActionAsANonCacheableAction()
+    public function configurePluginRespectsNonDefaultActionAsANonCacheableAction(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
@@ -214,7 +214,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault()
+    public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
@@ -254,7 +254,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
-    public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault()
+    public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
@@ -298,7 +298,7 @@ class ExtensionUtilityTest extends UnitTestCase
      *
      * @test
      */
-    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUnderscoredExtensionNameAndIconPathNotGiven()
+    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUnderscoredExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
@@ -322,7 +322,7 @@ class ExtensionUtilityTest extends UnitTestCase
      *
      * @test
      */
-    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven()
+    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
@@ -346,7 +346,7 @@ class ExtensionUtilityTest extends UnitTestCase
      *
      * @test
      */
-    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfIconPathIsGiven()
+    public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfIconPathIsGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
@@ -367,7 +367,7 @@ class ExtensionUtilityTest extends UnitTestCase
      *
      * @test
      */
-    public function sameTypeConvertersRegisteredAreAddedOnlyOnce()
+    public function sameTypeConvertersRegisteredAreAddedOnlyOnce(): void
     {
         $typeConverterClassName = ArrayConverter::class;
 
@@ -388,7 +388,7 @@ class ExtensionUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function controllerArgumentsAndExpectedObjectName()
+    public function controllerArgumentsAndExpectedObjectName(): array
     {
         return [
             'Vendor TYPO3\CMS, extension, controller given' => [
@@ -428,7 +428,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @param string $controllerObjectName
      * @test
      */
-    public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName)
+    public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName): void
     {
         self::assertEquals(
             $controllerObjectName,
@@ -444,7 +444,7 @@ class ExtensionUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function checkResolveControllerAliasFromControllerClassNameDataProvider()
+    public function checkResolveControllerAliasFromControllerClassNameDataProvider(): array
     {
         return [
             'Class in root namespace without controller suffix' => [
@@ -489,7 +489,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @param string $controllerClassName
      * @test
      */
-    public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName)
+    public function checkResolveControllerAliasFromControllerClassName(string $expectedControllerAlias, string $controllerClassName): void
     {
         self::assertEquals(
             $expectedControllerAlias,
@@ -502,7 +502,7 @@ class ExtensionUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function checkResolveVendorFromExtensionAndControllerClassNameDataProvider()
+    public function checkResolveVendorFromExtensionAndControllerClassNameDataProvider(): array
     {
         return [
             'Class in root namespace' => [
@@ -545,7 +545,7 @@ class ExtensionUtilityTest extends UnitTestCase
         string $expectedVendor,
         string $extensionName,
         string $controllerClassName
-    ) {
+    ): void {
         self::assertEquals(
             $expectedVendor,
             ExtensionUtility::resolveVendorFromExtensionAndControllerClassName(

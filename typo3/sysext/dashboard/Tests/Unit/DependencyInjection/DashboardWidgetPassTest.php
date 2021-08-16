@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use TYPO3\CMS\Dashboard\DependencyInjection\DashboardWidgetPass;
@@ -26,11 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DashboardWidgetPassTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var DashboardWidgetPass
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected DashboardWidgetPass $subject;
 
     /**
      * @var ContainerBuilder

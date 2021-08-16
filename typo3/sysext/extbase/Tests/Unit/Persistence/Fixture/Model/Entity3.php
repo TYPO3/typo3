@@ -29,10 +29,10 @@ class Entity3 extends AbstractEntity
      *
      * @var string
      */
-    public $someString;
+    public string $someString;
 
     /**
      * @var int
      */
-    public $someInteger;
+    public int $someInteger;
 }

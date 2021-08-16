@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FloatValidatorTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = FloatValidator::class;
+    protected string $validatorClassName = FloatValidator::class;
 
     public function setup(): void
     {
@@ -60,7 +57,7 @@ class FloatValidatorTest extends UnitTestCase
      * @dataProvider validFloats
      * @param mixed $float
      */
-    public function floatValidatorReturnsNoErrorsForAValidFloat($float)
+    public function floatValidatorReturnsNoErrorsForAValidFloat($float): void
     {
         self::assertFalse($this->validator->validate($float)->hasErrors());
     }
@@ -70,7 +67,7 @@ class FloatValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function invalidFloats()
+    public function invalidFloats(): array
     {
         return [
             [1029437],
@@ -84,7 +81,7 @@ class FloatValidatorTest extends UnitTestCase
      * @dataProvider invalidFloats
      * @param mixed $float
      */
-    public function floatValidatorReturnsErrorForAnInvalidFloat($float)
+    public function floatValidatorReturnsErrorForAnInvalidFloat($float): void
     {
         self::assertTrue($this->validator->validate($float)->hasErrors());
     }
@@ -92,7 +89,7 @@ class FloatValidatorTest extends UnitTestCase
     /**
      * test
      */
-    public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject()
+    public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
         self::assertCount(1, $this->validator->validate(123456)->getErrors());
     }

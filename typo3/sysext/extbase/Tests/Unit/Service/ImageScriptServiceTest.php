@@ -36,10 +36,7 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var ImageService
-     */
-    protected $subject;
+    protected ImageService $subject;
 
     /**
      * Initialize ImageService and environment service mock

@@ -47,7 +47,7 @@ class ClassWithSettersAndConstructor
         return $this->property2;
     }
 
-    public function setProperty2($property2)
+    public function setProperty2($property2): void
     {
         $this->property2 = $property2;
     }

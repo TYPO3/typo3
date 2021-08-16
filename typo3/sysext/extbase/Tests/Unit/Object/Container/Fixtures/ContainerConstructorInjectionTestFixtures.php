@@ -19,15 +19,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures;
 
 class SimpleTypeConstructorArgument
 {
-    /**
-     * @var bool
-     */
-    public $foo;
+    public bool $foo;
 
     /**
      * @param bool $foo
      */
-    public function __construct($foo = false)
+    public function __construct(bool $foo = false)
     {
         $this->foo = $foo;
     }
@@ -39,15 +36,8 @@ class ArgumentTestClass
 
 class MandatoryConstructorArgument
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
-
-    /**
-     * @var array
-     */
-    public $allArguments;
+    public ArgumentTestClass $argumentTestClass;
+    public array $allArguments;
 
     /**
      * @param ArgumentTestClass $argumentTestClass
@@ -61,13 +51,10 @@ class MandatoryConstructorArgument
 
 class OptionalConstructorArgument
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
+    public ?ArgumentTestClass $argumentTestClass;
 
     /**
-     * @param ArgumentTestClass $argumentTestClass
+     * @param ArgumentTestClass|null $argumentTestClass
      */
     public function __construct(ArgumentTestClass $argumentTestClass = null)
     {
@@ -77,15 +64,8 @@ class OptionalConstructorArgument
 
 class MandatoryConstructorArgumentTwo
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
-
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClassTwo;
+    public ArgumentTestClass $argumentTestClass;
+    public ArgumentTestClass $argumentTestClassTwo;
 
     /**
      * @param ArgumentTestClass $argumentTestClass
@@ -100,19 +80,12 @@ class MandatoryConstructorArgumentTwo
 
 class TwoConstructorArgumentsSecondOptional
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
-
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClassTwo;
+    public ArgumentTestClass $argumentTestClass;
+    public ?ArgumentTestClass $argumentTestClassTwo;
 
     /**
      * @param ArgumentTestClass $argumentTestClass
-     * @param ArgumentTestClass $argumentTestClassTwo
+     * @param ArgumentTestClass|null $argumentTestClassTwo
      */
     public function __construct(ArgumentTestClass $argumentTestClass, ArgumentTestClass $argumentTestClassTwo = null)
     {
@@ -123,15 +96,8 @@ class TwoConstructorArgumentsSecondOptional
 
 class TwoConstructorArgumentsFirstOptional
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
-
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClassTwo;
+    public ?ArgumentTestClass $argumentTestClass;
+    public ArgumentTestClass $argumentTestClassTwo;
 
     /**
      * The extbase container code uses PHP parameter reflection isOptional() to determine
@@ -142,7 +108,7 @@ class TwoConstructorArgumentsFirstOptional
      *
      * @see https://bugs.php.net/bug.php?id=62715
      *
-     * @param ArgumentTestClass $argumentTestClass
+     * @param ArgumentTestClass|null $argumentTestClass
      * @param ArgumentTestClass $argumentTestClassTwo
      */
     public function __construct(ArgumentTestClass $argumentTestClass = null, ArgumentTestClass $argumentTestClassTwo)
@@ -154,19 +120,12 @@ class TwoConstructorArgumentsFirstOptional
 
 class TwoConstructorArgumentsBothOptional
 {
-    /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClass;
+    public ?ArgumentTestClass $argumentTestClass;
+    public ?ArgumentTestClass $argumentTestClassTwo;
 
     /**
-     * @var ArgumentTestClass
-     */
-    public $argumentTestClassTwo;
-
-    /**
-     * @param ArgumentTestClass $argumentTestClass
-     * @param ArgumentTestClass $argumentTestClassTwo
+     * @param ArgumentTestClass|null $argumentTestClass
+     * @param ArgumentTestClass|null $argumentTestClassTwo
      */
     public function __construct(ArgumentTestClass $argumentTestClass = null, ArgumentTestClass $argumentTestClassTwo = null)
     {

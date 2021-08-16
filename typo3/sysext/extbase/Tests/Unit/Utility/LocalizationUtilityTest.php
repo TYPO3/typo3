@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Instance of configurationManagerInterface, injected to subject
      *
@@ -45,16 +47,13 @@ class LocalizationUtilityTest extends UnitTestCase
 
     /**
      * LOCAL_LANG array fixture
-     *
-     * @var array
      */
-    protected $LOCAL_LANG = [];
+    protected array $LOCAL_LANG = [];
 
     /**
      * File path of locallang for extension "core"
-     * @var string
      */
-    protected $languageFilePath = '';
+    protected string $languageFilePath = '';
 
     /**
      * Prepare class mocking some dependencies
@@ -220,7 +219,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function implodeTypoScriptLabelArrayWorks()
+    public function implodeTypoScriptLabelArrayWorks(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
         $method = $reflectionClass->getMethod('flattenTypoScriptLabelArray');
@@ -251,7 +250,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateForEmptyStringKeyReturnsNull()
+    public function translateForEmptyStringKeyReturnsNull(): void
     {
         self::assertNull(LocalizationUtility::translate('', 'extbase'));
     }
@@ -259,7 +258,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateForEmptyStringKeyWithArgumentsReturnsNull()
+    public function translateForEmptyStringKeyWithArgumentsReturnsNull(): void
     {
         self::assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
     }
@@ -308,7 +307,7 @@ class LocalizationUtilityTest extends UnitTestCase
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
+    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
     {
         $this->configurationManagerInterfaceProphecy
             ->getConfiguration('Framework', 'core', null)
@@ -339,7 +338,7 @@ class LocalizationUtilityTest extends UnitTestCase
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
+    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
     {
         $this->configurationManagerInterfaceProphecy
             ->getConfiguration('Framework', 'core', null)
@@ -461,7 +460,7 @@ class LocalizationUtilityTest extends UnitTestCase
      * @dataProvider loadTypoScriptLabelsProvider
      * @test
      */
-    public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected)
+    public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
@@ -489,7 +488,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function clearLabelWithTypoScript()
+    public function clearLabelWithTypoScript(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
@@ -530,7 +529,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateThrowsExceptionWithEmptyExtensionNameIfKeyIsNotPrefixedWithLLL()
+    public function translateThrowsExceptionWithEmptyExtensionNameIfKeyIsNotPrefixedWithLLL(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1498144052);
@@ -540,7 +539,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists()
+    public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 

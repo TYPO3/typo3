@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -26,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class StringConverterTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     * @var TypeConverterInterface
      */
     protected $converter;
 
@@ -39,7 +40,7 @@ class StringConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata()
+    public function checkMetadata(): void
     {
         self::assertEquals(['string', 'integer'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         self::assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
@@ -49,7 +50,7 @@ class StringConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromShouldReturnSourceString()
+    public function convertFromShouldReturnSourceString(): void
     {
         self::assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
     }
@@ -57,7 +58,7 @@ class StringConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrue()
+    public function canConvertFromShouldReturnTrue(): void
     {
         self::assertTrue($this->converter->canConvertFrom('myString', 'string'));
     }
@@ -65,7 +66,7 @@ class StringConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
+    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }

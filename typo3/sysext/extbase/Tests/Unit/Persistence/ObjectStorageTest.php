@@ -28,7 +28,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function anObjectCanBeAttached()
+    public function anObjectCanBeAttached(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -42,7 +42,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function anObjectCanBeDetached()
+    public function anObjectCanBeDetached(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -59,7 +59,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetSetAssociatesDataToAnObjectInTheStorage()
+    public function offsetSetAssociatesDataToAnObjectInTheStorage(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -73,7 +73,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetUnsetRemovesAnObjectFromTheStorage()
+    public function offsetUnsetRemovesAnObjectFromTheStorage(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -90,7 +90,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetUnsetKeyRemovesAnObjectFromTheStorage()
+    public function offsetUnsetKeyRemovesAnObjectFromTheStorage(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -107,7 +107,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetGetReturnsTheDataAssociatedWithAnObject()
+    public function offsetGetReturnsTheDataAssociatedWithAnObject(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -121,7 +121,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetGetKeyReturnsTheObject()
+    public function offsetGetKeyReturnsTheObject(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -135,7 +135,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetExistsChecksWhetherAnObjectExistsInTheStorage()
+    public function offsetExistsChecksWhetherAnObjectExistsInTheStorage(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -148,7 +148,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetExistsChecksWhetherKeyExistsInTheStorage()
+    public function offsetExistsChecksWhetherKeyExistsInTheStorage(): void
     {
         $objectStorage = new ObjectStorage();
         $objectStorage->attach(new \stdClass());
@@ -159,7 +159,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetExistsWorksWithEmptyStorageAndIntegerKey()
+    public function offsetExistsWorksWithEmptyStorageAndIntegerKey(): void
     {
         $objectStorage = new ObjectStorage();
         self::assertFalse($objectStorage->offsetExists(0));
@@ -168,7 +168,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetExistsWorksWithEmptyStorageAndStringKey()
+    public function offsetExistsWorksWithEmptyStorageAndStringKey(): void
     {
         $objectStorage = new ObjectStorage();
         self::assertFalse($objectStorage->offsetExists('0'));
@@ -177,7 +177,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInfoReturnsTheDataAssociatedWithTheCurrentIteratorEntry()
+    public function getInfoReturnsTheDataAssociatedWithTheCurrentIteratorEntry(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -197,7 +197,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setInfoSetsTheDataAssociatedWithTheCurrentIteratorEntry()
+    public function setInfoSetsTheDataAssociatedWithTheCurrentIteratorEntry(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -215,7 +215,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeAllRemovesObjectsContainedInAnotherStorageFromTheCurrentStorage()
+    public function removeAllRemovesObjectsContainedInAnotherStorageFromTheCurrentStorage(): void
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
@@ -232,7 +232,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAllAddsAllObjectsFromAnotherStorage()
+    public function addAllAddsAllObjectsFromAnotherStorage(): void
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
@@ -250,7 +250,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theStorageCanBeRetrievedAsArray()
+    public function theStorageCanBeRetrievedAsArray(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -264,7 +264,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function allRelationsAreNotDirtyOnAttaching()
+    public function allRelationsAreNotDirtyOnAttaching(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -281,7 +281,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function allRelationsAreNotDirtyOnAttachingAndRemoving()
+    public function allRelationsAreNotDirtyOnAttachingAndRemoving(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -298,7 +298,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theRelationsAreNotDirtyOnReAddingAtSamePosition()
+    public function theRelationsAreNotDirtyOnReAddingAtSamePosition(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();
@@ -316,7 +316,7 @@ class ObjectStorageTest extends UnitTestCase
     /**
      * @test
      */
-    public function theRelationsAreDirtyOnReAddingAtOtherPosition()
+    public function theRelationsAreDirtyOnReAddingAtOtherPosition(): void
     {
         $objectStorage = new ObjectStorage();
         $object1 = new \stdClass();

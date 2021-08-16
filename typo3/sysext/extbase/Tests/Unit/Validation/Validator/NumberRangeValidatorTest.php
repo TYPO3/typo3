@@ -25,15 +25,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class NumberRangeValidatorTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = NumberRangeValidator::class;
+    protected string $validatorClassName = NumberRangeValidator::class;
 
     /**
      * @test
      */
-    public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange()
+    public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
@@ -46,7 +43,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function numberRangeValidatorReturnsErrorForANumberOutOfRange()
+    public function numberRangeValidatorReturnsErrorForANumberOutOfRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)
@@ -59,7 +56,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange()
+    public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange(): void
     {
         $options = ['minimum' => 1000, 'maximum' => 0];
         $validator = $this->getMockBuilder($this->validatorClassName)
@@ -72,7 +69,7 @@ class NumberRangeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function numberRangeValidatorReturnsErrorForAString()
+    public function numberRangeValidatorReturnsErrorForAString(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
         $validator = $this->getMockBuilder($this->validatorClassName)

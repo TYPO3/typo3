@@ -27,9 +27,9 @@ class DummyValidator implements ValidatorInterface
 {
     /**
      * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      */
-    public function validate($value)
+    public function validate($value): Result
     {
         return new Result();
     }
@@ -37,7 +37,7 @@ class DummyValidator implements ValidatorInterface
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return [];
     }

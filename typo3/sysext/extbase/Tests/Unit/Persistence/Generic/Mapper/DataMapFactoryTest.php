@@ -40,7 +40,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function oneToOneRelation()
+    public function oneToOneRelation(): array
     {
         return [
             ['Tx_Myext_Domain_Model_Foo'],
@@ -52,7 +52,7 @@ class DataMapFactoryTest extends UnitTestCase
      * @test
      * @dataProvider oneToOneRelation
      */
-    public function setRelationsDetectsOneToOneRelation($className)
+    public function setRelationsDetectsOneToOneRelation($className): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $columnConfiguration = [
@@ -72,7 +72,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingOneToOneRelationSetsRelationTableMatchFields()
+    public function settingOneToOneRelationSetsRelationTableMatchFields(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $matchFields = [
@@ -95,7 +95,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingOneToManyRelationSetsRelationTableMatchFields()
+    public function settingOneToManyRelationSetsRelationTableMatchFields(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $matchFields = [
@@ -118,7 +118,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRelationsDetectsOneToOneRelationWithIntermediateTable()
+    public function setRelationsDetectsOneToOneRelationWithIntermediateTable(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $columnConfiguration = [
@@ -138,7 +138,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRelationsDetectsOneToManyRelation()
+    public function setRelationsDetectsOneToManyRelation(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $columnConfiguration = [
@@ -159,7 +159,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRelationsDetectsSelectRenderTypeSingleAsNonRelational()
+    public function setRelationsDetectsSelectRenderTypeSingleAsNonRelational(): void
     {
         $columnMap = new ColumnMap('foo', 'foo');
         $columnConfiguration = [
@@ -184,7 +184,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider()
+    public function columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider(): array
     {
         return [
             'maxitems not set' => ['', 'RELATION_HAS_MANY'],
@@ -198,7 +198,7 @@ class DataMapFactoryTest extends UnitTestCase
      *
      * @dataProvider columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider
      */
-    public function setRelationsDetectsTypeGroupAndRelationManyToMany($maxitems, $relation)
+    public function setRelationsDetectsTypeGroupAndRelationManyToMany($maxitems, $relation): void
     {
         $columnMap = new ColumnMap('foo', 'foo');
         if (empty($maxitems)) {
@@ -224,7 +224,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRelationsDetectsManyToManyRelationOfTypeSelect()
+    public function setRelationsDetectsManyToManyRelationOfTypeSelect(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $columnConfiguration = [
@@ -244,7 +244,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRelationsDetectsManyToManyRelationOfTypeInlineWithIntermediateTable()
+    public function setRelationsDetectsManyToManyRelationOfTypeInlineWithIntermediateTable(): void
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $columnConfiguration = [
@@ -264,7 +264,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnMapIsInitializedWithManyToManyRelationOfTypeSelect()
+    public function columnMapIsInitializedWithManyToManyRelationOfTypeSelect(): void
     {
         $leftColumnsDefinition = [
             'rights' => [
@@ -291,7 +291,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnMapIsInitializedWithOppositeManyToManyRelationOfTypeSelect()
+    public function columnMapIsInitializedWithOppositeManyToManyRelationOfTypeSelect(): void
     {
         $rightColumnsDefinition = [
             'lefts' => [
@@ -318,7 +318,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnMapIsInitializedWithManyToManyRelationOfTypeInlineAndIntermediateTable()
+    public function columnMapIsInitializedWithManyToManyRelationOfTypeInlineAndIntermediateTable(): void
     {
         $leftColumnsDefinition = [
             'rights' => [
@@ -345,7 +345,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnMapIsInitializedWithManyToManyRelationWithoutPidColumn()
+    public function columnMapIsInitializedWithManyToManyRelationWithoutPidColumn(): void
     {
         $leftColumnsDefinition = [
             'rights' => [
@@ -367,7 +367,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function columnMapIsInitializedWithManyToManyRelationWithPidColumn()
+    public function columnMapIsInitializedWithManyToManyRelationWithPidColumn(): void
     {
         $leftColumnsDefinition = [
             'rights' => [
@@ -389,7 +389,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider()
+    public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
     {
         return [
             'date field' => ['date', 'date'],
@@ -405,7 +405,7 @@ class DataMapFactoryTest extends UnitTestCase
      * @test
      * @dataProvider columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider
      */
-    public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFields($type, $expectedValue)
+    public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFields($type, $expectedValue): void
     {
         $columnDefinition = [
             'type' => 'input',
@@ -437,7 +437,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildDataMapThrowsExceptionIfClassNameIsNotKnown()
+    public function buildDataMapThrowsExceptionIfClassNameIsNotKnown(): void
     {
         $this->expectException(InvalidClassException::class);
         // @TODO expectExceptionCode is 0
@@ -454,7 +454,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildDataMapFetchesSubclassesRecursively()
+    public function buildDataMapFetchesSubclassesRecursively(): void
     {
         self::markTestSkipped('Incomplete mocking in a complex scenario. This should be a functional test');
         $configuration = [
@@ -502,7 +502,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function classNameTableNameMappings()
+    public function classNameTableNameMappings(): array
     {
         return [
             'Core classes' => [LogEntry::class, 'tx_belog_domain_model_logentry'],
@@ -516,7 +516,7 @@ class DataMapFactoryTest extends UnitTestCase
      * @test
      * @dataProvider classNameTableNameMappings
      */
-    public function resolveTableNameReturnsExpectedTablenames($className, $expected)
+    public function resolveTableNameReturnsExpectedTablenames($className, $expected): void
     {
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
         self::assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
@@ -525,7 +525,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createColumnMapReturnsAValidColumnMap()
+    public function createColumnMapReturnsAValidColumnMap(): void
     {
         /** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
@@ -544,7 +544,7 @@ class DataMapFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function tcaConfigurationsContainingTypeAndInternalType()
+    public function tcaConfigurationsContainingTypeAndInternalType(): array
     {
         return [
             [['type' => 'input'], TableColumnType::INPUT, null],
@@ -573,7 +573,7 @@ class DataMapFactoryTest extends UnitTestCase
      * @param string $type
      * @param string $internalType
      */
-    public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType)
+    public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType): void
     {
         /** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory | AccessibleObjectInterface */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);

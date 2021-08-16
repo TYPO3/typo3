@@ -26,17 +26,15 @@ class ValueObject extends AbstractValueObject
 {
     /**
      * The value object's name
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * Constructs this value object
      *
      * @param string $name Name of this blog
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->setName($name);
     }
@@ -46,7 +44,7 @@ class ValueObject extends AbstractValueObject
      *
      * @param string $name The value object's name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -56,7 +54,7 @@ class ValueObject extends AbstractValueObject
      *
      * @return string The value object's name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

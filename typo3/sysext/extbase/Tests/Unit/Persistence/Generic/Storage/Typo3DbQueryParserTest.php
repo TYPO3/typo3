@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -47,7 +49,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class Typo3DbQueryParserTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Clean up after tests
      */
@@ -60,7 +63,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint()
+    public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -90,7 +93,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderThrowsExceptionOnNotImplementedConstraint()
+    public function convertQueryToDoctrineQueryBuilderThrowsExceptionOnNotImplementedConstraint(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -122,7 +125,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderAddsSimpleAndWhere()
+    public function convertQueryToDoctrineQueryBuilderAddsSimpleAndWhere(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -154,7 +157,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderAddsNotConstraint()
+    public function convertQueryToDoctrineQueryBuilderAddsNotConstraint(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -187,7 +190,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderAddsAndConstraint()
+    public function convertQueryToDoctrineQueryBuilderAddsAndConstraint(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -228,7 +231,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertQueryToDoctrineQueryBuilderAddsOrConstraint()
+    public function convertQueryToDoctrineQueryBuilderAddsOrConstraint(): void
     {
         // Prepare subject, turn off initialize qb method and inject qb prophecy revelation
         $subject = $this->getAccessibleMock(
@@ -267,9 +270,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
     }
 
     /**
-     * @return \Prophecy\Prophecy\ObjectProphecy
+     * @return ObjectProphecy
      */
-    protected function getQueryBuilderWithExpressionBuilderProphet()
+    protected function getQueryBuilderWithExpressionBuilderProphet(): ObjectProphecy
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
@@ -280,9 +283,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
     }
 
     /**
-     * @return \Prophecy\Prophecy\ObjectProphecy
+     * @return ObjectProphecy
      */
-    protected function getQueryBuilderProphetWithQueryBuilderForSubselect()
+    protected function getQueryBuilderProphetWithQueryBuilderForSubselect(): ObjectProphecy
     {
         $connectionProphet = $this->prophesize(Connection::class);
         $connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
@@ -307,7 +310,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForDefaultLanguage()
+    public function addGetLanguageStatementWorksForDefaultLanguage(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -328,7 +331,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForNonDefaultLanguage()
+    public function addGetLanguageStatementWorksForNonDefaultLanguage(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -350,7 +353,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksInBackendContextWithNoGlobalTypoScriptFrontendControllerAvailable()
+    public function addGetLanguageStatementWorksInBackendContextWithNoGlobalTypoScriptFrontendControllerAvailable(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -371,7 +374,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned()
+    public function addGetLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -394,7 +397,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForForeignLanguageWithoutSubselection()
+    public function addGetLanguageStatementWorksForForeignLanguageWithoutSubselection(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -416,7 +419,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned()
+    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -445,7 +448,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
+    public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -472,7 +475,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addGetLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
+    public function addGetLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
         $table = 'tt_content';
         $GLOBALS['TCA'][$table]['ctrl'] = [
@@ -501,7 +504,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function orderStatementGenerationWorks()
+    public function orderStatementGenerationWorks(): void
     {
         $mockSource = $this->getMockBuilder(Selector::class)
             ->onlyMethods(['getNodeTypeName'])
@@ -527,7 +530,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function orderStatementGenerationThrowsExceptionOnUnsupportedOrder()
+    public function orderStatementGenerationThrowsExceptionOnUnsupportedOrder(): void
     {
         $this->expectException(UnsupportedOrderException::class);
         $this->expectExceptionCode(1242816074);
@@ -552,7 +555,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function orderStatementGenerationWorksWithMultipleOrderings()
+    public function orderStatementGenerationWorksWithMultipleOrderings(): void
     {
         $mockSource = $this->getMockBuilder(Selector::class)
             ->onlyMethods(['getNodeTypeName'])
@@ -586,7 +589,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
     }
 
-    public function providerForVisibilityConstraintStatement()
+    public function providerForVisibilityConstraintStatement(): array
     {
         return [
             'in be: include all' => ['BE', true, [], true, ''],
@@ -604,7 +607,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      * @test
      * @dataProvider providerForVisibilityConstraintStatement
      */
-    public function visibilityConstraintStatementIsGeneratedAccordingToTheQuerySettings($mode, $ignoreEnableFields, $enableFieldsToBeIgnored, $deletedValue, $expectedSql)
+    public function visibilityConstraintStatementIsGeneratedAccordingToTheQuerySettings($mode, $ignoreEnableFields, $enableFieldsToBeIgnored, $deletedValue, $expectedSql): void
     {
         $tableName = 'tx_foo_table';
         $GLOBALS['TCA'][$tableName]['ctrl'] = [
@@ -658,7 +661,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         unset($GLOBALS['TCA'][$tableName]);
     }
 
-    public function providerForRespectEnableFields()
+    public function providerForRespectEnableFields(): array
     {
         return [
             'in be: respectEnableFields=false' => ['BE', false, ''],
@@ -672,7 +675,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      * @test
      * @dataProvider providerForRespectEnableFields
      */
-    public function respectEnableFieldsSettingGeneratesCorrectStatement($mode, $respectEnableFields, $expectedSql)
+    public function respectEnableFieldsSettingGeneratesCorrectStatement($mode, $respectEnableFields, $expectedSql): void
     {
         $tableName = 'tx_foo_table';
         $GLOBALS['TCA'][$tableName]['ctrl'] = [
@@ -728,7 +731,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * @test
      */
-    public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent()
+    public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent(): void
     {
         $this->expectException(InconsistentQuerySettingsException::class);
         $this->expectExceptionCode(1460975922);
@@ -759,7 +762,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * DataProvider for addPageIdStatement Tests
      */
-    public function providerForAddPageIdStatementData()
+    public function providerForAddPageIdStatementData(): array
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         return [
@@ -796,7 +799,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      * @test
      * @dataProvider providerForAddPageIdStatementData
      */
-    public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql, $storagePageIds = [42, 27])
+    public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql, $storagePageIds = [42, 27]): void
     {
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'rootLevel' => $rootLevel

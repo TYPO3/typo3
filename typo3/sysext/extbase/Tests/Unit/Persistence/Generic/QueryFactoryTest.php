@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,16 +36,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var string
-     */
-    protected $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
+    use ProphecyTrait;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
-     */
-    protected $queryFactory;
+    protected string $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
+    protected QueryFactory $queryFactory;
 
     /**
      * @var \Psr\Container\ContainerInterface
@@ -86,7 +81,7 @@ class QueryFactoryTest extends UnitTestCase
         );
     }
 
-    public function getStaticAndRootLevelAndExpectedResult()
+    public function getStaticAndRootLevelAndExpectedResult(): array
     {
         return [
             'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => [false, false, true],
@@ -104,7 +99,7 @@ class QueryFactoryTest extends UnitTestCase
      * @dataProvider getStaticAndRootLevelAndExpectedResult
      * @test
      */
-    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult)
+    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult): void
     {
         $this->dataMap->expects(self::any())->method('getIsStatic')->willReturn($static);
         $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);

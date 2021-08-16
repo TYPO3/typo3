@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
+use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
@@ -34,6 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\Entity;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Repository\EntityRepository;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -42,47 +45,47 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RepositoryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var Repository|MockObject|AccessibleObjectInterface
      */
     protected $repository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $mockObjectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
+     * @var QueryFactory
      */
     protected $mockQueryFactory;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
+     * @var BackendInterface
      */
     protected $mockBackend;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+     * @var Session
      */
     protected $mockSession;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @var PersistenceManagerInterface
      */
     protected $mockPersistenceManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @var QueryInterface
      */
     protected $mockQuery;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+     * @var QuerySettingsInterface
     */
     protected $mockQuerySettings;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     * @var ConfigurationManager
      */
     protected $mockConfigurationManager;
 
@@ -117,7 +120,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function abstractRepositoryImplementsRepositoryInterface()
+    public function abstractRepositoryImplementsRepositoryInterface(): void
     {
         self::assertInstanceOf(RepositoryInterface::class, $this->repository);
     }
@@ -125,7 +128,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createQueryCallsPersistenceManagerWithExpectedClassName()
+    public function createQueryCallsPersistenceManagerWithExpectedClassName(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManager::class);
         $mockPersistenceManager->expects(self::once())->method('createQueryForType')->with('ExpectedType');
@@ -139,7 +142,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createQuerySetsDefaultOrderingIfDefined()
+    public function createQuerySetsDefaultOrderingIfDefined(): void
     {
         $orderings = ['foo' => QueryInterface::ORDER_ASCENDING];
         $mockQuery = $this->createMock(QueryInterface::class);
@@ -159,7 +162,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findAllCreatesQueryAndReturnsResultOfExecuteCall()
+    public function findAllCreatesQueryAndReturnsResultOfExecuteCall(): void
     {
         $expectedResult = $this->createMock(QueryResultInterface::class);
 
@@ -178,7 +181,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findByIdentifierReturnsResultOfGetObjectByIdentifierCallFromBackend()
+    public function findByIdentifierReturnsResultOfGetObjectByIdentifierCallFromBackend(): void
     {
         $identifier = '42';
         $object = new \stdClass();
@@ -198,7 +201,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDelegatesToPersistenceManager()
+    public function addDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -211,7 +214,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeDelegatesToPersistenceManager()
+    public function removeDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -224,7 +227,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateDelegatesToPersistenceManager()
+    public function updateDelegatesToPersistenceManager(): void
     {
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -237,7 +240,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria()
+    public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $mockQueryResult = $this->createMock(QueryResultInterface::class);
         $mockQuery = $this->createMock(QueryInterface::class);
@@ -257,7 +260,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria()
+    public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $object = new \stdClass();
         $mockQueryResult = $this->createMock(QueryResultInterface::class);
@@ -280,7 +283,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria()
+    public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
     {
         $mockQuery = $this->createMock(QueryInterface::class);
         $mockQueryResult = $this->createMock(QueryResultInterface::class);
@@ -301,7 +304,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled()
+    public function magicCallMethodTriggersAnErrorIfUnknownMethodsAreCalled(): void
     {
         $this->expectException(UnsupportedMethodException::class);
         $this->expectExceptionCode(1233180480);
@@ -315,7 +318,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addChecksObjectType()
+    public function addChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1248363335);
@@ -326,7 +329,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeChecksObjectType()
+    public function removeChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1248363336);
@@ -337,7 +340,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateChecksObjectType()
+    public function updateChecksObjectType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1249479625);
@@ -350,7 +353,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructSetsObjectTypeFromClassName()
+    public function constructSetsObjectTypeFromClassName(): void
     {
         $repository = new EntityRepository($this->mockObjectManager);
 
@@ -365,7 +368,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings()
+    public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings(): void
     {
         $this->mockQuery = $this->createMock(Query::class);
         $mockDefaultQuerySettings = $this->createMock(QuerySettingsInterface::class);
@@ -379,7 +382,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function findByUidReturnsResultOfGetObjectByIdentifierCall()
+    public function findByUidReturnsResultOfGetObjectByIdentifierCall(): void
     {
         $fakeUid = '123';
         $object = new \stdClass();
@@ -396,7 +399,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateRejectsObjectsOfWrongType()
+    public function updateRejectsObjectsOfWrongType(): void
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1249479625);
@@ -407,7 +410,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult()
+    public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult(): void
     {
         $queryResultArray = [
             0 => [
@@ -424,7 +427,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult()
+    public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult(): void
     {
         $queryResultArray = [];
         $this->mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');

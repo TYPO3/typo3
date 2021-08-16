@@ -34,10 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CollectionValidatorTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = CollectionValidator::class;
+    protected string $validatorClassName = CollectionValidator::class;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
@@ -75,7 +72,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorReturnsNoErrorsForANullValue()
+    public function collectionValidatorReturnsNoErrorsForANullValue(): void
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
@@ -83,7 +80,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorFailsForAValueNotBeingACollection()
+    public function collectionValidatorFailsForAValueNotBeingACollection(): void
     {
         self::assertTrue($this->validator->validate(new \stdClass())->hasErrors());
     }
@@ -91,7 +88,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator()
+    public function collectionValidatorValidatesEveryElementOfACollectionWithTheGivenElementValidator(): void
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
@@ -121,7 +118,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping()
+    public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping(): void
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
@@ -170,7 +167,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorIsValidEarlyReturnsOnUninitializedLazyObjectStorages()
+    public function collectionValidatorIsValidEarlyReturnsOnUninitializedLazyObjectStorages(): void
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
@@ -192,7 +189,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages()
+    public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages(): void
     {
         // todo: this test is rather complex, consider making it a functional test with fixtures
 

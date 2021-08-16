@@ -29,7 +29,7 @@ class MethodTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsMethodVisibility()
+    public function classSchemaDetectsMethodVisibility(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
 
@@ -52,7 +52,7 @@ class MethodTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsInjectMethods()
+    public function classSchemaDetectsInjectMethods(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
         self::assertTrue($classSchema->hasInjectMethods());
@@ -76,7 +76,7 @@ class MethodTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsStaticMethods()
+    public function classSchemaDetectsStaticMethods(): void
     {
         self::assertTrue(
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
