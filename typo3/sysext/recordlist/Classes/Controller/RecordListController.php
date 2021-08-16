@@ -204,7 +204,7 @@ class RecordListController
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $this->pointer =  max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
         $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
-        $this->search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? '');
+        $this->search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? $this->search_field);
         $this->search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
         $this->showLimit = (int)($parsedBody['showLimit'] ?? $queryParams['showLimit'] ?? 0);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
