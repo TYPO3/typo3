@@ -42,7 +42,7 @@ New :js:`ModuleStorage` component is capable of providing similar behavior,
 corresponding state is written to `sessionStorage` and available for current
 client user session (per browser tab).
 
-.. code-block: javascript
+.. code-block:: javascript
 
    import {ModuleStateStorage} from '../Storage/ModuleStateStorage';
    let identifier: string, selection: string|null, mount: string|null;
