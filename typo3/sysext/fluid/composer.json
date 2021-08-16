@@ -20,8 +20,8 @@
 	},
 	"require": {
 		"symfony/dependency-injection": "^5.3.0",
-		"typo3/cms-core": "11.3.*@dev",
-		"typo3/cms-extbase": "11.3.*@dev",
+		"typo3/cms-core": "11.3.3",
+		"typo3/cms-extbase": "11.3.3",
 		"typo3fluid/fluid": "^2.7.0"
 	},
 	"conflict": {
