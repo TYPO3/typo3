@@ -586,9 +586,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @return bool
      * @internal should only be used from within TYPO3 Core
      */
-    public function isRTE()
+    public function isRTE(): bool
     {
-        return (bool)$this->uc['edit_RTE'];
+        return (bool)($this->uc['edit_RTE'] ?? false);
     }
 
     /**
