@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Impexp\Controller\ExportController;
@@ -101,12 +102,14 @@ class PresetsTest extends AbstractImportExportTestCase
         $moduleTemplateMock->expects(self::once())->method('addFlashMessage')->with(self::equalTo($expected));
         $moduleTemplateFactoryMock = $this->getAccessibleMock(ModuleTemplateFactory::class, ['create'], [], '', false);
         $moduleTemplateFactoryMock->expects(self::any())->method('create')->willReturn($moduleTemplateMock);
+        $responseFactory = $this->getAccessibleMock(ResponseFactory::class, ['dummy'], [], '', false);
 
         $subject = $this->getAccessibleMock(ExportController::class, ['addFlashMessage'], [
             $iconFactoryMock,
             $pageRendererMock,
             $uriBuilderMock,
-            $moduleTemplateFactoryMock
+            $moduleTemplateFactoryMock,
+            $responseFactory
         ]);
         $subject->_set('moduleTemplate', $moduleTemplateMock);
         $inData = $subject->preprocessInputData($inData);

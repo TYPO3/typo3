@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Controller;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -59,15 +61,19 @@ class ExportController extends ImportExportController
      */
     protected $presetRepository;
 
+    protected ResponseFactoryInterface $responseFactory;
+
     public function __construct(
         IconFactory $iconFactory,
         PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        ResponseFactoryInterface $responseFactory
     ) {
         parent::__construct($iconFactory, $pageRenderer, $uriBuilder, $moduleTemplateFactory);
 
         $this->presetRepository = GeneralUtility::makeInstance(PresetRepository::class);
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -274,15 +280,15 @@ class ExportController extends ImportExportController
 
             // Export by download:
             if ($inData['download_export'] ?? null) {
-                // @todo: create response and return!
                 $fileName = $this->export->getOrGenerateExportFileNameWithFileExtension();
                 $fileContent = $this->export->render();
-                $mimeType = 'application/octet-stream';
-                header('Content-Type: ' . $mimeType);
-                header('Content-Length: ' . strlen($fileContent));
-                header('Content-Disposition: attachment; filename=' . PathUtility::basename($fileName));
-                echo $fileContent;
-                die;
+                $response = $this->responseFactory->createResponse()
+                    ->withHeader('Content-Type', 'application/octet-stream')
+                    ->withHeader('Content-Length', (string)strlen($fileContent))
+                    ->withHeader('Content-Disposition', 'attachment; filename=' . PathUtility::basename($fileName));
+                $response->getBody()->write($fileContent);
+                // @todo: Refactor to *return* the response instead of throwing PropagateResponseException
+                throw new PropagateResponseException($response, 1629196918);
             }
 
             // Export by saving on server:
