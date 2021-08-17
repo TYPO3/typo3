@@ -1,12 +1,3 @@
 <f:render partial="TaskList" arguments="{tasks: tasks, moduleUri: moduleUri, missingClasses: missingClasses}" />
 
-<button class="btn btn-default" name="go_cron">
-    <core:icon identifier="actions-clock" />
-    <f:translate key="label.cronjobSelected" />
-</button>
-<button class="btn btn-default" name="go">
-    <core:icon identifier="actions-play" />
-    <f:translate key="label.executeSelected" />
-</button>
-
 <f:render partial="ServerTime" arguments="{now: now}" />

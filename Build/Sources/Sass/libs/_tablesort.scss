@@ -4,8 +4,8 @@ th[role=columnheader]:not([data-sort-method="none"]) {
 
     &:after {
         content: '';
-        float: right;
-        margin-top: 7px;
+        position: absolute;
+        margin: 7px 0 0 3px;
         border-width: 4px 4px 0;
         border-style: solid;
         border-color: #404040 transparent;

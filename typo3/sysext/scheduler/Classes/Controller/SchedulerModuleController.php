@@ -155,6 +155,7 @@ class SchedulerModuleController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -754,10 +755,11 @@ class SchedulerModuleController
     {
         // Continue if some elements have been chosen for execution
         if (isset($this->submittedData['execute']) && !empty($this->submittedData['execute'])) {
+            $taskIds = GeneralUtility::trimExplode(',', $this->submittedData['execute']);
             // Get list of registered classes
             $registeredClasses = $this->getRegisteredClasses();
             // Loop on all selected tasks
-            foreach ($this->submittedData['execute'] as $uid) {
+            foreach ($taskIds as $uid) {
                 try {
                     // Try fetching the task
                     $task = $this->scheduler->fetchTask($uid);

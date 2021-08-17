@@ -7,128 +7,195 @@
     <f:for each="{tasks}" as="taskGroup" iteration="groupIterator">
         <f:if condition="{taskGroup.tasks -> f:count()}">
             <div class="tx_scheduler_mod1_table">
-                <div class="panel panel-space panel-default recordlist">
-                    <f:if condition="{taskGroup.groupName} == ''">
-                        <f:then>
-                            <f:if condition="{tasks -> f:count()}>1">
-                                <div class="panel-heading" data-task-group-id="{groupIterator.index}">
-                                    <a href="#" title="{f:translate(key: 'label.group')}" class="t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#recordlist-task-group-{groupIterator.index}">
-                                        {f:translate(id: 'label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
-                                    </a>
-                                    <a href="#" class="pull-right t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#recordlist-task-group-{groupIterator.index}">
-                                        <span class="caret"></span>
-                                    </a>
-                                </div>
+                <div class="panel panel-default overflow-visible" data-multi-record-selection-identifier="task-group-{groupIterator.index}">
+                    <div class="panel-heading" data-task-group-id="{groupIterator.index}">
+                        <button type="button" title="{f:translate(key: 'label.group')}" class="btn btn-link fw-bold pt-1 p-0" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{groupIterator.index}">
+                            <f:if condition="!{taskGroup.groupName}">
+                                <f:then>
+                                    <span>{f:translate(id: 'label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                </f:then>
+                                <f:else>
+                                    <span>{taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                </f:else>
                             </f:if>
-                        </f:then>
-                        <f:else>
-                            <div class="panel-heading" data-task-group-id="{groupIterator.index}">
-                                <a href="#" title="{f:translate(key: 'label.group')}" class="t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#recordlist-task-group-{groupIterator.index}">
-                                    {taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
-                                </a>
-                                <a href="#" class="pull-right t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#recordlist-task-group-{groupIterator.index}">
-                                    <span class="caret"></span>
-                                </a>
-                            </div>
-                        </f:else>
-                    </f:if>
-                    <div class="collapse show" data-state="expanded" id="recordlist-task-group-{groupIterator.index}">
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{groupIterator.index}">
+                            <span class="collapseIcon">
+                                <core:icon identifier="actions-view-list-collapse" size="small" />
+                            </span>
+                        </button>
+                        <f:render partial="MultiRecordSelectionActions" />
+                    </div>
+                    <div class="collapse show" id="scheduler-task-group-{groupIterator.index}">
                         <div class="table-fit mb-0">
                             <table class="table table-striped table-hover taskGroup-table">
-                            <thead>
-                                <tr class="taskGroup_{groupIterator.index}">
-                                    <th><span class="t-span"><a class="btn btn-default checkall" href="#" id="checkall" title="{f:translate(key:'label.checkAll')}"><core:icon identifier="actions-document-select"/></a></span></th>
-                                    <th><span class="t-span"><f:translate key="label.id"/></span></th>
-                                    <th><span class="t-span"><f:translate key="task"/></span></th>
-                                    <th></th>
-                                    <th><span class="t-span"><f:translate key="label.type"/></span></th>
-                                    <th><span class="t-span"><f:translate key="label.frequency"/></span></th>
-                                    <th><span class="t-span"><f:translate key="label.parallel"/></span></th>
-                                    <th><span class="t-span"><f:translate key="label.lastExecution"/></span></th>
-                                    <th><span class="t-span"><f:translate key="label.nextExecution"/></span></th>
-                                    <th><span class="t-span"></span></th>
-                                </tr>
-                            </thead>
-                            <f:for each="{taskGroup.tasks}" as="taskRecord" iteration="taskIterator">
-                                <f:if condition="{taskRecord.validClass}">
-                                    <tr class="{taskRecord.showAsDisabled} taskGroup_{groupIterator.index}">
-                                        <td><span class="t-span"><label class="btn btn-default btn-checkbox"><input type="checkbox" name="tx_scheduler[execute][]" value="{taskRecord.uid}" id="task_{taskRecord.uid}"><span class="t3-icon fa"></span></label></span></td>
-                                        <td class="right"><span class="t-span">{taskRecord.uid}</span></td>
-                                        <td class="nowrap-disabled">
-                                            <span class="t-span">
-                                                <div class="name">
-                                                    <a href="{moduleUri}&CMD=edit&tx_scheduler[uid]={taskRecord.uid}">
-                                                        <strong>{taskRecord.classTitle} ({taskRecord.classExtension})</strong>
-                                                        <f:if condition="{taskRecord.progress}">
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{taskRecord.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {taskRecord.progress}%;">{taskRecord.progress}%</div>
-                                                            </div>
-                                                        </f:if>
-                                                        <f:if condition="{taskRecord.additionalInformation}">
-                                                            <div class="additional-information"><f:format.nl2br>{taskRecord.additionalInformation}</f:format.nl2br></div>
-                                                        </f:if>
-                                                    </a>
-                                                </div>
-                                                <f:if condition="{taskRecord.description} != ''">
-                                                    <div class="text-muted" style="margin-top: 0.5em;"><f:format.nl2br>{taskRecord.description}</f:format.nl2br></div>
-                                                </f:if>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <f:for each="{taskRecord.labels}" as="label">
-                                                <f:if condition="{taskRecord.validClass}">
-                                                    <span class="label label-{label.class}" title="{label.description}">{label.text}</span>
-                                                </f:if>
-                                            </f:for>
-                                        </td>
-                                        <td><span class="t-span">{taskRecord.execType}</span></td>
-                                        <td><span class="t-span">{taskRecord.frequency}</span></td>
-                                        <td><span class="t-span">{taskRecord.multiple}</span></td>
-                                        <td><span class="t-span">{taskRecord.lastExecution}</span></td>
-                                        <td><span class="t-span {taskRecord.labels.nextexecution.class}">{taskRecord.nextDate}</span></td>
-                                        <td class="nowrap">
-                                            <span class="t-span">
-                                                <f:if condition="{taskRecord.isRunning}">
-                                                    <f:then>
-                                                        <div class="btn-group" role="group">
-                                                            <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=stop&tx_scheduler[uid]={taskRecord.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.stop')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}">
-                                                                <core:icon identifier="actions-close"/>
-                                                            </a>
-                                                        </div>
-                                                    </f:then>
-                                                    <f:else>
-                                                        <div class="btn-group" role="group">
-                                                            <a data-bs-toggle="tooltip" class="btn btn-default" href="{moduleUri}&CMD=edit&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
-                                                                <core:icon identifier="actions-open"/>
-                                                            </a>
-                                                            <a data-bs-toggle="tooltip" class="btn btn-default" href="{moduleUri}&CMD=toggleHidden&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:{taskRecord.translationKey}')}">
-                                                                <f:if condition="{taskRecord.translationKey} == 'enable'">
-                                                                    <f:then>
-                                                                        <core:icon identifier="actions-edit-unhide"/>
-                                                                    </f:then>
-                                                                    <f:else>
-                                                                        <core:icon identifier="actions-edit-hide"/>
-                                                                    </f:else>
-                                                                </f:if>
-                                                            </a>
-                                                            <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=delete&tx_scheduler[uid]={taskRecord.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.delete')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}">
-                                                                <core:icon identifier="actions-edit-delete"/>
-                                                            </a>
-                                                        </div>
-                                                        <div class="btn-group" role="group">
-                                                            <a class="btn btn-default" data-bs-toggle="tooltip" href="{moduleUri}&CMD=setNextExecutionTime&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'action.run_task_cron')}">
-                                                                <core:icon identifier="actions-clock"/>
-                                                            </a>
-                                                            <a class="btn btn-default" data-bs-toggle="tooltip" href="{moduleUri}&tx_scheduler[execute][]={taskRecord.uid}" title="{f:translate(key:'action.run_task')}">
-                                                                <core:icon identifier="actions-play"/>
-                                                            </a>
-                                                        </div>
-                                                    </f:else>
-                                                </f:if>
-                                            </span>
-                                        </td>
+                                <thead>
+                                    <tr class="taskGroup_{groupIterator.index}">
+                                        <th data-sort-method="none">
+                                            <div class="btn-group dropdown position-static">
+                                                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                                                    <core:icon identifier="content-special-div" size="small" />
+                                                </button>
+                                                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
+                                                    <li>
+                                                        <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
+                                                            <core:icon identifier="actions-check-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')}">
+                                                            <core:icon identifier="actions-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')}">
+                                                            <core:icon identifier="actions-document-select" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </th>
+                                        <th><f:translate key="label.id"/></th>
+                                        <th><f:translate key="task"/></th>
+                                        <th><f:translate key="label.status"/></th>
+                                        <th><f:translate key="label.type"/></th>
+                                        <th><f:translate key="label.frequency"/></th>
+                                        <th><f:translate key="label.parallel"/></th>
+                                        <th><f:translate key="label.lastExecution"/></th>
+                                        <th><f:translate key="label.nextExecution"/></th>
+                                        <th data-sort-method="none"></th>
                                     </tr>
-                                </f:if>
+                                </thead>
+                                <tbody>
+                                    <f:for each="{taskGroup.tasks}" as="taskRecord" iteration="taskIterator">
+                                        <f:if condition="{taskRecord.validClass}">
+                                            <tr class="{taskRecord.showAsDisabled} taskGroup_{groupIterator.index}" data-task-id="{taskRecord.uid}">
+                                                <td>
+                                                    <span class="form-check form-toggle">
+                                                        <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
+                                                    </span>
+                                                </td>
+                                                <td class="right">{taskRecord.uid}</td>
+                                                <td class="nowrap-disabled">
+                                                    <div class="name">
+                                                        <a href="{moduleUri}&CMD=edit&tx_scheduler[uid]={taskRecord.uid}">
+                                                            <strong>{taskRecord.classTitle} ({taskRecord.classExtension})</strong>
+                                                            <f:if condition="{taskRecord.progress}">
+                                                                <div class="progress">
+                                                                    <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{taskRecord.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {taskRecord.progress}%;">{taskRecord.progress}%</div>
+                                                                </div>
+                                                            </f:if>
+                                                            <f:if condition="{taskRecord.additionalInformation}">
+                                                                <div class="additional-information"><f:format.nl2br>{taskRecord.additionalInformation}</f:format.nl2br></div>
+                                                            </f:if>
+                                                        </a>
+                                                    </div>
+                                                    <f:if condition="{taskRecord.description} != ''">
+                                                        <div class="text-muted" style="margin-top: 0.5em;"><f:format.nl2br>{taskRecord.description}</f:format.nl2br></div>
+                                                    </f:if>
+                                                </td>
+                                                <td>
+                                                    <f:for each="{taskRecord.labels}" as="label">
+                                                        <f:if condition="{taskRecord.validClass}">
+                                                            <span class="label label-{label.class}" title="{label.description}">{label.text}</span>
+                                                        </f:if>
+                                                    </f:for>
+                                                </td>
+                                                <td>{taskRecord.execType}</td>
+                                                <td>{taskRecord.frequency}</td>
+                                                <td>{taskRecord.multiple}</td>
+                                                <td>{taskRecord.lastExecution}</td>
+                                                <td><span class="{taskRecord.labels.nextexecution.class}">{taskRecord.nextDate}</span></td>
+                                                <td class="nowrap">
+                                                    <f:if condition="{taskRecord.isRunning}">
+                                                        <f:then>
+                                                            <div class="btn-group" role="group">
+                                                                <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=stop&tx_scheduler[uid]={taskRecord.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.stop')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}">
+                                                                    <core:icon identifier="actions-close"/>
+                                                                </a>
+                                                            </div>
+                                                        </f:then>
+                                                        <f:else>
+                                                            <div class="btn-group" role="group">
+                                                                <a data-bs-toggle="tooltip" class="btn btn-default" href="{moduleUri}&CMD=edit&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                                                                    <core:icon identifier="actions-open"/>
+                                                                </a>
+                                                                <a data-bs-toggle="tooltip" class="btn btn-default" href="{moduleUri}&CMD=toggleHidden&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:{taskRecord.translationKey}')}">
+                                                                    <f:if condition="{taskRecord.translationKey} == 'enable'">
+                                                                        <f:then>
+                                                                            <core:icon identifier="actions-edit-unhide"/>
+                                                                        </f:then>
+                                                                        <f:else>
+                                                                            <core:icon identifier="actions-edit-hide"/>
+                                                                        </f:else>
+                                                                    </f:if>
+                                                                </a>
+                                                                <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=delete&tx_scheduler[uid]={taskRecord.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.delete')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}">
+                                                                    <core:icon identifier="actions-edit-delete"/>
+                                                                </a>
+                                                            </div>
+                                                            <div class="btn-group" role="group">
+                                                                <a class="btn btn-default" data-bs-toggle="tooltip" href="{moduleUri}&CMD=setNextExecutionTime&tx_scheduler[uid]={taskRecord.uid}" title="{f:translate(key:'action.run_task_cron')}">
+                                                                    <core:icon identifier="actions-clock"/>
+                                                                </a>
+                                                                <button type="submit" class="btn btn-default" data-bs-toggle="tooltip" name="tx_scheduler[execute]" value="{taskRecord.uid}" title="{f:translate(key:'action.run_task')}">
+                                                                    <core:icon identifier="actions-play"/>
+                                                                </button>
+                                                            </div>
+                                                        </f:else>
+                                                    </f:if>
+                                                </td>
+                                            </tr>
+                                        </f:if>
+                                    </f:for>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </f:if>
+    </f:for>
+    <f:if condition="{missingClasses}">
+        <div class="tx_scheduler_mod1_table">
+            <div class="panel panel-default mt-2">
+                <div class="panel-heading taskGroup" data-task-group-id="missing">
+                    <button type="button" title="{f:translate(key: 'label.noClass')}" class="btn btn-link fw-bold pt-1 p-0" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing">
+                        <f:translate key="label.noClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'label.noClass.taskCount')}">{missingClasses -> f:count()}</span>)
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing">
+                        <span class="collapseIcon">
+                            <core:icon identifier="actions-view-list-collapse" size="small" />
+                        </span>
+                    </button>
+                </div>
+                <div class="collapse show" id="scheduler-task-group-missing">
+                    <div class="table-fit">
+                        <table class="table table-striped table-hover">
+                            <tr class="taskGroup" data-task-group-id="0">
+                                <td class="nowrap-disabled"><span>{f:translate(key:'msg.invalidTaskClass') -> f:format.raw()}</span></td>
+                            </tr>
+                        </table>
+                        <table class="table table-striped table-hover taskGroup-table">
+                            <thead>
+                            <tr>
+                                <th><f:translate key="label.id"/></th>
+                                <th><f:translate key="task"/></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <f:for each="{missingClasses}" as="missingClass">
+                                <tr>
+                                    <td class="right">{missingClass.uid}</td>
+                                    <td><span class="label label-danger">{missingClass.class}</span></td>
+                                    <td class="nowrap">
+                                        <div class="btn-group" role="group">
+                                            <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=delete&tx_scheduler[uid]={missingClass.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.delete')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}">
+                                                <core:icon identifier="actions-edit-delete"/>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                             </f:for>
                         </table>
                     </div>
@@ -136,51 +203,4 @@
             </div>
         </div>
     </f:if>
-</f:for>
-
-<f:if condition="{missingClasses}">
-    <div class="tx_scheduler_mod1_table">
-        <div class="panel panel-space panel-default recordlist">
-            <div class="panel-heading taskGroup" data-task-group-id="missing">
-                <f:translate key="label.noClass"/>
-                (<span class="t3js-table-total-items" title="{f:translate(key: 'label.noClass.taskCount')}">{missingClasses -> f:count()}</span>)
-                <a href="#" class="pull-right t3js-toggle-recordlist"
-                    data-table="task-group-missing" data-bs-toggle="collapse" data-bs-target="#recordlist-task-group-missing">
-                    <span class="caret"></span>
-                </a>
-            </div>
-            <div class="collapse show" data-state="expanded" id="recordlist-task-group-missing">
-                <div class="table-fit">
-                    <table class="table table-striped table-hover">
-                        <tr class="taskGroup" data-task-group-id="0">
-                            <td class="nowrap-disabled"><span>{f:translate(key:'msg.invalidTaskClass') -> f:format.raw()}</span></td>
-                        </tr>
-                    </table>
-                    <table class="table table-striped table-hover taskGroup-table">
-                        <thead>
-                        <tr>
-                            <th><span class="t-span"><f:translate key="label.id"/></span></th>
-                            <th><span class="t-span"><f:translate key="task"/></span></th>
-                            <th><span class="t-span"></span></th>
-                        </tr>
-                        </thead>
-                        <f:for each="{missingClasses}" as="missingClass">
-                            <tr>
-                                <td class="right">{missingClass.uid}</td>
-                                <td><span class="label label-danger">{missingClass.class}</span></td>
-                                <td class="nowrap">
-                                    <div class="btn-group" role="group">
-                                        <a data-bs-toggle="tooltip" class="btn btn-default t3js-modal-trigger" href="{moduleUri}&CMD=delete&tx_scheduler[uid]={missingClass.uid}" data-severity="warning" data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}" data-bs-content="{f:translate(key:'msg.delete')}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}">
-                                            <core:icon identifier="actions-edit-delete"/>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </f:for>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</f:if>
 </html>

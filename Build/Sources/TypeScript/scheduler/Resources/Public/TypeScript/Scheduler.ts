@@ -14,7 +14,9 @@
 import $ from 'jquery';
 import 'tablesort';
 import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import Modal = require('TYPO3/CMS/Backend/Modal');
+import Icons = require('TYPO3/CMS/Backend/Icons');
 import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 
 interface TableNumberMapping {
@@ -27,8 +29,6 @@ declare let defaultNumberOfDays: TableNumberMapping;
  * @exports TYPO3/CMS/Scheduler/Scheduler
  */
 class Scheduler {
-  private allCheckedStatus: boolean = false;
-
   private static updateElementBrowserTriggers(): void {
     const triggers = document.querySelectorAll('.t3js-element-browser');
 
@@ -114,15 +114,6 @@ class Scheduler {
   }
 
   /**
-   * Check or uncheck all checkboxes
-   */
-  public checkOrUncheckAllCheckboxes = (theSelector: JQuery): boolean => {
-    theSelector.parents('.tx_scheduler_mod1_table').find(':checkbox').prop('checked', !this.allCheckedStatus);
-    this.allCheckedStatus = !this.allCheckedStatus;
-    return false;
-  }
-
-  /**
    * Toggle the relevant form fields by task type
    */
   public toggleFieldsByTaskType = (taskType: number): void => {
@@ -133,22 +124,9 @@ class Scheduler {
   }
 
   /**
-   * Toggle the visibility of task groups by clicking anywhere on the
-   * task group header
-   */
-  public toggleTaskGroups = (theSelector: JQuery): void => {
-    let taskGroup = theSelector.data('task-group-id');
-    $('#recordlist-task-group-' + taskGroup).collapse('toggle');
-  }
-
-  /**
    * Registers listeners
    */
   public initializeEvents = (): void => {
-    $('.checkall').on('click', (evt: JQueryEventObject): void => {
-      this.checkOrUncheckAllCheckboxes($(evt.currentTarget));
-    });
-
     $('#task_class').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangedTaskClass($(evt.currentTarget));
     });
@@ -185,6 +163,11 @@ class Scheduler {
         size: Modal.sizes.large
       });
     });
+
+    new RegularEvent('show.bs.collapse', this.toggleCollapseIcon).bindTo(document);
+    new RegularEvent('hide.bs.collapse', this.toggleCollapseIcon).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:go', this.executeTasks).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:go_cron', this.executeTasks).bindTo(document);
 
     window.addEventListener('message', this.listenOnElementBrowser);
   }
@@ -223,6 +206,48 @@ class Scheduler {
       field.value = result[1];
     }
   }
+
+  private toggleCollapseIcon (e: Event): void {
+    const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .collapseIcon');
+    if (collapseIcon !== null) {
+      Icons
+        .getIcon((e.type === 'show.bs.collapse' ? 'actions-view-list-collapse' : 'actions-view-list-expand'), Icons.sizes.small)
+        .done((icon: string): void => {
+          collapseIcon.innerHTML = icon;
+        });
+    }
+  }
+
+  private executeTasks (e: CustomEvent): void {
+    const form: HTMLFormElement = document.querySelector('#tx_scheduler_form');
+    if (form === null) {
+      return;
+    }
+    const taskIds: Array<string> = [];
+    (e.detail.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+      const checkboxContainer: HTMLElement = checkbox.closest('tr');
+      if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
+        taskIds.push(checkboxContainer.dataset.taskId);
+      }
+    });
+    if (taskIds.length) {
+      const executeTasks: HTMLInputElement = document.createElement('input');
+      executeTasks.setAttribute('type', 'hidden');
+      executeTasks.setAttribute('name', 'tx_scheduler[execute]');
+      executeTasks.setAttribute('value', taskIds.join(','));
+      form.append(executeTasks);
+
+      if (e.type === 'multiRecordSelection:action:go_cron') {
+        const goCron: HTMLInputElement = document.createElement('input');
+        goCron.setAttribute('type', 'hidden');
+        goCron.setAttribute('name', 'go_cron');
+        goCron.setAttribute('value', '1');
+        form.append(goCron);
+      }
+
+      form.submit();
+    }
+  };
 }
 
 export = new Scheduler();
