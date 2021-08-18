@@ -27,14 +27,12 @@
                 </div>
             </div>
         </form>
-        <f:render section="buttons" arguments="{allowDelete: allowDelete}"/>
-        <div class="table-fit">
+        <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
+        <div class="table-fit mb-0">
             <table class="table table-hover" id="itemsInRecycler">
                 <thead>
                     <tr>
-                        <th>
-                            <button type="button" class="btn btn-default t3js-toggle-all"><core:icon identifier="actions-document-select" /></button>
-                        </th>
+                        <th><f:render section="multiRecordSelectionCheckboxActions" /></th>
                         <th><f:translate key="table.header.recordtype" /></th>
                         <th><f:translate key="table.header.record" /></th>
                         <th><f:translate key="table.header.tstamp" /></th>
@@ -47,27 +45,61 @@
                 </tbody>
             </table>
         </div>
-        <f:render section="buttons" arguments="{allowDelete: allowDelete}"/>
+        <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
         <nav>
         </nav>
     </div>
 </f:section>
 
-<f:section name="buttons">
-    <div class="form-group">
-        <button class="btn btn-default disabled" data-action="massundo" disabled>
-            <core:icon identifier="actions-edit-undo" />
-            <span class="text">
-                <f:translate key="button.undo" />
-            </span>
+<f:section name="multiRecordSelectionCheckboxActions">
+    <div class="btn-group dropdown position-static">
+        <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+            <core:icon identifier="content-special-div" size="small" />
         </button>
-        <f:if condition="{allowDelete}">
-            <button class="btn btn-default disabled" data-action="massdelete" disabled>
-                <core:icon identifier="actions-edit-delete" />
-                <span class="text">
-                    <f:translate key="button.delete" />
-                </span>
-            </button>
-        </f:if>
+        <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
+                    <core:icon identifier="actions-check-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')}">
+                    <core:icon identifier="actions-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')}">
+                    <core:icon identifier="actions-document-select" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+                </button>
+            </li>
+        </ul>
+    </div>
+</f:section>
+
+<f:section name="multiRecordSelectionActions">
+    <div class="multi-record-selection-actions-wrapper">
+        <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+            <div class="col">
+                <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+            </div>
+            <div class="col">
+                <button class="btn btn-default btn-sm" data-multi-record-selection-action="massundo" data-multi-record-selection-action-config='{"idField": "uid"}'>
+                    <core:icon identifier="actions-edit-undo" />
+                    <span class="text">
+                        <f:translate key="button.undo" />
+                    </span>
+                </button>
+            </div>
+            <f:if condition="{allowDelete}">
+                <div class="col">
+                    <button class="btn btn-default btn-sm" data-multi-record-selection-action="massdelete" data-multi-record-selection-action-config='{"idField": "uid"}'>
+                        <core:icon identifier="actions-edit-delete" />
+                        <span class="text">
+                            <f:translate key="button.delete" />
+                        </span>
+                    </button>
+                </div>
+            </f:if>
+        </div>
     </div>
 </f:section>

@@ -18,6 +18,7 @@ import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction')
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum RecyclerIdentifiers {
   searchForm = '#recycler-form',
@@ -28,9 +29,10 @@ enum RecyclerIdentifiers {
   recyclerTable = '#itemsInRecycler',
   paginator = '#recycler-index nav',
   reloadAction = 'a[data-action=reload]',
-  massUndo = 'button[data-action=massundo]',
-  massDelete = 'button[data-action=massdelete]',
-  toggleAll = '.t3js-toggle-all',
+  undo = 'a[data-action=undo]',
+  delete = 'a[data-action=delete]',
+  massUndo = 'button[data-multi-record-selection-action=massundo]',
+  massDelete = 'button[data-multi-record-selection-action=massdelete]',
 }
 
 /**
@@ -46,7 +48,6 @@ class Recycler {
     itemsPerPage: TYPO3.settings.Recycler.pagingSize,
   };
   public markedRecordsForMassAction: Array<string> = [];
-  public allToggled: boolean = false;
 
   /**
    * Reloads the page tree
@@ -77,7 +78,6 @@ class Recycler {
       $reloadAction: $(RecyclerIdentifiers.reloadAction),
       $massUndo: $(RecyclerIdentifiers.massUndo),
       $massDelete: $(RecyclerIdentifiers.massDelete),
-      $toggleAll: $(RecyclerIdentifiers.toggleAll),
     };
   }
 
@@ -127,10 +127,10 @@ class Recycler {
     });
 
     // clicking "recover" in single row
-    this.elements.$recyclerTable.on('click', '[data-action=undo]', this.undoRecord);
+    new RegularEvent('click', this.undoRecord).delegateTo(document, RecyclerIdentifiers.undo);
 
     // clicking "delete" in single row
-    this.elements.$recyclerTable.on('click', '[data-action=delete]', this.deleteRecord);
+    new RegularEvent('click', this.deleteRecord).delegateTo(document, RecyclerIdentifiers.delete);
 
     this.elements.$reloadAction.on('click', (e: JQueryEventObject): void => {
       e.preventDefault();
@@ -199,14 +199,9 @@ class Recycler {
     });
 
     // checkboxes in the table
-    this.elements.$toggleAll.on('click', (): void => {
-      this.allToggled = !this.allToggled;
-      $('input[type="checkbox"]').prop('checked', this.allToggled).trigger('change');
-    });
-    this.elements.$recyclerTable.on('change', 'tr input[type=checkbox]', this.handleCheckboxSelects);
-
-    this.elements.$massUndo.on('click', this.undoRecord);
-    this.elements.$massDelete.on('click', this.deleteRecord);
+    new RegularEvent('checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:massundo', this.undoRecord).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:massdelete', this.deleteRecord).bindTo(document);
   }
 
   /**
@@ -230,8 +225,8 @@ class Recycler {
   /**
    * Handles the clicks on checkboxes in the records table
    */
-  private handleCheckboxSelects = (e: JQueryEventObject): void => {
-    const $checkbox = $(e.currentTarget);
+  private handleCheckboxStateChanged = (e: Event): void => {
+    const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
     const table = $tr.data('table');
     const uid = $tr.data('uid');
@@ -239,29 +234,20 @@ class Recycler {
 
     if ($checkbox.prop('checked')) {
       this.markedRecordsForMassAction.push(record);
-      $tr.addClass('warning');
     } else {
       const index = this.markedRecordsForMassAction.indexOf(record);
       if (index > -1) {
         this.markedRecordsForMassAction.splice(index, 1);
       }
-      $tr.removeClass('warning');
     }
 
     if (this.markedRecordsForMassAction.length > 0) {
-      if (this.elements.$massUndo.hasClass('disabled')) {
-        this.elements.$massUndo.removeClass('disabled').removeAttr('disabled');
-      }
-      if (this.elements.$massDelete.hasClass('disabled')) {
-        this.elements.$massDelete.removeClass('disabled').removeAttr('disabled');
-      }
-
-      const btnTextUndo = this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length]);
-      const btnTextDelete = this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length]);
-
-      this.elements.$massUndo.find('span.text').text(btnTextUndo);
-      this.elements.$massDelete.find('span.text').text(btnTextDelete);
-
+      this.elements.$massUndo.find('span.text').text(
+        this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length])
+      );
+      this.elements.$massDelete.find('span.text').text(
+        this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length])
+      );
     } else {
       this.resetMassActionButtons();
     }
@@ -272,10 +258,9 @@ class Recycler {
    */
   private resetMassActionButtons(): void {
     this.markedRecordsForMassAction = [];
-    this.elements.$massUndo.addClass('disabled').attr('disabled', true);
     this.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
-    this.elements.$massDelete.addClass('disabled').attr('disabled', true);
     this.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
+    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
   }
 
   /**
@@ -350,12 +335,12 @@ class Recycler {
     });
   }
 
-  private deleteRecord = (e: JQueryEventObject): void => {
+  private deleteRecord = (e: Event): void => {
     if (TYPO3.settings.Recycler.deleteDisable) {
       return;
     }
 
-    const $tr = $(e.currentTarget).parents('tr');
+    const $tr = $(e.target).parents('tr');
     const isMassDelete = $tr.parent().prop('tagName') !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
     let records: Array<string>;
     let message: string;
@@ -389,8 +374,8 @@ class Recycler {
     ]);
   }
 
-  private undoRecord = (e: JQueryEventObject): void => {
-    const $tr = $(e.currentTarget).parents('tr');
+  private undoRecord = (e: Event): void => {
+    const $tr = $(e.target).parents('tr');
     const isMassUndo = $tr.parent().prop('tagName') !== 'TBODY'; // undoRecord() was invoked by the mass delete button
 
     let records: Array<string>;
@@ -501,9 +486,6 @@ class Recycler {
           if (reloadPageTree) {
             Recycler.refreshPageTree();
           }
-
-          // Reset toggle state
-          this.allToggled = false;
         });
       },
       complete: () => {
