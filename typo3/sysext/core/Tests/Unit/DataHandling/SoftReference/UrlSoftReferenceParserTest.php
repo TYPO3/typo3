@@ -90,6 +90,17 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     ]
                 ]
             ],
+            'No space character after the last URL matches' => [
+                '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
+                [
+                    'content' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
+                    'elements' => [
+                        2 => [
+                            'matchString' => 'https://foo.bar.baz/abc/def/ghi/.'
+                        ]
+                    ]
+                ]
+            ]
         ];
     }
 

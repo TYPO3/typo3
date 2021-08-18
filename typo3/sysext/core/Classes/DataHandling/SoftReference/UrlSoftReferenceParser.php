@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\DataHandling\SoftReference;
  */
 class UrlSoftReferenceParser extends AbstractSoftReferenceParser
 {
-    protected const REGEXP = '/([\s\'"]+)((https?|ftp):\\/\\/(?:[!#$&-;=?-\[\]_a-z~]+|%[0-9a-fA-F]{2})+)([\s\'"])/';
+    protected const REGEXP = '/([\s\'"]+)((https?|ftp):\\/\\/(?:[!#$&-;=?-\[\]_a-z~]+|%[0-9a-fA-F]{2})+)([\s\'"])?/';
 
     public function parse(string $table, string $field, int $uid, string $content, string $structurePath = ''): SoftReferenceParserResult
     {
