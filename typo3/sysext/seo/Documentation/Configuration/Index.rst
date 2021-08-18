@@ -96,6 +96,15 @@ Redirects
 Having correct redirects is a very important part of SEO. Especially the status code that is used for redirects is
 really important. Please use the appropriate status code for your use case.
 
+Example
+
+As there are no explanation for wildcard redirects in the external resources:
+trying to redirect old realulr URLs which all ends with `.html` to the new generic form you have to create a redirect with:
+Source Path[source_path] = `/(.+)\.html/`
+Target[target] = `https://www.domain.tld/$1`
+Is regular expression?[is_regexp] = checked
+
+
 External Resources:
 
 * See `Tutorial of redirect module in TYPO3 <https://www.toujou.de/en/service/tutorials/redirects/>`__ by toujou
