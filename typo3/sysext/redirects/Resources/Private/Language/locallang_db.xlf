@@ -48,6 +48,15 @@
 			<trans-unit id="sys_redirect.target_statuscode.307" resname="sys_redirect.target_statuscode.307">
 				<source>307 Temporary Redirect</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.target_statuscode.308" resname="sys_redirect.target_statuscode.308">
+				<source>308 Permanent Redirect</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.target_statuscode.keep" resname="sys_redirect.target_statuscode.keep">
+				<source>Keep HTTP method</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.target_statuscode.change" resname="sys_redirect.target_statuscode.change">
+				<source>Change HTTP method to GET</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount">
 				<source>Count</source>
 			</trans-unit>
