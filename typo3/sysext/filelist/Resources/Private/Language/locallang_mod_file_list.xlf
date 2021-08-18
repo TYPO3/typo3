@@ -12,9 +12,6 @@
 			<trans-unit id="clip_pasteInto" resname="clip_pasteInto">
 				<source>Paste into: Clipboard content is inserted into this folder</source>
 			</trans-unit>
-			<trans-unit id="selection" resname="selection">
-				<source>Selection:</source>
-			</trans-unit>
 			<trans-unit id="editMarked" resname="editMarked">
 				<source>Edit Metadata</source>
 			</trans-unit>

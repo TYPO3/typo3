@@ -90,10 +90,8 @@ class MultiRecordSelection {
     checked.forEach((checkbox: HTMLInputElement) => {
       checkbox.closest('tr').classList.add('success');
     });
-    const actionsContainer: HTMLElement = document.querySelector(Selectors.actionsSelector);
-    if (actionsContainer !== null) {
-      actionsContainer.classList.remove('hidden');
-    }
+    const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(Selectors.actionsSelector);
+    actionContainers.length && actionContainers.forEach((container: HTMLElement): void => container.classList.remove('hidden'));
   }
 
   /**
@@ -101,6 +99,21 @@ class MultiRecordSelection {
    * currently selected elements and their nature.
    */
   private static toggleActionsState(): void {
+    const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(Selectors.actionsSelector);
+    if (!actionContainers.length) {
+      // Early return in case no action containers are defined
+      return;
+    }
+
+    if (!MultiRecordSelection.getCheckboxes(CheckboxState.checked).length) {
+      // In case no checkbox is checked, hide all action containers and return
+      actionContainers.forEach((container: HTMLElement): void => container.classList.add('hidden'));
+      return;
+    }
+
+    // Remove hidden state of all action containers, since checked checkboxes exist
+    actionContainers.forEach((container: HTMLElement): void => container.classList.remove('hidden'));
+
     const actions: NodeListOf<HTMLButtonElement> = document.querySelectorAll([Selectors.actionsSelector, Buttons.actionButton].join(' '));
     if (!actions.length) {
       // Early return in case no action is defined
@@ -137,6 +150,7 @@ class MultiRecordSelection {
     DocumentService.ready().then((): void => {
       MultiRecordSelection.restoreTemporaryState();
       this.registerActions();
+      this.registerActionsEventHandlers();
       this.registerCheckboxActions();
       this.registerToggleCheckboxActions();
       this.registerDispatchCheckboxStateChangedEvent();
@@ -189,6 +203,21 @@ class MultiRecordSelection {
     MultiRecordSelection.toggleActionsState();
   }
 
+  /**
+   * Other components can dispatch the "multiRecordSelection:actions"
+   * events to influence the display depending on their custom logic.
+   */
+  private registerActionsEventHandlers(): void {
+    new RegularEvent('multiRecordSelection:actions:show', (): void => {
+      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(Selectors.actionsSelector);
+      actionContainers && actionContainers.forEach((container: HTMLElement): void => container.classList.remove('hidden'));
+    }).bindTo(document);
+    new RegularEvent('multiRecordSelection:actions:hide', (): void => {
+      const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(Selectors.actionsSelector);
+      actionContainers && actionContainers.forEach((container: HTMLElement): void => container.classList.add('hidden'));
+    }).bindTo(document);
+  }
+
   private registerCheckboxActions(): void {
     new RegularEvent('click', (e: Event, target: HTMLButtonElement): void => {
       e.preventDefault();
@@ -237,15 +266,6 @@ class MultiRecordSelection {
         checkbox.closest('tr').classList.add('success');
       } else {
         checkbox.closest('tr').classList.remove('success');
-      }
-
-      const actionsContainer: HTMLElement = document.querySelector(Selectors.actionsSelector);
-      if (actionsContainer !== null) {
-        if (MultiRecordSelection.getCheckboxes(CheckboxState.checked).length) {
-          actionsContainer.classList.remove('hidden');
-        } else {
-          actionsContainer.classList.add('hidden');
-        }
       }
 
       // Toggle actions for changed checkbox state

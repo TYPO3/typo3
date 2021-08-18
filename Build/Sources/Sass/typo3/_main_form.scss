@@ -579,3 +579,10 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
         width: 800px;
     }
 }
+
+.multi-record-selection-actions-wrapper {
+    // Calculation of min height for the multi record selection actions, based on the fact that btn-sm is used
+    min-height: floor(2px + ($padding-small-vertical * 2) + ($font-size-small * $line-height-small));
+    // Consistent space between actions and listing
+    margin: 0.5rem 0;
+}

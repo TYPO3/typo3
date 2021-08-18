@@ -341,9 +341,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup = [];
         $markup[] = '<div class="mt-4 mb-4">' . $searchBox . '</div>';
         $markup[] = '<div id="filelist">';
-        $markup[] = '  <div class="row row-cols-auto justify-content-between list-header">';
+        $markup[] = '  <div class="row row-cols-auto justify-content-between gx-0 list-header multi-record-selection-actions-wrapper">';
         $markup[] = '      <div class="col-auto">';
         $markup[] = '          <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">';
+        $markup[] = '              <div class="col">';
+        $markup[] = '                  <strong>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '</strong>';
+        $markup[] = '              </div>';
         $markup[] = '              <div class="col">';
         $markup[] = '                  <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="import" title="' . htmlspecialchars($lang->getLL('importSelection')) . '">';
         $markup[] = '                      ' . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->getLL('importSelection'));
@@ -353,7 +356,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup[] = '      </div>';
         $markup[] = '      ' . $this->getThumbnailSelector();
         $markup[] = '   </div>';
-        $markup[] = '   <table class="mt-1 table table-sm table-responsive table-striped table-hover" id="typo3-filelist" data-list-container="files">';
+        $markup[] = '   <table class="table table-sm table-responsive table-striped table-hover" id="typo3-filelist" data-list-container="files">';
         $markup[] = '       ' . $tableHeader;
         $markup[] = '       <tbody>';
         $markup[] = '         ' . implode('', $lines);

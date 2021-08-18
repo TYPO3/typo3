@@ -43,12 +43,12 @@
                 </div>
             </div>
         </div>
-        <div class="row row-cols-auto justify-content-between">
+        <div class="row row-cols-auto justify-content-between gx-0 multi-record-selection-actions-wrapper">
             <div class="col-auto">
                 <f:if condition="{listHtml} && {totalItems}">
                     <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions {f:if(condition: '!{hasSelectedElements}', then: 'hidden')}">
                         <div class="col">
-                            <strong><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:selection"/></strong>
+                            <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration}">

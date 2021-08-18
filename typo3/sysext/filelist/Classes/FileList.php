@@ -341,13 +341,11 @@ class FileList
         }
 
         return '
-            <div class="mb-4 mt-2">
-                <div class="table-fit mb-0">
-                    <table class="table table-striped table-hover" id="typo3-filelist">
-                        <thead>' . $this->addElement($theData, [], true) . '</thead>
-                        <tbody>' . $iOut . '</tbody>
-                    </table>
-                </div>
+            <div class="table-fit mb-4">
+                <table class="table table-striped table-hover" id="typo3-filelist">
+                    <thead>' . $this->addElement($theData, [], true) . '</thead>
+                    <tbody>' . $iOut . '</tbody>
+                </table>
             </div>';
     }
 
