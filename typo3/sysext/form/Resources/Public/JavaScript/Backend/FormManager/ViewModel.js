@@ -631,64 +631,79 @@ define(['jquery',
         /**
          * Wizard step 2
          */
-        MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.info, null, function(slide, settings) {
-          var html, modal, nextButton;
+        MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.info, TYPO3.lang['formManager.duplicateFormWizard.step2.progressLabel'], function(slide, settings) {
+          Icons.getIcon('actions-file-t3d', Icons.sizes.small).then(function (formTemplateIconMarkup) {
+            Icons.getIcon('actions-tag', Icons.sizes.small).then(function (formNameIconMarkup) {
+              Icons.getIcon('actions-database', Icons.sizes.small).then(function (formStorageMarkup) {
+                var html, modal, nextButton;
 
-          MultiStepWizard.unlockPrevStep();
-          MultiStepWizard.unlockNextStep();
+                MultiStepWizard.unlockPrevStep();
+                MultiStepWizard.unlockNextStep();
 
-          modal = MultiStepWizard.setup.$carousel.closest('.modal');
-          nextButton = modal.find('.modal-footer').find('button[name="next"]');
+                modal = MultiStepWizard.setup.$carousel.closest('.modal');
+                nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-          html = '<div class="new-form-modal">'
-            + '<div class="form-horizontal">'
-            + '<div>';
+                html = '<div class="new-form-modal">'
+                  + '<div class="form-horizontal">'
+                  + '<div>';
 
-          html += '<h3 class="modal-title">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h3>'
-            + '<hr />'
-            + '<div class="row">'
-            + '<div class="col-sm-3">'
-            + '<strong>' + TYPO3.lang['formManager.form_copied'] + ':</strong>'
-            + '</div>'
-            + '<div class="col-sm-9">'
-            + '<p>'
-            + securityUtility.encodeHtml(settings['confirmationDuplicateFormName'])
-            + '</p>'
-            + '</div>'
-            + '</div>'
-            + '<div class="row">'
-            + '<div class="col-sm-3">'
-            + '<strong>' + TYPO3.lang['formManager.form_name'] + ':</strong>'
-            + '</div>'
-            + '<div class="col-sm-9">'
-            + '<p>'
-            + securityUtility.encodeHtml(settings['formName'])
-            + '</p>'
-            + '</div>'
-            + '</div>'
-            + '<div class="row">'
-            + '<div class="col-sm-3">'
-            + '<strong>' + TYPO3.lang['formManager.form_save_path'] + ':</strong>'
-            + '</div>'
-            + '<div class="col-sm-9">'
-            + '<p>'
-            + securityUtility.encodeHtml(settings['confirmationDuplicateFormSavePath'])
-            + '</p>'
-            + '</div>'
-            + '</div>';
+                html += '<div class="mb-3">'
+                  + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h5>'
+                  + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
+                  + '</div>'
+                  + '<div class="alert alert-notice">'
+                  + '<div class="alert-body mt-1">'
+                  + '<div class="dropdown-table-row">'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                  + formTemplateIconMarkup
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                  + TYPO3.lang['formManager.form_copied']
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value">'
+                  + securityUtility.encodeHtml(settings['confirmationDuplicateFormName'])
+                  + '</div>'
+                  + '</div>'
+                  + '<div class="dropdown-table-row">'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                  + formNameIconMarkup
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                  + TYPO3.lang['formManager.form_name']
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value">'
+                  + securityUtility.encodeHtml(settings['formName'])
+                  + '</div>'
+                  + '</div>'
+                  + '<div class="dropdown-table-row">'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                  + formStorageMarkup
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                  + TYPO3.lang['formManager.form_save_path']
+                  + '</div>'
+                  + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value">'
+                  + securityUtility.encodeHtml(settings['confirmationDuplicateFormSavePath'])
+                  + '</div>'
+                  + '</div>'
+                  + '</div>'
+                  + '</div>';
 
-          html += '</div>'
-            + '</div>'
-            + '</div>';
+                html += '</div>'
+                  + '</div>'
+                  + '</div>';
 
-          slide.html(html);
+                slide.html(html);
 
-          nextButton.focus();
+                nextButton.focus();
 
-          nextButton.on('click', function(e) {
-            MultiStepWizard.setup.forceSelection = false;
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
-              slide.html($('<div />', {class: 'text-center'}).append(markup));
+                nextButton.on('click', function(e) {
+                  MultiStepWizard.setup.forceSelection = false;
+                  Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
+                    slide.html($('<div />', {class: 'text-center'}).append(markup));
+                  });
+                });
+              });
             });
           });
         });
